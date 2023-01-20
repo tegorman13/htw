@@ -184,13 +184,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#quick-reminder-of-general-patterns" id="toc-quick-reminder-of-general-patterns" class="nav-link active" data-scroll-target="#quick-reminder-of-general-patterns">Quick Reminder of General Patterns</a></li>
   <li><a href="#naive-model-that-fits-single-slope-and-intercept-to-all-subjects" id="toc-naive-model-that-fits-single-slope-and-intercept-to-all-subjects" class="nav-link" data-scroll-target="#naive-model-that-fits-single-slope-and-intercept-to-all-subjects">naive model that fits single slope and intercept to all subjects</a></li>
   <li><a href="#fit-no-pooling-model-individual-fit-for-each-subject" id="toc-fit-no-pooling-model-individual-fit-for-each-subject" class="nav-link" data-scroll-target="#fit-no-pooling-model-individual-fit-for-each-subject">Fit no pooling model (individual fit for each subject)</a></li>
-  <li><a href="#some-individual-plots-showing-the-best-fitting-line-to-testing-data" id="toc-some-individual-plots-showing-the-best-fitting-line-to-testing-data" class="nav-link" data-scroll-target="#some-individual-plots-showing-the-best-fitting-line-to-testing-data">Some individual plots showing the best fitting line to testing data</a>
+  <li><a href="#some-individual-plots-showing-the-best-fitting-line-against-testing-behavior-x-velocity." id="toc-some-individual-plots-showing-the-best-fitting-line-against-testing-behavior-x-velocity." class="nav-link" data-scroll-target="#some-individual-plots-showing-the-best-fitting-line-against-testing-behavior-x-velocity.">Some individual plots showing the best fitting line against testing behavior (x velocity).</a></li>
+  <li><a href="#fit-partial-pooling-model-linear-mixed-model-with-random-slope-and-intercept" id="toc-fit-partial-pooling-model-linear-mixed-model-with-random-slope-and-intercept" class="nav-link" data-scroll-target="#fit-partial-pooling-model-linear-mixed-model-with-random-slope-and-intercept">Fit partial pooling model (linear mixed model with random slope and intercept)</a></li>
+  <li><a href="#correlation-between-fit-parameters-slope-and-intercept-and-testing-vx" id="toc-correlation-between-fit-parameters-slope-and-intercept-and-testing-vx" class="nav-link" data-scroll-target="#correlation-between-fit-parameters-slope-and-intercept-and-testing-vx">Correlation between fit parameters (Slope and Intercept) and testing Vx</a>
   <ul class="collapse">
-  <li><a href="#fit-partial-pooling-model-linear-mixed-model-with-random-slope-and-intercept" id="toc-fit-partial-pooling-model-linear-mixed-model-with-random-slope-and-intercept" class="nav-link" data-scroll-target="#fit-partial-pooling-model-linear-mixed-model-with-random-slope-and-intercept">Fit partial pooling model (linear mixed model with random slope and intercept)</a>
-  <ul class="collapse">
-  <li><a href="#correlation-between-parameters-and-vx" id="toc-correlation-between-parameters-and-vx" class="nav-link" data-scroll-target="#correlation-between-parameters-and-vx">Correlation between parameters and Vx</a></li>
   <li><a href="#correlation-between-parameters-and-mean-deviation." id="toc-correlation-between-parameters-and-mean-deviation." class="nav-link" data-scroll-target="#correlation-between-parameters-and-mean-deviation.">Correlation between parameters and Mean Deviation.</a></li>
-  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -377,10 +375,11 @@ F-statistic:  1296 on 1 and 2450 DF,  p-value: &lt; 2.2e-16</code></pre>
 </details>
 </div>
 </section>
-<section id="some-individual-plots-showing-the-best-fitting-line-to-testing-data" class="level1 page-columns page-full">
-<h1>Some individual plots showing the best fitting line to testing data</h1>
+<section id="some-individual-plots-showing-the-best-fitting-line-against-testing-behavior-x-velocity." class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="some-individual-plots-showing-the-best-fitting-line-against-testing-behavior-x-velocity.">Some individual plots showing the best fitting line against testing behavior (x velocity).</h2>
 <ul>
-<li>subset of high, and low discriminating subjects</li>
+<li>Sample of high, and low discriminating subjects (i.e.&nbsp;highest and lowest slopes)</li>
+<li>Mean Vx for each band shown via dot.</li>
 <li>correct bands shown with translucent rectangles</li>
 </ul>
 <div class="cell page-columns page-full">
@@ -406,35 +405,29 @@ F-statistic:  1296 on 1 and 2450 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>tv<span class="ot">&lt;-</span>testSlopeIndv <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(dtestAgg, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit<span class="sc">==</span><span class="st">"Varied"</span>,rank<span class="sc">&lt;=</span><span class="dv">6</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>   <span class="fu">plotSlope</span>(.,<span class="at">colour=</span><span class="st">"black"</span>,<span class="at">title=</span><span class="st">"Highest Varied Sbj. Slopes"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>   <span class="fu">plotSlope</span>(.,<span class="at">colour=</span><span class="st">"black"</span>,<span class="at">title=</span><span class="st">"Largest Individually fit Varied Sbj. Slopes"</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>tc<span class="ot">&lt;-</span>testSlopeIndv <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(dtestAgg, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit<span class="sc">==</span><span class="st">"Constant"</span>,rank<span class="sc">&lt;=</span><span class="dv">6</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>   <span class="fu">plotSlope</span>(.,<span class="at">colour=</span><span class="st">"black"</span>,<span class="at">title=</span><span class="st">"Largest Individually fit Constant Sbj. Slopes"</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>bv<span class="ot">&lt;-</span>testSlopeIndv <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(dtestAgg, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit<span class="sc">==</span><span class="st">"Varied"</span>,rank<span class="sc">&gt;=</span>nGrp<span class="dv">-5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>   <span class="fu">plotSlope</span>(.,<span class="at">colour=</span><span class="st">"black"</span>,<span class="at">title=</span><span class="st">"Smallest Varied Sbj. Slopes"</span>)</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>bc<span class="ot">&lt;-</span>testSlopeIndv <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(dtestAgg, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit<span class="sc">==</span><span class="st">"Constant"</span>,rank<span class="sc">&gt;=</span>nGrp<span class="dv">-5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>   <span class="fu">plotSlope</span>(.,<span class="at">colour=</span><span class="st">"black"</span>,<span class="at">title=</span><span class="st">"Smallest Constant Sbj. Slopes."</span>)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>title <span class="ot">=</span> <span class="fu">ggdraw</span>()<span class="sc">+</span><span class="fu">draw_label</span>(<span class="st">"Highest and Lowest Slope Values"</span>,<span class="at">fontface =</span> <span class="st">'bold'</span>,<span class="at">x=</span><span class="dv">0</span>,<span class="at">hjust=</span><span class="dv">0</span>)<span class="sc">+</span><span class="fu">theme</span>(<span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, .<span class="dv">5</span>))</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(title,<span class="cn">NULL</span>,tv,tc,bv,bc,<span class="cn">NULL</span>,<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">rel_heights =</span> <span class="fu">c</span>(.<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-ℹ Please use `linewidth` instead.</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>tc<span class="ot">&lt;-</span>testSlopeIndv <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(dtestAgg, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit<span class="sc">==</span><span class="st">"Constant"</span>,rank<span class="sc">&lt;=</span><span class="dv">6</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">plotSlope</span>(.,<span class="at">colour=</span><span class="st">"black"</span>,<span class="at">title=</span><span class="st">"Highest Constant Sbj. Slopes"</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>bv<span class="ot">&lt;-</span>testSlopeIndv <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(dtestAgg, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit<span class="sc">==</span><span class="st">"Varied"</span>,rank<span class="sc">&gt;=</span>nGrp<span class="dv">-5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">plotSlope</span>(.,<span class="at">colour=</span><span class="st">"black"</span>,<span class="at">title=</span><span class="st">"Worst Varied Sbj. Slopes"</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>bc<span class="ot">&lt;-</span>testSlopeIndv <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(dtestAgg, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit<span class="sc">==</span><span class="st">"Constant"</span>,rank<span class="sc">&gt;=</span>nGrp<span class="dv">-5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">plotSlope</span>(.,<span class="at">colour=</span><span class="st">"black"</span>,<span class="at">title=</span><span class="st">"Lowest Constant Sbj. Slopes."</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>title <span class="ot">=</span> <span class="fu">ggdraw</span>()<span class="sc">+</span><span class="fu">draw_label</span>(<span class="st">"Highest and Lowest Slope Values"</span>,<span class="at">fontface =</span> <span class="st">'bold'</span>,<span class="at">x=</span><span class="dv">0</span>,<span class="at">hjust=</span><span class="dv">0</span>)<span class="sc">+</span><span class="fu">theme</span>(<span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, .<span class="dv">5</span>))</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(title,<span class="cn">NULL</span>,tv,tc,bv,bc,<span class="cn">NULL</span>,<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">rel_heights =</span> <span class="fu">c</span>(.<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display column-page-inset-right">
+<div class="cell-output-display column-page-right">
 <p><img src="discrim_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="1248"></p>
 </div>
 </div>
+</section>
 <section id="fit-partial-pooling-model-linear-mixed-model-with-random-slope-and-intercept" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="fit-partial-pooling-model-linear-mixed-model-with-random-slope-and-intercept">Fit partial pooling model (linear mixed model with random slope and intercept)</h2>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>bm1 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(vxMed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> band <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> band <span class="sc">|</span> id), dtestAgg, <span class="at">control =</span> <span class="fu">lmerControl</span>(<span class="at">optimizer =</span> <span class="st">"bobyqa"</span>, <span class="at">optCtrl =</span> <span class="fu">list</span>(<span class="at">maxfun =</span> <span class="fl">3e5</span>)))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>arm<span class="sc">::</span><span class="fu">display</span>(bm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>bm1 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(vxMed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> band <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> band <span class="sc">|</span> id), dtestAgg, <span class="at">control =</span> <span class="fu">lmerControl</span>(<span class="at">optimizer =</span> <span class="st">"bobyqa"</span>, <span class="at">optCtrl =</span> <span class="fu">list</span>(<span class="at">maxfun =</span> <span class="fl">3e5</span>)))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>arm<span class="sc">::</span><span class="fu">display</span>(bm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>lmer(formula = vxMed ~ 1 + band + (1 + band | id), data = dtestAgg, 
@@ -455,13 +448,13 @@ deviance = 33217.1 </code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df_partial_pooling <span class="ot">&lt;-</span> <span class="fu">coef</span>(bm1)[[<span class="st">"id"</span>]] <span class="sc">%&gt;%</span> </span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"id"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Intercept =</span> <span class="st">`</span><span class="at">(Intercept)</span><span class="st">`</span>, <span class="at">Slope_band =</span> band) <span class="sc">%&gt;%</span> </span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">Model =</span> <span class="st">"Partial pooling"</span>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df_partial_pooling)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df_partial_pooling <span class="ot">&lt;-</span> <span class="fu">coef</span>(bm1)[[<span class="st">"id"</span>]] <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"id"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Intercept =</span> <span class="st">`</span><span class="at">(Intercept)</span><span class="st">`</span>, <span class="at">Slope_band =</span> band) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">Model =</span> <span class="st">"Partial pooling"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df_partial_pooling)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
@@ -476,7 +469,7 @@ deviance = 33217.1 </code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(bm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(bm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
@@ -519,86 +512,87 @@ Model is nearly unidentifiable: large eigenvalue ratio
 <div class="cell page-columns page-full">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter to only retain the no pooling and partial pooling models. </span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare the average slope and intercepts between constant and varied condits. Use barplots with standard error bars</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>df_models <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df_pooled, df_no_pooling, df_partial_pooling) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(dtestAgg, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"id"</span>))</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>grpAvg<span class="ot">&lt;-</span>  df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"No pooling"</span>, <span class="st">"Partial pooling"</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,Model) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Model, condit) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">n=</span> <span class="fu">n</span>(),</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Intercept =</span> <span class="fu">mean</span>(Intercept), </span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">Slope_band =</span> <span class="fu">mean</span>(Slope_band),</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>( <span class="at">Intercept_se =</span> <span class="fu">sd</span>(Intercept)<span class="sc">/</span><span class="fu">sqrt</span>(n),</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Slope_band_se =</span> <span class="fu">sd</span>(Slope_band)<span class="sc">/</span><span class="fu">sqrt</span>(n), <span class="at">.groups=</span><span class="st">"keep"</span>)</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co">#head(grpAvg)</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a> p1<span class="ot">=</span>grpAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Model, <span class="at">y =</span> Slope_band, <span class="at">fill =</span> condit) <span class="sc">+</span></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span> </span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> Slope_band <span class="sc">-</span> Slope_band_se, <span class="at">ymax =</span> Slope_band <span class="sc">+</span> Slope_band_se), <span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="fl">0.9</span>)) <span class="sc">+</span></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Model"</span>, <span class="at">y =</span> <span class="st">"Slope (band)"</span>) <span class="sc">+</span> </span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Comparing Slopes between Conditions - Both pooling models"</span>)</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a> p2<span class="ot">=</span>grpAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Model, <span class="at">y =</span> Intercept, <span class="at">fill =</span> condit) <span class="sc">+</span></span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span> </span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> Intercept <span class="sc">-</span> Intercept_se, <span class="at">ymax =</span> Intercept <span class="sc">+</span> Intercept_se), <span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="fl">0.9</span>)) <span class="sc">+</span></span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Model"</span>, <span class="at">y =</span> <span class="st">"Intercept"</span>) <span class="sc">+</span> </span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Comparing Intercepts between Conditions - Both pooling models"</span>)</span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="co"># For the partial pooling model, visualize the correlation between the intercept and slope for each subject.</span></span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Use geom_smooth to fit a linear model to the data, and plot the line of best fit.</span></span>
-<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>p3<span class="ot">=</span>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Intercept, <span class="at">y =</span> Slope_band) <span class="sc">+</span> </span>
-<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Intercept"</span>, <span class="at">y =</span> <span class="st">"Slope (band)"</span>) <span class="sc">+</span> </span>
-<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Correlation between Fit Slope and Intercept (Mixed Effects model)"</span>)</span>
-<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For the partial pooling model, visualize the correlation between slope and devMean for each subject.</span></span>
-<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Use geom_smooth to fit a linear model to the data, and plot the line of best fit.</span></span>
-<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>p4<span class="ot">=</span>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Slope_band, <span class="at">y =</span> devMean) <span class="sc">+</span> </span>
-<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Slope (band)"</span>, <span class="at">y =</span> <span class="st">"devMean"</span>) <span class="sc">+</span> </span>
-<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Correlation between Fit Slope and testing performance (Mixed Effects model)"</span>)</span>
-<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a><span class="co"># For the partial pooling model, visualize the correlation between Intercept and devMean for each subject.</span></span>
-<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a>p5<span class="ot">=</span>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Intercept, <span class="at">y =</span> devMean) <span class="sc">+</span> </span>
-<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Intercept"</span>, <span class="at">y =</span> <span class="st">"devMean"</span>) <span class="sc">+</span> </span>
-<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Correlation between Fit Intercept and testing performance (Mixed Effects model)"</span>)</span>
-<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a>title <span class="ot">=</span> <span class="fu">ggdraw</span>()<span class="sc">+</span><span class="fu">draw_label</span>(<span class="st">"Examining the Fit Slopes and Intercepts"</span>,<span class="at">fontface =</span> <span class="st">'bold'</span>,<span class="at">x=</span><span class="dv">0</span>,<span class="at">hjust=</span><span class="dv">0</span>)<span class="sc">+</span><span class="fu">theme</span>(<span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, .<span class="dv">5</span>))</span>
-<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(title,<span class="cn">NULL</span>,p1,p2,p3,p4,p5,<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">rel_heights =</span> <span class="fu">c</span>(.<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter to only retain the no pooling and partial pooling models. </span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare the average slope and intercepts between constant and varied condits. Use barplots with standard error bars</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>df_models <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df_pooled, df_no_pooling, df_partial_pooling) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(dtestAgg, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"id"</span>))</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>grpAvg<span class="ot">&lt;-</span>  df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"No pooling"</span>, <span class="st">"Partial pooling"</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,Model) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Model, condit) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">n=</span> <span class="fu">n</span>(),</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Intercept =</span> <span class="fu">mean</span>(Intercept), </span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">Slope_band =</span> <span class="fu">mean</span>(Slope_band),</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>( <span class="at">Intercept_se =</span> <span class="fu">sd</span>(Intercept)<span class="sc">/</span><span class="fu">sqrt</span>(n),</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Slope_band_se =</span> <span class="fu">sd</span>(Slope_band)<span class="sc">/</span><span class="fu">sqrt</span>(n), <span class="at">.groups=</span><span class="st">"keep"</span>) </span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#head(grpAvg)</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a> p1<span class="ot">=</span>grpAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Model, <span class="at">y =</span> Slope_band, <span class="at">fill =</span> condit) <span class="sc">+</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span> </span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> Slope_band <span class="sc">-</span> Slope_band_se, <span class="at">ymax =</span> Slope_band <span class="sc">+</span> Slope_band_se), <span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="fl">0.9</span>)) <span class="sc">+</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Model"</span>, <span class="at">y =</span> <span class="st">"Slope (band)"</span>) <span class="sc">+</span> </span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Comparing Slopes between Conditions - Both pooling models"</span>)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a> p2<span class="ot">=</span>grpAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Model, <span class="at">y =</span> Intercept, <span class="at">fill =</span> condit) <span class="sc">+</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span> </span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> Intercept <span class="sc">-</span> Intercept_se, <span class="at">ymax =</span> Intercept <span class="sc">+</span> Intercept_se), <span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="fl">0.9</span>)) <span class="sc">+</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Model"</span>, <span class="at">y =</span> <span class="st">"Intercept"</span>) <span class="sc">+</span> </span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Comparing Intercepts between Conditions - Both pooling models"</span>)</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="co"># For the partial pooling model, visualize the correlation between the intercept and slope for each subject.</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Use geom_smooth to fit a linear model to the data, and plot the line of best fit.</span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>p3<span class="ot">=</span>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Intercept, <span class="at">y =</span> Slope_band) <span class="sc">+</span> </span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Intercept"</span>, <span class="at">y =</span> <span class="st">"Slope (band)"</span>) <span class="sc">+</span> </span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Correlation between Fit Slope and Intercept (Mixed Effects model)"</span>)</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For the partial pooling model, visualize the correlation between slope and devMean for each subject.</span></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Use geom_smooth to fit a linear model to the data, and plot the line of best fit.</span></span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>p4<span class="ot">=</span>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Slope_band, <span class="at">y =</span> devMean) <span class="sc">+</span> </span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Slope (band)"</span>, <span class="at">y =</span> <span class="st">"devMean"</span>) <span class="sc">+</span> </span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Correlation between Fit Slope and testing performance (Mixed Effects model)"</span>)</span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a><span class="co"># For the partial pooling model, visualize the correlation between Intercept and devMean for each subject.</span></span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>p5<span class="ot">=</span>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Intercept, <span class="at">y =</span> devMean) <span class="sc">+</span> </span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Intercept"</span>, <span class="at">y =</span> <span class="st">"devMean"</span>) <span class="sc">+</span> </span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>)<span class="sc">+</span><span class="fu">ggtitle</span>(<span class="st">"Correlation between Fit Intercept and testing performance (Mixed Effects model)"</span>)</span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a>title <span class="ot">=</span> <span class="fu">ggdraw</span>()<span class="sc">+</span><span class="fu">draw_label</span>(<span class="st">"Examining the Fit Slopes and Intercepts"</span>,<span class="at">fontface =</span> <span class="st">'bold'</span>,<span class="at">x=</span><span class="dv">0</span>,<span class="at">hjust=</span><span class="dv">0</span>)<span class="sc">+</span><span class="fu">theme</span>(<span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, .<span class="dv">5</span>))</span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(title,<span class="cn">NULL</span>,p1,p2,p3,p4,p5,<span class="at">ncol=</span><span class="dv">2</span>,<span class="at">rel_heights =</span> <span class="fu">c</span>(.<span class="dv">15</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display column-page-inset-right">
 <p><img src="discrim_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
-<section id="correlation-between-parameters-and-vx" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="correlation-between-parameters-and-vx">Correlation between parameters and Vx</h3>
+</section>
+<section id="correlation-between-fit-parameters-slope-and-intercept-and-testing-vx" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="correlation-between-fit-parameters-slope-and-intercept-and-testing-vx">Correlation between fit parameters (Slope and Intercept) and testing Vx</h2>
 <ul>
 <li>Noteworthy that The correlation between slope and Vx is strongest for the slowest bands (100-300 and 350-550), for both original and reverse ordered groups. The slow positions are extrapolation for the Original ordered group, and trained by the reverse ordered group.</li>
 <li>Fairly similar patterns for Slope and Intercept</li>
@@ -606,17 +600,17 @@ Model is nearly unidentifiable: large eigenvalue ratio
 <div class="cell page-columns page-full">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For the partial pooling model, visualize the correlation between slope and devMean for each subject. Facet by vb~catOrder. Group and color by condit. </span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Use geom_smooth to fit a linear model to the data, and plot the line of best fit.</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Slope_band, <span class="at">y =</span> vxMed, <span class="at">color =</span> condit) <span class="sc">+</span> </span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Slope (band)"</span>, <span class="at">y =</span> <span class="st">"Median Vx"</span>) <span class="sc">+</span> </span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>) <span class="sc">+</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(catOrder<span class="sc">~</span>vb)<span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Correlation between Slope and Median VX"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For the partial pooling model, visualize the correlation between slope and devMean for each subject. Facet by vb~catOrder. Group and color by condit. </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Use geom_smooth to fit a linear model to the data, and plot the line of best fit.</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Slope_band, <span class="at">y =</span> vxMed, <span class="at">color =</span> condit) <span class="sc">+</span> </span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Slope (band)"</span>, <span class="at">y =</span> <span class="st">"Median Vx"</span>) <span class="sc">+</span> </span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>) <span class="sc">+</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(catOrder<span class="sc">~</span>vb)<span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Correlation between Slope and Median VX"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
@@ -626,14 +620,14 @@ Model is nearly unidentifiable: large eigenvalue ratio
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Intercept, <span class="at">y =</span> vxMed, <span class="at">color =</span> condit) <span class="sc">+</span> </span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Intercept"</span>, <span class="at">y =</span> <span class="st">"Median Vx"</span>) <span class="sc">+</span> </span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>) <span class="sc">+</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(catOrder<span class="sc">~</span>vb)<span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Correlation between Intercept and Median Vx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Intercept, <span class="at">y =</span> vxMed, <span class="at">color =</span> condit) <span class="sc">+</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Intercept"</span>, <span class="at">y =</span> <span class="st">"Median Vx"</span>) <span class="sc">+</span> </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>) <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(catOrder<span class="sc">~</span>vb)<span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Correlation between Intercept and Median Vx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
@@ -642,7 +636,6 @@ Model is nearly unidentifiable: large eigenvalue ratio
 <p><img src="discrim_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
-</section>
 <section id="correlation-between-parameters-and-mean-deviation." class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="correlation-between-parameters-and-mean-deviation.">Correlation between parameters and Mean Deviation.</h3>
 <ul>
@@ -651,17 +644,17 @@ Model is nearly unidentifiable: large eigenvalue ratio
 <div class="cell page-columns page-full">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For the partial pooling model, visualize the correlation between slope and devMean for each subject. Facet by vb~catOrder. Group and color by condit. </span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Use geom_smooth to fit a linear model to the data, and plot the line of best fit.</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Slope_band, <span class="at">y =</span> devMean, <span class="at">color =</span> condit) <span class="sc">+</span> </span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Slope (band)"</span>, <span class="at">y =</span> <span class="st">"devMean"</span>) <span class="sc">+</span> </span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>) <span class="sc">+</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(catOrder<span class="sc">~</span>vb)<span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Correlation between Slope and Mean Deviation"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For the partial pooling model, visualize the correlation between slope and devMean for each subject. Facet by vb~catOrder. Group and color by condit. </span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Use geom_smooth to fit a linear model to the data, and plot the line of best fit.</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Slope_band, <span class="at">y =</span> devMean, <span class="at">color =</span> condit) <span class="sc">+</span> </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Slope (band)"</span>, <span class="at">y =</span> <span class="st">"devMean"</span>) <span class="sc">+</span> </span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>) <span class="sc">+</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(catOrder<span class="sc">~</span>vb)<span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Correlation between Slope and Mean Deviation"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
@@ -671,14 +664,14 @@ Model is nearly unidentifiable: large eigenvalue ratio
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Intercept, <span class="at">y =</span> devMean, <span class="at">color =</span> condit) <span class="sc">+</span> </span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Intercept"</span>, <span class="at">y =</span> <span class="st">"devMean"</span>) <span class="sc">+</span> </span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>) <span class="sc">+</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(catOrder<span class="sc">~</span>vb)<span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Correlation between Intercept and Mean Deviation"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df_models <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Partial pooling"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Intercept, <span class="at">y =</span> devMean, <span class="at">color =</span> condit) <span class="sc">+</span> </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Intercept"</span>, <span class="at">y =</span> <span class="st">"devMean"</span>) <span class="sc">+</span> </span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">legend.justification =</span> <span class="st">"left"</span>) <span class="sc">+</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(catOrder<span class="sc">~</span>vb)<span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Correlation between Intercept and Mean Deviation"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
@@ -689,7 +682,6 @@ Model is nearly unidentifiable: large eigenvalue ratio
 </div>
 
 
-</section>
 </section>
 </section>
 
