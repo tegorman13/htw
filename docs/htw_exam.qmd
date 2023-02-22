@@ -1,0 +1,211 @@
+---
+title: HTW EXAM Simulations
+code-fold: true
+execute: 
+  warning: false
+  eval: false
+--- 
+
+
+```{r}
+pacman::p_load(tidyverse,data.table,igraph,ggraph,kableExtra)
+
+d <- readRDS('dPrune-01-19-23.rds')
+
+dtest <- d %>% filter(expMode %in% c("test-Nf","test-train-nf")) %>% group_by(id,lowBound) %>% 
+  mutate(nBand=n(),band=bandInt,id=factor(id)) %>% group_by(id) %>% mutate(nd=n_distinct(lowBound))
+# unique(dtest[dtest$nd==4,]$sbjCode) # 7 in wrong condition
+dtest <- dtest %>% group_by(id,lowBound) %>% filter(nBand>=5 & nd==6)
+# for any id that has at least 1 nBand >=5, remove all rows with that id. 
+dtest <- dtest %>% group_by(id) %>% filter(!id %in% unique(dtest$id[dtest$nBand<5]))
+
+dtestAgg <- dtest %>% group_by(id,condit,catOrder,feedbackType,vb,band,lowBound,highBound,input) %>% mutate(vxCapped=ifelse(vx>1600,1600,vx)) %>%
+  summarise(vxMean=mean(vx),devMean=mean(dist),vxMed=median(vx),devMed=median(dist),
+            vxMeanCap=mean(vxCapped),.groups = "keep")
+
+# select first row for each id in d, then create histogram for nTrain
+#  d  %>% group_by(id) %>% slice(1) %>% ggplot(aes(nTrain)) + geom_histogram() + facet_wrap(~condit)
+  
+ds <- d %>% filter(expMode %in% c("train","train-Nf","test-Nf","test-train-nf")) %>% 
+filter(!id %in% unique(dtest$id[dtest$nBand<5])) %>% select(id,condit,catOrder,feedbackType,expMode,trial,vb,band,lowBound,highBound,input,vx,dist,vxb) 
+
+dst <- ds %>% filter(expMode=="train",catOrder=="orig")
+
+```
+
+
+```{r}
+
+alm.response <- function(input=1,c) {
+input.activation <- exp(-c*(input.layer - input)^2)
+input.activation <<- input.activation/sum(input.activation)
+#print(length(input.activation)); print(dim(weight.mat))
+output.activation <<- weight.mat %*% input.activation
+output.probability <<- output.activation/sum(output.activation)
+mean.response <<- sum(output.layer * output.probability)
+mean.response
+}
+
+alm.update <- function(corResp,c,lr){
+  fz <- exp(-c*(output.layer - corResp)^2)
+  teacherSignal <- (fz - output.activation)*lr
+  #print(length(teacherSignal)); print(length(fz))
+  wChange <- teacherSignal %*% t(input.activation)
+  weight.mat <<- weight.mat + (wChange)
+  weight.mat[weight.mat<0]=0
+ # weight.mat[weight.mat>1]=1
+  weight.mat <<- weight.mat
+}
+
+alm.trial <- function(input, corResp,c,lr){
+  alm.response(input,c)
+  alm.update(corResp,c,lr)
+  print(paste0("input=",input,"; corResp=",corResp,"; mean.response=",mean.response))
+  mean.response
+}
+
+htw_exam_response <- function(input,c){
+  # Find the index of the input node with the highest activation
+  trainVec = c(0,sort(unique(xt))) # add 0 to the training vector
+  nearestTrain <- trainVec[which.min(abs(input - trainVec))]
+  aresp <- alm.response(nearestTrain,c)
+  #max.index <- which.max(input.activation)
+  xUnder = ifelse(min(trainVec) == nearestTrain, nearestTrain, trainVec[which(trainVec == nearestTrain) - 1])
+  xOver = ifelse(max(trainVec) == nearestTrain, nearestTrain, trainVec[which(trainVec == nearestTrain) + 1])
+
+  mUnder <- alm.response(xUnder,c)
+  mOver <- alm.response(xOver,c)
+ 
+   exam.output = round(aresp + ((mOver - mUnder) / (xOver - xUnder)) * (input - nearestTrain), 3)
+  # Determine the input nodes and associated weights for computing the slope
+  exam.output
+}
+
+
+
+# simulation function
+htw_alm_sim <- function(dat, c, lr,testRange=seq(0,100,.5)){
+input.layer <<- matrix(seq(1,7,1) ) # half step units for inputs, from 0 to 100
+output.layer <<- matrix(seq(50,1600,50)) # single step units for outputs, from 0 to 250
+weight.mat <<- matrix(0.00001,nrow=length(output.layer),ncol=length(input.layer )) # weights initialized to 0 (as in Delosh 1997)
+xt<<-dat$x
+# run training
+st <- map2_dbl(dat$x, dat$y, ~alm.trial(.x,.y,c,lr))
+# append training data to the data frame
+dat <- dat %>% mutate(almResp = st)
+# test final weights on the full range of inputs
+almResp <- map_dbl(testRange, ~alm.response(.x,c)) 
+examResp <- map_dbl(testRange,~exam.response(.x,c))
+
+return(list(d=dat, alm=almResp,exam=examResp,wm=weight.mat,c=c,lr=lr)) # final weightmat is probs incorrect for all but last
+}
+
+simOrganize <- function(simOut){
+
+  dat <- simOut$d
+  weight.mat <<- simOut$wm
+  c <- simOut$c
+  lr <- simOut$lr
+
+  almResp <- generate.data(seq(0,100,.5), type = first(dat$type)) %>% rowwise() %>% 
+ mutate(model="ALM",resp = alm.response(x,c))
+
+examResp <- generate.data(seq(0,100,.5), type = first(dat$type)) %>% rowwise() %>% 
+ mutate(model="EXAM",resp = exam.response(x,c))
+
+ bind_rows(almResp,examResp) %>% 
+ mutate(type=first(dat$type),c=c,lr=lr,
+ type=factor(type,levels=c("linear","exponential","quadratic")))
+
+}
+  
+
+```
+
+
+
+We can model the relation between reaction time (in seconds) and the number of practice trials as a power law function. Let $f: \mathbb{N} \rightarrow \mathbb{R}^+$ be a function that maps the number of trials to reaction times. We write
+
+$$
+f_p(N) = \alpha + \beta N^{-r} \enspace ,
+$$
+
+where $\alpha$ is a lower bound (one cannot respond faster than that due to processing and motor control limits); $\beta$ is the learning gain from practice with respect to the first trial ($N = 1$); $N$ indexes the particular trial; and $r$ is the learning rate. Similarly, we can write
+
+
+$$
+f_e(N) = \alpha + \beta e^{-rN} \enspace ,
+$$
+
+where the parameters have the same interpretation, except that $\beta$ is the learning gain from practice compared to no practice ($N = 0$).[^2]
+
+What is the main difference between those two functions? *The exponential model assumes a constant learning rate, while the power model assumes diminishing returns*. To see this, let $\alpha = 0$, and ignore for the moment that $N$ is discrete. Taking the derivative for the power law model results in
+
+$$
+\frac{\partial f_p(N)}{\partial N} = -r\beta N^{-r - 1} = (-r/N) \, \beta N^{-r} = (-r/N) \, f_p(N) \enspace ,
+$$
+
+which shows that the *local learning rate* --- the change in reaction time as a function of $N$ --- is $-r/N$; it depends on how many trials have been completed previously. The more one has practiced, the smaller the local learning rate $-r / N$. The exponential function, in contrast, shows no such dependency on practice:
+
+$$
+\frac{\partial f_e(N)}{\partial N} = -r\beta e^{-rN} = -r \, f_e(N) \enspace .
+$$
+# simulate data
+sim_power <- function(N, alpha, beta, r, t0 = 0, sdlog = 1) {
+  t0 + (alpha + beta * N^(-r)) * rlnorm(length(N), 0, sdlog)
+}
+sim_exp <- function(N, alpha, beta, r, t0 = 0, sdlog = 1) {
+  t0 + (alpha + beta * exp(-r*N)) * rlnorm(length(N), 0, sdlog)
+}
+
+
+negative_llh_exp <- function(y, N, alpha, beta, r, sigma_e, tau = 0) {
+  -sum(dnorm(y, alpha + beta * (tau + 1) / (tau + exp(r*N)), sigma_e, log = TRUE))
+}
+
+```{r}
+
+# create learning models for condit and varied groups. Aggregatign over ids in dst. The models predict dist as an exponential decay function of trial number. Band is an additional predictor. 
+
+# fit exponential decay model as a function of trial number
+
+fit_exp <- function(trial,dist,input){
+    # fit exponential decay model as a function of trial number, band is an additional predictor
+    fit <- nls(dist ~ yf + (y0-yf) * exp(-r*trial) + beta2*input, start = list(yf = 300, y0 = 364, beta2=0, r = .1), data = data.frame(trial=trial,dist=dist,input=input))
+
+    # extract parameters
+    alpha <- coef(fit)[1]
+    beta <- coef(fit)[2]
+    beta2 <- coef(fit)[3]
+    r <- coef(fit)[4]
+    sigma_e <- summary(fit)$sigma
+
+    # compute negative log likelihood
+    nllh <- negative_llh_exp(dist, trial, alpha, beta, r, sigma_e)
+
+    # return parameters and negative log likelihood
+    return(list(alpha=alpha,beta=beta,beta2=beta2,r=r,sigma_e=sigma_e,nllh=nllh))
+}
+
+# Compute group averages for dist over trial and band. dst 
+
+avgTrain <- dst %>% group_by(id,condit,trial,band,input) %>% summarise(dist=mean(dist)) %>% ungroup() %>% group_by(condit,trial,band) %>% summarise(dist=mean(dist)) %>% ungroup()
+ 
+# plot group averages
+ggplot(avgTrain,aes(x=trial,y=dist)) + geom_line(aes(group=band,color=band)) +facet_grid(~condit)
+
+avgTrain %>% filter(condit=="Constant") %>% nls(dist ~ yf + (y0-yf) * exp(-r*trial), start = list(yf = 120, y0 = 364, r = .1), data = .) %>% summary()
+
+
+avgTrain %>% filter(condit=="Constant") %>% nls(dist ~ SSasymp(trial, yf, y0, log_alpha),data=.)
+
+# fit exponential decay model for each condit
+fit_condit <- avgTrain %>% group_by(condit) %>% do(fit_exp(trial=.$trial,dist=.$dist,input=.$input))
+
+
+# fit exponential model
+
+
+
+
+```
