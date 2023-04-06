@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.211">
+<meta name="generator" content="quarto-1.3.242">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-02-22">
+<meta name="dcterms.date" content="2023-03-18">
 
 <title>HTW Project - Project 2</title>
 <style>
@@ -18,9 +18,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -47,48 +48,19 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+/* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
 }
-.hanging div.csl-entry {
+.hanging-indent div.csl-entry {
   margin-left:2em;
   text-indent:-2em;
 }
@@ -102,8 +74,7 @@ div.csl-right-inline {
 }
 div.csl-indent {
   margin-left: 2em;
-}
-</style>
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -196,12 +167,27 @@ div.csl-indent {
     <a class="dropdown-item" href="./ALM_Shiny.html" rel="" target="">
  <span class="dropdown-text">Shiny App</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./ojs_alm.html" rel="" target="">
+ <span class="dropdown-text">OJS ALM</span></a>
+  </li>  
     </ul>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="./htw_exam.qmd" rel="" target="">
- <span class="menu-text">Model Fitting</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-model-fitting" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Model Fitting</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-model-fitting">    
+        <li>
+    <a class="dropdown-item" href="./htw_exam.html" rel="" target="">
+ <span class="dropdown-text">ALM &amp; EXAM Fitting</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./benchmarks.html" rel="" target="">
+ <span class="dropdown-text">Benchmarking</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="./Task.html" rel="" target="">
  <span class="menu-text">Task</span></a>
@@ -273,7 +259,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 22, 2023</p>
+      <p class="date">March 18, 2023</p>
     </div>
   </div>
   
@@ -307,8 +293,8 @@ div.csl-indent {
 </ol>
 <div class="cell">
 <div class="cell-output-display">
-<div id="htmlwidget-5a5408afca951838f119" style="width:100%;height:232px;" class="grViz html-widget "></div>
-<script type="application/json" data-for="htmlwidget-5a5408afca951838f119">{"x":{"diagram":"digraph {\ngraph [layout = dot, rankdir = LR]\n# define the global styles of the nodes. We can override these in box if we wish\nnode [shape = rectangle, style = filled, fillcolor = Linen]\ndata1 [label = <<b>Varied Training<\/b>  \n<br ALIGN = \"LEFT\" /> 800-1000\n<br/> 1000-1200\n<br/>1200-1400>]\ndata2 [label = <<b>Constant Training<\/b>  \n<br/> 800-1000 >]\nTest1 [label = <<b>Testing - No Feedback<\/b>  \n<br ALIGN = \"LEFT\" /> 100-300\n<br/> 350-550\n<br/>600-800>]\nTest2 [label = <<b>Test From Train<\/b>  \n<br ALIGN = \"LEFT\" /> 800-1000\n<br/> 1000-1200\n<br/>1200-1400>]\nTest3[label = <<b>Testing -Feedback<\/b>  \n<br ALIGN = \"LEFT\" /> 100-300\n<br/> 350-550\n<br/>600-800>]\n\n# edge definitions with the node IDs\n{data1 data2}  -> Test1 -> Test2 -> Test3\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-34b3e80e11e2c1f79101" style="width:100%;height:232px;" class="grViz html-widget "></div>
+<script type="application/json" data-for="htmlwidget-34b3e80e11e2c1f79101">{"x":{"diagram":"digraph {\ngraph [layout = dot, rankdir = LR]\n# define the global styles of the nodes. We can override these in box if we wish\nnode [shape = rectangle, style = filled, fillcolor = Linen]\ndata1 [label = <<b>Varied Training<\/b>  \n<br ALIGN = \"LEFT\" /> 800-1000\n<br/> 1000-1200\n<br/>1200-1400>]\ndata2 [label = <<b>Constant Training<\/b>  \n<br/> 800-1000 >]\nTest1 [label = <<b>Testing - No Feedback<\/b>  \n<br ALIGN = \"LEFT\" /> 100-300\n<br/> 350-550\n<br/>600-800>]\nTest2 [label = <<b>Test From Train<\/b>  \n<br ALIGN = \"LEFT\" /> 800-1000\n<br/> 1000-1200\n<br/>1200-1400>]\nTest3[label = <<b>Testing -Feedback<\/b>  \n<br ALIGN = \"LEFT\" /> 100-300\n<br/> 350-550\n<br/>600-800>]\n\n# edge definitions with the node IDs\n{data1 data2}  -> Test1 -> Test2 -> Test3\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>Experiment Procedure</p>
 </div>
 </div>
@@ -574,29 +560,29 @@ Slope value computed from nearest training instances and then added to the respo
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-bottNonmonotonicExtrapolationFunction2004" class="csl-entry" role="doc-biblioentry">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-bottNonmonotonicExtrapolationFunction2004" class="csl-entry" role="listitem">
 Bott, Lewis, and Evan Heit. 2004. <span>“Nonmonotonic <span>Extrapolation</span> in <span>Function Learning</span>.”</span> <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em> 30: 38–50.
 </div>
-<div id="ref-brehmerHypothesesRelationsScaled1974" class="csl-entry" role="doc-biblioentry">
+<div id="ref-brehmerHypothesesRelationsScaled1974" class="csl-entry" role="listitem">
 Brehmer, Berndt. 1974. <span>“Hypotheses about Relations Between Scaled Variables in the Learning of Probabilistic Inference Tasks.”</span> <em>Organizational Behavior and Human Performance</em> 11 (1): 1–27. <a href="https://doi.org/10.1016/0030-5073(74)90002-6">https://doi.org/10.1016/0030-5073(74)90002-6</a>.
 </div>
-<div id="ref-carrollFunctionalLearningLearning1963" class="csl-entry" role="doc-biblioentry">
+<div id="ref-carrollFunctionalLearningLearning1963" class="csl-entry" role="listitem">
 Carroll, J. Douglas. 1963. <span>“Functional <span>Learning</span>: <span>The Learning</span> of <span>Continuous Functional Mappings Relating Stimulus</span> and <span>Response Continua</span>.”</span> <em>ETS Research Bulletin Series</em> 1963 (2): i–144. <a href="https://doi.org/10.1002/j.2333-8504.1963.tb00958.x">https://doi.org/10.1002/j.2333-8504.1963.tb00958.x</a>.
 </div>
-<div id="ref-deloshExtrapolationSineQua1997" class="csl-entry" role="doc-biblioentry">
+<div id="ref-deloshExtrapolationSineQua1997" class="csl-entry" role="listitem">
 DeLosh, Edward L, Mark A McDaniel, and Jerome R Busemeyer. 1997. <span>“Extrapolation: <span>The Sine Qua Non</span> for <span>Abstraction</span> in <span>Function Learning</span>.”</span> <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, 19.
 </div>
-<div id="ref-jonesActiveFunctionLearning2018" class="csl-entry" role="doc-biblioentry">
+<div id="ref-jonesActiveFunctionLearning2018" class="csl-entry" role="listitem">
 Jones, Angela, Eric Schulz, Björn Meder, and Azzurra Ruggeri. 2018. <span>“Active <span>Function Learning</span>.”</span> Preprint. <span>Animal Behavior and Cognition</span>. <a href="https://doi.org/10.1101/262394">https://doi.org/10.1101/262394</a>.
 </div>
-<div id="ref-kalishPopulationLinearExperts2004" class="csl-entry" role="doc-biblioentry">
+<div id="ref-kalishPopulationLinearExperts2004" class="csl-entry" role="listitem">
 Kalish, Michael L., Stephan Lewandowsky, and John K. Kruschke. 2004. <span>“Population of <span>Linear Experts</span>: <span>Knowledge Partitioning</span> and <span>Function Learning</span>.”</span> <em>Psychological Review</em> 111 (4): 1072–99. <a href="https://doi.org/10.1037/0033-295X.111.4.1072">https://doi.org/10.1037/0033-295X.111.4.1072</a>.
 </div>
-<div id="ref-mcdanielConceptualBasisFunction2005" class="csl-entry" role="doc-biblioentry">
+<div id="ref-mcdanielConceptualBasisFunction2005" class="csl-entry" role="listitem">
 Mcdaniel, Mark A., and Jerome R. Busemeyer. 2005. <span>“The Conceptual Basis of Function Learning and Extrapolation: <span>Comparison</span> of Rule-Based and Associative-Based Models.”</span> <em>Psychonomic Bulletin &amp; Review</em> 12 (1): 24–42. <a href="https://doi.org/10.3758/BF03196347">https://doi.org/10.3758/BF03196347</a>.
 </div>
-<div id="ref-mcdanielPredictingTransferPerformance2009" class="csl-entry" role="doc-biblioentry">
+<div id="ref-mcdanielPredictingTransferPerformance2009" class="csl-entry" role="listitem">
 Mcdaniel, Mark, Eric Dimperio, Jacqueline Griego, and Jerome Busemeyer. 2009. <span>“Predicting Transfer Performance: <span>A</span> Comparison of Competing Function Learning Models.”</span> <em>Journal of Experimental Psychology. Learning, Memory, and Cognition</em> 35 (January): 173–95. <a href="https://doi.org/10.1037/a0013982">https://doi.org/10.1037/a0013982</a>.
 </div>
 </div>
@@ -749,9 +735,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
