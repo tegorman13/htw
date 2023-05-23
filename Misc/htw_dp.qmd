@@ -1,7 +1,7 @@
 ---
 title: "Project 2"
 subtitle: " Variability and Function Learning "
-bibliography: "Bib/HTW.bib"
+bibliography: "../Bib/HTW.bib"
 date: last-modified
 keep-tex: true
 code-fold: true
@@ -11,10 +11,10 @@ code-fold: true
 
 
 ```{r setup, include = FALSE}
-library(figpatch)
+#library(figpatch)
 library(kableExtra)
 library(knitr)
-
+library(here)
 
 ```
 
@@ -132,7 +132,8 @@ group had 3x more practice trials from that band.
 #fig.cap="\\label{fig:figs}training performance"
 
 #title=paste0("HTW Training")
-figpatch::fig("Assets/Training-1.png")
+#figpatch::fig(here("Assets/Training-1.png"))
+knitr::include_graphics(here("Assets/Training-1.png"))
   #fig_lab(.,title,pos="top",fontface='bold',size=12,hjust=.01)
 
 ```
@@ -157,8 +158,8 @@ for which both groups had an average of greater than 500.
 # fig2aCap=str_wrap("Figure 2B: Bands 100-300, 350-550 and 600-800 are novel extrapolations for both groups. Band 800-1000 was a training band for both groups. Bands 1000-1200, and 1200-1400 were trained for the varied group, and novel for the constant group.  Top figure displays mean deviation from correct velocity. Bottom figure displays the average % of trials where participants hit the wall with the correct velocity. Error bars indicate standard error of the mean. " ,width=170)
 
 
-figpatch::fig("Assets/Testing_Vx-1.png") 
-
+#figpatch::fig(here("Assets/Testing_Vx-1.png"))
+knitr::include_graphics(here("Assets/Testing_Vx-1.png"))
 
 ```
 
@@ -173,7 +174,8 @@ participants.
 ```{r Test Performance, out.height="100%", out.width="100%"}
 #| column: page-inset
 
-figpatch::fig("Assets/Test_Performance-1.png") 
+#figpatch::fig(here("Assets/Test_Performance-1.png"))
+knitr::include_graphics(here("Assets/Test_Performance-1.png"))
 
 # 
 # gtitle="2C. Testing Performance"

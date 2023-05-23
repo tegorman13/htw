@@ -14,8 +14,8 @@ editor:
 
 ```{r}
 
-pacman::p_load(tidyverse,foreach,doParallel,future,furrr)
-purrr::walk(c("Functions/alm_functions.R","Functions/Display_Functions.R"),source)
+pacman::p_load(tidyverse,foreach,doParallel,future,furrr,here)
+purrr::walk(c(here("Functions/alm_functions.R","Functions/Display_Functions.R")),source)
 
 n_cores <- parallel::detectCores()
 
@@ -189,7 +189,7 @@ ts user system elapsed 1132.716 76.260 1493.154
 pacman::p_load(tidyverse,data.table,microbenchmark())
 
 
-d <- readRDS('dPrune-01-19-23.rds')
+d <- readRDS(here('dPrune-01-19-23.rds'))
 
 dtest <- d %>% filter(expMode %in% c("test-Nf","test-train-nf")) %>% group_by(id,lowBound) %>% 
   mutate(nBand=n(),band=bandInt,id=factor(id)) %>% group_by(id) %>% mutate(nd=n_distinct(lowBound))
