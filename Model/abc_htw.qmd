@@ -15,11 +15,11 @@ execute:
 
 ```{r}
 # load and view data
-pacman::p_load(tidyverse,data.table,lme4,future,furrr,abc,mvtnorm,patchwork)
-purrr::walk(c("Functions/alm_functions.R","Functions/Display_Functions.R","Functions/Noisy_Functions.R"),source)
+pacman::p_load(tidyverse,data.table,lme4,future,furrr,abc,mvtnorm,patchwork,here)
+purrr::walk(here(c("Functions/alm_functions.R","Functions/Display_Functions.R","Functions/Noisy_Functions.R")),source)
 
 select <- dplyr::select; mutate <- dplyr::mutate 
-d <- readRDS("dPrune-01-19-23.rds")
+d <- readRDS(here("data/dPrune-01-19-23.rds"))
 levels(d$condit)
 # Prepare the data for analysis
 dtest <- d %>% filter(expMode %in% c("test-Nf","test-train-nf")) %>% group_by(id,lowBound) %>% 
@@ -147,8 +147,13 @@ ggpv <- postV/(gvp + gvo)
 
 ```
 
-![](images/abc_varied.png)
 
+
+
+```{r}
+knitr::include_graphics(here("images/abc_varied.png"))
+#![](images/abc_varied.png)
+```
 
 
 
@@ -211,5 +216,11 @@ ggsave("images/abc_constant.png",postC/(gcp + gco),width=12,height=10)
 
 ```
 
-![](images/abc_constant.png)
+
+`r knitr::include_graphics(here("images/abc_constant.png"))`
+
+
+
+
+
 
