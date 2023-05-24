@@ -2,6 +2,13 @@
 # import sys
 # !{sys.executable} -m pip install numpy
 
+
+
+# https://osf.io/erp4q
+
+
+
+
 import numpy as np
 
 def input_activation(x_target, c):

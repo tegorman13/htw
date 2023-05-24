@@ -1,0 +1,30 @@
+---
+title: HTW Test Analysis
+date: last-modified
+categories: [Analysis, R]
+page-layout: full
+code-fold: show
+code-tools: true
+execute: 
+  warning: false
+  eval: true
+---
+
+
+
+```{r}
+pacman::p_load(tidyverse,data.table,lme4,emmeans,here)
+d <- readRDS(here("data/dPrune-05-21-23.rds"))
+
+dtest <- d %>% filter(expMode %in% c("test-Nf","test-train-nf")) %>% group_by(id,lowBound) %>% 
+  mutate(nBand=n(),band=bandInt,id=factor(id)) %>% group_by(id) %>% mutate(nd=n_distinct(lowBound))
+dtest <- dtest %>% group_by(id,lowBound) %>% filter(nBand>=5 & nd==6)
+dtest <- dtest %>% group_by(id) %>% filter(!id %in% unique(dtest$id[dtest$nBand<5]))
+
+dtestAgg <- dtest %>% group_by(id,condit,catOrder,fb,vb,band,lowBound,highBound,input) %>% mutate(vxCapped=ifelse(vx>1600,1600,vx)) %>%
+  summarise(vxMean=mean(vx),devMean=mean(dist),vxMed=median(vx),devMed=median(dist),
+            vxMeanCap=mean(vxCapped),.groups = "keep")
+
+
+
+```
