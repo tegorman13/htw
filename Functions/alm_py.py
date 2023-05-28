@@ -6,6 +6,9 @@
 
 # https://osf.io/erp4q
 
+
+
+
 import numpy as np
 
 def input_activation(x_target, c):
