@@ -1,0 +1,75 @@
+---
+title: alm hidden
+---
+
+
+
+
+
+```{r}
+
+#Here's a new version of ALM with 7 input nodes, 32 output nodes, and a hidden layer with 10 nodes:
+input.activation <- function(x.target, association.parameter) {
+  return(exp(-1 * association.parameter * (x.target - x.plotting)^2))
+}
+
+hidden.activation <- function(input.activations, weights, association.parameter) {
+  return(exp(-1 * association.parameter * (weights %*% input.activations)))
+}
+
+output.activation <- function(hidden.activations, weights, association.parameter) {
+  return(weights %*% hidden.activations)
+}
+
+mean.prediction <- function(x.target, weights, association.parameter) {
+  hidden.activations <- hidden.activation(input.activation(x.target, association.parameter), weights, association.parameter)
+  probability <- output.activation(hidden.activations, weights, association.parameter) / sum(output.activation(hidden.activations, weights, association.parameter))
+  return(y.plotting %*% probability) # integer prediction
+}
+
+update.weights <- function(x.new, y.new, weights, association.parameter, update.parameter) {
+  hidden.activations <- hidden.activation(input.activation(x.new, association.parameter), weights, association.parameter)
+  y.feedback.activation <- exp(-1 * association.parameter * (y.new - y.plotting)^2)
+  x.feedback.activation <- output.activation(hidden.activations, weights, association.parameter)
+  delta.weights <- update.parameter * (y.feedback.activation - x.feedback.activation) %*% t(hidden.activations %*% input.activation(x.new, association.parameter))
+  return(weights + delta.weights)
+}
+
+learn.alm <- function(y.learning, association.parameter = 0.05, update.parameter = 0.5) {
+  weights1 <- matrix(rnorm(7 * 10, mean = 0, sd = 0.1), nrow = 7, ncol = 10)
+  weights2 <- matrix(rnorm(10 * 32, mean = 0, sd = 0.1), nrow = 32, ncol = 10)
+  for (i in 1:length(y.learning)) {
+    hidden.activations <- hidden.activation(input.activation(x.learning[i], association.parameter), weights1, association.parameter)
+    weights2 <- update.weights(x.learning[i], y.learning[i], weights2, association.parameter, update.parameter, hidden.activations)
+    resp = mean.prediction(x.learning[i], weights2, association.parameter)
+    weights2[weights2 < 0] = 0
+  }
+  alm.predictions <- sapply(x.plotting, mean.prediction, weights = weights2, association.parameter = association.parameter)
+  exam.predictions <- sapply(x.plotting, exam.prediction, weights = weights2, association.parameter = association.parameter)
+  return(list(alm.predictions = alm.predictions, exam.predictions = exam.predictions))
+}
+
+
+
+```
+
+
+
+
+```{r}
+# Define input and output variables
+x.learning <- seq(0, 100, length.out = 100)
+y.learning <- sin(x.learning) + rnorm(length(x.learning), mean = 0, sd = 0.1)
+x.plotting <- seq(0, 100, length.out = 10)
+y.plotting <- sin(x.plotting)
+
+
+# Train ALM model
+results <- learn.alm(y.learning)
+
+# Plot predictions
+plot(x.learning, y.learning, type = "l", col = "black")
+lines(x.learning, results$alm.predictions, col = "red")
+lines(x.learning, results$exam.predictions, col = "blue")
+legend("topright", legend = c("ALM", "Exemplar"), col = c("red", "blue"), lty = 1)
+```
