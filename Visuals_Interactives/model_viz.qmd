@@ -11,8 +11,11 @@ execute:
 
 ```{r}
 #lapply(c('tidyverse','data.table','igraph','ggraph','kableExtra'),library,character.only=TRUE))
-pacman::p_load(tidyverse,data.table,igraph,ggraph,kableExtra) 
+pacman::p_load(tidyverse,data.table,igraph,ggraph,kableExtra,DiagrammeR,png) 
 ```
+
+
+
 
 
 ## ggplot model visualization
@@ -101,13 +104,681 @@ geom_edge_link0(width=0.2,colour="grey")+
   annotate("rect",xmin=0,xmax=.1,ymin=min(coords$layout[,2]),ymax=max(coords$layout[,2]),fill="grey",alpha=0.7)
  geom_rect(xmin=0,xmax=1.1,ymin=min(coords$layout[,2]),ymax=max(coords$layout[,2]),fill="grey",alpha=0.7)
   
+ 
+ 
+ 
+```
+
+
+
+```{r fig.width=11, fig.height=12}
+# Load the required libraries
+library(ggplot2)
+library(ggpp)
+library(tidyverse)
+library(patchwork)
+
+# Create the Gaussian curve plots for each input node
+input_node_1 <- ggplot(data.frame(x = seq(-3, 3, length.out = 100)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 1, sd = .4)) +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0))
+
+input_node_2 <- ggplot(data.frame(x = seq(-3, 3, length.out = 100)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 2, sd = .4)) +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0))
+
+input_node_3 <- ggplot(data.frame(x = seq(-3, 3, length.out = 100)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 3, sd = .4)) +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0))
+
+# Create the main plot
+main_plot <- ggplot() +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0)) +
+  annotate("plot_npc", npcx = 0.2, npcy = 0.8, label = input_node_1) +
+  annotate("plot_npc", npcx = 0.5, npcy = 0.8, label = input_node_2) +
+  annotate("plot_npc", npcx = 0.8, npcy = 0.8, label = input_node_3) +
+  annotate("text", x = 0.2, y = 0.7, label = "Input Node 1") +
+  annotate("text", x = 0.5, y = 0.7, label = "Input Node 2") +
+  annotate("text", x = 0.8, y = 0.7, label = "Input Node 3") +
+  annotate("text", x = 0.5, y = 0.6, label = "Input Layer", fontface = "bold") +
+  annotate("text", x = 0.5, y = 0.3, label = "Output Layer", fontface = "bold") +
+  annotate("text", x = 0.5, y = 0.1, label = "ALM + EXAM Response", fontface = "bold")
+
+# Print the main plot
+print(main_plot)
+
+
+
+
+
+# Create the Gaussian curve plots for each input node
+input_node_1 <- ggplot(data.frame(x = seq(-3, 3, length.out = 100)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 0, sd = 1)) +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0))
+
+input_node_2 <- ggplot(data.frame(x = seq(-3, 3, length.out = 100)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 2.2, sd = 1)) +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0))
+
+input_node_3 <- ggplot(data.frame(x = seq(-3, 3, length.out = 100)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 4.3, sd = .1)) +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0))
+
+# Create the main plot
+main_plot <- ggplot() +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0)) +
+  annotate("plot_npc", npcx = 0.2, npcy = 0.8, label = input_node_1, width = 0.1, height = 0.1) +
+  annotate("plot_npc", npcx = 0.5, npcy = 0.8, label = input_node_2, width = 0.1, height = 0.1) +
+  annotate("plot_npc", npcx = 0.8, npcy = 0.8, label = input_node_3, width = 0.1, height = 0.1) +
+  annotate("text", x = 0.2, y = 0.9, label = "Input Node 1") +
+  annotate("text", x = 0.5, y = 0.9, label = "Input Node 2") +
+  annotate("text", x = 0.8, y = 0.9, label = "Input Node 3") +
+  annotate("text", x = 0.5, y = 0.6, label = "Input Layer", fontface = "bold") +
+  annotate("rect", xmin = 0.1, xmax = 0.3, ymin = 0.4, ymax = 0.5, fill = "grey80") +
+  annotate("rect", xmin = 0.4, xmax = 0.6, ymin = 0.4, ymax = 0.5, fill = "grey80") +
+  annotate("rect", xmin = 0.7, xmax = 0.9, ymin = 0.4, ymax = 0.5, fill = "grey80") +
+  annotate("text", x = 0.5, y = 0.3, label = "Output Layer", fontface = "bold") +
+  annotate("text", x = 0.5, y = 0.1, label = "ALM + EXAM Response", fontface ="bold")
+print(main_plot)
+
+
+# Create the Gaussian curve plots for each input node
+input_node_1 <- ggplot(data.frame(x = seq(-3, 3, length.out = 100)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 0, sd = .41)) +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0)) +
+  ggtitle("Input Node 1")
+
+input_node_2 <- ggplot(data.frame(x = seq(-3, 3, length.out = 100)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 2, sd = .41)) +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0)) +
+  ggtitle("Input Node 2")
+
+input_node_3 <- ggplot(data.frame(x = seq(-3, 3, length.out = 100)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 3, sd = .41)) +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0)) +
+  ggtitle("Input Node 3")
+
+# Create the output nodes
+output_node_1 <- ggplot() +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0)) +
+  annotate("rect", xmin = -1, xmax = 1, ymin = -1, ymax = 1, fill = "blue") +
+  ggtitle("Output Node 1")
+
+output_node_2 <- ggplot() +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0)) +
+  annotate("rect", xmin = -1, xmax = 1, ymin = -1, ymax = 1, fill = "blue") +
+  ggtitle("Output Node 2")
+
+# Combine the input and output nodes using patchwork
+input_layer <- input_node_1 + input_node_2 + input_node_3
+output_layer <- output_node_1 + output_node_2
+
+# Create the connection matrix
+connection_matrix <- ggplot() +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0)) +
+  annotate("segment", x = 0.2, xend = 0.8, y = 0.8, yend = 0.2, arrow = arrow()) +
+  annotate("segment", x = 0.5, xend = 0.8, y = 0.8, yend = 0.2, arrow = arrow()) +
+  annotate("segment", x = 0.8, xend = 0.8, y = 0.8, yend = 0.2, arrow = arrow())
+
+# Combine the input layer, connection matrix, and output layer
+main_plot <- input_layer / connection_matrix / output_layer
+
+# Print the main plot
+print(main_plot)
+
+
+
+
+
+
+# Function to create an input node
+create_input_node <- function(mean, position) {
+  ggplot(data.frame(x = seq(-3, 3, length.out = 100)), aes(x)) +
+    stat_function(fun = dnorm, args = list(mean = mean, sd = .3)) +
+    theme_void() +
+    theme(plot.margin = margin(0, 0, 0, 0)) +
+    coord_cartesian(xlim = c(0, 3), ylim = c(0, 0.5)) + coord_flip()+
+    labs(title = paste("Input Node", position)) +
+    theme(plot.title = element_text(hjust = 0.5))
+}
+
+# Function to create an output node
+create_output_node <- function(position) {
+  ggplot() +
+    theme_void() +
+    theme(plot.margin = margin(0, 0, 0, 0)) +
+    annotate("rect", xmin = -1, xmax = 1, ymin = -1, ymax = 1, fill = "grey80") +
+    labs(title = paste("Output Node", position)) +
+    theme(plot.title = element_text(hjust = 0.5))
+}
+
+create_input_layer <- function(n) {
+  input_plots <- map(1:n, ~create_gaussian_plot(.x))
+  input_layer <- wrap_plots(input_plots, ncol = 1) + coord_flip()
+  return(input_layer)
+}
+
+
+
+# Create the input nodes
+input_nodes <- map(1:3, ~create_input_node(.x, .x))
+
+# Create the output nodes
+output_nodes <- map(1:4, ~create_output_node(.x))
+
+## Create the connection matrix
+connection_matrix <- ggplot() +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0)) +
+  annotate("segment", x = 1, xend = 2, y = rep(1:3, each = 4), yend = rep(1:4, times = 3), arrow = arrow())
+# Combine the plots
+input_layer <- wrap_plots(input_nodes,byrow=FALSE,ncol=1)
+output_layer <- wrap_plots(output_nodes, ncol = 1)
+main_plot <- input_layer + connection_matrix + output_layer + plot_layout(ncol = 3)
+
+# Print the main plot
+print(main_plot)
+
+
+
+
+
+combined_plot <- input_layer + connection_matrix + output_layer +
+  plot_layout(ncol = 3)
+
+print(combined_plot)
+
+
+
+print(input_layer)
+
+
+```
+
+
+```{r}
+# Load the required libraries
+library(ggplot2)
+library(ggpp)
+library(patchwork)
+library(tidyverse)
+
+# Function to create the input layer
+create_input_layer <- function(n_nodes, stimulus = 0, gamma = 5) {
+  # Create a data frame with the x values and node means
+  df <- expand.grid(x = seq(-3, 3, length.out = 100),
+                    mean = seq(-2, 1.5, length.out = n_nodes)) %>% 
+    mutate(noisyMean=map(mean,~dnorm(.x,mean,sd=.5)))
   
+  df <- df %>%
+    mutate(distance = abs(x - stimulus),
+           noise = rnorm(n(), sd = 0.05),
+           max_activation = exp(-gamma * distance^2) + noise,
+           y = max_activation * exp(-gamma * (x - mean)^2))
+  
+  # Create the plot
+  ggplot(df, aes(x, y, group = mean)) +
+    geom_line() +
+    geom_smooth()+
+    coord_cartesian(xlim = c(-2, 2), ylim = c(0, 1)) +
+    labs(title = "Input Layer") +
+    theme(plot.title = element_text(hjust = 0.5))
+}
+
+# Function to create an output node
+create_output_node <- function(position) {
+  ggplot() +
+    theme_void() +
+    theme(plot.margin = margin(0, 0, 0, 0)) +
+    annotate("rect", xmin = -1, xmax = 1, ymin = -1, ymax = 1, fill = "grey80") +
+    labs(title = paste("Output Node", position)) +
+    theme(plot.title = element_text(hjust = 0.5))
+}
+
+# Create the input layer
+input_layer <- create_input_layer(3)
+
+# Create the output nodes
+output_nodes <- map(1:4, ~create_output_node(.x))
+
+# Create the connection matrix
+connection_matrix <- ggplot() +
+  theme_void() +
+  theme(plot.margin = margin(0, 0, 0, 0)) +
+  annotate("segment", x = 1, xend = 2, y = 1:3, yend = rep(1:4, each = 3), arrow = arrow())
+
+# Combine the plots
+output_layer <- wrap_plots(output_nodes, ncol = 1)
+main_plot <- input_layer + connection_matrix + output_layer + plot_layout(ncol = 3)
+
+# Print the main plot
+print(main_plot)
+
+
+
+```
+
+
+
+```{r}
+# Load the visNetwork package
+library(visNetwork)
+
+# Define the nodes
+nodes <- data.frame(
+  id = c("InputLayer", "I1", "I2", "I3", "OutputLayer", "O1", "O2", "O3", "O4", "ALM", "EXAM"),
+  label = c("Input Layer", "Input Node 1", "Input Node 2", "Input Node 3", "Output Layer", "Output Node 1", "Output Node 2", "Output Node 3", "Output Node 4", "ALM Response", "EXAM Response"),
+  shape = c("box", "image", "image", "image", "box", "circle", "circle", "circle", "circle", "box", "box"),
+  image = c(NA, "gaussian_curve_input_node_1.png", "gaussian_curve_input_node_2.png", "gaussian_curve_input_node_3.png", NA, NA, NA, NA, NA, NA, NA)
+)
+
+# Define the edges
+edges <- data.frame(
+  from = c("InputLayer", "I1", "I1", "I1", "I1", "I2", "I2", "I2", "I2", "I3", "I3", "I3", "I3", "OutputLayer", "OutputLayer", "ALM", "EXAM"),
+  to = c("I1", "O1", "O2", "O3", "O4", "O1", "O2", "O3", "O4", "O1", "O2", "O3", "O4", "ALM", "EXAM", "EXAM", "ALM"),
+  label = c("", "w1", "w2", "w3", "w4", "w5", "w6", "w7", "w8", "w9", "w10", "w11", "w12", "", "", "Pure ALM Model", "ALM with EXAM Response Component")
+)
+
+# Create the network diagram
+visNetwork(nodes, edges, width = "100%") %>%
+  visNodes(shapeProperties = list(useBorderWithImage = TRUE)) %>%
+  visLayout(randomSeed = 2)
+
+
+
+
+
+# Define the nodes
+nodes <- data.frame(
+  id = c("InputLayer", "I1", "I2", "I3", "OutputLayer", "O1", "O2", "O3", "O4", "ALM", "EXAM"),
+  label = c("Input Layer", "<img src='gaussian_curve_input_node_1.png' />", "<img src='gaussian_curve_input_node_2.png' />", "<img src='gaussian_curve_input_node_3.png' />", "Output Layer", "Output Node 1", "Output Node 2", "Output Node 3", "Output Node 4", "ALM Response", "EXAM Response"),
+  shape = c("box", "circle", "circle", "circle", "box", "circle", "circle", "circle", "circle", "box", "box")
+)
+
+# Define the edges
+edges <- data.frame(
+  from = c("InputLayer", "I1", "I1", "I1", "I1", "I2", "I2", "I2", "I2", "I3", "I3", "I3", "I3", "OutputLayer", "OutputLayer", "ALM", "EXAM"),
+  to = c("I1", "O1", "O2", "O3", "O4", "O1", "O2", "O3", "O4", "O1", "O2", "O3", "O4", "ALM", "EXAM", "EXAM", "ALM"),
+  label = c(NA, "w1", "w2", "w3", "w4", "w5", "w6", "w7", "w8", "w9", "w10", "w11", "w12", NA, NA, "Pure ALM Model", "ALM with EXAM Response Component")
+)
+
+# Create the network diagram
+visNetwork(nodes, edges, width = "100%") %>%
+  visNodes(shapeProperties = list(useBorderWithImage = TRUE)) %>%
+  visLayout(randomSeed = 2)
+
+
+
 ```
 
 
 
 
+```{r}
+
+# Load the DiagrammeR package
+library(DiagrammeR)
+# Define the graph
+grViz("
+  digraph ALM_EXAM {
+
+    # Graph attributes
+    graph [overlap = true, fontsize = 10]
+
+    # Node definitions
+    node [shape = box, fontname = Helvetica]
+    InputLayer [label = 'Input Layer']
+    OutputLayer [label = 'Output Layer']
+    ALM [label = 'ALM Response']
+    EXAM [label = 'EXAM Response']
+
+    node [shape = circle, fixedsize = true, width = 0.9]
+    I1 [label = 'Input Node 1']
+    I2 [label = 'Input Node 2']
+    I3 [label = 'Input Node 3']
+    O1 [label = 'Output Node 1']
+    O2 [label = 'Output Node 2']
+    O3 [label = 'Output Node 3']
+    O4 [label = 'Output Node 4']
+
+    # Edge definitions
+    InputLayer -> I1
+    InputLayer -> I2
+    InputLayer -> I3
+    I1 -> O1 [label = 'w1']
+    I1 -> O2 [label = 'w2']
+    I1 -> O3 [label = 'w3']
+    I1 -> O4 [label = 'w4']
+    I2 -> O1 [label = 'w5']
+    I2 -> O2 [label = 'w6']
+    I2 -> O3 [label = 'w7']
+    I2 -> O4 [label = 'w8']
+    I3 -> O1 [label = 'w9']
+    I3 -> O2 [label = 'w10']
+    I3 -> O3 [label = 'w11']
+    I3 -> O4 [label = 'w12']
+    OutputLayer -> O1
+    OutputLayer -> O2
+    OutputLayer -> O3
+    OutputLayer -> O4
+    OutputLayer -> ALM
+    OutputLayer -> EXAM
+    ALM -> EXAM [label = 'Pure ALM Model']
+    EXAM -> ALM [label = 'ALM with EXAM Response Component']
+  }
+")
+
+
+
+```
+
+
+```{r}
+
+# Load the required packages
+library(ggplot2)
+library(png)
+
+# Define the Gaussian function
+gaussian <- function(x, mean, sd) {
+  1/(sd*sqrt(2*pi)) * exp(-1/2 * ((x - mean)/sd)^2)
+}
+
+# Define the central values for the input nodes
+central_values <- c(1, 2, 3)
+
+# Define the input stimulus value
+input_stimulus <- 2
+
+# Generate a Gaussian curve image for each input node
+for (i in seq_along(central_values)) {
+  # Define the mean and standard deviation for the Gaussian curve
+  mean <- central_values[i]
+  sd <- 1
+  # Generate the x values
+  x <- seq(mean - 3*sd, mean + 3*sd, length.out = 100)
+  # Generate the y values
+  y <- gaussian(x, mean, sd)
+  # Create the plot
+  p <- ggplot(data.frame(x, y), aes(x, y)) +
+    geom_line() +
+    theme_minimal() +
+    labs(x = "X", y = "Activation", title = paste("Input Node", i))
+  # Save the plot as a PNG image
+  ggsave(paste0("gaussian_curve_input_node_", i, ".png"), plot = p, width = 4, height = 3)
+}
+
+
+```
+
+
+`r knitr::include_graphics(("gaussian_curve_input_node_1.png"))`
+
+```{r}
+grViz("digraph causal {
+                      	# Nodes
+                      	node [imagescale=true,shape = reactangle, fontname = Arial, style = filled]
+                      	iv   [label = 'TRT', fillcolor = '#7FC97F']
+                      	me   [label = 'Mediator', shape = ellipse]
+                      	dv   [label = 'DLQI', fillcolor = '#7FC97F']
+                      	
+                      	# Edges
+                      	edge [color = black, arrowhead = normal]
+                      	rankdir = LR
+                      	iv -> me
+                      	iv -> dv [label = 'DIRECT', fontcolor = '#7FC97F', color = '#7FC97F']
+                      	me -> dv
+                      	# Graph
+                      	graph [overlap = true, fontsize = 10]
+                      }")
+
+
+grViz("digraph causal {
+                      	# Nodes
+                      	node [shape = reactangle, fontname = Arial, style = filled]
+                      	iv   [image='gaussian_curve_input_node_1.png',label = '', fillcolor = '#7FC97F']
+                      	me   [label = 'Mediator', shape = ellipse]
+                      	dv   [label = 'DLQI', fillcolor = '#7FC97F']
+                      	
+                      	# Edges
+                      	edge [color = black, arrowhead = normal]
+                      	rankdir = LR
+                      	iv -> me
+                      	iv -> dv [label = 'DIRECT', fontcolor = '#7FC97F', color = '#7FC97F']
+                      	me -> dv
+                      	# Graph
+                      	graph [overlap = true, fontsize = 10]
+                      }")
+
+```
+
+
+
+```{r}
+
+# grViz('digraph structs {
+#     node [shape=plaintext];
+# 
+#     struct1 [label=<<TABLE>
+#       <TR><TD><IMG SRC="gaussian_curve_input_node_1.png"/></TD></TR>
+#       <TR><TD>caption</TD></TR>
+#     </TABLE>>];
+# }')
+
+
+svgDataUrl = "data:image/svg+xml;base64,"
+grViz('
+digraph {
+  node[imagescale=true, shape=circle, width=4, height=4,fontname="sans-serif",penwidth=0]
+  a[label=<<FONT POINT-SIZE="10">Transaction</FONT><BR/><FONT POINT-SIZE="36"><B>TRNA</B></FONT>>,image="gaussian_curve_input_node_1.png"]
+  b[label=<<FONT POINT-SIZE="10">Transaction</FONT><BR/><FONT POINT-SIZE="18"><B>TRNB</B></FONT>>,image="${svgDataUrl}"]
+  c[label=<<FONT POINT-SIZE="10">Transaction</FONT><BR/><FONT POINT-SIZE="24"><B>TRNC</B></FONT>>,image="${svgDataUrl}"]
+  a -> b
+  a -> c
+}')
+
+grViz('digraph { a[image=\"gaussian_curve_input_node_1\"]; }", {
+  images: [{ href: "gaussian_curve_input_node_1.png", width: "400px", height: "300px" }]
+}');
+
+grViz('
+digraph g{
+  node[imagescale=true, shape=circle, width=14, height=14,fontname="sans-serif",penwidth=0]
+  I1[image="gaussian_curve_input_node_1.png", label=""];
+}')
+
+grViz('digraph {
+    ratio="fill";
+    size="10,10!";
+    margin="0,0";
+
+    node [shape=plain];
+    root [label=<<TABLE border="0"><TR><TD><IMG SRC="gaussian_curve_input_node_1"/></TD></TR>
+                                   <TR><TD>text under</TD></TR></TABLE>>];
+}')
+```
+
+
+```{r}
+
+grViz("
+  digraph ALM_EXAM {
+
+    # Graph attributes
+    graph [overlap = true, fontsize = 10, rankdir = LR]
+
+    # Node definitions
+    node [shape = box, fontname = Helvetica]
+    InputLayer [label = 'Input Layer']
+    OutputLayer [label = 'Output Layer']
+    ALM [label = 'ALM Response']
+    EXAM [label = 'EXAM Response']
+
+    node [shape = none, label = '']
+    I1 [image = 'gaussian_curve_input_node_1.png', label='']
+    I2 [image = 'gaussian_curve_input_node_2.png', label='']
+    I3 [image = 'gaussian_curve_input_node_3.png', label='']
+
+    node [shape = circle, fixedsize = true, width = 0.9]
+    O1 [label = 'Output Node 1']
+    O2 [label = 'Output Node 2']
+    O3 [label = 'Output Node 3']
+    O4 [label = 'Output Node 4']
+
+    # Edge definitions
+    InputLayer -> I1
+    InputLayer -> I2
+    InputLayer -> I3
+    I1 -> O1 [label = 'w1']
+    I1 -> O2 [label = 'w2']
+    I1 -> O3 [label = 'w3']
+    I1 -> O4 [label = 'w4']
+    I2 -> O1 [label = 'w5']
+    I2 -> O2 [label = 'w6']
+    I2 -> O3 [label = 'w7']
+    I2 -> O4 [label = 'w8']
+    I3 -> O1 [label = 'w9']
+    I3 -> O2 [label = 'w10']
+    I3 -> O3 [label = 'w11']
+    I3 -> O4 [label = 'w12']
+    OutputLayer -> O1
+    OutputLayer -> O2
+    OutputLayer -> O3
+    OutputLayer -> O4
+    OutputLayer -> ALM
+    OutputLayer -> EXAM
+    ALM -> EXAM [label = 'Pure ALM Model']
+    EXAM -> ALM [label = 'ALM with EXAM Response Component']
+  }
+")
+
+
+
+```
+
+```{r}
+
+
+DiagrammeR::grViz("digraph {
+
+graph [layout = dot, rankdir = LR]
+
+# define the global styles of the nodes. We can override these in box if we wish
+node [shape = rectangle, style = filled, fillcolor = Linen]
+
+data1 [label = 'Dataset 1', shape = folder, fillcolor = Beige]
+data2 [label = 'Dataset 2', shape = folder, fillcolor = Beige]
+process [label =  'Process \n Data']
+statistical [label = 'Statistical \n Analysis']
+results [label= 'Results']
+
+# edge definitions with the node IDs
+{data1 data2}  -> process -> statistical -> results
+}")
+
+
+```
     
+
+
+
+
+
+```{mermaid}
+graph LR
+  subgraph InputLayer
+    I1["Input Node 1"]
+    I2["Input Node 2"]
+    I3["Input Node 3"]
+  end
+  subgraph OutputLayer
+    O1["Output Node 1"]
+    O2["Output Node 2"]
+    O3["Output Node 3"]
+    O4["Output Node 4"]
+  end
+  I1 -->|"w1"| O1
+  I1 -->|"w2"| O2
+  I1 -->|"w3"| O3
+  I1 -->|"w4"| O4
+  I2 -->|"w5"| O1
+  I2 -->|"w6"| O2
+  I2 -->|"w7"| O3
+  I2 -->|"w8"| O4
+  I3 -->|"w9"| O1
+  I3 -->|"w10"| O2
+  I3 -->|"w11"| O3
+  I3 -->|"w12"| O4
+  style InputLayer fill:#99cc99,stroke:#333,stroke-width:2px
+  style OutputLayer fill:#cc99cc,stroke:#333,stroke-width:2px
+  IS["Input Stimulus (X)"] --> InputLayer
+  InputLayer -->|"Gaussian Activation (a_i)"| OutputLayer
+  OutputLayer --> ALM["ALM Response (m(X))"]
+  OutputLayer --> EXAM["EXAM Response (E[Y | X_i])"]
+  ALM -->|"Pure ALM Model"| EXAM
+  EXAM -->|"ALM with EXAM Response Component"| ALM
+  linkStyle 0 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 1 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 2 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 3 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 4 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 5 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 6 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 7 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 8 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 9 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 10 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 11 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 12 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 13 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 14 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 15 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 16 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 17 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 0 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 1 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 2 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 3 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 4 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 5 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 6 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 7 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 8 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 9 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 10 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 11 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 12 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 13 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 14 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 15 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 16 stroke:#2ecd71,stroke-width:2px;
+  linkStyle 17 stroke:#2ecd71,stroke-width:2px;
+
+
+
+```
+
+
+
+
+
+
+
+
 
 ## P5 sketching
 ```{ojs}
