@@ -11,12 +11,48 @@ execute:
 
 ```{r}
 #lapply(c('tidyverse','data.table','igraph','ggraph','kableExtra'),library,character.only=TRUE))
-pacman::p_load(tidyverse,data.table,igraph,ggraph,kableExtra,DiagrammeR,png) 
+pacman::p_load(tidyverse,data.table,igraph,ggraph,kableExtra,DiagrammeR,png, plantuml) 
 ```
 
 
 
+```{r}
 
+uml <- '@startuml
+
+skinparam ranksep 20
+skinparam dpi 125
+skinparam packageTitleAlignment left
+
+rectangle "Input Layer" {
+  (Input1)
+  (Input2)
+}
+
+rectangle "Output Layer" {
+  (Output1)
+  (Output2)
+  (Output3)
+}
+
+rectangle "<b>ALM (Associative Learning Model)</b>" as ALM_model
+
+(Input1) ..> (Output1) : w_{11}
+(Input1) ..> (Output2) : w_{12}
+(Input1) ..> (Output3) : w_{13}
+
+(Input2) ..> (Output1) : w_{21}
+(Input2) ..> (Output2) : w_{22}
+(Input2) ..> (Output3) : w_{23}
+
+ALM_model ==> (Input Layer)
+(Input Layer) --> (Output Layer)
+
+@enduml
+'
+uml <- plantuml(uml)
+plot(x=uml)
+```
 
 ## ggplot model visualization
 ```{r}

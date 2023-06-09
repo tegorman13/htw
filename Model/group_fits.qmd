@@ -8,14 +8,16 @@ code-tools: true
 execute: 
   warning: false
   eval: false
---- 
+---
 
-
+## test fold
 
 ### Prep data
+
 ```{r}
 #| eval: true
 #| code-fold: show
+x=2
 pacman::p_load(tidyverse,data.table,here)
 options(dplyr.summarise.inform=FALSE)
 
@@ -37,11 +39,14 @@ dtestAgg <- dtest %>% group_by(id,condit,catOrder,feedbackType,vb,band,lowBound,
 ds <- d %>% filter(expMode %in% c("train","train-Nf","test-Nf","test-train-nf")) %>% 
 filter(!id %in% unique(dtest$id[dtest$nBand<5])) %>% 
 select(id,condit,catOrder,feedbackType,expMode,trial,gt.train,vb,band,bandInt,lowBound,highBound,input,vx,dist,vxb) 
-head(ds)
+head(ds,6)
 
 dst <- ds %>% filter(expMode=="train",catOrder=="orig")
 head(dst)
 colnames(dst)
+
+
+
 
 
 
@@ -66,9 +71,8 @@ dst[1:2,]
 
 ```
 
-
-
 ### Empirical Learning Patterns - Group Level
+
 ```{r fig.width=11, fig.height=12}
 #| eval: true
 #| warning: false
@@ -184,9 +188,6 @@ wrap_optim <- function(dat,wm){
 
 ```
 
-
-
-
 ```{r}
 
 inputNodes = seq(1,7,1)  # 
@@ -220,8 +221,6 @@ geom_line(aes(y=pred),color="red") + facet_wrap(~bandInt, scale="free_y")+ggtitl
 
 ```
 
-
-
 ```{r}
 
 testVec=seq(2,7)
@@ -243,13 +242,8 @@ conTestPred
 
 ```
 
-
-
-
-
 ```{r}
 
 
 
 ```
-
