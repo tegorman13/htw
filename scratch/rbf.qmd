@@ -1,16 +1,19 @@
 ---
 title: "rbf.qmd"
-format: html
+jupyter: julia-1.9
 ---
 
 ```{r}
-pacman::p_load(tidyverse,RSNNS)
+pacman::p_load(tidyverse,RSNNS,tikzDevice,knitr)
 ```
 
 
 
-```{r fig.width=11, fig.height=9}
 
+
+
+```{r fig.width=11, fig.height=9}
+#| eval: false 
 n_iter=500
 n_nodes <- c(c(1,3,6,9),seq(10,300,10))
 train <- tibble(input=as.matrix(seq(0,100,1)),output=as.matrix(round(2.2*input + 30,0)))

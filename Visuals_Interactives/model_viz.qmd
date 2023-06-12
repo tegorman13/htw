@@ -16,8 +16,11 @@ pacman::p_load(tidyverse,data.table,igraph,ggraph,kableExtra,DiagrammeR,png, pla
 
 
 
-```{r}
 
+
+
+### plantuml visualizations
+```{r}
 uml <- '@startuml
 
 skinparam ranksep 20
@@ -53,6 +56,67 @@ ALM_model ==> (Input Layer)
 uml <- plantuml(uml)
 plot(x=uml)
 ```
+
+
+
+
+```{r}
+
+
+alm_model_with_equations <- '
+@startuml
+
+skinparam ranksep 20
+skinparam dpi 125
+skinparam packageTitleAlignment left
+
+rectangle "Input Layer" {
+  (Input1)
+  (Input2)
+}
+
+rectangle "Output Layer" {
+  (Output1)
+  (Output2)
+  (Output3)
+}
+
+
+(Input1) ..> (Output1) : w_{11}
+(Input1) ..> (Output2) : w_{12}
+(Input1) ..> (Output3) : w_{13}
+
+(Input2) ..> (Output1) : w_{21}
+(Input2) ..> (Output2) : w_{22}
+(Input2) ..> (Output3) : w_{23}
+
+
+rectangle "<b>ALM (Associative Learning Model)</b>" as ALM_model
+
+ALM_model ==> (Input Layer)
+(Input Layer) --> (Output Layer)
+
+note right of (Input Layer)
+  <math>a_i(X)=e^{-\\gamma \\cdot(X-X_i)^2}</math>
+  <math>Normalized: \\frac{a_i(X)}{\\sum a_i(X)}</math>
+end note
+
+note right of (Output Layer)
+  blank
+end note
+
+@enduml
+'
+
+# Pass the PlantUML code to plantuml function
+alm_model_with_equations <- plantuml(alm_model_with_equations)
+plot(x=alm_model_with_equations)
+```
+
+
+
+
+
 
 ## ggplot model visualization
 ```{r}
@@ -147,7 +211,220 @@ geom_edge_link0(width=0.2,colour="grey")+
 
 
 
+
+
+
+```{r}
+
+
+library(tidyverse)
+library(ggforce)
+
+theme_set(theme_grey() +
+            theme_void() +
+            theme(plot.margin = margin(0, 5.5, 0, 5.5)))
+
+# Parameters
+input_x <- c(1, 2)
+output_x <- c(1.5, 2.5, 3.5)
+input_y <- 3
+output_y <- 1
+activation_levels <- c(0.2, 0.7, 0.5)
+
+# Input Layer
+input_layer <- tibble(x = input_x, y = rep(input_y, length(input_x)))
+
+# Output Layer
+output_layer <- tibble(x = output_x, y = rep(output_y, length(output_x)), activation = activation_levels)
+
+# Gaussian Activation
+gaussian_activation <- tibble(
+  x = seq(from = 0, to = 3, by = 0.01),
+  y = exp(-2 * (x - 1)^2) + 2.5,
+  x2 = x,
+  y2 = exp(-2 * (x - 2)^2) + 2.5
+)
+
+# Plot
+p <- ggplot() +
+  # Input nodes
+  geom_point(data = input_layer, aes(x = x, y = y), size = 4, color = 'green') +
+  annotate("text", x = input_x, y = rep(input_y, length(input_x)) + 0.3, label = c("Input #1", "Input #2")) +
+  
+  # Gaussian Activations
+  geom_line(data = gaussian_activation, aes(x = x, y = y), color = 'blue') +
+  geom_line(data = gaussian_activation, aes(x = x2, y = y2), color = 'blue') +
+  
+  # Connections
+  geom_segment(data = expand.grid(input_x, output_x), aes(x = Var1, xend = Var2, y = input_y, yend = output_y), arrow = arrow(type = 'closed', length = unit(0.2, 'inches'))) +
+  
+  # Output nodes
+  geom_point(data = output_layer, aes(x = x, y = y), size = 4, color = 'red') +
+  geom_bar(data = output_layer, aes(x = x, y = activation), stat = 'identity', position = 'dodge', fill = 'red', alpha = 0.3, width = 0.3) +
+  annotate("text", x = output_x, y = rep(output_y, length(output_x)) - 0.3, label = c("Output #1", "Output #2", "Output #3")) +
+  
+  # Equation annotations
+  annotate("text", x = 0.5, y = input_y + 1, label = "1", parse = TRUE) +
+  annotate("text", x = 1.5, y = output_y - 1, label = "2 ", parse = TRUE) +
+  
+  # Input stimulus and output response
+  annotate("text", x = mean(input_x), y = input_y + 1.3, label = "Input Stimulus") +
+  annotate("text", x = mean(output_x), y = output_y - 1.3, label = "Output Response") +
+  
+  # Coordinate limits and axis labels
+  coord_cartesian(xlim = c(0, 4), ylim = c(-1, 5)) +
+  labs(x = "", y = "") +
+  theme_void()
+
+# Show the plot
+print(p)
+```
+
+
+
+
+
+```{r}
+
+library(ggplot2)
+library(ggrepel)
+
+neural_network_plot <- function(layers, layer_labels = NULL, node_labels = c('x', 'y')) {
+data <- expand.grid(layer = seq_along(layers), node = 1:max(layers))
+data <- data[data$node <= layers[data$layer], ]
+
+links <- data.frame()
+for (i in 1:(length(layers) - 1)) {
+start <- subset(data, layer == i)
+end <- subset(data, layer == i + 1)
+links <- rbind(links, expand.grid(from = start$node, to = end$node, from_layer = start$layer, to_layer = end$layer))
+}
+
+p <- ggplot() +
+geom_segment(data = links, aes(x = from_layer, xend = to_layer, y = from, yend = to), color = 'grey') +
+geom_point(data = data, aes(x = layer, y = node), size = 5, color = 'orange') +
+theme_minimal() +
+theme(axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank(),
+axis.title = element_blank())
+
+if (!is.null(layer_labels)) {
+data$layer_label <- layer_labels[data$layer]
+p <- p + geom_text_repel(data = data, aes(x = layer, y = max(layers) + 1, label = layer_label), size = 5, nudge_y = 1)
+}
+
+if (!is.null(node_labels)) {
+data$node_label <- ifelse(data$layer == 1, paste0(node_labels[1], '', data$node),
+ifelse(data$layer == length(layers), paste0(node_labels[2], '', data$node), ''))
+p <- p + geom_text_repel(data = data, aes(x = layer, y = node, label = node_label), size = 3)
+}
+
+return(p)
+}
+
+#Example usage
+layers <- c(8, 5, 3, 5, 8)
+layer_labels <- c('Input Layer', '', 'Latent\nRepresentation', '', 'Output Layer')
+neural_network_plot(layers, layer_labels)
+
+
+
+```
+
+
+```{r}
+library(ggplot2)
+
+data <- data.frame(
+x = c(1, 2, 2, 3, 4, 4, 1, 2, 3, 4),
+y = c(0, 1, -1, 0, 0, 0, 0, 0, 0, 0),
+label = c("x_1", "w_1", "w_2", "Σ", "f", "y", "x_2", "w_3", "b", ""),
+shape = c("circle", "square", "square", "circle", "square", "square", "circle", "square", "square", "square"),
+text_y = c(0.15, 0.15, -0.15, 0, 0.3, 0.3, -0.15, -0.3, 0.15, 0)
+)
+
+data$shape <- factor(data$shape, levels = c("circle", "square"))
+
+ggplot(data, aes(x = x, y = y)) +
+geom_point(aes(shape = shape), size = 8) +
+geom_text(aes(label = label, y = y + text_y), size = 5) +
+scale_shape_manual(values = c("circle" = 19, "square" = 15)) +
+geom_segment(aes(x = 2, xend = 3, y = 1, yend = 0.2), arrow = arrow(type = "closed", length = unit(0.2, "inches"))) +
+geom_segment(aes(x = 2, xend = 3, y = -1, yend = -0.2), arrow = arrow(type = "closed", length = unit(0.2, "inches"))) +
+geom_segment(aes(x = 3, xend = 2, y = 0.2, yend = 1), arrow = arrow(type = "closed", length = unit(0.2, "inches"))) +
+geom_segment(aes(x = 3, xend = 2, y = -0.2, yend = -1), arrow = arrow(type = "closed", length = unit(0.2, "inches"))) +
+geom_segment(aes(x = 3.5, xend = 4.5, y = 0, yend = 0)) +
+geom_segment(aes(x = 4.5, xend = 5.5, y = 0, yend = 0)) +
+annotate("text", x = 4, y = 0.5, label = "Activation\nFunction", hjust = 0.5) +
+annotate("text", x = 5, y = 0, label = "Output", hjust = 0.5) +
+annotate("text", x = 3, y = 1.1, label = "Bias\nb", hjust = 0.5) +
+geom_rect(aes(xmin = 0.5, xmax = 1.5, ymin = -1.5, ymax = 1.5), color = "black", linetype = "dashed", fill = NA) +
+annotate("text", x = 0.3, y = 0, label = "Inputs", angle = 90) +
+theme_void() +
+xlim(0, 6) +
+theme(legend.position = "none")
+
+
+
+data <- data.frame(
+    x = c(2, 3, 3, 4, 5, 5, 2, 3, 4, 5),
+    y = c(0, 1, -1, 0, 0, 0, 0, 0, 0, 0),
+    label = c("X", "w_{ji}", "(ai)", "(sum)", "O_j(X)", "m(X)", "X_i", "(e^{-gamma * (X-X[i])^2})", "(e^{-gamma * (Z-Y[j])^2})", "f_j(Z)"),
+    shape = c("circle", "square", "circle", "circle", "circle", "circle", "circle", "circle", "circle", "circle"),
+    text_y = c(0.15, 0.15, -0.15, 0, 0.3, 0.3, -0.15, -0.3, 0.15, 0)
+)
+
+data$shape <- factor(data$shape, levels = c("circle", "square"))
+
+ggplot(data, aes(x = x, y = y)) +
+    geom_point(aes(shape = shape), size = 8) +
+    geom_text(aes(label = label, y = y + text_y), size = 4) +
+    scale_shape_manual(values = c("circle" = 19, "square" = 15)) +
+    geom_segment(aes(x = 3, xend = 4, y = 1, yend = 0.2), arrow = arrow(type = "closed", length = unit(0.2, "inches"))) +
+    geom_segment(aes(x = 3, xend = 4, y = -1, yend = -0.2), arrow = arrow(type = "closed", length = unit(0.2, "inches"))) +
+    geom_segment(aes(x = 4.5, xend = 5.5, y = 0, yend = 0)) +
+    annotate("text", x = 5, y = 0.5, label = "Mean Output", hjust = 0.5) +
+    annotate("text", x = 4, y = 1.1, label = "Normalized Input\nActivation", hjust = 0.5) +
+    annotate("text", x = 4, y = -1.1, label = "Feedback\nActivation", hjust = 0.5) +
+    geom_rect(aes(xmin = 1.5, xmax = 2.5, ymin = -1.5, ymax = 1.5), color = "black", linetype = "dashed", fill = NA) +
+    annotate("text", x = 1.3, y = 0, label = "Input\nStimulus", angle = 90) +
+    annotate("text", x = 3.5, y = -2, label = "Associative Learning Model - Activation and Learning", size = 5, hjust = 0.5) +
+    theme_void() +
+    xlim(0, 7) +
+    theme(legend.position = "none")
+
+data <- data.frame(
+    x = c(rep(2, 3), rep(4, 2), rep(6, 3)),
+    y = c(-1, 0, 1, 0, 0, -1, 0, 1),
+    label = c("e^{-γ(X-X_i)^2}", "Σ", "e^{-γ(Z-Y_j)^2}", "w_{ji}", "a_i(X)", "w_{ji}(t+1)", "O_j(X)", "Y_j"),
+    shape = c("circle", "circle", "circle", "square", "square", "circle", "circle", "circle"),
+    text_y = c(0.15, 0.15, 0.15, 0, 0, 0.15, 0.15, 0.15)
+)
+
+data$shape <- factor(data$shape, levels = c("circle", "square"))
+
+ggplot(data, aes(x = x, y = y)) +
+    geom_point(aes(shape = shape), size = 8) +
+    geom_text(aes(label = label, y = y + text_y), size = 5) +
+    scale_shape_manual(values = c("circle" = 19, "square" = 15)) +
+    geom_segment(aes(x = 2, xend = 4, y = 1, yend = 0.2), arrow = arrow(type = "closed", length = unit(0.2, "inches"))) +
+    geom_segment(aes(x = 2, xend = 4, y = -1, yend = -0.2), arrow = arrow(type = "closed", length = unit(0.2, "inches"))) +
+    geom_segment(aes(x = 4, xend = 6, y = 0, yend = 1), arrow = arrow(type = "closed", length = unit(0.2, "inches"))) +
+    geom_segment(aes(x = 4, xend = 6, y = 0, yend = -1), arrow = arrow(type = "closed", length = unit(0.2, "inches"))) +
+    annotate("text", x = 3, y = 1.5, label = "Input Layer\nGaussian Activation\na_i(X)=e^{-γ(X-X_i)^2}", hjust = 0.5) +
+    annotate("text", x = 5, y = 1.5, label = "Output Layer\nO_j(X)=Σ w_{ji} a_i(X)\nm(X)=Σ Y_j P[Y_j | X]", hjust = 0.5) +
+    annotate("text", x = 5, y = -1.5, label = "Learning\nw_{ji}(t+1)=w_{ji}(t)+α{f_j[Z(t)]-O_j[X(t)]}a_i[X(t)]\nf_j(Z)=e^{-γ(Z-Y_j)^2}", hjust = 0.5) +
+    theme_void() +
+    xlim(0, 8) +
+    theme(legend.position = "none")
+
+```
+
+
+
 ```{r fig.width=11, fig.height=12}
+#| eval: false
 # Load the required libraries
 library(ggplot2)
 library(ggpp)
@@ -347,6 +624,8 @@ print(input_layer)
 
 
 ```{r}
+#| eval: false 
+#| 
 # Load the required libraries
 library(ggplot2)
 library(ggpp)
@@ -524,7 +803,7 @@ grViz("
 
 
 ```{r}
-
+#| eval: false
 # Load the required packages
 library(ggplot2)
 library(png)
