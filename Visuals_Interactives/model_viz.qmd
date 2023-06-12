@@ -58,8 +58,6 @@ plot(x=uml)
 ```
 
 
-
-
 ```{r}
 
 
@@ -282,7 +280,7 @@ print(p)
 
 
 
-
+### Alt ggplot 2
 
 ```{r}
 
@@ -332,7 +330,7 @@ neural_network_plot(layers, layer_labels)
 
 ```
 
-
+### Alt ggplot 3
 ```{r}
 library(ggplot2)
 
@@ -690,6 +688,8 @@ print(main_plot)
 
 
 ```{r}
+#| eval: false
+
 # Load the visNetwork package
 library(visNetwork)
 
@@ -841,9 +841,10 @@ for (i in seq_along(central_values)) {
 ```
 
 
-`r knitr::include_graphics(("gaussian_curve_input_node_1.png"))`
+
 
 ```{r}
+#| eval: false
 grViz("digraph causal {
                       	# Nodes
                       	node [imagescale=true,shape = reactangle, fontname = Arial, style = filled]
@@ -884,6 +885,7 @@ grViz("digraph causal {
 
 
 ```{r}
+#| eval: false
 
 # grViz('digraph structs {
 #     node [shape=plaintext];
@@ -899,7 +901,7 @@ svgDataUrl = "data:image/svg+xml;base64,"
 grViz('
 digraph {
   node[imagescale=true, shape=circle, width=4, height=4,fontname="sans-serif",penwidth=0]
-  a[label=<<FONT POINT-SIZE="10">Transaction</FONT><BR/><FONT POINT-SIZE="36"><B>TRNA</B></FONT>>,image="gaussian_curve_input_node_1.png"]
+  a[label=<<FONT POINT-SIZE="10">Transaction</FONT><BR/><FONT POINT-SIZE="36"><B>TRNA</B></FONT>>,image="${svgDataUrl}"]
   b[label=<<FONT POINT-SIZE="10">Transaction</FONT><BR/><FONT POINT-SIZE="18"><B>TRNB</B></FONT>>,image="${svgDataUrl}"]
   c[label=<<FONT POINT-SIZE="10">Transaction</FONT><BR/><FONT POINT-SIZE="24"><B>TRNC</B></FONT>>,image="${svgDataUrl}"]
   a -> b
@@ -928,7 +930,10 @@ grViz('digraph {
 ```
 
 
+
+
 ```{r}
+#| eval: false
 
 grViz("
   digraph ALM_EXAM {

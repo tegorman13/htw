@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.357">
+<meta name="generator" content="quarto-1.3.361">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -167,14 +167,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-model-fitting" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
- <span class="menu-text">Model Fitting</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-model" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Model</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-model-fitting">    
-        <li>
-    <a class="dropdown-item" href="../Model/htw_exam.html" rel="" target="">
- <span class="dropdown-text">ALM &amp; EXAM Fitting</span></a>
-  </li>  
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-model">    
+        <li class="dropdown-header">Model/</li>
         <li>
     <a class="dropdown-item" href="../Model/abc_htw.html" rel="" target="">
  <span class="dropdown-text">Approximate Bayesian Fitting</span></a>
@@ -201,10 +198,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li>
     <a class="dropdown-item" href="../Visuals_Interactives/ALM_Shiny.html" rel="" target="">
  <span class="dropdown-text">ALM Shiny App Code</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Visuals_Interactives/quartoP5.qmd" rel="" target="">
- <span class="dropdown-text"></span></a>
   </li>  
     </ul>
   </li>
@@ -242,6 +235,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
             <div class="quarto-navbar-tools ms-auto">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
@@ -3089,7 +3087,329 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-1025"><a href="#cb22-1025" aria-hidden="true" tabindex="-1"></a>  \tikzstyle{neuron}<span class="ot">=</span>[circle, draw<span class="ot">=</span>black<span class="sc">!</span><span class="dv">100</span>, minimum size<span class="ot">=</span>17pt,inner sep<span class="ot">=</span>0pt]; </span>
 <span id="cb22-1026"><a href="#cb22-1026" aria-hidden="true" tabindex="-1"></a>  \tikzstyle{input neuron}<span class="ot">=</span>[neuron]; </span>
 <span id="cb22-1027"><a href="#cb22-1027" aria-hidden="true" tabindex="-1"></a>  \tikzstyle{output neuron}<span class="ot">=</span>[neuron]; </span>
-<span id="cb22-1028"><a href="#cb22-1028" aria-hidden="true" tabindex="-1"></a>  \tikzstyle{hidden n</span>
+<span id="cb22-1028"><a href="#cb22-1028" aria-hidden="true" tabindex="-1"></a>  \tikzstyle{hidden neuron}<span class="ot">=</span>[neuron]; </span>
+<span id="cb22-1029"><a href="#cb22-1029" aria-hidden="true" tabindex="-1"></a>  \tikzstyle{annot} <span class="ot">=</span> [text width<span class="ot">=</span>4em, text centered, text<span class="ot">=</span>black<span class="sc">!</span><span class="dv">100</span>] </span>
+<span id="cb22-1030"><a href="#cb22-1030" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb22-1031"><a href="#cb22-1031" aria-hidden="true" tabindex="-1"></a>  % drawing neurons </span>
+<span id="cb22-1032"><a href="#cb22-1032" aria-hidden="true" tabindex="-1"></a>  \foreach \name <span class="sc">/</span> \y <span class="cf">in</span> {<span class="dv">1</span>,...,<span class="dv">3</span>} </span>
+<span id="cb22-1033"><a href="#cb22-1033" aria-hidden="true" tabindex="-1"></a>      \node [input neuron, pin<span class="ot">=</span>left<span class="sc">:</span>\textcolor{black<span class="sc">!</span><span class="dv">100</span>}{Input \y}] (I<span class="sc">-</span>\name) <span class="fu">at</span> (<span class="dv">0</span>,<span class="sc">-</span><span class="fl">0.5</span><span class="sc">-</span>\y) {};</span>
+<span id="cb22-1034"><a href="#cb22-1034" aria-hidden="true" tabindex="-1"></a>  \foreach \name <span class="sc">/</span> \y <span class="cf">in</span> {<span class="dv">1</span><span class="sc">/</span><span class="dv">1</span>,<span class="dv">2</span><span class="sc">/</span><span class="dv">2</span>,<span class="dv">3</span><span class="sc">/</span><span class="dv">3</span>,<span class="dv">4</span><span class="sc">/</span><span class="dv">4</span>} </span>
+<span id="cb22-1035"><a href="#cb22-1035" aria-hidden="true" tabindex="-1"></a>      \path[yshift<span class="ot">=</span>0cm] </span>
+<span id="cb22-1036"><a href="#cb22-1036" aria-hidden="true" tabindex="-1"></a>          node[hidden neuron] (H<span class="sc">-</span>\name) <span class="fu">at</span> (<span class="dv">1</span><span class="sc">*</span> \layersep,<span class="sc">-</span>\y cm) {};</span>
+<span id="cb22-1037"><a href="#cb22-1037" aria-hidden="true" tabindex="-1"></a>  \foreach \name <span class="sc">/</span> \y <span class="cf">in</span> {<span class="dv">5</span><span class="sc">/</span><span class="dv">1</span>,<span class="dv">6</span><span class="sc">/</span><span class="dv">2</span>,<span class="dv">7</span><span class="sc">/</span><span class="dv">3</span>,<span class="dv">8</span><span class="sc">/</span><span class="dv">4</span>} </span>
+<span id="cb22-1038"><a href="#cb22-1038" aria-hidden="true" tabindex="-1"></a>      \path[yshift<span class="ot">=</span>0cm] </span>
+<span id="cb22-1039"><a href="#cb22-1039" aria-hidden="true" tabindex="-1"></a>          node[hidden neuron] (H<span class="sc">-</span>\name) <span class="fu">at</span> (<span class="dv">2</span><span class="sc">*</span> \layersep,<span class="sc">-</span>\y cm) {};</span>
+<span id="cb22-1040"><a href="#cb22-1040" aria-hidden="true" tabindex="-1"></a>  \foreach \name <span class="sc">/</span> \y <span class="cf">in</span> {<span class="dv">9</span><span class="sc">/</span><span class="dv">1</span>,<span class="dv">10</span><span class="sc">/</span><span class="dv">2</span>,<span class="dv">11</span><span class="sc">/</span><span class="dv">3</span>,<span class="dv">12</span><span class="sc">/</span><span class="dv">4</span>} </span>
+<span id="cb22-1041"><a href="#cb22-1041" aria-hidden="true" tabindex="-1"></a>      \path[yshift<span class="ot">=</span>0cm] </span>
+<span id="cb22-1042"><a href="#cb22-1042" aria-hidden="true" tabindex="-1"></a>          node[hidden neuron] (H<span class="sc">-</span>\name) <span class="fu">at</span> (<span class="dv">3</span><span class="sc">*</span> \layersep,<span class="sc">-</span>\y cm) {};</span>
+<span id="cb22-1043"><a href="#cb22-1043" aria-hidden="true" tabindex="-1"></a>  \node[output neuron,pin<span class="ot">=</span>{[pin edge<span class="ot">=</span>{<span class="ot">-&gt;</span>}]right<span class="sc">:</span>\textcolor{black<span class="sc">!</span><span class="dv">100</span>}{Output}}, right of<span class="ot">=</span>H<span class="dv">-10</span>, yshift<span class="ot">=</span><span class="sc">-</span><span class="fl">0.5</span>cm] (O) {}; </span>
+<span id="cb22-1044"><a href="#cb22-1044" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1045"><a href="#cb22-1045" aria-hidden="true" tabindex="-1"></a>   % drawing arrows </span>
+<span id="cb22-1046"><a href="#cb22-1046" aria-hidden="true" tabindex="-1"></a>  \foreach \source <span class="cf">in</span> {<span class="dv">1</span>,...,<span class="dv">3</span>} </span>
+<span id="cb22-1047"><a href="#cb22-1047" aria-hidden="true" tabindex="-1"></a>      \foreach \dest <span class="cf">in</span> {<span class="dv">1</span>,...,<span class="dv">4</span>}</span>
+<span id="cb22-1048"><a href="#cb22-1048" aria-hidden="true" tabindex="-1"></a>           \<span class="fu">path</span> (I<span class="sc">-</span>\source) <span class="fu">edge</span> (H<span class="sc">-</span>\dest); </span>
+<span id="cb22-1049"><a href="#cb22-1049" aria-hidden="true" tabindex="-1"></a>  \foreach \source <span class="cf">in</span> {<span class="dv">1</span>,...,<span class="dv">4</span>} </span>
+<span id="cb22-1050"><a href="#cb22-1050" aria-hidden="true" tabindex="-1"></a>      \foreach \dest <span class="cf">in</span> {<span class="dv">5</span>,...,<span class="dv">8</span>}</span>
+<span id="cb22-1051"><a href="#cb22-1051" aria-hidden="true" tabindex="-1"></a>           \<span class="fu">path</span> (H<span class="sc">-</span>\source) <span class="fu">edge</span> (H<span class="sc">-</span>\dest); </span>
+<span id="cb22-1052"><a href="#cb22-1052" aria-hidden="true" tabindex="-1"></a>  \foreach \source <span class="cf">in</span> {<span class="dv">5</span>,...,<span class="dv">8</span>} </span>
+<span id="cb22-1053"><a href="#cb22-1053" aria-hidden="true" tabindex="-1"></a>      \foreach \dest <span class="cf">in</span> {<span class="dv">9</span>,...,<span class="dv">12</span>}</span>
+<span id="cb22-1054"><a href="#cb22-1054" aria-hidden="true" tabindex="-1"></a>           \<span class="fu">path</span> (H<span class="sc">-</span>\source) <span class="fu">edge</span> (H<span class="sc">-</span>\dest); </span>
+<span id="cb22-1055"><a href="#cb22-1055" aria-hidden="true" tabindex="-1"></a>  \foreach \source <span class="cf">in</span> {<span class="dv">9</span>,...,<span class="dv">12</span>}</span>
+<span id="cb22-1056"><a href="#cb22-1056" aria-hidden="true" tabindex="-1"></a>           \<span class="fu">path</span> (H<span class="sc">-</span>\source) <span class="fu">edge</span> (O);</span>
+<span id="cb22-1057"><a href="#cb22-1057" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb22-1058"><a href="#cb22-1058" aria-hidden="true" tabindex="-1"></a>   % annotations </span>
+<span id="cb22-1059"><a href="#cb22-1059" aria-hidden="true" tabindex="-1"></a>  \node[annot,above of<span class="ot">=</span>I<span class="dv">-1</span>, node distance<span class="ot">=</span><span class="fl">2.5</span>cm] {Input layer}; </span>
+<span id="cb22-1060"><a href="#cb22-1060" aria-hidden="true" tabindex="-1"></a>  \node[annot,above of<span class="ot">=</span>I<span class="dv">-1</span>, node distance<span class="ot">=</span><span class="fl">1.5</span>cm] {<span class="sc">$</span>\circled{<span class="dv">3</span>}<span class="sc">$</span>}; </span>
+<span id="cb22-1061"><a href="#cb22-1061" aria-hidden="true" tabindex="-1"></a>  \node[annot,above of<span class="ot">=</span>H<span class="dv">-1</span>, node distance<span class="ot">=</span>2cm] (hl1) {Hidden layer <span class="dv">1</span>}; </span>
+<span id="cb22-1062"><a href="#cb22-1062" aria-hidden="true" tabindex="-1"></a>  \node[annot,above of<span class="ot">=</span>H<span class="dv">-1</span>, node distance<span class="ot">=</span>1cm] (hl1) {<span class="sc">$</span>\circled{<span class="dv">4</span>}<span class="sc">$</span>}; </span>
+<span id="cb22-1063"><a href="#cb22-1063" aria-hidden="true" tabindex="-1"></a>  \node[annot,above of<span class="ot">=</span>H<span class="dv">-5</span>, node distance<span class="ot">=</span>2cm] (hl2) {Hidden layer <span class="dv">2</span>}; </span>
+<span id="cb22-1064"><a href="#cb22-1064" aria-hidden="true" tabindex="-1"></a>  \node[annot,above of<span class="ot">=</span>H<span class="dv">-5</span>, node distance<span class="ot">=</span>1cm] (hl2) {<span class="sc">$</span>\circled{<span class="dv">4</span>}<span class="sc">$</span>}; </span>
+<span id="cb22-1065"><a href="#cb22-1065" aria-hidden="true" tabindex="-1"></a>  \node[annot,above of<span class="ot">=</span>H<span class="dv">-9</span>, node distance<span class="ot">=</span>2cm] (hl3) {Hidden layer <span class="dv">3</span>}; </span>
+<span id="cb22-1066"><a href="#cb22-1066" aria-hidden="true" tabindex="-1"></a>  \node[annot,above of<span class="ot">=</span>H<span class="dv">-9</span>, node distance<span class="ot">=</span>1cm] (hl3) {<span class="sc">$</span>\circled{<span class="dv">4</span>}<span class="sc">$</span>}; </span>
+<span id="cb22-1067"><a href="#cb22-1067" aria-hidden="true" tabindex="-1"></a>  \node[annot,above of <span class="ot">=</span>O, node distance<span class="ot">=</span><span class="fl">3.5</span>cm] {Output layer}; </span>
+<span id="cb22-1068"><a href="#cb22-1068" aria-hidden="true" tabindex="-1"></a>  \node[annot,above of <span class="ot">=</span>O, node distance<span class="ot">=</span><span class="fl">2.5</span>cm] {<span class="sc">$</span>\circled{<span class="dv">1</span>}<span class="sc">$</span>}; </span>
+<span id="cb22-1069"><a href="#cb22-1069" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1070"><a href="#cb22-1070" aria-hidden="true" tabindex="-1"></a>\end{tikzpicture} </span>
+<span id="cb22-1071"><a href="#cb22-1071" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1072"><a href="#cb22-1072" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1073"><a href="#cb22-1073" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1074"><a href="#cb22-1074" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1075"><a href="#cb22-1075" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb22-1076"><a href="#cb22-1076" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1077"><a href="#cb22-1077" aria-hidden="true" tabindex="-1"></a><span class="at">### Latent Space Projection</span></span>
+<span id="cb22-1078"><a href="#cb22-1078" aria-hidden="true" tabindex="-1"></a><span class="at">https://tikz.net/manifold/</span></span>
+<span id="cb22-1079"><a href="#cb22-1079" aria-hidden="true" tabindex="-1"></a><span class="st">```</span>{r, engine <span class="ot">=</span> <span class="st">'tikz'</span>,engine.opts<span class="ot">=</span><span class="fu">list</span>(<span class="at">extra.preamble =</span> <span class="fu">c</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">usepackage{cmbright}"</span>))}</span>
+<span id="cb22-1080"><a href="#cb22-1080" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
+<span id="cb22-1081"><a href="#cb22-1081" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: true</span></span>
+<span id="cb22-1082"><a href="#cb22-1082" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1083"><a href="#cb22-1083" aria-hidden="true" tabindex="-1"></a>\usetikzlibrary{arrows.meta}</span>
+<span id="cb22-1084"><a href="#cb22-1084" aria-hidden="true" tabindex="-1"></a>\definecolor{green}{rgb}{<span class="fl">0.0</span>,<span class="fl">0.50</span>,<span class="fl">0.0</span>}</span>
+<span id="cb22-1085"><a href="#cb22-1085" aria-hidden="true" tabindex="-1"></a>\tikzset{<span class="sc">&gt;=</span>{Straight Barb[angle<span class="st">'=80, scale=1.1]}}</span></span>
+<span id="cb22-1086"><a href="#cb22-1086" aria-hidden="true" tabindex="-1"></a><span class="sc">\b</span><span class="st">egin{tikzpicture}</span></span>
+<span id="cb22-1087"><a href="#cb22-1087" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1088"><a href="#cb22-1088" aria-hidden="true" tabindex="-1"></a><span class="st">\draw[-&gt;] (0, 0) -- ++(0, 2);</span></span>
+<span id="cb22-1089"><a href="#cb22-1089" aria-hidden="true" tabindex="-1"></a><span class="st">\draw[-&gt;] (0, 0) -- ++(2.5, 0.6);</span></span>
+<span id="cb22-1090"><a href="#cb22-1090" aria-hidden="true" tabindex="-1"></a><span class="st">\draw[-&gt;] (0, 0) -- ++(3, 0) node[midway, below, yshift=-0.5em]</span></span>
+<span id="cb22-1091"><a href="#cb22-1091" aria-hidden="true" tabindex="-1"></a><span class="st">    {Original space ${\cal X}$};</span></span>
+<span id="cb22-1092"><a href="#cb22-1092" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1093"><a href="#cb22-1093" aria-hidden="true" tabindex="-1"></a><span class="st">\draw[fill=green!50, draw=none, shift={(0.2, 0.7)},scale=0.5]</span></span>
+<span id="cb22-1094"><a href="#cb22-1094" aria-hidden="true" tabindex="-1"></a><span class="st">  (0, 0) to[out=20, in=140] (1.5, -0.2) to [out=60, in=160]</span></span>
+<span id="cb22-1095"><a href="#cb22-1095" aria-hidden="true" tabindex="-1"></a><span class="st">  (5, 0.5) to[out=130, in=60]</span></span>
+<span id="cb22-1096"><a href="#cb22-1096" aria-hidden="true" tabindex="-1"></a><span class="st">  cycle;</span></span>
+<span id="cb22-1097"><a href="#cb22-1097" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1098"><a href="#cb22-1098" aria-hidden="true" tabindex="-1"></a><span class="st">\shade[thin, left color=green!10, right color=green!50, draw=none,</span></span>
+<span id="cb22-1099"><a href="#cb22-1099" aria-hidden="true" tabindex="-1"></a><span class="st">  shift={(0.2, 0.7)},scale=0.5]</span></span>
+<span id="cb22-1100"><a href="#cb22-1100" aria-hidden="true" tabindex="-1"></a><span class="st">  (0, 0) to[out=10, in=140] (3.3, -0.8) to [out=60, in=190] (5, 0.5)</span></span>
+<span id="cb22-1101"><a href="#cb22-1101" aria-hidden="true" tabindex="-1"></a><span class="st">    to[out=130, in=60] cycle;</span></span>
+<span id="cb22-1102"><a href="#cb22-1102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1103"><a href="#cb22-1103" aria-hidden="true" tabindex="-1"></a><span class="st">  \draw[-&gt;] (4.8, 0.8) -- ++(0, 2);</span></span>
+<span id="cb22-1104"><a href="#cb22-1104" aria-hidden="true" tabindex="-1"></a><span class="st">  \draw[-&gt;] (4.8, 0.8) -- ++(2, 0) node[midway, below, yshift=-0.5em]</span></span>
+<span id="cb22-1105"><a href="#cb22-1105" aria-hidden="true" tabindex="-1"></a><span class="st">      {Latent space ${\cal F}$};</span></span>
+<span id="cb22-1106"><a href="#cb22-1106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1107"><a href="#cb22-1107" aria-hidden="true" tabindex="-1"></a><span class="st">  \draw[thin, fill=green!30, draw=none, shift={(5.4, 1.1)}, rotate=20]</span></span>
+<span id="cb22-1108"><a href="#cb22-1108" aria-hidden="true" tabindex="-1"></a><span class="st">    (0, 0) -- (1, 0) -- (1, 1) -- (0, 1) -- cycle;</span></span>
+<span id="cb22-1109"><a href="#cb22-1109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1110"><a href="#cb22-1110" aria-hidden="true" tabindex="-1"></a><span class="st">  \draw[thick,-&gt;,red]</span></span>
+<span id="cb22-1111"><a href="#cb22-1111" aria-hidden="true" tabindex="-1"></a><span class="st">    (1.5, 1.3) to [out=55, in=150] node[midway, above, xshift=6pt, yshift=2pt]</span></span>
+<span id="cb22-1112"><a href="#cb22-1112" aria-hidden="true" tabindex="-1"></a><span class="st">    {$f$} (5.7, 2);</span></span>
+<span id="cb22-1113"><a href="#cb22-1113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1114"><a href="#cb22-1114" aria-hidden="true" tabindex="-1"></a><span class="st">  \draw[thick,-&gt;,blue] (1.5, 1.3) ++(4.03, 0.3) to [out=150, in=55]</span></span>
+<span id="cb22-1115"><a href="#cb22-1115" aria-hidden="true" tabindex="-1"></a><span class="st">    node[midway, below, xshift=2pt, yshift=-2pt] {$g$} ++(-3.6, -0.5);</span></span>
+<span id="cb22-1116"><a href="#cb22-1116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1117"><a href="#cb22-1117" aria-hidden="true" tabindex="-1"></a><span class="sc">\e</span><span class="st">nd{tikzpicture}</span></span>
+<span id="cb22-1118"><a href="#cb22-1118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1119"><a href="#cb22-1119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1120"><a href="#cb22-1120" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb22-1121"><a href="#cb22-1121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1122"><a href="#cb22-1122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1123"><a href="#cb22-1123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1124"><a href="#cb22-1124" aria-hidden="true" tabindex="-1"></a><span class="st">### Flow</span></span>
+<span id="cb22-1125"><a href="#cb22-1125" aria-hidden="true" tabindex="-1"></a><span class="st">https://tikz.net/maf/</span></span>
+<span id="cb22-1126"><a href="#cb22-1126" aria-hidden="true" tabindex="-1"></a><span class="st">```{r, engine = '</span>tikz<span class="st">'}</span></span>
+<span id="cb22-1127"><a href="#cb22-1127" aria-hidden="true" tabindex="-1"></a><span class="st">#| cache: true</span></span>
+<span id="cb22-1128"><a href="#cb22-1128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1129"><a href="#cb22-1129" aria-hidden="true" tabindex="-1"></a><span class="st">\usetikzlibrary{calc,positioning}</span></span>
+<span id="cb22-1130"><a href="#cb22-1130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1131"><a href="#cb22-1131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1132"><a href="#cb22-1132" aria-hidden="true" tabindex="-1"></a><span class="sc">\b</span><span class="st">egin{tikzpicture}[</span></span>
+<span id="cb22-1133"><a href="#cb22-1133" aria-hidden="true" tabindex="-1"></a><span class="st">    thick, text centered,</span></span>
+<span id="cb22-1134"><a href="#cb22-1134" aria-hidden="true" tabindex="-1"></a><span class="st">    box/.style={draw, thin, minimum width=1cm},</span></span>
+<span id="cb22-1135"><a href="#cb22-1135" aria-hidden="true" tabindex="-1"></a><span class="st">    func/.style={circle, text=white},</span></span>
+<span id="cb22-1136"><a href="#cb22-1136" aria-hidden="true" tabindex="-1"></a><span class="st">    input/.style={draw=red, very thick},</span></span>
+<span id="cb22-1137"><a href="#cb22-1137" aria-hidden="true" tabindex="-1"></a><span class="st">  ]</span></span>
+<span id="cb22-1138"><a href="#cb22-1138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1139"><a href="#cb22-1139" aria-hidden="true" tabindex="-1"></a><span class="st">  % x nodes</span></span>
+<span id="cb22-1140"><a href="#cb22-1140" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[box, input, fill=blue!20] (x1) {$x_1$};</span></span>
+<span id="cb22-1141"><a href="#cb22-1141" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[box, input, fill=blue!20, right of=x1] (x2) {$x_2$};</span></span>
+<span id="cb22-1142"><a href="#cb22-1142" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[right of=x2] (xdots1) {\dots};</span></span>
+<span id="cb22-1143"><a href="#cb22-1143" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[box, input, fill=blue!20, right of=xdots1] (xd) {$x_d$};</span></span>
+<span id="cb22-1144"><a href="#cb22-1144" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[box, fill=green!60!black, text opacity=1, opacity=0.4, right=2 of xd] (xdp1) {$x_{d+1}$};</span></span>
+<span id="cb22-1145"><a href="#cb22-1145" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[right of=xdp1] (xdots2) {\dots};</span></span>
+<span id="cb22-1146"><a href="#cb22-1146" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[box, fill=green!60!black, text opacity=1, opacity=0.4, right of=xdots2] (xD) {$x_D$};</span></span>
+<span id="cb22-1147"><a href="#cb22-1147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1148"><a href="#cb22-1148" aria-hidden="true" tabindex="-1"></a><span class="st">  % z nodes</span></span>
+<span id="cb22-1149"><a href="#cb22-1149" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[box, fill=blue!20, below=3 of x1] (z1) {$z_1$};</span></span>
+<span id="cb22-1150"><a href="#cb22-1150" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[box, fill=blue!20, right of=z1] (z2) {$z_2$};</span></span>
+<span id="cb22-1151"><a href="#cb22-1151" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[right of=z2] (zdots1) {\dots};</span></span>
+<span id="cb22-1152"><a href="#cb22-1152" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[box, fill=blue!20, right of=zdots1] (zd) {$z_d$};</span></span>
+<span id="cb22-1153"><a href="#cb22-1153" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[box, input, fill=orange!40, right=2 of zd] (zdp1) {$z_{d+1}$};</span></span>
+<span id="cb22-1154"><a href="#cb22-1154" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[right of=zdp1] (zdots2) {\dots};</span></span>
+<span id="cb22-1155"><a href="#cb22-1155" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[box, fill=orange!40, right of=zdots2] (zD) {$z_D$};</span></span>
+<span id="cb22-1156"><a href="#cb22-1156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1157"><a href="#cb22-1157" aria-hidden="true" tabindex="-1"></a><span class="st">  % z to x lines</span></span>
+<span id="cb22-1158"><a href="#cb22-1158" aria-hidden="true" tabindex="-1"></a><span class="st">  \draw[-&gt;] (zdp1) -- (xdp1);</span></span>
+<span id="cb22-1159"><a href="#cb22-1159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1160"><a href="#cb22-1160" aria-hidden="true" tabindex="-1"></a><span class="st">  % scale and translate functions</span></span>
+<span id="cb22-1161"><a href="#cb22-1161" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[func, font=\large, fill=teal, above right=0.1] (t) at ($(zd)!0.5!(xdp1)$) {$t$};</span></span>
+<span id="cb22-1162"><a href="#cb22-1162" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\f</span><span class="st">ill[teal, opacity=0.5] (x1.south west) -- (t.center) -- (xd.south east) -- (x1.south west);</span></span>
+<span id="cb22-1163"><a href="#cb22-1163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1164"><a href="#cb22-1164" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[func, font=\large, fill=orange, below left=0.1] (s) at ($(zd)!0.5!(xdp1)$) {$s$};</span></span>
+<span id="cb22-1165"><a href="#cb22-1165" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\f</span><span class="st">ill[orange, opacity=0.5] (x1.south west) -- (s.center) -- (xd.south east) -- (x1.south west);</span></span>
+<span id="cb22-1166"><a href="#cb22-1166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1167"><a href="#cb22-1167" aria-hidden="true" tabindex="-1"></a><span class="st">  % feeding in s and t</span></span>
+<span id="cb22-1168"><a href="#cb22-1168" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[func, inner sep=0, fill=orange] (odot1) at ($(zdp1)!0.4!(xdp1)$) {$\odot$};</span></span>
+<span id="cb22-1169"><a href="#cb22-1169" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="sc">\n</span><span class="st">ode[func, inner sep=0, fill=teal] (oplus1) at ($(zdp1)!0.7!(xdp1)$) {$\oplus$};</span></span>
+<span id="cb22-1170"><a href="#cb22-1170" aria-hidden="true" tabindex="-1"></a><span class="st">  \draw[orange, -&gt;] (s) to[bend right=5] (odot1);</span></span>
+<span id="cb22-1171"><a href="#cb22-1171" aria-hidden="true" tabindex="-1"></a><span class="st">  \draw[teal, -&gt;] (t) to[bend right=5] (oplus1);</span></span>
+<span id="cb22-1172"><a href="#cb22-1172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1173"><a href="#cb22-1173" aria-hidden="true" tabindex="-1"></a><span class="sc">\e</span><span class="st">nd{tikzpicture}</span></span>
+<span id="cb22-1174"><a href="#cb22-1174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1175"><a href="#cb22-1175" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb22-1176"><a href="#cb22-1176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1177"><a href="#cb22-1177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1178"><a href="#cb22-1178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1179"><a href="#cb22-1179" aria-hidden="true" tabindex="-1"></a><span class="st">## ALM</span></span>
+<span id="cb22-1180"><a href="#cb22-1180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1181"><a href="#cb22-1181" aria-hidden="true" tabindex="-1"></a><span class="st">```{r, engine = '</span>tikz<span class="st">'}</span></span>
+<span id="cb22-1182"><a href="#cb22-1182" aria-hidden="true" tabindex="-1"></a><span class="st">#| eval: false</span></span>
+<span id="cb22-1183"><a href="#cb22-1183" aria-hidden="true" tabindex="-1"></a><span class="st">\usetikzlibrary{positioning}</span></span>
+<span id="cb22-1184"><a href="#cb22-1184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1185"><a href="#cb22-1185" aria-hidden="true" tabindex="-1"></a><span class="st">\def\layersep{3.5cm}</span></span>
+<span id="cb22-1186"><a href="#cb22-1186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1187"><a href="#cb22-1187" aria-hidden="true" tabindex="-1"></a><span class="sc">\b</span><span class="st">egin{tikzpicture}[shorten &gt;=1pt,-&gt;,draw=black!50, node distance=\layersep]</span></span>
+<span id="cb22-1188"><a href="#cb22-1188" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{every pin edge}=[&lt;-,shorten &lt;=1pt]</span></span>
+<span id="cb22-1189"><a href="#cb22-1189" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]</span></span>
+<span id="cb22-1190"><a href="#cb22-1190" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{input neuron}=[neuron, fill=green!50];</span></span>
+<span id="cb22-1191"><a href="#cb22-1191" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{output neuron}=[neuron, fill=red!50];</span></span>
+<span id="cb22-1192"><a href="#cb22-1192" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{annot} = [text width=4em, text centered]</span></span>
+<span id="cb22-1193"><a href="#cb22-1193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1194"><a href="#cb22-1194" aria-hidden="true" tabindex="-1"></a><span class="st">    % Draw the input layer nodes</span></span>
+<span id="cb22-1195"><a href="#cb22-1195" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\f</span><span class="st">oreach </span><span class="sc">\n</span><span class="st">ame / \y in {1,2}</span></span>
+<span id="cb22-1196"><a href="#cb22-1196" aria-hidden="true" tabindex="-1"></a><span class="st">        </span><span class="sc">\n</span><span class="st">ode[input neuron, pin=left:Input \#\y] (I-</span><span class="sc">\n</span><span class="st">ame) at (0,-\y) {};</span></span>
+<span id="cb22-1197"><a href="#cb22-1197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1198"><a href="#cb22-1198" aria-hidden="true" tabindex="-1"></a><span class="st">    % Draw the output layer nodes</span></span>
+<span id="cb22-1199"><a href="#cb22-1199" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\f</span><span class="st">oreach </span><span class="sc">\n</span><span class="st">ame / \y in {1,2,3}</span></span>
+<span id="cb22-1200"><a href="#cb22-1200" aria-hidden="true" tabindex="-1"></a><span class="st">        \path[yshift=1.0cm]</span></span>
+<span id="cb22-1201"><a href="#cb22-1201" aria-hidden="true" tabindex="-1"></a><span class="st">            node[output neuron] (O-</span><span class="sc">\n</span><span class="st">ame) at (\layersep,-\y cm) {};</span></span>
+<span id="cb22-1202"><a href="#cb22-1202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1203"><a href="#cb22-1203" aria-hidden="true" tabindex="-1"></a><span class="st">    % Connect every node in the input layer with every node in the</span></span>
+<span id="cb22-1204"><a href="#cb22-1204" aria-hidden="true" tabindex="-1"></a><span class="st">    % output layer.</span></span>
+<span id="cb22-1205"><a href="#cb22-1205" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\f</span><span class="st">oreach \source in {1,2}</span></span>
+<span id="cb22-1206"><a href="#cb22-1206" aria-hidden="true" tabindex="-1"></a><span class="st">        </span><span class="sc">\f</span><span class="st">oreach \dest in {1,2,3}</span></span>
+<span id="cb22-1207"><a href="#cb22-1207" aria-hidden="true" tabindex="-1"></a><span class="st">            \path (I-\source) edge (O-\dest);</span></span>
+<span id="cb22-1208"><a href="#cb22-1208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1209"><a href="#cb22-1209" aria-hidden="true" tabindex="-1"></a><span class="st">    % Annotate the layers with equations</span></span>
+<span id="cb22-1210"><a href="#cb22-1210" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[above of=I-1, node distance=1.5cm] (il) {$a_i(X)=e^{-\gamma \cdot (X-X_i)^2}$ </span><span class="sc">\\</span><span class="st"> $</span><span class="sc">\f</span><span class="st">rac{a_i(X)}{\sum a_i(X)}$};</span></span>
+<span id="cb22-1211"><a href="#cb22-1211" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[above of=O-1, node distance=1.5cm] (ol) {$O_j(X)=\sum_{i=1}^M w_{j i} \cdot a_i(X)$ </span><span class="sc">\\</span><span class="st"> $P[Y_j|X]=</span><span class="sc">\f</span><span class="st">rac{O_j(X)}{\sum_{k=1}^L O_k(X)}$};</span></span>
+<span id="cb22-1212"><a href="#cb22-1212" aria-hidden="true" tabindex="-1"></a><span class="sc">\e</span><span class="st">nd{tikzpicture}</span></span>
+<span id="cb22-1213"><a href="#cb22-1213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1214"><a href="#cb22-1214" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb22-1215"><a href="#cb22-1215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1216"><a href="#cb22-1216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1217"><a href="#cb22-1217" aria-hidden="true" tabindex="-1"></a><span class="st">```{r, engine = '</span>tikz<span class="st">'}</span></span>
+<span id="cb22-1218"><a href="#cb22-1218" aria-hidden="true" tabindex="-1"></a><span class="st">#| eval: false</span></span>
+<span id="cb22-1219"><a href="#cb22-1219" aria-hidden="true" tabindex="-1"></a><span class="st">#| </span></span>
+<span id="cb22-1220"><a href="#cb22-1220" aria-hidden="true" tabindex="-1"></a><span class="st">\usetikzlibrary{positioning}</span></span>
+<span id="cb22-1221"><a href="#cb22-1221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1222"><a href="#cb22-1222" aria-hidden="true" tabindex="-1"></a><span class="st">\def\layersep{3.5cm}</span></span>
+<span id="cb22-1223"><a href="#cb22-1223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1224"><a href="#cb22-1224" aria-hidden="true" tabindex="-1"></a><span class="sc">\b</span><span class="st">egin{tikzpicture}[shorten &gt;=1pt,-&gt;,draw=black!50, node distance=\layersep]</span></span>
+<span id="cb22-1225"><a href="#cb22-1225" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{every pin edge}=[&lt;-,shorten &lt;=1pt]</span></span>
+<span id="cb22-1226"><a href="#cb22-1226" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]</span></span>
+<span id="cb22-1227"><a href="#cb22-1227" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{input neuron}=[neuron, fill=green!50];</span></span>
+<span id="cb22-1228"><a href="#cb22-1228" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{output neuron}=[neuron, fill=red!50];</span></span>
+<span id="cb22-1229"><a href="#cb22-1229" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{annot} = [text width=4em, text centered]</span></span>
+<span id="cb22-1230"><a href="#cb22-1230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1231"><a href="#cb22-1231" aria-hidden="true" tabindex="-1"></a><span class="st">    % Draw the input layer nodes</span></span>
+<span id="cb22-1232"><a href="#cb22-1232" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\f</span><span class="st">oreach </span><span class="sc">\n</span><span class="st">ame / \y in {1,2}</span></span>
+<span id="cb22-1233"><a href="#cb22-1233" aria-hidden="true" tabindex="-1"></a><span class="st">        </span><span class="sc">\n</span><span class="st">ode[input neuron, pin=left:Input \#\y] (I-</span><span class="sc">\n</span><span class="st">ame) at (0,-\y) {$X_{\y}$};</span></span>
+<span id="cb22-1234"><a href="#cb22-1234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1235"><a href="#cb22-1235" aria-hidden="true" tabindex="-1"></a><span class="st">    % Draw the output layer nodes</span></span>
+<span id="cb22-1236"><a href="#cb22-1236" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\f</span><span class="st">oreach </span><span class="sc">\n</span><span class="st">ame / \y in {1,2,3}</span></span>
+<span id="cb22-1237"><a href="#cb22-1237" aria-hidden="true" tabindex="-1"></a><span class="st">        \path[yshift=1.0cm]</span></span>
+<span id="cb22-1238"><a href="#cb22-1238" aria-hidden="true" tabindex="-1"></a><span class="st">            node[output neuron] (O-</span><span class="sc">\n</span><span class="st">ame) at (\layersep,-\y cm) {$Y_{\y}$};</span></span>
+<span id="cb22-1239"><a href="#cb22-1239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1240"><a href="#cb22-1240" aria-hidden="true" tabindex="-1"></a><span class="st">    % Connect every node in the input layer with every node in the</span></span>
+<span id="cb22-1241"><a href="#cb22-1241" aria-hidden="true" tabindex="-1"></a><span class="st">    % output layer.</span></span>
+<span id="cb22-1242"><a href="#cb22-1242" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\f</span><span class="st">oreach \source in {1,2}</span></span>
+<span id="cb22-1243"><a href="#cb22-1243" aria-hidden="true" tabindex="-1"></a><span class="st">        </span><span class="sc">\f</span><span class="st">oreach \dest in {1,2,3}</span></span>
+<span id="cb22-1244"><a href="#cb22-1244" aria-hidden="true" tabindex="-1"></a><span class="st">            \path (I-\source) edge (O-\dest);</span></span>
+<span id="cb22-1245"><a href="#cb22-1245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1246"><a href="#cb22-1246" aria-hidden="true" tabindex="-1"></a><span class="st">    % Annotate the layers with equations</span></span>
+<span id="cb22-1247"><a href="#cb22-1247" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[above of=I-1, node distance=1.5cm] (il) {$a_i(X)=e^{-\gamma \cdot (X-X_i)^2}$ </span><span class="sc">\\</span><span class="st"> $</span><span class="sc">\f</span><span class="st">rac{a_i(X)}{\sum a_i(X)}$};</span></span>
+<span id="cb22-1248"><a href="#cb22-1248" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[above of=O-1, node distance=1.5cm] (ol) {$O_j(X)=\sum_{i=1}^M w_{j i} \cdot a_i(X)$ </span><span class="sc">\\</span><span class="st"> $P[Y_j|X]=</span><span class="sc">\f</span><span class="st">rac{O_j(X)}{\sum_{k=1}^L O_k(X)}$};</span></span>
+<span id="cb22-1249"><a href="#cb22-1249" aria-hidden="true" tabindex="-1"></a><span class="sc">\e</span><span class="st">nd{tikzpicture}</span></span>
+<span id="cb22-1250"><a href="#cb22-1250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1251"><a href="#cb22-1251" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb22-1252"><a href="#cb22-1252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1253"><a href="#cb22-1253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1254"><a href="#cb22-1254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1255"><a href="#cb22-1255" aria-hidden="true" tabindex="-1"></a><span class="st">```{r, engine = '</span>tikz<span class="st">'}</span></span>
+<span id="cb22-1256"><a href="#cb22-1256" aria-hidden="true" tabindex="-1"></a><span class="st">#| eval: false</span></span>
+<span id="cb22-1257"><a href="#cb22-1257" aria-hidden="true" tabindex="-1"></a><span class="st">#| </span></span>
+<span id="cb22-1258"><a href="#cb22-1258" aria-hidden="true" tabindex="-1"></a><span class="st">\usetikzlibrary{positioning, fit}</span></span>
+<span id="cb22-1259"><a href="#cb22-1259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1260"><a href="#cb22-1260" aria-hidden="true" tabindex="-1"></a><span class="st">\def\layersep{3.5cm}</span></span>
+<span id="cb22-1261"><a href="#cb22-1261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1262"><a href="#cb22-1262" aria-hidden="true" tabindex="-1"></a><span class="sc">\b</span><span class="st">egin{tikzpicture}[shorten &gt;=1pt,-&gt;,draw=black!50, node distance=\layersep]</span></span>
+<span id="cb22-1263"><a href="#cb22-1263" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{every pin edge}=[&lt;-,shorten &lt;=1pt]</span></span>
+<span id="cb22-1264"><a href="#cb22-1264" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]</span></span>
+<span id="cb22-1265"><a href="#cb22-1265" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{input neuron}=[neuron, fill=green!50];</span></span>
+<span id="cb22-1266"><a href="#cb22-1266" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{output neuron}=[neuron, fill=red!50];</span></span>
+<span id="cb22-1267"><a href="#cb22-1267" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{annot} = [text width=4em, text centered]</span></span>
+<span id="cb22-1268"><a href="#cb22-1268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1269"><a href="#cb22-1269" aria-hidden="true" tabindex="-1"></a><span class="st">    % Draw the input layer nodes</span></span>
+<span id="cb22-1270"><a href="#cb22-1270" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\f</span><span class="st">oreach </span><span class="sc">\n</span><span class="st">ame / \y in {1,2}</span></span>
+<span id="cb22-1271"><a href="#cb22-1271" aria-hidden="true" tabindex="-1"></a><span class="st">        </span><span class="sc">\n</span><span class="st">ode[input neuron, pin=left:Input \#\y] (I-</span><span class="sc">\n</span><span class="st">ame) at (0,-\y) {$X_{\y}$};</span></span>
+<span id="cb22-1272"><a href="#cb22-1272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1273"><a href="#cb22-1273" aria-hidden="true" tabindex="-1"></a><span class="st">    % Draw the output layer nodes</span></span>
+<span id="cb22-1274"><a href="#cb22-1274" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\f</span><span class="st">oreach </span><span class="sc">\n</span><span class="st">ame / \y in {1,2,3}</span></span>
+<span id="cb22-1275"><a href="#cb22-1275" aria-hidden="true" tabindex="-1"></a><span class="st">        \path[yshift=1.0cm]</span></span>
+<span id="cb22-1276"><a href="#cb22-1276" aria-hidden="true" tabindex="-1"></a><span class="st">            node[output neuron] (O-</span><span class="sc">\n</span><span class="st">ame) at (\layersep,-\y cm) {$Y_{\y}$};</span></span>
+<span id="cb22-1277"><a href="#cb22-1277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1278"><a href="#cb22-1278" aria-hidden="true" tabindex="-1"></a><span class="st">    % Connect every node in the input layer with every node in the</span></span>
+<span id="cb22-1279"><a href="#cb22-1279" aria-hidden="true" tabindex="-1"></a><span class="st">    % output layer.</span></span>
+<span id="cb22-1280"><a href="#cb22-1280" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\f</span><span class="st">oreach \source in {1,2}</span></span>
+<span id="cb22-1281"><a href="#cb22-1281" aria-hidden="true" tabindex="-1"></a><span class="st">        </span><span class="sc">\f</span><span class="st">oreach \dest in {1,2,3}</span></span>
+<span id="cb22-1282"><a href="#cb22-1282" aria-hidden="true" tabindex="-1"></a><span class="st">            \path (I-\source) edge (O-\dest);</span></span>
+<span id="cb22-1283"><a href="#cb22-1283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1284"><a href="#cb22-1284" aria-hidden="true" tabindex="-1"></a><span class="st">    % Annotate the layers with equations</span></span>
+<span id="cb22-1285"><a href="#cb22-1285" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[above of=I-1, node distance=1.5cm] (il) {$a_i(X)=e^{-\gamma \cdot (X-X_i)^2}$ </span><span class="sc">\\</span><span class="st"> $</span><span class="sc">\f</span><span class="st">rac{a_i(X)}{\sum a_i(X)}$};</span></span>
+<span id="cb22-1286"><a href="#cb22-1286" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[above of=O-1, node distance=1.5cm] (ol) {$O_j(X)=\sum_{i=1}^M w_{j i} \cdot a_i(X)$ </span><span class="sc">\\</span><span class="st"> $P[Y_j|X]=</span><span class="sc">\f</span><span class="st">rac{O_j(X)}{\sum_{k=1}^L O_k(X)}$};</span></span>
+<span id="cb22-1287"><a href="#cb22-1287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1288"><a href="#cb22-1288" aria-hidden="true" tabindex="-1"></a><span class="st">    % Draw rectangles over the input and output layer nodes</span></span>
+<span id="cb22-1289"><a href="#cb22-1289" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[rectangle, draw=black, inner sep=0.5cm, fit=(I-1) (I-2)] (inputbox) {};</span></span>
+<span id="cb22-1290"><a href="#cb22-1290" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[rectangle, draw=black, inner sep=0.5cm, fit=(O-1) (O-2) (O-3)] (outputbox) {};</span></span>
+<span id="cb22-1291"><a href="#cb22-1291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1292"><a href="#cb22-1292" aria-hidden="true" tabindex="-1"></a><span class="sc">\e</span><span class="st">nd{tikzpicture}</span></span>
+<span id="cb22-1293"><a href="#cb22-1293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1294"><a href="#cb22-1294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1295"><a href="#cb22-1295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1296"><a href="#cb22-1296" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb22-1297"><a href="#cb22-1297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1298"><a href="#cb22-1298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1299"><a href="#cb22-1299" aria-hidden="true" tabindex="-1"></a><span class="st">```{r, engine = '</span>tikz<span class="st">'}</span></span>
+<span id="cb22-1300"><a href="#cb22-1300" aria-hidden="true" tabindex="-1"></a><span class="st">#| eval: false</span></span>
+<span id="cb22-1301"><a href="#cb22-1301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1302"><a href="#cb22-1302" aria-hidden="true" tabindex="-1"></a><span class="st">\usetikzlibrary{positioning, fit, calc}</span></span>
+<span id="cb22-1303"><a href="#cb22-1303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1304"><a href="#cb22-1304" aria-hidden="true" tabindex="-1"></a><span class="st">\def\layersep{5cm}</span></span>
+<span id="cb22-1305"><a href="#cb22-1305" aria-hidden="true" tabindex="-1"></a><span class="sc">\b</span><span class="st">egin{tikzpicture}[shorten &gt;=1pt,-&gt;,draw=black!50, node distance=\layersep]</span></span>
+<span id="cb22-1306"><a href="#cb22-1306" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{every pin edge}=[&lt;-,shorten &lt;=1pt]</span></span>
+<span id="cb22-1307"><a href="#cb22-1307" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]</span></span>
+<span id="cb22-1308"><a href="#cb22-1308" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{input neuron}=[neuron, fill=green!50];</span></span>
+<span id="cb22-1309"><a href="#cb22-1309" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{output neuron}=[neuron, fill=red!50];</span></span>
+<span id="cb22-1310"><a href="#cb22-1310" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\t</span><span class="st">ikzstyle{annot} = [text centered]</span></span>
+<span id="cb22-1311"><a href="#cb22-1311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1312"><a href="#cb22-1312" aria-hidden="true" tabindex="-1"></a><span class="st">    % Draw the input layer nodes horizontally</span></span>
+<span id="cb22-1313"><a href="#cb22-1313" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\f</span><span class="st">oreach </span><span class="sc">\n</span><span class="st">ame / \y in {1,2}</span></span>
+<span id="cb22-1314"><a href="#cb22-1314" aria-hidden="true" tabindex="-1"></a><span class="st">        </span><span class="sc">\n</span><span class="st">ode[input neuron, pin=left:Input \#\y] (I-</span><span class="sc">\n</span><span class="st">ame) at ($(1.5*\y cm,0)$) {$X_{\y}$};</span></span>
+<span id="cb22-1315"><a href="#cb22-1315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1316"><a href="#cb22-1316" aria-hidden="true" tabindex="-1"></a><span class="st">    % Draw the output layer nodes</span></span>
+<span id="cb22-1317"><a href="#cb22-1317" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\f</span><span class="st">oreach </span><span class="sc">\n</span><span class="st">ame / \y in {1,2,3}</span></span>
+<span id="cb22-1318"><a href="#cb22-1318" aria-hidden="true" tabindex="-1"></a><span class="st">        </span><span class="sc">\n</span><span class="st">ode[output neuron] (O-</span><span class="sc">\n</span><span class="st">ame) at ($(1.5*</span><span class="sc">\n</span><span class="st">ame cm, -\layersep)$) {$Y_{\y}$};</span></span>
+<span id="cb22-1319"><a href="#cb22-1319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1320"><a href="#cb22-1320" aria-hidden="true" tabindex="-1"></a><span class="st">    % Connect every node in the input layer with every node in the</span></span>
+<span id="cb22-1321"><a href="#cb22-1321" aria-hidden="true" tabindex="-1"></a><span class="st">    % output layer.</span></span>
+<span id="cb22-1322"><a href="#cb22-1322" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\f</span><span class="st">oreach \source in {1,2}</span></span>
+<span id="cb22-1323"><a href="#cb22-1323" aria-hidden="true" tabindex="-1"></a><span class="st">        </span><span class="sc">\f</span><span class="st">oreach \dest in {1,2,3}</span></span>
+<span id="cb22-1324"><a href="#cb22-1324" aria-hidden="true" tabindex="-1"></a><span class="st">            \path (I-\source) edge (O-\dest);</span></span>
+<span id="cb22-1325"><a href="#cb22-1325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1326"><a href="#cb22-1326" aria-hidden="true" tabindex="-1"></a><span class="st">    % Add input stimulus symbol above the input layer</span></span>
+<span id="cb22-1327"><a href="#cb22-1327" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[above=2cm of I-1, anchor=south] (input-stimulus) {Stimulus $S$};</span></span>
+<span id="cb22-1328"><a href="#cb22-1328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1329"><a href="#cb22-1329" aria-hidden="true" tabindex="-1"></a><span class="st">    % Add output response symbol below the output layer</span></span>
+<span id="cb22-1330"><a href="#cb22-1330" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[below=2cm of O-2, anchor=north] (output-response) {Response $R$};</span></span>
+<span id="cb22-1331"><a href="#cb22-1331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1332"><a href="#cb22-1332" aria-hidden="true" tabindex="-1"></a><span class="st">    % Annotate the layers with equations</span></span>
+<span id="cb22-1333"><a href="#cb22-1333" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[left=4cm of I-1, anchor=east, font=\small, text width=5cm] (ile) {$a_i(X)=e^{-\gamma \cdot (X-X_i)^2}$ </span><span class="sc">\\</span><span class="st"> $</span><span class="sc">\f</span><span class="st">rac{a_i(X)}{\sum a_i(X)}$};</span></span>
+<span id="cb22-1334"><a href="#cb22-1334" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[left=4cm of O-1, anchor=east, font=\small, text width=5cm] (ole) {$O_j(X)=\sum_{i=1}^M w_{j i} \cdot a_i(X)$ </span><span class="sc">\\</span><span class="st"> $P[Y_j|X]=</span><span class="sc">\f</span><span class="st">rac{O_j(X)}{\sum_{k=1}^L O_k(X)}$};</span></span>
+<span id="cb22-1335"><a href="#cb22-1335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1336"><a href="#cb22-1336" aria-hidden="true" tabindex="-1"></a><span class="st">    % Add rectangles around input and output layers</span></span>
+<span id="cb22-1337"><a href="#cb22-1337" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[draw,rectangle,fit=(I-1) (I-2),minimum width=4cm, label=above:Input Layer] (input-rect) {};</span></span>
+<span id="cb22-1338"><a href="#cb22-1338" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[draw,rectangle,fit=(O-1) (O-2) (O-3),minimum width=4cm, label=above:Output Layer] (output-rect) {};</span></span>
+<span id="cb22-1339"><a href="#cb22-1339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1340"><a href="#cb22-1340" aria-hidden="true" tabindex="-1"></a><span class="st">    % Add rectangle for the decoding process</span></span>
+<span id="cb22-1341"><a href="#cb22-1341" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="sc">\n</span><span class="st">ode[draw,rectangle,fit=(output-response), label=above:Decoding Process, minimum width=3cm] (decoding-rect) {};</span></span>
+<span id="cb22-1342"><a href="#cb22-1342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1343"><a href="#cb22-1343" aria-hidden="true" tabindex="-1"></a><span class="st">    % Add arrow from output layer to decoding process</span></span>
+<span id="cb22-1344"><a href="#cb22-1344" aria-hidden="true" tabindex="-1"></a><span class="st">    \draw[-&gt;,thick] (output-rect) -- (decoding-rect);</span></span>
+<span id="cb22-1345"><a href="#cb22-1345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1346"><a href="#cb22-1346" aria-hidden="true" tabindex="-1"></a><span class="sc">\e</span><span class="st">nd{tikzpicture}</span></span>
+<span id="cb22-1347"><a href="#cb22-1347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1348"><a href="#cb22-1348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1349"><a href="#cb22-1349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-1350"><a href="#cb22-1350" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
