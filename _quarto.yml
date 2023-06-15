@@ -1,4 +1,3 @@
-
 project:
   type: website
   output-dir: docs
@@ -19,34 +18,42 @@ exclude: ["*.rds","*.tex","*.csl","*.bib","docs*","404.html","_old*","out.bib",
 website:
   title: "HTW Project"
   reader-mode: true
-  navbar:
+  page-navigation: true
+  sidebar:
+    collapse-level: 2
     pinned: false
    # background: "#EE6A24"
-    left:
-      - text: Analyses
-        menu: 
+    contents:
+      - index.qmd
+      - text: "---"
+      - section: Analyses
+        contents: 
           - Analysis/discrim.qmd
           - Analysis/ME_Pool.qmd
           - Analysis/analysis.qmd
           - Visuals_Interactives/ojs_explore.qmd
-      - text: Simulations
-        menu: 
+      - text: "---"
+      - section: Simulations
+        contents: 
           - Simulations/simParameterRecovery.qmd
           - Simulations/DeLosh97_Sim.qmd
           - Simulations/SimReplications.qmd
           - Simulations/alm_learning.qmd
-      - text: Model 
-        menu: 
+      - text: "---"
+      - section: Model 
+        contents: 
             - Model/htw_exam.qmd
             - Model/abc_htw.qmd
             - Model/group_fits.qmd
-      - text: Interactive
-        menu: 
+      - text: "---"
+      - section: Interactive
+        contents: 
           - Visuals_Interactives/ojs_alm.qmd
           - Visuals_Interactives/quarto_shiny.qmd
           - Visuals_Interactives/ALM_Shiny.qmd
-      - text: Misc
-        menu: 
+      - text: "---"
+      - section: Misc
+        contents: 
           - Misc/Task.qmd
           - Visuals_Interactives/model_viz.qmd
           - Misc/htw_dp.qmd
@@ -61,14 +68,17 @@ format:
       light: spacelab #[default]
       dark: cyborg
     css: ["Style/style1.css", "Style/calloutTG.css"]
+    page-layout: full
     toc: true
-    toc-location: left
+    toc-location: right
+    toc-depth: 2
     cold-fold: true
     cold-tool: true
     code-link: true
     code-line-numbers: true
     #code-overflow: wrap
     code-copy: true
+    number-depth: 3
     smooth-scroll: true
     highlight-style: github #monokai #a11y
     #html-math-method: mathjax
@@ -77,33 +87,40 @@ execute:
   freeze: true
 
 
-# filters:
-#   - filters/diagram-generator.lua
-
-
 # website:
 #   title: "HTW Project"
+#   reader-mode: true
 #   navbar:
 #     pinned: false
 #    # background: "#EE6A24"
 #     left:
-#       - text: To-Do
-#         file: HTW_ToDo.qmd
 #       - text: Analyses
-#         file: discrim.qmd
+#         menu: 
+#           - Analysis/discrim.qmd
+#           - Analysis/ME_Pool.qmd
+#           - Analysis/analysis.qmd
+#           - Visuals_Interactives/ojs_explore.qmd
 #       - text: Simulations
 #         menu: 
-#           - DeLosh97_Sim.qmd
-#           - SimReplications.qmd
-#           - ALM_Shiny.qmd
-#           - ojs_alm.qmd
-#           - alm_learning.qmd
-#       - text: Model Fitting
+#           - Simulations/simParameterRecovery.qmd
+#           - Simulations/DeLosh97_Sim.qmd
+#           - Simulations/SimReplications.qmd
+#           - Simulations/alm_learning.qmd
+#       - text: Model 
 #         menu: 
-#           - htw_exam.qmd
-#           - benchmarks.qmd
-#       - text: Task
-#         file: Task.qmd
-#       - text: Proposal
-#         file: htw_dp.qmd
-#       - External.qmd
+#             - Model/htw_exam.qmd
+#             - Model/abc_htw.qmd
+#             - Model/group_fits.qmd
+#       - text: Interactive
+#         menu: 
+#           - Visuals_Interactives/ojs_alm.qmd
+#           - Visuals_Interactives/quarto_shiny.qmd
+#           - Visuals_Interactives/ALM_Shiny.qmd
+#       - text: Misc
+#         menu: 
+#           - Misc/Task.qmd
+#           - Visuals_Interactives/model_viz.qmd
+#           - Misc/htw_dp.qmd
+#           - Misc/External.qmd
+#           - Misc/HTW_ToDo.qmd
+#           - Misc/benchmarks.qmd
