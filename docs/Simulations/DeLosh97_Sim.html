@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.361">
+<meta name="generator" content="quarto-1.4.146">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2023-05-23">
+<meta name="dcterms.date" content="2023-06-15">
 <title>HTW Project - Simulating DeLosh 1997</title>
 <style>
 code{white-space: pre-wrap;}
@@ -61,6 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../Simulations/SimReplications.html" rel="next">
+<link href="../Simulations/simParameterRecovery.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -72,12 +74,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
+  "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
+  "panel-placement": "start",
+  "type": "textbox",
   "limit": 20,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -94,138 +101,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="../Style/style1.css">
 <link rel="stylesheet" href="../Style/calloutTG.css">
 </head>
-<body class="floating nav-fixed slimcontent">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
-    <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">HTW Project</span>
-    </a>
-  </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-<li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-analyses" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
- <span class="menu-text">Analyses</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-analyses">
-<li>
-    <a class="dropdown-item" href="../Analysis/discrim.html" rel="" target="">
- <span class="dropdown-text">Testing Discrimination Analysis</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Analysis/ME_Pool.html" rel="" target="">
- <span class="dropdown-text">ME_Pool</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Analysis/analysis.html" rel="" target="">
- <span class="dropdown-text">HTW Analysis</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Visuals_Interactives/ojs_explore.html" rel="" target="">
- <span class="dropdown-text">OJS data exploration</span></a>
-  </li>  
-    </ul>
-</li>
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-simulations" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
- <span class="menu-text">Simulations</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-simulations">
-<li>
-    <a class="dropdown-item" href="../Simulations/simParameterRecovery.html" rel="" target="">
- <span class="dropdown-text">Parameter Recovery Simulations</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Simulations/DeLosh97_Sim.html" rel="" target="">
- <span class="dropdown-text">Simulating DeLosh 1997</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Simulations/SimReplications.html" rel="" target="">
- <span class="dropdown-text">General Simulations</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Simulations/alm_learning.html" rel="" target="">
- <span class="dropdown-text">ALM Learning</span></a>
-  </li>  
-    </ul>
-</li>
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-model" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
- <span class="menu-text">Model</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-model">
-<li>
-    <a class="dropdown-item" href="../Model/htw_exam.html" rel="" target="">
- <span class="dropdown-text">ALM &amp; EXAM Fitting</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Model/abc_htw.html" rel="" target="">
- <span class="dropdown-text">Approximate Bayesian Fitting</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Model/group_fits.html" rel="" target="">
- <span class="dropdown-text">Group Level Fits</span></a>
-  </li>  
-    </ul>
-</li>
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-interactive" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
- <span class="menu-text">Interactive</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-interactive">
-<li>
-    <a class="dropdown-item" href="../Visuals_Interactives/ojs_alm.html" rel="" target="">
- <span class="dropdown-text">OJS ALM</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Visuals_Interactives/quarto_shiny.qmd" rel="" target="">
- <span class="dropdown-text"></span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Visuals_Interactives/ALM_Shiny.html" rel="" target="">
- <span class="dropdown-text">ALM Shiny App Code</span></a>
-  </li>  
-    </ul>
-</li>
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-misc" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
- <span class="menu-text">Misc</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-misc">
-<li>
-    <a class="dropdown-item" href="../Misc/Task.html" rel="" target="">
- <span class="dropdown-text">HTW Task</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Visuals_Interactives/model_viz.html" rel="" target="">
- <span class="dropdown-text">Model Visualization</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Misc/htw_dp.html" rel="" target="">
- <span class="dropdown-text">Project 2</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Misc/External.html" rel="" target="">
- <span class="dropdown-text">External</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Misc/HTW_ToDo.html" rel="" target="">
- <span class="dropdown-text">HTW To-do and Notes</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../Misc/benchmarks.html" rel="" target="">
- <span class="dropdown-text">Benchmarking</span></a>
-  </li>  
-    </ul>
-</li>
-</ul>
-<div class="quarto-navbar-tools ms-auto">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Simulations/simParameterRecovery.html">Simulations</a></li><li class="breadcrumb-item"><a href="../Simulations/DeLosh97_Sim.html">Simulating DeLosh 1997</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">HTW Project</a> 
+        <div class="sidebar-tools-main">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
@@ -233,34 +128,208 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </a>
 </div>
-          </div> <!-- /navcollapse -->
-      </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
-<!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
-   
-  <ul>
-<li>
-<a href="#alm-definition" id="toc-alm-definition" class="nav-link active" data-scroll-target="#alm-definition">ALM Definition</a>
-  <ul class="collapse">
-<li><a href="#generate-response" id="toc-generate-response" class="nav-link" data-scroll-target="#generate-response">Generate Response</a></li>
-  <li><a href="#update-weights-based-on-feedback" id="toc-update-weights-based-on-feedback" class="nav-link" data-scroll-target="#update-weights-based-on-feedback">Update Weights Based on Feedback</a></li>
-  <li><a href="#exam-generalization" id="toc-exam-generalization" class="nav-link" data-scroll-target="#exam-generalization">Exam Generalization</a></li>
-  <li><a href="#prepare-simulation-data" id="toc-prepare-simulation-data" class="nav-link" data-scroll-target="#prepare-simulation-data">Prepare Simulation Data</a></li>
-  <li><a href="#simulation-functions" id="toc-simulation-functions" class="nav-link" data-scroll-target="#simulation-functions">Simulation Functions</a></li>
-  <li><a href="#simulate-training" id="toc-simulate-training" class="nav-link" data-scroll-target="#simulate-training">Simulate Training:</a></li>
-  <li><a href="#master-function-for-full-simulation" id="toc-master-function-for-full-simulation" class="nav-link" data-scroll-target="#master-function-for-full-simulation">Master Function for full simulation</a></li>
-  <li><a href="#simulations-with-noise" id="toc-simulations-with-noise" class="nav-link" data-scroll-target="#simulations-with-noise">Simulations with noise</a></li>
-  <li><a href="#primary-functions" id="toc-primary-functions" class="nav-link" data-scroll-target="#primary-functions">Primary Functions</a></li>
-  </ul>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Project</span></a>
+  </div>
 </li>
-  </ul></nav>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Analyses</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/discrim.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Testing Discrimination Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/ME_Pool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ME_Pool</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visuals_Interactives/ojs_explore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OJS data exploration</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Simulations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Simulations/simParameterRecovery.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Parameter Recovery Simulations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Simulations/DeLosh97_Sim.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Simulating DeLosh 1997</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Simulations/SimReplications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">General Simulations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Simulations/alm_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ALM Learning</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Model</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ALM &amp; EXAM Fitting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/abc_htw.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Approximate Bayesian Fitting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/group_fits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Group Level Fits</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Interactive</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visuals_Interactives/ojs_alm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OJS ALM</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visuals_Interactives/ALM_Shiny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ALM Shiny App Code</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Misc</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/Task.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Task</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visuals_Interactives/model_viz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/htw_dp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Project 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/External.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">External</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/HTW_ToDo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW To-do and Notes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/benchmarks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Benchmarking</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+<li><a href="#alm-definition" id="toc-alm-definition" class="nav-link active" data-scroll-target="#alm-definition">ALM Definition</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content page-columns page-full column-body" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <div class="quarto-title-block"><div><h1 class="title">Simulating DeLosh 1997</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
   <div class="quarto-categories">
     <div class="quarto-category">Simulation</div>
@@ -272,13 +341,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-body">
 
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 23, 2023</p>
+      <p class="date">June 15, 2023</p>
     </div>
   </div>
   
@@ -788,6 +857,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
   }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
   const toggleColorMode = (alternate) => {
     // Switch the stylesheets
     const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
@@ -854,13 +950,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -990,10 +1088,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1003,8 +1100,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1017,6 +1123,61 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    if (id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        for (let i = 0; i < 2; i++) {
+          container.appendChild(note.children[i].cloneNode(true));
+        }
+        return container.innerHTML
+      } else {
+        return note.innerHTML;
+      }
+    } else {
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      try { hash = new URL(url).hash; } catch {}
+      const id = hash.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note !== null) {
+        try {
+          const html = processXRef(id, note);
+          instance.setContent(html);
+        } finally {
+          instance.enable();
+          instance.show();
+        }
+      } else {
+        // See if we can fetch this
+        fetch(url.split('#')[0])
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.getElementById(id);
+          console.log(htmlDoc.body.innerHTML);
+          if (note !== null) {
+            const html = processXRef(id, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1060,6 +1221,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1143,7 +1305,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+</script><nav class="page-navigation column-body"><div class="nav-page nav-page-previous">
+      <a href="../Simulations/simParameterRecovery.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Parameter Recovery Simulations</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../Simulations/SimReplications.html" class="pagination-link">
+        <span class="nav-page-text">General Simulations</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb15" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">---</span></span>
 <span id="cb15-2"><a href="#cb15-2"></a><span class="an">title:</span><span class="co"> Simulating DeLosh 1997</span></span>
 <span id="cb15-3"><a href="#cb15-3"></a><span class="an">date:</span><span class="co"> last-modified</span></span>
@@ -1152,7 +1324,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-6"><a href="#cb15-6"></a><span class="an">code-tools:</span><span class="co"> true</span></span>
 <span id="cb15-7"><a href="#cb15-7"></a><span class="an">execute:</span><span class="co"> </span></span>
 <span id="cb15-8"><a href="#cb15-8"></a><span class="co">  warning: false</span></span>
-<span id="cb15-9"><a href="#cb15-9"></a><span class="co">---</span> </span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co">---</span></span>
 <span id="cb15-10"><a href="#cb15-10"></a></span>
 <span id="cb15-13"><a href="#cb15-13"></a><span class="in">```{r}</span></span>
 <span id="cb15-14"><a href="#cb15-14"></a><span class="co">#lapply(c('tidyverse','data.table','igraph','ggraph','kableExtra'),library,character.only=TRUE))</span></span>
@@ -1160,168 +1332,168 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-16"><a href="#cb15-16"></a></span>
 <span id="cb15-17"><a href="#cb15-17"></a><span class="in">```</span></span>
 <span id="cb15-18"><a href="#cb15-18"></a></span>
-<span id="cb15-19"><a href="#cb15-19"></a></span>
-<span id="cb15-22"><a href="#cb15-22"></a><span class="in">```{r}</span></span>
-<span id="cb15-23"><a href="#cb15-23"></a><span class="co">#https://nrennie.rbind.io/blog/2022-06-06-creating-flowcharts-with-ggplot2/</span></span>
-<span id="cb15-24"><a href="#cb15-24"></a>inNodes <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">6</span>,<span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">as.integer</span>()</span>
-<span id="cb15-25"><a href="#cb15-25"></a>outNodes <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">300</span>,<span class="dv">1000</span>,<span class="dv">50</span>)<span class="sc">%&gt;%</span> <span class="fu">as.integer</span>()</span>
-<span id="cb15-26"><a href="#cb15-26"></a>stim <span class="ot">&lt;-</span> <span class="st">"Stim"</span></span>
-<span id="cb15-27"><a href="#cb15-27"></a>resp <span class="ot">&lt;-</span> <span class="st">"Response"</span></span>
-<span id="cb15-28"><a href="#cb15-28"></a>inFlow <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="fu">expand.grid</span>(<span class="at">from=</span>stim,<span class="at">to=</span>inNodes)) <span class="sc">%&gt;%</span> <span class="fu">mutate_all</span>(as.character)</span>
-<span id="cb15-29"><a href="#cb15-29"></a>outFlow <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="fu">expand.grid</span>(<span class="at">from=</span>outNodes,<span class="at">to=</span>resp)) <span class="sc">%&gt;%</span> <span class="fu">mutate_all</span>(as.character)</span>
-<span id="cb15-30"><a href="#cb15-30"></a></span>
-<span id="cb15-31"><a href="#cb15-31"></a>gd <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="fu">expand.grid</span>(<span class="at">from=</span>inNodes,<span class="at">to=</span>outNodes)) <span class="sc">%&gt;%</span> <span class="fu">mutate_all</span>(as.character) <span class="sc">%&gt;%</span></span>
-<span id="cb15-32"><a href="#cb15-32"></a>  <span class="fu">rbind</span>(inFlow,.) <span class="sc">%&gt;%</span> <span class="fu">rbind</span>(.,outFlow)</span>
-<span id="cb15-33"><a href="#cb15-33"></a></span>
-<span id="cb15-34"><a href="#cb15-34"></a>g <span class="ot">=</span> <span class="fu">graph_from_data_frame</span>(gd,<span class="at">directed=</span><span class="cn">TRUE</span>)</span>
-<span id="cb15-35"><a href="#cb15-35"></a>coords2<span class="ot">=</span><span class="fu">layout_as_tree</span>(g)</span>
-<span id="cb15-36"><a href="#cb15-36"></a><span class="fu">colnames</span>(coords2)<span class="ot">=</span><span class="fu">c</span>(<span class="st">"y"</span>,<span class="st">"x"</span>)</span>
-<span id="cb15-37"><a href="#cb15-37"></a>odf <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(coords2) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-38"><a href="#cb15-38"></a>  <span class="fu">mutate</span>(<span class="at">label=</span><span class="fu">vertex_attr</span>(g,<span class="st">"name"</span>),</span>
-<span id="cb15-39"><a href="#cb15-39"></a>         <span class="at">type=</span><span class="fu">c</span>(<span class="st">"stim"</span>,<span class="fu">rep</span>(<span class="st">"Input"</span>,<span class="fu">length</span>(inNodes)),<span class="fu">rep</span>(<span class="st">"Output"</span>,<span class="fu">length</span>(outNodes)),<span class="st">"Resp"</span>),</span>
-<span id="cb15-40"><a href="#cb15-40"></a>         <span class="at">x=</span>x<span class="sc">*-</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-41"><a href="#cb15-41"></a>  <span class="fu">mutate</span>(<span class="at">y=</span><span class="fu">ifelse</span>(type<span class="sc">==</span><span class="st">"Resp"</span>,<span class="dv">0</span>,y),<span class="at">xmin=</span>x<span class="fl">-.05</span>,<span class="at">xmax=</span>x<span class="fl">+.05</span>,<span class="at">ymin=</span>y<span class="fl">-.35</span>,<span class="at">ymax=</span>y<span class="fl">+.35</span>)</span>
-<span id="cb15-42"><a href="#cb15-42"></a></span>
-<span id="cb15-43"><a href="#cb15-43"></a>plot_edges <span class="ot">=</span> gd <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">id=</span><span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb15-44"><a href="#cb15-44"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols=</span><span class="fu">c</span>(<span class="st">"from"</span>,<span class="st">"to"</span>),<span class="at">names_to=</span><span class="st">"s_e"</span>,<span class="at">values_to=</span>(<span class="st">"label"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-45"><a href="#cb15-45"></a>                 <span class="fu">mutate</span>(<span class="at">label=</span><span class="fu">as.character</span>(label)) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-46"><a href="#cb15-46"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span></span>
-<span id="cb15-47"><a href="#cb15-47"></a>  <span class="fu">mutate</span>(<span class="at">weight=</span><span class="fu">sqrt</span>(<span class="fu">rnorm</span>(<span class="dv">1</span>,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="dv">10</span>)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-48"><a href="#cb15-48"></a>  <span class="fu">left_join</span>(odf,<span class="at">by=</span><span class="st">"label"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-49"><a href="#cb15-49"></a>  <span class="fu">mutate</span>(<span class="at">xmin=</span>xmin<span class="fl">+.02</span>,<span class="at">xmax=</span>xmax<span class="fl">-.02</span>)</span>
-<span id="cb15-50"><a href="#cb15-50"></a></span>
-<span id="cb15-51"><a href="#cb15-51"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_rect</span>(<span class="at">data =</span> odf,</span>
-<span id="cb15-52"><a href="#cb15-52"></a>            <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">xmin =</span> xmin, <span class="at">ymin =</span> ymin, </span>
-<span id="cb15-53"><a href="#cb15-53"></a>                          <span class="at">xmax =</span> xmax, <span class="at">ymax =</span> ymax, </span>
-<span id="cb15-54"><a href="#cb15-54"></a>                          <span class="at">fill =</span> type, <span class="at">colour =</span> type),<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb15-55"><a href="#cb15-55"></a>  <span class="fu">geom_text</span>(<span class="at">data=</span>odf,<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">label=</span>label,<span class="at">size=</span><span class="dv">3</span>)) <span class="sc">+</span></span>
-<span id="cb15-56"><a href="#cb15-56"></a>  <span class="fu">geom_path</span>(<span class="at">data=</span>plot_edges,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">group=</span>id,<span class="at">alpha=</span>weight)) <span class="sc">+</span></span>
-<span id="cb15-57"><a href="#cb15-57"></a>  <span class="co"># geom_rect(aes(xmin=-1.05,xmax=-.95,ymin=-10,ymax=5),color="red",alpha=.1)+</span></span>
-<span id="cb15-58"><a href="#cb15-58"></a>  <span class="co"># geom_rect(aes(xmin=-0.05,xmax=.05,ymin=-10,ymax=5),color="blue",alpha=.1) +</span></span>
-<span id="cb15-59"><a href="#cb15-59"></a>  <span class="fu">theme_void</span>()</span>
-<span id="cb15-60"><a href="#cb15-60"></a></span>
-<span id="cb15-61"><a href="#cb15-61"></a><span class="in">```</span></span>
-<span id="cb15-62"><a href="#cb15-62"></a></span>
+<span id="cb15-21"><a href="#cb15-21"></a><span class="in">```{r}</span></span>
+<span id="cb15-22"><a href="#cb15-22"></a><span class="co">#https://nrennie.rbind.io/blog/2022-06-06-creating-flowcharts-with-ggplot2/</span></span>
+<span id="cb15-23"><a href="#cb15-23"></a>inNodes <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">6</span>,<span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">as.integer</span>()</span>
+<span id="cb15-24"><a href="#cb15-24"></a>outNodes <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">300</span>,<span class="dv">1000</span>,<span class="dv">50</span>)<span class="sc">%&gt;%</span> <span class="fu">as.integer</span>()</span>
+<span id="cb15-25"><a href="#cb15-25"></a>stim <span class="ot">&lt;-</span> <span class="st">"Stim"</span></span>
+<span id="cb15-26"><a href="#cb15-26"></a>resp <span class="ot">&lt;-</span> <span class="st">"Response"</span></span>
+<span id="cb15-27"><a href="#cb15-27"></a>inFlow <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="fu">expand.grid</span>(<span class="at">from=</span>stim,<span class="at">to=</span>inNodes)) <span class="sc">%&gt;%</span> <span class="fu">mutate_all</span>(as.character)</span>
+<span id="cb15-28"><a href="#cb15-28"></a>outFlow <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="fu">expand.grid</span>(<span class="at">from=</span>outNodes,<span class="at">to=</span>resp)) <span class="sc">%&gt;%</span> <span class="fu">mutate_all</span>(as.character)</span>
+<span id="cb15-29"><a href="#cb15-29"></a></span>
+<span id="cb15-30"><a href="#cb15-30"></a>gd <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="fu">expand.grid</span>(<span class="at">from=</span>inNodes,<span class="at">to=</span>outNodes)) <span class="sc">%&gt;%</span> <span class="fu">mutate_all</span>(as.character) <span class="sc">%&gt;%</span></span>
+<span id="cb15-31"><a href="#cb15-31"></a>  <span class="fu">rbind</span>(inFlow,.) <span class="sc">%&gt;%</span> <span class="fu">rbind</span>(.,outFlow)</span>
+<span id="cb15-32"><a href="#cb15-32"></a></span>
+<span id="cb15-33"><a href="#cb15-33"></a>g <span class="ot">=</span> <span class="fu">graph_from_data_frame</span>(gd,<span class="at">directed=</span><span class="cn">TRUE</span>)</span>
+<span id="cb15-34"><a href="#cb15-34"></a>coords2<span class="ot">=</span><span class="fu">layout_as_tree</span>(g)</span>
+<span id="cb15-35"><a href="#cb15-35"></a><span class="fu">colnames</span>(coords2)<span class="ot">=</span><span class="fu">c</span>(<span class="st">"y"</span>,<span class="st">"x"</span>)</span>
+<span id="cb15-36"><a href="#cb15-36"></a>odf <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(coords2) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-37"><a href="#cb15-37"></a>  <span class="fu">mutate</span>(<span class="at">label=</span><span class="fu">vertex_attr</span>(g,<span class="st">"name"</span>),</span>
+<span id="cb15-38"><a href="#cb15-38"></a>         <span class="at">type=</span><span class="fu">c</span>(<span class="st">"stim"</span>,<span class="fu">rep</span>(<span class="st">"Input"</span>,<span class="fu">length</span>(inNodes)),<span class="fu">rep</span>(<span class="st">"Output"</span>,<span class="fu">length</span>(outNodes)),<span class="st">"Resp"</span>),</span>
+<span id="cb15-39"><a href="#cb15-39"></a>         <span class="at">x=</span>x<span class="sc">*-</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-40"><a href="#cb15-40"></a>  <span class="fu">mutate</span>(<span class="at">y=</span><span class="fu">ifelse</span>(type<span class="sc">==</span><span class="st">"Resp"</span>,<span class="dv">0</span>,y),<span class="at">xmin=</span>x<span class="fl">-.05</span>,<span class="at">xmax=</span>x<span class="fl">+.05</span>,<span class="at">ymin=</span>y<span class="fl">-.35</span>,<span class="at">ymax=</span>y<span class="fl">+.35</span>)</span>
+<span id="cb15-41"><a href="#cb15-41"></a></span>
+<span id="cb15-42"><a href="#cb15-42"></a>plot_edges <span class="ot">=</span> gd <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">id=</span><span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb15-43"><a href="#cb15-43"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols=</span><span class="fu">c</span>(<span class="st">"from"</span>,<span class="st">"to"</span>),<span class="at">names_to=</span><span class="st">"s_e"</span>,<span class="at">values_to=</span>(<span class="st">"label"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-44"><a href="#cb15-44"></a>                 <span class="fu">mutate</span>(<span class="at">label=</span><span class="fu">as.character</span>(label)) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-45"><a href="#cb15-45"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span></span>
+<span id="cb15-46"><a href="#cb15-46"></a>  <span class="fu">mutate</span>(<span class="at">weight=</span><span class="fu">sqrt</span>(<span class="fu">rnorm</span>(<span class="dv">1</span>,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="dv">10</span>)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-47"><a href="#cb15-47"></a>  <span class="fu">left_join</span>(odf,<span class="at">by=</span><span class="st">"label"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-48"><a href="#cb15-48"></a>  <span class="fu">mutate</span>(<span class="at">xmin=</span>xmin<span class="fl">+.02</span>,<span class="at">xmax=</span>xmax<span class="fl">-.02</span>)</span>
+<span id="cb15-49"><a href="#cb15-49"></a></span>
+<span id="cb15-50"><a href="#cb15-50"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_rect</span>(<span class="at">data =</span> odf,</span>
+<span id="cb15-51"><a href="#cb15-51"></a>            <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">xmin =</span> xmin, <span class="at">ymin =</span> ymin, </span>
+<span id="cb15-52"><a href="#cb15-52"></a>                          <span class="at">xmax =</span> xmax, <span class="at">ymax =</span> ymax, </span>
+<span id="cb15-53"><a href="#cb15-53"></a>                          <span class="at">fill =</span> type, <span class="at">colour =</span> type),<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb15-54"><a href="#cb15-54"></a>  <span class="fu">geom_text</span>(<span class="at">data=</span>odf,<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">label=</span>label,<span class="at">size=</span><span class="dv">3</span>)) <span class="sc">+</span></span>
+<span id="cb15-55"><a href="#cb15-55"></a>  <span class="fu">geom_path</span>(<span class="at">data=</span>plot_edges,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">group=</span>id,<span class="at">alpha=</span>weight)) <span class="sc">+</span></span>
+<span id="cb15-56"><a href="#cb15-56"></a>  <span class="co"># geom_rect(aes(xmin=-1.05,xmax=-.95,ymin=-10,ymax=5),color="red",alpha=.1)+</span></span>
+<span id="cb15-57"><a href="#cb15-57"></a>  <span class="co"># geom_rect(aes(xmin=-0.05,xmax=.05,ymin=-10,ymax=5),color="blue",alpha=.1) +</span></span>
+<span id="cb15-58"><a href="#cb15-58"></a>  <span class="fu">theme_void</span>()</span>
+<span id="cb15-59"><a href="#cb15-59"></a></span>
+<span id="cb15-60"><a href="#cb15-60"></a><span class="in">```</span></span>
+<span id="cb15-61"><a href="#cb15-61"></a></span>
+<span id="cb15-62"><a href="#cb15-62"></a><span class="fu">## ALM Definition</span></span>
 <span id="cb15-63"><a href="#cb15-63"></a></span>
-<span id="cb15-64"><a href="#cb15-64"></a></span>
-<span id="cb15-65"><a href="#cb15-65"></a><span class="fu">## ALM Definition</span></span>
+<span id="cb15-64"><a href="#cb15-64"></a>::: column-margin</span>
+<span id="cb15-65"><a href="#cb15-65"></a><span class="fu">###### Input Activation</span></span>
 <span id="cb15-66"><a href="#cb15-66"></a></span>
-<span id="cb15-67"><a href="#cb15-67"></a></span>
-<span id="cb15-68"><a href="#cb15-68"></a></span>
-<span id="cb15-69"><a href="#cb15-69"></a>::: {.column-margin}</span>
-<span id="cb15-70"><a href="#cb15-70"></a><span class="fu">###### Input Activation</span></span>
-<span id="cb15-71"><a href="#cb15-71"></a>$$</span>
-<span id="cb15-72"><a href="#cb15-72"></a>a_i(X)=\exp \left|-\gamma \cdot\left<span class="co">[</span><span class="ot">X-X_i\right</span><span class="co">]</span>^2\right|</span>
+<span id="cb15-67"><a href="#cb15-67"></a>$$</span>
+<span id="cb15-68"><a href="#cb15-68"></a>a_i(X)=\exp \left|-\gamma \cdot\left<span class="co">[</span><span class="ot">X-X_i\right</span><span class="co">]</span>^2\right|</span>
+<span id="cb15-69"><a href="#cb15-69"></a>$$</span>
+<span id="cb15-70"><a href="#cb15-70"></a></span>
+<span id="cb15-71"><a href="#cb15-71"></a><span class="fu">###### Output activation</span></span>
+<span id="cb15-72"><a href="#cb15-72"></a></span>
 <span id="cb15-73"><a href="#cb15-73"></a>$$</span>
-<span id="cb15-74"><a href="#cb15-74"></a></span>
-<span id="cb15-75"><a href="#cb15-75"></a><span class="fu">###### Output activation</span></span>
-<span id="cb15-76"><a href="#cb15-76"></a>$$</span>
-<span id="cb15-77"><a href="#cb15-77"></a>o_j(X)=\Sigma_{i=1, M} w_{j i} \cdot a_i(X) </span>
-<span id="cb15-78"><a href="#cb15-78"></a>$$</span>
-<span id="cb15-79"><a href="#cb15-79"></a></span>
-<span id="cb15-80"><a href="#cb15-80"></a><span class="fu">###### Output Probability</span></span>
+<span id="cb15-74"><a href="#cb15-74"></a>o_j(X)=\Sigma_{i=1, M} w_{j i} \cdot a_i(X) </span>
+<span id="cb15-75"><a href="#cb15-75"></a>$$</span>
+<span id="cb15-76"><a href="#cb15-76"></a></span>
+<span id="cb15-77"><a href="#cb15-77"></a><span class="fu">###### Output Probability</span></span>
+<span id="cb15-78"><a href="#cb15-78"></a></span>
+<span id="cb15-79"><a href="#cb15-79"></a>$$</span>
+<span id="cb15-80"><a href="#cb15-80"></a>P\left<span class="co">[</span><span class="ot">Y_j \mid X\right</span><span class="co">]</span>=o_j(X) / \Sigma_{k=1, L} o_k(X) </span>
 <span id="cb15-81"><a href="#cb15-81"></a>$$</span>
-<span id="cb15-82"><a href="#cb15-82"></a>P\left<span class="co">[</span><span class="ot">Y_j \mid X\right</span><span class="co">]</span>=o_j(X) / \Sigma_{k=1, L} o_k(X) </span>
-<span id="cb15-83"><a href="#cb15-83"></a>$$</span>
+<span id="cb15-82"><a href="#cb15-82"></a></span>
+<span id="cb15-83"><a href="#cb15-83"></a><span class="fu">###### Mean Response</span></span>
 <span id="cb15-84"><a href="#cb15-84"></a></span>
-<span id="cb15-85"><a href="#cb15-85"></a><span class="fu">###### Mean Response</span></span>
-<span id="cb15-86"><a href="#cb15-86"></a>$$</span>
-<span id="cb15-87"><a href="#cb15-87"></a>m(X)=\Sigma_{j=1, L} Y_j \cdot P\left<span class="co">[</span><span class="ot">Y_j \mid X\right</span><span class="co">]</span> </span>
-<span id="cb15-88"><a href="#cb15-88"></a>$$</span>
+<span id="cb15-85"><a href="#cb15-85"></a>$$</span>
+<span id="cb15-86"><a href="#cb15-86"></a>m(X)=\Sigma_{j=1, L} Y_j \cdot P\left<span class="co">[</span><span class="ot">Y_j \mid X\right</span><span class="co">]</span> </span>
+<span id="cb15-87"><a href="#cb15-87"></a>$$</span>
+<span id="cb15-88"><a href="#cb15-88"></a>:::</span>
 <span id="cb15-89"><a href="#cb15-89"></a></span>
-<span id="cb15-90"><a href="#cb15-90"></a>:::</span>
+<span id="cb15-90"><a href="#cb15-90"></a><span class="fu">### Generate Response</span></span>
 <span id="cb15-91"><a href="#cb15-91"></a></span>
-<span id="cb15-92"><a href="#cb15-92"></a><span class="fu">### Generate Response</span></span>
-<span id="cb15-95"><a href="#cb15-95"></a><span class="in">```{r}</span></span>
-<span id="cb15-96"><a href="#cb15-96"></a><span class="co">#| code-fold: show</span></span>
-<span id="cb15-97"><a href="#cb15-97"></a><span class="co">#| code-summary: "Toggle Code"</span></span>
-<span id="cb15-98"><a href="#cb15-98"></a>alm.response <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">input=</span><span class="dv">1</span>,c) {</span>
-<span id="cb15-99"><a href="#cb15-99"></a>input.activation <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c<span class="sc">*</span>(input.layer <span class="sc">-</span> input)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb15-100"><a href="#cb15-100"></a>input.activation <span class="ot">&lt;&lt;-</span> input.activation<span class="sc">/</span><span class="fu">sum</span>(input.activation)</span>
-<span id="cb15-101"><a href="#cb15-101"></a><span class="co">#print(length(input.activation)); print(dim(weight.mat))</span></span>
-<span id="cb15-102"><a href="#cb15-102"></a>output.activation <span class="ot">&lt;&lt;-</span> weight.mat <span class="sc">%*%</span> input.activation</span>
-<span id="cb15-103"><a href="#cb15-103"></a>output.probability <span class="ot">&lt;&lt;-</span> output.activation<span class="sc">/</span><span class="fu">sum</span>(output.activation)</span>
-<span id="cb15-104"><a href="#cb15-104"></a>mean.response <span class="ot">&lt;&lt;-</span> <span class="fu">sum</span>(output.layer <span class="sc">*</span> output.probability)</span>
-<span id="cb15-105"><a href="#cb15-105"></a>mean.response</span>
-<span id="cb15-106"><a href="#cb15-106"></a>}</span>
-<span id="cb15-107"><a href="#cb15-107"></a><span class="in">```</span></span>
-<span id="cb15-108"><a href="#cb15-108"></a></span>
-<span id="cb15-109"><a href="#cb15-109"></a>\ \ \ \ \ </span>
-<span id="cb15-110"><a href="#cb15-110"></a></span>
+<span id="cb15-94"><a href="#cb15-94"></a><span class="in">```{r}</span></span>
+<span id="cb15-95"><a href="#cb15-95"></a><span class="co">#| code-fold: show</span></span>
+<span id="cb15-96"><a href="#cb15-96"></a><span class="co">#| code-summary: "Toggle Code"</span></span>
+<span id="cb15-97"><a href="#cb15-97"></a>alm.response <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">input=</span><span class="dv">1</span>,c) {</span>
+<span id="cb15-98"><a href="#cb15-98"></a>input.activation <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c<span class="sc">*</span>(input.layer <span class="sc">-</span> input)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb15-99"><a href="#cb15-99"></a>input.activation <span class="ot">&lt;&lt;-</span> input.activation<span class="sc">/</span><span class="fu">sum</span>(input.activation)</span>
+<span id="cb15-100"><a href="#cb15-100"></a><span class="co">#print(length(input.activation)); print(dim(weight.mat))</span></span>
+<span id="cb15-101"><a href="#cb15-101"></a>output.activation <span class="ot">&lt;&lt;-</span> weight.mat <span class="sc">%*%</span> input.activation</span>
+<span id="cb15-102"><a href="#cb15-102"></a>output.probability <span class="ot">&lt;&lt;-</span> output.activation<span class="sc">/</span><span class="fu">sum</span>(output.activation)</span>
+<span id="cb15-103"><a href="#cb15-103"></a>mean.response <span class="ot">&lt;&lt;-</span> <span class="fu">sum</span>(output.layer <span class="sc">*</span> output.probability)</span>
+<span id="cb15-104"><a href="#cb15-104"></a>mean.response</span>
+<span id="cb15-105"><a href="#cb15-105"></a>}</span>
+<span id="cb15-106"><a href="#cb15-106"></a><span class="in">```</span></span>
+<span id="cb15-107"><a href="#cb15-107"></a></span>
+<span id="cb15-108"><a href="#cb15-108"></a><span class="in">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+<span id="cb15-109"><a href="#cb15-109"></a></span>
+<span id="cb15-110"><a href="#cb15-110"></a><span class="fu">### Update Weights Based on Feedback</span></span>
 <span id="cb15-111"><a href="#cb15-111"></a></span>
-<span id="cb15-112"><a href="#cb15-112"></a><span class="fu">### Update Weights Based on Feedback</span></span>
-<span id="cb15-115"><a href="#cb15-115"></a><span class="in">```{r}</span></span>
-<span id="cb15-116"><a href="#cb15-116"></a><span class="co">#| code-fold: show</span></span>
-<span id="cb15-117"><a href="#cb15-117"></a><span class="co">#| code-summary: "Toggle Code"</span></span>
-<span id="cb15-118"><a href="#cb15-118"></a><span class="co">#| code-overflow: wrap</span></span>
-<span id="cb15-119"><a href="#cb15-119"></a>alm.update <span class="ot">&lt;-</span> <span class="cf">function</span>(corResp,c,lr){</span>
-<span id="cb15-120"><a href="#cb15-120"></a>  fz <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c<span class="sc">*</span>(output.layer <span class="sc">-</span> corResp)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb15-121"><a href="#cb15-121"></a>  teacherSignal <span class="ot">&lt;-</span> (fz <span class="sc">-</span> output.activation)<span class="sc">*</span>lr</span>
-<span id="cb15-122"><a href="#cb15-122"></a>  <span class="co">#print(length(teacherSignal)); print(length(fz))</span></span>
-<span id="cb15-123"><a href="#cb15-123"></a>  wChange <span class="ot">&lt;-</span> teacherSignal <span class="sc">%*%</span> <span class="fu">t</span>(input.activation)</span>
-<span id="cb15-124"><a href="#cb15-124"></a>  weight.mat <span class="ot">&lt;&lt;-</span> weight.mat <span class="sc">+</span> (wChange)</span>
-<span id="cb15-125"><a href="#cb15-125"></a>  weight.mat[weight.mat<span class="sc">&lt;</span><span class="dv">0</span>]<span class="ot">=</span><span class="dv">0</span> <span class="co"># prevent negative values</span></span>
-<span id="cb15-126"><a href="#cb15-126"></a> <span class="co"># weight.mat[weight.mat&gt;1]=1</span></span>
-<span id="cb15-127"><a href="#cb15-127"></a>  weight.mat <span class="ot">&lt;&lt;-</span> weight.mat</span>
-<span id="cb15-128"><a href="#cb15-128"></a>}</span>
-<span id="cb15-129"><a href="#cb15-129"></a></span>
-<span id="cb15-130"><a href="#cb15-130"></a>alm.trial <span class="ot">&lt;-</span> <span class="cf">function</span>(input, corResp,c,lr){</span>
-<span id="cb15-131"><a href="#cb15-131"></a>  <span class="fu">alm.response</span>(input,c)</span>
-<span id="cb15-132"><a href="#cb15-132"></a>  <span class="fu">alm.update</span>(corResp,c,lr)</span>
-<span id="cb15-133"><a href="#cb15-133"></a> <span class="co"># print(paste0("input=",input,"; corResp=",corResp,"; mean.response=",mean.response))</span></span>
-<span id="cb15-134"><a href="#cb15-134"></a>  mean.response</span>
-<span id="cb15-135"><a href="#cb15-135"></a>}</span>
-<span id="cb15-136"><a href="#cb15-136"></a><span class="in">```</span></span>
-<span id="cb15-137"><a href="#cb15-137"></a></span>
-<span id="cb15-138"><a href="#cb15-138"></a>::: {.column-margin}</span>
-<span id="cb15-139"><a href="#cb15-139"></a><span class="fu">###### Feedback Signal</span></span>
-<span id="cb15-140"><a href="#cb15-140"></a></span>
-<span id="cb15-141"><a href="#cb15-141"></a>$$</span>
-<span id="cb15-142"><a href="#cb15-142"></a>f_j(Z)=e^{-c\cdot(Z-Y_j)^2}</span>
-<span id="cb15-143"><a href="#cb15-143"></a>$$</span>
-<span id="cb15-144"><a href="#cb15-144"></a></span>
-<span id="cb15-145"><a href="#cb15-145"></a><span class="fu">###### Weight Updates</span></span>
+<span id="cb15-114"><a href="#cb15-114"></a><span class="in">```{r}</span></span>
+<span id="cb15-115"><a href="#cb15-115"></a><span class="co">#| code-fold: show</span></span>
+<span id="cb15-116"><a href="#cb15-116"></a><span class="co">#| code-summary: "Toggle Code"</span></span>
+<span id="cb15-117"><a href="#cb15-117"></a><span class="co">#| code-overflow: wrap</span></span>
+<span id="cb15-118"><a href="#cb15-118"></a>alm.update <span class="ot">&lt;-</span> <span class="cf">function</span>(corResp,c,lr){</span>
+<span id="cb15-119"><a href="#cb15-119"></a>  fz <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c<span class="sc">*</span>(output.layer <span class="sc">-</span> corResp)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb15-120"><a href="#cb15-120"></a>  teacherSignal <span class="ot">&lt;-</span> (fz <span class="sc">-</span> output.activation)<span class="sc">*</span>lr</span>
+<span id="cb15-121"><a href="#cb15-121"></a>  <span class="co">#print(length(teacherSignal)); print(length(fz))</span></span>
+<span id="cb15-122"><a href="#cb15-122"></a>  wChange <span class="ot">&lt;-</span> teacherSignal <span class="sc">%*%</span> <span class="fu">t</span>(input.activation)</span>
+<span id="cb15-123"><a href="#cb15-123"></a>  weight.mat <span class="ot">&lt;&lt;-</span> weight.mat <span class="sc">+</span> (wChange)</span>
+<span id="cb15-124"><a href="#cb15-124"></a>  weight.mat[weight.mat<span class="sc">&lt;</span><span class="dv">0</span>]<span class="ot">=</span><span class="dv">0</span> <span class="co"># prevent negative values</span></span>
+<span id="cb15-125"><a href="#cb15-125"></a> <span class="co"># weight.mat[weight.mat&gt;1]=1</span></span>
+<span id="cb15-126"><a href="#cb15-126"></a>  weight.mat <span class="ot">&lt;&lt;-</span> weight.mat</span>
+<span id="cb15-127"><a href="#cb15-127"></a>}</span>
+<span id="cb15-128"><a href="#cb15-128"></a></span>
+<span id="cb15-129"><a href="#cb15-129"></a>alm.trial <span class="ot">&lt;-</span> <span class="cf">function</span>(input, corResp,c,lr){</span>
+<span id="cb15-130"><a href="#cb15-130"></a>  <span class="fu">alm.response</span>(input,c)</span>
+<span id="cb15-131"><a href="#cb15-131"></a>  <span class="fu">alm.update</span>(corResp,c,lr)</span>
+<span id="cb15-132"><a href="#cb15-132"></a> <span class="co"># print(paste0("input=",input,"; corResp=",corResp,"; mean.response=",mean.response))</span></span>
+<span id="cb15-133"><a href="#cb15-133"></a>  mean.response</span>
+<span id="cb15-134"><a href="#cb15-134"></a>}</span>
+<span id="cb15-135"><a href="#cb15-135"></a><span class="in">```</span></span>
+<span id="cb15-136"><a href="#cb15-136"></a></span>
+<span id="cb15-137"><a href="#cb15-137"></a>::: column-margin</span>
+<span id="cb15-138"><a href="#cb15-138"></a><span class="fu">###### Feedback Signal</span></span>
+<span id="cb15-139"><a href="#cb15-139"></a></span>
+<span id="cb15-140"><a href="#cb15-140"></a>$$</span>
+<span id="cb15-141"><a href="#cb15-141"></a>f_j(Z)=e^{-c\cdot(Z-Y_j)^2}</span>
+<span id="cb15-142"><a href="#cb15-142"></a>$$</span>
+<span id="cb15-143"><a href="#cb15-143"></a></span>
+<span id="cb15-144"><a href="#cb15-144"></a><span class="fu">###### Weight Updates</span></span>
+<span id="cb15-145"><a href="#cb15-145"></a></span>
 <span id="cb15-146"><a href="#cb15-146"></a>$$</span>
 <span id="cb15-147"><a href="#cb15-147"></a>w_{ji}(t+1)=w_{ji}(t)+\alpha \cdot {f_i(Z(t))-O_j(X(t))} \cdot a_i(X(t))</span>
 <span id="cb15-148"><a href="#cb15-148"></a>$$</span>
 <span id="cb15-149"><a href="#cb15-149"></a>:::</span>
 <span id="cb15-150"><a href="#cb15-150"></a></span>
-<span id="cb15-151"><a href="#cb15-151"></a></span>
+<span id="cb15-151"><a href="#cb15-151"></a><span class="fu">### Exam Generalization</span></span>
 <span id="cb15-152"><a href="#cb15-152"></a></span>
-<span id="cb15-153"><a href="#cb15-153"></a><span class="fu">### Exam Generalization</span></span>
-<span id="cb15-156"><a href="#cb15-156"></a><span class="in">```{r}</span></span>
-<span id="cb15-157"><a href="#cb15-157"></a><span class="co">#| code-fold: show</span></span>
-<span id="cb15-158"><a href="#cb15-158"></a><span class="co">#| code-summary: "Toggle Code"</span></span>
-<span id="cb15-159"><a href="#cb15-159"></a>exam.response <span class="ot">&lt;-</span> <span class="cf">function</span>(input,c){</span>
-<span id="cb15-160"><a href="#cb15-160"></a>  <span class="co"># Find the index of the input node with the highest activation</span></span>
-<span id="cb15-161"><a href="#cb15-161"></a>  trainVec <span class="ot">=</span> <span class="fu">sort</span>(<span class="fu">unique</span>(xt))</span>
-<span id="cb15-162"><a href="#cb15-162"></a>  nearestTrain <span class="ot">&lt;-</span> trainVec[<span class="fu">which.min</span>(<span class="fu">abs</span>(input <span class="sc">-</span> trainVec))]</span>
-<span id="cb15-163"><a href="#cb15-163"></a>  aresp <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(nearestTrain,c)</span>
-<span id="cb15-164"><a href="#cb15-164"></a>  <span class="co">#max.index &lt;- which.max(input.activation)</span></span>
-<span id="cb15-165"><a href="#cb15-165"></a>  xUnder <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">min</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">-</span> <span class="dv">1</span>])</span>
-<span id="cb15-166"><a href="#cb15-166"></a>  xOver <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">max</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">+</span> <span class="dv">1</span>])</span>
-<span id="cb15-167"><a href="#cb15-167"></a></span>
-<span id="cb15-168"><a href="#cb15-168"></a>  mUnder <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xUnder,c)</span>
-<span id="cb15-169"><a href="#cb15-169"></a>  mOver <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xOver,c)</span>
-<span id="cb15-170"><a href="#cb15-170"></a> </span>
-<span id="cb15-171"><a href="#cb15-171"></a>   exam.output <span class="ot">=</span> <span class="fu">round</span>(aresp <span class="sc">+</span> ((mOver <span class="sc">-</span> mUnder) <span class="sc">/</span> (xOver <span class="sc">-</span> xUnder)) <span class="sc">*</span> (input <span class="sc">-</span> nearestTrain), <span class="dv">3</span>)</span>
-<span id="cb15-172"><a href="#cb15-172"></a>  <span class="co"># Determine the input nodes and associated weights for computing the slope</span></span>
-<span id="cb15-173"><a href="#cb15-173"></a>  exam.output</span>
-<span id="cb15-174"><a href="#cb15-174"></a>}</span>
-<span id="cb15-175"><a href="#cb15-175"></a><span class="in">```</span></span>
-<span id="cb15-176"><a href="#cb15-176"></a></span>
-<span id="cb15-177"><a href="#cb15-177"></a>::: {.column-margin}</span>
-<span id="cb15-178"><a href="#cb15-178"></a><span class="fu">###### Input node actvation</span></span>
+<span id="cb15-155"><a href="#cb15-155"></a><span class="in">```{r}</span></span>
+<span id="cb15-156"><a href="#cb15-156"></a><span class="co">#| code-fold: show</span></span>
+<span id="cb15-157"><a href="#cb15-157"></a><span class="co">#| code-summary: "Toggle Code"</span></span>
+<span id="cb15-158"><a href="#cb15-158"></a>exam.response <span class="ot">&lt;-</span> <span class="cf">function</span>(input,c){</span>
+<span id="cb15-159"><a href="#cb15-159"></a>  <span class="co"># Find the index of the input node with the highest activation</span></span>
+<span id="cb15-160"><a href="#cb15-160"></a>  trainVec <span class="ot">=</span> <span class="fu">sort</span>(<span class="fu">unique</span>(xt))</span>
+<span id="cb15-161"><a href="#cb15-161"></a>  nearestTrain <span class="ot">&lt;-</span> trainVec[<span class="fu">which.min</span>(<span class="fu">abs</span>(input <span class="sc">-</span> trainVec))]</span>
+<span id="cb15-162"><a href="#cb15-162"></a>  aresp <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(nearestTrain,c)</span>
+<span id="cb15-163"><a href="#cb15-163"></a>  <span class="co">#max.index &lt;- which.max(input.activation)</span></span>
+<span id="cb15-164"><a href="#cb15-164"></a>  xUnder <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">min</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">-</span> <span class="dv">1</span>])</span>
+<span id="cb15-165"><a href="#cb15-165"></a>  xOver <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">max</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">+</span> <span class="dv">1</span>])</span>
+<span id="cb15-166"><a href="#cb15-166"></a></span>
+<span id="cb15-167"><a href="#cb15-167"></a>  mUnder <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xUnder,c)</span>
+<span id="cb15-168"><a href="#cb15-168"></a>  mOver <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xOver,c)</span>
+<span id="cb15-169"><a href="#cb15-169"></a> </span>
+<span id="cb15-170"><a href="#cb15-170"></a>   exam.output <span class="ot">=</span> <span class="fu">round</span>(aresp <span class="sc">+</span> ((mOver <span class="sc">-</span> mUnder) <span class="sc">/</span> (xOver <span class="sc">-</span> xUnder)) <span class="sc">*</span> (input <span class="sc">-</span> nearestTrain), <span class="dv">3</span>)</span>
+<span id="cb15-171"><a href="#cb15-171"></a>  <span class="co"># Determine the input nodes and associated weights for computing the slope</span></span>
+<span id="cb15-172"><a href="#cb15-172"></a>  exam.output</span>
+<span id="cb15-173"><a href="#cb15-173"></a>}</span>
+<span id="cb15-174"><a href="#cb15-174"></a><span class="in">```</span></span>
+<span id="cb15-175"><a href="#cb15-175"></a></span>
+<span id="cb15-176"><a href="#cb15-176"></a>::: column-margin</span>
+<span id="cb15-177"><a href="#cb15-177"></a><span class="fu">###### Input node actvation</span></span>
+<span id="cb15-178"><a href="#cb15-178"></a></span>
 <span id="cb15-179"><a href="#cb15-179"></a>$$</span>
 <span id="cb15-180"><a href="#cb15-180"></a>P<span class="co">[</span><span class="ot">X_i|X</span><span class="co">]</span> = \frac{a_i(X)}{<span class="sc">\\</span>sum_{k=1}^Ma_k(X)}</span>
 <span id="cb15-181"><a href="#cb15-181"></a>$$</span>
 <span id="cb15-182"><a href="#cb15-182"></a></span>
 <span id="cb15-183"><a href="#cb15-183"></a><span class="fu">###### Slope Computation</span></span>
-<span id="cb15-184"><a href="#cb15-184"></a>$$</span>
-<span id="cb15-185"><a href="#cb15-185"></a>E<span class="co">[</span><span class="ot">Y|X_i</span><span class="co">]</span>=m(X_i) + \bigg<span class="co">[</span><span class="ot">\frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1} - X_{i-1}} \bigg</span><span class="co">]</span>\cdot<span class="co">[</span><span class="ot">X-X_i</span><span class="co">]</span></span>
-<span id="cb15-186"><a href="#cb15-186"></a>$$</span>
-<span id="cb15-187"><a href="#cb15-187"></a>::: </span>
-<span id="cb15-188"><a href="#cb15-188"></a></span>
+<span id="cb15-184"><a href="#cb15-184"></a></span>
+<span id="cb15-185"><a href="#cb15-185"></a>$$</span>
+<span id="cb15-186"><a href="#cb15-186"></a>E<span class="co">[</span><span class="ot">Y|X_i</span><span class="co">]</span>=m(X_i) + \bigg<span class="co">[</span><span class="ot">\frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1} - X_{i-1}} \bigg</span><span class="co">]</span>\cdot<span class="co">[</span><span class="ot">X-X_i</span><span class="co">]</span></span>
+<span id="cb15-187"><a href="#cb15-187"></a>$$</span>
+<span id="cb15-188"><a href="#cb15-188"></a>:::</span>
 <span id="cb15-189"><a href="#cb15-189"></a></span>
 <span id="cb15-190"><a href="#cb15-190"></a><span class="fu">### Prepare Simulation Data</span></span>
 <span id="cb15-191"><a href="#cb15-191"></a></span>
@@ -1385,343 +1557,332 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-251"><a href="#cb15-251"></a></span>
 <span id="cb15-252"><a href="#cb15-252"></a><span class="in">```</span></span>
 <span id="cb15-253"><a href="#cb15-253"></a></span>
-<span id="cb15-254"><a href="#cb15-254"></a></span>
+<span id="cb15-254"><a href="#cb15-254"></a><span class="fu">### Simulation Functions</span></span>
 <span id="cb15-255"><a href="#cb15-255"></a></span>
-<span id="cb15-256"><a href="#cb15-256"></a></span>
-<span id="cb15-257"><a href="#cb15-257"></a></span>
-<span id="cb15-258"><a href="#cb15-258"></a></span>
-<span id="cb15-259"><a href="#cb15-259"></a></span>
-<span id="cb15-260"><a href="#cb15-260"></a><span class="fu">### Simulation Functions</span></span>
-<span id="cb15-261"><a href="#cb15-261"></a></span>
-<span id="cb15-264"><a href="#cb15-264"></a><span class="in">```{r}</span></span>
-<span id="cb15-265"><a href="#cb15-265"></a><span class="co">#| code-fold: show</span></span>
-<span id="cb15-266"><a href="#cb15-266"></a><span class="co">#| </span></span>
-<span id="cb15-267"><a href="#cb15-267"></a><span class="co"># simulation function</span></span>
-<span id="cb15-268"><a href="#cb15-268"></a>alm.sim <span class="ot">&lt;-</span> <span class="cf">function</span>(dat, c, lr,<span class="at">testRange=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,.<span class="dv">5</span>)){</span>
-<span id="cb15-269"><a href="#cb15-269"></a>  </span>
-<span id="cb15-270"><a href="#cb15-270"></a>input.layer <span class="ot">&lt;&lt;-</span> <span class="fu">matrix</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,.<span class="dv">5</span>) ) <span class="co"># half step units for inputs, from 0 to 100</span></span>
-<span id="cb15-271"><a href="#cb15-271"></a>output.layer <span class="ot">&lt;&lt;-</span> <span class="fu">matrix</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">250</span>,<span class="dv">1</span>)) <span class="co"># single step units for outputs, from 0 to 250</span></span>
-<span id="cb15-272"><a href="#cb15-272"></a>weight.mat <span class="ot">&lt;&lt;-</span> <span class="fu">matrix</span>(<span class="fl">0.0000000</span>,<span class="at">nrow=</span><span class="fu">length</span>(output.layer),<span class="at">ncol=</span><span class="fu">length</span>(input.layer )) <span class="co"># weights initialized to 0 (as in Delosh 1997)</span></span>
+<span id="cb15-258"><a href="#cb15-258"></a><span class="in">```{r}</span></span>
+<span id="cb15-259"><a href="#cb15-259"></a><span class="co">#| code-fold: show</span></span>
+<span id="cb15-260"><a href="#cb15-260"></a><span class="co">#| </span></span>
+<span id="cb15-261"><a href="#cb15-261"></a><span class="co"># simulation function</span></span>
+<span id="cb15-262"><a href="#cb15-262"></a>alm.sim <span class="ot">&lt;-</span> <span class="cf">function</span>(dat, c, lr,<span class="at">testRange=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,.<span class="dv">5</span>)){</span>
+<span id="cb15-263"><a href="#cb15-263"></a>  </span>
+<span id="cb15-264"><a href="#cb15-264"></a>input.layer <span class="ot">&lt;&lt;-</span> <span class="fu">matrix</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,.<span class="dv">5</span>) ) <span class="co"># half step units for inputs, from 0 to 100</span></span>
+<span id="cb15-265"><a href="#cb15-265"></a>output.layer <span class="ot">&lt;&lt;-</span> <span class="fu">matrix</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">250</span>,<span class="dv">1</span>)) <span class="co"># single step units for outputs, from 0 to 250</span></span>
+<span id="cb15-266"><a href="#cb15-266"></a>weight.mat <span class="ot">&lt;&lt;-</span> <span class="fu">matrix</span>(<span class="fl">0.0000000</span>,<span class="at">nrow=</span><span class="fu">length</span>(output.layer),<span class="at">ncol=</span><span class="fu">length</span>(input.layer )) <span class="co"># weights initialized to 0 (as in Delosh 1997)</span></span>
+<span id="cb15-267"><a href="#cb15-267"></a></span>
+<span id="cb15-268"><a href="#cb15-268"></a>xt<span class="ot">&lt;&lt;-</span>dat<span class="sc">$</span>x</span>
+<span id="cb15-269"><a href="#cb15-269"></a><span class="co"># run training</span></span>
+<span id="cb15-270"><a href="#cb15-270"></a>st <span class="ot">&lt;-</span> <span class="fu">map2_dbl</span>(dat<span class="sc">$</span>x, dat<span class="sc">$</span>y, <span class="sc">~</span><span class="fu">alm.trial</span>(.x,.y,c,lr))</span>
+<span id="cb15-271"><a href="#cb15-271"></a><span class="co"># append training data to the data frame</span></span>
+<span id="cb15-272"><a href="#cb15-272"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">almResp =</span> st)</span>
 <span id="cb15-273"><a href="#cb15-273"></a></span>
-<span id="cb15-274"><a href="#cb15-274"></a>xt<span class="ot">&lt;&lt;-</span>dat<span class="sc">$</span>x</span>
-<span id="cb15-275"><a href="#cb15-275"></a><span class="co"># run training</span></span>
-<span id="cb15-276"><a href="#cb15-276"></a>st <span class="ot">&lt;-</span> <span class="fu">map2_dbl</span>(dat<span class="sc">$</span>x, dat<span class="sc">$</span>y, <span class="sc">~</span><span class="fu">alm.trial</span>(.x,.y,c,lr))</span>
-<span id="cb15-277"><a href="#cb15-277"></a><span class="co"># append training data to the data frame</span></span>
-<span id="cb15-278"><a href="#cb15-278"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">almResp =</span> st)</span>
-<span id="cb15-279"><a href="#cb15-279"></a></span>
-<span id="cb15-280"><a href="#cb15-280"></a><span class="fu">return</span>(<span class="fu">list</span>(<span class="at">d=</span>dat,<span class="at">wm=</span>weight.mat,<span class="at">c=</span>c,<span class="at">lr=</span>lr)) <span class="co"># final weightmat is probs incorrect for all but last</span></span>
-<span id="cb15-281"><a href="#cb15-281"></a>}</span>
-<span id="cb15-282"><a href="#cb15-282"></a></span>
+<span id="cb15-274"><a href="#cb15-274"></a><span class="fu">return</span>(<span class="fu">list</span>(<span class="at">d=</span>dat,<span class="at">wm=</span>weight.mat,<span class="at">c=</span>c,<span class="at">lr=</span>lr)) <span class="co"># final weightmat is probs incorrect for all but last</span></span>
+<span id="cb15-275"><a href="#cb15-275"></a>}</span>
+<span id="cb15-276"><a href="#cb15-276"></a></span>
+<span id="cb15-277"><a href="#cb15-277"></a></span>
+<span id="cb15-278"><a href="#cb15-278"></a>simOrganize <span class="ot">&lt;-</span> <span class="cf">function</span>(simOut){</span>
+<span id="cb15-279"><a href="#cb15-279"></a>  dat <span class="ot">&lt;-</span> simOut<span class="sc">$</span>d</span>
+<span id="cb15-280"><a href="#cb15-280"></a>  weight.mat <span class="ot">&lt;&lt;-</span> simOut<span class="sc">$</span>wm</span>
+<span id="cb15-281"><a href="#cb15-281"></a>  c <span class="ot">&lt;-</span> simOut<span class="sc">$</span>c</span>
+<span id="cb15-282"><a href="#cb15-282"></a>  lr <span class="ot">&lt;-</span> simOut<span class="sc">$</span>lr</span>
 <span id="cb15-283"><a href="#cb15-283"></a></span>
-<span id="cb15-284"><a href="#cb15-284"></a>simOrganize <span class="ot">&lt;-</span> <span class="cf">function</span>(simOut){</span>
-<span id="cb15-285"><a href="#cb15-285"></a>  dat <span class="ot">&lt;-</span> simOut<span class="sc">$</span>d</span>
-<span id="cb15-286"><a href="#cb15-286"></a>  weight.mat <span class="ot">&lt;&lt;-</span> simOut<span class="sc">$</span>wm</span>
-<span id="cb15-287"><a href="#cb15-287"></a>  c <span class="ot">&lt;-</span> simOut<span class="sc">$</span>c</span>
-<span id="cb15-288"><a href="#cb15-288"></a>  lr <span class="ot">&lt;-</span> simOut<span class="sc">$</span>lr</span>
+<span id="cb15-284"><a href="#cb15-284"></a>  trainX <span class="ot">&lt;-</span> <span class="fu">unique</span>(dat<span class="sc">$</span>x)</span>
+<span id="cb15-285"><a href="#cb15-285"></a>  xt <span class="ot">&lt;&lt;-</span> trainX</span>
+<span id="cb15-286"><a href="#cb15-286"></a>  </span>
+<span id="cb15-287"><a href="#cb15-287"></a> almResp <span class="ot">&lt;-</span> <span class="fu">generate.data</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,.<span class="dv">5</span>), <span class="at">type =</span> <span class="fu">first</span>(dat<span class="sc">$</span>type)) <span class="sc">%&gt;%</span> <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-288"><a href="#cb15-288"></a> <span class="fu">mutate</span>(<span class="at">model=</span><span class="st">"ALM"</span>,<span class="at">resp =</span> <span class="fu">alm.response</span>(x,c))</span>
 <span id="cb15-289"><a href="#cb15-289"></a></span>
-<span id="cb15-290"><a href="#cb15-290"></a>  trainX <span class="ot">&lt;-</span> <span class="fu">unique</span>(dat<span class="sc">$</span>x)</span>
-<span id="cb15-291"><a href="#cb15-291"></a>  xt <span class="ot">&lt;&lt;-</span> trainX</span>
-<span id="cb15-292"><a href="#cb15-292"></a>  </span>
-<span id="cb15-293"><a href="#cb15-293"></a> almResp <span class="ot">&lt;-</span> <span class="fu">generate.data</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,.<span class="dv">5</span>), <span class="at">type =</span> <span class="fu">first</span>(dat<span class="sc">$</span>type)) <span class="sc">%&gt;%</span> <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb15-294"><a href="#cb15-294"></a> <span class="fu">mutate</span>(<span class="at">model=</span><span class="st">"ALM"</span>,<span class="at">resp =</span> <span class="fu">alm.response</span>(x,c))</span>
-<span id="cb15-295"><a href="#cb15-295"></a></span>
-<span id="cb15-296"><a href="#cb15-296"></a> examResp <span class="ot">&lt;-</span> <span class="fu">generate.data</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,.<span class="dv">5</span>), <span class="at">type =</span> <span class="fu">first</span>(dat<span class="sc">$</span>type)) <span class="sc">%&gt;%</span> <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb15-297"><a href="#cb15-297"></a> <span class="fu">mutate</span>(<span class="at">model=</span><span class="st">"EXAM"</span>,<span class="at">resp =</span> <span class="fu">exam.response</span>(x,c))</span>
-<span id="cb15-298"><a href="#cb15-298"></a></span>
-<span id="cb15-299"><a href="#cb15-299"></a> <span class="fu">bind_rows</span>(almResp,examResp) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-300"><a href="#cb15-300"></a> <span class="fu">mutate</span>(<span class="at">type=</span><span class="fu">first</span>(dat<span class="sc">$</span>type),</span>
-<span id="cb15-301"><a href="#cb15-301"></a>        <span class="at">c=</span>c,<span class="at">lr=</span>lr,</span>
-<span id="cb15-302"><a href="#cb15-302"></a> <span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb15-303"><a href="#cb15-303"></a> <span class="co"># compute test_region, equal to "train" if x is within trainX, interpolate if within trainX range, else "extrapolate"</span></span>
-<span id="cb15-304"><a href="#cb15-304"></a>  <span class="fu">mutate</span>(<span class="at">test_region =</span> <span class="fu">ifelse</span>(x <span class="sc">%in%</span> trainX, <span class="st">"train"</span>, <span class="fu">ifelse</span>(x <span class="sc">&gt;</span> <span class="fu">min</span>(trainX) <span class="sc">&amp;</span> x <span class="sc">&lt;</span> <span class="fu">max</span>(trainX), <span class="st">"interpolate"</span>, <span class="st">"extrapolate"</span>)))</span>
+<span id="cb15-290"><a href="#cb15-290"></a> examResp <span class="ot">&lt;-</span> <span class="fu">generate.data</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,.<span class="dv">5</span>), <span class="at">type =</span> <span class="fu">first</span>(dat<span class="sc">$</span>type)) <span class="sc">%&gt;%</span> <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-291"><a href="#cb15-291"></a> <span class="fu">mutate</span>(<span class="at">model=</span><span class="st">"EXAM"</span>,<span class="at">resp =</span> <span class="fu">exam.response</span>(x,c))</span>
+<span id="cb15-292"><a href="#cb15-292"></a></span>
+<span id="cb15-293"><a href="#cb15-293"></a> <span class="fu">bind_rows</span>(almResp,examResp) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-294"><a href="#cb15-294"></a> <span class="fu">mutate</span>(<span class="at">type=</span><span class="fu">first</span>(dat<span class="sc">$</span>type),</span>
+<span id="cb15-295"><a href="#cb15-295"></a>        <span class="at">c=</span>c,<span class="at">lr=</span>lr,</span>
+<span id="cb15-296"><a href="#cb15-296"></a> <span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb15-297"><a href="#cb15-297"></a> <span class="co"># compute test_region, equal to "train" if x is within trainX, interpolate if within trainX range, else "extrapolate"</span></span>
+<span id="cb15-298"><a href="#cb15-298"></a>  <span class="fu">mutate</span>(<span class="at">test_region =</span> <span class="fu">ifelse</span>(x <span class="sc">%in%</span> trainX, <span class="st">"train"</span>, <span class="fu">ifelse</span>(x <span class="sc">&gt;</span> <span class="fu">min</span>(trainX) <span class="sc">&amp;</span> x <span class="sc">&lt;</span> <span class="fu">max</span>(trainX), <span class="st">"interpolate"</span>, <span class="st">"extrapolate"</span>)))</span>
+<span id="cb15-299"><a href="#cb15-299"></a></span>
+<span id="cb15-300"><a href="#cb15-300"></a>}</span>
+<span id="cb15-301"><a href="#cb15-301"></a></span>
+<span id="cb15-302"><a href="#cb15-302"></a><span class="in">```</span></span>
+<span id="cb15-303"><a href="#cb15-303"></a></span>
+<span id="cb15-304"><a href="#cb15-304"></a><span class="fu">### Simulate Training:</span></span>
 <span id="cb15-305"><a href="#cb15-305"></a></span>
-<span id="cb15-306"><a href="#cb15-306"></a>}</span>
-<span id="cb15-307"><a href="#cb15-307"></a></span>
-<span id="cb15-308"><a href="#cb15-308"></a><span class="in">```</span></span>
-<span id="cb15-309"><a href="#cb15-309"></a></span>
+<span id="cb15-306"><a href="#cb15-306"></a><span class="in">```{r fig.width=10, fig.height=8}</span></span>
+<span id="cb15-307"><a href="#cb15-307"></a><span class="co">#| column: page-inset-right</span></span>
+<span id="cb15-308"><a href="#cb15-308"></a><span class="co"># split by type, then send each training dataset to simulation function</span></span>
+<span id="cb15-309"><a href="#cb15-309"></a>lowSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(lowTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
 <span id="cb15-310"><a href="#cb15-310"></a></span>
-<span id="cb15-311"><a href="#cb15-311"></a></span>
-<span id="cb15-312"><a href="#cb15-312"></a><span class="fu">### Simulate Training:</span></span>
-<span id="cb15-313"><a href="#cb15-313"></a><span class="in">```{r fig.width=10, fig.height=8}</span></span>
-<span id="cb15-314"><a href="#cb15-314"></a><span class="co">#| column: page-inset-right</span></span>
-<span id="cb15-315"><a href="#cb15-315"></a><span class="co"># split by type, then send each training dataset to simulation function</span></span>
-<span id="cb15-316"><a href="#cb15-316"></a>lowSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(lowTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
-<span id="cb15-317"><a href="#cb15-317"></a></span>
-<span id="cb15-318"><a href="#cb15-318"></a>medSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(medTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
+<span id="cb15-311"><a href="#cb15-311"></a>medSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(medTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
+<span id="cb15-312"><a href="#cb15-312"></a></span>
+<span id="cb15-313"><a href="#cb15-313"></a>highSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(highTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
+<span id="cb15-314"><a href="#cb15-314"></a></span>
+<span id="cb15-315"><a href="#cb15-315"></a></span>
+<span id="cb15-316"><a href="#cb15-316"></a>simAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">bind_rows</span>(lowSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>), </span>
+<span id="cb15-317"><a href="#cb15-317"></a>                <span class="fu">bind_rows</span>(medSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>), </span>
+<span id="cb15-318"><a href="#cb15-318"></a>                <span class="fu">bind_rows</span>(highSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>))</span>
 <span id="cb15-319"><a href="#cb15-319"></a></span>
-<span id="cb15-320"><a href="#cb15-320"></a>highSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(highTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
+<span id="cb15-320"><a href="#cb15-320"></a></span>
 <span id="cb15-321"><a href="#cb15-321"></a></span>
-<span id="cb15-322"><a href="#cb15-322"></a></span>
-<span id="cb15-323"><a href="#cb15-323"></a>simAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">bind_rows</span>(lowSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>), </span>
-<span id="cb15-324"><a href="#cb15-324"></a>                <span class="fu">bind_rows</span>(medSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>), </span>
-<span id="cb15-325"><a href="#cb15-325"></a>                <span class="fu">bind_rows</span>(highSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>))</span>
-<span id="cb15-326"><a href="#cb15-326"></a></span>
-<span id="cb15-327"><a href="#cb15-327"></a></span>
+<span id="cb15-322"><a href="#cb15-322"></a>simAll <span class="ot">&lt;-</span> simAll <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">stage=</span><span class="fu">as.numeric</span>(<span class="fu">cut</span>(trial,<span class="at">breaks=</span><span class="dv">20</span>,<span class="at">labels=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">20</span>))),</span>
+<span id="cb15-323"><a href="#cb15-323"></a>                                      <span class="at">dev=</span><span class="fu">sqrt</span>((y<span class="sc">-</span>almResp)<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb15-324"><a href="#cb15-324"></a>                                  <span class="co">#reorder density factor levels</span></span>
+<span id="cb15-325"><a href="#cb15-325"></a>                            <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>)),</span>
+<span id="cb15-326"><a href="#cb15-326"></a>                            <span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb15-327"><a href="#cb15-327"></a>                            dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,stage)</span>
 <span id="cb15-328"><a href="#cb15-328"></a></span>
-<span id="cb15-329"><a href="#cb15-329"></a>simAll <span class="ot">&lt;-</span> simAll <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">stage=</span><span class="fu">as.numeric</span>(<span class="fu">cut</span>(trial,<span class="at">breaks=</span><span class="dv">20</span>,<span class="at">labels=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">20</span>))),</span>
-<span id="cb15-330"><a href="#cb15-330"></a>                                      <span class="at">dev=</span><span class="fu">sqrt</span>((y<span class="sc">-</span>almResp)<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb15-331"><a href="#cb15-331"></a>                                  <span class="co">#reorder density factor levels</span></span>
-<span id="cb15-332"><a href="#cb15-332"></a>                            <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>)),</span>
-<span id="cb15-333"><a href="#cb15-333"></a>                            <span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb15-334"><a href="#cb15-334"></a>                            dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,stage)</span>
+<span id="cb15-329"><a href="#cb15-329"></a>simAll <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>block,<span class="at">y=</span>dev,<span class="at">color=</span>type)) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"line"</span>,<span class="at">fun=</span>mean,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
+<span id="cb15-330"><a href="#cb15-330"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"point"</span>,<span class="at">fun=</span>mean,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
+<span id="cb15-331"><a href="#cb15-331"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"errorbar"</span>,<span class="at">fun.data=</span>mean_cl_normal,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>density, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
+<span id="cb15-332"><a href="#cb15-332"></a></span>
+<span id="cb15-333"><a href="#cb15-333"></a></span>
+<span id="cb15-334"><a href="#cb15-334"></a><span class="in">```</span></span>
 <span id="cb15-335"><a href="#cb15-335"></a></span>
-<span id="cb15-336"><a href="#cb15-336"></a>simAll <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>block,<span class="at">y=</span>dev,<span class="at">color=</span>type)) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"line"</span>,<span class="at">fun=</span>mean,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
-<span id="cb15-337"><a href="#cb15-337"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"point"</span>,<span class="at">fun=</span>mean,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
-<span id="cb15-338"><a href="#cb15-338"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"errorbar"</span>,<span class="at">fun.data=</span>mean_cl_normal,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>density, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
-<span id="cb15-339"><a href="#cb15-339"></a></span>
-<span id="cb15-340"><a href="#cb15-340"></a></span>
-<span id="cb15-341"><a href="#cb15-341"></a><span class="in">```</span></span>
-<span id="cb15-342"><a href="#cb15-342"></a></span>
-<span id="cb15-343"><a href="#cb15-343"></a>Predictions for Generalization</span>
-<span id="cb15-344"><a href="#cb15-344"></a><span class="in">```{r fig.width=11,fig.height=10}</span></span>
-<span id="cb15-345"><a href="#cb15-345"></a><span class="co">#| column: page-inset-right</span></span>
-<span id="cb15-346"><a href="#cb15-346"></a><span class="co">#| </span></span>
-<span id="cb15-347"><a href="#cb15-347"></a>lowSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(lowSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>)</span>
-<span id="cb15-348"><a href="#cb15-348"></a>medSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(medSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>)</span>
-<span id="cb15-349"><a href="#cb15-349"></a>highSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(highSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>)</span>
-<span id="cb15-350"><a href="#cb15-350"></a></span>
-<span id="cb15-351"><a href="#cb15-351"></a>simTestAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(lowSimTest,medSimTest,highSimTest) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type,density,model) <span class="sc">%&gt;%</span></span>
-<span id="cb15-352"><a href="#cb15-352"></a>  <span class="fu">mutate</span>(<span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>)),</span>
-<span id="cb15-353"><a href="#cb15-353"></a>         <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb15-354"><a href="#cb15-354"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,test_region)</span>
-<span id="cb15-355"><a href="#cb15-355"></a></span>
-<span id="cb15-356"><a href="#cb15-356"></a>simTestAll <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span> </span>
-<span id="cb15-357"><a href="#cb15-357"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">shape=</span>model,<span class="at">color=</span>model),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb15-358"><a href="#cb15-358"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
-<span id="cb15-359"><a href="#cb15-359"></a>  <span class="co">#geom_point(aes(x=x,y=y,color=test_region),alpha=.2)+ </span></span>
-<span id="cb15-360"><a href="#cb15-360"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>simTestAll <span class="sc">%&gt;%</span> <span class="fu">filter</span>(test_region<span class="sc">==</span><span class="st">"train"</span>),<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">color=</span><span class="st">"black"</span>,<span class="at">size=</span><span class="dv">1</span>,<span class="at">alpha=</span><span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb15-361"><a href="#cb15-361"></a> <span class="co"># geom_point(data=simTestAll %&gt;% filter(test_region %in% c("interpolate","extrapolate")),aes(x=x,y=y,color=test_region),alpha=.6) +</span></span>
-<span id="cb15-362"><a href="#cb15-362"></a>  <span class="co"># geom_point(data=simTestAll %&gt;% filter(test_region=="extrapolate"),aes(x=x,y=y),color="purple",alpha=.3) +</span></span>
-<span id="cb15-363"><a href="#cb15-363"></a>  <span class="fu">facet_grid</span>(density<span class="sc">~</span>type) <span class="sc">+</span> </span>
-<span id="cb15-364"><a href="#cb15-364"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
-<span id="cb15-365"><a href="#cb15-365"></a></span>
-<span id="cb15-366"><a href="#cb15-366"></a></span>
-<span id="cb15-367"><a href="#cb15-367"></a><span class="co">#lowSimTest %&gt;% filter(model=="EXAM" &amp; type=="linear")</span></span>
-<span id="cb15-368"><a href="#cb15-368"></a><span class="co">#rm(list= ls()[sapply(ls(), function(x) class(get(x))) != 'function'])</span></span>
-<span id="cb15-369"><a href="#cb15-369"></a><span class="co">#rm(weight.mat,input.activation,output.probability,output.activation,mean.response,xt)</span></span>
-<span id="cb15-370"><a href="#cb15-370"></a><span class="co"># </span></span>
-<span id="cb15-371"><a href="#cb15-371"></a><span class="co"># simAll %&gt;% ggplot(aes(x=block,y=dev)) + stat_summary(geom="line",fun=mean,alpha=.3)+stat_summary(geom="point",fun=mean)+</span></span>
-<span id="cb15-372"><a href="#cb15-372"></a><span class="co">#   stat_summary(geom="errorbar",fun.data=mean_cl_normal)+facet_wrap(density~type, scales="free_x")</span></span>
-<span id="cb15-373"><a href="#cb15-373"></a></span>
-<span id="cb15-374"><a href="#cb15-374"></a><span class="in">```</span></span>
-<span id="cb15-375"><a href="#cb15-375"></a></span>
-<span id="cb15-376"><a href="#cb15-376"></a></span>
-<span id="cb15-377"><a href="#cb15-377"></a></span>
-<span id="cb15-378"><a href="#cb15-378"></a>Collpasing Across Density Levels gives us: </span>
-<span id="cb15-381"><a href="#cb15-381"></a><span class="in">```{r}</span></span>
-<span id="cb15-382"><a href="#cb15-382"></a><span class="co">#| eval: false</span></span>
-<span id="cb15-383"><a href="#cb15-383"></a><span class="co">#| column: page-inset-right</span></span>
-<span id="cb15-384"><a href="#cb15-384"></a>simTestAll <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type,model,x,y) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">resp=</span><span class="fu">mean</span>(resp))  <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span> </span>
-<span id="cb15-385"><a href="#cb15-385"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">shape=</span>model,<span class="at">color=</span>model),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb15-386"><a href="#cb15-386"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
-<span id="cb15-387"><a href="#cb15-387"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>type) <span class="sc">+</span> </span>
-<span id="cb15-388"><a href="#cb15-388"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
-<span id="cb15-389"><a href="#cb15-389"></a><span class="in">```</span></span>
-<span id="cb15-390"><a href="#cb15-390"></a></span>
-<span id="cb15-391"><a href="#cb15-391"></a></span>
-<span id="cb15-392"><a href="#cb15-392"></a><span class="fu">### Master Function for full simulation</span></span>
-<span id="cb15-393"><a href="#cb15-393"></a></span>
-<span id="cb15-396"><a href="#cb15-396"></a><span class="in">```{r}</span></span>
-<span id="cb15-397"><a href="#cb15-397"></a><span class="co">#| eval: false</span></span>
-<span id="cb15-398"><a href="#cb15-398"></a><span class="co"># Function that goes through every step of generating data, simulating training, and simulating generalization</span></span>
-<span id="cb15-399"><a href="#cb15-399"></a>full.sim <span class="ot">&lt;-</span> <span class="cf">function</span>(c,lr,noise)</span>
-<span id="cb15-400"><a href="#cb15-400"></a>{</span>
-<span id="cb15-401"><a href="#cb15-401"></a>  </span>
-<span id="cb15-402"><a href="#cb15-402"></a>envTypes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"linear"</span>, <span class="st">"exponential"</span>, <span class="st">"quadratic"</span>)</span>
-<span id="cb15-403"><a href="#cb15-403"></a>lowDensityTrainBlock <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">30.5</span>, <span class="fl">36.0</span>, <span class="fl">41.0</span>, <span class="fl">46.5</span>, <span class="fl">53.5</span>, <span class="fl">59.0</span>, <span class="fl">64.0</span>, <span class="fl">69.5</span>)</span>
-<span id="cb15-404"><a href="#cb15-404"></a>medDensityTrainBlock <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb15-405"><a href="#cb15-405"></a>    <span class="fl">30.0</span>, <span class="fl">31.5</span>, <span class="fl">33.0</span>, <span class="fl">34.5</span>, <span class="fl">36.5</span>, <span class="fl">38.5</span>, <span class="fl">41.0</span>, <span class="fl">43.5</span>, <span class="fl">46.0</span>,</span>
-<span id="cb15-406"><a href="#cb15-406"></a>    <span class="fl">48.5</span>, <span class="fl">51.5</span>, <span class="fl">54.0</span>, <span class="fl">56.5</span>, <span class="fl">59.0</span>, <span class="fl">61.5</span>, <span class="fl">63.5</span>, <span class="fl">65.5</span>, <span class="fl">67.0</span>, <span class="fl">68.5</span>, <span class="fl">70.0</span></span>
-<span id="cb15-407"><a href="#cb15-407"></a>)</span>
-<span id="cb15-408"><a href="#cb15-408"></a>highDensityTrainBlock <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb15-409"><a href="#cb15-409"></a>    <span class="fl">30.0</span>, <span class="fl">30.5</span>, <span class="fl">31.0</span>, <span class="fl">32.0</span>, <span class="fl">33.0</span>, <span class="fl">33.5</span>, <span class="fl">34.5</span>, <span class="fl">35.5</span>,</span>
-<span id="cb15-410"><a href="#cb15-410"></a>    <span class="fl">36.5</span>, <span class="fl">37.0</span>, <span class="fl">38.0</span>, <span class="fl">38.5</span>, <span class="fl">39.5</span>, <span class="fl">40.5</span>, <span class="fl">41.5</span>, <span class="fl">42.0</span>, <span class="fl">43.0</span>,</span>
-<span id="cb15-411"><a href="#cb15-411"></a>    <span class="fl">43.5</span>, <span class="fl">44.5</span>, <span class="fl">45.5</span>, <span class="fl">46.5</span>, <span class="fl">47.0</span>, <span class="fl">48.0</span>, <span class="fl">48.5</span>, <span class="fl">49.0</span>, <span class="fl">51.0</span>, <span class="fl">51.5</span>, <span class="fl">52.0</span>,</span>
-<span id="cb15-412"><a href="#cb15-412"></a>    <span class="fl">53.0</span>, <span class="fl">53.5</span>, <span class="fl">54.5</span>, <span class="fl">55.5</span>, <span class="fl">56.5</span>, <span class="fl">57.0</span>, <span class="fl">58.0</span>, <span class="fl">58.5</span>, <span class="fl">59.5</span>, <span class="fl">60.5</span>, <span class="fl">61.5</span>, </span>
-<span id="cb15-413"><a href="#cb15-413"></a>    <span class="fl">62.0</span>, <span class="fl">63.0</span>,<span class="fl">63.5</span>, <span class="fl">64.5</span>, <span class="fl">65.5</span>, <span class="fl">66.5</span>, <span class="fl">67.0</span>, <span class="fl">68.0</span>, <span class="fl">69.0</span>, <span class="fl">69.5</span>, <span class="fl">70.0</span></span>
-<span id="cb15-414"><a href="#cb15-414"></a>)</span>
-<span id="cb15-415"><a href="#cb15-415"></a><span class="co"># low density has 25 training blocks, medium has 10 blocks, high has 4 blocks. </span></span>
-<span id="cb15-416"><a href="#cb15-416"></a><span class="co"># generate training data, for each combination of environment type and density. Use purrr map functions. Rep each dataset by its number of blocks.</span></span>
-<span id="cb15-417"><a href="#cb15-417"></a>lowTrain <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(envTypes, <span class="sc">~</span> <span class="fu">generate.data</span>(<span class="fu">rep</span>(lowDensityTrainBlock,<span class="dv">25</span>), <span class="at">type =</span> .x, noise)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">block =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">25</span>, <span class="at">each =</span> <span class="dv">8</span>),<span class="at">trial=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">200</span>))</span>
-<span id="cb15-418"><a href="#cb15-418"></a>medTrain <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(envTypes, <span class="sc">~</span> <span class="fu">generate.data</span>(<span class="fu">rep</span>(medDensityTrainBlock,<span class="dv">10</span>), <span class="at">type =</span> .x, noise)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">block =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">each =</span> <span class="dv">20</span>),<span class="at">trial=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">200</span>))</span>
-<span id="cb15-419"><a href="#cb15-419"></a>highTrain <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(envTypes, <span class="sc">~</span> <span class="fu">generate.data</span>(<span class="fu">rep</span>(highDensityTrainBlock,<span class="dv">4</span>), <span class="at">type =</span> .x, noise)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">block =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">each =</span> <span class="dv">50</span>),<span class="at">trial=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">200</span>))</span>
-<span id="cb15-420"><a href="#cb15-420"></a>  </span>
-<span id="cb15-421"><a href="#cb15-421"></a>lowSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(lowTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
-<span id="cb15-422"><a href="#cb15-422"></a>medSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(medTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
-<span id="cb15-423"><a href="#cb15-423"></a>highSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(highTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
-<span id="cb15-424"><a href="#cb15-424"></a></span>
-<span id="cb15-425"><a href="#cb15-425"></a>simAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">bind_rows</span>(lowSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>), </span>
-<span id="cb15-426"><a href="#cb15-426"></a>                <span class="fu">bind_rows</span>(medSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>), </span>
-<span id="cb15-427"><a href="#cb15-427"></a>                <span class="fu">bind_rows</span>(highSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>))</span>
-<span id="cb15-428"><a href="#cb15-428"></a></span>
-<span id="cb15-429"><a href="#cb15-429"></a>simAll <span class="ot">&lt;-</span> simAll <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">stage=</span><span class="fu">as.numeric</span>(<span class="fu">cut</span>(trial,<span class="at">breaks=</span><span class="dv">20</span>,<span class="at">labels=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">20</span>))),</span>
-<span id="cb15-430"><a href="#cb15-430"></a>                                      <span class="at">dev=</span><span class="fu">sqrt</span>((y<span class="sc">-</span>almResp)<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb15-431"><a href="#cb15-431"></a>                                  <span class="co">#reorder density factor levels</span></span>
-<span id="cb15-432"><a href="#cb15-432"></a>                            <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>)),</span>
-<span id="cb15-433"><a href="#cb15-433"></a>                            <span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb15-434"><a href="#cb15-434"></a>                            dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,stage)</span>
-<span id="cb15-435"><a href="#cb15-435"></a></span>
-<span id="cb15-436"><a href="#cb15-436"></a>lowSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(lowSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>)</span>
-<span id="cb15-437"><a href="#cb15-437"></a>medSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(medSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>)</span>
-<span id="cb15-438"><a href="#cb15-438"></a>highSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(highSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>)</span>
-<span id="cb15-439"><a href="#cb15-439"></a></span>
-<span id="cb15-440"><a href="#cb15-440"></a>simTestAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(lowSimTest,medSimTest,highSimTest) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type,density,model) <span class="sc">%&gt;%</span></span>
-<span id="cb15-441"><a href="#cb15-441"></a>  <span class="fu">mutate</span>(<span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>)),</span>
-<span id="cb15-442"><a href="#cb15-442"></a>         <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb15-443"><a href="#cb15-443"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,test_region)</span>
-<span id="cb15-444"><a href="#cb15-444"></a></span>
-<span id="cb15-445"><a href="#cb15-445"></a><span class="fu">return</span>(<span class="fu">list</span>(<span class="at">simAll=</span><span class="fu">list</span>(simAll),<span class="at">simTestAll=</span><span class="fu">list</span>(simTestAll)))</span>
-<span id="cb15-446"><a href="#cb15-446"></a>  </span>
-<span id="cb15-447"><a href="#cb15-447"></a>}</span>
-<span id="cb15-448"><a href="#cb15-448"></a><span class="in">```</span></span>
-<span id="cb15-449"><a href="#cb15-449"></a></span>
-<span id="cb15-450"><a href="#cb15-450"></a><span class="fu">### Simulations with noise</span></span>
-<span id="cb15-451"><a href="#cb15-451"></a><span class="in">```{r fig.height=10,fig.width=11}</span></span>
-<span id="cb15-452"><a href="#cb15-452"></a><span class="co">#| eval: false</span></span>
-<span id="cb15-453"><a href="#cb15-453"></a>k <span class="ot">=</span> <span class="fu">full.sim</span>(<span class="at">c=</span><span class="fl">1.4</span>,<span class="at">lr=</span>.<span class="dv">4</span>,<span class="at">noise=</span><span class="fl">2.0</span>)</span>
-<span id="cb15-454"><a href="#cb15-454"></a>k4 <span class="ot">=</span> <span class="fu">full.sim</span>(<span class="at">c=</span><span class="fl">1.4</span>,<span class="at">lr=</span>.<span class="dv">4</span>,<span class="at">noise=</span><span class="fl">4.0</span>)</span>
+<span id="cb15-336"><a href="#cb15-336"></a>Predictions for Generalization</span>
+<span id="cb15-337"><a href="#cb15-337"></a></span>
+<span id="cb15-338"><a href="#cb15-338"></a><span class="in">```{r fig.width=11,fig.height=10}</span></span>
+<span id="cb15-339"><a href="#cb15-339"></a><span class="co">#| column: page-inset-right</span></span>
+<span id="cb15-340"><a href="#cb15-340"></a><span class="co">#| </span></span>
+<span id="cb15-341"><a href="#cb15-341"></a>lowSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(lowSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>)</span>
+<span id="cb15-342"><a href="#cb15-342"></a>medSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(medSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>)</span>
+<span id="cb15-343"><a href="#cb15-343"></a>highSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(highSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>)</span>
+<span id="cb15-344"><a href="#cb15-344"></a></span>
+<span id="cb15-345"><a href="#cb15-345"></a>simTestAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(lowSimTest,medSimTest,highSimTest) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type,density,model) <span class="sc">%&gt;%</span></span>
+<span id="cb15-346"><a href="#cb15-346"></a>  <span class="fu">mutate</span>(<span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>)),</span>
+<span id="cb15-347"><a href="#cb15-347"></a>         <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb15-348"><a href="#cb15-348"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,test_region)</span>
+<span id="cb15-349"><a href="#cb15-349"></a></span>
+<span id="cb15-350"><a href="#cb15-350"></a>simTestAll <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span> </span>
+<span id="cb15-351"><a href="#cb15-351"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">shape=</span>model,<span class="at">color=</span>model),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb15-352"><a href="#cb15-352"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
+<span id="cb15-353"><a href="#cb15-353"></a>  <span class="co">#geom_point(aes(x=x,y=y,color=test_region),alpha=.2)+ </span></span>
+<span id="cb15-354"><a href="#cb15-354"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>simTestAll <span class="sc">%&gt;%</span> <span class="fu">filter</span>(test_region<span class="sc">==</span><span class="st">"train"</span>),<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">color=</span><span class="st">"black"</span>,<span class="at">size=</span><span class="dv">1</span>,<span class="at">alpha=</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb15-355"><a href="#cb15-355"></a> <span class="co"># geom_point(data=simTestAll %&gt;% filter(test_region %in% c("interpolate","extrapolate")),aes(x=x,y=y,color=test_region),alpha=.6) +</span></span>
+<span id="cb15-356"><a href="#cb15-356"></a>  <span class="co"># geom_point(data=simTestAll %&gt;% filter(test_region=="extrapolate"),aes(x=x,y=y),color="purple",alpha=.3) +</span></span>
+<span id="cb15-357"><a href="#cb15-357"></a>  <span class="fu">facet_grid</span>(density<span class="sc">~</span>type) <span class="sc">+</span> </span>
+<span id="cb15-358"><a href="#cb15-358"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
+<span id="cb15-359"><a href="#cb15-359"></a></span>
+<span id="cb15-360"><a href="#cb15-360"></a></span>
+<span id="cb15-361"><a href="#cb15-361"></a><span class="co">#lowSimTest %&gt;% filter(model=="EXAM" &amp; type=="linear")</span></span>
+<span id="cb15-362"><a href="#cb15-362"></a><span class="co">#rm(list= ls()[sapply(ls(), function(x) class(get(x))) != 'function'])</span></span>
+<span id="cb15-363"><a href="#cb15-363"></a><span class="co">#rm(weight.mat,input.activation,output.probability,output.activation,mean.response,xt)</span></span>
+<span id="cb15-364"><a href="#cb15-364"></a><span class="co"># </span></span>
+<span id="cb15-365"><a href="#cb15-365"></a><span class="co"># simAll %&gt;% ggplot(aes(x=block,y=dev)) + stat_summary(geom="line",fun=mean,alpha=.3)+stat_summary(geom="point",fun=mean)+</span></span>
+<span id="cb15-366"><a href="#cb15-366"></a><span class="co">#   stat_summary(geom="errorbar",fun.data=mean_cl_normal)+facet_wrap(density~type, scales="free_x")</span></span>
+<span id="cb15-367"><a href="#cb15-367"></a></span>
+<span id="cb15-368"><a href="#cb15-368"></a><span class="in">```</span></span>
+<span id="cb15-369"><a href="#cb15-369"></a></span>
+<span id="cb15-370"><a href="#cb15-370"></a>Collpasing Across Density Levels gives us:</span>
+<span id="cb15-371"><a href="#cb15-371"></a></span>
+<span id="cb15-374"><a href="#cb15-374"></a><span class="in">```{r}</span></span>
+<span id="cb15-375"><a href="#cb15-375"></a><span class="co">#| eval: false</span></span>
+<span id="cb15-376"><a href="#cb15-376"></a><span class="co">#| column: page-inset-right</span></span>
+<span id="cb15-377"><a href="#cb15-377"></a>simTestAll <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type,model,x,y) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">resp=</span><span class="fu">mean</span>(resp))  <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span> </span>
+<span id="cb15-378"><a href="#cb15-378"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">shape=</span>model,<span class="at">color=</span>model),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb15-379"><a href="#cb15-379"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
+<span id="cb15-380"><a href="#cb15-380"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>type) <span class="sc">+</span> </span>
+<span id="cb15-381"><a href="#cb15-381"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
+<span id="cb15-382"><a href="#cb15-382"></a><span class="in">```</span></span>
+<span id="cb15-383"><a href="#cb15-383"></a></span>
+<span id="cb15-384"><a href="#cb15-384"></a><span class="fu">### Master Function for full simulation</span></span>
+<span id="cb15-385"><a href="#cb15-385"></a></span>
+<span id="cb15-388"><a href="#cb15-388"></a><span class="in">```{r}</span></span>
+<span id="cb15-389"><a href="#cb15-389"></a><span class="co">#| eval: false</span></span>
+<span id="cb15-390"><a href="#cb15-390"></a><span class="co"># Function that goes through every step of generating data, simulating training, and simulating generalization</span></span>
+<span id="cb15-391"><a href="#cb15-391"></a>full.sim <span class="ot">&lt;-</span> <span class="cf">function</span>(c,lr,noise)</span>
+<span id="cb15-392"><a href="#cb15-392"></a>{</span>
+<span id="cb15-393"><a href="#cb15-393"></a>  </span>
+<span id="cb15-394"><a href="#cb15-394"></a>envTypes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"linear"</span>, <span class="st">"exponential"</span>, <span class="st">"quadratic"</span>)</span>
+<span id="cb15-395"><a href="#cb15-395"></a>lowDensityTrainBlock <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">30.5</span>, <span class="fl">36.0</span>, <span class="fl">41.0</span>, <span class="fl">46.5</span>, <span class="fl">53.5</span>, <span class="fl">59.0</span>, <span class="fl">64.0</span>, <span class="fl">69.5</span>)</span>
+<span id="cb15-396"><a href="#cb15-396"></a>medDensityTrainBlock <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb15-397"><a href="#cb15-397"></a>    <span class="fl">30.0</span>, <span class="fl">31.5</span>, <span class="fl">33.0</span>, <span class="fl">34.5</span>, <span class="fl">36.5</span>, <span class="fl">38.5</span>, <span class="fl">41.0</span>, <span class="fl">43.5</span>, <span class="fl">46.0</span>,</span>
+<span id="cb15-398"><a href="#cb15-398"></a>    <span class="fl">48.5</span>, <span class="fl">51.5</span>, <span class="fl">54.0</span>, <span class="fl">56.5</span>, <span class="fl">59.0</span>, <span class="fl">61.5</span>, <span class="fl">63.5</span>, <span class="fl">65.5</span>, <span class="fl">67.0</span>, <span class="fl">68.5</span>, <span class="fl">70.0</span></span>
+<span id="cb15-399"><a href="#cb15-399"></a>)</span>
+<span id="cb15-400"><a href="#cb15-400"></a>highDensityTrainBlock <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb15-401"><a href="#cb15-401"></a>    <span class="fl">30.0</span>, <span class="fl">30.5</span>, <span class="fl">31.0</span>, <span class="fl">32.0</span>, <span class="fl">33.0</span>, <span class="fl">33.5</span>, <span class="fl">34.5</span>, <span class="fl">35.5</span>,</span>
+<span id="cb15-402"><a href="#cb15-402"></a>    <span class="fl">36.5</span>, <span class="fl">37.0</span>, <span class="fl">38.0</span>, <span class="fl">38.5</span>, <span class="fl">39.5</span>, <span class="fl">40.5</span>, <span class="fl">41.5</span>, <span class="fl">42.0</span>, <span class="fl">43.0</span>,</span>
+<span id="cb15-403"><a href="#cb15-403"></a>    <span class="fl">43.5</span>, <span class="fl">44.5</span>, <span class="fl">45.5</span>, <span class="fl">46.5</span>, <span class="fl">47.0</span>, <span class="fl">48.0</span>, <span class="fl">48.5</span>, <span class="fl">49.0</span>, <span class="fl">51.0</span>, <span class="fl">51.5</span>, <span class="fl">52.0</span>,</span>
+<span id="cb15-404"><a href="#cb15-404"></a>    <span class="fl">53.0</span>, <span class="fl">53.5</span>, <span class="fl">54.5</span>, <span class="fl">55.5</span>, <span class="fl">56.5</span>, <span class="fl">57.0</span>, <span class="fl">58.0</span>, <span class="fl">58.5</span>, <span class="fl">59.5</span>, <span class="fl">60.5</span>, <span class="fl">61.5</span>, </span>
+<span id="cb15-405"><a href="#cb15-405"></a>    <span class="fl">62.0</span>, <span class="fl">63.0</span>,<span class="fl">63.5</span>, <span class="fl">64.5</span>, <span class="fl">65.5</span>, <span class="fl">66.5</span>, <span class="fl">67.0</span>, <span class="fl">68.0</span>, <span class="fl">69.0</span>, <span class="fl">69.5</span>, <span class="fl">70.0</span></span>
+<span id="cb15-406"><a href="#cb15-406"></a>)</span>
+<span id="cb15-407"><a href="#cb15-407"></a><span class="co"># low density has 25 training blocks, medium has 10 blocks, high has 4 blocks. </span></span>
+<span id="cb15-408"><a href="#cb15-408"></a><span class="co"># generate training data, for each combination of environment type and density. Use purrr map functions. Rep each dataset by its number of blocks.</span></span>
+<span id="cb15-409"><a href="#cb15-409"></a>lowTrain <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(envTypes, <span class="sc">~</span> <span class="fu">generate.data</span>(<span class="fu">rep</span>(lowDensityTrainBlock,<span class="dv">25</span>), <span class="at">type =</span> .x, noise)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">block =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">25</span>, <span class="at">each =</span> <span class="dv">8</span>),<span class="at">trial=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">200</span>))</span>
+<span id="cb15-410"><a href="#cb15-410"></a>medTrain <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(envTypes, <span class="sc">~</span> <span class="fu">generate.data</span>(<span class="fu">rep</span>(medDensityTrainBlock,<span class="dv">10</span>), <span class="at">type =</span> .x, noise)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">block =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">each =</span> <span class="dv">20</span>),<span class="at">trial=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">200</span>))</span>
+<span id="cb15-411"><a href="#cb15-411"></a>highTrain <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(envTypes, <span class="sc">~</span> <span class="fu">generate.data</span>(<span class="fu">rep</span>(highDensityTrainBlock,<span class="dv">4</span>), <span class="at">type =</span> .x, noise)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">block =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">each =</span> <span class="dv">50</span>),<span class="at">trial=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">200</span>))</span>
+<span id="cb15-412"><a href="#cb15-412"></a>  </span>
+<span id="cb15-413"><a href="#cb15-413"></a>lowSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(lowTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
+<span id="cb15-414"><a href="#cb15-414"></a>medSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(medTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
+<span id="cb15-415"><a href="#cb15-415"></a>highSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(highTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
+<span id="cb15-416"><a href="#cb15-416"></a></span>
+<span id="cb15-417"><a href="#cb15-417"></a>simAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">bind_rows</span>(lowSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>), </span>
+<span id="cb15-418"><a href="#cb15-418"></a>                <span class="fu">bind_rows</span>(medSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>), </span>
+<span id="cb15-419"><a href="#cb15-419"></a>                <span class="fu">bind_rows</span>(highSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>))</span>
+<span id="cb15-420"><a href="#cb15-420"></a></span>
+<span id="cb15-421"><a href="#cb15-421"></a>simAll <span class="ot">&lt;-</span> simAll <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">stage=</span><span class="fu">as.numeric</span>(<span class="fu">cut</span>(trial,<span class="at">breaks=</span><span class="dv">20</span>,<span class="at">labels=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">20</span>))),</span>
+<span id="cb15-422"><a href="#cb15-422"></a>                                      <span class="at">dev=</span><span class="fu">sqrt</span>((y<span class="sc">-</span>almResp)<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb15-423"><a href="#cb15-423"></a>                                  <span class="co">#reorder density factor levels</span></span>
+<span id="cb15-424"><a href="#cb15-424"></a>                            <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>)),</span>
+<span id="cb15-425"><a href="#cb15-425"></a>                            <span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb15-426"><a href="#cb15-426"></a>                            dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,stage)</span>
+<span id="cb15-427"><a href="#cb15-427"></a></span>
+<span id="cb15-428"><a href="#cb15-428"></a>lowSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(lowSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>)</span>
+<span id="cb15-429"><a href="#cb15-429"></a>medSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(medSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>)</span>
+<span id="cb15-430"><a href="#cb15-430"></a>highSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(highSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>)</span>
+<span id="cb15-431"><a href="#cb15-431"></a></span>
+<span id="cb15-432"><a href="#cb15-432"></a>simTestAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(lowSimTest,medSimTest,highSimTest) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type,density,model) <span class="sc">%&gt;%</span></span>
+<span id="cb15-433"><a href="#cb15-433"></a>  <span class="fu">mutate</span>(<span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>)),</span>
+<span id="cb15-434"><a href="#cb15-434"></a>         <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb15-435"><a href="#cb15-435"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,test_region)</span>
+<span id="cb15-436"><a href="#cb15-436"></a></span>
+<span id="cb15-437"><a href="#cb15-437"></a><span class="fu">return</span>(<span class="fu">list</span>(<span class="at">simAll=</span><span class="fu">list</span>(simAll),<span class="at">simTestAll=</span><span class="fu">list</span>(simTestAll)))</span>
+<span id="cb15-438"><a href="#cb15-438"></a>  </span>
+<span id="cb15-439"><a href="#cb15-439"></a>}</span>
+<span id="cb15-440"><a href="#cb15-440"></a><span class="in">```</span></span>
+<span id="cb15-441"><a href="#cb15-441"></a></span>
+<span id="cb15-442"><a href="#cb15-442"></a><span class="fu">### Simulations with noise</span></span>
+<span id="cb15-443"><a href="#cb15-443"></a></span>
+<span id="cb15-444"><a href="#cb15-444"></a><span class="in">```{r fig.height=10,fig.width=11}</span></span>
+<span id="cb15-445"><a href="#cb15-445"></a><span class="co">#| eval: false</span></span>
+<span id="cb15-446"><a href="#cb15-446"></a>k <span class="ot">=</span> <span class="fu">full.sim</span>(<span class="at">c=</span><span class="fl">1.4</span>,<span class="at">lr=</span>.<span class="dv">4</span>,<span class="at">noise=</span><span class="fl">2.0</span>)</span>
+<span id="cb15-447"><a href="#cb15-447"></a>k4 <span class="ot">=</span> <span class="fu">full.sim</span>(<span class="at">c=</span><span class="fl">1.4</span>,<span class="at">lr=</span>.<span class="dv">4</span>,<span class="at">noise=</span><span class="fl">4.0</span>)</span>
+<span id="cb15-448"><a href="#cb15-448"></a></span>
+<span id="cb15-449"><a href="#cb15-449"></a><span class="co"># run simulation with noise=10, 3 times, average results together. </span></span>
+<span id="cb15-450"><a href="#cb15-450"></a>k10 <span class="ot">=</span> <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="sc">~</span> <span class="fu">full.sim</span>(<span class="at">c=</span><span class="fl">1.4</span>,<span class="at">lr=</span>.<span class="dv">4</span>,<span class="at">noise=</span><span class="fl">10.0</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type,density,model) <span class="sc">%&gt;%</span></span>
+<span id="cb15-451"><a href="#cb15-451"></a>  <span class="fu">mutate</span>(<span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>)),</span>
+<span id="cb15-452"><a href="#cb15-452"></a>         <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb15-453"><a href="#cb15-453"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,test_region)</span>
+<span id="cb15-454"><a href="#cb15-454"></a></span>
 <span id="cb15-455"><a href="#cb15-455"></a></span>
-<span id="cb15-456"><a href="#cb15-456"></a><span class="co"># run simulation with noise=10, 3 times, average results together. </span></span>
-<span id="cb15-457"><a href="#cb15-457"></a>k10 <span class="ot">=</span> <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="sc">~</span> <span class="fu">full.sim</span>(<span class="at">c=</span><span class="fl">1.4</span>,<span class="at">lr=</span>.<span class="dv">4</span>,<span class="at">noise=</span><span class="fl">10.0</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type,density,model) <span class="sc">%&gt;%</span></span>
-<span id="cb15-458"><a href="#cb15-458"></a>  <span class="fu">mutate</span>(<span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>)),</span>
-<span id="cb15-459"><a href="#cb15-459"></a>         <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb15-460"><a href="#cb15-460"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,test_region)</span>
+<span id="cb15-456"><a href="#cb15-456"></a></span>
+<span id="cb15-457"><a href="#cb15-457"></a>k <span class="sc">%&gt;%</span> <span class="fu">pluck</span>(<span class="st">"simAll"</span>) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>block,<span class="at">y=</span>dev,<span class="at">color=</span>type)) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"line"</span>,<span class="at">fun=</span>mean,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
+<span id="cb15-458"><a href="#cb15-458"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"point"</span>,<span class="at">fun=</span>mean,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
+<span id="cb15-459"><a href="#cb15-459"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"errorbar"</span>,<span class="at">fun.data=</span>mean_cl_normal,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>density, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
+<span id="cb15-460"><a href="#cb15-460"></a></span>
 <span id="cb15-461"><a href="#cb15-461"></a></span>
-<span id="cb15-462"><a href="#cb15-462"></a></span>
-<span id="cb15-463"><a href="#cb15-463"></a></span>
-<span id="cb15-464"><a href="#cb15-464"></a>k <span class="sc">%&gt;%</span> <span class="fu">pluck</span>(<span class="st">"simAll"</span>) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>block,<span class="at">y=</span>dev,<span class="at">color=</span>type)) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"line"</span>,<span class="at">fun=</span>mean,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
-<span id="cb15-465"><a href="#cb15-465"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"point"</span>,<span class="at">fun=</span>mean,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
-<span id="cb15-466"><a href="#cb15-466"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"errorbar"</span>,<span class="at">fun.data=</span>mean_cl_normal,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>density, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
-<span id="cb15-467"><a href="#cb15-467"></a></span>
-<span id="cb15-468"><a href="#cb15-468"></a></span>
-<span id="cb15-469"><a href="#cb15-469"></a>k4 <span class="sc">%&gt;%</span> <span class="fu">pluck</span>(<span class="st">"simAll"</span>) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>block,<span class="at">y=</span>dev,<span class="at">color=</span>type)) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"line"</span>,<span class="at">fun=</span>mean,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
-<span id="cb15-470"><a href="#cb15-470"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"point"</span>,<span class="at">fun=</span>mean,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
-<span id="cb15-471"><a href="#cb15-471"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"errorbar"</span>,<span class="at">fun.data=</span>mean_cl_normal,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>density, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
-<span id="cb15-472"><a href="#cb15-472"></a></span>
+<span id="cb15-462"><a href="#cb15-462"></a>k4 <span class="sc">%&gt;%</span> <span class="fu">pluck</span>(<span class="st">"simAll"</span>) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>block,<span class="at">y=</span>dev,<span class="at">color=</span>type)) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"line"</span>,<span class="at">fun=</span>mean,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
+<span id="cb15-463"><a href="#cb15-463"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"point"</span>,<span class="at">fun=</span>mean,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
+<span id="cb15-464"><a href="#cb15-464"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"errorbar"</span>,<span class="at">fun.data=</span>mean_cl_normal,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>density, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
+<span id="cb15-465"><a href="#cb15-465"></a></span>
+<span id="cb15-466"><a href="#cb15-466"></a></span>
+<span id="cb15-467"><a href="#cb15-467"></a>k <span class="sc">%&gt;%</span> <span class="fu">pluck</span>(<span class="st">"simTestAll"</span>) <span class="sc">%&gt;%</span><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span> </span>
+<span id="cb15-468"><a href="#cb15-468"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">shape=</span>model,<span class="at">color=</span>model),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb15-469"><a href="#cb15-469"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
+<span id="cb15-470"><a href="#cb15-470"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>simTestAll <span class="sc">%&gt;%</span> <span class="fu">filter</span>(test_region<span class="sc">==</span><span class="st">"train"</span>),<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">color=</span><span class="st">"black"</span>,<span class="at">size=</span><span class="dv">1</span>,<span class="at">alpha=</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb15-471"><a href="#cb15-471"></a>  <span class="fu">facet_grid</span>(density<span class="sc">~</span>type) <span class="sc">+</span> </span>
+<span id="cb15-472"><a href="#cb15-472"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
 <span id="cb15-473"><a href="#cb15-473"></a></span>
-<span id="cb15-474"><a href="#cb15-474"></a>k <span class="sc">%&gt;%</span> <span class="fu">pluck</span>(<span class="st">"simTestAll"</span>) <span class="sc">%&gt;%</span><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span> </span>
+<span id="cb15-474"><a href="#cb15-474"></a>k4 <span class="sc">%&gt;%</span> <span class="fu">pluck</span>(<span class="st">"simTestAll"</span>) <span class="sc">%&gt;%</span><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span> </span>
 <span id="cb15-475"><a href="#cb15-475"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">shape=</span>model,<span class="at">color=</span>model),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
 <span id="cb15-476"><a href="#cb15-476"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
 <span id="cb15-477"><a href="#cb15-477"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>simTestAll <span class="sc">%&gt;%</span> <span class="fu">filter</span>(test_region<span class="sc">==</span><span class="st">"train"</span>),<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">color=</span><span class="st">"black"</span>,<span class="at">size=</span><span class="dv">1</span>,<span class="at">alpha=</span><span class="dv">1</span>) <span class="sc">+</span></span>
 <span id="cb15-478"><a href="#cb15-478"></a>  <span class="fu">facet_grid</span>(density<span class="sc">~</span>type) <span class="sc">+</span> </span>
 <span id="cb15-479"><a href="#cb15-479"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
 <span id="cb15-480"><a href="#cb15-480"></a></span>
-<span id="cb15-481"><a href="#cb15-481"></a>k4 <span class="sc">%&gt;%</span> <span class="fu">pluck</span>(<span class="st">"simTestAll"</span>) <span class="sc">%&gt;%</span><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span> </span>
+<span id="cb15-481"><a href="#cb15-481"></a>k10 <span class="sc">%&gt;%</span> <span class="fu">pluck</span>(<span class="st">"simTestAll"</span>) <span class="sc">%&gt;%</span><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span> </span>
 <span id="cb15-482"><a href="#cb15-482"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">shape=</span>model,<span class="at">color=</span>model),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
 <span id="cb15-483"><a href="#cb15-483"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
 <span id="cb15-484"><a href="#cb15-484"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>simTestAll <span class="sc">%&gt;%</span> <span class="fu">filter</span>(test_region<span class="sc">==</span><span class="st">"train"</span>),<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">color=</span><span class="st">"black"</span>,<span class="at">size=</span><span class="dv">1</span>,<span class="at">alpha=</span><span class="dv">1</span>) <span class="sc">+</span></span>
 <span id="cb15-485"><a href="#cb15-485"></a>  <span class="fu">facet_grid</span>(density<span class="sc">~</span>type) <span class="sc">+</span> </span>
 <span id="cb15-486"><a href="#cb15-486"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
 <span id="cb15-487"><a href="#cb15-487"></a></span>
-<span id="cb15-488"><a href="#cb15-488"></a>k10 <span class="sc">%&gt;%</span> <span class="fu">pluck</span>(<span class="st">"simTestAll"</span>) <span class="sc">%&gt;%</span><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span> </span>
-<span id="cb15-489"><a href="#cb15-489"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">shape=</span>model,<span class="at">color=</span>model),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb15-490"><a href="#cb15-490"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
-<span id="cb15-491"><a href="#cb15-491"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>simTestAll <span class="sc">%&gt;%</span> <span class="fu">filter</span>(test_region<span class="sc">==</span><span class="st">"train"</span>),<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">color=</span><span class="st">"black"</span>,<span class="at">size=</span><span class="dv">1</span>,<span class="at">alpha=</span><span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb15-492"><a href="#cb15-492"></a>  <span class="fu">facet_grid</span>(density<span class="sc">~</span>type) <span class="sc">+</span> </span>
-<span id="cb15-493"><a href="#cb15-493"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
-<span id="cb15-494"><a href="#cb15-494"></a></span>
+<span id="cb15-488"><a href="#cb15-488"></a></span>
+<span id="cb15-489"><a href="#cb15-489"></a><span class="in">```</span></span>
+<span id="cb15-490"><a href="#cb15-490"></a></span>
+<span id="cb15-493"><a href="#cb15-493"></a><span class="in">```{r}</span></span>
+<span id="cb15-494"><a href="#cb15-494"></a><span class="co">#| eval: false</span></span>
 <span id="cb15-495"><a href="#cb15-495"></a></span>
-<span id="cb15-496"><a href="#cb15-496"></a><span class="in">```</span></span>
-<span id="cb15-497"><a href="#cb15-497"></a></span>
-<span id="cb15-498"><a href="#cb15-498"></a></span>
-<span id="cb15-499"><a href="#cb15-499"></a></span>
+<span id="cb15-496"><a href="#cb15-496"></a><span class="co"># label each each simulation with its density level (low, med, high), then combine all 3</span></span>
+<span id="cb15-497"><a href="#cb15-497"></a>lowSimTest <span class="ot">&lt;-</span> lowSimTest <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>)</span>
+<span id="cb15-498"><a href="#cb15-498"></a>medSimTest <span class="ot">&lt;-</span> medSimTest <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>)</span>
+<span id="cb15-499"><a href="#cb15-499"></a>highSimTest <span class="ot">&lt;-</span> highSimTest <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>)</span>
 <span id="cb15-500"><a href="#cb15-500"></a></span>
-<span id="cb15-503"><a href="#cb15-503"></a><span class="in">```{r}</span></span>
-<span id="cb15-504"><a href="#cb15-504"></a><span class="co">#| eval: false</span></span>
-<span id="cb15-505"><a href="#cb15-505"></a></span>
-<span id="cb15-506"><a href="#cb15-506"></a><span class="co"># label each each simulation with its density level (low, med, high), then combine all 3</span></span>
-<span id="cb15-507"><a href="#cb15-507"></a>lowSimTest <span class="ot">&lt;-</span> lowSimTest <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>)</span>
-<span id="cb15-508"><a href="#cb15-508"></a>medSimTest <span class="ot">&lt;-</span> medSimTest <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>)</span>
-<span id="cb15-509"><a href="#cb15-509"></a>highSimTest <span class="ot">&lt;-</span> highSimTest <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>)</span>
-<span id="cb15-510"><a href="#cb15-510"></a></span>
-<span id="cb15-511"><a href="#cb15-511"></a>simTest <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(lowSimTest,medSimTest,highSimTest)</span>
+<span id="cb15-501"><a href="#cb15-501"></a>simTest <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(lowSimTest,medSimTest,highSimTest)</span>
+<span id="cb15-502"><a href="#cb15-502"></a></span>
+<span id="cb15-503"><a href="#cb15-503"></a><span class="co"># extract element d from each list, and bind rows, remove Nan's, group by type, mutate new variable "Stage", which is set to first for block 1, last for final block, and middle for all other glocks, pipe to ggplot, plotting y and almResp in different colors, facet by type and stage (only first and last block)</span></span>
+<span id="cb15-504"><a href="#cb15-504"></a>ls2<span class="ot">=</span><span class="fu">bind_rows</span>(lowSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(almResp)) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-505"><a href="#cb15-505"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-506"><a href="#cb15-506"></a>  <span class="fu">mutate</span>(<span class="at">stage =</span> <span class="fu">ifelse</span>(block <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"first"</span>, <span class="fu">ifelse</span>(block <span class="sc">==</span> <span class="dv">25</span>, <span class="st">"last"</span>, <span class="st">"middle"</span>)),</span>
+<span id="cb15-507"><a href="#cb15-507"></a>         <span class="at">stage2=</span><span class="fu">cut</span>(trial,<span class="at">breaks=</span><span class="dv">20</span>,<span class="at">labels=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">20</span>)),</span>
+<span id="cb15-508"><a href="#cb15-508"></a>         <span class="at">dev=</span><span class="fu">sqrt</span>((y<span class="sc">-</span>almResp)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb15-509"><a href="#cb15-509"></a> </span>
+<span id="cb15-510"><a href="#cb15-510"></a>ls2 <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>stage2,<span class="at">y=</span>dev))<span class="sc">+</span><span class="fu">facet_grid</span>(<span class="sc">~</span>type)</span>
+<span id="cb15-511"><a href="#cb15-511"></a></span>
 <span id="cb15-512"><a href="#cb15-512"></a></span>
-<span id="cb15-513"><a href="#cb15-513"></a><span class="co"># extract element d from each list, and bind rows, remove Nan's, group by type, mutate new variable "Stage", which is set to first for block 1, last for final block, and middle for all other glocks, pipe to ggplot, plotting y and almResp in different colors, facet by type and stage (only first and last block)</span></span>
-<span id="cb15-514"><a href="#cb15-514"></a>ls2<span class="ot">=</span><span class="fu">bind_rows</span>(lowSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(almResp)) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-515"><a href="#cb15-515"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-516"><a href="#cb15-516"></a>  <span class="fu">mutate</span>(<span class="at">stage =</span> <span class="fu">ifelse</span>(block <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"first"</span>, <span class="fu">ifelse</span>(block <span class="sc">==</span> <span class="dv">25</span>, <span class="st">"last"</span>, <span class="st">"middle"</span>)),</span>
-<span id="cb15-517"><a href="#cb15-517"></a>         <span class="at">stage2=</span><span class="fu">cut</span>(trial,<span class="at">breaks=</span><span class="dv">20</span>,<span class="at">labels=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">20</span>)),</span>
-<span id="cb15-518"><a href="#cb15-518"></a>         <span class="at">dev=</span><span class="fu">sqrt</span>((y<span class="sc">-</span>almResp)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb15-519"><a href="#cb15-519"></a> </span>
-<span id="cb15-520"><a href="#cb15-520"></a>ls2 <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>stage2,<span class="at">y=</span>dev))<span class="sc">+</span><span class="fu">facet_grid</span>(<span class="sc">~</span>type)</span>
-<span id="cb15-521"><a href="#cb15-521"></a></span>
-<span id="cb15-522"><a href="#cb15-522"></a></span>
+<span id="cb15-513"><a href="#cb15-513"></a></span>
+<span id="cb15-514"><a href="#cb15-514"></a>ls2 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(stage <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"first"</span>,<span class="st">"last"</span>)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">color=</span><span class="st">"red"</span>,<span class="at">alpha=</span>.<span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb15-515"><a href="#cb15-515"></a><span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>almResp),<span class="at">color=</span><span class="st">"blue"</span>,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
+<span id="cb15-516"><a href="#cb15-516"></a><span class="fu">facet_grid</span>(type<span class="sc">~</span>stage) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
+<span id="cb15-517"><a href="#cb15-517"></a></span>
+<span id="cb15-518"><a href="#cb15-518"></a></span>
+<span id="cb15-519"><a href="#cb15-519"></a>lowSimTest <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">color=</span>model)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">3</span>)<span class="sc">+</span> <span class="fu">facet_grid</span>(<span class="sc">~</span>type) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
+<span id="cb15-520"><a href="#cb15-520"></a></span>
+<span id="cb15-521"><a href="#cb15-521"></a><span class="co"># make grid of each combination of train dataset and envType</span></span>
+<span id="cb15-522"><a href="#cb15-522"></a>simGrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">envTypes=</span>envTypes,<span class="at">trainData=</span><span class="fu">c</span>(<span class="st">"lowTrain"</span>,<span class="st">"medTrain"</span>,<span class="st">"highTrain"</span>))</span>
 <span id="cb15-523"><a href="#cb15-523"></a></span>
-<span id="cb15-524"><a href="#cb15-524"></a>ls2 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(stage <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"first"</span>,<span class="st">"last"</span>)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">color=</span><span class="st">"red"</span>,<span class="at">alpha=</span>.<span class="dv">3</span>) <span class="sc">+</span> </span>
-<span id="cb15-525"><a href="#cb15-525"></a><span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>almResp),<span class="at">color=</span><span class="st">"blue"</span>,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
-<span id="cb15-526"><a href="#cb15-526"></a><span class="fu">facet_grid</span>(type<span class="sc">~</span>stage) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
-<span id="cb15-527"><a href="#cb15-527"></a></span>
-<span id="cb15-528"><a href="#cb15-528"></a></span>
-<span id="cb15-529"><a href="#cb15-529"></a>lowSimTest <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">color=</span>model)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">3</span>)<span class="sc">+</span> <span class="fu">facet_grid</span>(<span class="sc">~</span>type) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
-<span id="cb15-530"><a href="#cb15-530"></a></span>
-<span id="cb15-531"><a href="#cb15-531"></a><span class="co"># make grid of each combination of train dataset and envType</span></span>
-<span id="cb15-532"><a href="#cb15-532"></a>simGrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">envTypes=</span>envTypes,<span class="at">trainData=</span><span class="fu">c</span>(<span class="st">"lowTrain"</span>,<span class="st">"medTrain"</span>,<span class="st">"highTrain"</span>))</span>
+<span id="cb15-524"><a href="#cb15-524"></a><span class="co"># map over the grid, for each row of simGrid, filter the training dataset by the envType, and then run the simulation function, and then bind rows of the output data frame.</span></span>
+<span id="cb15-525"><a href="#cb15-525"></a>simOut <span class="ot">&lt;-</span> <span class="fu">map2</span>(<span class="fu">c</span>(<span class="st">"lowTrain"</span>,<span class="st">"medTrain"</span>,<span class="st">"highTrain"</span>),envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(<span class="fu">get</span>(.x) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .y), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
+<span id="cb15-526"><a href="#cb15-526"></a></span>
+<span id="cb15-527"><a href="#cb15-527"></a><span class="co"># simOut &lt;- map(c("lowTrain","medTrain","highTrain"), ~ map_dfr(envTypes, ~ alm.sim(get(.) %&gt;% filter(type == .x), c = 1.4, lr = .4) %&gt;% simOrganize))</span></span>
+<span id="cb15-528"><a href="#cb15-528"></a><span class="co"># </span></span>
+<span id="cb15-529"><a href="#cb15-529"></a><span class="co"># simOut &lt;- map_dfr(simGrid, ~ alm.sim(get(.x$trainData) %&gt;% filter(type == .x$envTypes), c = 1.4, lr = .4) %&gt;% simOrganize)</span></span>
+<span id="cb15-530"><a href="#cb15-530"></a><span class="co"># </span></span>
+<span id="cb15-531"><a href="#cb15-531"></a><span class="co"># for each training dataset in c(lowTrain,medTrain,highTrain), run simulation function, separately for each type, and then bind rows of the output data frame.</span></span>
+<span id="cb15-532"><a href="#cb15-532"></a></span>
 <span id="cb15-533"><a href="#cb15-533"></a></span>
-<span id="cb15-534"><a href="#cb15-534"></a><span class="co"># map over the grid, for each row of simGrid, filter the training dataset by the envType, and then run the simulation function, and then bind rows of the output data frame.</span></span>
-<span id="cb15-535"><a href="#cb15-535"></a>simOut <span class="ot">&lt;-</span> <span class="fu">map2</span>(<span class="fu">c</span>(<span class="st">"lowTrain"</span>,<span class="st">"medTrain"</span>,<span class="st">"highTrain"</span>),envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(<span class="fu">get</span>(.x) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .y), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
-<span id="cb15-536"><a href="#cb15-536"></a></span>
-<span id="cb15-537"><a href="#cb15-537"></a><span class="co"># simOut &lt;- map(c("lowTrain","medTrain","highTrain"), ~ map_dfr(envTypes, ~ alm.sim(get(.) %&gt;% filter(type == .x), c = 1.4, lr = .4) %&gt;% simOrganize))</span></span>
-<span id="cb15-538"><a href="#cb15-538"></a><span class="co"># </span></span>
-<span id="cb15-539"><a href="#cb15-539"></a><span class="co"># simOut &lt;- map_dfr(simGrid, ~ alm.sim(get(.x$trainData) %&gt;% filter(type == .x$envTypes), c = 1.4, lr = .4) %&gt;% simOrganize)</span></span>
-<span id="cb15-540"><a href="#cb15-540"></a><span class="co"># </span></span>
-<span id="cb15-541"><a href="#cb15-541"></a><span class="co"># for each training dataset in c(lowTrain,medTrain,highTrain), run simulation function, separately for each type, and then bind rows of the output data frame.</span></span>
-<span id="cb15-542"><a href="#cb15-542"></a></span>
-<span id="cb15-543"><a href="#cb15-543"></a></span>
-<span id="cb15-544"><a href="#cb15-544"></a><span class="in">```</span></span>
-<span id="cb15-545"><a href="#cb15-545"></a></span>
-<span id="cb15-546"><a href="#cb15-546"></a></span>
-<span id="cb15-547"><a href="#cb15-547"></a><span class="fu">### Primary Functions</span></span>
-<span id="cb15-548"><a href="#cb15-548"></a></span>
-<span id="cb15-551"><a href="#cb15-551"></a><span class="in">```{r}</span></span>
-<span id="cb15-552"><a href="#cb15-552"></a><span class="co">#| code-fold: show</span></span>
-<span id="cb15-553"><a href="#cb15-553"></a><span class="co">#| include: false</span></span>
-<span id="cb15-554"><a href="#cb15-554"></a><span class="co">#| eval: false</span></span>
-<span id="cb15-555"><a href="#cb15-555"></a>alm.response <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">input=</span><span class="dv">1</span>,c) {</span>
-<span id="cb15-556"><a href="#cb15-556"></a>input.activation <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c<span class="sc">*</span>(input.layer <span class="sc">-</span> input)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb15-557"><a href="#cb15-557"></a>input.activation <span class="ot">&lt;&lt;-</span> input.activation<span class="sc">/</span><span class="fu">sum</span>(input.activation)</span>
-<span id="cb15-558"><a href="#cb15-558"></a><span class="co">#print(length(input.activation)); print(dim(weight.mat))</span></span>
-<span id="cb15-559"><a href="#cb15-559"></a>output.activation <span class="ot">&lt;&lt;-</span> weight.mat <span class="sc">%*%</span> input.activation</span>
-<span id="cb15-560"><a href="#cb15-560"></a>output.probability <span class="ot">&lt;&lt;-</span> output.activation<span class="sc">/</span><span class="fu">sum</span>(output.activation)</span>
-<span id="cb15-561"><a href="#cb15-561"></a>mean.response <span class="ot">&lt;&lt;-</span> <span class="fu">sum</span>(output.layer <span class="sc">*</span> output.probability)</span>
-<span id="cb15-562"><a href="#cb15-562"></a>mean.response</span>
+<span id="cb15-534"><a href="#cb15-534"></a><span class="in">```</span></span>
+<span id="cb15-535"><a href="#cb15-535"></a></span>
+<span id="cb15-536"><a href="#cb15-536"></a><span class="fu">### Primary Functions</span></span>
+<span id="cb15-537"><a href="#cb15-537"></a></span>
+<span id="cb15-540"><a href="#cb15-540"></a><span class="in">```{r}</span></span>
+<span id="cb15-541"><a href="#cb15-541"></a><span class="co">#| code-fold: show</span></span>
+<span id="cb15-542"><a href="#cb15-542"></a><span class="co">#| include: false</span></span>
+<span id="cb15-543"><a href="#cb15-543"></a><span class="co">#| eval: false</span></span>
+<span id="cb15-544"><a href="#cb15-544"></a>alm.response <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">input=</span><span class="dv">1</span>,c) {</span>
+<span id="cb15-545"><a href="#cb15-545"></a>input.activation <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c<span class="sc">*</span>(input.layer <span class="sc">-</span> input)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb15-546"><a href="#cb15-546"></a>input.activation <span class="ot">&lt;&lt;-</span> input.activation<span class="sc">/</span><span class="fu">sum</span>(input.activation)</span>
+<span id="cb15-547"><a href="#cb15-547"></a><span class="co">#print(length(input.activation)); print(dim(weight.mat))</span></span>
+<span id="cb15-548"><a href="#cb15-548"></a>output.activation <span class="ot">&lt;&lt;-</span> weight.mat <span class="sc">%*%</span> input.activation</span>
+<span id="cb15-549"><a href="#cb15-549"></a>output.probability <span class="ot">&lt;&lt;-</span> output.activation<span class="sc">/</span><span class="fu">sum</span>(output.activation)</span>
+<span id="cb15-550"><a href="#cb15-550"></a>mean.response <span class="ot">&lt;&lt;-</span> <span class="fu">sum</span>(output.layer <span class="sc">*</span> output.probability)</span>
+<span id="cb15-551"><a href="#cb15-551"></a>mean.response</span>
+<span id="cb15-552"><a href="#cb15-552"></a>}</span>
+<span id="cb15-553"><a href="#cb15-553"></a></span>
+<span id="cb15-554"><a href="#cb15-554"></a>alm.update <span class="ot">&lt;-</span> <span class="cf">function</span>(corResp,c,lr){</span>
+<span id="cb15-555"><a href="#cb15-555"></a>  fz <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c<span class="sc">*</span>(output.layer <span class="sc">-</span> corResp)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb15-556"><a href="#cb15-556"></a>  teacherSignal <span class="ot">&lt;-</span> (fz <span class="sc">-</span> output.activation)<span class="sc">*</span>lr</span>
+<span id="cb15-557"><a href="#cb15-557"></a>  <span class="co">#print(length(teacherSignal)); print(length(fz))</span></span>
+<span id="cb15-558"><a href="#cb15-558"></a>  wChange <span class="ot">&lt;-</span> teacherSignal <span class="sc">%*%</span> <span class="fu">t</span>(input.activation)</span>
+<span id="cb15-559"><a href="#cb15-559"></a>  weight.mat <span class="ot">&lt;&lt;-</span> weight.mat <span class="sc">+</span> (wChange)</span>
+<span id="cb15-560"><a href="#cb15-560"></a>  weight.mat[weight.mat<span class="sc">&lt;</span><span class="dv">0</span>]<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb15-561"><a href="#cb15-561"></a> <span class="co"># weight.mat[weight.mat&gt;1]=1</span></span>
+<span id="cb15-562"><a href="#cb15-562"></a>  weight.mat <span class="ot">&lt;&lt;-</span> weight.mat</span>
 <span id="cb15-563"><a href="#cb15-563"></a>}</span>
 <span id="cb15-564"><a href="#cb15-564"></a></span>
-<span id="cb15-565"><a href="#cb15-565"></a>alm.update <span class="ot">&lt;-</span> <span class="cf">function</span>(corResp,c,lr){</span>
-<span id="cb15-566"><a href="#cb15-566"></a>  fz <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c<span class="sc">*</span>(output.layer <span class="sc">-</span> corResp)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb15-567"><a href="#cb15-567"></a>  teacherSignal <span class="ot">&lt;-</span> (fz <span class="sc">-</span> output.activation)<span class="sc">*</span>lr</span>
-<span id="cb15-568"><a href="#cb15-568"></a>  <span class="co">#print(length(teacherSignal)); print(length(fz))</span></span>
-<span id="cb15-569"><a href="#cb15-569"></a>  wChange <span class="ot">&lt;-</span> teacherSignal <span class="sc">%*%</span> <span class="fu">t</span>(input.activation)</span>
-<span id="cb15-570"><a href="#cb15-570"></a>  weight.mat <span class="ot">&lt;&lt;-</span> weight.mat <span class="sc">+</span> (wChange)</span>
-<span id="cb15-571"><a href="#cb15-571"></a>  weight.mat[weight.mat<span class="sc">&lt;</span><span class="dv">0</span>]<span class="ot">=</span><span class="dv">0</span></span>
-<span id="cb15-572"><a href="#cb15-572"></a> <span class="co"># weight.mat[weight.mat&gt;1]=1</span></span>
-<span id="cb15-573"><a href="#cb15-573"></a>  weight.mat <span class="ot">&lt;&lt;-</span> weight.mat</span>
-<span id="cb15-574"><a href="#cb15-574"></a>}</span>
-<span id="cb15-575"><a href="#cb15-575"></a></span>
-<span id="cb15-576"><a href="#cb15-576"></a>alm.trial <span class="ot">&lt;-</span> <span class="cf">function</span>(input, corResp,c,lr){</span>
-<span id="cb15-577"><a href="#cb15-577"></a>  <span class="fu">alm.response</span>(input,c)</span>
-<span id="cb15-578"><a href="#cb15-578"></a>  <span class="fu">alm.update</span>(corResp,c,lr)</span>
-<span id="cb15-579"><a href="#cb15-579"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"input="</span>,input,<span class="st">"; corResp="</span>,corResp,<span class="st">"; mean.response="</span>,mean.response))</span>
-<span id="cb15-580"><a href="#cb15-580"></a>  mean.response</span>
-<span id="cb15-581"><a href="#cb15-581"></a>}</span>
-<span id="cb15-582"><a href="#cb15-582"></a></span>
-<span id="cb15-583"><a href="#cb15-583"></a>exam.response <span class="ot">&lt;-</span> <span class="cf">function</span>(input,c){</span>
-<span id="cb15-584"><a href="#cb15-584"></a>  <span class="co"># Find the index of the input node with the highest activation</span></span>
-<span id="cb15-585"><a href="#cb15-585"></a>  trainVec <span class="ot">=</span> <span class="fu">sort</span>(<span class="fu">unique</span>(xt))</span>
-<span id="cb15-586"><a href="#cb15-586"></a>  nearestTrain <span class="ot">&lt;-</span> trainVec[<span class="fu">which.min</span>(<span class="fu">abs</span>(input <span class="sc">-</span> trainVec))]</span>
-<span id="cb15-587"><a href="#cb15-587"></a>  aresp <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(nearestTrain,c)</span>
-<span id="cb15-588"><a href="#cb15-588"></a>  <span class="co">#max.index &lt;- which.max(input.activation)</span></span>
-<span id="cb15-589"><a href="#cb15-589"></a>  xUnder <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">min</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">-</span> <span class="dv">1</span>])</span>
-<span id="cb15-590"><a href="#cb15-590"></a>  xOver <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">max</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">+</span> <span class="dv">1</span>])</span>
-<span id="cb15-591"><a href="#cb15-591"></a></span>
-<span id="cb15-592"><a href="#cb15-592"></a>  mUnder <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xUnder,c)</span>
-<span id="cb15-593"><a href="#cb15-593"></a>  mOver <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xOver,c)</span>
-<span id="cb15-594"><a href="#cb15-594"></a> </span>
-<span id="cb15-595"><a href="#cb15-595"></a>   exam.output <span class="ot">=</span> <span class="fu">round</span>(aresp <span class="sc">+</span> ((mOver <span class="sc">-</span> mUnder) <span class="sc">/</span> (xOver <span class="sc">-</span> xUnder)) <span class="sc">*</span> (input <span class="sc">-</span> nearestTrain), <span class="dv">3</span>)</span>
-<span id="cb15-596"><a href="#cb15-596"></a>  <span class="co"># Determine the input nodes and associated weights for computing the slope</span></span>
-<span id="cb15-597"><a href="#cb15-597"></a>  exam.output</span>
-<span id="cb15-598"><a href="#cb15-598"></a>}</span>
-<span id="cb15-599"><a href="#cb15-599"></a></span>
-<span id="cb15-600"><a href="#cb15-600"></a><span class="in">```</span></span>
+<span id="cb15-565"><a href="#cb15-565"></a>alm.trial <span class="ot">&lt;-</span> <span class="cf">function</span>(input, corResp,c,lr){</span>
+<span id="cb15-566"><a href="#cb15-566"></a>  <span class="fu">alm.response</span>(input,c)</span>
+<span id="cb15-567"><a href="#cb15-567"></a>  <span class="fu">alm.update</span>(corResp,c,lr)</span>
+<span id="cb15-568"><a href="#cb15-568"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"input="</span>,input,<span class="st">"; corResp="</span>,corResp,<span class="st">"; mean.response="</span>,mean.response))</span>
+<span id="cb15-569"><a href="#cb15-569"></a>  mean.response</span>
+<span id="cb15-570"><a href="#cb15-570"></a>}</span>
+<span id="cb15-571"><a href="#cb15-571"></a></span>
+<span id="cb15-572"><a href="#cb15-572"></a>exam.response <span class="ot">&lt;-</span> <span class="cf">function</span>(input,c){</span>
+<span id="cb15-573"><a href="#cb15-573"></a>  <span class="co"># Find the index of the input node with the highest activation</span></span>
+<span id="cb15-574"><a href="#cb15-574"></a>  trainVec <span class="ot">=</span> <span class="fu">sort</span>(<span class="fu">unique</span>(xt))</span>
+<span id="cb15-575"><a href="#cb15-575"></a>  nearestTrain <span class="ot">&lt;-</span> trainVec[<span class="fu">which.min</span>(<span class="fu">abs</span>(input <span class="sc">-</span> trainVec))]</span>
+<span id="cb15-576"><a href="#cb15-576"></a>  aresp <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(nearestTrain,c)</span>
+<span id="cb15-577"><a href="#cb15-577"></a>  <span class="co">#max.index &lt;- which.max(input.activation)</span></span>
+<span id="cb15-578"><a href="#cb15-578"></a>  xUnder <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">min</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">-</span> <span class="dv">1</span>])</span>
+<span id="cb15-579"><a href="#cb15-579"></a>  xOver <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">max</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">+</span> <span class="dv">1</span>])</span>
+<span id="cb15-580"><a href="#cb15-580"></a></span>
+<span id="cb15-581"><a href="#cb15-581"></a>  mUnder <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xUnder,c)</span>
+<span id="cb15-582"><a href="#cb15-582"></a>  mOver <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xOver,c)</span>
+<span id="cb15-583"><a href="#cb15-583"></a> </span>
+<span id="cb15-584"><a href="#cb15-584"></a>   exam.output <span class="ot">=</span> <span class="fu">round</span>(aresp <span class="sc">+</span> ((mOver <span class="sc">-</span> mUnder) <span class="sc">/</span> (xOver <span class="sc">-</span> xUnder)) <span class="sc">*</span> (input <span class="sc">-</span> nearestTrain), <span class="dv">3</span>)</span>
+<span id="cb15-585"><a href="#cb15-585"></a>  <span class="co"># Determine the input nodes and associated weights for computing the slope</span></span>
+<span id="cb15-586"><a href="#cb15-586"></a>  exam.output</span>
+<span id="cb15-587"><a href="#cb15-587"></a>}</span>
+<span id="cb15-588"><a href="#cb15-588"></a></span>
+<span id="cb15-589"><a href="#cb15-589"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

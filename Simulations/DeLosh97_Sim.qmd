@@ -6,14 +6,13 @@ code-fold: true
 code-tools: true
 execute: 
   warning: false
---- 
+---
 
 ```{r}
 #lapply(c('tidyverse','data.table','igraph','ggraph','kableExtra'),library,character.only=TRUE))
 pacman::p_load(tidyverse,data.table,igraph,ggraph,kableExtra) 
 
 ```
-
 
 ```{r}
 #https://nrennie.rbind.io/blog/2022-06-06-creating-flowcharts-with-ggplot2/
@@ -56,36 +55,36 @@ ggplot() + geom_rect(data = odf,
 
 ```
 
-
-
 ## ALM Definition
 
-
-
-::: {.column-margin}
+::: column-margin
 ###### Input Activation
+
 $$
 a_i(X)=\exp \left|-\gamma \cdot\left[X-X_i\right]^2\right|
 $$
 
 ###### Output activation
+
 $$
 o_j(X)=\Sigma_{i=1, M} w_{j i} \cdot a_i(X) 
 $$
 
 ###### Output Probability
+
 $$
 P\left[Y_j \mid X\right]=o_j(X) / \Sigma_{k=1, L} o_k(X) 
 $$
 
 ###### Mean Response
+
 $$
 m(X)=\Sigma_{j=1, L} Y_j \cdot P\left[Y_j \mid X\right] 
 $$
-
 :::
 
 ### Generate Response
+
 ```{r}
 #| code-fold: show
 #| code-summary: "Toggle Code"
@@ -100,10 +99,10 @@ mean.response
 }
 ```
 
-\ \ \ \ \ 
-
+     
 
 ### Update Weights Based on Feedback
+
 ```{r}
 #| code-fold: show
 #| code-summary: "Toggle Code"
@@ -127,7 +126,7 @@ alm.trial <- function(input, corResp,c,lr){
 }
 ```
 
-::: {.column-margin}
+::: column-margin
 ###### Feedback Signal
 
 $$
@@ -135,14 +134,14 @@ f_j(Z)=e^{-c\cdot(Z-Y_j)^2}
 $$
 
 ###### Weight Updates
+
 $$
 w_{ji}(t+1)=w_{ji}(t)+\alpha \cdot {f_i(Z(t))-O_j(X(t))} \cdot a_i(X(t))
 $$
 :::
 
-
-
 ### Exam Generalization
+
 ```{r}
 #| code-fold: show
 #| code-summary: "Toggle Code"
@@ -164,18 +163,19 @@ exam.response <- function(input,c){
 }
 ```
 
-::: {.column-margin}
+::: column-margin
 ###### Input node actvation
+
 $$
 P[X_i|X] = \frac{a_i(X)}{\\sum_{k=1}^Ma_k(X)}
 $$
 
 ###### Slope Computation
+
 $$
 E[Y|X_i]=m(X_i) + \bigg[\frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1} - X_{i-1}} \bigg]\cdot[X-X_i]
 $$
-::: 
-
+:::
 
 ### Prepare Simulation Data
 
@@ -239,12 +239,6 @@ highTrain <- map_dfr(envTypes, ~ generate.data(rep(highDensityTrainBlock,4), typ
 
 ```
 
-
-
-
-
-
-
 ### Simulation Functions
 
 ```{r}
@@ -293,9 +287,8 @@ simOrganize <- function(simOut){
 
 ```
 
-
-
 ### Simulate Training:
+
 ```{r fig.width=10, fig.height=8}
 #| column: page-inset-right
 # split by type, then send each training dataset to simulation function
@@ -327,6 +320,7 @@ simAll %>% ggplot(aes(x=block,y=dev,color=type)) + stat_summary(geom="line",fun=
 ```
 
 Predictions for Generalization
+
 ```{r fig.width=11,fig.height=10}
 #| column: page-inset-right
 #| 
@@ -359,9 +353,8 @@ simTestAll %>% ggplot(aes(x=x,y=y)) +
 
 ```
 
+Collpasing Across Density Levels gives us:
 
-
-Collpasing Across Density Levels gives us: 
 ```{r}
 #| eval: false
 #| column: page-inset-right
@@ -371,7 +364,6 @@ simTestAll %>% group_by(type,model,x,y) %>% summarise(resp=mean(resp))  %>% ggpl
   facet_grid(~type) + 
   theme_bw() + theme(legend.position="bottom")
 ```
-
 
 ### Master Function for full simulation
 
@@ -430,6 +422,7 @@ return(list(simAll=list(simAll),simTestAll=list(simTestAll)))
 ```
 
 ### Simulations with noise
+
 ```{r fig.height=10,fig.width=11}
 #| eval: false
 k = full.sim(c=1.4,lr=.4,noise=2.0)
@@ -477,9 +470,6 @@ k10 %>% pluck("simTestAll") %>%ggplot(aes(x=x,y=y)) +
 
 ```
 
-
-
-
 ```{r}
 #| eval: false
 
@@ -522,7 +512,6 @@ simOut <- map2(c("lowTrain","medTrain","highTrain"),envTypes, ~ alm.sim(get(.x) 
 
 
 ```
-
 
 ### Primary Functions
 
