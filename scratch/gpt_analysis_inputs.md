@@ -2,6 +2,64 @@
 
 You are an expert and Psychological experiment design, statistical analyses, and academic writing. You have been recruited to work the "HTW" study analysis and writeup. Here is a description of the HTW study: Consider this study description, then propose a statistical analysis approach that can be conducted with R. The main interest of the study is on the difference between the varied and constant training conditions, but the effect of catOrder and feedbacktype will also need to be considered.
 
+You are an expert and Psychological experiment design, statistical analyses, and academic writing. You have been recruited to work the "HTW" study analysis and writeup, the primary purpose of which is to examine the influence of training variability on learning and generalization. Here is a description of the HTW study: 647 participants engaged in a visuomotor extrapolation task named "Hit The Wall," where they launched projectiles to hit a target. Participants underwent training and testing stages. During training, participants were divided into two groups: varied training (3 velocity bands) and constant training (1 velocity band) across 90 trials. Additional 'no feedback' trials were interleaved during training. The testing stage consisted of three phases: 1) No-feedback testing with 3 novel extrapolation bands (15 trials each), 2) No-feedback testing from the 3 bands used during training (9 trials each), and 3) Feedback testing for each of the 3 extrapolation bands (10 trials each). The study employed two between-subject manipulations: order manipulation ('orig' and 'rev') and feedback type ('continuous' and 'ordinal'). Participants' performance was measured by calculating the distance between the produced x-velocity and the closest edge of the current velocity band, with lower distances indicating better performance.
+
+# GPT Bullet Points
+
+### Necessary information to replicate the study:
+
+-   Participants: 647 participants (after exclusions), 196 in the initial experiment (106 constant, 90 varied)
+
+-   Task: "Hit The Wall" (HTW) visuomotor extrapolation task involving launching a projectile to hit a rectangle with a specified velocity
+
+-   Recorded data: vx and vy produced by the participant, distance between the vx value and the closest edge of the current velocity band
+
+-   Design:
+
+    -   Training stage: 90 training trials evenly divided between velocity bands (Varied training with 3 bands, Constant training with 1 band)
+
+    -   Training-Nf: interleaved no feedback testing throughout training
+
+    -   Testing Stage:
+
+        1.  No-feedback testing from 3 novel extrapolation bands (test-Nf), 15 trials each
+
+        2.  No-feedback testing from the 3 bands used during the training phase (test-train-Nf), 9 trials each
+
+        3.  Feedback testing for each of the 3 extrapolation bands (test-feedback), 10 trials each
+
+-   Between-subjects order manipulation (catOrder): orig and rev conditions
+
+    -   orig: constant subjects train on band 800-1000, varied subjects train on bands 800-1000, 1000-1200, and 1200-1400
+
+    -   rev: constant subjects train on band 600-800, varied subjects train on bands 600-800, 350-550, and 100-300
+
+-   FeedbackType between-subjects manipulation: continuous and ordinal conditions
+
+    -   continuous: subjects receive continuous feedback
+
+    -   ordinal: subjects receive ordinal feedback
+
+### Information missing for replication:
+
+-   Participant demographics: age, gender, education level, etc.
+
+-   Detailed instructions given to participants
+
+-   Software or platform used for data collection
+
+-   Randomization procedures for assigning participants to conditions
+
+-   Any specific exclusion criteria used
+
+-   Any practice or familiarization trials before the actual experiment
+
+-   Details on how the vx and vy values were controlled and manipulated during the task
+
+-   Any time constraints or limits during the trials
+
+-   Description of the feedback provided (e.g., visual, auditory) and how it was presented to the participants
+
 # GPT-4 Summaries
 
 Summary 1: In this study, 647 participants engaged in a visuomotor extrapolation task named "Hit The Wall," where they launched projectiles to hit a target. Participants underwent training and testing stages. During training, participants were divided into two groups: varied training (3 velocity bands) and constant training (1 velocity band) across 90 trials. Additional 'no feedback' trials were interleaved during training. The testing stage consisted of three phases: 1) No-feedback testing with 3 novel extrapolation bands (15 trials each), 2) No-feedback testing from the 3 bands used during training (9 trials each), and 3) Feedback testing for each of the 3 extrapolation bands (10 trials each). The study employed two between-subject manipulations: order manipulation ('orig' and 'rev') and feedback type ('continuous' and 'ordinal'). Participants' performance was measured by calculating the distance between the produced x-velocity and the closest edge of the current velocity band, with lower distances indicating better performance.
@@ -13,6 +71,28 @@ Candidate Summary 3: This study investigated the effect of varied vs. constant t
 Candidate Summary 4: In the study, the effect of varied and constant training on extrapolation performance in a visuomotor task was examined using 647 participants. The "Hit The Wall" task required launching a projectile to hit a target with a specified force, focusing on the x-velocity component. During training, participants underwent 90 trials with either varied training across three velocity bands or constant training on one band, and interleaved testing without feedback. The testing stage included 15 no-feedback trials on novel bands, nine no-feedback trials on training bands, and 10 feedback trials on extrapolation bands. The order in which training bands were presented (original or reversed) and feedback type (continuous or ordinal) were manipulated between subjects.
 
 Candidate Summary 5: This study assessed how varied and constant training conditions impacted extrapolation performance in a novel visuomotor task called "Hit The Wall". Participants (647 in total) were tasked to launch projectiles to hit targets, focusing on x-velocity. The training stage comprised 90 trials, where varied training involved three velocity bands and constant training involved one. An interleaved no-feedback testing occurred during training. The testing stage included no-feedback tests from three novel bands and training bands and feedback tests from extrapolation bands. Additionally, between-subject variables included the order of training bands (original or reversed) and the type of feedback (continuous or ordinal). Performance was evaluated based on the distance between achieved x-velocity and the target velocity band's closest edge.
+
+# GPT APA Methods
+
+## Method
+
+### Participants
+
+A total of 647 participants were included in the analysis after applying exclusion criteria. The initial experiment consisted of 196 participants, with 106 in the constant training condition and 90 in the varied training condition. Participant demographics such as age, gender, and education level are not provided (XXX). Additional experiments were conducted with minor manipulations, but the results were consistent with the initial experiment.
+
+### Materials and Procedure
+
+The "Hit The Wall" (HTW) visuomotor extrapolation task was developed to investigate the effects of varied and constant training conditions. In this task, participants were asked to launch a projectile so that it hit a rectangle at the far end of the screen with a specified velocity. The projectile had both x and y velocity components, but only the x-dimension was relevant for the task. On each trial, the vx and vy values produced by the participant were recorded. The distance between the vx value and the closest edge of the current velocity band was calculated, with lower distance values corresponding to better performance.
+
+The experiment had a mixed design, with training conditions (constant vs. varied) and feedback type (continuous vs. ordinal) as between-subjects factors, and trial type (training, testing) as a within-subjects factor. The training stage consisted of 90 trials, with varied training participants exposed to 3 velocity bands and constant training participants exposed to 1 band. Interleaved no-feedback testing (train-Nf) occurred throughout the training stage.
+
+The testing stage included three trial types: 1. No-feedback testing from 3 novel extrapolation bands (test-Nf), with 15 trials each. 2. No-feedback testing from the 3 bands used during the training phase (test-train-Nf), with 9 trials each. 3. Feedback testing for each of the 3 extrapolation bands (test-feedback), with 10 trials each.
+
+A between-subjects order manipulation (catOrder) was also included, with two conditions: orig and rev. In the orig condition, constant subjects trained on the 800-1000 velocity band, while varied subjects trained on the 800-1000, 1000-1200, and 1200-1400 bands. In the rev condition, constant subjects trained on the 600-800 band, and varied subjects trained on the 600-800, 350-550, and 100-300 bands.
+
+Finally, a feedback type between-subjects manipulation was implemented. Participants in the continuous condition received continuous feedback, while those in the ordinal condition received ordinal feedback.
+
+The software or platform used for data collection, randomization procedures, specific exclusion criteria, practice or familiarization trials, details on vx and vy value manipulations, time constraints, and description of the feedback provided are not provided (XXX).
 
 # Velocity Band Descriptions
 
