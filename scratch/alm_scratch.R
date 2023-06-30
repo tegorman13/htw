@@ -41,6 +41,100 @@ alm.trial <- function(input, corResp,c,lr){
 }
 
 
+
+
+# Generate training data
+generate_training_data <- function(n, variability) {
+  x <- runif(n, -1, 1) # Generate n random input values between -1 and 1
+  y <- x^2 + rnorm(n, 0, variability) # Calculate y = x^2 with added noise based on the variability
+  return(list(x = x, y = y))
+}
+
+# Train the RBF network
+train_network <- function(training_data, inputNodes, outputNodes, c, lr, epochs) {
+  weights <- matrix(runif(length(inputNodes) * length(outputNodes), -1, 1), nrow = length(outputNodes), ncol = length(inputNodes))
+  
+  for (epoch in 1:epochs) {
+    for (i in 1:length(training_data$x)) {
+      x.new <- training_data$x[i]
+      y.new <- training_data$y[i]
+      weights <- update.weights(x.new, y.new, weights, c, lr)
+    }
+  }
+  
+  return(weights)
+}
+
+# Simulate the experiment
+simulate_experiment <- function(n, variability_levels, inputNodes, outputNodes, c, lr, epochs) {
+  results <- list()
+  
+  for (variability in variability_levels) {
+    # Generate training data with the current variability level
+    training_data <- generate_training_data(n, variability)
+    
+    # Train the RBF network on the current training data
+    weights <- train_network(training_data, inputNodes, outputNodes, c, lr, epochs)
+    
+    # Store the trained weights for the current variability level
+    results[[paste0("variability_", variability)]] <- weights
+  }
+  
+  return(results)
+}
+
+# Example of using the simulate_experiment function
+n <- 100 # number of training examples
+variability_levels <- c(0.1, 0.2, 0.3) # different levels of variability
+inputNodes <- seq(-1, 1, length.out = 10) # Define input nodes
+outputNodes <- seq(0, 1, length.out = 5) # Define output nodes
+c <- 2 # positive constant
+lr <- 0.1 # learning rate
+epochs <- 50 # number of training epochs
+
+experiment_results <- simulate_experiment(n, variability_levels, inputNodes, outputNodes, c, lr, epochs)
+
+
+#########
+
+# Generate a population of learners with random parameter values
+generate_population <- function(population_size, c_range, lr_range) {
+  learners <- data.frame(id = 1:population_size,
+                         c = runif(population_size, c_range[1], c_range[2]),
+                         lr = runif(population_size, lr_range[1], lr_range[2]))
+  return(learners)
+}
+
+# Run the experiment for a population of learners
+run_experiment_for_population <- function(population, n, variability_levels, inputNodes, outputNodes, epochs) {
+  population_results <- list()
+  
+  for (learner in 1:nrow(population)) {
+    learner_id <- population$id[learner]
+    c <- population$c[learner]
+    lr <- population$lr[learner]
+    
+    learner_results <- simulate_experiment(n, variability_levels, inputNodes, outputNodes, c, lr, epochs)
+    population_results[[paste0("learner_", learner_id)]] <- learner_results
+  }
+  
+  return(population_results)
+}
+
+# Example of using the run_experiment_for_population function
+population_size <- 10 # number of learners in the population
+c_range <- c(1, 5) # range of parameter c values
+lr_range <- c(0.01, 0.3) # range of learning rate values
+
+population <- generate_population(population_size, c_range, lr_range)
+population_experiment_results <- run_experiment_for_population(population, n, variability_levels, inputNodes, outputNodes, epochs)
+
+
+
+##########
+
+
+
 generate.data <- function(x, type = 'linear', noise = NA) {
   if (type == 'linear') {
     y <- round(2.2*x + 30,0)
