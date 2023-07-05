@@ -1,0 +1,84 @@
+---
+title: Experiment 1 Analysis
+date: last-modified
+categories: [Analysis, R]
+page-layout: article
+fig-width: 15
+fig-height: 8
+code-fold: true
+code-tools: true
+execute: 
+  warning: false
+  eval: true
+---
+
+
+
+
+
+```{r}
+pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt)
+e1 <- readRDS(here("data/e1_07_04_23.rds"))
+source(here("Functions/Display_Functions.R"))
+```
+
+
+
+```{r}
+#| column: page-inset-right
+#| fig-cap: "Mean Vx over training blocks"
+nb=5
+vp1=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,vx,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) 
+vp1
+# vpt1=plotWithTable(vp1,vt1,arrange="V") 
+```
+
+
+
+```{r}
+#| column: page-inset-right
+#| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)"
+#| tbl-cap-location: top
+
+
+
+vt1=e1 |> filter(expMode=="train") |> 
+  learn_curve_table(gt.train,vx,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |>
+  rename("Band"=vb,"Group"=condit) 
+vt1 %>% gt()
+
+
+```
+
+```{r}
+#| column: page-inset-right
+#| fig-cap: "Absolute Deviation from Band over training"
+vp2=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,dist,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) 
+vp2
+
+
+```
+
+```{r}
+#| column: page-inset-right
+#| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)"
+#| tbl-cap-location: bottom
+
+
+vt2=e1 |> filter(expMode=="train") |> 
+  learn_curve_table(gt.train,dist,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |>
+  rename("Band"=vb,"Group"=condit) 
+vt2 %>% gt()
+
+
+```
+
+
+
+## Testing
+```{r}
+
+
+
+```
+

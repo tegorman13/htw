@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.357">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="dcterms.date" content="2023-05-23">
+<title>HTW Project - Parameter Recovery Simulations</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../Simulations/DeLosh97_Sim.html" rel="next">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><style>html{ scroll-behavior: smooth; }</style>
+<link rel="stylesheet" href="../Style/style1.css">
+<link rel="stylesheet" href="../Style/calloutTG.css">
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Simulations/simParameterRecovery.html">Simulations</a></li><li class="breadcrumb-item"><a href="../Simulations/simParameterRecovery.html">Parameter Recovery Simulations</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">HTW Project</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Project</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Methods</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/data_dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Data Dictionary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+ <span class="menu-text">Analysis/data_organization.qmd</span>
+  </li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Analyses</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/test_analysis-all.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Test Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/discrim.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Testing Discrimination Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/ME_Pool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ME_Pool</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visuals_Interactives/ojs_explore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OJS data exploration</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Simulations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Simulations/simParameterRecovery.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Parameter Recovery Simulations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Simulations/DeLosh97_Sim.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Simulating DeLosh 1997</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Simulations/SimReplications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">General Simulations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Simulations/alm_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ALM Learning</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Model</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ALM &amp; EXAM Fitting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/abc_htw.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Approximate Bayesian Fitting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/group_fits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Group Level Fits</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Interactive</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visuals_Interactives/ojs_alm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OJS ALM</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visuals_Interactives/ALM_Shiny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ALM Shiny App Code</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Misc</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/Task.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Task</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visuals_Interactives/model_viz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/htw_dp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Project 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/External.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">External</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/HTW_ToDo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW To-do and Notes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/benchmarks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Benchmarking</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+<li><a href="#parameter-recovery-simulations" id="toc-parameter-recovery-simulations" class="nav-link active" data-scroll-target="#parameter-recovery-simulations">Parameter Recovery Simulations</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content column-body" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Parameter Recovery Simulations</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">Simulation</div>
+    <div class="quarto-category">ALM</div>
+    <div class="quarto-category">EXAM</div>
+    <div class="quarto-category">R</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 23, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header><section id="parameter-recovery-simulations" class="level1"><h1>Parameter Recovery Simulations</h1>
+<p>Assessing the parameter recovery of ALM and EXAM on synthetic data.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse,data.table)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">options</span>(<span class="at">dplyr.summarise.inform=</span><span class="cn">FALSE</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>input.activation<span class="ot">&lt;-</span><span class="cf">function</span>(x.target, c) { <span class="fu">return</span>(<span class="fu">exp</span>((<span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>c)<span class="sc">*</span>(x.target<span class="sc">-</span>inputNodes)<span class="sc">^</span><span class="dv">2</span>))}</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a>output.activation<span class="ot">&lt;-</span><span class="cf">function</span>(x.target, weights, c){</span>
+<span id="cb1-7"><a href="#cb1-7"></a>  <span class="fu">return</span>(weights<span class="sc">%*%</span><span class="fu">input.activation</span>(x.target, c))</span>
+<span id="cb1-8"><a href="#cb1-8"></a>}</span>
+<span id="cb1-9"><a href="#cb1-9"></a>mean.prediction<span class="ot">&lt;-</span><span class="cf">function</span>(x.target, weights, c){</span>
+<span id="cb1-10"><a href="#cb1-10"></a>  probability<span class="ot">&lt;-</span><span class="fu">output.activation</span>(x.target, weights, c)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">output.activation</span>(x.target, weights, c))</span>
+<span id="cb1-11"><a href="#cb1-11"></a>  <span class="fu">return</span>(outputNodes<span class="sc">%*%</span>probability) <span class="co"># integer prediction</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a>update.weights<span class="ot">&lt;-</span><span class="cf">function</span>(x.new, y.new, weights, c, lr){t</span>
+<span id="cb1-15"><a href="#cb1-15"></a>  yt.feedback.activation<span class="ot">&lt;-</span><span class="fu">exp</span>(<span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>c<span class="sc">*</span>(y.new<span class="sc">-</span>outputNodes)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1-16"><a href="#cb1-16"></a>  x.feedback.activation<span class="ot">&lt;-</span><span class="fu">output.activation</span>(x.new, weights, c)</span>
+<span id="cb1-17"><a href="#cb1-17"></a>  <span class="fu">return</span>(weights<span class="sc">+</span>lr<span class="sc">*</span>(y.feedback.activation<span class="sc">-</span>x.feedback.activation)<span class="sc">%*%</span><span class="fu">t</span>(<span class="fu">input.activation</span>(x.new, c)))</span>
+<span id="cb1-18"><a href="#cb1-18"></a>}</span>
+<span id="cb1-19"><a href="#cb1-19"></a></span>
+<span id="cb1-20"><a href="#cb1-20"></a>train.alm<span class="ot">&lt;-</span><span class="cf">function</span>(dat, <span class="at">c=</span><span class="fl">0.05</span>, <span class="at">lr=</span><span class="fl">0.5</span>, weights){</span>
+<span id="cb1-21"><a href="#cb1-21"></a>   alm.train<span class="ot">&lt;-</span><span class="fu">rep</span>(<span class="cn">NA</span>,<span class="fu">nrow</span>(dat))  </span>
+<span id="cb1-22"><a href="#cb1-22"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dat)){</span>
+<span id="cb1-23"><a href="#cb1-23"></a>    weights <span class="ot">&lt;-</span> <span class="fu">update.weights</span>(dat<span class="sc">$</span>input[i], dat<span class="sc">$</span>vx[i], weights, c, lr)</span>
+<span id="cb1-24"><a href="#cb1-24"></a>    resp <span class="ot">=</span> <span class="fu">mean.prediction</span>(dat<span class="sc">$</span>input[i], weights, c)</span>
+<span id="cb1-25"><a href="#cb1-25"></a>    alm.train[i]<span class="ot">=</span>resp</span>
+<span id="cb1-26"><a href="#cb1-26"></a>    weights[weights<span class="sc">&lt;</span><span class="dv">0</span>]<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb1-27"><a href="#cb1-27"></a>  }</span>
+<span id="cb1-28"><a href="#cb1-28"></a>  alm.train</span>
+<span id="cb1-29"><a href="#cb1-29"></a>}</span>
+<span id="cb1-30"><a href="#cb1-30"></a></span>
+<span id="cb1-31"><a href="#cb1-31"></a><span class="co"># function to generate exam predictions</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a>exam.prediction<span class="ot">&lt;-</span><span class="cf">function</span>(x.target, weights, c,trainVec){</span>
+<span id="cb1-33"><a href="#cb1-33"></a>  <span class="co">#trainVec = sort(unique(x.learning))</span></span>
+<span id="cb1-34"><a href="#cb1-34"></a>  nearestTrain <span class="ot">=</span> trainVec[<span class="fu">which.min</span>(<span class="fu">abs</span>(trainVec<span class="sc">-</span>x.target))]</span>
+<span id="cb1-35"><a href="#cb1-35"></a>  aresp <span class="ot">=</span> <span class="fu">mean.prediction</span>(nearestTrain, weights, c)</span>
+<span id="cb1-36"><a href="#cb1-36"></a>  xUnder <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">min</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">-</span> <span class="dv">1</span>])</span>
+<span id="cb1-37"><a href="#cb1-37"></a>  xOver <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">max</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">+</span> <span class="dv">1</span>])</span>
+<span id="cb1-38"><a href="#cb1-38"></a>  mUnder <span class="ot">=</span> <span class="fu">mean.prediction</span>(xUnder, weights, c)</span>
+<span id="cb1-39"><a href="#cb1-39"></a>  mOver <span class="ot">=</span> <span class="fu">mean.prediction</span>(xOver, weights, c)</span>
+<span id="cb1-40"><a href="#cb1-40"></a>  exam.output <span class="ot">=</span> <span class="fu">round</span>(aresp <span class="sc">+</span> ((mOver <span class="sc">-</span> mUnder) <span class="sc">/</span> (xOver <span class="sc">-</span> xUnder)) <span class="sc">*</span> (x.target <span class="sc">-</span> nearestTrain), <span class="dv">3</span>)</span>
+<span id="cb1-41"><a href="#cb1-41"></a>  exam.output</span>
+<span id="cb1-42"><a href="#cb1-42"></a>}</span>
+<span id="cb1-43"><a href="#cb1-43"></a></span>
+<span id="cb1-44"><a href="#cb1-44"></a><span class="co"># Modify the sim_data function to accept the dataset as an argument</span></span>
+<span id="cb1-45"><a href="#cb1-45"></a>sim_data <span class="ot">&lt;-</span> <span class="cf">function</span>(dat, <span class="at">c=</span><span class="fl">0.5</span>, <span class="at">lr=</span><span class="fl">0.2</span>, <span class="at">inNodes=</span><span class="dv">7</span>, <span class="at">outNodes=</span><span class="dv">32</span>, <span class="at">trainVec=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>)) {</span>
+<span id="cb1-46"><a href="#cb1-46"></a>  inputNodes <span class="ot">&lt;&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">7</span>,<span class="at">length.out=</span>inNodes<span class="sc">*</span><span class="dv">1</span>)  </span>
+<span id="cb1-47"><a href="#cb1-47"></a>  outputNodes <span class="ot">&lt;&lt;-</span> <span class="fu">seq</span>(<span class="dv">50</span>,<span class="dv">1600</span>,<span class="at">length.out=</span>outNodes<span class="sc">*</span><span class="dv">1</span>) </span>
+<span id="cb1-48"><a href="#cb1-48"></a>  wm<span class="ot">=</span><span class="fu">matrix</span>(.<span class="dv">0000</span>,<span class="at">nrow=</span><span class="fu">length</span>(outputNodes),<span class="at">ncol=</span><span class="fu">length</span>(inputNodes))</span>
+<span id="cb1-49"><a href="#cb1-49"></a>  tt<span class="ot">&lt;-</span><span class="fu">trainTest.alm</span>(dat, c, lr, wm, trainVec)</span>
+<span id="cb1-50"><a href="#cb1-50"></a>}</span>
+<span id="cb1-51"><a href="#cb1-51"></a></span>
+<span id="cb1-52"><a href="#cb1-52"></a>gen_train <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">trainVec=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>),<span class="at">trainRep=</span><span class="dv">10</span>,<span class="at">noise=</span><span class="dv">0</span>){</span>
+<span id="cb1-53"><a href="#cb1-53"></a>   bandVec<span class="ot">=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>,<span class="dv">350</span>,<span class="dv">600</span>,<span class="dv">800</span>,<span class="dv">1000</span>,<span class="dv">1200</span>)</span>
+<span id="cb1-54"><a href="#cb1-54"></a>   ts <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">length</span>(trainVec)),trainRep)</span>
+<span id="cb1-55"><a href="#cb1-55"></a>   noiseVec<span class="ot">=</span><span class="fu">rnorm</span>(<span class="fu">length</span>(ts),<span class="at">mean=</span><span class="dv">0</span>)<span class="sc">*</span>noise</span>
+<span id="cb1-56"><a href="#cb1-56"></a>   <span class="cf">if</span>(noise<span class="sc">==</span><span class="dv">0</span>) {noiseVec<span class="ot">=</span>noiseVec<span class="sc">*</span><span class="dv">0</span>}</span>
+<span id="cb1-57"><a href="#cb1-57"></a>   <span class="fu">tibble</span>(<span class="at">input=</span>trainVec[ts],<span class="at">vx=</span>bandVec[trainVec[ts]]<span class="sc">+</span>noiseVec)</span>
+<span id="cb1-58"><a href="#cb1-58"></a>}</span>
+<span id="cb1-59"><a href="#cb1-59"></a></span>
+<span id="cb1-60"><a href="#cb1-60"></a></span>
+<span id="cb1-61"><a href="#cb1-61"></a>trainTest.alm<span class="ot">&lt;-</span><span class="cf">function</span>(dat, <span class="at">c=</span><span class="fl">0.05</span>, <span class="at">lr=</span><span class="fl">0.5</span>, weights,testVec){</span>
+<span id="cb1-62"><a href="#cb1-62"></a>   alm.train<span class="ot">&lt;-</span><span class="fu">rep</span>(<span class="cn">NA</span>,<span class="fu">nrow</span>(dat))  </span>
+<span id="cb1-63"><a href="#cb1-63"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dat)){</span>
+<span id="cb1-64"><a href="#cb1-64"></a>    weights <span class="ot">&lt;-</span> <span class="fu">update.weights</span>(dat<span class="sc">$</span>input[i], dat<span class="sc">$</span>vx[i], weights, c, lr)</span>
+<span id="cb1-65"><a href="#cb1-65"></a>    resp <span class="ot">=</span> <span class="fu">mean.prediction</span>(dat<span class="sc">$</span>input[i], weights, c)</span>
+<span id="cb1-66"><a href="#cb1-66"></a>    alm.train[i]<span class="ot">=</span>resp</span>
+<span id="cb1-67"><a href="#cb1-67"></a>    weights[weights<span class="sc">&lt;</span><span class="dv">0</span>]<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb1-68"><a href="#cb1-68"></a>  }</span>
+<span id="cb1-69"><a href="#cb1-69"></a>  almPred <span class="ot">&lt;-</span> <span class="fu">sapply</span>(testVec,mean.prediction,weights,c)</span>
+<span id="cb1-70"><a href="#cb1-70"></a>  examPred <span class="ot">&lt;-</span> <span class="fu">sapply</span>(testVec,exam.prediction,weights,c,<span class="at">trainVec=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="fu">sort</span>(<span class="fu">unique</span>(dat<span class="sc">$</span>input))))</span>
+<span id="cb1-71"><a href="#cb1-71"></a>  <span class="fu">list</span>(<span class="at">almTrain=</span>alm.train,<span class="at">almPred=</span>almPred,<span class="at">examPred=</span>examPred)</span>
+<span id="cb1-72"><a href="#cb1-72"></a>}</span>
+<span id="cb1-73"><a href="#cb1-73"></a></span>
+<span id="cb1-74"><a href="#cb1-74"></a>wrap_alm <span class="ot">&lt;-</span> <span class="cf">function</span>(par,dat, weights,lossFun){</span>
+<span id="cb1-75"><a href="#cb1-75"></a>    c<span class="ot">=</span>par[<span class="dv">1</span>]; lr<span class="ot">=</span>par[<span class="dv">2</span>]</span>
+<span id="cb1-76"><a href="#cb1-76"></a>   pred<span class="ot">=</span><span class="fu">train.alm</span>(dat, <span class="at">c=</span>c, <span class="at">lr=</span>lr, <span class="at">weights=</span>weights)</span>
+<span id="cb1-77"><a href="#cb1-77"></a>   <span class="co">#sqrt(mean((dat$vx -pred)^2))</span></span>
+<span id="cb1-78"><a href="#cb1-78"></a>   <span class="fu">lossFun</span>(dat<span class="sc">$</span>vx,pred)</span>
+<span id="cb1-79"><a href="#cb1-79"></a>}</span>
+<span id="cb1-80"><a href="#cb1-80"></a></span>
+<span id="cb1-81"><a href="#cb1-81"></a>wrap_optim <span class="ot">&lt;-</span> <span class="cf">function</span>(dat,<span class="at">lossFun=</span>RMSE){</span>
+<span id="cb1-82"><a href="#cb1-82"></a>  <span class="cf">if</span>(<span class="fu">class</span>(lossFun)<span class="sc">==</span><span class="st">"character"</span>){lossFun<span class="ot">=</span><span class="fu">get</span>(lossFun)}</span>
+<span id="cb1-83"><a href="#cb1-83"></a>  inputNodes <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">7</span>,<span class="dv">1</span>)  <span class="co"># </span></span>
+<span id="cb1-84"><a href="#cb1-84"></a>  outputNodes <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">50</span>,<span class="dv">1600</span>,<span class="dv">50</span>)</span>
+<span id="cb1-85"><a href="#cb1-85"></a>  wm<span class="ot">=</span><span class="fu">matrix</span>(.<span class="dv">00001</span>,<span class="at">nrow=</span><span class="fu">length</span>(outputNodes),<span class="at">ncol=</span><span class="fu">length</span>(inputNodes))</span>
+<span id="cb1-86"><a href="#cb1-86"></a>  testVec<span class="ot">=</span><span class="fu">seq</span>(<span class="dv">2</span>,<span class="dv">7</span>)</span>
+<span id="cb1-87"><a href="#cb1-87"></a>  </span>
+<span id="cb1-88"><a href="#cb1-88"></a>  bounds_lower <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">0000001</span>, .<span class="dv">00001</span>)</span>
+<span id="cb1-89"><a href="#cb1-89"></a>  bounds_upper <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb1-90"><a href="#cb1-90"></a>  parmsLab <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"c"</span>,<span class="st">"lr"</span>)</span>
+<span id="cb1-91"><a href="#cb1-91"></a>  </span>
+<span id="cb1-92"><a href="#cb1-92"></a> fit<span class="ot">=</span><span class="fu">optim</span>(<span class="at">par=</span><span class="fu">c</span>(.<span class="dv">1</span>, .<span class="dv">2</span>),</span>
+<span id="cb1-93"><a href="#cb1-93"></a>   <span class="at">fn =</span> wrap_alm,</span>
+<span id="cb1-94"><a href="#cb1-94"></a>   <span class="at">dat =</span> dat, <span class="at">weights =</span> wm,<span class="at">lossFun=</span>lossFun,</span>
+<span id="cb1-95"><a href="#cb1-95"></a>   <span class="at">method =</span> <span class="st">"L-BFGS-B"</span>,</span>
+<span id="cb1-96"><a href="#cb1-96"></a>   <span class="at">lower =</span> bounds_lower,</span>
+<span id="cb1-97"><a href="#cb1-97"></a>   <span class="at">upper =</span> bounds_upper,</span>
+<span id="cb1-98"><a href="#cb1-98"></a>   <span class="at">control =</span> <span class="fu">list</span>(<span class="at">maxit =</span> <span class="fl">1e5</span>, <span class="at">pgtol =</span> <span class="dv">0</span>, <span class="at">factr =</span> <span class="dv">0</span>)</span>
+<span id="cb1-99"><a href="#cb1-99"></a> )</span>
+<span id="cb1-100"><a href="#cb1-100"></a></span>
+<span id="cb1-101"><a href="#cb1-101"></a> l<span class="ot">=</span><span class="fu">reduce</span>(<span class="fu">list</span>(<span class="fu">list</span>(fit),fit<span class="sc">$</span>par,fit<span class="sc">$</span>value),append)</span>
+<span id="cb1-102"><a href="#cb1-102"></a> <span class="fu">names</span>(l)<span class="ot">=</span><span class="fu">c</span>(<span class="st">"Fit"</span>,parmsLab,<span class="st">"Value"</span>)</span>
+<span id="cb1-103"><a href="#cb1-103"></a> <span class="fu">return</span>(l)</span>
+<span id="cb1-104"><a href="#cb1-104"></a>}</span>
+<span id="cb1-105"><a href="#cb1-105"></a></span>
+<span id="cb1-106"><a href="#cb1-106"></a><span class="co"># implement wrap_optim using grid search</span></span>
+<span id="cb1-107"><a href="#cb1-107"></a>wrap_grid <span class="ot">&lt;-</span> <span class="cf">function</span>(dat,<span class="at">lossFun=</span>RMSE){</span>
+<span id="cb1-108"><a href="#cb1-108"></a>  <span class="cf">if</span>(<span class="fu">class</span>(lossFun)<span class="sc">==</span><span class="st">"character"</span>){lossFun<span class="ot">=</span><span class="fu">get</span>(lossFun)}  </span>
+<span id="cb1-109"><a href="#cb1-109"></a>  inputNodes <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">7</span>,<span class="dv">1</span>)  <span class="co"># </span></span>
+<span id="cb1-110"><a href="#cb1-110"></a>  outputNodes <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">50</span>,<span class="dv">1600</span>,<span class="dv">50</span>)</span>
+<span id="cb1-111"><a href="#cb1-111"></a>  wm<span class="ot">=</span><span class="fu">matrix</span>(.<span class="dv">0000</span>,<span class="at">nrow=</span><span class="fu">length</span>(outputNodes),<span class="at">ncol=</span><span class="fu">length</span>(inputNodes))</span>
+<span id="cb1-112"><a href="#cb1-112"></a>  testVec<span class="ot">=</span><span class="fu">seq</span>(<span class="dv">2</span>,<span class="dv">7</span>)</span>
+<span id="cb1-113"><a href="#cb1-113"></a>  <span class="co"># define grid boundaries</span></span>
+<span id="cb1-114"><a href="#cb1-114"></a>  cRange <span class="ot">&lt;-</span> <span class="fu">seq</span>(.<span class="dv">000001</span>, <span class="dv">5</span>, <span class="at">length.out =</span> <span class="dv">30</span>)</span>
+<span id="cb1-115"><a href="#cb1-115"></a>  lrRange <span class="ot">&lt;-</span> <span class="fu">seq</span>(.<span class="dv">05</span>, <span class="dv">5</span>, <span class="at">length.out =</span> <span class="dv">20</span>)</span>
+<span id="cb1-116"><a href="#cb1-116"></a>  <span class="co"># create grid</span></span>
+<span id="cb1-117"><a href="#cb1-117"></a>  grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">c =</span> cRange, <span class="at">lr =</span> lrRange)</span>
+<span id="cb1-118"><a href="#cb1-118"></a>  grid<span class="sc">$</span>Value <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb1-119"><a href="#cb1-119"></a>  <span class="co"># loop through grid</span></span>
+<span id="cb1-120"><a href="#cb1-120"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(grid)) {</span>
+<span id="cb1-121"><a href="#cb1-121"></a>    grid<span class="sc">$</span>Value[i] <span class="ot">&lt;-</span> <span class="fu">wrap_alm</span>(<span class="at">par=</span><span class="fu">c</span>(grid[i,<span class="fu">c</span>(<span class="st">"c"</span>) ],grid[i,<span class="fu">c</span>(<span class="st">"lr"</span>) ]), <span class="at">dat=</span>dat, <span class="at">weights=</span>wm,<span class="at">lossFun=</span>lossFun)</span>
+<span id="cb1-122"><a href="#cb1-122"></a>  }</span>
+<span id="cb1-123"><a href="#cb1-123"></a></span>
+<span id="cb1-124"><a href="#cb1-124"></a>  <span class="co"># find best fit</span></span>
+<span id="cb1-125"><a href="#cb1-125"></a>  bestFit <span class="ot">&lt;-</span> grid[<span class="fu">which.min</span>(grid<span class="sc">$</span>Value), ]</span>
+<span id="cb1-126"><a href="#cb1-126"></a>  bestFit<span class="sc">$</span>Value <span class="ot">&lt;-</span> <span class="fu">min</span>(grid<span class="sc">$</span>Value)</span>
+<span id="cb1-127"><a href="#cb1-127"></a></span>
+<span id="cb1-128"><a href="#cb1-128"></a>  <span class="co"># return best fit, and best c and lr</span></span>
+<span id="cb1-129"><a href="#cb1-129"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">Fit =</span> bestFit, <span class="at">c =</span> bestFit<span class="sc">$</span>c, <span class="at">lr =</span> bestFit<span class="sc">$</span>lr, <span class="at">Value =</span> bestFit<span class="sc">$</span>Value))</span>
+<span id="cb1-130"><a href="#cb1-130"></a> </span>
+<span id="cb1-131"><a href="#cb1-131"></a>}</span>
+<span id="cb1-132"><a href="#cb1-132"></a></span>
+<span id="cb1-133"><a href="#cb1-133"></a><span class="co"># sim_data &lt;- function(c=0.5, lr=0.2,noise=0,inNodes=7,outNodes=32,</span></span>
+<span id="cb1-134"><a href="#cb1-134"></a><span class="co">#                      trainVec=c(5,6,7),trainRep=10,testVec=seq(2,7)) {</span></span>
+<span id="cb1-135"><a href="#cb1-135"></a><span class="co">#   </span></span>
+<span id="cb1-136"><a href="#cb1-136"></a><span class="co">#   inputNodes &lt;&lt;- seq(1,7,length.out=inNodes*1)  </span></span>
+<span id="cb1-137"><a href="#cb1-137"></a><span class="co">#   outputNodes &lt;&lt;- seq(50,1600,length.out=outNodes*1) </span></span>
+<span id="cb1-138"><a href="#cb1-138"></a><span class="co">#   wm=matrix(.0000,nrow=length(outputNodes),ncol=length(inputNodes))</span></span>
+<span id="cb1-139"><a href="#cb1-139"></a><span class="co">#   dat&lt;-gen_train(trainVec,trainRep,noise)</span></span>
+<span id="cb1-140"><a href="#cb1-140"></a><span class="co">#   #trainDat &lt;- train.alm(dat,c,lr,wm)</span></span>
+<span id="cb1-141"><a href="#cb1-141"></a><span class="co">#   tt&lt;-trainTest.alm(dat,c,lr,wm,testVec)</span></span>
+<span id="cb1-142"><a href="#cb1-142"></a><span class="co"># }</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="loss-functions" class="level3"><h3 class="anchored" data-anchor-id="loss-functions">Loss Functions</h3>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>RMSE <span class="ot">&lt;-</span> <span class="cf">function</span>(x,y){</span>
+<span id="cb2-2"><a href="#cb2-2"></a> <span class="co"># print("rmseTrial")</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">sqrt</span>(<span class="fu">mean</span>((x<span class="sc">-</span>y)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb2-4"><a href="#cb2-4"></a>}</span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a>RMSE.blocked <span class="ot">&lt;-</span> <span class="cf">function</span>(x,y,<span class="at">blocks=</span><span class="dv">6</span>){</span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="co">#print("rmseBlocked")</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>  <span class="fu">data.table</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">t=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">length</span>(x))) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-9"><a href="#cb2-9"></a>    .[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(<span class="at">fitBins =</span> <span class="fu">cut</span>(t, <span class="at">breaks =</span> ..blocks, <span class="at">labels =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>..blocks)))] <span class="sc">%&gt;%</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>    .[, .(<span class="at">predMean =</span> <span class="fu">mean</span>(x), <span class="at">obsMean =</span> <span class="fu">mean</span>(y)), keyby <span class="ot">=</span> .(fitBins)] <span class="sc">%&gt;%</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>    .[, <span class="fu">RMSE</span>(predMean,obsMean)] <span class="sc">%&gt;%</span> <span class="fu">as.numeric</span>()</span>
+<span id="cb2-12"><a href="#cb2-12"></a>}</span>
+<span id="cb2-13"><a href="#cb2-13"></a></span>
+<span id="cb2-14"><a href="#cb2-14"></a>MAE <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb2-15"><a href="#cb2-15"></a>  <span class="fu">mean</span>(<span class="fu">abs</span>(x <span class="sc">-</span> y))</span>
+<span id="cb2-16"><a href="#cb2-16"></a>}</span>
+<span id="cb2-17"><a href="#cb2-17"></a></span>
+<span id="cb2-18"><a href="#cb2-18"></a>MAPE <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb2-19"><a href="#cb2-19"></a>  <span class="fu">mean</span>(<span class="fu">abs</span>((x <span class="sc">-</span> y) <span class="sc">/</span> y)) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>}</span>
+<span id="cb2-21"><a href="#cb2-21"></a></span>
+<span id="cb2-22"><a href="#cb2-22"></a>MedAE <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb2-23"><a href="#cb2-23"></a>  <span class="fu">median</span>(<span class="fu">abs</span>(x <span class="sc">-</span> y))</span>
+<span id="cb2-24"><a href="#cb2-24"></a>}</span>
+<span id="cb2-25"><a href="#cb2-25"></a></span>
+<span id="cb2-26"><a href="#cb2-26"></a>HuberLoss <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">delta =</span> <span class="dv">1</span>) {</span>
+<span id="cb2-27"><a href="#cb2-27"></a>  error <span class="ot">&lt;-</span> x <span class="sc">-</span> y</span>
+<span id="cb2-28"><a href="#cb2-28"></a>  abs_error <span class="ot">&lt;-</span> <span class="fu">abs</span>(error)</span>
+<span id="cb2-29"><a href="#cb2-29"></a>  loss <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(abs_error <span class="sc">&lt;=</span> delta, <span class="fl">0.5</span> <span class="sc">*</span> error<span class="sc">^</span><span class="dv">2</span>, delta <span class="sc">*</span> (abs_error <span class="sc">-</span> <span class="fl">0.5</span> <span class="sc">*</span> delta))</span>
+<span id="cb2-30"><a href="#cb2-30"></a>  <span class="fu">mean</span>(loss)</span>
+<span id="cb2-31"><a href="#cb2-31"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>k<span class="ot">=</span> parmVec <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(simNum,c,lr) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">td =</span> <span class="fu">list</span>(<span class="fu">gen_train</span>(<span class="at">trainRep =</span> <span class="fu">first</span>(trainRep), <span class="at">noise =</span> <span class="fu">first</span>(noise))),</span>
+<span id="cb3-2"><a href="#cb3-2"></a>                                                 <span class="at">o=</span><span class="fu">map</span>(td,head,<span class="dv">1</span>),<span class="at">vx1=</span><span class="fu">map</span>(o,<span class="st">"vx"</span>))</span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a>parmVec <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="fu">crossing</span>(<span class="at">c =</span> <span class="fu">c</span>(<span class="fl">0.1</span>), <span class="at">lr =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.4</span>,<span class="dv">1</span>), <span class="at">noise =</span> <span class="fu">c</span>(<span class="dv">10</span>), <span class="at">trainRep =</span> <span class="fu">c</span>(<span class="dv">20</span>), <span class="at">lossFun =</span> <span class="fu">list</span>(<span class="st">"RMSE"</span>, <span class="st">"MAE"</span>,<span class="st">"MAPE"</span>, <span class="st">"MedAE"</span>, <span class="st">"HuberLoss"</span>), <span class="at">simNum =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a>sdp <span class="ot">&lt;-</span> parmVec <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(simNum,c,lr) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">td =</span> <span class="fu">list</span>(<span class="fu">gen_train</span>(<span class="at">trainRep =</span> <span class="fu">first</span>(trainRep), <span class="at">noise =</span> <span class="fu">first</span>(noise)))) <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>  <span class="fu">mutate</span>(<span class="at">d =</span> <span class="fu">pmap</span>(<span class="fu">list</span>(td, c, lr), <span class="sc">~</span><span class="fu">sim_data</span>(<span class="at">dat =</span> .x, <span class="at">c =</span> ..<span class="dv">2</span>, <span class="at">lr =</span> ..<span class="dv">3</span>)),</span>
+<span id="cb3-8"><a href="#cb3-8"></a>         <span class="at">almTrainDat =</span> <span class="fu">map</span>(d, <span class="st">"almTrain"</span>),</span>
+<span id="cb3-9"><a href="#cb3-9"></a>         <span class="at">almTestDat =</span> <span class="fu">map</span>(d, <span class="st">"almPred"</span>),</span>
+<span id="cb3-10"><a href="#cb3-10"></a>         <span class="at">examTestDat =</span> <span class="fu">map</span>(d, <span class="st">"examPred"</span>),</span>
+<span id="cb3-11"><a href="#cb3-11"></a>         <span class="at">fitO =</span> <span class="fu">map2</span>(td, lossFun, <span class="sc">~</span><span class="fu">wrap_optim</span>(.x, .y)),</span>
+<span id="cb3-12"><a href="#cb3-12"></a>         <span class="at">cFitO =</span> <span class="fu">map_dbl</span>(fitO, <span class="st">"c"</span>),</span>
+<span id="cb3-13"><a href="#cb3-13"></a>         <span class="at">lrFitO =</span> <span class="fu">map_dbl</span>(fitO, <span class="st">"lr"</span>),</span>
+<span id="cb3-14"><a href="#cb3-14"></a>         <span class="at">optimValO =</span> <span class="fu">map_dbl</span>(fitO, <span class="st">"Value"</span>)) </span>
+<span id="cb3-15"><a href="#cb3-15"></a></span>
+<span id="cb3-16"><a href="#cb3-16"></a>sdpResults <span class="ot">&lt;-</span> sdp <span class="sc">%&gt;%</span> </span>
+<span id="cb3-17"><a href="#cb3-17"></a>  <span class="fu">mutate</span>(<span class="at">lossFun=</span><span class="fu">as.character</span>(lossFun),<span class="at">cDiff=</span>cFitO<span class="sc">-</span>c,<span class="at">lrDiff=</span>lrFitO<span class="sc">-</span>lr) <span class="sc">%&gt;%</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>  <span class="fu">relocate</span>(simNum,lossFun, c,lr,cFitO,lrFitO,optimValO,cDiff,lrDiff) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-19"><a href="#cb3-19"></a>  <span class="fu">arrange</span>(lossFun,lr,c)</span>
+<span id="cb3-20"><a href="#cb3-20"></a></span>
+<span id="cb3-21"><a href="#cb3-21"></a>averaged_sdp <span class="ot">&lt;-</span> sdpResults <span class="sc">%&gt;%</span></span>
+<span id="cb3-22"><a href="#cb3-22"></a>  <span class="fu">group_by</span>(lossFun, c, lr) <span class="sc">%&gt;%</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-24"><a href="#cb3-24"></a>    <span class="at">avg_cFitO =</span> <span class="fu">mean</span>(cFitO),</span>
+<span id="cb3-25"><a href="#cb3-25"></a>    <span class="at">avg_lrFitO =</span> <span class="fu">mean</span>(lrFitO),</span>
+<span id="cb3-26"><a href="#cb3-26"></a>    <span class="at">avg_optimValO =</span> <span class="fu">mean</span>(optimValO),</span>
+<span id="cb3-27"><a href="#cb3-27"></a>    <span class="at">avg_cDiff =</span> <span class="fu">mean</span>(cDiff),</span>
+<span id="cb3-28"><a href="#cb3-28"></a>    <span class="at">avg_lrDiff =</span> <span class="fu">mean</span>(lrDiff),</span>
+<span id="cb3-29"><a href="#cb3-29"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb3-30"><a href="#cb3-30"></a>  )</span>
+<span id="cb3-31"><a href="#cb3-31"></a></span>
+<span id="cb3-32"><a href="#cb3-32"></a></span>
+<span id="cb3-33"><a href="#cb3-33"></a>averaged_sdp <span class="ot">&lt;-</span> sdpResults <span class="sc">%&gt;%</span></span>
+<span id="cb3-34"><a href="#cb3-34"></a>  <span class="fu">group_by</span>(lossFun, c, lr) <span class="sc">%&gt;%</span></span>
+<span id="cb3-35"><a href="#cb3-35"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-36"><a href="#cb3-36"></a>    <span class="at">avg_cFitO =</span> <span class="fu">mean</span>(cFitO),</span>
+<span id="cb3-37"><a href="#cb3-37"></a>    <span class="at">var_cFitO =</span> <span class="fu">var</span>(cFitO),</span>
+<span id="cb3-38"><a href="#cb3-38"></a>    <span class="at">avg_lrFitO =</span> <span class="fu">mean</span>(lrFitO),</span>
+<span id="cb3-39"><a href="#cb3-39"></a>    <span class="at">var_lrFitO =</span> <span class="fu">var</span>(lrFitO),</span>
+<span id="cb3-40"><a href="#cb3-40"></a>    <span class="at">avg_optimValO =</span> <span class="fu">mean</span>(optimValO),</span>
+<span id="cb3-41"><a href="#cb3-41"></a>    <span class="at">var_optimValO =</span> <span class="fu">var</span>(optimValO),</span>
+<span id="cb3-42"><a href="#cb3-42"></a>    <span class="at">avg_cDiff =</span> <span class="fu">mean</span>(cDiff),</span>
+<span id="cb3-43"><a href="#cb3-43"></a>    <span class="at">var_cDiff =</span> <span class="fu">var</span>(cDiff),</span>
+<span id="cb3-44"><a href="#cb3-44"></a>    <span class="at">avg_lrDiff =</span> <span class="fu">mean</span>(lrDiff),</span>
+<span id="cb3-45"><a href="#cb3-45"></a>    <span class="at">var_lrDiff =</span> <span class="fu">var</span>(lrDiff),</span>
+<span id="cb3-46"><a href="#cb3-46"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb3-47"><a href="#cb3-47"></a>  )</span>
+<span id="cb3-48"><a href="#cb3-48"></a></span>
+<span id="cb3-49"><a href="#cb3-49"></a><span class="co"># averaged_sdp &lt;- sdp %&gt;%</span></span>
+<span id="cb3-50"><a href="#cb3-50"></a><span class="co">#   group_by(c, lr, noise, trainRep, lossFun) %&gt;%</span></span>
+<span id="cb3-51"><a href="#cb3-51"></a><span class="co">#   summarise(across(starts_with("cFit") | starts_with("lrFit") | starts_with("optimVal"), list(mean = mean), .names = "mean_{.col}")) %&gt;% </span></span>
+<span id="cb3-52"><a href="#cb3-52"></a><span class="co">#   mutate(lossFun=as.character(lossFun),</span></span>
+<span id="cb3-53"><a href="#cb3-53"></a><span class="co">#          diff_cFitO = abs(c - mean_cFitO),</span></span>
+<span id="cb3-54"><a href="#cb3-54"></a><span class="co">#          diff_lrFitO = abs(lr - mean_lrFitO)) %&gt;%</span></span>
+<span id="cb3-55"><a href="#cb3-55"></a><span class="co">#   relocate(noise, trainRep, lossFun, c, diff_cFitO, lr, diff_lrFitO) %&gt;%</span></span>
+<span id="cb3-56"><a href="#cb3-56"></a><span class="co">#   dplyr::arrange(c,lr)</span></span>
+<span id="cb3-57"><a href="#cb3-57"></a></span>
+<span id="cb3-58"><a href="#cb3-58"></a></span>
+<span id="cb3-59"><a href="#cb3-59"></a><span class="co">#k=parmVec %&gt;% group_by(simNum) %&gt;% mutate(td = list(gen_train(trainRep = first(trainRep), noise = first(noise))))</span></span>
+<span id="cb3-60"><a href="#cb3-60"></a><span class="co">#sdp &lt;- parmVec %&gt;% mutate(d = pmap(list(c, lr, noise, trainRep), ~sim_data(c = ..1, lr = ..2, noise = ..3, trainRep = ..4)),</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>g2<span class="ot">=</span> grid <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Value<span class="sc">&lt;</span><span class="dv">160</span>) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(Value)</span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#plot_ly() %&gt;% add_trace(data=g2,x=grid$c,y=grid$lr,z=grid$Value,type="mesh3d")</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a> </span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">plot_ly</span>(<span class="at">data=</span>g2,<span class="at">x=</span><span class="sc">~</span>c,<span class="at">y=</span><span class="sc">~</span>lr,<span class="at">z=</span><span class="sc">~</span>Value,<span class="at">type =</span> <span class="st">'mesh3d'</span>)</span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="fu">plot_ly</span>(g2,<span class="at">type =</span> <span class="st">'surface'</span>)</span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a></span>
+<span id="cb4-13"><a href="#cb4-13"></a>fig <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">x =</span> grid2<span class="sc">$</span>lr, <span class="at">y =</span> grid2<span class="sc">$</span>c, <span class="at">z =</span> grid2<span class="sc">$</span>Value) <span class="sc">%&gt;%</span> <span class="fu">add_surface</span>()</span>
+<span id="cb4-14"><a href="#cb4-14"></a></span>
+<span id="cb4-15"><a href="#cb4-15"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(g2, <span class="fu">aes</span>(c, lr, <span class="at">z=</span> Value)) <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a>  <span class="fu">stat_contour</span>(<span class="at">geom=</span><span class="st">"polygon"</span>,<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">stat</span>(level))) <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette =</span> <span class="st">"Spectral"</span>, <span class="at">direction =</span> <span class="dv">1</span>)</span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="fu">ggplotly</span>(p)</span>
+<span id="cb4-19"><a href="#cb4-19"></a></span>
+<span id="cb4-20"><a href="#cb4-20"></a></span>
+<span id="cb4-21"><a href="#cb4-21"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(grid, <span class="fu">aes</span>(c, lr, <span class="at">z=</span> Value,<span class="at">colour=</span><span class="fu">stat</span>(level))) <span class="sc">+</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a>  <span class="fu">geom_contour</span>() </span>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="fu">ggplotly</span>(p)</span>
+<span id="cb4-24"><a href="#cb4-24"></a></span>
+<span id="cb4-25"><a href="#cb4-25"></a></span>
+<span id="cb4-26"><a href="#cb4-26"></a><span class="fu">plot_ly</span>(g2, <span class="at">x =</span> <span class="sc">~</span>c, <span class="at">y =</span> <span class="sc">~</span>lr, <span class="at">z =</span> <span class="sc">~</span>Value, <span class="at">type =</span> <span class="st">'scatter3d'</span>, <span class="at">mode =</span> <span class="st">'lines+markers'</span>,</span>
+<span id="cb4-27"><a href="#cb4-27"></a>        <span class="at">opacity =</span> <span class="dv">7</span>, </span>
+<span id="cb4-28"><a href="#cb4-28"></a>        <span class="at">line =</span> <span class="fu">list</span>(<span class="at">width =</span> <span class="dv">6</span>, <span class="at">colorscale =</span> <span class="st">'Viridis'</span>, <span class="at">reverscale =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-29"><a href="#cb4-29"></a>        )</span>
+<span id="cb4-30"><a href="#cb4-30"></a></span>
+<span id="cb4-31"><a href="#cb4-31"></a></span>
+<span id="cb4-32"><a href="#cb4-32"></a><span class="co">#install.packages("echarts4r")</span></span>
+<span id="cb4-33"><a href="#cb4-33"></a><span class="fu">library</span>(echarts4r)</span>
+<span id="cb4-34"><a href="#cb4-34"></a>g2 <span class="sc">|&gt;</span> </span>
+<span id="cb4-35"><a href="#cb4-35"></a>  <span class="fu">e_charts</span>(c) <span class="sc">|&gt;</span> </span>
+<span id="cb4-36"><a href="#cb4-36"></a>  <span class="fu">e_surface</span>(lr, Value, <span class="at">wireframe =</span> <span class="fu">list</span>(<span class="at">show =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-37"><a href="#cb4-37"></a>  <span class="fu">e_visual_map</span>(Value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>c lr noise trainRep lossFun mean_cFitO mean_cFitG mean_lrFitO mean_lrFitG mean_optimValO mean_optimValG <dbl><dbl><dbl><dbl><chr><dbl><dbl><dbl><dbl><dbl><dbl> 1 0.1 0.4 500 20 RMSE 4.94 5 1.00 1.09 3.30e- 5 0.115<br>
+2 0.1 0.4 500 20 MAE 0.100 5 0.268 1.09 2.56e+ 1 0.0921 3 0.1 0.4 500 20 MAPE 0.101 5 0.268 1.09 2.31e+ 0 0.00954 4 0.1 0.4 500 20 MedAE 0.288 5 0.429 1.09 3.65e- 1 0.124<br>
+5 0.1 0.4 500 20 HuberLoss 8.09 5 1.00 1.09 1.98e-17 0.00662</dbl></dbl></dbl></dbl></dbl></dbl></chr></dbl></dbl></dbl></dbl></p>
+
+
+<!-- -->
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation column-body"><div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../Simulations/DeLosh97_Sim.html" class="pagination-link">
+        <span class="nav-page-text">Simulating DeLosh 1997</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb5" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">---</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="an">title:</span><span class="co"> Parameter Recovery Simulations</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="an">date:</span><span class="co"> last-modified</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="an">categories:</span><span class="co"> [Simulation, ALM, EXAM, R]</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="an">page-layout:</span><span class="co"> full</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="an">code-fold:</span><span class="co"> true</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="an">code-tools:</span><span class="co"> true</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co">  warning: false</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co">  eval: false </span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="co">---</span> </span>
+<span id="cb5-12"><a href="#cb5-12"></a></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="fu"># Parameter Recovery Simulations</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a></span>
+<span id="cb5-15"><a href="#cb5-15"></a>Assessing the parameter recovery of ALM and EXAM on synthetic data. </span>
+<span id="cb5-16"><a href="#cb5-16"></a></span>
+<span id="cb5-19"><a href="#cb5-19"></a><span class="in">```{r}</span></span>
+<span id="cb5-20"><a href="#cb5-20"></a><span class="co">#| code-fold: show</span></span>
+<span id="cb5-21"><a href="#cb5-21"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse,data.table)</span>
+<span id="cb5-22"><a href="#cb5-22"></a><span class="fu">options</span>(<span class="at">dplyr.summarise.inform=</span><span class="cn">FALSE</span>)</span>
+<span id="cb5-23"><a href="#cb5-23"></a></span>
+<span id="cb5-24"><a href="#cb5-24"></a>input.activation<span class="ot">&lt;-</span><span class="cf">function</span>(x.target, c) { <span class="fu">return</span>(<span class="fu">exp</span>((<span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>c)<span class="sc">*</span>(x.target<span class="sc">-</span>inputNodes)<span class="sc">^</span><span class="dv">2</span>))}</span>
+<span id="cb5-25"><a href="#cb5-25"></a></span>
+<span id="cb5-26"><a href="#cb5-26"></a>output.activation<span class="ot">&lt;-</span><span class="cf">function</span>(x.target, weights, c){</span>
+<span id="cb5-27"><a href="#cb5-27"></a>  <span class="fu">return</span>(weights<span class="sc">%*%</span><span class="fu">input.activation</span>(x.target, c))</span>
+<span id="cb5-28"><a href="#cb5-28"></a>}</span>
+<span id="cb5-29"><a href="#cb5-29"></a>mean.prediction<span class="ot">&lt;-</span><span class="cf">function</span>(x.target, weights, c){</span>
+<span id="cb5-30"><a href="#cb5-30"></a>  probability<span class="ot">&lt;-</span><span class="fu">output.activation</span>(x.target, weights, c)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">output.activation</span>(x.target, weights, c))</span>
+<span id="cb5-31"><a href="#cb5-31"></a>  <span class="fu">return</span>(outputNodes<span class="sc">%*%</span>probability) <span class="co"># integer prediction</span></span>
+<span id="cb5-32"><a href="#cb5-32"></a>}</span>
+<span id="cb5-33"><a href="#cb5-33"></a></span>
+<span id="cb5-34"><a href="#cb5-34"></a>update.weights<span class="ot">&lt;-</span><span class="cf">function</span>(x.new, y.new, weights, c, lr){t</span>
+<span id="cb5-35"><a href="#cb5-35"></a>  yt.feedback.activation<span class="ot">&lt;-</span><span class="fu">exp</span>(<span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>c<span class="sc">*</span>(y.new<span class="sc">-</span>outputNodes)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb5-36"><a href="#cb5-36"></a>  x.feedback.activation<span class="ot">&lt;-</span><span class="fu">output.activation</span>(x.new, weights, c)</span>
+<span id="cb5-37"><a href="#cb5-37"></a>  <span class="fu">return</span>(weights<span class="sc">+</span>lr<span class="sc">*</span>(y.feedback.activation<span class="sc">-</span>x.feedback.activation)<span class="sc">%*%</span><span class="fu">t</span>(<span class="fu">input.activation</span>(x.new, c)))</span>
+<span id="cb5-38"><a href="#cb5-38"></a>}</span>
+<span id="cb5-39"><a href="#cb5-39"></a></span>
+<span id="cb5-40"><a href="#cb5-40"></a>train.alm<span class="ot">&lt;-</span><span class="cf">function</span>(dat, <span class="at">c=</span><span class="fl">0.05</span>, <span class="at">lr=</span><span class="fl">0.5</span>, weights){</span>
+<span id="cb5-41"><a href="#cb5-41"></a>   alm.train<span class="ot">&lt;-</span><span class="fu">rep</span>(<span class="cn">NA</span>,<span class="fu">nrow</span>(dat))  </span>
+<span id="cb5-42"><a href="#cb5-42"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dat)){</span>
+<span id="cb5-43"><a href="#cb5-43"></a>    weights <span class="ot">&lt;-</span> <span class="fu">update.weights</span>(dat<span class="sc">$</span>input[i], dat<span class="sc">$</span>vx[i], weights, c, lr)</span>
+<span id="cb5-44"><a href="#cb5-44"></a>    resp <span class="ot">=</span> <span class="fu">mean.prediction</span>(dat<span class="sc">$</span>input[i], weights, c)</span>
+<span id="cb5-45"><a href="#cb5-45"></a>    alm.train[i]<span class="ot">=</span>resp</span>
+<span id="cb5-46"><a href="#cb5-46"></a>    weights[weights<span class="sc">&lt;</span><span class="dv">0</span>]<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb5-47"><a href="#cb5-47"></a>  }</span>
+<span id="cb5-48"><a href="#cb5-48"></a>  alm.train</span>
+<span id="cb5-49"><a href="#cb5-49"></a>}</span>
+<span id="cb5-50"><a href="#cb5-50"></a></span>
+<span id="cb5-51"><a href="#cb5-51"></a><span class="co"># function to generate exam predictions</span></span>
+<span id="cb5-52"><a href="#cb5-52"></a>exam.prediction<span class="ot">&lt;-</span><span class="cf">function</span>(x.target, weights, c,trainVec){</span>
+<span id="cb5-53"><a href="#cb5-53"></a>  <span class="co">#trainVec = sort(unique(x.learning))</span></span>
+<span id="cb5-54"><a href="#cb5-54"></a>  nearestTrain <span class="ot">=</span> trainVec[<span class="fu">which.min</span>(<span class="fu">abs</span>(trainVec<span class="sc">-</span>x.target))]</span>
+<span id="cb5-55"><a href="#cb5-55"></a>  aresp <span class="ot">=</span> <span class="fu">mean.prediction</span>(nearestTrain, weights, c)</span>
+<span id="cb5-56"><a href="#cb5-56"></a>  xUnder <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">min</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">-</span> <span class="dv">1</span>])</span>
+<span id="cb5-57"><a href="#cb5-57"></a>  xOver <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">max</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">+</span> <span class="dv">1</span>])</span>
+<span id="cb5-58"><a href="#cb5-58"></a>  mUnder <span class="ot">=</span> <span class="fu">mean.prediction</span>(xUnder, weights, c)</span>
+<span id="cb5-59"><a href="#cb5-59"></a>  mOver <span class="ot">=</span> <span class="fu">mean.prediction</span>(xOver, weights, c)</span>
+<span id="cb5-60"><a href="#cb5-60"></a>  exam.output <span class="ot">=</span> <span class="fu">round</span>(aresp <span class="sc">+</span> ((mOver <span class="sc">-</span> mUnder) <span class="sc">/</span> (xOver <span class="sc">-</span> xUnder)) <span class="sc">*</span> (x.target <span class="sc">-</span> nearestTrain), <span class="dv">3</span>)</span>
+<span id="cb5-61"><a href="#cb5-61"></a>  exam.output</span>
+<span id="cb5-62"><a href="#cb5-62"></a>}</span>
+<span id="cb5-63"><a href="#cb5-63"></a></span>
+<span id="cb5-64"><a href="#cb5-64"></a><span class="co"># Modify the sim_data function to accept the dataset as an argument</span></span>
+<span id="cb5-65"><a href="#cb5-65"></a>sim_data <span class="ot">&lt;-</span> <span class="cf">function</span>(dat, <span class="at">c=</span><span class="fl">0.5</span>, <span class="at">lr=</span><span class="fl">0.2</span>, <span class="at">inNodes=</span><span class="dv">7</span>, <span class="at">outNodes=</span><span class="dv">32</span>, <span class="at">trainVec=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>)) {</span>
+<span id="cb5-66"><a href="#cb5-66"></a>  inputNodes <span class="ot">&lt;&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">7</span>,<span class="at">length.out=</span>inNodes<span class="sc">*</span><span class="dv">1</span>)  </span>
+<span id="cb5-67"><a href="#cb5-67"></a>  outputNodes <span class="ot">&lt;&lt;-</span> <span class="fu">seq</span>(<span class="dv">50</span>,<span class="dv">1600</span>,<span class="at">length.out=</span>outNodes<span class="sc">*</span><span class="dv">1</span>) </span>
+<span id="cb5-68"><a href="#cb5-68"></a>  wm<span class="ot">=</span><span class="fu">matrix</span>(.<span class="dv">0000</span>,<span class="at">nrow=</span><span class="fu">length</span>(outputNodes),<span class="at">ncol=</span><span class="fu">length</span>(inputNodes))</span>
+<span id="cb5-69"><a href="#cb5-69"></a>  tt<span class="ot">&lt;-</span><span class="fu">trainTest.alm</span>(dat, c, lr, wm, trainVec)</span>
+<span id="cb5-70"><a href="#cb5-70"></a>}</span>
+<span id="cb5-71"><a href="#cb5-71"></a></span>
+<span id="cb5-72"><a href="#cb5-72"></a>gen_train <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">trainVec=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>),<span class="at">trainRep=</span><span class="dv">10</span>,<span class="at">noise=</span><span class="dv">0</span>){</span>
+<span id="cb5-73"><a href="#cb5-73"></a>   bandVec<span class="ot">=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>,<span class="dv">350</span>,<span class="dv">600</span>,<span class="dv">800</span>,<span class="dv">1000</span>,<span class="dv">1200</span>)</span>
+<span id="cb5-74"><a href="#cb5-74"></a>   ts <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">length</span>(trainVec)),trainRep)</span>
+<span id="cb5-75"><a href="#cb5-75"></a>   noiseVec<span class="ot">=</span><span class="fu">rnorm</span>(<span class="fu">length</span>(ts),<span class="at">mean=</span><span class="dv">0</span>)<span class="sc">*</span>noise</span>
+<span id="cb5-76"><a href="#cb5-76"></a>   <span class="cf">if</span>(noise<span class="sc">==</span><span class="dv">0</span>) {noiseVec<span class="ot">=</span>noiseVec<span class="sc">*</span><span class="dv">0</span>}</span>
+<span id="cb5-77"><a href="#cb5-77"></a>   <span class="fu">tibble</span>(<span class="at">input=</span>trainVec[ts],<span class="at">vx=</span>bandVec[trainVec[ts]]<span class="sc">+</span>noiseVec)</span>
+<span id="cb5-78"><a href="#cb5-78"></a>}</span>
+<span id="cb5-79"><a href="#cb5-79"></a></span>
+<span id="cb5-80"><a href="#cb5-80"></a></span>
+<span id="cb5-81"><a href="#cb5-81"></a>trainTest.alm<span class="ot">&lt;-</span><span class="cf">function</span>(dat, <span class="at">c=</span><span class="fl">0.05</span>, <span class="at">lr=</span><span class="fl">0.5</span>, weights,testVec){</span>
+<span id="cb5-82"><a href="#cb5-82"></a>   alm.train<span class="ot">&lt;-</span><span class="fu">rep</span>(<span class="cn">NA</span>,<span class="fu">nrow</span>(dat))  </span>
+<span id="cb5-83"><a href="#cb5-83"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dat)){</span>
+<span id="cb5-84"><a href="#cb5-84"></a>    weights <span class="ot">&lt;-</span> <span class="fu">update.weights</span>(dat<span class="sc">$</span>input[i], dat<span class="sc">$</span>vx[i], weights, c, lr)</span>
+<span id="cb5-85"><a href="#cb5-85"></a>    resp <span class="ot">=</span> <span class="fu">mean.prediction</span>(dat<span class="sc">$</span>input[i], weights, c)</span>
+<span id="cb5-86"><a href="#cb5-86"></a>    alm.train[i]<span class="ot">=</span>resp</span>
+<span id="cb5-87"><a href="#cb5-87"></a>    weights[weights<span class="sc">&lt;</span><span class="dv">0</span>]<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb5-88"><a href="#cb5-88"></a>  }</span>
+<span id="cb5-89"><a href="#cb5-89"></a>  almPred <span class="ot">&lt;-</span> <span class="fu">sapply</span>(testVec,mean.prediction,weights,c)</span>
+<span id="cb5-90"><a href="#cb5-90"></a>  examPred <span class="ot">&lt;-</span> <span class="fu">sapply</span>(testVec,exam.prediction,weights,c,<span class="at">trainVec=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="fu">sort</span>(<span class="fu">unique</span>(dat<span class="sc">$</span>input))))</span>
+<span id="cb5-91"><a href="#cb5-91"></a>  <span class="fu">list</span>(<span class="at">almTrain=</span>alm.train,<span class="at">almPred=</span>almPred,<span class="at">examPred=</span>examPred)</span>
+<span id="cb5-92"><a href="#cb5-92"></a>}</span>
+<span id="cb5-93"><a href="#cb5-93"></a></span>
+<span id="cb5-94"><a href="#cb5-94"></a>wrap_alm <span class="ot">&lt;-</span> <span class="cf">function</span>(par,dat, weights,lossFun){</span>
+<span id="cb5-95"><a href="#cb5-95"></a>    c<span class="ot">=</span>par[<span class="dv">1</span>]; lr<span class="ot">=</span>par[<span class="dv">2</span>]</span>
+<span id="cb5-96"><a href="#cb5-96"></a>   pred<span class="ot">=</span><span class="fu">train.alm</span>(dat, <span class="at">c=</span>c, <span class="at">lr=</span>lr, <span class="at">weights=</span>weights)</span>
+<span id="cb5-97"><a href="#cb5-97"></a>   <span class="co">#sqrt(mean((dat$vx -pred)^2))</span></span>
+<span id="cb5-98"><a href="#cb5-98"></a>   <span class="fu">lossFun</span>(dat<span class="sc">$</span>vx,pred)</span>
+<span id="cb5-99"><a href="#cb5-99"></a>}</span>
+<span id="cb5-100"><a href="#cb5-100"></a></span>
+<span id="cb5-101"><a href="#cb5-101"></a>wrap_optim <span class="ot">&lt;-</span> <span class="cf">function</span>(dat,<span class="at">lossFun=</span>RMSE){</span>
+<span id="cb5-102"><a href="#cb5-102"></a>  <span class="cf">if</span>(<span class="fu">class</span>(lossFun)<span class="sc">==</span><span class="st">"character"</span>){lossFun<span class="ot">=</span><span class="fu">get</span>(lossFun)}</span>
+<span id="cb5-103"><a href="#cb5-103"></a>  inputNodes <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">7</span>,<span class="dv">1</span>)  <span class="co"># </span></span>
+<span id="cb5-104"><a href="#cb5-104"></a>  outputNodes <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">50</span>,<span class="dv">1600</span>,<span class="dv">50</span>)</span>
+<span id="cb5-105"><a href="#cb5-105"></a>  wm<span class="ot">=</span><span class="fu">matrix</span>(.<span class="dv">00001</span>,<span class="at">nrow=</span><span class="fu">length</span>(outputNodes),<span class="at">ncol=</span><span class="fu">length</span>(inputNodes))</span>
+<span id="cb5-106"><a href="#cb5-106"></a>  testVec<span class="ot">=</span><span class="fu">seq</span>(<span class="dv">2</span>,<span class="dv">7</span>)</span>
+<span id="cb5-107"><a href="#cb5-107"></a>  </span>
+<span id="cb5-108"><a href="#cb5-108"></a>  bounds_lower <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">0000001</span>, .<span class="dv">00001</span>)</span>
+<span id="cb5-109"><a href="#cb5-109"></a>  bounds_upper <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb5-110"><a href="#cb5-110"></a>  parmsLab <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"c"</span>,<span class="st">"lr"</span>)</span>
+<span id="cb5-111"><a href="#cb5-111"></a>  </span>
+<span id="cb5-112"><a href="#cb5-112"></a> fit<span class="ot">=</span><span class="fu">optim</span>(<span class="at">par=</span><span class="fu">c</span>(.<span class="dv">1</span>, .<span class="dv">2</span>),</span>
+<span id="cb5-113"><a href="#cb5-113"></a>   <span class="at">fn =</span> wrap_alm,</span>
+<span id="cb5-114"><a href="#cb5-114"></a>   <span class="at">dat =</span> dat, <span class="at">weights =</span> wm,<span class="at">lossFun=</span>lossFun,</span>
+<span id="cb5-115"><a href="#cb5-115"></a>   <span class="at">method =</span> <span class="st">"L-BFGS-B"</span>,</span>
+<span id="cb5-116"><a href="#cb5-116"></a>   <span class="at">lower =</span> bounds_lower,</span>
+<span id="cb5-117"><a href="#cb5-117"></a>   <span class="at">upper =</span> bounds_upper,</span>
+<span id="cb5-118"><a href="#cb5-118"></a>   <span class="at">control =</span> <span class="fu">list</span>(<span class="at">maxit =</span> <span class="fl">1e5</span>, <span class="at">pgtol =</span> <span class="dv">0</span>, <span class="at">factr =</span> <span class="dv">0</span>)</span>
+<span id="cb5-119"><a href="#cb5-119"></a> )</span>
+<span id="cb5-120"><a href="#cb5-120"></a></span>
+<span id="cb5-121"><a href="#cb5-121"></a> l<span class="ot">=</span><span class="fu">reduce</span>(<span class="fu">list</span>(<span class="fu">list</span>(fit),fit<span class="sc">$</span>par,fit<span class="sc">$</span>value),append)</span>
+<span id="cb5-122"><a href="#cb5-122"></a> <span class="fu">names</span>(l)<span class="ot">=</span><span class="fu">c</span>(<span class="st">"Fit"</span>,parmsLab,<span class="st">"Value"</span>)</span>
+<span id="cb5-123"><a href="#cb5-123"></a> <span class="fu">return</span>(l)</span>
+<span id="cb5-124"><a href="#cb5-124"></a>}</span>
+<span id="cb5-125"><a href="#cb5-125"></a></span>
+<span id="cb5-126"><a href="#cb5-126"></a><span class="co"># implement wrap_optim using grid search</span></span>
+<span id="cb5-127"><a href="#cb5-127"></a>wrap_grid <span class="ot">&lt;-</span> <span class="cf">function</span>(dat,<span class="at">lossFun=</span>RMSE){</span>
+<span id="cb5-128"><a href="#cb5-128"></a>  <span class="cf">if</span>(<span class="fu">class</span>(lossFun)<span class="sc">==</span><span class="st">"character"</span>){lossFun<span class="ot">=</span><span class="fu">get</span>(lossFun)}  </span>
+<span id="cb5-129"><a href="#cb5-129"></a>  inputNodes <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">7</span>,<span class="dv">1</span>)  <span class="co"># </span></span>
+<span id="cb5-130"><a href="#cb5-130"></a>  outputNodes <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">50</span>,<span class="dv">1600</span>,<span class="dv">50</span>)</span>
+<span id="cb5-131"><a href="#cb5-131"></a>  wm<span class="ot">=</span><span class="fu">matrix</span>(.<span class="dv">0000</span>,<span class="at">nrow=</span><span class="fu">length</span>(outputNodes),<span class="at">ncol=</span><span class="fu">length</span>(inputNodes))</span>
+<span id="cb5-132"><a href="#cb5-132"></a>  testVec<span class="ot">=</span><span class="fu">seq</span>(<span class="dv">2</span>,<span class="dv">7</span>)</span>
+<span id="cb5-133"><a href="#cb5-133"></a>  <span class="co"># define grid boundaries</span></span>
+<span id="cb5-134"><a href="#cb5-134"></a>  cRange <span class="ot">&lt;-</span> <span class="fu">seq</span>(.<span class="dv">000001</span>, <span class="dv">5</span>, <span class="at">length.out =</span> <span class="dv">30</span>)</span>
+<span id="cb5-135"><a href="#cb5-135"></a>  lrRange <span class="ot">&lt;-</span> <span class="fu">seq</span>(.<span class="dv">05</span>, <span class="dv">5</span>, <span class="at">length.out =</span> <span class="dv">20</span>)</span>
+<span id="cb5-136"><a href="#cb5-136"></a>  <span class="co"># create grid</span></span>
+<span id="cb5-137"><a href="#cb5-137"></a>  grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">c =</span> cRange, <span class="at">lr =</span> lrRange)</span>
+<span id="cb5-138"><a href="#cb5-138"></a>  grid<span class="sc">$</span>Value <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb5-139"><a href="#cb5-139"></a>  <span class="co"># loop through grid</span></span>
+<span id="cb5-140"><a href="#cb5-140"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(grid)) {</span>
+<span id="cb5-141"><a href="#cb5-141"></a>    grid<span class="sc">$</span>Value[i] <span class="ot">&lt;-</span> <span class="fu">wrap_alm</span>(<span class="at">par=</span><span class="fu">c</span>(grid[i,<span class="fu">c</span>(<span class="st">"c"</span>) ],grid[i,<span class="fu">c</span>(<span class="st">"lr"</span>) ]), <span class="at">dat=</span>dat, <span class="at">weights=</span>wm,<span class="at">lossFun=</span>lossFun)</span>
+<span id="cb5-142"><a href="#cb5-142"></a>  }</span>
+<span id="cb5-143"><a href="#cb5-143"></a></span>
+<span id="cb5-144"><a href="#cb5-144"></a>  <span class="co"># find best fit</span></span>
+<span id="cb5-145"><a href="#cb5-145"></a>  bestFit <span class="ot">&lt;-</span> grid[<span class="fu">which.min</span>(grid<span class="sc">$</span>Value), ]</span>
+<span id="cb5-146"><a href="#cb5-146"></a>  bestFit<span class="sc">$</span>Value <span class="ot">&lt;-</span> <span class="fu">min</span>(grid<span class="sc">$</span>Value)</span>
+<span id="cb5-147"><a href="#cb5-147"></a></span>
+<span id="cb5-148"><a href="#cb5-148"></a>  <span class="co"># return best fit, and best c and lr</span></span>
+<span id="cb5-149"><a href="#cb5-149"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">Fit =</span> bestFit, <span class="at">c =</span> bestFit<span class="sc">$</span>c, <span class="at">lr =</span> bestFit<span class="sc">$</span>lr, <span class="at">Value =</span> bestFit<span class="sc">$</span>Value))</span>
+<span id="cb5-150"><a href="#cb5-150"></a> </span>
+<span id="cb5-151"><a href="#cb5-151"></a>}</span>
+<span id="cb5-152"><a href="#cb5-152"></a></span>
+<span id="cb5-153"><a href="#cb5-153"></a><span class="co"># sim_data &lt;- function(c=0.5, lr=0.2,noise=0,inNodes=7,outNodes=32,</span></span>
+<span id="cb5-154"><a href="#cb5-154"></a><span class="co">#                      trainVec=c(5,6,7),trainRep=10,testVec=seq(2,7)) {</span></span>
+<span id="cb5-155"><a href="#cb5-155"></a><span class="co">#   </span></span>
+<span id="cb5-156"><a href="#cb5-156"></a><span class="co">#   inputNodes &lt;&lt;- seq(1,7,length.out=inNodes*1)  </span></span>
+<span id="cb5-157"><a href="#cb5-157"></a><span class="co">#   outputNodes &lt;&lt;- seq(50,1600,length.out=outNodes*1) </span></span>
+<span id="cb5-158"><a href="#cb5-158"></a><span class="co">#   wm=matrix(.0000,nrow=length(outputNodes),ncol=length(inputNodes))</span></span>
+<span id="cb5-159"><a href="#cb5-159"></a><span class="co">#   dat&lt;-gen_train(trainVec,trainRep,noise)</span></span>
+<span id="cb5-160"><a href="#cb5-160"></a><span class="co">#   #trainDat &lt;- train.alm(dat,c,lr,wm)</span></span>
+<span id="cb5-161"><a href="#cb5-161"></a><span class="co">#   tt&lt;-trainTest.alm(dat,c,lr,wm,testVec)</span></span>
+<span id="cb5-162"><a href="#cb5-162"></a><span class="co"># }</span></span>
+<span id="cb5-163"><a href="#cb5-163"></a><span class="in">```</span></span>
+<span id="cb5-164"><a href="#cb5-164"></a></span>
+<span id="cb5-165"><a href="#cb5-165"></a></span>
+<span id="cb5-166"><a href="#cb5-166"></a><span class="fu">### Loss Functions</span></span>
+<span id="cb5-169"><a href="#cb5-169"></a><span class="in">```{r}</span></span>
+<span id="cb5-170"><a href="#cb5-170"></a>RMSE <span class="ot">&lt;-</span> <span class="cf">function</span>(x,y){</span>
+<span id="cb5-171"><a href="#cb5-171"></a> <span class="co"># print("rmseTrial")</span></span>
+<span id="cb5-172"><a href="#cb5-172"></a>  <span class="fu">sqrt</span>(<span class="fu">mean</span>((x<span class="sc">-</span>y)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb5-173"><a href="#cb5-173"></a>}</span>
+<span id="cb5-174"><a href="#cb5-174"></a></span>
+<span id="cb5-175"><a href="#cb5-175"></a>RMSE.blocked <span class="ot">&lt;-</span> <span class="cf">function</span>(x,y,<span class="at">blocks=</span><span class="dv">6</span>){</span>
+<span id="cb5-176"><a href="#cb5-176"></a>  <span class="co">#print("rmseBlocked")</span></span>
+<span id="cb5-177"><a href="#cb5-177"></a>  <span class="fu">data.table</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">t=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">length</span>(x))) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-178"><a href="#cb5-178"></a>    .[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(<span class="at">fitBins =</span> <span class="fu">cut</span>(t, <span class="at">breaks =</span> ..blocks, <span class="at">labels =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>..blocks)))] <span class="sc">%&gt;%</span></span>
+<span id="cb5-179"><a href="#cb5-179"></a>    .[, .(<span class="at">predMean =</span> <span class="fu">mean</span>(x), <span class="at">obsMean =</span> <span class="fu">mean</span>(y)), keyby <span class="ot">=</span> .(fitBins)] <span class="sc">%&gt;%</span></span>
+<span id="cb5-180"><a href="#cb5-180"></a>    .[, <span class="fu">RMSE</span>(predMean,obsMean)] <span class="sc">%&gt;%</span> <span class="fu">as.numeric</span>()</span>
+<span id="cb5-181"><a href="#cb5-181"></a>}</span>
+<span id="cb5-182"><a href="#cb5-182"></a></span>
+<span id="cb5-183"><a href="#cb5-183"></a>MAE <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb5-184"><a href="#cb5-184"></a>  <span class="fu">mean</span>(<span class="fu">abs</span>(x <span class="sc">-</span> y))</span>
+<span id="cb5-185"><a href="#cb5-185"></a>}</span>
+<span id="cb5-186"><a href="#cb5-186"></a></span>
+<span id="cb5-187"><a href="#cb5-187"></a>MAPE <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb5-188"><a href="#cb5-188"></a>  <span class="fu">mean</span>(<span class="fu">abs</span>((x <span class="sc">-</span> y) <span class="sc">/</span> y)) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb5-189"><a href="#cb5-189"></a>}</span>
+<span id="cb5-190"><a href="#cb5-190"></a></span>
+<span id="cb5-191"><a href="#cb5-191"></a>MedAE <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb5-192"><a href="#cb5-192"></a>  <span class="fu">median</span>(<span class="fu">abs</span>(x <span class="sc">-</span> y))</span>
+<span id="cb5-193"><a href="#cb5-193"></a>}</span>
+<span id="cb5-194"><a href="#cb5-194"></a></span>
+<span id="cb5-195"><a href="#cb5-195"></a>HuberLoss <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">delta =</span> <span class="dv">1</span>) {</span>
+<span id="cb5-196"><a href="#cb5-196"></a>  error <span class="ot">&lt;-</span> x <span class="sc">-</span> y</span>
+<span id="cb5-197"><a href="#cb5-197"></a>  abs_error <span class="ot">&lt;-</span> <span class="fu">abs</span>(error)</span>
+<span id="cb5-198"><a href="#cb5-198"></a>  loss <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(abs_error <span class="sc">&lt;=</span> delta, <span class="fl">0.5</span> <span class="sc">*</span> error<span class="sc">^</span><span class="dv">2</span>, delta <span class="sc">*</span> (abs_error <span class="sc">-</span> <span class="fl">0.5</span> <span class="sc">*</span> delta))</span>
+<span id="cb5-199"><a href="#cb5-199"></a>  <span class="fu">mean</span>(loss)</span>
+<span id="cb5-200"><a href="#cb5-200"></a>}</span>
+<span id="cb5-201"><a href="#cb5-201"></a></span>
+<span id="cb5-202"><a href="#cb5-202"></a></span>
+<span id="cb5-203"><a href="#cb5-203"></a><span class="in">```</span></span>
+<span id="cb5-204"><a href="#cb5-204"></a></span>
+<span id="cb5-205"><a href="#cb5-205"></a></span>
+<span id="cb5-206"><a href="#cb5-206"></a></span>
+<span id="cb5-207"><a href="#cb5-207"></a></span>
+<span id="cb5-208"><a href="#cb5-208"></a></span>
+<span id="cb5-209"><a href="#cb5-209"></a></span>
+<span id="cb5-210"><a href="#cb5-210"></a></span>
+<span id="cb5-211"><a href="#cb5-211"></a></span>
+<span id="cb5-212"><a href="#cb5-212"></a></span>
+<span id="cb5-215"><a href="#cb5-215"></a><span class="in">```{r}</span></span>
+<span id="cb5-216"><a href="#cb5-216"></a>k<span class="ot">=</span> parmVec <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(simNum,c,lr) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">td =</span> <span class="fu">list</span>(<span class="fu">gen_train</span>(<span class="at">trainRep =</span> <span class="fu">first</span>(trainRep), <span class="at">noise =</span> <span class="fu">first</span>(noise))),</span>
+<span id="cb5-217"><a href="#cb5-217"></a>                                                 <span class="at">o=</span><span class="fu">map</span>(td,head,<span class="dv">1</span>),<span class="at">vx1=</span><span class="fu">map</span>(o,<span class="st">"vx"</span>))</span>
+<span id="cb5-218"><a href="#cb5-218"></a></span>
+<span id="cb5-219"><a href="#cb5-219"></a>parmVec <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="fu">crossing</span>(<span class="at">c =</span> <span class="fu">c</span>(<span class="fl">0.1</span>), <span class="at">lr =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.4</span>,<span class="dv">1</span>), <span class="at">noise =</span> <span class="fu">c</span>(<span class="dv">10</span>), <span class="at">trainRep =</span> <span class="fu">c</span>(<span class="dv">20</span>), <span class="at">lossFun =</span> <span class="fu">list</span>(<span class="st">"RMSE"</span>, <span class="st">"MAE"</span>,<span class="st">"MAPE"</span>, <span class="st">"MedAE"</span>, <span class="st">"HuberLoss"</span>), <span class="at">simNum =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span>
+<span id="cb5-220"><a href="#cb5-220"></a></span>
+<span id="cb5-221"><a href="#cb5-221"></a>sdp <span class="ot">&lt;-</span> parmVec <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(simNum,c,lr) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">td =</span> <span class="fu">list</span>(<span class="fu">gen_train</span>(<span class="at">trainRep =</span> <span class="fu">first</span>(trainRep), <span class="at">noise =</span> <span class="fu">first</span>(noise)))) <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-222"><a href="#cb5-222"></a>  <span class="fu">mutate</span>(<span class="at">d =</span> <span class="fu">pmap</span>(<span class="fu">list</span>(td, c, lr), <span class="sc">~</span><span class="fu">sim_data</span>(<span class="at">dat =</span> .x, <span class="at">c =</span> ..<span class="dv">2</span>, <span class="at">lr =</span> ..<span class="dv">3</span>)),</span>
+<span id="cb5-223"><a href="#cb5-223"></a>         <span class="at">almTrainDat =</span> <span class="fu">map</span>(d, <span class="st">"almTrain"</span>),</span>
+<span id="cb5-224"><a href="#cb5-224"></a>         <span class="at">almTestDat =</span> <span class="fu">map</span>(d, <span class="st">"almPred"</span>),</span>
+<span id="cb5-225"><a href="#cb5-225"></a>         <span class="at">examTestDat =</span> <span class="fu">map</span>(d, <span class="st">"examPred"</span>),</span>
+<span id="cb5-226"><a href="#cb5-226"></a>         <span class="at">fitO =</span> <span class="fu">map2</span>(td, lossFun, <span class="sc">~</span><span class="fu">wrap_optim</span>(.x, .y)),</span>
+<span id="cb5-227"><a href="#cb5-227"></a>         <span class="at">cFitO =</span> <span class="fu">map_dbl</span>(fitO, <span class="st">"c"</span>),</span>
+<span id="cb5-228"><a href="#cb5-228"></a>         <span class="at">lrFitO =</span> <span class="fu">map_dbl</span>(fitO, <span class="st">"lr"</span>),</span>
+<span id="cb5-229"><a href="#cb5-229"></a>         <span class="at">optimValO =</span> <span class="fu">map_dbl</span>(fitO, <span class="st">"Value"</span>)) </span>
+<span id="cb5-230"><a href="#cb5-230"></a></span>
+<span id="cb5-231"><a href="#cb5-231"></a>sdpResults <span class="ot">&lt;-</span> sdp <span class="sc">%&gt;%</span> </span>
+<span id="cb5-232"><a href="#cb5-232"></a>  <span class="fu">mutate</span>(<span class="at">lossFun=</span><span class="fu">as.character</span>(lossFun),<span class="at">cDiff=</span>cFitO<span class="sc">-</span>c,<span class="at">lrDiff=</span>lrFitO<span class="sc">-</span>lr) <span class="sc">%&gt;%</span></span>
+<span id="cb5-233"><a href="#cb5-233"></a>  <span class="fu">relocate</span>(simNum,lossFun, c,lr,cFitO,lrFitO,optimValO,cDiff,lrDiff) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-234"><a href="#cb5-234"></a>  <span class="fu">arrange</span>(lossFun,lr,c)</span>
+<span id="cb5-235"><a href="#cb5-235"></a></span>
+<span id="cb5-236"><a href="#cb5-236"></a>averaged_sdp <span class="ot">&lt;-</span> sdpResults <span class="sc">%&gt;%</span></span>
+<span id="cb5-237"><a href="#cb5-237"></a>  <span class="fu">group_by</span>(lossFun, c, lr) <span class="sc">%&gt;%</span></span>
+<span id="cb5-238"><a href="#cb5-238"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb5-239"><a href="#cb5-239"></a>    <span class="at">avg_cFitO =</span> <span class="fu">mean</span>(cFitO),</span>
+<span id="cb5-240"><a href="#cb5-240"></a>    <span class="at">avg_lrFitO =</span> <span class="fu">mean</span>(lrFitO),</span>
+<span id="cb5-241"><a href="#cb5-241"></a>    <span class="at">avg_optimValO =</span> <span class="fu">mean</span>(optimValO),</span>
+<span id="cb5-242"><a href="#cb5-242"></a>    <span class="at">avg_cDiff =</span> <span class="fu">mean</span>(cDiff),</span>
+<span id="cb5-243"><a href="#cb5-243"></a>    <span class="at">avg_lrDiff =</span> <span class="fu">mean</span>(lrDiff),</span>
+<span id="cb5-244"><a href="#cb5-244"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb5-245"><a href="#cb5-245"></a>  )</span>
+<span id="cb5-246"><a href="#cb5-246"></a></span>
+<span id="cb5-247"><a href="#cb5-247"></a></span>
+<span id="cb5-248"><a href="#cb5-248"></a>averaged_sdp <span class="ot">&lt;-</span> sdpResults <span class="sc">%&gt;%</span></span>
+<span id="cb5-249"><a href="#cb5-249"></a>  <span class="fu">group_by</span>(lossFun, c, lr) <span class="sc">%&gt;%</span></span>
+<span id="cb5-250"><a href="#cb5-250"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb5-251"><a href="#cb5-251"></a>    <span class="at">avg_cFitO =</span> <span class="fu">mean</span>(cFitO),</span>
+<span id="cb5-252"><a href="#cb5-252"></a>    <span class="at">var_cFitO =</span> <span class="fu">var</span>(cFitO),</span>
+<span id="cb5-253"><a href="#cb5-253"></a>    <span class="at">avg_lrFitO =</span> <span class="fu">mean</span>(lrFitO),</span>
+<span id="cb5-254"><a href="#cb5-254"></a>    <span class="at">var_lrFitO =</span> <span class="fu">var</span>(lrFitO),</span>
+<span id="cb5-255"><a href="#cb5-255"></a>    <span class="at">avg_optimValO =</span> <span class="fu">mean</span>(optimValO),</span>
+<span id="cb5-256"><a href="#cb5-256"></a>    <span class="at">var_optimValO =</span> <span class="fu">var</span>(optimValO),</span>
+<span id="cb5-257"><a href="#cb5-257"></a>    <span class="at">avg_cDiff =</span> <span class="fu">mean</span>(cDiff),</span>
+<span id="cb5-258"><a href="#cb5-258"></a>    <span class="at">var_cDiff =</span> <span class="fu">var</span>(cDiff),</span>
+<span id="cb5-259"><a href="#cb5-259"></a>    <span class="at">avg_lrDiff =</span> <span class="fu">mean</span>(lrDiff),</span>
+<span id="cb5-260"><a href="#cb5-260"></a>    <span class="at">var_lrDiff =</span> <span class="fu">var</span>(lrDiff),</span>
+<span id="cb5-261"><a href="#cb5-261"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb5-262"><a href="#cb5-262"></a>  )</span>
+<span id="cb5-263"><a href="#cb5-263"></a></span>
+<span id="cb5-264"><a href="#cb5-264"></a><span class="co"># averaged_sdp &lt;- sdp %&gt;%</span></span>
+<span id="cb5-265"><a href="#cb5-265"></a><span class="co">#   group_by(c, lr, noise, trainRep, lossFun) %&gt;%</span></span>
+<span id="cb5-266"><a href="#cb5-266"></a><span class="co">#   summarise(across(starts_with("cFit") | starts_with("lrFit") | starts_with("optimVal"), list(mean = mean), .names = "mean_{.col}")) %&gt;% </span></span>
+<span id="cb5-267"><a href="#cb5-267"></a><span class="co">#   mutate(lossFun=as.character(lossFun),</span></span>
+<span id="cb5-268"><a href="#cb5-268"></a><span class="co">#          diff_cFitO = abs(c - mean_cFitO),</span></span>
+<span id="cb5-269"><a href="#cb5-269"></a><span class="co">#          diff_lrFitO = abs(lr - mean_lrFitO)) %&gt;%</span></span>
+<span id="cb5-270"><a href="#cb5-270"></a><span class="co">#   relocate(noise, trainRep, lossFun, c, diff_cFitO, lr, diff_lrFitO) %&gt;%</span></span>
+<span id="cb5-271"><a href="#cb5-271"></a><span class="co">#   dplyr::arrange(c,lr)</span></span>
+<span id="cb5-272"><a href="#cb5-272"></a></span>
+<span id="cb5-273"><a href="#cb5-273"></a></span>
+<span id="cb5-274"><a href="#cb5-274"></a><span class="co">#k=parmVec %&gt;% group_by(simNum) %&gt;% mutate(td = list(gen_train(trainRep = first(trainRep), noise = first(noise))))</span></span>
+<span id="cb5-275"><a href="#cb5-275"></a><span class="co">#sdp &lt;- parmVec %&gt;% mutate(d = pmap(list(c, lr, noise, trainRep), ~sim_data(c = ..1, lr = ..2, noise = ..3, trainRep = ..4)),</span></span>
+<span id="cb5-276"><a href="#cb5-276"></a></span>
+<span id="cb5-277"><a href="#cb5-277"></a><span class="in">```</span></span>
+<span id="cb5-278"><a href="#cb5-278"></a></span>
+<span id="cb5-279"><a href="#cb5-279"></a></span>
+<span id="cb5-280"><a href="#cb5-280"></a></span>
+<span id="cb5-281"><a href="#cb5-281"></a></span>
+<span id="cb5-282"><a href="#cb5-282"></a></span>
+<span id="cb5-283"><a href="#cb5-283"></a></span>
+<span id="cb5-284"><a href="#cb5-284"></a></span>
+<span id="cb5-285"><a href="#cb5-285"></a></span>
+<span id="cb5-286"><a href="#cb5-286"></a></span>
+<span id="cb5-287"><a href="#cb5-287"></a></span>
+<span id="cb5-290"><a href="#cb5-290"></a><span class="in">```{r}</span></span>
+<span id="cb5-291"><a href="#cb5-291"></a><span class="in">```</span></span>
+<span id="cb5-292"><a href="#cb5-292"></a></span>
+<span id="cb5-293"><a href="#cb5-293"></a></span>
+<span id="cb5-296"><a href="#cb5-296"></a><span class="in">```{r}</span></span>
+<span id="cb5-297"><a href="#cb5-297"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb5-298"><a href="#cb5-298"></a></span>
+<span id="cb5-299"><a href="#cb5-299"></a>g2<span class="ot">=</span> grid <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Value<span class="sc">&lt;</span><span class="dv">160</span>) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(Value)</span>
+<span id="cb5-300"><a href="#cb5-300"></a><span class="co">#plot_ly() %&gt;% add_trace(data=g2,x=grid$c,y=grid$lr,z=grid$Value,type="mesh3d")</span></span>
+<span id="cb5-301"><a href="#cb5-301"></a> </span>
+<span id="cb5-302"><a href="#cb5-302"></a><span class="fu">plot_ly</span>(<span class="at">data=</span>g2,<span class="at">x=</span><span class="sc">~</span>c,<span class="at">y=</span><span class="sc">~</span>lr,<span class="at">z=</span><span class="sc">~</span>Value,<span class="at">type =</span> <span class="st">'mesh3d'</span>)</span>
+<span id="cb5-303"><a href="#cb5-303"></a><span class="fu">plot_ly</span>(g2,<span class="at">type =</span> <span class="st">'surface'</span>)</span>
+<span id="cb5-304"><a href="#cb5-304"></a></span>
+<span id="cb5-305"><a href="#cb5-305"></a></span>
+<span id="cb5-306"><a href="#cb5-306"></a></span>
+<span id="cb5-307"><a href="#cb5-307"></a></span>
+<span id="cb5-308"><a href="#cb5-308"></a></span>
+<span id="cb5-309"><a href="#cb5-309"></a>fig <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">x =</span> grid2<span class="sc">$</span>lr, <span class="at">y =</span> grid2<span class="sc">$</span>c, <span class="at">z =</span> grid2<span class="sc">$</span>Value) <span class="sc">%&gt;%</span> <span class="fu">add_surface</span>()</span>
+<span id="cb5-310"><a href="#cb5-310"></a></span>
+<span id="cb5-311"><a href="#cb5-311"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(g2, <span class="fu">aes</span>(c, lr, <span class="at">z=</span> Value)) <span class="sc">+</span></span>
+<span id="cb5-312"><a href="#cb5-312"></a>  <span class="fu">stat_contour</span>(<span class="at">geom=</span><span class="st">"polygon"</span>,<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">stat</span>(level))) <span class="sc">+</span></span>
+<span id="cb5-313"><a href="#cb5-313"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette =</span> <span class="st">"Spectral"</span>, <span class="at">direction =</span> <span class="dv">1</span>)</span>
+<span id="cb5-314"><a href="#cb5-314"></a><span class="fu">ggplotly</span>(p)</span>
+<span id="cb5-315"><a href="#cb5-315"></a></span>
+<span id="cb5-316"><a href="#cb5-316"></a></span>
+<span id="cb5-317"><a href="#cb5-317"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(grid, <span class="fu">aes</span>(c, lr, <span class="at">z=</span> Value,<span class="at">colour=</span><span class="fu">stat</span>(level))) <span class="sc">+</span></span>
+<span id="cb5-318"><a href="#cb5-318"></a>  <span class="fu">geom_contour</span>() </span>
+<span id="cb5-319"><a href="#cb5-319"></a><span class="fu">ggplotly</span>(p)</span>
+<span id="cb5-320"><a href="#cb5-320"></a></span>
+<span id="cb5-321"><a href="#cb5-321"></a></span>
+<span id="cb5-322"><a href="#cb5-322"></a><span class="fu">plot_ly</span>(g2, <span class="at">x =</span> <span class="sc">~</span>c, <span class="at">y =</span> <span class="sc">~</span>lr, <span class="at">z =</span> <span class="sc">~</span>Value, <span class="at">type =</span> <span class="st">'scatter3d'</span>, <span class="at">mode =</span> <span class="st">'lines+markers'</span>,</span>
+<span id="cb5-323"><a href="#cb5-323"></a>        <span class="at">opacity =</span> <span class="dv">7</span>, </span>
+<span id="cb5-324"><a href="#cb5-324"></a>        <span class="at">line =</span> <span class="fu">list</span>(<span class="at">width =</span> <span class="dv">6</span>, <span class="at">colorscale =</span> <span class="st">'Viridis'</span>, <span class="at">reverscale =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-325"><a href="#cb5-325"></a>        )</span>
+<span id="cb5-326"><a href="#cb5-326"></a></span>
+<span id="cb5-327"><a href="#cb5-327"></a></span>
+<span id="cb5-328"><a href="#cb5-328"></a><span class="co">#install.packages("echarts4r")</span></span>
+<span id="cb5-329"><a href="#cb5-329"></a><span class="fu">library</span>(echarts4r)</span>
+<span id="cb5-330"><a href="#cb5-330"></a>g2 <span class="sc">|&gt;</span> </span>
+<span id="cb5-331"><a href="#cb5-331"></a>  <span class="fu">e_charts</span>(c) <span class="sc">|&gt;</span> </span>
+<span id="cb5-332"><a href="#cb5-332"></a>  <span class="fu">e_surface</span>(lr, Value, <span class="at">wireframe =</span> <span class="fu">list</span>(<span class="at">show =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-333"><a href="#cb5-333"></a>  <span class="fu">e_visual_map</span>(Value)</span>
+<span id="cb5-334"><a href="#cb5-334"></a></span>
+<span id="cb5-335"><a href="#cb5-335"></a><span class="in">```</span></span>
+<span id="cb5-336"><a href="#cb5-336"></a></span>
+<span id="cb5-337"><a href="#cb5-337"></a></span>
+<span id="cb5-338"><a href="#cb5-338"></a></span>
+<span id="cb5-339"><a href="#cb5-339"></a> c    lr noise trainRep lossFun   mean_cFitO mean_cFitG mean_lrFitO mean_lrFitG mean_optimValO mean_optimValG</span>
+<span id="cb5-340"><a href="#cb5-340"></a>  <span class="kw">&lt;dbl&gt;</span> <span class="kw">&lt;dbl&gt;</span> <span class="kw">&lt;dbl&gt;</span>    <span class="kw">&lt;dbl&gt;</span> <span class="kw">&lt;chr&gt;</span>          <span class="kw">&lt;dbl&gt;</span>      <span class="kw">&lt;dbl&gt;</span>       <span class="kw">&lt;dbl&gt;</span>       <span class="kw">&lt;dbl&gt;</span>          <span class="kw">&lt;dbl&gt;</span>          <span class="kw">&lt;dbl&gt;</span></span>
+<span id="cb5-341"><a href="#cb5-341"></a>1   0.1   0.4   500       20 RMSE           4.94           5       1.00         1.09       3.30e- 5        0.115  </span>
+<span id="cb5-342"><a href="#cb5-342"></a>2   0.1   0.4   500       20 MAE            0.100          5       0.268        1.09       2.56e+ 1        0.0921 </span>
+<span id="cb5-343"><a href="#cb5-343"></a>3   0.1   0.4   500       20 MAPE           0.101          5       0.268        1.09       2.31e+ 0        0.00954</span>
+<span id="cb5-344"><a href="#cb5-344"></a>4   0.1   0.4   500       20 MedAE          0.288          5       0.429        1.09       3.65e- 1        0.124  </span>
+<span id="cb5-345"><a href="#cb5-345"></a>5   0.1   0.4   500       20 HuberLoss      8.09           5       1.00         1.09       1.98e-17        0.00662</span>
+<span id="cb5-346"><a href="#cb5-346"></a></span>
+<span id="cb5-347"><a href="#cb5-347"></a></span>
+<span id="cb5-348"><a href="#cb5-348"></a></span>
+<span id="cb5-351"><a href="#cb5-351"></a><span class="in">```{r}</span></span>
+<span id="cb5-352"><a href="#cb5-352"></a><span class="in">```</span></span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
