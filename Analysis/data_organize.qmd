@@ -47,6 +47,12 @@ d %>% select_if(is.factor) %>% select(-sbjCode,-id) %>% map(levels)
 
 
 ```{r}
+d %>% select_if(is.numeric) |> colnames()
+
+```
+
+
+```{r}
 #| eval: false
 e1 <- d |> filter(fb=="Continuous" & bandOrder=="Original")
 e2 <- d |> filter(fb=="Continuous" & bandOrder=="Reverse")
