@@ -389,7 +389,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-16"><a href="#cb1-16"></a>  (vb <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"100-300"</span>,<span class="st">"350-550"</span>,<span class="st">"600-800"</span>) <span class="sc">&amp;</span> bandOrder<span class="sc">==</span><span class="st">"Reverse"</span>) <span class="sc">~</span> <span class="st">"Trained"</span>,</span>
 <span id="cb1-17"><a href="#cb1-17"></a>  <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
 <span id="cb1-18"><a href="#cb1-18"></a>))</span>
-<span id="cb1-19"><a href="#cb1-19"></a></span>
+<span id="cb1-19"><a href="#cb1-19"></a>d<span class="sc">$</span>bandType <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>bandType,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Trained"</span>,<span class="st">"Extrapolation"</span>))</span>
 <span id="cb1-20"><a href="#cb1-20"></a></span>
 <span id="cb1-21"><a href="#cb1-21"></a>d<span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">id=</span><span class="fu">as.factor</span>(d<span class="sc">$</span>id),<span class="at">fullCond=</span><span class="fu">as.factor</span>(fullCond)) <span class="sc">%&gt;%</span> </span>
 <span id="cb1-22"><a href="#cb1-22"></a>  <span class="fu">select</span>(<span class="sc">-</span>catOrder,<span class="sc">-</span>mode) <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(bandOrder,bandType,<span class="at">.after=</span>fb)</span>
@@ -410,6 +410,9 @@ $fb
 
 $bandOrder
 [1] "Original" "Reverse" 
+
+$bandType
+[1] "Trained"       "Extrapolation"
 
 $tOrder
 [1] "Test First"  "Train First"
@@ -452,15 +455,31 @@ $fullCond
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>e1 <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> <span class="fu">filter</span>(fb<span class="sc">==</span><span class="st">"Continuous"</span> <span class="sc">&amp;</span> bandOrder<span class="sc">==</span><span class="st">"Original"</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>e2 <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> <span class="fu">filter</span>(fb<span class="sc">==</span><span class="st">"Continuous"</span> <span class="sc">&amp;</span> bandOrder<span class="sc">==</span><span class="st">"Reverse"</span>)</span>
-<span id="cb4-3"><a href="#cb4-3"></a>e3 <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> <span class="fu">filter</span>(fb<span class="sc">==</span><span class="st">"Ordinal"</span>)</span>
-<span id="cb4-4"><a href="#cb4-4"></a></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="fu">saveRDS</span>(d,<span class="fu">here</span>(<span class="st">"data/dAll_07_04_23.rds"</span>))</span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">saveRDS</span>(e1,<span class="fu">here</span>(<span class="st">"data/e1_07_04_23.rds"</span>))</span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="fu">saveRDS</span>(e2,<span class="fu">here</span>(<span class="st">"data/e2_07_04_23.rds"</span>))</span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="fu">saveRDS</span>(e3,<span class="fu">here</span>(<span class="st">"data/e3_07_04_23.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>d <span class="sc">%&gt;%</span> <span class="fu">select_if</span>(is.numeric) <span class="sc">|&gt;</span> <span class="fu">colnames</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "trial"        "nGoodTrial"   "gt.bandStage" "gt.stage"     "gt.train"    
+ [6] "input"        "bandInt"      "highBound"    "runTotal"     "dist"        
+[11] "sdist"        "vx"           "vxb"          "vxi"          "vy"          
+[16] "nTrain"       "nTestNf"      "nInt"         "nTestF"       "nTotal"      
+[21] "lastTrain"    "lastTrial"   </code></pre>
 </div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>e1 <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> <span class="fu">filter</span>(fb<span class="sc">==</span><span class="st">"Continuous"</span> <span class="sc">&amp;</span> bandOrder<span class="sc">==</span><span class="st">"Original"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>e2 <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> <span class="fu">filter</span>(fb<span class="sc">==</span><span class="st">"Continuous"</span> <span class="sc">&amp;</span> bandOrder<span class="sc">==</span><span class="st">"Reverse"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3"></a>e3 <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> <span class="fu">filter</span>(fb<span class="sc">==</span><span class="st">"Ordinal"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="fu">saveRDS</span>(d,<span class="fu">here</span>(<span class="st">"data/dAll_07_04_23.rds"</span>))</span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="fu">saveRDS</span>(e1,<span class="fu">here</span>(<span class="st">"data/e1_07_04_23.rds"</span>))</span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="fu">saveRDS</span>(e2,<span class="fu">here</span>(<span class="st">"data/e2_07_04_23.rds"</span>))</span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="fu">saveRDS</span>(e3,<span class="fu">here</span>(<span class="st">"data/e3_07_04_23.rds"</span>))</span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co"># save csv versions</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>d <span class="sc">%&gt;%</span> <span class="fu">write_csv</span>(<span class="fu">here</span>(<span class="st">"data/dAll_07_04_23.csv"</span>))</span>
+<span id="cb6-11"><a href="#cb6-11"></a>e1 <span class="sc">%&gt;%</span> <span class="fu">write_csv</span>(<span class="fu">here</span>(<span class="st">"data/e1_07_04_23.csv"</span>))</span>
+<span id="cb6-12"><a href="#cb6-12"></a>e2 <span class="sc">%&gt;%</span> <span class="fu">write_csv</span>(<span class="fu">here</span>(<span class="st">"data/e2_07_04_23.csv"</span>))</span>
+<span id="cb6-13"><a href="#cb6-13"></a>e3 <span class="sc">%&gt;%</span> <span class="fu">write_csv</span>(<span class="fu">here</span>(<span class="st">"data/e3_07_04_23.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>```</p>
 
 
 
