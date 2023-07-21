@@ -12,6 +12,9 @@ execute:
   eval: true
 ---
 
+
+### Dictionary
+
 | Variable Name | Variable Levels                 | Description                                                                               |
 |---------------|---------------------------------|-------------------------------------------------------------------------------------------|
 | condit        | Constant, Varied                | Condition of the experiment: constant or varied                                             |
@@ -172,42 +175,5 @@ e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = vb, y
 
 
 ```
-```{r}
 
-
-df <- data.frame(level = c("a", "b", "c", 'd'), outcome = c(2.3, 1.9, 3.2, 1))
-
-ggplot(df) +
-  geom_col_pattern(
-    aes(level, outcome, pattern_fill = level), 
-    pattern = 'stripe',
-    fill    = 'white',
-    colour  = 'black'
-  ) +
-  theme_bw(18) +
-  theme(legend.position = 'none') + 
-  labs(
-    title    = "ggpattern::geom_col_pattern()",
-    subtitle = "pattern = 'stripe'"
-  ) +
-  coord_fixed(ratio = 1/2)
-
-
-
-
-ggplot(e1) +
-  geom_col_pattern(
-    aes(vb, vx, pattern_fill = bandType), 
-    pattern = 'stripe',
-    fill    = 'white',
-    colour  = 'black'
-  ) +
-  theme_bw(18) +
-  theme(legend.position = 'none') + 
-  labs(
-    title    = "ggpattern::geom_col_pattern()",
-    subtitle = "pattern = 'stripe'"
-  ) +
-  coord_fixed(ratio = 1/2)
-```
 
