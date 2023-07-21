@@ -96,7 +96,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script><style>html{ scroll-behavior: smooth; }</style>
-<link rel="stylesheet" href="../Assets/Style/style1.css">
+<script src="../site_libs/core-js-2.5.3/shim.min.js"></script><script src="../site_libs/react-17.0.0/react.min.js"></script><script src="../site_libs/react-17.0.0/react-dom.min.js"></script><script src="../site_libs/reactwidget-1.0.0/react-tools.js"></script><script src="../site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><link href="../site_libs/reactable-0.4.4/reactable.css" rel="stylesheet">
+<script src="../site_libs/reactable-binding-0.4.4/reactable.js"></script><link rel="stylesheet" href="../Assets/Style/style1.css">
 <link rel="stylesheet" href="../Assets/Style/calloutTG.css">
 </head>
 <body class="nav-sidebar floating">
@@ -330,12 +331,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Misc/External.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">External</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../Misc/HTW_ToDo.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HTW To-do and Notes</span></a>
   </div>
@@ -356,13 +351,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         
     </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/data_dictionary.html">Methods</a></li><li class="breadcrumb-item"><a href="../Analysis/data_organize.html">Organization</a></li></ol></nav><div class="quarto-title">
+<main class="content page-columns page-full column-body" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/data_dictionary.html">Methods</a></li><li class="breadcrumb-item"><a href="../Analysis/data_organize.html">Organization</a></li></ol></nav><div class="quarto-title">
 <h1 class="title">Organization</h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page-right">
+<div class="quarto-title-meta column-body">
 
     
   
@@ -371,7 +366,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 </header><div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse,lme4,emmeans,here,knitr,kableExtra)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse,lme4,emmeans,here,knitr,kableExtra,reactable)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">options</span>(<span class="at">dplyr.summarise.inform=</span><span class="cn">FALSE</span>)</span>
 <span id="cb1-3"><a href="#cb1-3"></a>d <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/dPrune-05-21-23.rds"</span>)) <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>()</span>
 <span id="cb1-4"><a href="#cb1-4"></a>d<span class="sc">$</span>stage <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>stage, <span class="at">ordered=</span><span class="cn">TRUE</span>, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"4"</span>,<span class="st">"5"</span>,<span class="st">"6"</span>,<span class="st">"7"</span>,<span class="st">"8"</span>,<span class="st">"9"</span>,<span class="st">"10"</span>,<span class="st">"11"</span>,<span class="st">"12"</span>,<span class="st">"13"</span>,<span class="st">"14"</span>,<span class="st">"15"</span>,<span class="st">"16"</span>,<span class="st">"17"</span>,<span class="st">"18"</span>,<span class="st">"19"</span>,<span class="st">"20"</span>,<span class="st">"21"</span>,<span class="st">"22"</span>,<span class="st">"23"</span>))</span>
@@ -455,13 +450,14 @@ $fullCond
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>d <span class="sc">%&gt;%</span> <span class="fu">select_if</span>(is.numeric) <span class="sc">|&gt;</span> <span class="fu">colnames</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "trial"        "nGoodTrial"   "gt.bandStage" "gt.stage"     "gt.train"    
- [6] "input"        "bandInt"      "highBound"    "runTotal"     "dist"        
-[11] "sdist"        "vx"           "vxb"          "vxi"          "vy"          
-[16] "nTrain"       "nTestNf"      "nInt"         "nTestF"       "nTotal"      
-[21] "lastTrain"    "lastTrial"   </code></pre>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>e1 <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> <span class="fu">filter</span>(fb<span class="sc">==</span><span class="st">"Continuous"</span> <span class="sc">&amp;</span> bandOrder<span class="sc">==</span><span class="st">"Original"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>e2 <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> <span class="fu">filter</span>(fb<span class="sc">==</span><span class="st">"Continuous"</span> <span class="sc">&amp;</span> bandOrder<span class="sc">==</span><span class="st">"Reverse"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>e3 <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> <span class="fu">filter</span>(fb<span class="sc">==</span><span class="st">"Ordinal"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="fu">saveRDS</span>(d,<span class="fu">here</span>(<span class="st">"data/dAll_07_04_23.rds"</span>))</span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">saveRDS</span>(e1,<span class="fu">here</span>(<span class="st">"data/e1_07_04_23.rds"</span>))</span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="fu">saveRDS</span>(e2,<span class="fu">here</span>(<span class="st">"data/e2_07_04_23.rds"</span>))</span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="fu">saveRDS</span>(e3,<span class="fu">here</span>(<span class="st">"data/e3_07_04_23.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div class="cell">
@@ -922,7 +918,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script><nav class="page-navigation column-page-right"><div class="nav-page nav-page-previous">
+</script><nav class="page-navigation column-body"><div class="nav-page nav-page-previous">
       <a href="../Analysis/data_dictionary.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">HTW Data Dictionary</span>
       </a>          
