@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: docs
+  preview:
+    port: 4200
   render:
     - "*.qmd"
     - "!_*" # ignore any file that starts with a _
@@ -18,33 +20,46 @@ exclude: ["*.rds","*.tex","*.csl","*.bib","docs*","404.html","_old*","out.bib",
 # Exclude all files in HTW_Analysis folder, recursively
 website:
   title: "HTW Project"
-  repo-url: "https://github.com/tegorman13/htw"
+  repo-url: https://github.com/tegorman13/htw
   site-url: "https://tegorman13.github.io/htw/"
+  repo-actions: [source, edit, issue]
   reader-mode: true
   page-navigation: true
+  # navbar:
+  #   background: light
+  #   left:
+  #     - href: index.qmd
+  #       text: Home
+  #     - icon: github
+  #       href: https://github.com/tegorman13/htw
+  #     aria-label: GitHub
   sidebar:
+    style: "docked"
+    border: false
     collapse-level: 2
     pinned: false
     tools:
       - icon: github
         href: https://github.com/tegorman13/htw
+        # menu:
+        #   - text: Open Github Repo 
+        #     url:  https://github.com/tegorman13/htw
    # background: "#EE6A24"
     contents:
       - index.qmd
       - text: "---"
       - section: Methods
         contents: 
+          - Misc/Task.qmd
           - Analysis/data_dictionary.qmd
           - Analysis/data_organize.qmd
       - text: "---"
       - section: Analyses
-        contents: 
+        contents: # Analysis/* 
           - Analysis/e1_Analysis.qmd
           - Analysis/test_analysis-all.qmd
           - Analysis/discrim.qmd
-          - Analysis/ME_Pool.qmd
           - Analysis/analysis.qmd
-          #- Visuals_Interactives/ojs_explore.qmd
       - text: "---"
       - section: Simulations
         contents: 
@@ -67,7 +82,6 @@ website:
       - text: "---"
       - section: Misc
         contents: 
-          - Misc/Task.qmd
           - Misc/Visuals_Interactives/model_viz.qmd
           - Misc/htw_dp.qmd
           #- Misc/External.qmd
