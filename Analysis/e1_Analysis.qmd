@@ -177,3 +177,85 @@ e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = vb, y
 ```
 
 
+```{r}
+# non linear learning models
+
+
+
+# Fit the model
+model <- lmer(
+  dist ~ vb * condit + 
+    (1 | id) + 
+    (1 + gt.train | id:condit), 
+ # family = binomial(link = "logit"), 
+  data = e1[e1$expMode=="train",]
+)
+
+model <- lmer(
+  vx ~ vb * condit + I(gt.train^2) + 
+    (1 + gt.train + I(gt.train^2) | id:condit), 
+  data = e1[e1$expMode=="train",]
+)
+
+summary(model)
+
+
+e1$gt.train.scaled <- scale(e1$gt.train)
+# Fit the model with the rescaled variables
+model <- lmer(
+  dist ~ vb * condit + I(gt.train.scaled^2) + 
+    (1 + gt.train.scaled + I(gt.train.scaled^2) | id:condit), 
+  data = e1[e1$expMode=="train",]
+)
+summary(model)
+
+
+library(nlme)
+
+# Define a non-linear function for the learning effect
+learning_effect <- function(time, Asym, R0, lrc) {
+  Asym + R0 * exp(-exp(lrc) * time)
+}
+
+# Fit the model
+model <- nlme(
+  vx ~ learning_effect(gt.train.scaled, Asym, R0, lrc) * condit,
+  fixed = Asym + R0 + lrc ~ 1,
+  random = Asym + R0 ~ 1 | id,
+  start = c(Asym = 1, R0 = 1, lrc = 0),
+  data = e1[e1$expMode=="train",]
+)
+
+e1$condit_numeric <- as.numeric(e1$condit)
+
+# Fit the model
+model <- nlme(
+  vx ~ learning_effect(gt.train.scaled, Asym, R0, lrc) * condit_numeric,
+  fixed = Asym + R0 + lrc ~ 1,
+  random = Asym + R0 ~ 1 | id,
+  start = c(Asym = 1, R0 = 1, lrc = 0),
+  data = e1[e1$expMode=="train",]
+)
+summary(model)
+
+
+
+model <- nlme(
+  # Reflects the shift in velocity across conditions and time
+  vx ~ learning_effect(gt.train.scaled, Asym, R0, lrc) * condit_numeric,
+  # Fixed effects structure
+  fixed = Asym + R0 + lrc ~ 1,
+  # Random effects structure, now includes 'lrc' for individual learning rates
+  random = Asym + R0 + lrc ~ 1 | id,
+  # Starting values for the parameters
+  start = c(Asym = 1, R0 = 1, lrc = 0),
+  # Subset of the data used for training phase
+  data = e1 %>% filter(expMode=="train")
+)
+
+# Prints out a summary of the model
+summary(model)
+
+
+
+```
