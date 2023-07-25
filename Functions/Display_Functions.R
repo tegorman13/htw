@@ -69,7 +69,7 @@ plot_theme <- function(title_size = NULL,
     # Specify the default settings for legend titles
     legend.title = element_text(
       size = legend_text_size,
-      face = "bold",
+      face = "plain",
       family = "serif"
     ),
     # Specify the default settings for legend text
@@ -106,19 +106,19 @@ plot_theme <- function(title_size = NULL,
 
 ## Set the base theme settings for ggplot2
 theme_set(plot_theme(
-  xaxis_size = 24,
-  yaxis_size = 24,
-  title_size = 24,
-  caption_size = 24,
-  axis_text_size = 24,
-  strip_face = "bold",
-  y_axis_face = "bold",
-  x_axis_face = "bold",
+  xaxis_size = 14,
+  yaxis_size = 14,
+  title_size = 16,
+  caption_size = 12,
+  axis_text_size = 10,
+  strip_face = "plain",
+  y_axis_face = "plain",
+  x_axis_face = "plain",
   plot.margin = margin(2, 2, 4, 5, "mm"),
   plot.caption.position = "plot",
   plot.title.position = "plot",
-  strip_size = 24,
-  legend_text_size = 24,
+  strip_size = 12,
+  legend_text_size = 12,
   legend.position = "top",
   caption.hjust = 0, 
   caption.vjust = -1,
@@ -142,6 +142,21 @@ scale_fill_discrete <- function(...) {
 }
 
 
+
+
+learn_curve_bins<- function(df, x_var, y_var,gw,groupVec, nbins, labels = FALSE,prefix="") {
+  df |> 
+    group_by(pick({{ groupVec }})) |> 
+    mutate(Trial_Bin = cut( {{x_var}} , breaks = nbins, labels = labels)) |> 
+    group_by(Trial_Bin,pick({{ groupVec }})) |>
+    summarize(
+      mean_y = round(mean({{ y_var }}, na.rm = TRUE),0),
+      se_y = round(sd({{ y_var }}, na.rm = TRUE) / sqrt(n()),0),
+      .groups = "drop"
+    ) |>
+    mutate(combined = paste0(mean_y, " (", se_y, ")")) |>
+    select(-mean_y, -se_y)
+}
 
 
 learn_curve_plot <- function(df, x_var, y_var, color_var, facet_var = NULL, groupVec, nbins, labels = FALSE) {

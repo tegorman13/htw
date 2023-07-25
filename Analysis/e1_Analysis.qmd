@@ -3,9 +3,9 @@ title: Experiment 1 Analysis
 date: last-modified
 categories: [Analysis, R]
 page-layout: full
-fig-width: 15
-fig-height: 8
-code-fold: show
+# fig-width: 15
+# fig-height: 8
+code-fold: true
 code-tools: true
 toc: false
 execute: 
@@ -22,6 +22,19 @@ source(here("Functions/Display_Functions.R"))
 
 ```
 
+```{r}
+#| label: tbl-example
+#| tbl-cap: "Example"
+#| tbl-subcap: 
+#|   - "Cars"
+#|   - "Pressure"
+#| layout-ncol: 2
+#| echo: fenced
+
+library(knitr)
+kable(head(cars))
+kable(head(pressure))
+```
 
 
 ## Dictionary
@@ -71,7 +84,7 @@ After completing the experiment, participants were debriefed and provided with a
 
 ```{dot}
 //| label: fig-simple
-//| fig-cap: "This is a simple graphviz graph."
+//| fig-cap: "Experimental Design. Constant and Varied participants complete different training conditions."
 //| fig-width: 8.0
 //| fig-height: 2.5
 //| fig-responsive: false
@@ -120,48 +133,109 @@ digraph {
 
 
 
+<!-- ::: panel-tabset -->
+<!-- ## Figure -->
+<!-- ```{r} -->
+<!-- #| column: page-inset-right -->
+<!-- #| fig-cap: "Mean Vx over training blocks" -->
 
-```{r}
-#| column: page-inset-right
-#| fig-cap: "Mean Vx over training blocks"
-nb=5
-vp1=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,vx,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) 
-vp1
-# vpt1=plotWithTable(vp1,vt1,arrange="V") 
-```
+<!-- # vpt1=plotWithTable(vp1,vt1,arrange="V") -->
+<!-- nb=5 -->
+<!-- vp1=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,vx,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) -->
+<!-- vp1 -->
+
+<!-- ``` -->
 
 
+<!-- ## Table -->
+<!-- ```{r} -->
+<!-- #| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)" -->
+<!-- #| tbl-cap-location: top -->
+
+<!-- vt1=e1 |> filter(expMode=="train") |> -->
+<!--   learn_curve_table(gt.train,vx,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |> -->
+<!--   rename("Band"=vb,"Group"=condit) -->
+<!-- vt1 %>% kable() -->
+
+
+<!-- ``` -->
+<!-- ::: -->
+
+
+
+
+::: {layout="[ [1,4],[1,5]]"}
 
 ```{r}
 #| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)"
 #| tbl-cap-location: top
-
-vt1=e1 |> filter(expMode=="train") |> 
+nb=5
+vt1=e1 |> filter(expMode=="train") |>
   learn_curve_table(gt.train,vx,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |>
-  rename("Band"=vb,"Group"=condit) 
-vt1 %>% gt()
+  rename("Band"=vb,"Group"=condit)
+vt1 %>% kable() 
+
 
 ```
 
 ```{r}
-#| column: page-inset-right
-#| fig-cap: "Absolute Deviation from Band over training"
-vp2=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,dist,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) 
-vp2
+#| fig-cap: "Mean Vx over training blocks"
+
+# vpt1=plotWithTable(vp1,vt1,arrange="V")
+nb=5
+vp1=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,vx,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb)
+vp1
 
 ```
 
+
 ```{r}
-#| column: page-inset-right
-#| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)"
+#| tbl-cap: "Deviation over blocks. Mean (Standard Error)"
 #| tbl-cap-location: bottom
 
 vt2=e1 |> filter(expMode=="train") |> 
   learn_curve_table(gt.train,dist,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |>
   rename("Band"=vb,"Group"=condit) 
-vt2 %>% gt()
+vt2 %>% kable()
 
 ```
+
+```{r}
+#| fig-cap: "Absolute Deviation from Band over training"
+#| fig-width: 8
+
+vp2=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,dist,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) 
+vp2
+
+```
+
+
+:::
+
+
+<!-- ```{r} -->
+<!-- #| layout-ncol: 2 -->
+<!-- #| fig-cap:  -->
+<!-- #|   - "Speed and Stopping Distances of Cars" -->
+<!-- #|   - "Vapor Pressure of Mercury as a Function of Temperature" -->
+
+<!-- vp1 -->
+<!-- vp2 -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| tbl-cap: "Training" -->
+<!-- #| tbl-subcap:  -->
+<!-- #|   - "Speed and Stopping Distances of Cars" -->
+<!-- #|   - "Vapor Pressure of Mercury as a Function of Temperature" -->
+<!-- #| layout-ncol: 2 -->
+<!-- #| echo: fenced -->
+
+<!-- vt1 %>% kable() -->
+<!-- vt2 %>% kable() -->
+<!-- ``` -->
+
+
 
 
 
@@ -172,7 +246,7 @@ vt2 %>% gt()
 
 ### Varied vs. Constant
 ```{r}
-#| column: page-inset-right
+#| fig-width: 8
 e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  
   ggplot(aes(x = vb, y = dist,fill=condit)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
@@ -195,6 +269,7 @@ e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = condi
 
 ```
 ::: 
+
 
 ```{r}
 #| eval: false
