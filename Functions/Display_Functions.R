@@ -1,4 +1,146 @@
-library(tidyverse)
+
+
+pacman::p_load(ggplot2,wesanderson)
+#pacman::p_load(ggplot2,ggpattern,viridis,scales,wesanderson,ggthemer)
+
+
+# Custom theme for data visualizations
+plot_theme <- function(title_size = NULL, 
+                       xaxis_size = NULL, 
+                       yaxis_size = NULL, 
+                       strip_size = NULL, 
+                       strip_face = NULL, 
+                       caption.hjust = 1, 
+                       caption.vjust = 0, 
+                       x_axis_face = NULL, 
+                       y_axis_face = NULL, 
+                       transparent = FALSE, 
+                       axis_text_size = NULL, 
+                       legend_text_size = NULL,
+                       subtitle_size = NULL,
+                       caption_size = NULL,
+                       base_size = 12,
+                       ...) {
+  .theme <- theme_minimal(base_size = base_size) + theme(
+    # Specify the default settings for the plot title
+    plot.title = element_text(
+      size = title_size,
+      face = "bold",
+      family = "serif"
+    ),
+    # Specify the default settings for caption text
+    plot.caption = element_text(
+      size = caption_size,
+      family = "serif",
+      hjust = caption.hjust,
+      vjust = caption.vjust
+    ),
+    # Specify the default settings for subtitle text
+    plot.subtitle = element_text(
+      size = subtitle_size,
+      family = "serif"
+    ),
+    # Specify the default settings specific to the x axis title
+    axis.title.y = element_text(
+      size = yaxis_size, 
+      face = y_axis_face, 
+      family = "serif",
+      margin = margin(r = 10, l = -10)
+    ),
+    # Specify the default settings specific to the y axis title
+    axis.title.x = element_text(
+      size = xaxis_size, 
+      face = x_axis_face, 
+      family = "serif",
+      margin = margin(t = 10, b = -10)
+    ),
+    # Specify the default settings for x axis text
+    axis.text.x = element_text(
+      size = axis_text_size,
+      family = "serif",
+      face = x_axis_face
+    ),
+    # Specify the default settings for y axis text
+    axis.text.y = element_text(
+      size = axis_text_size,
+      family = "serif",
+      face = y_axis_face
+    ),
+    # Specify the default settings for legend titles
+    legend.title = element_text(
+      size = legend_text_size,
+      face = "bold",
+      family = "serif"
+    ),
+    # Specify the default settings for legend text
+    legend.text = element_text(
+      size = legend_text_size,
+      family = "serif"
+    ),
+    # Set the strip background fill to blank
+    strip.background = element_blank(),
+    # Adjust the strip text size settings
+    strip.text = element_text(
+      family = "serif", 
+      size = strip_size,
+      face = strip_face
+    ),
+    # Additional Settings Passed to theme()
+    ...
+  )
+  # Plot Transparency
+  if (transparent == TRUE) {
+    .theme <- .theme + theme(
+      panel.background = element_rect(fill = "transparent", colour = NA),
+      plot.background = element_rect(fill = "transparent", colour = NA),
+      legend.background = element_rect(fill = "transparent", colour = NA),
+      legend.key = element_rect(fill = "transparent", colour = NA)
+    )
+  }
+  return(.theme)
+}
+
+
+#ggthemr::ggthemr('fresh')
+
+
+## Set the base theme settings for ggplot2
+theme_set(plot_theme(
+  xaxis_size = 24,
+  yaxis_size = 24,
+  title_size = 24,
+  caption_size = 24,
+  axis_text_size = 24,
+  strip_face = "bold",
+  y_axis_face = "bold",
+  x_axis_face = "bold",
+  plot.margin = margin(2, 2, 4, 5, "mm"),
+  plot.caption.position = "plot",
+  plot.title.position = "plot",
+  strip_size = 24,
+  legend_text_size = 24,
+  legend.position = "top",
+  caption.hjust = 0, 
+  caption.vjust = -1,
+  transparent = TRUE
+))
+
+# options(ggplot2.continuous.colour="viridis")
+# options(ggplot2.continuous.fill = "viridis")
+
+
+darjeeling <- c(wes_palette("Darjeeling1"),wes_palette("Darjeeling2"))
+#cat(darjeeling)
+
+
+scale_colour_discrete <- function(...) {
+  scale_colour_manual(..., values = darjeeling)
+}
+
+scale_fill_discrete <- function(...) {
+  scale_fill_manual(..., values = darjeeling)
+}
+
 
 
 

@@ -2,18 +2,29 @@
 title: Experiment 1 Analysis
 date: last-modified
 categories: [Analysis, R]
-page-layout: article
+page-layout: full
 fig-width: 15
 fig-height: 8
-code-fold: true
+code-fold: show
 code-tools: true
+toc: false
 execute: 
   warning: false
   eval: true
 ---
 
+```{r setup}
+pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt)
+e1 <- readRDS(here("data/e1_07_04_23.rds"))
+source(here("Functions/Display_Functions.R"))
 
-### Dictionary
+
+
+```
+
+
+
+## Dictionary
 
 | Variable Name | Variable Levels                 | Description                                                                               |
 |---------------|---------------------------------|-------------------------------------------------------------------------------------------|
@@ -31,17 +42,8 @@ execute:
 ---
 
 
-```{r}
-pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt,ggpattern)
-e1 <- readRDS(here("data/e1_07_04_23.rds"))
-source(here("Functions/Display_Functions.R"))
 
-
-```
-
-
-
-### Methods
+## Methods
 
 Participants
 A total of `r length(unique(e1$id))` participants (XXX% female, XXX% male) were recruited from the Indiana University Introductory Psychology Course. The average age of participants was XXX years (SD = XXX). Participants were randomly assigned to one of two training conditions: varied training or constant training. 
@@ -67,37 +69,41 @@ Throughout the experiment, participants' performance was measured by calculating
 After completing the experiment, participants were debriefed and provided with an opportunity to ask questions about the study.
 
 
+```{dot}
+//| label: fig-simple
+//| fig-cap: "This is a simple graphviz graph."
+//| fig-width: 8.0
+//| fig-height: 2.5
+//| fig-responsive: false
+digraph {
+  graph [layout = dot, rankdir = LR]
 
-```{r design, echo=FALSE, fig.cap="Experiment Procedure"}
-DiagrammeR::grViz("digraph {
-graph [layout = dot, rankdir = LR]
-# define the global styles of the nodes. We can override these in box if we wish
-node [shape = rectangle, style = filled, fillcolor = Linen]
-data1 [label = <<b>Varied Training</b>  
-<br ALIGN = 'LEFT' /> 800-1000
-<br/> 1000-1200
-<br/>1200-1400>]
-data2 [label = <<b>Constant Training</b>  
-<br/> 800-1000 >]
-Test1 [label = <<b>Testing - No Feedback</b>  
-<br ALIGN = 'LEFT' /> 100-300
-<br/> 350-550
-<br/>600-800>]
-Test2 [label = <<b>Test From Train</b>  
-<br ALIGN = 'LEFT' /> 800-1000
-<br/> 1000-1200
-<br/>1200-1400>]
-Test3[label = <<b>Testing -Feedback</b>  
-<br ALIGN = 'LEFT' /> 100-300
-<br/> 350-550
-<br/>600-800>]
+  // define the global styles of the nodes
+  node [shape = rectangle, style = filled]
 
-# edge definitions with the node IDs
-{data1 data2}  -> Test1 -> Test2 -> Test3
+  data1 [label = " Varied Training \n800-1000\n1000-1200\n1200-1400", fillcolor = "#FF0000"]
+  data2 [label = " Constant Training \n800-1000", fillcolor = "#00A08A"]
+  Test3 [label = "    Final Test \n  Novel With Feedback  \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]
+
+  // edge definitions with the node IDs
+  data1 -> Test1
+  data2 -> Test1
+
+  subgraph cluster {
+    label = "Test Phase \n(Counterbalanced Order)"
+    Test1 [label = "Test  \nNovel Bands \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]
+    Test2 [label = "  Test \n  Varied Training Bands  \n800-1000\n1000-1200\n1200-1400", fillcolor = "#ECCBAE"]
+    Test1 -> Test2
+  }
+
+  Test2 -> Test3
 }
-",width=700,height=250)
-
+#https://renenyffenegger.ch/notes/tools/Graphviz/examples/index
+#https://edotor.net/
 ```
+
+
+
 
 ```{r}
 
@@ -127,7 +133,6 @@ vp1
 
 
 ```{r}
-#| column: page-inset-right
 #| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)"
 #| tbl-cap-location: top
 
@@ -161,19 +166,116 @@ vt2 %>% gt()
 
 
 ## Testing
-```{r}
 
-e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
+
+::: panel-tabset
+
+### Varied vs. Constant
+```{r}
+#| column: page-inset-right
+e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  
+  ggplot(aes(x = vb, y = dist,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
+```
+### Dist
+```{r}
+e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = condit, y = dist,fill=vb)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
 
+```
+
+### Vx
+```{r}
+
+e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = condit, y = vx,fill=vb)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
+
+```
+::: 
+
+```{r}
+#| eval: false
+# non linear learning models
 
 
 
-# Update this plot code so that the bars are textured to reflect where the testing band is extrapolation, interpolation, or trained. The constant group trained from 800-100 only, while the varied group trained from 800-1000, 1000-1200, 1200-1400. 
+# Fit the model
+model <- lmer(
+  dist ~ vb * condit + 
+    (1 | id) + 
+    (1 + gt.train | id:condit), 
+ # family = binomial(link = "logit"), 
+  data = e1[e1$expMode=="train",]
+)
+
+model <- lmer(
+  vx ~ vb * condit + I(gt.train^2) + 
+    (1 + gt.train + I(gt.train^2) | id:condit), 
+  data = e1[e1$expMode=="train",]
+)
+
+summary(model)
+
+
+e1$gt.train.scaled <- scale(e1$gt.train)
+# Fit the model with the rescaled variables
+model <- lmer(
+  dist ~ vb * condit + I(gt.train.scaled^2) + 
+    (1 + gt.train.scaled + I(gt.train.scaled^2) | id:condit), 
+  data = e1[e1$expMode=="train",]
+)
+summary(model)
+
+
+library(nlme)
+
+# Define a non-linear function for the learning effect
+learning_effect <- function(time, Asym, R0, lrc) {
+  Asym + R0 * exp(-exp(lrc) * time)
+}
+
+# Fit the model
+model <- nlme(
+  vx ~ learning_effect(gt.train.scaled, Asym, R0, lrc) * condit,
+  fixed = Asym + R0 + lrc ~ 1,
+  random = Asym + R0 ~ 1 | id,
+  start = c(Asym = 1, R0 = 1, lrc = 0),
+  data = e1[e1$expMode=="train",]
+)
+
+e1$condit_numeric <- as.numeric(e1$condit)
+
+# Fit the model
+model <- nlme(
+  vx ~ learning_effect(gt.train.scaled, Asym, R0, lrc) * condit_numeric,
+  fixed = Asym + R0 + lrc ~ 1,
+  random = Asym + R0 ~ 1 | id,
+  start = c(Asym = 1, R0 = 1, lrc = 0),
+  data = e1[e1$expMode=="train",]
+)
+summary(model)
+
+
+
+model <- nlme(
+  # Reflects the shift in velocity across conditions and time
+  vx ~ learning_effect(gt.train.scaled, Asym, R0, lrc) * condit_numeric,
+  # Fixed effects structure
+  fixed = Asym + R0 + lrc ~ 1,
+  # Random effects structure, now includes 'lrc' for individual learning rates
+  random = Asym + R0 + lrc ~ 1 | id,
+  # Starting values for the parameters
+  start = c(Asym = 1, R0 = 1, lrc = 0),
+  # Subset of the data used for training phase
+  data = e1 %>% filter(expMode=="train")
+)
+
+# Prints out a summary of the model
+summary(model)
 
 
 
 ```
-
-

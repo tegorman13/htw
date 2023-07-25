@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.224">
+<meta name="generator" content="quarto-1.4.251">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2023-07-13">
+<meta name="dcterms.date" content="2023-07-24">
 <title>HTW Project - Project 2</title>
 <style>
 code{white-space: pre-wrap;}
@@ -87,12 +87,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -118,8 +116,7 @@ div.csl-indent {
   }
 }</script><style>html{ scroll-behavior: smooth; }</style>
 <script src="../site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><script src="../site_libs/viz-1.8.2/viz.js"></script><link href="../site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
-<script src="../site_libs/grViz-binding-1.0.10/grViz.js"></script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="../Assets/Style/style1.css">
-<link rel="stylesheet" href="../Assets/Style/calloutTG.css">
+<script src="../site_libs/grViz-binding-1.0.10/grViz.js"></script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 </head>
 <body class="nav-sidebar docked">
 
@@ -140,9 +137,8 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">HTW Project</a> 
-        <div class="sidebar-tools-main tools-wide">
+        <div class="sidebar-tools-main">
     <a href="https://github.com/tegorman13/htw" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -405,7 +401,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 13, 2023</p>
+      <p class="date">July 24, 2023</p>
     </div>
   </div>
   
@@ -413,8 +409,9 @@ div.csl-indent {
   </div>
   
 
+
 </header><section id="introduction" class="level1"><h1>Introduction</h1>
-<p>In project 1, we applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for the difference between varied and constant training via an extended version of a similarity based generalization model. In project 2, we will go a step further, implementing a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. Project 2 also places a greater emphasis on extrapolation performance following training - as varied training has often been purported to be particularly beneficial in such situations. Extrapolation has long been a focus of the literature on function learning <span class="citation" data-cites="brehmerHypothesesRelationsScaled1974 carrollFunctionalLearningLearning1963">[@brehmerHypothesesRelationsScaled1974; @carrollFunctionalLearningLearning1963]</span>. Central questions of the function learning literature have included the relative difficulties of learning various functional forms (e.g.&nbsp;linear vs.bilinear vs.&nbsp;quadratic), and the relative effectiveness of rule-based vs.&nbsp;association-based exemplar models vs.&nbsp;various hybrid models <span class="citation" data-cites="bottNonmonotonicExtrapolationFunction2004 deloshExtrapolationSineQua1997 jonesActiveFunctionLearning2018 kalishPopulationLinearExperts2004 mcdanielConceptualBasisFunction2005 mcdanielPredictingTransferPerformance2009">[@bottNonmonotonicExtrapolationFunction2004; @deloshExtrapolationSineQua1997; @jonesActiveFunctionLearning2018; @kalishPopulationLinearExperts2004; @mcdanielConceptualBasisFunction2005; @mcdanielPredictingTransferPerformance2009]</span>. However the issue of training variation has received surprisingly little attention in this area.</p>
+<p>In project 1, we applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for the difference between varied and constant training via an extended version of a similarity based generalization model. In project 2, we will go a step further, implementing a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. Project 2 also places a greater emphasis on extrapolation performance following training - as varied training has often been purported to be particularly beneficial in such situations. Extrapolation has long been a focus of the literature on function learning <span class="citation" data-cites="brehmerHypothesesRelationsScaled1974 carrollFunctionalLearningLearning1963">(<a href="#ref-brehmerHypothesesRelationsScaled1974" role="doc-biblioref">Brehmer 1974</a>; <a href="#ref-carrollFunctionalLearningLearning1963" role="doc-biblioref">Carroll 1963</a>)</span>. Central questions of the function learning literature have included the relative difficulties of learning various functional forms (e.g.&nbsp;linear vs.bilinear vs.&nbsp;quadratic), and the relative effectiveness of rule-based vs.&nbsp;association-based exemplar models vs.&nbsp;various hybrid models <span class="citation" data-cites="bottNonmonotonicExtrapolationFunction2004 deloshExtrapolationSineQua1997 jonesActiveFunctionLearning2018 kalishPopulationLinearExperts2004 mcdanielConceptualBasisFunction2005 mcdanielPredictingTransferPerformance2009">(<a href="#ref-bottNonmonotonicExtrapolationFunction2004" role="doc-biblioref">Bott and Heit 2004</a>; <a href="#ref-deloshExtrapolationSineQua1997" role="doc-biblioref">DeLosh, McDaniel, and Busemeyer 1997</a>; <a href="#ref-jonesActiveFunctionLearning2018" role="doc-biblioref">Jones et al. 2018</a>; <a href="#ref-kalishPopulationLinearExperts2004" role="doc-biblioref">Kalish, Lewandowsky, and Kruschke 2004</a>; <a href="#ref-mcdanielConceptualBasisFunction2005" role="doc-biblioref">M. A. Mcdaniel and Busemeyer 2005</a>; <a href="#ref-mcdanielPredictingTransferPerformance2009" role="doc-biblioref">M. Mcdaniel et al. 2009</a>)</span>. However the issue of training variation has received surprisingly little attention in this area.</p>
 </section><section id="methods" class="level1"><h1>Methods</h1>
 <section id="participants" class="level2"><h2 class="anchored" data-anchor-id="participants">Participants</h2>
 <p>Data was collected from 647 participants (after exclusions). The results shown below consider data from subjects in our initial experiment, which consisted of 196 participants (106 constant, 90 varied). The follow-up experiments entailed minor manipulations: 1) reversing the velocity bands that were trained on vs.&nbsp;novel during testing; 2) providing ordinal rather than numerical feedback during training (e.g.&nbsp;correct, too low, too high). The data from these subsequent experiments are largely consistently with our initial results shown below.</p>
@@ -429,8 +426,8 @@ div.csl-indent {
 </ol>
 <div class="cell">
 <div class="cell-output-display">
-<div id="htmlwidget-2c44395660ac4c799c8e" style="width:100%;height:232px;" class="grViz html-widget "></div>
-<script type="application/json" data-for="htmlwidget-2c44395660ac4c799c8e">{"x":{"diagram":"digraph {\ngraph [layout = dot, rankdir = LR]\n# define the global styles of the nodes. We can override these in box if we wish\nnode [shape = rectangle, style = filled, fillcolor = Linen]\ndata1 [label = <<b>Varied Training<\/b>  \n<br ALIGN = \"LEFT\" /> 800-1000\n<br/> 1000-1200\n<br/>1200-1400>]\ndata2 [label = <<b>Constant Training<\/b>  \n<br/> 800-1000 >]\nTest1 [label = <<b>Testing - No Feedback<\/b>  \n<br ALIGN = \"LEFT\" /> 100-300\n<br/> 350-550\n<br/>600-800>]\nTest2 [label = <<b>Test From Train<\/b>  \n<br ALIGN = \"LEFT\" /> 800-1000\n<br/> 1000-1200\n<br/>1200-1400>]\nTest3[label = <<b>Testing -Feedback<\/b>  \n<br ALIGN = \"LEFT\" /> 100-300\n<br/> 350-550\n<br/>600-800>]\n\n# edge definitions with the node IDs\n{data1 data2}  -> Test1 -> Test2 -> Test3\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><p>Experiment Procedure</p>
+<div id="htmlwidget-aeaf11975ab96afc7a89" style="width:100%;height:232px;" class="grViz html-widget "></div>
+<script type="application/json" data-for="htmlwidget-aeaf11975ab96afc7a89">{"x":{"diagram":"digraph {\ngraph [layout = dot, rankdir = LR]\n# define the global styles of the nodes. We can override these in box if we wish\nnode [shape = rectangle, style = filled, fillcolor = Linen]\ndata1 [label = <<b>Varied Training<\/b>  \n<br ALIGN = \"LEFT\" /> 800-1000\n<br/> 1000-1200\n<br/>1200-1400>]\ndata2 [label = <<b>Constant Training<\/b>  \n<br/> 800-1000 >]\nTest1 [label = <<b>Testing - No Feedback<\/b>  \n<br ALIGN = \"LEFT\" /> 100-300\n<br/> 350-550\n<br/>600-800>]\nTest2 [label = <<b>Test From Train<\/b>  \n<br ALIGN = \"LEFT\" /> 800-1000\n<br/> 1000-1200\n<br/>1200-1400>]\nTest3[label = <<b>Testing -Feedback<\/b>  \n<br ALIGN = \"LEFT\" /> 100-300\n<br/> 350-550\n<br/>600-800>]\n\n# edge definitions with the node IDs\n{data1 data2}  -> Test1 -> Test2 -> Test3\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><p>Experiment Procedure</p>
 </div>
 </div>
 <!-- {.tabset} -->
@@ -438,44 +435,44 @@ div.csl-indent {
 <section id="training" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="training">Training</h2>
 <p>Training performance is shown in Results Figure 2A. All groups show improvement from each of their training velocity-bands (i.e.&nbsp;decreasing average distance from target). In the velocity band trained at by both groups (800-1000), the constant group maintains a superior level of performance from the early through the final stages of training. This difference is unsurprising given that the constant group had 3x more practice trials from that band.</p>
 <div class="cell page-columns page-full">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#fig.cap="\\label{fig:figs}training performance"</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#title=paste0("HTW Training")</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#figpatch::fig(here("Assets/Training-1.png"))</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"Assets/Training-1.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#fig.cap="\\label{fig:figs}training performance"</span></span>
+<span></span>
+<span><span class="co">#title=paste0("HTW Training")</span></span>
+<span><span class="co">#figpatch::fig(here("Assets/Training-1.png"))</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"Assets/Training-1.png"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display column-body-outset">
 <p><img src="../Assets/Training-1.png" style="width:100.0%;height:100.0%"></p>
 </div>
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>  <span class="co">#fig_lab(.,title,pos="top",fontface='bold',size=12,hjust=.01)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="co">#fig_lab(.,title,pos="top",fontface='bold',size=12,hjust=.01)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section><section id="testing" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="testing">Testing</h2>
 <p>For evaluating testing performance, we consider 3 separate metrics. 1) The average absolute deviation from the correct velocity, 2) The % of throws in which the wall was hit with the correct velocity and 3) The average x velocity produced.</p>
 <p>Results Figure 2B shows the average velocity produced for all 6 bands that were tested. At least at the aggregate level, both conditions were able to differentiate all 6 bands in the correct order, despite only having received training feedback for 1/6 (constant) or 3/6 (varied) bands during training. Participants in both groups also had a bias towards greatly overestimating the correct velocity for band 100-300, for which both groups had an average of greater than 500.</p>
 <div class="cell page-columns page-full">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># fig2aCap=str_wrap("Figure 2B: Bands 100-300, 350-550 and 600-800 are novel extrapolations for both groups. Band 800-1000 was a training band for both groups. Bands 1000-1200, and 1200-1400 were trained for the varied group, and novel for the constant group.  Top figure displays mean deviation from correct velocity. Bottom figure displays the average % of trials where participants hit the wall with the correct velocity. Error bars indicate standard error of the mean. " ,width=170)</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#figpatch::fig(here("Assets/Testing_Vx-1.png"))</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"Assets/Testing_Vx-1.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># fig2aCap=str_wrap("Figure 2B: Bands 100-300, 350-550 and 600-800 are novel extrapolations for both groups. Band 800-1000 was a training band for both groups. Bands 1000-1200, and 1200-1400 were trained for the varied group, and novel for the constant group.  Top figure displays mean deviation from correct velocity. Bottom figure displays the average % of trials where participants hit the wall with the correct velocity. Error bars indicate standard error of the mean. " ,width=170)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">#figpatch::fig(here("Assets/Testing_Vx-1.png"))</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"Assets/Testing_Vx-1.png"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display column-page-inset">
 <p><img src="../Assets/Testing_Vx-1.png" style="width:100.0%;height:100.0%"></p>
 </div>
 </div>
 <p>As is reflected in Results Figure 2C, the constant group performed significantly better than the varied group at the 3 testing bands of greatest interest. Both groups tended to perform worse for testing bands further away from their training conditions. The varied group had a slight advantage for bands 1000-1200 and 1200-1400, which were repeats from training for the varied participants, but novel for the constant participants.</p>
 <div class="cell page-columns page-full">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">#figpatch::fig(here("Assets/Test_Performance-1.png"))</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"Assets/Test_Performance-1.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#figpatch::fig(here("Assets/Test_Performance-1.png"))</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"Assets/Test_Performance-1.png"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display column-page-inset">
 <p><img src="../Assets/Test_Performance-1.png" style="width:100.0%;height:100.0%"></p>
 </div>
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># </span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="co"># gtitle="2C. Testing Performance"</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="co"># title = ggdraw()+draw_label(gtitle,fontface = 'bold',x=0,hjust=0)+theme(plot.margin = margin(0, 0, 0, 7))</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co"># captionText=str_wrap("Figure 2C: Bands 100-300, 350-550 and 600-800 are novel extrapolations for both groups. Band 800-1000 was a training band for both groups. Bands 1000-1200, and 1200-1400 were trained for the varied group, and novel for the constant group.  Right side figure displays mean deviation from correct velocity band (lower values correspond to better performance). Bottom Left displays the average % of trials where participants hit the wall with the correct velocity (higher values correspond got better performance). Error bars indicate standard error of the mean. ",150)</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="co"># capt=ggdraw()+draw_label(captionText,fontface = 'italic',x=0,hjust=0,size=11)+theme(plot.margin = margin(0, 0, 0, 1))</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="co"># </span></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="co"># plot_grid(title,NULL,leg,NULL,gbDev,gbHit,capt,NULL,ncol=2,rel_heights=c(.1,.1,1,.1),rel_widths=c(1,1))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># </span></span>
+<span><span class="co"># gtitle="2C. Testing Performance"</span></span>
+<span><span class="co"># title = ggdraw()+draw_label(gtitle,fontface = 'bold',x=0,hjust=0)+theme(plot.margin = margin(0, 0, 0, 7))</span></span>
+<span><span class="co"># captionText=str_wrap("Figure 2C: Bands 100-300, 350-550 and 600-800 are novel extrapolations for both groups. Band 800-1000 was a training band for both groups. Bands 1000-1200, and 1200-1400 were trained for the varied group, and novel for the constant group.  Right side figure displays mean deviation from correct velocity band (lower values correspond to better performance). Bottom Left displays the average % of trials where participants hit the wall with the correct velocity (higher values correspond got better performance). Error bars indicate standard error of the mean. ",150)</span></span>
+<span><span class="co"># capt=ggdraw()+draw_label(captionText,fontface = 'italic',x=0,hjust=0,size=11)+theme(plot.margin = margin(0, 0, 0, 1))</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># plot_grid(title,NULL,leg,NULL,gbDev,gbHit,capt,NULL,ncol=2,rel_heights=c(.1,.1,1,.1),rel_widths=c(1,1))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section></section><section id="modeling" class="level1 page-columns page-full"><h1>Modeling</h1>
@@ -486,45 +483,45 @@ div.csl-indent {
 <p>See Table 2A for a full specification of the equations that define ALM and EXAM.</p>
 </section><section id="model-equations" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="model-equations">Model Equations</h2>
 <div class="column-page-inset-right">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>text_tbl <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb6-2"><a href="#cb6-2"></a>    <span class="st">'Step'</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"Input Activation"</span>,<span class="st">"Output Activation"</span>,<span class="st">"Output Probability"</span>,<span class="st">"Mean Output"</span>,<span class="st">"Feedback Activation"</span>,<span class="st">"Update Weights"</span>,<span class="st">"Extrapolation"</span>,<span class="st">""</span>),</span>
-<span id="cb6-3"><a href="#cb6-3"></a>    <span class="st">'Equation'</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"$a_i(X) = </span><span class="sc">\\</span><span class="st">frac{e^{-c </span><span class="sc">\\</span><span class="st">cdot (X-X_i)^2}}{ </span><span class="sc">\\</span><span class="st">sum_{k=1}^Me^{-c </span><span class="sc">\\</span><span class="st">cdot (X-X_i)^2}}$"</span>, </span>
-<span id="cb6-4"><a href="#cb6-4"></a>                   <span class="st">'$O_j(X) = </span><span class="sc">\\</span><span class="st">sum_{k=1}^Mw_{ji} </span><span class="sc">\\</span><span class="st">cdot a_i(X)$'</span>,</span>
-<span id="cb6-5"><a href="#cb6-5"></a>                   <span class="st">'$P[Y_j | X] = </span><span class="sc">\\</span><span class="st">frac{O_i(X)}{</span><span class="sc">\\</span><span class="st">sum_{k=1}^Mo_k(X)}$'</span>,</span>
-<span id="cb6-6"><a href="#cb6-6"></a>                   <span class="st">"$m(x) = </span><span class="sc">\\</span><span class="st">sum_{j=1}^LY_j </span><span class="sc">\\</span><span class="st">cdot </span><span class="sc">\\</span><span class="st">bigg[</span><span class="sc">\\</span><span class="st">frac{O_j(X)}{</span><span class="sc">\\</span><span class="st">sum_{k=1}^Lo_k(X)}</span><span class="sc">\\</span><span class="st">bigg]$"</span>,</span>
-<span id="cb6-7"><a href="#cb6-7"></a>                   <span class="st">"$f_j(Z)=e^{-c</span><span class="sc">\\</span><span class="st">cdot(Z-Y_j)^2}$"</span>,</span>
-<span id="cb6-8"><a href="#cb6-8"></a>                   <span class="st">"$w_{ji}(t+1)=w_{ji}(t)+</span><span class="sc">\\</span><span class="st">alpha </span><span class="sc">\\</span><span class="st">cdot {f_i(Z(t))-O_j(X(t))} </span><span class="sc">\\</span><span class="st">cdot a_i(X(t))$"</span>,</span>
-<span id="cb6-9"><a href="#cb6-9"></a>                   <span class="st">"$P[X_i|X] = </span><span class="sc">\\</span><span class="st">frac{a_i(X)}{</span><span class="sc">\\</span><span class="st">sum_{k=1}^Ma_k(X)}$"</span>,</span>
-<span id="cb6-10"><a href="#cb6-10"></a>                   <span class="st">"$E[Y|X_i]=m(X_i) + </span><span class="sc">\\</span><span class="st">bigg[</span><span class="sc">\\</span><span class="st">frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1} - X_{i-1}} </span><span class="sc">\\</span><span class="st">bigg] </span><span class="sc">\\</span><span class="st">cdot[X-X_i]$"</span>),</span>
-<span id="cb6-11"><a href="#cb6-11"></a>    </span>
-<span id="cb6-12"><a href="#cb6-12"></a>    <span class="st">'Description'</span><span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb6-13"><a href="#cb6-13"></a>            <span class="st">"Activation of each input node, $X_i$, is a function of the Gaussian similarity between the node value and stimulus X. "</span>,</span>
-<span id="cb6-14"><a href="#cb6-14"></a>            <span class="st">"Activation of each Output unit $O_j$ is the weighted sum of the input activations and association weights"</span>,</span>
-<span id="cb6-15"><a href="#cb6-15"></a>            <span class="st">"Each output node has associated response, $Y_j$. The probability of response $Y_j$ is determined by the ratio of output activations"</span>,</span>
-<span id="cb6-16"><a href="#cb6-16"></a>            <span class="st">"The response to stimulus x is the weighted average of the response probabilities"</span>,</span>
-<span id="cb6-17"><a href="#cb6-17"></a>            <span class="st">"After responding, feedback signal Z is presented, activating each output node via the Gaussian similarity to the ideal response  "</span>,</span>
-<span id="cb6-18"><a href="#cb6-18"></a>            <span class="st">"Delta rule to update weights. Magnitude of weight changes controlled by learning rate parameter alpha."</span>,</span>
-<span id="cb6-19"><a href="#cb6-19"></a>            <span class="st">"Novel test stimulus X activates input nodes associated with trained stimuli"</span>,</span>
-<span id="cb6-20"><a href="#cb6-20"></a>            <span class="st">"Slope value computed from nearest training instances and then added to the response associated with the nearest training instance,m(x)"</span>)</span>
-<span id="cb6-21"><a href="#cb6-21"></a>)</span>
-<span id="cb6-22"><a href="#cb6-22"></a>text_tbl<span class="sc">$</span>Step<span class="ot">=</span><span class="fu">cell_spec</span>(text_tbl<span class="sc">$</span>Step,<span class="at">font_size=</span><span class="dv">12</span>)</span>
-<span id="cb6-23"><a href="#cb6-23"></a>text_tbl<span class="sc">$</span>Equation<span class="ot">=</span><span class="fu">cell_spec</span>(text_tbl<span class="sc">$</span>Equation,<span class="at">font_size=</span><span class="dv">18</span>)</span>
-<span id="cb6-24"><a href="#cb6-24"></a>almTable<span class="ot">=</span><span class="fu">kable</span>(text_tbl, <span class="st">'html'</span>, </span>
-<span id="cb6-25"><a href="#cb6-25"></a>  <span class="at">booktabs=</span>T, <span class="at">escape =</span> F, <span class="at">align=</span><span class="st">'l'</span>,</span>
-<span id="cb6-26"><a href="#cb6-26"></a>  <span class="at">caption =</span> <span class="st">'&lt;span style = "color:black;"&gt;&lt;center&gt;&lt;strong&gt;Table 1: ALM &amp; EXAM Equations&lt;/strong&gt;&lt;/center&gt;&lt;/span&gt;'</span>,</span>
-<span id="cb6-27"><a href="#cb6-27"></a>  <span class="at">col.names=</span><span class="fu">c</span>(<span class="st">""</span>,<span class="st">"Equation"</span>,<span class="st">"Description"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-28"><a href="#cb6-28"></a>  <span class="fu">kable_styling</span>(<span class="at">position=</span><span class="st">"left"</span>,<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"hover"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-29"><a href="#cb6-29"></a>  <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">bold =</span> F,<span class="at">border_right=</span>T) <span class="sc">%&gt;%</span></span>
-<span id="cb6-30"><a href="#cb6-30"></a>  <span class="fu">column_spec</span>(<span class="dv">2</span>, <span class="at">width =</span> <span class="st">'10cm'</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb6-31"><a href="#cb6-31"></a>  <span class="fu">column_spec</span>(<span class="dv">3</span>, <span class="at">width =</span> <span class="st">'15cm'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-32"><a href="#cb6-32"></a>  <span class="fu">pack_rows</span>(<span class="st">"ALM Activation &amp; Response"</span>,<span class="dv">1</span>,<span class="dv">4</span>,<span class="at">bold=</span><span class="cn">FALSE</span>,<span class="at">italic=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-33"><a href="#cb6-33"></a>  <span class="fu">pack_rows</span>(<span class="st">"ALM Learning"</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="at">bold=</span><span class="cn">FALSE</span>,<span class="at">italic=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-34"><a href="#cb6-34"></a>  <span class="fu">pack_rows</span>(<span class="st">"EXAM"</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="at">bold=</span><span class="cn">FALSE</span>,<span class="at">italic=</span><span class="cn">TRUE</span>)</span>
-<span id="cb6-35"><a href="#cb6-35"></a>  <span class="co">#save_kable(file="almTable.html",self_contained=T)</span></span>
-<span id="cb6-36"><a href="#cb6-36"></a><span class="co">#almTable</span></span>
-<span id="cb6-37"><a href="#cb6-37"></a></span>
-<span id="cb6-38"><a href="#cb6-38"></a></span>
-<span id="cb6-39"><a href="#cb6-39"></a><span class="fu">cat</span>(almTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">text_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>    <span class="st">'Step'</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Input Activation"</span>,<span class="st">"Output Activation"</span>,<span class="st">"Output Probability"</span>,<span class="st">"Mean Output"</span>,<span class="st">"Feedback Activation"</span>,<span class="st">"Update Weights"</span>,<span class="st">"Extrapolation"</span>,<span class="st">""</span><span class="op">)</span>,</span>
+<span>    <span class="st">'Equation'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"$a_i(X) = \\frac{e^{-c \\cdot (X-X_i)^2}}{ \\sum_{k=1}^Me^{-c \\cdot (X-X_i)^2}}$"</span>, </span>
+<span>                   <span class="st">'$O_j(X) = \\sum_{k=1}^Mw_{ji} \\cdot a_i(X)$'</span>,</span>
+<span>                   <span class="st">'$P[Y_j | X] = \\frac{O_i(X)}{\\sum_{k=1}^Mo_k(X)}$'</span>,</span>
+<span>                   <span class="st">"$m(x) = \\sum_{j=1}^LY_j \\cdot \\bigg[\\frac{O_j(X)}{\\sum_{k=1}^Lo_k(X)}\\bigg]$"</span>,</span>
+<span>                   <span class="st">"$f_j(Z)=e^{-c\\cdot(Z-Y_j)^2}$"</span>,</span>
+<span>                   <span class="st">"$w_{ji}(t+1)=w_{ji}(t)+\\alpha \\cdot {f_i(Z(t))-O_j(X(t))} \\cdot a_i(X(t))$"</span>,</span>
+<span>                   <span class="st">"$P[X_i|X] = \\frac{a_i(X)}{\\sum_{k=1}^Ma_k(X)}$"</span>,</span>
+<span>                   <span class="st">"$E[Y|X_i]=m(X_i) + \\bigg[\\frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1} - X_{i-1}} \\bigg] \\cdot[X-X_i]$"</span><span class="op">)</span>,</span>
+<span>    </span>
+<span>    <span class="st">'Description'</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>            <span class="st">"Activation of each input node, $X_i$, is a function of the Gaussian similarity between the node value and stimulus X. "</span>,</span>
+<span>            <span class="st">"Activation of each Output unit $O_j$ is the weighted sum of the input activations and association weights"</span>,</span>
+<span>            <span class="st">"Each output node has associated response, $Y_j$. The probability of response $Y_j$ is determined by the ratio of output activations"</span>,</span>
+<span>            <span class="st">"The response to stimulus x is the weighted average of the response probabilities"</span>,</span>
+<span>            <span class="st">"After responding, feedback signal Z is presented, activating each output node via the Gaussian similarity to the ideal response  "</span>,</span>
+<span>            <span class="st">"Delta rule to update weights. Magnitude of weight changes controlled by learning rate parameter alpha."</span>,</span>
+<span>            <span class="st">"Novel test stimulus X activates input nodes associated with trained stimuli"</span>,</span>
+<span>            <span class="st">"Slope value computed from nearest training instances and then added to the response associated with the nearest training instance,m(x)"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">text_tbl</span><span class="op">$</span><span class="va">Step</span><span class="op">=</span><span class="fu">cell_spec</span><span class="op">(</span><span class="va">text_tbl</span><span class="op">$</span><span class="va">Step</span>,font_size<span class="op">=</span><span class="fl">12</span><span class="op">)</span></span>
+<span><span class="va">text_tbl</span><span class="op">$</span><span class="va">Equation</span><span class="op">=</span><span class="fu">cell_spec</span><span class="op">(</span><span class="va">text_tbl</span><span class="op">$</span><span class="va">Equation</span>,font_size<span class="op">=</span><span class="fl">18</span><span class="op">)</span></span>
+<span><span class="va">almTable</span><span class="op">=</span><span class="fu">kable</span><span class="op">(</span><span class="va">text_tbl</span>, <span class="st">'html'</span>, </span>
+<span>  booktabs<span class="op">=</span><span class="cn">T</span>, escape <span class="op">=</span> <span class="cn">F</span>, align<span class="op">=</span><span class="st">'l'</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">'&lt;span style = "color:black;"&gt;&lt;center&gt;&lt;strong&gt;Table 1: ALM &amp; EXAM Equations&lt;/strong&gt;&lt;/center&gt;&lt;/span&gt;'</span>,</span>
+<span>  col.names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">""</span>,<span class="st">"Equation"</span>,<span class="st">"Description"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">kable_styling</span><span class="op">(</span>position<span class="op">=</span><span class="st">"left"</span>,bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"hover"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">column_spec</span><span class="op">(</span><span class="fl">1</span>, bold <span class="op">=</span> <span class="cn">F</span>,border_right<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">column_spec</span><span class="op">(</span><span class="fl">2</span>, width <span class="op">=</span> <span class="st">'10cm'</span><span class="op">)</span><span class="op">%&gt;%</span></span>
+<span>  <span class="fu">column_spec</span><span class="op">(</span><span class="fl">3</span>, width <span class="op">=</span> <span class="st">'15cm'</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pack_rows</span><span class="op">(</span><span class="st">"ALM Activation &amp; Response"</span>,<span class="fl">1</span>,<span class="fl">4</span>,bold<span class="op">=</span><span class="cn">FALSE</span>,italic<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pack_rows</span><span class="op">(</span><span class="st">"ALM Learning"</span>,<span class="fl">5</span>,<span class="fl">6</span>,bold<span class="op">=</span><span class="cn">FALSE</span>,italic<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pack_rows</span><span class="op">(</span><span class="st">"EXAM"</span>,<span class="fl">7</span>,<span class="fl">8</span>,bold<span class="op">=</span><span class="cn">FALSE</span>,italic<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="co">#save_kable(file="almTable.html",self_contained=T)</span></span>
+<span><span class="co">#almTable</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">almTable</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><table class="table table-hover" style="">
 <caption>
 <span style="color:black;">
@@ -651,11 +648,34 @@ Slope value computed from nearest training instances and then added to the respo
 </table>
 </div>
 </section><section id="model-fitting-and-comparison" class="level2"><h2 class="anchored" data-anchor-id="model-fitting-and-comparison">Model Fitting and Comparison</h2>
-<p>Following the procedure used by McDaniel &amp; Busemeyer (2009), we will assess the ability of both ALM and EXAM to account for the empirical data when fitting the models to 1) only the training data, and 2) both training and testing data. Models will be fit directly to the trial by trial data of each individual participants, both by minimizing the root-mean squared deviation (RMSE), and by maximizing log likelihood. Because ALM has been shown to do poorly at accounting for human patterns extrapolation <span class="citation" data-cites="deloshExtrapolationSineQua1997">[@deloshExtrapolationSineQua1997]</span>, we will also fit the extended EXAM version of the model, which operates identically to ALM during training, but includes a linear extrapolation mechanism for generating novel responses during testing.</p>
+<p>Following the procedure used by McDaniel &amp; Busemeyer (2009), we will assess the ability of both ALM and EXAM to account for the empirical data when fitting the models to 1) only the training data, and 2) both training and testing data. Models will be fit directly to the trial by trial data of each individual participants, both by minimizing the root-mean squared deviation (RMSE), and by maximizing log likelihood. Because ALM has been shown to do poorly at accounting for human patterns extrapolation <span class="citation" data-cites="deloshExtrapolationSineQua1997">(<a href="#ref-deloshExtrapolationSineQua1997" role="doc-biblioref">DeLosh, McDaniel, and Busemeyer 1997</a>)</span>, we will also fit the extended EXAM version of the model, which operates identically to ALM during training, but includes a linear extrapolation mechanism for generating novel responses during testing.</p>
 <p><br><br><br><br><br><br><br></p>
 </section></section><section id="references" class="level1"><h1>References</h1>
-<div id="refs" role="list">
-
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-bottNonmonotonicExtrapolationFunction2004" class="csl-entry" role="listitem">
+Bott, Lewis, and Evan Heit. 2004. <span>“Nonmonotonic <span>Extrapolation</span> in <span>Function Learning</span>.”</span> <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em> 30: 38–50.
+</div>
+<div id="ref-brehmerHypothesesRelationsScaled1974" class="csl-entry" role="listitem">
+Brehmer, Berndt. 1974. <span>“Hypotheses about Relations Between Scaled Variables in the Learning of Probabilistic Inference Tasks.”</span> <em>Organizational Behavior and Human Performance</em> 11 (1): 1–27. <a href="https://doi.org/10.1016/0030-5073(74)90002-6">https://doi.org/10.1016/0030-5073(74)90002-6</a>.
+</div>
+<div id="ref-carrollFunctionalLearningLearning1963" class="csl-entry" role="listitem">
+Carroll, J. Douglas. 1963. <span>“Functional <span>Learning</span>: <span>The Learning</span> of <span>Continuous Functional Mappings Relating Stimulus</span> and <span>Response Continua</span>.”</span> <em>ETS Research Bulletin Series</em> 1963 (2): i–144. <a href="https://doi.org/10.1002/j.2333-8504.1963.tb00958.x">https://doi.org/10.1002/j.2333-8504.1963.tb00958.x</a>.
+</div>
+<div id="ref-deloshExtrapolationSineQua1997" class="csl-entry" role="listitem">
+DeLosh, Edward L, Mark A McDaniel, and Jerome R Busemeyer. 1997. <span>“Extrapolation: <span>The Sine Qua Non</span> for <span>Abstraction</span> in <span>Function Learning</span>.”</span> <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, 19.
+</div>
+<div id="ref-jonesActiveFunctionLearning2018" class="csl-entry" role="listitem">
+Jones, Angela, Eric Schulz, Björn Meder, and Azzurra Ruggeri. 2018. <span>“Active <span>Function Learning</span>.”</span> Preprint. <span>Animal Behavior and Cognition</span>. <a href="https://doi.org/10.1101/262394">https://doi.org/10.1101/262394</a>.
+</div>
+<div id="ref-kalishPopulationLinearExperts2004" class="csl-entry" role="listitem">
+Kalish, Michael L., Stephan Lewandowsky, and John K. Kruschke. 2004. <span>“Population of <span>Linear Experts</span>: <span>Knowledge Partitioning</span> and <span>Function Learning</span>.”</span> <em>Psychological Review</em> 111 (4): 1072–99. <a href="https://doi.org/10.1037/0033-295X.111.4.1072">https://doi.org/10.1037/0033-295X.111.4.1072</a>.
+</div>
+<div id="ref-mcdanielConceptualBasisFunction2005" class="csl-entry" role="listitem">
+Mcdaniel, Mark A., and Jerome R. Busemeyer. 2005. <span>“The Conceptual Basis of Function Learning and Extrapolation: <span>Comparison</span> of Rule-Based and Associative-Based Models.”</span> <em>Psychonomic Bulletin &amp; Review</em> 12 (1): 24–42. <a href="https://doi.org/10.3758/BF03196347">https://doi.org/10.3758/BF03196347</a>.
+</div>
+<div id="ref-mcdanielPredictingTransferPerformance2009" class="csl-entry" role="listitem">
+Mcdaniel, Mark, Eric Dimperio, Jacqueline Griego, and Jerome Busemeyer. 2009. <span>“Predicting Transfer Performance: <span>A</span> Comparison of Competing Function Learning Models.”</span> <em>Journal of Experimental Psychology. Learning, Memory, and Cognition</em> 35 (January): 173–95. <a href="https://doi.org/10.1037/a0013982">https://doi.org/10.1037/a0013982</a>.
+</div>
 </div>
 <p><br><br></p>
 <p><br><br></p>
@@ -681,150 +701,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
-  const disableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'prefetch';
-    }
-  }
-  const enableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'stylesheet';
-    }
-  }
-  const manageTransitions = (selector, allowTransitions) => {
-    const els = window.document.querySelectorAll(selector);
-    for (let i=0; i < els.length; i++) {
-      const el = els[i];
-      if (allowTransitions) {
-        el.classList.remove('notransition');
-      } else {
-        el.classList.add('notransition');
-      }
-    }
-  }
-  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-    let newTheme = '';
-    if(darkModeDefault) {
-      newTheme = isAlternate ? baseTheme : alternateTheme;
-    } else {
-      newTheme = isAlternate ? alternateTheme : baseTheme;
-    }
-    const changeGiscusTheme = () => {
-      // From: https://github.com/giscus/giscus/issues/336
-      const sendMessage = (message) => {
-        const iframe = document.querySelector('iframe.giscus-frame');
-        if (!iframe) return;
-        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-      }
-      sendMessage({
-        setConfig: {
-          theme: newTheme
-        }
-      });
-    }
-    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-    if (isGiscussLoaded) {
-      changeGiscusTheme();
-    }
-  }
-  const toggleColorMode = (alternate) => {
-    // Switch the stylesheets
-    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-    manageTransitions('#quarto-margin-sidebar .nav-link', false);
-    if (alternate) {
-      enableStylesheet(alternateStylesheets);
-      for (const sheetNode of alternateStylesheets) {
-        if (sheetNode.id === "quarto-bootstrap") {
-          toggleBodyColorMode(sheetNode);
-        }
-      }
-    } else {
-      disableStylesheet(alternateStylesheets);
-      toggleBodyColorPrimary();
-    }
-    manageTransitions('#quarto-margin-sidebar .nav-link', true);
-    // Switch the toggles
-    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-    for (let i=0; i < toggles.length; i++) {
-      const toggle = toggles[i];
-      if (toggle) {
-        if (alternate) {
-          toggle.classList.add("alternate");     
-        } else {
-          toggle.classList.remove("alternate");
-        }
-      }
-    }
-    // Hack to workaround the fact that safari doesn't
-    // properly recolor the scrollbar when toggling (#1455)
-    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-      manageTransitions("body", false);
-      window.scrollTo(0, 1);
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        manageTransitions("body", true);
-      }, 40);  
-    }
-  }
-  const isFileUrl = () => { 
-    return window.location.protocol === 'file:';
-  }
-  const hasAlternateSentinel = () => {  
-    let styleSentinel = getColorSchemeSentinel();
-    if (styleSentinel !== null) {
-      return styleSentinel === "alternate";
-    } else {
-      return false;
-    }
-  }
-  const setStyleSentinel = (alternate) => {
-    const value = alternate ? "alternate" : "default";
-    if (!isFileUrl()) {
-      window.localStorage.setItem("quarto-color-scheme", value);
-    } else {
-      localAlternateSentinel = value;
-    }
-  }
-  const getColorSchemeSentinel = () => {
-    if (!isFileUrl()) {
-      const storageValue = window.localStorage.getItem("quarto-color-scheme");
-      return storageValue != null ? storageValue : localAlternateSentinel;
-    } else {
-      return localAlternateSentinel;
-    }
-  }
-  const darkModeDefault = false;
-  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
-  // Dark / light mode switch
-  window.quartoToggleColorScheme = () => {
-    // Read the current dark / light value 
-    let toAlternate = !hasAlternateSentinel();
-    toggleColorMode(toAlternate);
-    setStyleSentinel(toAlternate);
-    toggleGiscusIfUsed(toAlternate, darkModeDefault);
-  };
-  // Ensure there is a toggle, if there isn't float one in the top right
-  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-    const a = window.document.createElement('a');
-    a.classList.add('top-right');
-    a.classList.add('quarto-color-scheme-toggle');
-    a.href = "";
-    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-    const i = window.document.createElement("i");
-    i.classList.add('bi');
-    a.appendChild(i);
-    window.document.body.appendChild(a);
-  }
-  // Switch to dark mode if need be
-  if (hasAlternateSentinel()) {
-    toggleColorMode(true);
-  } else {
-    toggleColorMode(false);
-  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -923,6 +799,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
   const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
     if (id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
@@ -935,6 +821,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return note.innerHTML;
       }
     } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
       return note.innerHTML;
     }
   }
@@ -944,33 +835,39 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       instance.disable();
       let url = xref.getAttribute('href');
       let hash = undefined; 
-      try { hash = new URL(url).hash; } catch {}
-      const id = hash.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note !== null) {
-        try {
-          const html = processXRef(id, note);
-          instance.setContent(html);
-        } finally {
-          instance.enable();
-          instance.show();
-        }
+      if (url.startsWith('#')) {
+        hash = url;
       } else {
-        // See if we can fetch this
-        fetch(url.split('#')[0])
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.getElementById(id);
-          if (note !== null) {
-            const html = processXRef(id, note);
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
             instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
       }
     }, function(instance) {
     });

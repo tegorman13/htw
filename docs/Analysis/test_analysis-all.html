@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.224">
+<meta name="generator" content="quarto-1.4.251">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="dcterms.date" content="2023-07-05">
 <title>HTW Project - HTW Test Analysis</title>
@@ -68,12 +68,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -98,8 +96,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script><style>html{ scroll-behavior: smooth; }</style>
-<link rel="stylesheet" href="../Assets/Style/style1.css">
-<link rel="stylesheet" href="../Assets/Style/calloutTG.css">
 </head>
 <body class="nav-sidebar docked">
 
@@ -120,9 +116,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">HTW Project</a> 
-        <div class="sidebar-tools-main tools-wide">
+        <div class="sidebar-tools-main">
     <a href="https://github.com/tegorman13/htw" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -368,22 +363,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header><div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse,data.table,lme4,emmeans,here,knitr,kableExtra)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>d <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/dPrune-05-21-23.rds"</span>))</span>
-<span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a>dtest <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> <span class="fu">filter</span>(expMode <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,lowBound) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-5"><a href="#cb1-5"></a>  <span class="fu">mutate</span>(<span class="at">nBand=</span><span class="fu">n</span>(),<span class="at">band=</span>bandInt,<span class="at">id=</span><span class="fu">factor</span>(id)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">nd=</span><span class="fu">n_distinct</span>(lowBound))</span>
-<span id="cb1-6"><a href="#cb1-6"></a>dtest <span class="ot">&lt;-</span> dtest <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,lowBound) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(nBand<span class="sc">&gt;=</span><span class="dv">5</span> <span class="sc">&amp;</span> nd<span class="sc">==</span><span class="dv">6</span>)</span>
-<span id="cb1-7"><a href="#cb1-7"></a>dtest <span class="ot">&lt;-</span> dtest <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span>id <span class="sc">%in%</span> <span class="fu">unique</span>(dtest<span class="sc">$</span>id[dtest<span class="sc">$</span>nBand<span class="sc">&lt;</span><span class="dv">5</span>]))</span>
-<span id="cb1-8"><a href="#cb1-8"></a></span>
-<span id="cb1-9"><a href="#cb1-9"></a>dtestAgg <span class="ot">&lt;-</span> dtest <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,condit,catOrder,fb,vb,band,lowBound,highBound,input) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">vxCapped=</span><span class="fu">ifelse</span>(vx<span class="sc">&gt;</span><span class="dv">1600</span>,<span class="dv">1600</span>,vx)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>  <span class="fu">summarise</span>(<span class="at">vxMean=</span><span class="fu">mean</span>(vx),<span class="at">devMean=</span><span class="fu">mean</span>(dist),<span class="at">vxMed=</span><span class="fu">median</span>(vx),<span class="at">devMed=</span><span class="fu">median</span>(dist),</span>
-<span id="cb1-11"><a href="#cb1-11"></a>            <span class="at">vxMeanCap=</span><span class="fu">mean</span>(vxCapped),<span class="at">.groups =</span> <span class="st">"keep"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">data.table</span>,<span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/dPrune-05-21-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">lowBound</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>nBand<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span>,band<span class="op">=</span><span class="va">bandInt</span>,id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>nd<span class="op">=</span><span class="fu">n_distinct</span><span class="op">(</span><span class="va">lowBound</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">dtest</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">lowBound</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">nBand</span><span class="op">&gt;=</span><span class="fl">5</span> <span class="op">&amp;</span> <span class="va">nd</span><span class="op">==</span><span class="fl">6</span><span class="op">)</span></span>
+<span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">dtest</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">dtest</span><span class="op">$</span><span class="va">id</span><span class="op">[</span><span class="va">dtest</span><span class="op">$</span><span class="va">nBand</span><span class="op">&lt;</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dtestAgg</span> <span class="op">&lt;-</span> <span class="va">dtest</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>,<span class="va">catOrder</span>,<span class="va">fb</span>,<span class="va">vb</span>,<span class="va">band</span>,<span class="va">lowBound</span>,<span class="va">highBound</span>,<span class="va">input</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>vxCapped<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">vx</span><span class="op">&gt;</span><span class="fl">1600</span>,<span class="fl">1600</span>,<span class="va">vx</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>vxMean<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">vx</span><span class="op">)</span>,devMean<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dist</span><span class="op">)</span>,vxMed<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">vx</span><span class="op">)</span>,devMed<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">dist</span><span class="op">)</span>,</span>
+<span>            vxMeanCap<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">vxCapped</span><span class="op">)</span>,.groups <span class="op">=</span> <span class="st">"keep"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lmer</span>(devMean <span class="sc">~</span> condit <span class="sc">*</span> catOrder <span class="sc">*</span> fb <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id), <span class="at">data =</span> dtestAgg)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span><span class="va">devMean</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">catOrder</span> <span class="op">*</span> <span class="va">fb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dtestAgg</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML ['lmerMod']
 Formula: devMean ~ condit * catOrder * fb + (1 | id)
@@ -441,8 +437,8 @@ Number of obs: 2697, groups: id, 461</p>
 </ul>
 <p>In summary, the analysis suggests that training variability and feedback type have significant main effects on participants’ performance in the visuomotor extrapolation task. Participants in the varied training group and those receiving ordinal feedback had higher devMean values, indicating better performance. However, the order manipulation (‘orig’ and ‘rev’) did not have a significant effect on performance. Additionally, there were no significant interactions between the factors, suggesting that their effects on performance were independent of each other.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>model_vb <span class="ot">&lt;-</span> <span class="fu">lmer</span>(devMean <span class="sc">~</span> condit <span class="sc">*</span> catOrder <span class="sc">*</span> fb <span class="sc">*</span> vb <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id), <span class="at">data =</span> dtestAgg)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">summary</span>(model_vb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_vb</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span><span class="va">devMean</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">catOrder</span> <span class="op">*</span> <span class="va">fb</span> <span class="op">*</span> <span class="va">vb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dtestAgg</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model_vb</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML ['lmerMod']
 Formula: devMean ~ condit * catOrder * fb * vb + (1 | id)
@@ -536,26 +532,26 @@ Number of obs: 2697, groups: id, 461</p>
 <p>In summary, the updated analysis suggests that training variability, order manipulation, feedback type, and velocity band all have significant main effects on participants’ performance in the visuomotor extrapolation task. Additionally, there are significant interactions between these factors, indicating that their effects on performance are not independent of each other.</p>
 <section id="interaction-between-variability-and-order" class="level3"><h3 class="anchored" data-anchor-id="interaction-between-variability-and-order">Interaction between variability and order</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb6-2"><a href="#cb6-2"></a></span>
-<span id="cb6-3"><a href="#cb6-3"></a>interaction_plot_1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dtestAgg, <span class="fu">aes</span>(<span class="at">x =</span> catOrder, <span class="at">y =</span> devMean, <span class="at">color =</span> condit)) <span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.data =</span> mean_se, <span class="at">geom =</span> <span class="st">"errorbar"</span>, <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Interaction between Training Variability and Order Manipulation"</span>,</span>
-<span id="cb6-8"><a href="#cb6-8"></a>       <span class="at">x =</span> <span class="st">"Order Manipulation"</span>,</span>
-<span id="cb6-9"><a href="#cb6-9"></a>       <span class="at">y =</span> <span class="st">"Mean Deviation"</span>,</span>
-<span id="cb6-10"><a href="#cb6-10"></a>       <span class="at">color =</span> <span class="st">"Training Variability"</span>)</span>
-<span id="cb6-11"><a href="#cb6-11"></a></span>
-<span id="cb6-12"><a href="#cb6-12"></a>interaction_plot_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">interaction_plot_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">dtestAgg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">catOrder</span>, y <span class="op">=</span> <span class="va">devMean</span>, color <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_summary.html">stat_summary</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">mean</span>, geom <span class="op">=</span> <span class="st">"point"</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_summary.html">stat_summary</a></span><span class="op">(</span>fun.data <span class="op">=</span> <span class="va">mean_se</span>, geom <span class="op">=</span> <span class="st">"errorbar"</span>, width <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Interaction between Training Variability and Order Manipulation"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"Order Manipulation"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Mean Deviation"</span>,</span>
+<span>       color <span class="op">=</span> <span class="st">"Training Variability"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">interaction_plot_1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="test_analysis-all_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>table_2 <span class="ot">&lt;-</span> dtestAgg <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">group_by</span>(condit, catOrder) <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">summarise</span>(<span class="at">mean_deviation =</span> <span class="fu">mean</span>(devMean), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb7-4"><a href="#cb7-4"></a></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="fu">kable</span>(table_2, <span class="at">caption =</span> <span class="st">"Mean Deviation by Training Variability and Category Order"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">table_2</span> <span class="op">&lt;-</span> <span class="va">dtestAgg</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span>, <span class="va">catOrder</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>mean_deviation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">devMean</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">kable</span><span class="op">(</span><span class="va">table_2</span>, caption <span class="op">=</span> <span class="st">"Mean Deviation by Training Variability and Category Order"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <caption>Mean Deviation by Training Variability and Category Order</caption>
@@ -591,26 +587,26 @@ Number of obs: 2697, groups: id, 461</p>
 </div>
 </section><section id="variation-and-feedback" class="level3"><h3 class="anchored" data-anchor-id="variation-and-feedback">Variation and Feedback</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>interaction_plot_2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dtestAgg, <span class="fu">aes</span>(<span class="at">x =</span> fb, <span class="at">y =</span> devMean, <span class="at">color =</span> condit)) <span class="sc">+</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.data =</span> mean_se, <span class="at">geom =</span> <span class="st">"errorbar"</span>, <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Interaction between Training Variability and Feedback Type"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6"></a>       <span class="at">x =</span> <span class="st">"Feedback Type"</span>,</span>
-<span id="cb8-7"><a href="#cb8-7"></a>       <span class="at">y =</span> <span class="st">"Mean Deviation"</span>,</span>
-<span id="cb8-8"><a href="#cb8-8"></a>       <span class="at">color =</span> <span class="st">"Training Variability"</span>)</span>
-<span id="cb8-9"><a href="#cb8-9"></a></span>
-<span id="cb8-10"><a href="#cb8-10"></a>interaction_plot_2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">interaction_plot_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">dtestAgg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">fb</span>, y <span class="op">=</span> <span class="va">devMean</span>, color <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_summary.html">stat_summary</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">mean</span>, geom <span class="op">=</span> <span class="st">"point"</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_summary.html">stat_summary</a></span><span class="op">(</span>fun.data <span class="op">=</span> <span class="va">mean_se</span>, geom <span class="op">=</span> <span class="st">"errorbar"</span>, width <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Interaction between Training Variability and Feedback Type"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"Feedback Type"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Mean Deviation"</span>,</span>
+<span>       color <span class="op">=</span> <span class="st">"Training Variability"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">interaction_plot_2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="test_analysis-all_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb9-2"><a href="#cb9-2"></a></span>
-<span id="cb9-3"><a href="#cb9-3"></a>table_1 <span class="ot">&lt;-</span> dtestAgg <span class="sc">%&gt;%</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>  <span class="fu">group_by</span>(condit, fb) <span class="sc">%&gt;%</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a>  <span class="fu">summarise</span>(<span class="at">mean_deviation =</span> <span class="fu">mean</span>(devMean), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb9-6"><a href="#cb9-6"></a></span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="fu">kable</span>(table_1, <span class="at">caption =</span> <span class="st">"Mean Deviation by Training Variability and Feedback Type"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yihui.org/knitr/">knitr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">table_1</span> <span class="op">&lt;-</span> <span class="va">dtestAgg</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span>, <span class="va">fb</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>mean_deviation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">devMean</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">table_1</span>, caption <span class="op">=</span> <span class="st">"Mean Deviation by Training Variability and Feedback Type"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <caption>Mean Deviation by Training Variability and Feedback Type</caption>
@@ -646,27 +642,27 @@ Number of obs: 2697, groups: id, 461</p>
 </div>
 </section><section id="interaction-between-variation-and-band" class="level3"><h3 class="anchored" data-anchor-id="interaction-between-variation-and-band">interaction between Variation and Band</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>selected_vb <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"800-1000"</span>, <span class="st">"1000-1200"</span>, <span class="st">"1200-1400"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2"></a>dtestAgg_filtered <span class="ot">&lt;-</span> dtestAgg <span class="sc">%&gt;%</span> <span class="fu">filter</span>(vb <span class="sc">%in%</span> selected_vb)</span>
-<span id="cb10-3"><a href="#cb10-3"></a></span>
-<span id="cb10-4"><a href="#cb10-4"></a>interaction_plot_3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dtestAgg_filtered, <span class="fu">aes</span>(<span class="at">x =</span> vb, <span class="at">y =</span> devMean, <span class="at">color =</span> condit)) <span class="sc">+</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.data =</span> mean_se, <span class="at">geom =</span> <span class="st">"errorbar"</span>, <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb10-7"><a href="#cb10-7"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Interaction between Training Variability and Specific Velocity Bands"</span>,</span>
-<span id="cb10-9"><a href="#cb10-9"></a>       <span class="at">x =</span> <span class="st">"Velocity Band"</span>,</span>
-<span id="cb10-10"><a href="#cb10-10"></a>       <span class="at">y =</span> <span class="st">"Mean Deviation"</span>,</span>
-<span id="cb10-11"><a href="#cb10-11"></a>       <span class="at">color =</span> <span class="st">"Training Variability"</span>)</span>
-<span id="cb10-12"><a href="#cb10-12"></a></span>
-<span id="cb10-13"><a href="#cb10-13"></a>interaction_plot_3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">selected_vb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"800-1000"</span>, <span class="st">"1000-1200"</span>, <span class="st">"1200-1400"</span><span class="op">)</span></span>
+<span><span class="va">dtestAgg_filtered</span> <span class="op">&lt;-</span> <span class="va">dtestAgg</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">vb</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">selected_vb</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">interaction_plot_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">dtestAgg_filtered</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">vb</span>, y <span class="op">=</span> <span class="va">devMean</span>, color <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_summary.html">stat_summary</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">mean</span>, geom <span class="op">=</span> <span class="st">"point"</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_summary.html">stat_summary</a></span><span class="op">(</span>fun.data <span class="op">=</span> <span class="va">mean_se</span>, geom <span class="op">=</span> <span class="st">"errorbar"</span>, width <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Interaction between Training Variability and Specific Velocity Bands"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"Velocity Band"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Mean Deviation"</span>,</span>
+<span>       color <span class="op">=</span> <span class="st">"Training Variability"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">interaction_plot_3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="test_analysis-all_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>table_3 <span class="ot">&lt;-</span> dtestAgg <span class="sc">%&gt;%</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">group_by</span>(condit, vb) <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">summarise</span>(<span class="at">mean_deviation =</span> <span class="fu">mean</span>(devMean), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb11-4"><a href="#cb11-4"></a></span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="fu">kable</span>(table_3, <span class="at">caption =</span> <span class="st">"Mean Deviation by Training Variability and Velocity Band"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">table_3</span> <span class="op">&lt;-</span> <span class="va">dtestAgg</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span>, <span class="va">vb</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>mean_deviation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">devMean</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">table_3</span>, caption <span class="op">=</span> <span class="st">"Mean Deviation by Training Variability and Velocity Band"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <caption>Mean Deviation by Training Variability and Velocity Band</caption>
@@ -769,150 +765,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
-  const disableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'prefetch';
-    }
-  }
-  const enableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'stylesheet';
-    }
-  }
-  const manageTransitions = (selector, allowTransitions) => {
-    const els = window.document.querySelectorAll(selector);
-    for (let i=0; i < els.length; i++) {
-      const el = els[i];
-      if (allowTransitions) {
-        el.classList.remove('notransition');
-      } else {
-        el.classList.add('notransition');
-      }
-    }
-  }
-  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-    let newTheme = '';
-    if(darkModeDefault) {
-      newTheme = isAlternate ? baseTheme : alternateTheme;
-    } else {
-      newTheme = isAlternate ? alternateTheme : baseTheme;
-    }
-    const changeGiscusTheme = () => {
-      // From: https://github.com/giscus/giscus/issues/336
-      const sendMessage = (message) => {
-        const iframe = document.querySelector('iframe.giscus-frame');
-        if (!iframe) return;
-        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-      }
-      sendMessage({
-        setConfig: {
-          theme: newTheme
-        }
-      });
-    }
-    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-    if (isGiscussLoaded) {
-      changeGiscusTheme();
-    }
-  }
-  const toggleColorMode = (alternate) => {
-    // Switch the stylesheets
-    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-    manageTransitions('#quarto-margin-sidebar .nav-link', false);
-    if (alternate) {
-      enableStylesheet(alternateStylesheets);
-      for (const sheetNode of alternateStylesheets) {
-        if (sheetNode.id === "quarto-bootstrap") {
-          toggleBodyColorMode(sheetNode);
-        }
-      }
-    } else {
-      disableStylesheet(alternateStylesheets);
-      toggleBodyColorPrimary();
-    }
-    manageTransitions('#quarto-margin-sidebar .nav-link', true);
-    // Switch the toggles
-    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-    for (let i=0; i < toggles.length; i++) {
-      const toggle = toggles[i];
-      if (toggle) {
-        if (alternate) {
-          toggle.classList.add("alternate");     
-        } else {
-          toggle.classList.remove("alternate");
-        }
-      }
-    }
-    // Hack to workaround the fact that safari doesn't
-    // properly recolor the scrollbar when toggling (#1455)
-    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-      manageTransitions("body", false);
-      window.scrollTo(0, 1);
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        manageTransitions("body", true);
-      }, 40);  
-    }
-  }
-  const isFileUrl = () => { 
-    return window.location.protocol === 'file:';
-  }
-  const hasAlternateSentinel = () => {  
-    let styleSentinel = getColorSchemeSentinel();
-    if (styleSentinel !== null) {
-      return styleSentinel === "alternate";
-    } else {
-      return false;
-    }
-  }
-  const setStyleSentinel = (alternate) => {
-    const value = alternate ? "alternate" : "default";
-    if (!isFileUrl()) {
-      window.localStorage.setItem("quarto-color-scheme", value);
-    } else {
-      localAlternateSentinel = value;
-    }
-  }
-  const getColorSchemeSentinel = () => {
-    if (!isFileUrl()) {
-      const storageValue = window.localStorage.getItem("quarto-color-scheme");
-      return storageValue != null ? storageValue : localAlternateSentinel;
-    } else {
-      return localAlternateSentinel;
-    }
-  }
-  const darkModeDefault = false;
-  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
-  // Dark / light mode switch
-  window.quartoToggleColorScheme = () => {
-    // Read the current dark / light value 
-    let toAlternate = !hasAlternateSentinel();
-    toggleColorMode(toAlternate);
-    setStyleSentinel(toAlternate);
-    toggleGiscusIfUsed(toAlternate, darkModeDefault);
-  };
-  // Ensure there is a toggle, if there isn't float one in the top right
-  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-    const a = window.document.createElement('a');
-    a.classList.add('top-right');
-    a.classList.add('quarto-color-scheme-toggle');
-    a.href = "";
-    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-    const i = window.document.createElement("i");
-    i.classList.add('bi');
-    a.appendChild(i);
-    window.document.body.appendChild(a);
-  }
-  // Switch to dark mode if need be
-  if (hasAlternateSentinel()) {
-    toggleColorMode(true);
-  } else {
-    toggleColorMode(false);
-  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -1011,6 +863,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
   const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
     if (id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
@@ -1023,6 +885,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return note.innerHTML;
       }
     } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
       return note.innerHTML;
     }
   }
@@ -1032,33 +899,39 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       instance.disable();
       let url = xref.getAttribute('href');
       let hash = undefined; 
-      try { hash = new URL(url).hash; } catch {}
-      const id = hash.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note !== null) {
-        try {
-          const html = processXRef(id, note);
-          instance.setContent(html);
-        } finally {
-          instance.enable();
-          instance.show();
-        }
+      if (url.startsWith('#')) {
+        hash = url;
       } else {
-        // See if we can fetch this
-        fetch(url.split('#')[0])
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.getElementById(id);
-          if (note !== null) {
-            const html = processXRef(id, note);
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
             instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
       }
     }, function(instance) {
     });
