@@ -17,6 +17,168 @@ pacman::p_load(tidyverse,data.table,igraph,ggraph,kableExtra,DiagrammeR,png,cons
 ```
 
 
+```{mermaid}
+%%| fig-cap: "Mean Vx over training blocks"
+
+flowchart LR
+    data1(Varied Training<br/>800-1000<br/>1000-1200<br/>1200-1400)
+    data2(Constant Training<br/>800-1000)
+    Test1(Testing - No Feedback<br/>100-300<br/>350-550<br/>600-800)
+    Test2(Test From Train<br/>800-1000<br/>1000-1200<br/>1200-1400)
+    Test3(Testing - Feedback<br/>100-300<br/>350-550<br/>600-800)
+
+    data1 --> Test1
+    data2 --> Test1
+    Test1 --> Test2
+    Test2 --> Test3
+    
+%% https://quarto.org/docs/authoring/diagrams.html
+```
+
+```{dot}
+//| label: fig-simple
+//| fig-cap: "This is a simple graphviz graph."
+//| fig-width: 7.5
+//| fig-responsive: false
+digraph {
+  graph [layout = dot, rankdir = LR]
+
+  // define the global styles of the nodes
+  node [shape = rectangle, style = filled, fillcolor = Linen]
+
+  data1 [label = "Varied Training\n800-1000\n1000-1200\n1200-1400"]
+  data2 [label = "Constant Training\n800-1000"]
+  Test1 [label = "Testing - No Feedback\n100-300\n350-550\n600-800"]
+  Test2 [label = "Test From Train\n800-1000\n1000-1200\n1200-1400"]
+  Test3 [label = "Testing - Feedback\n100-300\n350-550\n600-800"]
+
+  // edge definitions with the node IDs
+  data1 -> Test1
+  data2 -> Test1
+  Test1 -> Test2
+  Test2 -> Test3
+}
+```
+
+```{dot}
+//| label: fig-simple2
+//| fig-cap: "This is a simple graphviz graph."
+//| fig-width: 7.5
+//| fig-height: 2.5
+
+
+digraph {
+  graph [layout = dot, rankdir = LR]
+
+  // define the global styles of the nodes
+  node [shape = rectangle, style = filled, fillcolor = Linen]
+
+  data1 [label = "Varied Training\n800-1000\n1000-1200\n1200-1400"]
+  data2 [label = "Constant Training\n800-1000"]
+  Test1 [label = "Testing - No Feedback\n100-300\n350-550\n600-800"]
+  Test2 [label = "Test From Train\n800-1000\n1000-1200\n1200-1400"]
+  Test3 [label = "Testing - Feedback\n100-300\n350-550\n600-800"]
+
+  // edge definitions with the node IDs
+  data1 -> Test1
+  data2 -> Test1
+  Test1 -> Test2 [dir=both, constraint= false]
+  Test2 -> Test3
+}
+
+
+
+```
+
+## subgraph
+```{dot}
+
+digraph {
+  graph [layout = dot, rankdir = LR]
+
+  // define the global styles of the nodes
+  node [shape = rectangle, style = filled, fillcolor = Linen]
+
+  data1 [label = "Varied Training\n800-1000\n1000-1200\n1200-1400"]
+  data2 [label = "Constant Training\n800-1000"]
+  Test1 [label = "Testing - No Feedback\n100-300\n350-550\n600-800"]
+  Test2 [label = "Test From Train\n800-1000\n1000-1200\n1200-1400"]
+  Test3 [label = "Testing - Feedback\n100-300\n350-550\n600-800"]
+
+  // edge definitions with the node IDs
+  data1 -> subgraph1
+  data2 -> subgraph1
+
+  subgraph cluster_counterbalanced {
+    label = "Counterbalanced Order"
+    Test1
+    Test2
+  }
+
+  subgraph1 -> Test3
+}
+
+
+
+```
+
+```{dot}
+
+digraph {
+  graph [layout = dot, rankdir = LR]
+
+  // define the global styles of the nodes
+  node [shape = rectangle, style = filled, fillcolor = Linen]
+
+  data1 [label = "Varied Training\n800-1000\n1000-1200\n1200-1400"]
+  data2 [label = "Constant Training\n800-1000"]
+  Test3 [label = "Testing - Feedback\n100-300\n350-550\n600-800"]
+
+  // edge definitions with the node IDs
+  data1 -> Test1
+  data2 -> Test1
+
+  subgraph cluster {
+    label = "Counterbalanced Order"
+    Test1 [label = "Testing - No Feedback\n100-300\n350-550\n600-800"]
+    Test2 [label = "Test From Train\n800-1000\n1000-1200\n1200-1400"]
+    Test1 -> Test2
+  }
+
+  Test2 -> Test3
+}
+```
+
+
+```{dot}
+digraph {
+  graph [layout = dot, rankdir = LR]
+
+  // define the global styles of the nodes
+  node [shape = rectangle, style = filled]
+
+  data1 [label = "Varied Training\n800-1000\n1000-1200\n1200-1400", fillcolor = "#FF0000"]
+  data2 [label = "Constant Training\n800-1000", fillcolor = "#00A08A"]
+  Test3 [label = "Testing - Feedback\n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]
+
+  // edge definitions with the node IDs
+  data1 -> Test1
+  data2 -> Test1
+
+  subgraph cluster {
+    label = "Counterbalanced Order"
+    Test1 [label = "Testing - No Feedback\n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]
+    Test2 [label = "Test From Train\n800-1000\n1000-1200\n1200-1400", fillcolor = "#ECCBAE"]
+    Test1 -> Test2
+  }
+
+  Test2 -> Test3
+}
+
+```
+
+
+
 ```{dot}
 digraph ALM {
     rankdir = LR
@@ -62,6 +224,7 @@ digraph ALM {
 
 ```
 
+test
 
 ```{dot}
 digraph ALM {
@@ -118,7 +281,7 @@ digraph ALM {
 
 ```
 
-
+test2
 
 
 ```{dot}
@@ -145,7 +308,7 @@ x1->x2->E2->x100
 ```
 
 
-
+test3
 
 ```{dot}
 digraph G {
@@ -176,6 +339,10 @@ subgraph clusterX {
 
 ```
 
+
+test4
+
+
 ```{dot}
 
 digraph G {
@@ -199,7 +366,7 @@ x1->x2->E2->x100
 
 ```
 
-
+test5
 
 ```{dot}
 
@@ -222,7 +389,7 @@ digraph G {
 
 
 
-
+test6
 
 ```{dot}
 digraph ALM {
@@ -276,6 +443,8 @@ digraph ALM {
 
 ```
 
+
+test7
 
 ```{dot}
 digraph G {
@@ -464,6 +633,9 @@ digraph G {
 
 
 ```
+
+
+test8
 
 
 ```{dot}
@@ -964,6 +1136,7 @@ consort_plot(r,
 ```
 
 
+htab 
 
 ```{r}
 
@@ -999,6 +1172,7 @@ w <- r[, {
 
 ```
 
+mermaid maker 
 
 ```{r}
 
@@ -1044,6 +1218,7 @@ makemermaid(x,
 ```
 
 
+node plot 
 
 ```{r}
 # Create some service functions so later it will be easy to change from
