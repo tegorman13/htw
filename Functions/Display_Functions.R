@@ -2,7 +2,7 @@
 
 pacman::p_load(ggplot2,wesanderson)
 #pacman::p_load(ggplot2,ggpattern,viridis,scales,wesanderson,ggthemer)
-
+options(dplyr.summarise.inform=FALSE)
 
 # Custom theme for data visualizations
 plot_theme <- function(title_size = NULL, 
@@ -129,6 +129,8 @@ theme_set(plot_theme(
 # options(ggplot2.continuous.fill = "viridis")
 
 
+
+#### COLOR THEME ##### 
 darjeeling <- c(wes_palette("Darjeeling1"),wes_palette("Darjeeling2"))
 #cat(darjeeling)
 
@@ -141,7 +143,8 @@ scale_fill_discrete <- function(...) {
   scale_fill_manual(..., values = darjeeling)
 }
 
-
+options(ggplot2.continuous.colour=darjeeling)
+options(ggplot2.continuous.fill = darjeeling)
 
 
 learn_curve_bins<- function(df, x_var, y_var,gw,groupVec, nbins, labels = FALSE,prefix="") {
@@ -153,9 +156,9 @@ learn_curve_bins<- function(df, x_var, y_var,gw,groupVec, nbins, labels = FALSE,
       mean_y = round(mean({{ y_var }}, na.rm = TRUE),0),
       se_y = round(sd({{ y_var }}, na.rm = TRUE) / sqrt(n()),0),
       .groups = "drop"
-    ) |>
-    mutate(combined = paste0(mean_y, " (", se_y, ")")) |>
-    select(-mean_y, -se_y)
+     ) # |>
+    # mutate(combined = paste0(mean_y, " (", se_y, ")")) |>
+    # select(-mean_y, -se_y)
 }
 
 
@@ -207,6 +210,38 @@ plotWithTable <- function(p,t,arrange="H")
 
 
 
+
+# map(c("dist", "vx"), ~{
+#   train %>%
+#     learn_curve_bins(
+#       gt.train,
+#       !!sym(.x),
+#       gw = Trial_Bin, 
+#       groupVec = c(id, vb, condit),
+#       nbins = 8
+#     )
+# }) %>%
+#   walk(~ {
+#     print(ggplot(data=.,aes(x=Trial_Bin, y=mean_y,fill=vb)) + 
+#             ggdist::stat_halfeye(alpha=.5))
+#   })
+# 
+# 
+# titles = c("Title for dist", "Title for vx")
+# map2(c("dist", "vx"), titles, ~{
+#   train %>%
+#     learn_curve_bins(
+#       gt.train,
+#       !!sym(.x),
+#       gw = Trial_Bin, 
+#       groupVec = c(id, vb, condit),
+#       nbins = 8
+#     ) %>%
+#     ggplot(aes(x=Trial_Bin, y=mean_y,fill=vb)) + 
+#     ggdist::stat_halfeye(alpha=.5) +
+#     ggtitle(.y) 
+# }) %>%
+#   walk(~ print(.))
 
 
 

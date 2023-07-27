@@ -1,0 +1,251 @@
+---
+title: Experiment 1 Testing
+date: last-modified
+categories: [Analysis, R]
+page-layout: full
+# fig-width: 15
+# fig-height: 8
+code-fold: true
+code-tools: true
+toc: false
+execute: 
+  warning: false
+  eval: false
+---
+
+
+```{r setup}
+pacman::p_load(tidyverse,tidybayes, brms, broom, broom.mixed, lme4,emmeans,here,knitr,kableExtra,gt,ggh4x)
+e1 <- readRDS(here("data/e1_07_04_23.rds"))
+source(here("Functions/Display_Functions.R"))
+
+options(mc.cores = 4,  # Use 4 cores
+        brms.backend = "cmdstanr")
+bayes_seed <- 1234
+
+test <- e1 |> filter(expMode %in% c("test-Nf","test-train-nf"))
+
+nested_settings <- strip_nested(
+  text_x = list(element_text(family = "serif", 
+                             face = "plain"), NULL),
+  background_x = list(element_rect(fill = "grey92"), NULL),
+  by_layer_x = TRUE)
+
+
+testAvg <- test %>% group_by(id, condit, vb, bandInt) %>%
+  summarise(vx=mean(vx),dist=mean(dist))
+
+```
+
+
+
+```{r}
+model_super_boring <- e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  with(lm(vx ~ vb))
+tidy(model_super_boring)
+
+```
+
+
+```{r}
+model_boring <- brm(bf(vx ~ vb),
+                    data=filter(e1,expMode %in% c("test-Nf","test-train-nf")),
+                    chains=2,seed=bayes_seed)
+
+tidy(model_boring)
+```
+
+```{r}
+model_fixed <- brm(
+  bf(vx ~ vb + (1 | id)),
+  data = filter(e1,expMode %in% c("test-Nf","test-train-nf")),
+  control = list(adapt_delta = 0.95),
+  chains = 4, seed = bayes_seed
+)
+tidy(model_fixed)
+summary(model_fixed)
+
+tidy(model_fixed,effects="fixed")
+tidy(model_fixed,effects="ran_pars")
+
+indvEst1 <- ranef(model_fixed)$id %>% as_tibble(rownames="id")
+indvEst1
+
+coef(model_fixed)$id %>% as_tibble(rownames="id") %>% select(id,starts_with("Estimate"))
+
+
+model_fixed %>% 
+  emmeans(~ id + vb,
+          at = list(vb = 0),  # Look at predicted values for 1952
+          epred = TRUE,  # Use expected predictions from the posterior
+          re_formula = NULL)
+```
+```{r}
+model_cont <- brm(
+  bf(vx ~ bandInt + (1 | id)),
+  data = filter(e1,expMode %in% c("test-Nf","test-train-nf")),
+  control = list(adapt_delta = 0.95),
+  chains = 4, seed = bayes_seed
+)
+tidy(model_cont)
+summary(model_cont)
+
+tidy(model_cont,effects="fixed")
+tidy(model_cont,effects="ran_pars")
+
+indvEst1 <- ranef(model_cont)$id %>% as_tibble(rownames="id")
+indvEst1
+
+coef(model_cont)$id %>% as_tibble(rownames="id") %>% select(id,starts_with("Estimate"))
+
+
+model_cont %>% 
+  emmeans(~ id + bandInt,
+          at = list(bandInt = 100),  # Look at predicted values for 1952
+          epred = TRUE,  # Use expected predictions from the posterior
+          re_formula = NULL)
+
+```
+
+```{r fig.width=14, fig.height=16}
+
+
+pmcy = test %>% select(id,bandInt) %>% mutate(id=factor(id,levels=unique(id)))
+pmcy = expand_grid(id=unique(test$id),bandInt=unique(test$bandInt)) %>% mutate(id=factor(id,levels=unique(id)))
+
+preds1 <- model_cont %>% epred_draws(pmcy,re_formula = NULL) 
+  
+nd <- preds1 %>% left_join(test,by=c("id","bandInt"))
+
+
+preds1 <- model_cont %>% epred_draws(pmcy,re_formula = NULL,ndraws=1) 
+nd <- preds1 %>% left_join(test,by=c("id","bandInt"))
+nd <- test %>% mutate(pred=preds1$.epred) %>% relocate(bandInt,pred,vx,.after=nGoodTrial)
+
+
+
+ggplot(nd[1:5000,],aes(x=bandInt,y=pred))+geom_point(aes(y=vx))+
+  stat_lineribbon(alpha=.5)+scale_fill_brewer(palette="Reds") +
+  labs(title = "Intercepts and slopes for year trend vary by country",
+       subtitle = "lifeExp ~ year + (1 + year | country)",
+       x = NULL, y = "Predicted life expectancy") +
+  guides(fill = "none") +
+  facet_nested_wrap(vars(condit, id), nrow = 4, strip = nested_settings) +
+  theme(legend.position = "bottom",
+        plot.subtitle = element_text(family = "serif"),
+        axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
+
+```
+
+
+
+```{r}
+
+
+model_slope <- brm(
+  bf(vx ~ bandInt + (1 + bandInt | id)),
+  data = filter(e1,expMode %in% c("test-Nf","test-train-nf")),
+  control = list(adapt_delta = 0.95),
+  chains = 4, seed = bayes_seed
+)
+tidy(model_slope)
+summary(model_slope)
+
+tidy(model_slope,effects="fixed")
+tidy(model_slope,effects="ran_pars")
+
+indvEst2 <- ranef(model_slope)$id %>% as_tibble(rownames="id")
+indvEst2
+
+ms_coef <- coef(model_slope)$id %>% as_tibble(rownames="id") %>% select(id,starts_with("Estimate"))
+
+
+model_slope %>% 
+  emmeans(~ id + bandInt,
+          at = list(bandInt = 100),  # Look at predicted values for 1952
+          epred = TRUE,  # Use expected predictions from the posterior
+          re_formula = NULL)
+
+
+testAvg <- testAvg %>% left_join(ms_coef,by="id")
+
+testAvg %>% ggplot(aes(x=condit,y=Estimate.bandInt)) + 
+  stat_summary(geom="bar",fun=mean)+stat_summary(geom="errorbar",fun.data=mean_se,width=.5)
+
+testAvg %>% ggplot(aes(x=Estimate.bandInt,y=dist,col=condit))+geom_point()+geom_line(alpha=.5)+
+  facet_wrap(~vb)
+
+testAvg %>% ggplot(aes(x=Estimate.Intercept.y,y=dist,col=condit))+geom_point()+geom_line(alpha=.5)+
+  facet_wrap(~vb)
+testAvg %>% ggplot(aes(x=Estimate.bandInt,y=vx,col=condit))+geom_point()+geom_line(alpha=.5)+
+  facet_wrap(~vb)
+
+```
+```{r}
+# center model on bandInt 800, and fit slopes again with brms, intercept and slope for each id
+
+# center around bandInt 800
+e1$bandInt2 <- e1$bandInt - 800
+
+model_slope2 <- brm(
+  bf(vx ~ bandInt2 + (1 + bandInt2 | id)),
+  data = filter(e1,expMode %in% c("test-Nf","test-train-nf")),
+  control = list(adapt_delta = 0.95),
+  chains = 4, seed = bayes_seed
+)
+
+
+
+tidy(model_slope2,effects="fixed")
+ms_coef2 <- coef(model_slope2)$id %>% as_tibble(rownames="id") %>% select(id,starts_with("Estimate"))
+
+testAvg <- testAvg %>% left_join(ms_coef2,by="id")
+
+testAvg %>% ggplot(aes(x=condit,y=Estimate.bandInt2)) + 
+  stat_summary(geom="bar",fun=mean)+stat_summary(geom="errorbar",fun.data=mean_se,width=.5)
+
+testAvg %>% ggplot(aes(x=Estimate.bandInt2,y=dist,col=condit))+geom_point()+geom_line(alpha=.5)+
+  facet_wrap(~vb)
+
+testAvg %>% ggplot(aes(x=Estimate.Intercept.y,y=dist,col=condit))+geom_point()+geom_line(alpha=.5)+
+  facet_wrap(~vb)
+
+
+
+testAvg %>% ggplot(aes(x=Estimate.bandInt2,y=vx,col=condit))+geom_point()+geom_line(alpha=.5)+
+  facet_wrap(~vb)
+testAvg %>% ggplot(aes(x=Estimate.Intercept.y,y=vx,col=condit))+geom_point()+geom_line(alpha=.5)+
+  facet_wrap(~vb)
+
+```
+
+
+
+```{r}
+head(testAvg)
+
+model_slope3 <- brm(
+  bf(vx ~ bandInt + (1 + bandInt | id)),
+  data = testAvg,
+  control = list(adapt_delta = 0.95),
+  chains = 4, seed = bayes_seed
+)
+tidy(model_slope3)
+ms_coef3 <- coef(model_slope3)$id %>% as_tibble(rownames="id") %>% select(id,starts_with("Estimate")) 
+
+left_join(ms_coef,ms_coef3,by="id")
+
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+
