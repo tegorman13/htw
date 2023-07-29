@@ -15,32 +15,19 @@ execute:
 
 
 ```{r setup}
-pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt,gghalves)
-e1 <- readRDS(here("data/e1_07_04_23.rds"))
+pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist)
+e1 <- readRDS(here("data/e1_07-27-23.rds"))
 source(here("Functions/Display_Functions.R"))
 
 train <- e1 |> filter(expMode %in% c("train"))
 trainAvg <- train %>% group_by(id, condit, vb, bandInt,trainStage) %>%
-  summarise(vx=mean(vx),dist=mean(dist))
+  summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 test <- e1 |> filter(expMode %in% c("test-Nf","test-train-nf"))
-testAvg <- test %>% group_by(id, condit, vb, bandInt) %>%
-  summarise(vx=mean(vx),dist=mean(dist),sdist=mean(sdist))
+testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
+  summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
 ```
 
-```{r}
-#| label: tbl-example
-#| tbl-cap: "Example"
-#| tbl-subcap: 
-#|   - "Cars"
-#|   - "Pressure"
-#| layout-ncol: 2
-#| echo: fenced
-
-library(knitr)
-kable(head(cars))
-kable(head(pressure))
-```
 
 
 ## Dictionary
@@ -62,81 +49,6 @@ kable(head(pressure))
 
 
 
-## Methods
-
-Participants
-A total of `r length(unique(e1$id))` participants (XXX% female, XXX% male) were recruited from the Indiana University Introductory Psychology Course. The average age of participants was XXX years (SD = XXX). Participants were randomly assigned to one of two training conditions: varied training or constant training. 
-
-Design
-The experiment employed a 2 (Training Condition: varied vs. constant). 
-
-Procedure
-Upon arrival at the laboratory, participants were provided with a description of the experiment and signed informed consent forms. They were then seated in front of a computer equipped with a mouse and were given instructions on how to perform the "Hit The Wall" (HTW) visuomotor extrapolation task.
-
-The HTW task involved launching projectiles to hit a target displayed on the computer screen. Participants completed a total of 90 trials during the training stage. In the varied training condition, participants encountered three velocity bands (800-1000, 1000-1200, and 1200-1400). In contrast, participants in the constant training condition encountered only one velocity band (800-1000).
-
-During the training stage, participants in both conditions also completed "no feedback" trials, where they received no information about their performance. These trials were randomly interleaved with the regular training trials.
-
-Following the training stage, participants proceeded to the testing stage, which consisted of three phases. In the first phase, participants completed "no-feedback" testing from three novel extrapolation bands (100-300, 350-550, and 600-800), with each band consisting of 15 trials.
-
-In the second phase of testing, participants completed "no-feedback" testing from the three velocity bands used during the training stage (800-1000, 1000-1200, and 1200-1400). In the constant training condition, two of these bands were novel, while in the varied training condition, all three bands were encountered during training.
-
-The third and final phase of testing involved "feedback" testing for each of the three extrapolation bands (100-300, 350-550, and 600-800), with each band consisting of 10 trials. Participants received feedback on their performance during this phase.
-
-Throughout the experiment, participants' performance was measured by calculating the distance between the produced x-velocity of the projectiles and the closest edge of the current velocity band. Lower distances indicated better performance.
-
-After completing the experiment, participants were debriefed and provided with an opportunity to ask questions about the study.
-
-
-```{dot}
-//| label: fig-simple
-//| fig-cap: "Experimental Design. Constant and Varied participants complete different training conditions."
-//| fig-width: 8.0
-//| fig-height: 2.5
-//| fig-responsive: false
-digraph {
-  graph [layout = dot, rankdir = LR]
-
-  // define the global styles of the nodes
-  node [shape = rectangle, style = filled]
-
-  data1 [label = " Varied Training \n800-1000\n1000-1200\n1200-1400", fillcolor = "#FF0000"]
-  data2 [label = " Constant Training \n800-1000", fillcolor = "#00A08A"]
-  Test3 [label = "    Final Test \n  Novel With Feedback  \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]
-
-  // edge definitions with the node IDs
-  data1 -> Test1
-  data2 -> Test1
-
-  subgraph cluster {
-    label = "Test Phase \n(Counterbalanced Order)"
-    Test1 [label = "Test  \nNovel Bands \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]
-    Test2 [label = "  Test \n  Varied Training Bands  \n800-1000\n1000-1200\n1200-1400", fillcolor = "#ECCBAE"]
-    Test1 -> Test2
-  }
-
-  Test2 -> Test3
-}
-#https://renenyffenegger.ch/notes/tools/Graphviz/examples/index
-#https://edotor.net/
-```
-
-
-
-
-```{r}
-
-
-
-```
-
-
-
-
-```{r}
-
-
-```
 
 
 
@@ -171,39 +83,56 @@ digraph {
 
 
 
-::: {layout="[ [1,4],[1,5]]"}
+<!-- ::: {layout="[ [1,4],[1,5],[1,10]]"} -->
 
 ```{r}
 #| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)"
 #| tbl-cap-location: top
 nb=5
 vt1=e1 |> filter(expMode=="train") |>
-  learn_curve_table(gt.train,vx,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |>
+  learn_curve_table(gt.train,vx,gw=Trial_Bin,groupVec=c(id,vb,condit),nbins=nb,prefix="Block_") |>
   rename("Band"=vb,"Group"=condit)
 vt1 %>% kable() 
+
+vt1 %>% kable() %>% add_header_above(c(" "," "= 1, "Training Block"=5))
+
+vt1 %>% gt() %>% tab_options(column_labels.background.color = "#176940",
+                table.font.size = px(14))
+
+
 
 
 ```
 
 ```{r}
 #| fig-cap: "Mean Vx over training blocks"
+#| fig-width: 10
+#| fig-height: 9
+#| tbl-cap: "test table"
 
 # vpt1=plotWithTable(vp1,vt1,arrange="V")
 nb=5
 vp1=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,vx,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb)
 vp1
 
-```
+#vp1 / gridExtra::tableGrob(vt1)
+#vp1 / gt_temp(vt1)
 
+
+```
 
 ```{r}
 #| tbl-cap: "Deviation over blocks. Mean (Standard Error)"
 #| tbl-cap-location: bottom
+#| results: asis
+
+# vt2=e1 |> filter(expMode=="train") |> 
+#   learn_curve_table(gt.train,dist,gw=condit,groupVec=c(id,condit,vb),nbins=nb) %>%
+#   rename("Block"=Trial_Bin)
 
 vt2=e1 |> filter(expMode=="train") |> 
-  learn_curve_table(gt.train,dist,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |>
+  learn_curve_table(gt.train,dist,gw=Trial_Bin,groupVec=c(id,condit,vb),nbins=nb,prefix="Block_") %>%
   rename("Band"=vb,"Group"=condit) 
-vt2 %>% kable()
 
 ```
 
@@ -211,13 +140,123 @@ vt2 %>% kable()
 #| fig-cap: "Absolute Deviation from Band over training"
 #| fig-width: 8
 
-vp2=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,dist,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) 
+vp2=e1 |> filter(expMode=="train") |> 
+  learn_curve_plot(gt.train,dist,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) 
 vp2
+
+
 
 ```
 
 
-:::
+
+```{r}
+#| tbl-cap: "Signed Deviation over blocks. Mean (Standard Error)"
+#| tbl-cap-location: bottom
+
+vt3=e1 |> filter(expMode=="train") |> 
+  learn_curve_table(gt.train,sdist,gw=Trial_Bin,groupVec=c(id,vb,condit),nbins=nb,prefix="Block_") |>
+  rename("Band"=vb,"Group"=condit) 
+vt3 %>% kable(format = "html",escape = FALSE)
+```
+
+
+
+
+
+```{r}
+#| fig-cap: "Signed Deviation from Band over training"
+#| fig-width: 8
+
+vp3=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,sdist,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) 
+vp3
+
+```
+
+
+<!-- ::: -->
+
+```{r}
+vp4 <- e1 |> filter(expMode=="train") |> group_by(id) |>
+  mutate(Trial_Bin = cut(gt.train,breaks = nb,include.lowest=TRUE,labels=FALSE)) |>
+  group_by(id,Trial_Bin,condit, vb) |> summarise(nHits=sum(dist==0),n=n(),Percent_Hit=nHits/n) %>%
+  learn_curve_plot2(Trial_Bin,Percent_Hit,color_var=condit,facet_var=vb,groupVec=c(id,vb,condit))
+
+
+
+```
+
+
+# 22
+::: {.column-page-right}
+```{r}
+#| layout: [[65, 65],[-5], [1,550, 550]]
+#| label: train tables2
+#| echo: fenced
+#| tbl-subcap: 
+#|   - "Vx"
+#|   - "Deviation from target"
+
+vt1 %>% kable(format = "html",escape = FALSE)
+vt2 %>% kable(format = "html",escape = FALSE)
+
+vp3+big_text()
+vp4+big_text()
+
+```
+::: 
+
+
+
+# 33
+```{r}
+#| layout: [[65, 65],[-5], [1,350, 350,10]]
+#| label: train tables
+#| echo: fenced
+#| tbl-subcap: 
+#|   - "Vx"
+#|   - "Deviation from target"
+#| column: screen-inset-right
+
+vt1 %>% kable(format = "html",escape = FALSE)
+vt2 %>% kable(format = "html",escape = FALSE)
+
+vp3
+vp4
+```
+
+
+```{r}
+#| label: tbl-example4
+#| tbl-cap: "Example"
+#| tbl-subcap: 
+#|   - "Signed Distance"
+#|   - "Percent Hit"
+#| layout: [[80, 90],[2], [-60,650]]
+#| echo: fenced
+#| column: screen-inset-right
+#| fig-width: 14
+#| 
+
+
+vt2 %>% kable(format = "html",escape = FALSE) %>% kable_styling(font_size = 7)
+vt3 %>% kable(format = "html",escape = FALSE)
+
+vp4+vp3 + plot_layout(guides = "collect") & theme(legend.position = 'right')
+
+
+```
+
+```{r}
+#| fig-width: 12
+#| fig-height: 11
+#| column: page-inset-right
+((vp1+big_text()+vp2+big_text())/(vp3+big_text()+vp4+big_text())) + plot_layout(guides = "collect") 
+
+
+
+```
+
 
 
 <!-- ```{r} -->
@@ -261,7 +300,7 @@ e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>
 ```
 ### Dist
 ```{r}
-e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = condit, y = dist,fill=vb)) +
+e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
 
@@ -270,15 +309,39 @@ e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = condi
 ### Vx
 ```{r}
 
+e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = vb, y = vx,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
 
+testAvg |>  ggplot(aes(x = vb, y = vx,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
 
-e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = condit, y = vx,fill=vb)) +
+```
+
+### Signed Distance
+```{r}
+
+e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = vb, y = sdist,fill=condit)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
 
 
+testAvg |>  ggplot(aes(x = vb, y = sdist,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
 
 ```
+### Percent Hit
+```{r}
+
+testAvg |>  ggplot(aes(x = vb, y = Percent_Hit,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
+
+```
+
+
 ::: 
 
 
@@ -433,109 +496,57 @@ test %>% group_by(sbjCode,condit,vb) %>%
 
 
 
-test %>% 
-  group_by(id,condit,vb) %>%  
-  reframe(enframe(quantile(dist, c(0.2, 0.4, 0.6,.8)), "quantile", "dist")) |> 
-  pivot_wider(names_from=quantile,values_from=dist,names_prefix="Q_") |>
-  group_by(vb,condit) |>
-  summarise(across(starts_with("Q"), list(mean = mean)))
 
 
-
-  
 ```
 
+
 ```{r}
+
+
+
+
+
+```
+
+
+
+```{r}
+
+
+
+
+```
+
+
+
+
+
+```{r}
+#| fig-height: 13
+#| fig-width: 12
 library(ggforce)
 
-testAvg %>% ggplot(aes(x=dist,y=condit,col=condit))+ geom_point()+facet_col(facets="vb")
+testAvg %>% ggplot(aes(x=vx,y=condit,col=condit))+ ggdist::stat_halfeye()+facet_col(facets="vb")
+testAvg %>% ggplot(aes(x=sdist,y=condit,col=condit))+ geom_boxplot()+facet_col(facets="vb")+geom_vline(xintercept=0)+theme_classic()
 
-testAvg %>% ggplot(aes(x=sdist,y=condit,col=condit))+ geom_boxplot()+facet_col(facets="vb")+geom_vline(xintercept=0)
+library(ggh4x)
+library(ggdist)
 
-```
+testAvg %>% ggplot(aes(x=vx,y=vb,col=bandType)) +  ggdist::stat_halfeye(normalize="groups")+ facet_nested_wrap(vars(condit,tOrder),nrow=2)+theme_classic()
 
+testAvg %>% ggplot(aes(x=vx,y=vb,col=bandType)) +  ggdist::stat_histinterval(normalize="groups")+ facet_nested_wrap(vars(condit,tOrder),nrow=2)+theme_classic()
 
-
-```{r}
-#| eval: false
-# non linear learning models
-
-
-
-# Fit the model
-model <- lmer(
-  dist ~ vb * condit + 
-    (1 | id) + 
-    (1 + gt.train | id:condit), 
- # family = binomial(link = "logit"), 
-  data = e1[e1$expMode=="train",]
-)
-
-model <- lmer(
-  vx ~ vb * condit + I(gt.train^2) + 
-    (1 + gt.train + I(gt.train^2) | id:condit), 
-  data = e1[e1$expMode=="train",]
-)
-
-summary(model)
+testAvg %>% ggplot(aes(x=vx,y=vb,col=bandType)) +  ggdist::stat_histinterval(normalize="groups")+ facet_nested_wrap(vars(condit,tOrder),nrow=2)+theme_classic()
 
 
-e1$gt.train.scaled <- scale(e1$gt.train)
-# Fit the model with the rescaled variables
-model <- lmer(
-  dist ~ vb * condit + I(gt.train.scaled^2) + 
-    (1 + gt.train.scaled + I(gt.train.scaled^2) | id:condit), 
-  data = e1[e1$expMode=="train",]
-)
-summary(model)
+e1 |> group_by(id, condit, vb, bandInt,bandType,tOrder,expMode2) %>%
+  summarise(vx=mean(vx),dist=mean(dist),sdist=mean(sdist)) %>%
+  ggplot(aes(x=vx,y=condit,col=condit)) +  ggdist::stat_histinterval(normalize="groups")+ facet_nested_wrap(vars(vb,expMode2),nrow=6)+theme_classic()
 
-
-library(nlme)
-
-# Define a non-linear function for the learning effect
-learning_effect <- function(time, Asym, R0, lrc) {
-  Asym + R0 * exp(-exp(lrc) * time)
-}
-
-# Fit the model
-model <- nlme(
-  vx ~ learning_effect(gt.train.scaled, Asym, R0, lrc) * condit,
-  fixed = Asym + R0 + lrc ~ 1,
-  random = Asym + R0 ~ 1 | id,
-  start = c(Asym = 1, R0 = 1, lrc = 0),
-  data = e1[e1$expMode=="train",]
-)
-
-e1$condit_numeric <- as.numeric(e1$condit)
-
-# Fit the model
-model <- nlme(
-  vx ~ learning_effect(gt.train.scaled, Asym, R0, lrc) * condit_numeric,
-  fixed = Asym + R0 + lrc ~ 1,
-  random = Asym + R0 ~ 1 | id,
-  start = c(Asym = 1, R0 = 1, lrc = 0),
-  data = e1[e1$expMode=="train",]
-)
-summary(model)
-
-
-
-model <- nlme(
-  # Reflects the shift in velocity across conditions and time
-  vx ~ learning_effect(gt.train.scaled, Asym, R0, lrc) * condit_numeric,
-  # Fixed effects structure
-  fixed = Asym + R0 + lrc ~ 1,
-  # Random effects structure, now includes 'lrc' for individual learning rates
-  random = Asym + R0 + lrc ~ 1 | id,
-  # Starting values for the parameters
-  start = c(Asym = 1, R0 = 1, lrc = 0),
-  # Subset of the data used for training phase
-  data = e1 %>% filter(expMode=="train")
-)
-
-# Prints out a summary of the model
-summary(model)
-
-
+e1 |> group_by(id, condit, vb, bandInt,bandType,tOrder,expMode2) %>%
+  summarise(vx=mean(vx),dist=mean(dist),sdist=mean(sdist)) %>% ggplot(aes(x=sdist,y=vb,col=condit))+ stat_histinterval(normalize="groups",position=position_dodge())+facet_col(facets="expMode2")+geom_vline(xintercept=0)+theme_classic()
 
 ```
+
+

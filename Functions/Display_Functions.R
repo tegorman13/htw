@@ -1,8 +1,12 @@
 
 
-pacman::p_load(ggplot2,wesanderson)
+pacman::p_load(ggplot2,wesanderson,glue)
 #pacman::p_load(ggplot2,ggpattern,viridis,scales,wesanderson,ggthemer)
 options(dplyr.summarise.inform=FALSE)
+
+select <- dplyr::select
+mutate <- dplyr::mutate
+filter <- dplyr::filter
 
 # Custom theme for data visualizations
 plot_theme <- function(title_size = NULL, 
@@ -125,6 +129,36 @@ theme_set(plot_theme(
   transparent = TRUE
 ))
 
+big_text <- function() 
+  {theme(
+  xaxis_size = 18,
+  yaxis_size = 18,
+  title_size = 19,
+  caption_size = 16,
+  axis_text_size = 12,
+  strip_face = "plain",
+  y_axis_face = "plain",
+  x_axis_face = "plain",
+  strip_size = 12,
+  legend_text_size = 16,
+)
+}
+
+big_text <- function() {
+    theme(panel.grid.minor = element_blank(),
+          plot.background = element_rect(fill = "white", color = NA),
+          plot.title = element_text(face = "bold",size=16),
+          axis.title = element_text(face = "bold"),
+          axis.title.x=element_text(face="bold",size=14),
+          axis.title.y=element_text(face="bold",size=14),
+          axis.text.x = element_text(size = 14),
+          axis.text.y = element_text(size = 14),
+          strip.text = element_text(face = "bold", size = rel(0.8), hjust = 0),
+          strip.background = element_rect(fill = "grey80", color = NA),
+          legend.title = element_text(face = "bold"))
+}
+
+
 # options(ggplot2.continuous.colour="viridis")
 # options(ggplot2.continuous.fill = "viridis")
 
@@ -173,24 +207,46 @@ learn_curve_plot <- function(df, x_var, y_var, color_var, facet_var = NULL, grou
     scale_x_continuous(breaks=seq(1,nbins+1))
 }
 
-learn_curve_table <- function(df, x_var, y_var,gw,groupVec, nbins, labels = FALSE,prefix="") {
+learn_curve_plot2 <- function(df, x_var, y_var, color_var, facet_var = NULL, groupVec, labels = FALSE) {
+  nbins= df |> ungroup() |> select({{x_var}}) %>% max()
+  df |> 
+    ggplot(aes(x = {{ x_var }}, y = {{ y_var }}, col = {{ color_var }})) +
+    stat_summary(aes(color = {{ color_var }}), geom = "line", fun = mean) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
+    facet_wrap(vars({{facet_var}})) + 
+    scale_x_continuous(breaks=seq(1,nbins))
+}
+
+
+learn_curve_table <- function(df, x_var, y_var,gw,groupVec, nbins, nl=FALSE, labels = FALSE,prefix="") {
+  separator = ifelse(nl, "<br>", " ")
   df |> 
     group_by(pick({{ groupVec }})) |> 
     mutate(Trial_Bin = cut( {{x_var}} , breaks = nbins, labels = labels)) |> 
-    group_by(Trial_Bin,pick({{ groupVec }})) |>
+    group_by(pick({{ groupVec }}),Trial_Bin) |> ungroup(id) |>
     summarize(
       mean_y = round(mean({{ y_var }}, na.rm = TRUE),0),
       se_y = round(sd({{ y_var }}, na.rm = TRUE) / sqrt(n()),0),
       .groups = "drop"
     ) |>
-    mutate(combined = paste0(mean_y, " (", se_y, ")")) |>
+    mutate(combined = glue("{mean_y}", separator, "({se_y})")) |>
     select(-mean_y, -se_y) |>
     pivot_wider(names_from = {{ gw }}, values_from = combined,names_prefix=prefix) |>
     mutate_all(~as.character(.)) %>% replace(is.na(.), "..")
-    # mutate(across(starts_with(c("combined")), as.character),
-    #        across(starts_with(c("combined")), replace_na,"..")) 
-    
 }
+
+
+gt_temp <- function(gtable) {
+
+if (!inherits(gtable, "gt_tbl")) {
+  gtable <- gt::gt(gtable)
+}
+
+tmp <- tempfile(fileext = '.png') #generate path to temp .png file
+gtsave(gtable, tmp) #save gt table as png
+png::readPNG(tmp, native = TRUE) # read tmp png file
+}
+
 
 
 plotWithTable <- function(p,t,arrange="H")
@@ -199,16 +255,14 @@ plotWithTable <- function(p,t,arrange="H")
   ggp_table <- ggplot() +                            
     theme_void() +
     annotate(geom = "table",
-             x = 1,
-             y = 1,
+             x = 0,
+             y = 0,
              label = list(t))
   if (arrange=="H"){vp1+ggp_table}
   else {vp1/ggp_table}
-   
-  
 }
 
-
+#vp1 / gridExtra::tableGrob(vt1)
 
 
 # map(c("dist", "vx"), ~{
