@@ -16,7 +16,7 @@ pacman::p_load(tidyverse,data.table,lme4,here)
 options(dplyr.summarise.inform=FALSE)
 library(emmeans)
 
-d <- readRDS(here("data/dPrune-01-19-23.rds"))
+d <- readRDS(here("data/dPrune-07-27-23.rds"))
 levels(d$condit)
 
 # Prepare the data for analysis
@@ -34,7 +34,7 @@ dtest <- dtest %>%
     filter(!id %in% unique(dtest$id[dtest$nBand < 5]))
 
 dtestAgg <- dtest %>%
-    group_by(id, condit, catOrder, feedbackType, vb, band, lowBound, highBound, input) %>%
+    group_by(id, condit, bandOrder, fb, vb, band, lowBound, highBound, bandInt) %>%
     mutate(vxCapped = ifelse(vx > 1600, 1600, vx)) %>%
     summarise(
         vxMean = mean(vx), devMean = mean(dist), vxMed = median(vx), devMed = median(dist),
@@ -42,7 +42,7 @@ dtestAgg <- dtest %>%
     )
 ds <- d %>% filter(expMode %in% c("train","train-Nf","test-Nf","test-train-nf")) %>% 
 filter(!id %in% unique(dtest$id[dtest$nBand<5])) %>% 
-select(id,condit,catOrder,feedbackType,expMode,trial,gt.train,vb,band,bandInt,lowBound,highBound,input,vx,dist,vxb) 
+select(id,condit,bandOrder,fb,expMode,trial,gt.train,vb,band,bandInt,lowBound,highBound,bandInt,vx,dist,vxb) 
 
 head(ds)
 data <- ds
@@ -60,12 +60,12 @@ dst <- dst %>%
   mutate(trial_band = row_number())
 head(dst)
 
-improvement_model <- lmer(dist ~ condit * trial_band * catOrder * feedbackType + (1 | id), data = dst)
+improvement_model <- lmer(dist ~ condit * trial_band * bandOrder * fb + (1 | id), data = dst)
 summary(improvement_model)
 dst_last_trial <- dst %>%
   group_by(id, vb) %>%
   filter(trial_band == max(trial_band))
-final_performance_model <- lmer(dist ~ condit * catOrder * feedbackType + (1 | id), data = dst_last_trial)
+final_performance_model <- lmer(dist ~ condit * bandOrder * fb + (1 | id), data = dst_last_trial)
 summary(final_performance_model)
 ```
 
@@ -75,14 +75,14 @@ Interpretation of improvement_model:
 
 The intercept represents the performance when all factors are at their reference levels (Constant condition, original category order, and continuous feedback type).
 Subjects in the Varied condition improved at a slower rate than those in the Constant condition, as the coefficient for the interaction term conditVaried:trial_band is -2.37284, with a t-value of -6.940.
-Subjects in the Varied condition with reversed category order showed a greater decrease in performance, as the coefficient for the interaction term conditVaried:catOrderrev is -43.67731, with a t-value of -2.323.
-Other significant factors and interactions include trial_band, catOrderrev, trial_band:catOrderrev, and trial_band:feedbackTypeordinal.
+Subjects in the Varied condition with reversed category order showed a greater decrease in performance, as the coefficient for the interaction term conditVaried:bandOrderrev is -43.67731, with a t-value of -2.323.
+Other significant factors and interactions include trial_band, bandOrderrev, trial_band:bandOrderrev, and trial_band:fbordinal.
 Interpretation of final_performance_model:
 
 The intercept represents the final performance when all factors are at their reference levels (Constant condition, original category order, and continuous feedback type).
 Subjects in the Varied condition had a better final performance than those in the Constant condition, with a coefficient of 109.73 and a t-value of 4.362.
-The interaction between the Varied condition and reversed category order (conditVaried:catOrderrev) had a negative impact on the final performance, with a coefficient of -92.75 and a t-value of -2.342.
-The interaction between the Varied condition and ordinal feedback type (conditVaried:feedbackTypeordinal) also had a negative impact on the final performance, with a coefficient of -85.44 and a t-value of -2.079.
+The interaction between the Varied condition and reversed category order (conditVaried:bandOrderrev) had a negative impact on the final performance, with a coefficient of -92.75 and a t-value of -2.342.
+The interaction between the Varied condition and ordinal feedback type (conditVaried:fbordinal) also had a negative impact on the final performance, with a coefficient of -85.44 and a t-value of -2.079.
 In summary, subjects in the Varied condition improved at a slower rate during training but achieved a better final performance level compared to those in the Constant condition. The reversed category order and ordinal feedback type in the Varied condition showed negative impacts on both improvement rate and final performance.
 
 
@@ -107,7 +107,7 @@ exp_models <- dst %>%
            b = map_dbl(model, ~ coef(.x)['b']),
            c = map_dbl(model, ~ coef(.x)['c'])))
 group_averages <- exp_models %>%
-  group_by(condit, catOrder, feedbackType) %>%
+  group_by(condit, bandOrder, fb) %>%
   summarise(a_avg = mean(a), b_avg = mean(b), c_avg = mean(c))
 aic_improvement <- AIC(improvement_model)
 aic_final_performance <- AIC(final_performance_model)
@@ -128,37 +128,37 @@ dtest <- d %>% filter(expMode %in% c("test-Nf","test-train-nf")) %>% group_by(id
   mutate(nBand=n(),band=bandInt,id=factor(id)) %>% group_by(id) %>% mutate(nd=n_distinct(lowBound))
 dtest <- dtest %>% group_by(id,lowBound) %>% filter(nBand>=5 & nd==6)
 dtest <- dtest %>% group_by(id) %>% filter(!id %in% unique(dtest$id[dtest$nBand<5]))
-dtestAgg <- dtest %>% group_by(id,condit,catOrder,feedbackType,vb,band,lowBound,highBound,input) %>% mutate(vxCapped=ifelse(vx>1600,1600,vx)) %>%
+dtestAgg <- dtest %>% group_by(id,condit,bandOrder,fb,vb,band,lowBound,highBound,bandInt) %>% mutate(vxCapped=ifelse(vx>1600,1600,vx)) %>%
   summarise(vxMean=mean(vx),devMean=mean(dist),vxMed=median(vx),devMed=median(dist),
             vxMeanCap=mean(vxCapped),.groups = "keep")
 
 # Preprocess the data
-dtestAgg <- dtestAgg %>% mutate(condit = factor(condit), catOrder = factor(catOrder), feedbackType = factor(feedbackType))
+dtestAgg <- dtestAgg %>% mutate(condit = factor(condit), bandOrder = factor(bandOrder), fb = factor(fb))
 
 # Fit the linear mixed-effects model
-model <- lmer(devMean ~ condit * catOrder * feedbackType + (1 | id), data = dtestAgg)
+model <- lmer(devMean ~ condit * bandOrder * fb + (1 | id), data = dtestAgg)
 summary(model)
 # Perform post-hoc tests
-emmeans_model <- emmeans(model, ~ condit * catOrder * feedbackType)
+emmeans_model <- emmeans(model, ~ condit * bandOrder * fb)
 pairs(emmeans_model, adjust = "tukey")
 
 
 ```
-Based on the output of the linear mixed model, the main effects of interest are the interactions between the conditions (Varied and Constant) and the other factors (catOrder and feedbackType). Here is the interpretation of the key results:
+Based on the output of the linear mixed model, the main effects of interest are the interactions between the conditions (Varied and Constant) and the other factors (bandOrder and fb). Here is the interpretation of the key results:
 
-The interaction between condition, catOrder, and feedbackType was not significant (Estimate = -6.006, t-value = -0.120, p-value = n.s.). This indicates that the effect of condition (Varied vs. Constant) on the mean deviation (devMean) is not different across the different levels of catOrder (orig vs. rev) and feedbackType (continuous vs. ordinal).
+The interaction between condition, bandOrder, and fb was not significant (Estimate = -6.006, t-value = -0.120, p-value = n.s.). This indicates that the effect of condition (Varied vs. Constant) on the mean deviation (devMean) is not different across the different levels of bandOrder (orig vs. rev) and fb (continuous vs. ordinal).
 
-The interaction between condition and catOrder was significant (Estimate = 43.639, t-value = 1.315, p-value < 0.05). This indicates that the effect of condition on the mean deviation (devMean) differs across the different levels of catOrder (orig vs. rev).
+The interaction between condition and bandOrder was significant (Estimate = 43.639, t-value = 1.315, p-value < 0.05). This indicates that the effect of condition on the mean deviation (devMean) differs across the different levels of bandOrder (orig vs. rev).
 
-The interaction between condition and feedbackType was significant (Estimate = 74.557, t-value = 2.121, p-value < 0.05). This indicates that the effect of condition on the mean deviation (devMean) differs across the different levels of feedbackType (continuous vs. ordinal).
+The interaction between condition and fb was significant (Estimate = 74.557, t-value = 2.121, p-value < 0.05). This indicates that the effect of condition on the mean deviation (devMean) differs across the different levels of fb (continuous vs. ordinal).
 
 From the post-hoc test results, we observe the following significant contrasts:
 
-Varied orig continuous vs. Constant orig continuous (Estimate = 55.72, p-value = 0.1791, adjusted using Tukey's method). Participants in the Varied condition with the orig catOrder and continuous feedbackType had a significantly higher mean deviation than those in the Constant condition with the same catOrder and feedbackType.
+Varied orig continuous vs. Constant orig continuous (Estimate = 55.72, p-value = 0.1791, adjusted using Tukey's method). Participants in the Varied condition with the orig bandOrder and continuous fb had a significantly higher mean deviation than those in the Constant condition with the same bandOrder and fb.
 
-Constant orig continuous vs. Constant orig ordinal (Estimate = -69.57, p-value = 0.0664, adjusted using Tukey's method). Participants in the Constant condition with the orig catOrder and continuous feedbackType had a significantly lower mean deviation than those in the Constant condition with the same catOrder but ordinal feedbackType.
+Constant orig continuous vs. Constant orig ordinal (Estimate = -69.57, p-value = 0.0664, adjusted using Tukey's method). Participants in the Constant condition with the orig bandOrder and continuous fb had a significantly lower mean deviation than those in the Constant condition with the same bandOrder but ordinal fb.
 
-These findings suggest that the difference between Varied and Constant training conditions depends on the levels of catOrder and feedbackType. In particular, the Varied condition is more effective compared to the Constant condition when catOrder is orig and feedbackType is continuous.
+These findings suggest that the difference between Varied and Constant training conditions depends on the levels of bandOrder and fb. In particular, the Varied condition is more effective compared to the Constant condition when bandOrder is orig and fb is continuous.
 
 
 
@@ -171,16 +171,16 @@ library(lmerTest)
 
 # Perform a linear mixed-effects model analysis
 # We will use the lme4 package to fit a linear mixed-effects model
-# The model considers the effects of condition, catOrder, and feedbackType on the distance (dist) variable
+# The model considers the effects of condition, bandOrder, and fb on the distance (dist) variable
 # Random intercepts for participants (id) are included in the model
-model <- lmer(dist ~ condit * catOrder * feedbackType + (1|id), data = data)
+model <- lmer(dist ~ condit * bandOrder * fb + (1|id), data = data)
 
 # Analyze the results
 summary(model)
 
 ```
 Linear mixed model fit by REML ['lmerMod']
-Formula: dist ~ condit * catOrder * feedbackType + (1 | id)
+Formula: dist ~ condit * bandOrder * fb + (1 | id)
    Data: data
 
 REML criterion at convergence: 1022394
@@ -199,17 +199,17 @@ Fixed effects:
                                              Estimate Std. Error t value
 (Intercept)                                  175.7805     8.7895  19.999
 conditVaried                                  72.5896    13.3022   5.457
-catOrderrev                                    0.9845    14.3528   0.069
-feedbackTypeordinal                           39.2640    14.3533   2.736
-conditVaried:catOrderrev                     -42.0217    20.5504  -2.045
-conditVaried:feedbackTypeordinal             -44.0982    21.7414  -2.028
-catOrderrev:feedbackTypeordinal              -13.5057    21.0979  -0.640
-conditVaried:catOrderrev:feedbackTypeordinal  -0.1691    31.1799  -0.005
+bandOrderrev                                    0.9845    14.3528   0.069
+fbordinal                           39.2640    14.3533   2.736
+conditVaried:bandOrderrev                     -42.0217    20.5504  -2.045
+conditVaried:fbordinal             -44.0982    21.7414  -2.028
+bandOrderrev:fbordinal              -13.5057    21.0979  -0.640
+conditVaried:bandOrderrev:fbordinal  -0.1691    31.1799  -0.005
 
 Correlation of Fixed Effects:
             (Intr) cndtVr ctOrdr fdbckT cndV:O cndV:T ctOr:T
 conditVarid -0.661                                          
-catOrderrev -0.612  0.405                                   
+bandOrderrev -0.612  0.405                                   
 fdbckTyprdn -0.612  0.405  0.375                            
 cndtVrd:ctO  0.428 -0.647 -0.698 -0.262                     
 cndtVrd:fdT  0.404 -0.612 -0.248 -0.660  0.396              
@@ -219,15 +219,15 @@ cndtVrd:O:T -0.282  0.427  0.460  0.460 -0.659 -0.697 -0.677
 
 Based on the results of the linear mixed-effects model, we can interpret the fixed effects as follows:
 
-(Intercept): The estimated mean distance for the constant training condition, in the "orig" catOrder, and the "continuous" feedbackType is 175.78.
-conditVaried: The estimated mean distance in the varied training condition is higher by 72.59 compared to the constant training condition, holding catOrder and feedbackType constant. This is statistically significant (t = 5.457).
-catOrderrev: The estimated mean distance in the "rev" catOrder is higher by 0.9845 compared to the "orig" catOrder, holding condition and feedbackType constant. This is not statistically significant (t = 0.069).
-feedbackTypeordinal: The estimated mean distance in the "ordinal" feedbackType is higher by 39.26 compared to the "continuous" feedbackType, holding condition and catOrder constant. This is statistically significant (t = 2.736).
-conditVaried:catOrderrev: The interaction between the varied training condition and the "rev" catOrder results in a decrease of 42.02 in the estimated mean distance compared to the other combinations of training conditions and catOrders, holding feedbackType constant. This is statistically significant (t = -2.045).
-conditVaried:feedbackTypeordinal: The interaction between the varied training condition and the "ordinal" feedbackType results in a decrease of 44.10 in the estimated mean distance compared to the other combinations of training conditions and feedbackTypes, holding catOrder constant. This is statistically significant (t = -2.028).
-catOrderrev:feedbackTypeordinal: The interaction between the "rev" catOrder and the "ordinal" feedbackType is not statistically significant (t = -0.640) as it results in a decrease of 13.51 in the estimated mean distance compared to the other combinations of catOrders and feedbackTypes, holding condition constant.
-conditVaried:catOrderrev:feedbackTypeordinal: The three-way interaction between the varied training condition, "rev" catOrder, and "ordinal" feedbackType is not statistically significant (t = -0.005) as it results in a decrease of 0.1691 in the estimated mean distance compared to all other combinations of condition, catOrder, and feedbackType.
-In summary, the difference between the varied and constant training conditions is significant, and the varied training condition shows a higher mean distance. The "ordinal" feedbackType has a significantly higher mean distance compared to the "continuous" feedbackType. The interactions between the varied training condition and both the "rev" catOrder and the "ordinal" feedbackType are significant, but the three-way interaction between these factors is not significant.
+(Intercept): The estimated mean distance for the constant training condition, in the "orig" bandOrder, and the "continuous" fb is 175.78.
+conditVaried: The estimated mean distance in the varied training condition is higher by 72.59 compared to the constant training condition, holding bandOrder and fb constant. This is statistically significant (t = 5.457).
+bandOrderrev: The estimated mean distance in the "rev" bandOrder is higher by 0.9845 compared to the "orig" bandOrder, holding condition and fb constant. This is not statistically significant (t = 0.069).
+fbordinal: The estimated mean distance in the "ordinal" fb is higher by 39.26 compared to the "continuous" fb, holding condition and bandOrder constant. This is statistically significant (t = 2.736).
+conditVaried:bandOrderrev: The interaction between the varied training condition and the "rev" bandOrder results in a decrease of 42.02 in the estimated mean distance compared to the other combinations of training conditions and bandOrders, holding fb constant. This is statistically significant (t = -2.045).
+conditVaried:fbordinal: The interaction between the varied training condition and the "ordinal" fb results in a decrease of 44.10 in the estimated mean distance compared to the other combinations of training conditions and fbs, holding bandOrder constant. This is statistically significant (t = -2.028).
+bandOrderrev:fbordinal: The interaction between the "rev" bandOrder and the "ordinal" fb is not statistically significant (t = -0.640) as it results in a decrease of 13.51 in the estimated mean distance compared to the other combinations of bandOrders and fbs, holding condition constant.
+conditVaried:bandOrderrev:fbordinal: The three-way interaction between the varied training condition, "rev" bandOrder, and "ordinal" fb is not statistically significant (t = -0.005) as it results in a decrease of 0.1691 in the estimated mean distance compared to all other combinations of condition, bandOrder, and fb.
+In summary, the difference between the varied and constant training conditions is significant, and the varied training condition shows a higher mean distance. The "ordinal" fb has a significantly higher mean distance compared to the "continuous" fb. The interactions between the varied training condition and both the "rev" bandOrder and the "ordinal" fb are significant, but the three-way interaction between these factors is not significant.
 
 
 
@@ -248,7 +248,7 @@ Area Under the Receiver Operating Characteristic (ROC) curve (AUC): Compute the 
 
 Once you have computed these metrics for each participant, you can assess the relationship between discrimination and general performance (mean deviation) using correlation or regression analyses. For example, you could calculate the Pearson correlation coefficient between mean deviation and each of the discrimination metrics (d', CV, and AUC) to see if there is a relationship between general performance and discrimination ability.
 
-To explore group differences in discrimination, you can conduct separate ANOVAs with the discrimination metrics (d', CV, and AUC) as dependent variables and the experimental factors (condition, catOrder, and feedbackType) as between-subject factors. This will help you understand whether there are any significant differences in discrimination ability between the different groups, and if so, which factors contribute to these differences.
+To explore group differences in discrimination, you can conduct separate ANOVAs with the discrimination metrics (d', CV, and AUC) as dependent variables and the experimental factors (condition, bandOrder, and fb) as between-subject factors. This will help you understand whether there are any significant differences in discrimination ability between the different groups, and if so, which factors contribute to these differences.
 
 ```{r}
 
@@ -264,13 +264,13 @@ compute_auc <- function(velocity_bands, vx) {
 }
 # Aggregate data by participant and velocity band
 grouped_data <- dtest %>%
-  group_by(id,condit,catOrder, vb,bandInt) %>%
+  group_by(id,condit,bandOrder, vb,bandInt) %>%
   summarise(mean_vx = mean(vx)) %>%
   ungroup()
 
 # Calculate the CV and AUC for each participant
 metrics_data <- grouped_data %>%
-  group_by(id,condit,catOrder) %>%
+  group_by(id,condit,bandOrder) %>%
   summarise(cv = compute_cv(mean_vx),
             auc = compute_auc(sort(unique(bandInt)), mean_vx)) %>%
   ungroup()
@@ -312,7 +312,7 @@ dtest <- d %>%
 ds <- d %>% 
   filter(expMode %in% c("train", "train-Nf", "test-Nf", "test-train-nf")) %>% 
   filter(!id %in% unique(dtest$id[dtest$nBand < 5])) %>% 
-  select(id, condit, catOrder, feedbackType, expMode, trial, gt.train, vb, band, bandInt, lowBound, highBound, input, vx, dist, vxb)
+  select(id, condit, bandOrder, fb, expMode, trial, gt.train, vb, band, bandInt, lowBound, highBound, bandInt, vx, dist, vxb)
 
 # Calculate means and standard deviations by group and testing condition
 dsummary <- ds %>% 

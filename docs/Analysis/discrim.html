@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.251">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2023-07-24">
+<meta name="dcterms.date" content="2023-07-29">
 <title>HTW Project - Testing Discrimination Analysis</title>
 <style>
 code{white-space: pre-wrap;}
@@ -365,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 24, 2023</p>
+      <p class="date">July 29, 2023</p>
     </div>
   </div>
   
@@ -376,7 +376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><div class="cell">
 <details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'tidyverse'</span>,<span class="st">'data.table'</span>,<span class="st">'lme4'</span>,<span class="st">'lmerTest'</span>,<span class="st">'knitr'</span>,<span class="st">'kableExtra'</span>,<span class="st">'cowplot'</span>,<span class="st">'gghalves'</span>,<span class="st">'here'</span><span class="op">)</span>,<span class="va">library</span>,character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/dPrune-01-19-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/dPrune-07-27-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">lowBound</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>nBand<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span>,band<span class="op">=</span><span class="va">bandInt</span>,id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>nd<span class="op">=</span><span class="fu">n_distinct</span><span class="op">(</span><span class="va">lowBound</span><span class="op">)</span><span class="op">)</span></span>
@@ -385,7 +385,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co"># for any id that has at least 1 nBand &gt;=5, remove all rows with that id. </span></span>
 <span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">dtest</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">dtest</span><span class="op">$</span><span class="va">id</span><span class="op">[</span><span class="va">dtest</span><span class="op">$</span><span class="va">nBand</span><span class="op">&lt;</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">dtestAgg</span> <span class="op">&lt;-</span> <span class="va">dtest</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>,<span class="va">catOrder</span>,<span class="va">feedbackType</span>,<span class="va">vb</span>,<span class="va">band</span>,<span class="va">lowBound</span>,<span class="va">highBound</span>,<span class="va">input</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>vxCapped<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">vx</span><span class="op">&gt;</span><span class="fl">1600</span>,<span class="fl">1600</span>,<span class="va">vx</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="va">dtestAgg</span> <span class="op">&lt;-</span> <span class="va">dtest</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>,<span class="va">bandOrder</span>,<span class="va">fb</span>,<span class="va">vb</span>,<span class="va">band</span>,<span class="va">lowBound</span>,<span class="va">highBound</span>,<span class="va">bandInt</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>vxCapped<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">vx</span><span class="op">&gt;</span><span class="fl">1600</span>,<span class="fl">1600</span>,<span class="va">vx</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">summarise</span><span class="op">(</span>vxMean<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">vx</span><span class="op">)</span>,devMean<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dist</span><span class="op">)</span>,vxMed<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">vx</span><span class="op">)</span>,devMed<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">dist</span><span class="op">)</span>,</span>
 <span>            vxMeanCap<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">vxCapped</span><span class="op">)</span>,.groups <span class="op">=</span> <span class="st">"keep"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -417,11 +417,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span></span>
 <span><span class="co">#dtestAgg %&gt;% plotDist()</span></span>
-<span><span class="va">dtestAgg</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">catOrder</span><span class="op">==</span><span class="st">"orig"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">plotDist</span><span class="op">(</span>title<span class="op">=</span><span class="st">"Empirical Vx - Original Order"</span>,fcap<span class="op">=</span><span class="va">fig1aCap</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">dtestAgg</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">bandOrder</span><span class="op">==</span><span class="st">"Original"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">plotDist</span><span class="op">(</span>title<span class="op">=</span><span class="st">"Empirical Vx - Original Order"</span>,fcap<span class="op">=</span><span class="va">fig1aCap</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display column-page-inset-right">
 <p><img src="discrim_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="1152"></p>
 </div>
-<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dtestAgg</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">catOrder</span><span class="op">==</span><span class="st">"rev"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">plotDist</span><span class="op">(</span>title<span class="op">=</span><span class="st">"Empirical Vx - Reverse Order"</span>,fcap<span class="op">=</span><span class="va">fig1bCap</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dtestAgg</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">bandOrder</span><span class="op">==</span><span class="st">"Reverse"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">plotDist</span><span class="op">(</span>title<span class="op">=</span><span class="st">"Empirical Vx - Reverse Order"</span>,fcap<span class="op">=</span><span class="va">fig1bCap</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display column-page-inset-right">
 <p><img src="discrim_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="1152"></p>
 </div>
@@ -448,18 +448,18 @@ lm(formula = vxMean ~ band, data = dtestAgg)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--879.55 -214.41  -43.26  177.10 1300.93 
+-881.05 -214.32  -41.11  176.71 1299.96 
 
 Coefficients:
              Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 480.69135   12.55505   38.29   &lt;2e-16 ***
-band          0.59085    0.01641   36.00   &lt;2e-16 ***
+(Intercept) 480.61722   11.92601   40.30   &lt;2e-16 ***
+band          0.59216    0.01559   37.98   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 302.9 on 2450 degrees of freedom
-Multiple R-squared:  0.346, Adjusted R-squared:  0.3457 
-F-statistic:  1296 on 1 and 2450 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 301.6 on 2695 degrees of freedom
+Multiple R-squared:  0.3487,    Adjusted R-squared:  0.3484 
+F-statistic:  1443 on 1 and 2695 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section><section id="fit-no-pooling-model-individual-fit-for-each-subject" class="level2"><h2 class="anchored" data-anchor-id="fit-no-pooling-model-individual-fit-for-each-subject">Fit no pooling model (individual fit for each subject)</h2>
@@ -473,11 +473,11 @@ F-statistic:  1296 on 1 and 2450 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">df_no_pooling</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code>      id              Intercept        Slope_band         Model          
- Length:418         Min.   :-461.2   Min.   :-0.4938   Length:418        
- Class :character   1st Qu.: 185.9   1st Qu.: 0.2338   Class :character  
- Mode  :character   Median : 397.0   Median : 0.5976   Mode  :character  
-                    Mean   : 475.1   Mean   : 0.6059                     
-                    3rd Qu.: 733.3   3rd Qu.: 0.9334                     
+ Length:461         Min.   :-461.2   Min.   :-0.4938   Length:461        
+ Class :character   1st Qu.: 184.8   1st Qu.: 0.2604   Class :character  
+ Mode  :character   Median : 399.2   Median : 0.5927   Mode  :character  
+                    Mean   : 475.0   Mean   : 0.6075                     
+                    3rd Qu.: 733.1   3rd Qu.: 0.9347                     
                     Max.   :1657.5   Max.   : 2.3819                     </code></pre>
 </div>
 <details><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># print average residual of no pooling model</span></span>
@@ -556,18 +556,18 @@ F-statistic:  1296 on 1 and 2450 DF,  p-value: &lt; 2.2e-16</code></pre>
 <pre><code>lmer(formula = vxMed ~ 1 + band + (1 + band | id), data = dtestAgg, 
     control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e+05)))
             coef.est coef.se
-(Intercept) 457.18    19.03 
+(Intercept) 455.71    18.10 
 band          0.61     0.02 
 
 Error terms:
  Groups   Name        Std.Dev. Corr  
- id       (Intercept) 371.23         
+ id       (Intercept) 370.15         
           band          0.46   -0.79 
- Residual             136.58         
+ Residual             138.09         
 ---
-number of obs: 2452, groups: id, 418
-AIC = 33227.2, DIC = 33217.8
-deviance = 33216.5 </code></pre>
+number of obs: 2697, groups: id, 461
+AIC = 36583.8, DIC = 36573.6
+deviance = 36572.7 </code></pre>
 </div>
 <details><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_partial_pooling</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">bm1</span><span class="op">)</span><span class="op">[[</span><span class="st">"id"</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">rownames_to_column</span><span class="op">(</span><span class="st">"id"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
@@ -580,12 +580,12 @@ deviance = 33216.5 </code></pre>
 <pre><code># A tibble: 6 × 4
   id    Intercept Slope_band Model          
   &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;          
-1 1          558.      0.555 Partial pooling
-2 2         1159.      0.230 Partial pooling
-3 3         1034.     -0.142 Partial pooling
-4 4          250.      0.950 Partial pooling
-5 5          504.      0.596 Partial pooling
-6 6          224.      1.07  Partial pooling</code></pre>
+1 1         558.       0.556 Partial pooling
+2 2        1157.       0.230 Partial pooling
+3 3          44.5      1.42  Partial pooling
+4 4        1033.      -0.140 Partial pooling
+5 5         250.       0.949 Partial pooling
+6 6         504.       0.596 Partial pooling</code></pre>
 </div>
 <details><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">bm1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
@@ -595,31 +595,31 @@ Formula: vxMed ~ 1 + band + (1 + band | id)
    Data: dtestAgg
 Control: lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e+05))
 
-REML criterion at convergence: 33215.2
+REML criterion at convergence: 36571.8
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--3.4510 -0.4577 -0.0160  0.4425  5.0866 
+-3.4138 -0.4608 -0.0159  0.4495  5.0446 
 
 Random effects:
  Groups   Name        Variance  Std.Dev. Corr 
- id       (Intercept) 1.378e+05 371.2285      
-          band        2.075e-01   0.4555 -0.79
- Residual             1.865e+04 136.5755      
-Number of obs: 2452, groups:  id, 418
+ id       (Intercept) 1.370e+05 370.1522      
+          band        2.084e-01   0.4565 -0.79
+ Residual             1.907e+04 138.0887      
+Number of obs: 2697, groups:  id, 461
 
 Fixed effects:
              Estimate Std. Error        df t value Pr(&gt;|t|)    
-(Intercept) 457.17674   19.02930 416.47045   24.02   &lt;2e-16 ***
-band          0.60869    0.02353 414.60790   25.87   &lt;2e-16 ***
+(Intercept) 455.70935   18.09580 457.64524   25.18   &lt;2e-16 ***
+band          0.61216    0.02248 456.22667   27.24   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Correlation of Fixed Effects:
      (Intr)
-band -0.798
+band -0.801
 optimizer (bobyqa) convergence code: 0 (OK)
-Model failed to converge with max|grad| = 0.588713 (tol = 0.002, component 1)
+Model failed to converge with max|grad| = 0.0852438 (tol = 0.002, component 1)
 Model is nearly unidentifiable: very large eigenvalue
  - Rescale variables?
 Model is nearly unidentifiable: large eigenvalue ratio
@@ -726,7 +726,7 @@ Model is nearly unidentifiable: large eigenvalue ratio
 <span>  <span class="fu">geom_smooth</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Slope (band)"</span>, y <span class="op">=</span> <span class="st">"Median Vx"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span>, legend.justification <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">catOrder</span><span class="op">~</span><span class="va">vb</span><span class="op">)</span><span class="op">+</span> <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Correlation between Slope and Median VX"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">bandOrder</span><span class="op">~</span><span class="va">vb</span><span class="op">)</span><span class="op">+</span> <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Correlation between Slope and Median VX"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -740,7 +740,7 @@ Model is nearly unidentifiable: large eigenvalue ratio
 <span>  <span class="fu">geom_smooth</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Intercept"</span>, y <span class="op">=</span> <span class="st">"Median Vx"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span>, legend.justification <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">catOrder</span><span class="op">~</span><span class="va">vb</span><span class="op">)</span><span class="op">+</span> <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Correlation between Intercept and Median Vx"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">bandOrder</span><span class="op">~</span><span class="va">vb</span><span class="op">)</span><span class="op">+</span> <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Correlation between Intercept and Median Vx"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -763,7 +763,7 @@ Model is nearly unidentifiable: large eigenvalue ratio
 <span>  <span class="fu">geom_smooth</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Slope (band)"</span>, y <span class="op">=</span> <span class="st">"devMean"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span>, legend.justification <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">catOrder</span><span class="op">~</span><span class="va">vb</span><span class="op">)</span><span class="op">+</span> <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Correlation between Slope and Mean Deviation"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">bandOrder</span><span class="op">~</span><span class="va">vb</span><span class="op">)</span><span class="op">+</span> <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Correlation between Slope and Mean Deviation"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -777,7 +777,7 @@ Model is nearly unidentifiable: large eigenvalue ratio
 <span>  <span class="fu">geom_smooth</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Intercept"</span>, y <span class="op">=</span> <span class="st">"devMean"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span>, legend.justification <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">catOrder</span><span class="op">~</span><span class="va">vb</span><span class="op">)</span><span class="op">+</span> <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Correlation between Intercept and Mean Deviation"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">bandOrder</span><span class="op">~</span><span class="va">vb</span><span class="op">)</span><span class="op">+</span> <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Correlation between Intercept and Mean Deviation"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>

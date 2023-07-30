@@ -11,7 +11,7 @@ code-fold: true
 #| output: false
 
 lapply(c('tidyverse','data.table','lme4','lmerTest','knitr','kableExtra','cowplot','gghalves','here'),library,character.only = TRUE)
-d <- readRDS(here("data/dPrune-01-19-23.rds"))
+d <- readRDS(here("data/dPrune-07-27-23.rds"))
 
 dtest <- d %>% filter(expMode %in% c("test-Nf","test-train-nf")) %>% group_by(id,lowBound) %>% 
   mutate(nBand=n(),band=bandInt,id=factor(id)) %>% group_by(id) %>% mutate(nd=n_distinct(lowBound))
@@ -20,7 +20,7 @@ dtest <- dtest %>% group_by(id,lowBound) %>% filter(nBand>=5 & nd==6)
 # for any id that has at least 1 nBand >=5, remove all rows with that id. 
 dtest <- dtest %>% group_by(id) %>% filter(!id %in% unique(dtest$id[dtest$nBand<5]))
 
-dtestAgg <- dtest %>% group_by(id,condit,catOrder,feedbackType,vb,band,lowBound,highBound,input) %>% mutate(vxCapped=ifelse(vx>1600,1600,vx)) %>%
+dtestAgg <- dtest %>% group_by(id,condit,bandOrder,fb,vb,band,lowBound,highBound,bandInt) %>% mutate(vxCapped=ifelse(vx>1600,1600,vx)) %>%
   summarise(vxMean=mean(vx),devMean=mean(dist),vxMed=median(vx),devMed=median(dist),
             vxMeanCap=mean(vxCapped),.groups = "keep")
             
@@ -29,16 +29,16 @@ dtestAgg <- dtest %>% group_by(id,condit,catOrder,feedbackType,vb,band,lowBound,
 ```{r fig.width=11, fig.height=9}
 #| eval: false
 #| include: false
-dtest %>% group_by(id,lowBound,condit,catOrder,expMode) %>% summarise(n = n()) %>% ggplot(aes(x = n)) + geom_histogram(aes(fill = condit)) + facet_wrap(catOrder+expMode~lowBound,ncol=6)
+dtest %>% group_by(id,lowBound,condit,bandOrder,expMode) %>% summarise(n = n()) %>% ggplot(aes(x = n)) + geom_histogram(aes(fill = condit)) + facet_wrap(bandOrder+expMode~lowBound,ncol=6)
 
-dtest %>% group_by(id,lowBound,condit,catOrder,expMode) %>% summarise(n = n()) %>% mutate(nf=factor(n,levels=unique(n))) %>%
-  group_by(condit,expMode,catOrder,nf,n) %>% summarise(c=n()) %>% arrange(n) %>% select(-nf) %>% DT::datatable()
+dtest %>% group_by(id,lowBound,condit,bandOrder,expMode) %>% summarise(n = n()) %>% mutate(nf=factor(n,levels=unique(n))) %>%
+  group_by(condit,expMode,bandOrder,nf,n) %>% summarise(c=n()) %>% arrange(n) %>% select(-nf) %>% DT::datatable()
 
-dtest %>% group_by(id,lowBound,condit,catOrder) %>% summarise(n = n()) %>% group_by(lowBound,condit,catOrder) %>% summarise(mean = mean(n),sd = sd(n),n = n()) 
+dtest %>% group_by(id,lowBound,condit,bandOrder) %>% summarise(n = n()) %>% group_by(lowBound,condit,bandOrder) %>% summarise(mean = mean(n),sd = sd(n),n = n()) 
 
 # print number of subjects in each condition combination with less than 5 trials in any lowBound. 
-dtest %>% group_by(id,lowBound,condit,catOrder) %>% summarise(n = n()) %>% filter(n < 5) %>% DT::datatable()
-dtest %>% group_by(id,expMode,catOrder,lowBound) %>% select(nTestF,nTestNf,nBand) %>% slice(1) %>% arrange(nBand)
+dtest %>% group_by(id,lowBound,condit,bandOrder) %>% summarise(n = n()) %>% filter(n < 5) %>% DT::datatable()
+dtest %>% group_by(id,expMode,bandOrder,lowBound) %>% select(nTestF,nTestNf,nBand) %>% slice(1) %>% arrange(nBand)
 
 ```
 
@@ -74,8 +74,8 @@ plotDist <- function(df,title="",fcap=""){
 
 
 #dtestAgg %>% plotDist()
-dtestAgg %>% filter(catOrder=="orig") %>% plotDist(title="Empirical Vx - Original Order",fcap=fig1aCap)
-dtestAgg %>% filter(catOrder=="rev") %>% plotDist(title="Empirical Vx - Reverse Order",fcap=fig1bCap)
+dtestAgg %>% filter(bandOrder=="Original") %>% plotDist(title="Empirical Vx - Original Order",fcap=fig1aCap)
+dtestAgg %>% filter(bandOrder=="Reverse") %>% plotDist(title="Empirical Vx - Reverse Order",fcap=fig1bCap)
 
 ```
 
@@ -242,23 +242,23 @@ summary(gbd)
 
 
 
-gbmc <- lmer(vxMed ~ 1 + condit + band + catOrder + (1 + band | id), dtestAgg, control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
+gbmc <- lmer(vxMed ~ 1 + condit + band + bandOrder + (1 + band | id), dtestAgg, control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
 arm::display(gbmc)
 anova(gbmc)
 summary(gbmc)
 
-gbdc <- lmer(devMean ~ 1 + condit + band + catOrder + (1 + band | id), dtestAgg, control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
+gbdc <- lmer(devMean ~ 1 + condit + band + bandOrder + (1 + band | id), dtestAgg, control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
 arm::display(gbdc)
 anova(gbdc)
 summary(gbdc)
 
 
-gbm2 <- dtestAgg %>% filter(catOrder=="orig") %>% lmer(vxMed ~ 1 + condit + band + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
+gbm2 <- dtestAgg %>% filter(bandOrder=="Original") %>% lmer(vxMed ~ 1 + condit + band + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
 arm::display(gbm2)
 anova(gbm2)
 summary(gbm2)
 
-gbd2 <- dtestAgg %>% filter(catOrder=="orig") %>% lmer(devMean ~ 1 + condit + band + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
+gbd2 <- dtestAgg %>% filter(bandOrder=="Original") %>% lmer(devMean ~ 1 + condit + band + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
 arm::display(gbd2)
 anova(gbd2)
 summary(gbd2)
@@ -266,12 +266,12 @@ summary(gbd2)
 
 
 
-gbm2.i <- dtestAgg %>% filter(catOrder=="orig") %>% lmer(vxMed ~ 1 + (condit * band) + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
+gbm2.i <- dtestAgg %>% filter(bandOrder=="Original") %>% lmer(vxMed ~ 1 + (condit * band) + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
 arm::display(gbm2.i)
 anova(gbm2.i)
 summary(gbm2.i)
 
-gbd2.i <- dtestAgg %>% filter(catOrder=="orig") %>% lmer(devMean ~ 1 + (condit * band) + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
+gbd2.i <- dtestAgg %>% filter(bandOrder=="Original") %>% lmer(devMean ~ 1 + (condit * band) + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
 arm::display(gbd2.i)
 anova(gbd2.i)
 summary(gbd2.i)
@@ -411,7 +411,7 @@ df_models %>% filter(Model == "Partial pooling") %>%
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Slope (band)", y = "Median Vx") + 
   theme(legend.position = "top", legend.justification = "left") +
-  facet_grid(catOrder~vb)+ ggtitle("Correlation between Slope and Median VX")
+  facet_grid(bandOrder~vb)+ ggtitle("Correlation between Slope and Median VX")
 
 
 
@@ -422,7 +422,7 @@ df_models %>% filter(Model == "Partial pooling") %>%
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Intercept", y = "Median Vx") + 
   theme(legend.position = "top", legend.justification = "left") +
-  facet_grid(catOrder~vb)+ ggtitle("Correlation between Intercept and Median Vx")
+  facet_grid(bandOrder~vb)+ ggtitle("Correlation between Intercept and Median Vx")
 
 ```
 
@@ -444,7 +444,7 @@ df_models %>% filter(Model == "Partial pooling") %>%
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Slope (band)", y = "devMean") + 
   theme(legend.position = "top", legend.justification = "left") +
-  facet_grid(catOrder~vb)+ ggtitle("Correlation between Slope and Mean Deviation")
+  facet_grid(bandOrder~vb)+ ggtitle("Correlation between Slope and Mean Deviation")
 
 
 
@@ -455,7 +455,7 @@ df_models %>% filter(Model == "Partial pooling") %>%
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Intercept", y = "devMean") + 
   theme(legend.position = "top", legend.justification = "left") +
-  facet_grid(catOrder~vb)+ ggtitle("Correlation between Intercept and Mean Deviation")
+  facet_grid(bandOrder~vb)+ ggtitle("Correlation between Intercept and Mean Deviation")
 
 ```
 

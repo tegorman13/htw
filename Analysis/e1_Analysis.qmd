@@ -13,7 +13,6 @@ execute:
   eval: true
 ---
 
-
 ```{r setup}
 pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist)
 e1 <- readRDS(here("data/e1_07-27-23.rds"))
@@ -27,7 +26,6 @@ testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
 ```
-
 
 
 ## Dictionary
@@ -99,10 +97,10 @@ vt1 %>% kable() %>% add_header_above(c(" "," "= 1, "Training Block"=5))
 vt1 %>% gt() %>% tab_options(column_labels.background.color = "#176940",
                 table.font.size = px(14))
 
-
-
-
 ```
+
+
+
 
 ```{r}
 #| fig-cap: "Mean Vx over training blocks"
@@ -509,14 +507,6 @@ test %>% group_by(sbjCode,condit,vb) %>%
 
 ```
 
-
-
-```{r}
-
-
-
-
-```
 
 
 
