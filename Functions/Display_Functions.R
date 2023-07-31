@@ -262,6 +262,28 @@ plotWithTable <- function(p,t,arrange="H")
   else {vp1/ggp_table}
 }
 
+
+
+plotDist <- function(df,title="",fcap=""){
+  rectWidth=30
+  df %>%ggplot()+aes(x = band, y = vxMeanCap, fill=vb) +
+    # Set the color mapping in this layer so the points don't get a color
+    geom_half_violin(color=NA)+ # remove border color
+    geom_half_boxplot(position=position_nudge(x=-0.05),side="r",outlier.shape = NA,center=TRUE,
+                      errorbar.draw = FALSE,width=20)+
+    geom_half_point(transformation = position_jitter(width = 0.05, height = 0.05),size=.3,aes(color=vb))+
+    facet_wrap(~condit,scale="free_x")+
+    geom_rect(aes(xmin=band-rectWidth,xmax=band+rectWidth,ymin=band,ymax=highBound,fill=vb),alpha=.01)+
+    geom_segment(aes(x=band-rectWidth,xend=band+rectWidth,y=highBound,yend=highBound),alpha=.8,linetype="dashed")+
+    geom_segment(aes(x=band-rectWidth,xend=band+rectWidth,y=band,yend=band),alpha=.8,linetype="dashed")+
+    labs(x = "Velocity Band", y = "vxMean",caption=fcap) +
+    scale_y_continuous(expand=expansion(add=100),breaks=round(seq(0,2000,by=200),2))+
+    scale_x_continuous(labels=sort(unique(df$band)),breaks=sort(unique(df$band)))+
+    ggtitle(title) + theme(legend.position = "none")+theme_classic()+guides(fill="none",color="none")+
+    theme(plot.caption=element_text(hjust=0,face="italic"))
+}
+
+
 #vp1 / gridExtra::tableGrob(vt1)
 
 
