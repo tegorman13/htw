@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.251">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2023-07-05">
+<meta name="dcterms.date" content="2023-07-30">
 <title>HTW Project - HTW Test Analysis</title>
 <style>
 code{white-space: pre-wrap;}
@@ -355,7 +355,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 5, 2023</p>
+      <p class="date">July 30, 2023</p>
     </div>
   </div>
   
@@ -366,23 +366,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">data.table</span>,<span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span><span class="op">)</span></span>
-<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/dPrune-05-21-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/dPrune-07-27-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">lowBound</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>nBand<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span>,band<span class="op">=</span><span class="va">bandInt</span>,id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>nd<span class="op">=</span><span class="fu">n_distinct</span><span class="op">(</span><span class="va">lowBound</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">dtest</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">lowBound</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">nBand</span><span class="op">&gt;=</span><span class="fl">5</span> <span class="op">&amp;</span> <span class="va">nd</span><span class="op">==</span><span class="fl">6</span><span class="op">)</span></span>
 <span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">dtest</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">dtest</span><span class="op">$</span><span class="va">id</span><span class="op">[</span><span class="va">dtest</span><span class="op">$</span><span class="va">nBand</span><span class="op">&lt;</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">dtestAgg</span> <span class="op">&lt;-</span> <span class="va">dtest</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>,<span class="va">catOrder</span>,<span class="va">fb</span>,<span class="va">vb</span>,<span class="va">band</span>,<span class="va">lowBound</span>,<span class="va">highBound</span>,<span class="va">input</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>vxCapped<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">vx</span><span class="op">&gt;</span><span class="fl">1600</span>,<span class="fl">1600</span>,<span class="va">vx</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="va">dtestAgg</span> <span class="op">&lt;-</span> <span class="va">dtest</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>,<span class="va">bandOrder</span>,<span class="va">fb</span>,<span class="va">vb</span>,<span class="va">band</span>,<span class="va">lowBound</span>,<span class="va">highBound</span>,<span class="va">bandInt</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>vxCapped<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">vx</span><span class="op">&gt;</span><span class="fl">1600</span>,<span class="fl">1600</span>,<span class="va">vx</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">summarise</span><span class="op">(</span>vxMean<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">vx</span><span class="op">)</span>,devMean<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dist</span><span class="op">)</span>,vxMed<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">vx</span><span class="op">)</span>,devMed<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">dist</span><span class="op">)</span>,</span>
 <span>            vxMeanCap<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">vxCapped</span><span class="op">)</span>,.groups <span class="op">=</span> <span class="st">"keep"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span><span class="va">devMean</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">catOrder</span> <span class="op">*</span> <span class="va">fb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dtestAgg</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span><span class="va">devMean</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandOrder</span> <span class="op">*</span> <span class="va">fb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dtestAgg</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML ['lmerMod']
-Formula: devMean ~ condit * catOrder * fb + (1 | id)
+Formula: devMean ~ condit * bandOrder * fb + (1 | id)
    Data: dtestAgg
 
 REML criterion at convergence: 35822.8
@@ -398,50 +398,50 @@ Random effects:
 Number of obs: 2697, groups:  id, 461
 
 Fixed effects:
-                                   Estimate Std. Error t value
-(Intercept)                         212.430     13.967  15.209
-conditVaried                         53.614     19.965   2.685
-catOrderrev                           9.478     21.811   0.435
-fbordinal                            56.609     22.441   2.523
-conditVaried:catOrderrev            -45.098     30.951  -1.457
-conditVaried:fbordinal              -58.510     33.172  -1.764
-catOrderrev:fbordinal               -12.767     32.312  -0.395
-conditVaried:catOrderrev:fbordinal   -3.604     47.473  -0.076
+                                        Estimate Std. Error t value
+(Intercept)                              212.430     13.967  15.209
+conditVaried                              53.614     19.965   2.685
+bandOrderReverse                           9.478     21.811   0.435
+fbOrdinal                                 56.609     22.441   2.523
+conditVaried:bandOrderReverse            -45.098     30.951  -1.457
+conditVaried:fbOrdinal                   -58.510     33.172  -1.764
+bandOrderReverse:fbOrdinal               -12.767     32.312  -0.395
+conditVaried:bandOrderReverse:fbOrdinal   -3.604     47.473  -0.076
 
 Correlation of Fixed Effects:
-            (Intr) cndtVr ctOrdr fbrdnl cndV:O cndtV: ctOrd:
+            (Intr) cndtVr bndOrR fbOrdn cnV:OR cndV:O bnOR:O
 conditVarid -0.700                                          
-catOrderrev -0.640  0.448                                   
-fbordinal   -0.622  0.435  0.399                            
-cndtVrd:ctO  0.451 -0.645 -0.705 -0.281                     
-cndtVrd:fbr  0.421 -0.602 -0.270 -0.677  0.388              
-ctOrdrrv:fb  0.432 -0.302 -0.675 -0.695  0.476  0.470       
-cndtVrd:cO: -0.294  0.421  0.459  0.473 -0.652 -0.699 -0.681</code></pre>
+bndOrdrRvrs -0.640  0.448                                   
+fbOrdinal   -0.622  0.435  0.399                            
+cndtVrd:bOR  0.451 -0.645 -0.705 -0.281                     
+cndtVrd:fbO  0.421 -0.602 -0.270 -0.677  0.388              
+bndOrdrRv:O  0.432 -0.302 -0.675 -0.695  0.476  0.470       
+cndtVr:OR:O -0.294  0.421  0.459  0.473 -0.652 -0.699 -0.681</code></pre>
 </div>
 </div>
-<p>Linear mixed model fit by REML [‘lmerMod’] Formula: devMean ~ condit * catOrder * fb + (1 | id) Data: dtestAgg</p>
+<p>Linear mixed model fit by REML [‘lmerMod’] Formula: devMean ~ condit * bandOrder * fb + (1 | id) Data: dtestAgg</p>
 <p>REML criterion at convergence: 35822.8</p>
 <p>Scaled residuals: Min 1Q Median 3Q Max -2.2757 -0.6267 -0.1857 0.4206 5.3481</p>
 <p>Random effects: Groups Name Variance Std.Dev. id (Intercept) 10476 102.4<br>
 Residual 29024 170.4<br>
 Number of obs: 2697, groups: id, 461</p>
-<p>Fixed effects: Estimate Std. Error t value (Intercept) 212.430 13.967 15.209 conditVaried 53.614 19.965 2.685 catOrderrev 9.478 21.811 0.435 fbordinal 56.609 22.441 2.523 conditVaried:catOrderrev -45.098 30.951 -1.457 conditVaried:fbordinal -58.510 33.172 -1.764 catOrderrev:fbordinal -12.767 32.312 -0.395 conditVaried:catOrderrev:fbordinal -3.604 47.473 -0.076</p>
+<p>Fixed effects: Estimate Std. Error t value (Intercept) 212.430 13.967 15.209 conditVaried 53.614 19.965 2.685 bandOrderrev 9.478 21.811 0.435 fbordinal 56.609 22.441 2.523 conditVaried:bandOrderrev -45.098 30.951 -1.457 conditVaried:fbordinal -58.510 33.172 -1.764 bandOrderrev:fbordinal -12.767 32.312 -0.395 conditVaried:bandOrderrev:fbordinal -3.604 47.473 -0.076</p>
 <p>Correlation of Fixed Effects: (Intr) cndtVr ctOrdr fbrdnl cndV:O cndtV: ctOrd:</p>
 <p>The fixed effects estimates and their significance levels are as follows:</p>
 <ul>
 <li>The intercept (212.430) represents the estimated mean devMean for the reference group (constant training, ‘orig’ order, and continuous feedback).</li>
 <li>conditVaried (53.614) indicates that, on average, participants in the varied training group had a higher devMean compared to the constant training group, with a significant effect (t = 2.685).</li>
-<li>catOrderrev (9.478) suggests that the ‘rev’ order manipulation had a small and non-significant effect on devMean (t = 0.435).</li>
+<li>bandOrderrev (9.478) suggests that the ‘rev’ order manipulation had a small and non-significant effect on devMean (t = 0.435).</li>
 <li>fbordinal (56.609) shows that participants receiving ordinal feedback had a significantly higher devMean compared to those receiving continuous feedback (t = 2.523).</li>
-<li>The two-way and three-way interaction terms (conditVaried:catOrderrev, conditVaried:fbordinal, catOrderrev:fbordinal, and conditVaried:catOrderrev:fbordinal) were not significant, indicating that the effects of training variability, order manipulation, and feedback type did not significantly interact with each other.</li>
+<li>The two-way and three-way interaction terms (conditVaried:bandOrderrev, conditVaried:fbordinal, bandOrderrev:fbordinal, and conditVaried:bandOrderrev:fbordinal) were not significant, indicating that the effects of training variability, order manipulation, and feedback type did not significantly interact with each other.</li>
 </ul>
 <p>In summary, the analysis suggests that training variability and feedback type have significant main effects on participants’ performance in the visuomotor extrapolation task. Participants in the varied training group and those receiving ordinal feedback had higher devMean values, indicating better performance. However, the order manipulation (‘orig’ and ‘rev’) did not have a significant effect on performance. Additionally, there were no significant interactions between the factors, suggesting that their effects on performance were independent of each other.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_vb</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span><span class="va">devMean</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">catOrder</span> <span class="op">*</span> <span class="va">fb</span> <span class="op">*</span> <span class="va">vb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dtestAgg</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_vb</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span><span class="va">devMean</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandOrder</span> <span class="op">*</span> <span class="va">fb</span> <span class="op">*</span> <span class="va">vb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dtestAgg</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model_vb</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML ['lmerMod']
-Formula: devMean ~ condit * catOrder * fb * vb + (1 | id)
+Formula: devMean ~ condit * bandOrder * fb * vb + (1 | id)
    Data: dtestAgg
 
 REML criterion at convergence: 35068.9
@@ -457,75 +457,75 @@ Random effects:
 Number of obs: 2697, groups:  id, 461
 
 Fixed effects:
-                                               Estimate Std. Error t value
-(Intercept)                                      252.99      21.14  11.970
-conditVaried                                     134.26      30.28   4.434
-catOrderrev                                      -60.79      33.55  -1.812
-fbordinal                                        143.77      33.87   4.244
-vb350-550                                        -61.41      24.73  -2.483
-vb600-800                                       -102.59      24.73  -4.148
-vb800-1000                                       -66.11      24.91  -2.654
-vb1000-1200                                      -22.19      25.61  -0.866
-vb1200-1400                                       23.54      26.07   0.903
-conditVaried:catOrderrev                        -173.94      47.39  -3.670
-conditVaried:fbordinal                          -147.69      50.34  -2.934
-catOrderrev:fbordinal                             70.51      49.32   1.430
-conditVaried:vb350-550                           -36.84      35.43  -1.040
-conditVaried:vb600-800                           -48.49      35.43  -1.369
-conditVaried:vb800-1000                          -98.39      35.70  -2.756
-conditVaried:vb1000-1200                        -159.64      36.33  -4.394
-conditVaried:vb1200-1400                        -160.75      36.81  -4.367
-catOrderrev:vb350-550                             64.52      39.37   1.639
-catOrderrev:vb600-800                             97.13      39.37   2.467
-catOrderrev:vb800-1000                            75.46      39.24   1.923
-catOrderrev:vb1000-1200                           68.47      39.68   1.725
-catOrderrev:vb1200-1400                           97.34      39.98   2.435
-fbordinal:vb350-550                              -59.00      39.63  -1.489
-fbordinal:vb600-800                             -120.60      39.63  -3.043
-fbordinal:vb800-1000                            -104.78      40.35  -2.597
-fbordinal:vb1000-1200                           -121.77      41.28  -2.950
-fbordinal:vb1200-1400                           -133.56      41.92  -3.186
-conditVaried:catOrderrev:fbordinal               -53.01      72.62  -0.730
-conditVaried:catOrderrev:vb350-550                19.29      55.53   0.347
-conditVaried:catOrderrev:vb600-800                60.66      55.61   1.091
-conditVaried:catOrderrev:vb800-1000              198.56      55.52   3.576
-conditVaried:catOrderrev:vb1000-1200             267.80      55.93   4.788
-conditVaried:catOrderrev:vb1200-1400             249.68      56.24   4.439
-conditVaried:fbordinal:vb350-550                  61.93      58.90   1.051
-conditVaried:fbordinal:vb600-800                 103.53      58.90   1.758
-conditVaried:fbordinal:vb800-1000                 84.75      59.47   1.425
-conditVaried:fbordinal:vb1000-1200               141.77      60.19   2.356
-conditVaried:fbordinal:vb1200-1400               165.62      60.88   2.721
-catOrderrev:fbordinal:vb350-550                 -100.28      57.85  -1.733
-catOrderrev:fbordinal:vb600-800                 -124.71      57.78  -2.158
-catOrderrev:fbordinal:vb800-1000                -102.80      58.10  -1.769
-catOrderrev:fbordinal:vb1000-1200                -82.52      58.75  -1.404
-catOrderrev:fbordinal:vb1200-1400                -68.74      59.21  -1.161
-conditVaried:catOrderrev:fbordinal:vb350-550      93.93      85.00   1.105
-conditVaried:catOrderrev:fbordinal:vb600-800     133.48      85.09   1.569
-conditVaried:catOrderrev:fbordinal:vb800-1000     69.46      85.23   0.815
-conditVaried:catOrderrev:fbordinal:vb1000-1200   -12.91      85.74  -0.151
-conditVaried:catOrderrev:fbordinal:vb1200-1400   -15.49      86.22  -0.180</code></pre>
+                                                    Estimate Std. Error t value
+(Intercept)                                           252.99      21.14  11.970
+conditVaried                                          134.26      30.28   4.434
+bandOrderReverse                                      -60.79      33.55  -1.812
+fbOrdinal                                             143.77      33.87   4.244
+vb350-550                                             -61.41      24.73  -2.483
+vb600-800                                            -102.59      24.73  -4.148
+vb800-1000                                            -66.11      24.91  -2.654
+vb1000-1200                                           -22.19      25.61  -0.866
+vb1200-1400                                            23.54      26.07   0.903
+conditVaried:bandOrderReverse                        -173.94      47.39  -3.670
+conditVaried:fbOrdinal                               -147.69      50.34  -2.934
+bandOrderReverse:fbOrdinal                             70.51      49.32   1.430
+conditVaried:vb350-550                                -36.84      35.43  -1.040
+conditVaried:vb600-800                                -48.49      35.43  -1.369
+conditVaried:vb800-1000                               -98.39      35.70  -2.756
+conditVaried:vb1000-1200                             -159.64      36.33  -4.394
+conditVaried:vb1200-1400                             -160.75      36.81  -4.367
+bandOrderReverse:vb350-550                             64.52      39.37   1.639
+bandOrderReverse:vb600-800                             97.13      39.37   2.467
+bandOrderReverse:vb800-1000                            75.46      39.24   1.923
+bandOrderReverse:vb1000-1200                           68.47      39.68   1.725
+bandOrderReverse:vb1200-1400                           97.34      39.98   2.435
+fbOrdinal:vb350-550                                   -59.00      39.63  -1.489
+fbOrdinal:vb600-800                                  -120.60      39.63  -3.043
+fbOrdinal:vb800-1000                                 -104.78      40.35  -2.597
+fbOrdinal:vb1000-1200                                -121.77      41.28  -2.950
+fbOrdinal:vb1200-1400                                -133.56      41.92  -3.186
+conditVaried:bandOrderReverse:fbOrdinal               -53.01      72.62  -0.730
+conditVaried:bandOrderReverse:vb350-550                19.29      55.53   0.347
+conditVaried:bandOrderReverse:vb600-800                60.66      55.61   1.091
+conditVaried:bandOrderReverse:vb800-1000              198.56      55.52   3.576
+conditVaried:bandOrderReverse:vb1000-1200             267.80      55.93   4.788
+conditVaried:bandOrderReverse:vb1200-1400             249.68      56.24   4.439
+conditVaried:fbOrdinal:vb350-550                       61.93      58.90   1.051
+conditVaried:fbOrdinal:vb600-800                      103.53      58.90   1.758
+conditVaried:fbOrdinal:vb800-1000                      84.75      59.47   1.425
+conditVaried:fbOrdinal:vb1000-1200                    141.77      60.19   2.356
+conditVaried:fbOrdinal:vb1200-1400                    165.62      60.88   2.721
+bandOrderReverse:fbOrdinal:vb350-550                 -100.28      57.85  -1.733
+bandOrderReverse:fbOrdinal:vb600-800                 -124.71      57.78  -2.158
+bandOrderReverse:fbOrdinal:vb800-1000                -102.80      58.10  -1.769
+bandOrderReverse:fbOrdinal:vb1000-1200                -82.52      58.75  -1.404
+bandOrderReverse:fbOrdinal:vb1200-1400                -68.74      59.21  -1.161
+conditVaried:bandOrderReverse:fbOrdinal:vb350-550      93.93      85.00   1.105
+conditVaried:bandOrderReverse:fbOrdinal:vb600-800     133.48      85.09   1.569
+conditVaried:bandOrderReverse:fbOrdinal:vb800-1000     69.46      85.23   0.815
+conditVaried:bandOrderReverse:fbOrdinal:vb1000-1200   -12.91      85.74  -0.151
+conditVaried:bandOrderReverse:fbOrdinal:vb1200-1400   -15.49      86.22  -0.180</code></pre>
 </div>
 </div>
-<p>Linear mixed model fit by REML [‘lmerMod’] Formula: devMean ~ condit * catOrder * fb * vb + (1 | id) Data: dtestAgg</p>
+<p>Linear mixed model fit by REML [‘lmerMod’] Formula: devMean ~ condit * bandOrder * fb * vb + (1 | id) Data: dtestAgg</p>
 <p>REML criterion at convergence: 35068.9</p>
 <p>Scaled residuals: Min 1Q Median 3Q Max -3.3467 -0.5744 -0.1106 0.4417 5.9657</p>
 <p>Random effects: Groups Name Variance Std.Dev. id (Intercept) 11277 106.2<br>
 Residual 24462 156.4<br>
 Number of obs: 2697, groups: id, 461</p>
-<p>Fixed effects: Estimate Std. Error t value (Intercept) 252.99 21.14 11.970 conditVaried 134.26 30.28 4.434 catOrderrev -60.79 33.55 -1.812 fbordinal 143.77 33.87 4.244 vb350-550 -61.41 24.73 -2.483 vb600-800 -102.59 24.73 -4.148 vb800-1000 -66.11 24.91 -2.654 vb1000-1200 -22.19 25.61 -0.866 vb1200-1400 23.54 26.07 0.903 conditVaried:catOrderrev -173.94 47.39 -3.670 conditVaried:fbordinal -147.69 50.34 -2.934 catOrderrev:fbordinal 70.51 49.32 1.430 conditVaried:vb350-550 -36.84 35.43 -1.040 conditVaried:vb600-800 -48.49 35.43 -1.369 conditVaried:vb800-1000 -98.39 35.70 -2.756 conditVaried:vb1000-1200 -159.64 36.33 -4.394 conditVaried:vb1200-1400 -160.75 36.81 -4.367 catOrderrev:vb350-550 64.52 39.37 1.639 catOrderrev:vb600-800 97.13 39.37 2.467 catOrderrev:vb800-1000 75.46 39.24 1.923 catOrderrev:vb1000-1200 68.47 39.68 1.725 catOrderrev:vb1200-1400 97.34 39.98 2.435 fbordinal:vb350-550 -59.00 39.63 -1.489 fbordinal:vb600-800 -120.60 39.63 -3.043 fbordinal:vb800-1000 -104.78 40.35 -2.597 fbordinal:vb1000-1200 -121.77 41.28 -2.950 fbordinal:vb1200-1400 -133.56 41.92 -3.186 conditVaried:catOrderrev:fbordinal -53.01 72.62 -0.730 conditVaried:catOrderrev:vb350-550 19.29 55.53 0.347 conditVaried:catOrderrev:vb600-800 60.66 55.61 1.091 conditVaried:catOrderrev:vb800-1000 198.56 55.52 3.576 conditVaried:catOrderrev:vb1000-1200 267.80 55.93 4.788 conditVaried:catOrderrev:vb1200-1400 249.68 56.24 4.439 conditVaried:fbordinal:vb350-550 61.93 58.90 1.051 conditVaried:fbordinal:vb600-800 103.53 58.90 1.758 conditVaried:fbordinal:vb800-1000 84.75 59.47 1.425 conditVaried:fbordinal:vb1000-1200 141.77 60.19 2.356 conditVaried:fbordinal:vb1200-1400 165.62 60.88 2.721 catOrderrev:fbordinal:vb350-550 -100.28 57.85 -1.733 catOrderrev:fbordinal:vb600-800 -124.71 57.78 -2.158 catOrderrev:fbordinal:vb800-1000 -102.80 58.10 -1.769 catOrderrev:fbordinal:vb1000-1200 -82.52 58.75 -1.404 catOrderrev:fbordinal:vb1200-1400 -68.74 59.21 -1.161 conditVaried:catOrderrev:fbordinal:vb350-550 93.93 85.00 1.105 conditVaried:catOrderrev:fbordinal:vb600-800 133.48 85.09 1.569 conditVaried:catOrderrev:fbordinal:vb800-1000 69.46 85.23 0.815 conditVaried:catOrderrev:fbordinal:vb1000-1200 -12.91 85.74 -0.151 conditVaried:catOrderrev:fbordinal:vb1200-1400 -15.49 86.22 -0.180</p>
+<p>Fixed effects: Estimate Std. Error t value (Intercept) 252.99 21.14 11.970 conditVaried 134.26 30.28 4.434 bandOrderrev -60.79 33.55 -1.812 fbordinal 143.77 33.87 4.244 vb350-550 -61.41 24.73 -2.483 vb600-800 -102.59 24.73 -4.148 vb800-1000 -66.11 24.91 -2.654 vb1000-1200 -22.19 25.61 -0.866 vb1200-1400 23.54 26.07 0.903 conditVaried:bandOrderrev -173.94 47.39 -3.670 conditVaried:fbordinal -147.69 50.34 -2.934 bandOrderrev:fbordinal 70.51 49.32 1.430 conditVaried:vb350-550 -36.84 35.43 -1.040 conditVaried:vb600-800 -48.49 35.43 -1.369 conditVaried:vb800-1000 -98.39 35.70 -2.756 conditVaried:vb1000-1200 -159.64 36.33 -4.394 conditVaried:vb1200-1400 -160.75 36.81 -4.367 bandOrderrev:vb350-550 64.52 39.37 1.639 bandOrderrev:vb600-800 97.13 39.37 2.467 bandOrderrev:vb800-1000 75.46 39.24 1.923 bandOrderrev:vb1000-1200 68.47 39.68 1.725 bandOrderrev:vb1200-1400 97.34 39.98 2.435 fbordinal:vb350-550 -59.00 39.63 -1.489 fbordinal:vb600-800 -120.60 39.63 -3.043 fbordinal:vb800-1000 -104.78 40.35 -2.597 fbordinal:vb1000-1200 -121.77 41.28 -2.950 fbordinal:vb1200-1400 -133.56 41.92 -3.186 conditVaried:bandOrderrev:fbordinal -53.01 72.62 -0.730 conditVaried:bandOrderrev:vb350-550 19.29 55.53 0.347 conditVaried:bandOrderrev:vb600-800 60.66 55.61 1.091 conditVaried:bandOrderrev:vb800-1000 198.56 55.52 3.576 conditVaried:bandOrderrev:vb1000-1200 267.80 55.93 4.788 conditVaried:bandOrderrev:vb1200-1400 249.68 56.24 4.439 conditVaried:fbordinal:vb350-550 61.93 58.90 1.051 conditVaried:fbordinal:vb600-800 103.53 58.90 1.758 conditVaried:fbordinal:vb800-1000 84.75 59.47 1.425 conditVaried:fbordinal:vb1000-1200 141.77 60.19 2.356 conditVaried:fbordinal:vb1200-1400 165.62 60.88 2.721 bandOrderrev:fbordinal:vb350-550 -100.28 57.85 -1.733 bandOrderrev:fbordinal:vb600-800 -124.71 57.78 -2.158 bandOrderrev:fbordinal:vb800-1000 -102.80 58.10 -1.769 bandOrderrev:fbordinal:vb1000-1200 -82.52 58.75 -1.404 bandOrderrev:fbordinal:vb1200-1400 -68.74 59.21 -1.161 conditVaried:bandOrderrev:fbordinal:vb350-550 93.93 85.00 1.105 conditVaried:bandOrderrev:fbordinal:vb600-800 133.48 85.09 1.569 conditVaried:bandOrderrev:fbordinal:vb800-1000 69.46 85.23 0.815 conditVaried:bandOrderrev:fbordinal:vb1000-1200 -12.91 85.74 -0.151 conditVaried:bandOrderrev:fbordinal:vb1200-1400 -15.49 86.22 -0.180</p>
 <p>The fixed effects estimates and their significance levels are as follows:</p>
 <ul>
 <li>The intercept (252.99) represents the estimated mean devMean for the reference group (constant training, ‘orig’ order, continuous feedback, and the lowest velocity band).</li>
 <li>conditVaried (134.26) indicates that, on average, participants in the varied training group had a higher devMean compared to the constant training group, with a significant effect (t = 4.434).</li>
-<li>catOrderrev (-60.79) suggests that the ‘rev’ order manipulation had a small and marginally significant effect on devMean (t = -1.812).</li>
+<li>bandOrderrev (-60.79) suggests that the ‘rev’ order manipulation had a small and marginally significant effect on devMean (t = -1.812).</li>
 <li>fbordinal (143.77) shows that participants receiving ordinal feedback had a significantly higher devMean compared to those receiving continuous feedback (t = 4.244).</li>
 </ul>
 <p>The main effects of the velocity bands (vb350-550, vb600-800, vb800-1000, vb1000-1200, vb1200-1400) show that different velocity bands have varying effects on devMean, with some bands leading to significantly lower devMean values compared to the reference band (e.g., vb600-800: -102.59, t = -4.148).</p>
 <p>The two-way, three-way, and four-way interaction terms provide insights into how the effects of training variability, order manipulation, feedback type, and velocity band interact with each other. Some notable significant interactions include:</p>
 <ul>
-<li>conditVaried:catOrderrev (-173.94, t = -3.670): The interaction between training variability and order manipulation has a significant effect on devMean.</li>
+<li>conditVaried:bandOrderrev (-173.94, t = -3.670): The interaction between training variability and order manipulation has a significant effect on devMean.</li>
 <li>conditVaried:fbordinal (-147.69, t = -2.934): The interaction between training variability and feedback type has a significant effect on devMean.</li>
 <li>conditVaried:vb800-1000 (-98.39, t = -2.756), conditVaried:vb1000-1200 (-159.64, t = -4.394), and conditVaried:vb1200-1400 (-160.75, t = -4.367): The interaction between training variability and specific velocity bands has a significant effect on devMean.</li>
 </ul>
@@ -534,7 +534,7 @@ Number of obs: 2697, groups: id, 461</p>
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">interaction_plot_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">dtestAgg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">catOrder</span>, y <span class="op">=</span> <span class="va">devMean</span>, color <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="va">interaction_plot_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">dtestAgg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bandOrder</span>, y <span class="op">=</span> <span class="va">devMean</span>, color <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_summary.html">stat_summary</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">mean</span>, geom <span class="op">=</span> <span class="st">"point"</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_summary.html">stat_summary</a></span><span class="op">(</span>fun.data <span class="op">=</span> <span class="va">mean_se</span>, geom <span class="op">=</span> <span class="st">"errorbar"</span>, width <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -548,7 +548,7 @@ Number of obs: 2697, groups: id, 461</p>
 <p><img src="test_analysis-all_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">table_2</span> <span class="op">&lt;-</span> <span class="va">dtestAgg</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span>, <span class="va">catOrder</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span>, <span class="va">bandOrder</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">summarise</span><span class="op">(</span>mean_deviation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">devMean</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">kable</span><span class="op">(</span><span class="va">table_2</span>, caption <span class="op">=</span> <span class="st">"Mean Deviation by Training Variability and Category Order"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -557,28 +557,28 @@ Number of obs: 2697, groups: id, 461</p>
 <caption>Mean Deviation by Training Variability and Category Order</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">condit</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">catOrder</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">bandOrder</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">mean_deviation</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Constant</td>
-<td style="text-align: left;">orig</td>
+<td style="text-align: left;">Original</td>
 <td style="text-align: right;">231.9570</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Constant</td>
-<td style="text-align: left;">rev</td>
+<td style="text-align: left;">Reverse</td>
 <td style="text-align: right;">244.3648</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Varied</td>
-<td style="text-align: left;">orig</td>
+<td style="text-align: left;">Original</td>
 <td style="text-align: right;">264.3575</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Varied</td>
-<td style="text-align: left;">rev</td>
+<td style="text-align: left;">Reverse</td>
 <td style="text-align: right;">221.6839</td>
 </tr>
 </tbody>
@@ -618,22 +618,22 @@ Number of obs: 2697, groups: id, 461</p>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Constant</td>
-<td style="text-align: left;">continuous</td>
+<td style="text-align: left;">Continuous</td>
 <td style="text-align: right;">214.8380</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Constant</td>
-<td style="text-align: left;">ordinal</td>
+<td style="text-align: left;">Ordinal</td>
 <td style="text-align: right;">265.9528</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Varied</td>
-<td style="text-align: left;">continuous</td>
+<td style="text-align: left;">Continuous</td>
 <td style="text-align: right;">249.7688</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Varied</td>
-<td style="text-align: left;">ordinal</td>
+<td style="text-align: left;">Ordinal</td>
 <td style="text-align: right;">235.8744</td>
 </tr>
 </tbody>
@@ -739,9 +739,9 @@ Number of obs: 2697, groups: id, 461</p>
 </section><section id="summary" class="level3"><h3 class="anchored" data-anchor-id="summary">Summary</h3>
 </section><section id="results" class="level3"><h3 class="anchored" data-anchor-id="results">Results</h3>
 <p>The primary purpose of the HTW study was to examine the influence of training variability on learning and generalization in a visuomotor extrapolation task. Participants were divided into two groups based on training variability (varied training with 3 velocity bands and constant training with 1 velocity band) and underwent a testing stage consisting of three phases. The study employed two between-subject manipulations: order manipulation (‘orig’ and ‘rev’) and feedback type (‘continuous’ and ‘ordinal’). Participants’ performance was measured by calculating the distance between the produced x-velocity and the closest edge of the current velocity band, with lower distances indicating better performance.</p>
-<p>A linear mixed model was fitted to the data with devMean as the dependent variable and condit (training variability), catOrder (order manipulation), and fb (feedback type) as fixed effects, and id (participant) as a random effect. The analysis revealed significant main effects of training variability, F(1, 2695) = 7.21, p &lt; .01, and feedback type, F(1, 2695) = 6.36, p &lt; .05, on devMean. Participants in the varied training group (M = 266.04, SE = 19.97) had a higher devMean compared to the constant training group (M = 212.43, SE = 13.97), indicating better performance. Participants receiving ordinal feedback (M = 269.04, SE = 22.44) also had a higher devMean compared to those receiving continuous feedback (M = 212.43, SE = 13.97). The main effect of order manipulation was not significant, F(1, 2695) = 0.19, p = .66.</p>
-<p>The two-way and three-way interaction terms (conditVaried:catOrderrev, conditVaried:fbordinal, catOrderrev:fbordinal, and conditVaried:catOrderrev:fbordinal) were not significant, indicating that the effects of training variability, order manipulation, and feedback type did not significantly interact with each other.</p>
-<p>To further investigate the influence of velocity bands on performance, an additional linear mixed model was fitted with devMean as the dependent variable and condit, catOrder, fb, and vb (velocity band) as fixed effects, and id as a random effect. The main effects of the velocity bands were significant, with some bands leading to significantly lower devMean values compared to the reference band (e.g., vb600-800: -102.59, t = -4.148). Moreover, significant interactions were found between training variability and order manipulation, F(1, 2689) = 13.47, p &lt; .001, training variability and feedback type, F(1, 2689) = 8.61, p &lt; .01, and training variability and specific velocity bands (e.g., conditVaried:vb800-1000, F(1, 2689) = 7.59, p &lt; .01).</p>
+<p>A linear mixed model was fitted to the data with devMean as the dependent variable and condit (training variability), bandOrder (order manipulation), and fb (feedback type) as fixed effects, and id (participant) as a random effect. The analysis revealed significant main effects of training variability, F(1, 2695) = 7.21, p &lt; .01, and feedback type, F(1, 2695) = 6.36, p &lt; .05, on devMean. Participants in the varied training group (M = 266.04, SE = 19.97) had a higher devMean compared to the constant training group (M = 212.43, SE = 13.97), indicating better performance. Participants receiving ordinal feedback (M = 269.04, SE = 22.44) also had a higher devMean compared to those receiving continuous feedback (M = 212.43, SE = 13.97). The main effect of order manipulation was not significant, F(1, 2695) = 0.19, p = .66.</p>
+<p>The two-way and three-way interaction terms (conditVaried:bandOrderrev, conditVaried:fbordinal, bandOrderrev:fbordinal, and conditVaried:bandOrderrev:fbordinal) were not significant, indicating that the effects of training variability, order manipulation, and feedback type did not significantly interact with each other.</p>
+<p>To further investigate the influence of velocity bands on performance, an additional linear mixed model was fitted with devMean as the dependent variable and condit, bandOrder, fb, and vb (velocity band) as fixed effects, and id as a random effect. The main effects of the velocity bands were significant, with some bands leading to significantly lower devMean values compared to the reference band (e.g., vb600-800: -102.59, t = -4.148). Moreover, significant interactions were found between training variability and order manipulation, F(1, 2689) = 13.47, p &lt; .001, training variability and feedback type, F(1, 2689) = 8.61, p &lt; .01, and training variability and specific velocity bands (e.g., conditVaried:vb800-1000, F(1, 2689) = 7.59, p &lt; .01).</p>
 <p>In summary, the results suggest that training variability and feedback type have significant main effects on participants’ performance in the visuomotor extrapolation task. Participants in the varied training group and those receiving ordinal feedback had higher devMean values, indicating better performance. However, the order manipulation (‘orig’ and ‘rev’) did not have a significant effect on performance. Additionally, there were no significant interactions between the factors, suggesting that their effects on performance were independent of each other. The inclusion of velocity bands in the analysis revealed significant interactions between training variability, order manipulation, feedback type, and velocity band, indicating that these factors jointly influence performance in the task.</p>
 
 
