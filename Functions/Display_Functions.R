@@ -7,6 +7,7 @@ options(dplyr.summarise.inform=FALSE)
 select <- dplyr::select
 mutate <- dplyr::mutate
 filter <- dplyr::filter
+map <- purrr::map
 
 # Custom theme for data visualizations
 plot_theme <- function(title_size = NULL, 

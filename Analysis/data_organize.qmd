@@ -23,6 +23,19 @@ d <- d |> mutate(bandType=case_when(
 d$bandType <- factor(d$bandType,levels=c("Trained","Extrapolation"))
 d<- d %>% relocate(bandOrder,bandType,.after=bandInt)
 
+
+d <- d |> mutate(Exp=case_when(
+  fb=="Continuous" & bandOrder=="Original" ~ "E1",
+  fb=="Continuous" & bandOrder=="Reverse" ~ "E2",
+  fb=="Ordinal" ~ "E3",
+  TRUE ~ NA_character_
+))
+
+
+d <- d |> mutate(vxC = ifelse(vx>1800,1800,vx))
+d <- d %>% relocate(vxC,.after=vx)
+d <- d |> select(-goodThrow, -trainVec, -fullCond)
+
 # test <- d |> filter(expMode %in% c("test-Nf","test-train-nf"))
 # rtest <- test |> filter(bandOrder=="Reverse")
 # rtest |> group_by(vb,bandType,condit,tOrder) |> summarise(n=n()) 
@@ -31,11 +44,11 @@ d<- d %>% relocate(bandOrder,bandType,.after=bandInt)
 
 ```{r}
 #| eval: false
-e1 <- d |> filter(fb=="Continuous" & bandOrder=="Original")
-e2 <- d |> filter(fb=="Continuous" & bandOrder=="Reverse")
-e3 <- d |> filter(fb=="Ordinal")
+e1 <- d |> filter(fb=="Continuous" & bandOrder=="Original") |> mutate(id=factor(id,levels=unique(id)))
+e2 <- d |> filter(fb=="Continuous" & bandOrder=="Reverse") |> mutate(id=factor(id,levels=unique(id)))
+e3 <- d |> filter(fb=="Ordinal") |> mutate(id=factor(id,levels=unique(id)))
 
-date.append="07-27-23"
+date.append="08-04-23"
 
 # saveRDS(d,here(paste0("data/dAll_",date.append,".rds")))
 # saveRDS(e1,here(paste0("data/e1_",date.append,".rds")))

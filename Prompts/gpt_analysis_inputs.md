@@ -33,6 +33,11 @@ bandSeq - Previous Target Band and current Target Band, e.g. 800->1000  1000->12
 
 
 
+
+In the velocity production task, subjects are prompted to generated an X velocity target (e.g. an x of 100, 350, 600, 800, 1000, or 1200). Each subject has 15 trials with each of the 6 possible x velocities. The vx produced on each trial is saved as a continuous value, which can vary from 0-2000. Some subjects have good accuracy on average, but dont' actually seem to discriminate between some of the bands (e.g. their distribution of throws for 1000 and 1200 seem indistinguishable).  I want a way of quantifying how many velocity targets each subject is able to discriminate (independent of their accuracy/deviation), or how many parameters are needed to model each subjects data.  
+
+
+
 # System Prompts Old
 
 
