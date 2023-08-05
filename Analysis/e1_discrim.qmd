@@ -12,16 +12,13 @@ e1 <- readRDS(here("data/e1_08-04-23.rds"))
 source(here("Functions/Display_Functions.R"))
 
 
-test <- e1 |> filter(expMode2 == "Test") |> mutate(id=factor(id,levels=unique(id)))
+test <- e1 |> filter(expMode2 == "Test") 
 testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vxMean=mean(vx),vxMed=median(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
 #test %>% filter(id==1, band==1) %>% select(vx) %>% unlist() %>% as.vector()
 
-
-
 ```
-
 
 ```{r}
 
@@ -87,11 +84,9 @@ test$censored_vx <- ifelse(test$censored_vx > 1600, 1600, test$censored_vx)
 test$censored <- ifelse((test$vx <50 | test$vx>1600), TRUE, FALSE)
 
 # fit model
-m1_bayes <- brm(censored_vx | cens(censored) ~ 1 + bandInt + condit + (1 + bandInt | id), 
+m1_bayes <- brm(vx~ 1 + bandInt + condit + (1 + bandInt | id), 
                 data = test, family = gaussian())
 
-m1_bayesT <- brm(censored_vx | trunc(lb = 0) ~ 1 + bandInt + condit + (1 + bandInt | id), 
-                data = test, family = lognormal(),chains=1)
 
 
 m1_bayesSN <- brm(vx ~ 1 + bandInt + condit + (1 + bandInt | id), data = test, family = skew_normal(),chains = 4)
@@ -112,6 +107,74 @@ X <- cbind(test[,c("id","condit","trial","vb","bandInt","vx")], fitted(m1_bayes)
 
 ```
 
+$$
+\begin{aligned}
+  \operatorname{vx}_{i}  &\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{bandInt}), \sigma^2 \right) \\    
+\left(
+  \begin{array}{c} 
+    \begin{aligned}
+      &\alpha_{j} \\
+      &\beta_{1j}
+    \end{aligned}
+  \end{array}
+\right)
+  &\sim N \left(
+\left(
+  \begin{array}{c} 
+    \begin{aligned}
+      &\gamma_{0}^{\alpha} + \gamma_{1}^{\alpha}(\operatorname{condit}_{\operatorname{Varied}}) \\
+      &\mu_{\beta_{1j}}
+    \end{aligned}
+  \end{array}
+\right)
+, 
+\left(
+  \begin{array}{cc}
+     \sigma^2_{\alpha_{j}} & \rho_{\alpha_{j}\beta_{1j}} \\ 
+     \rho_{\beta_{1j}\alpha_{j}} & \sigma^2_{\beta_{1j}}
+  \end{array}
+\right)
+ \right)
+    \text{, for id j = 1,} \dots \text{,J}
+\end{aligned}
+$$
+
+`r cat(extract_eq(m1, use_coefs = TRUE))`
+
+$$
+\begin{aligned}
+  \operatorname{\widehat{vx}}_{i}  &\sim N \left(480.37_{\alpha_{j[i]}} + 0.63_{\beta_{1j[i]}}(\operatorname{bandInt}), \sigma^2 \right) \\    
+\left(
+  \begin{array}{c} 
+    \begin{aligned}
+      &\alpha_{j} \\
+      &\beta_{1j}
+    \end{aligned}
+  \end{array}
+\right)
+  &\sim N \left(
+\left(
+  \begin{array}{c} 
+    \begin{aligned}
+      &56.83_{\gamma_{1}^{\alpha}}(\operatorname{condit}_{\operatorname{Varied}}) \\
+      &0
+    \end{aligned}
+  \end{array}
+\right)
+, 
+\left(
+  \begin{array}{cc}
+     351.8 & -0.8 \\ 
+     -0.8 & 0.38
+  \end{array}
+\right)
+ \right)
+    \text{, for id j = 1,} \dots \text{,J}
+\end{aligned}
+$$
+
+
+
 
 
 ```{r}
@@ -131,7 +194,6 @@ summary(m1_bayes)
 
 ```
 
-
 ```{r}
 # Calculate the standard deviation of the estimates for each level of id
 m_all %>%
@@ -146,8 +208,6 @@ m_all %>%
 m_all |> filter(id==10)
 
 ```
-
-
 
 ```{r}
 #| eval: false
@@ -191,7 +251,6 @@ epred_draws(model_fixed,newdata=expand_grid(bandInt=unique(e1$bandInt),id=factor
 
 ```
 
-
 ```{r}
 #| eval: false
 
@@ -219,7 +278,6 @@ summary(skew_m1)
 
 
 ```
-
 
 ```{r}
 #| eval: false
@@ -252,9 +310,7 @@ m_all_bayes |> filter(id==10)
 
 ```
 
-
 ```{r}
 
 
 ```
-

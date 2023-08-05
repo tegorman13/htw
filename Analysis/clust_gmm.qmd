@@ -24,6 +24,9 @@ testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vxMean=mean(vx),vxMed=median(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
 
+
+
+
 get_mclust_param <- function(model, param) {
   if (!is.null(model$parameters[[param]])) {
     return(model$parameters[[param]])
@@ -120,6 +123,66 @@ mcBoot2b |> group_by(condit) |> mutate(n=n()) |>
 ```
 
 
+```{r}
+#| fig.width=12
+#| 
+ta <- test %>% group_by(id,condit, vb) %>% summarise(mean(dist),mean(vx),mad(vx),sd(vx),IQR(vx),moments::skewness(vx))
+
+plots <- map(names(ta)[-(1:3)], ~ {
+  var_name <- .x
+  ggplot(ta, aes(x = vb, y = !!sym(var_name), color = condit)) +
+    gghalves::geom_half_violin()+
+    gghalves::geom_half_boxplot(alpha=.5)+
+    labs(x = "Velocity Band", y = var_name,
+         title = paste("Plot of", var_name, "by Velocity Band and Condition"),
+         color = "Condition") +
+    theme_minimal()
+})
+
+# Combine the plots using patchwork
+combined_plot <- wrap_plots(plots, ncol = 2)
+
+# Print the combined plot
+print(combined_plot)
+
+
+dispersion_vars <- names(ta)[-(1:5)]
+correlation_results <- map(dispersion_vars, ~ {
+  var_name <- .x
+  cor_result <- cor.test(ta[['mean(dist)']], ta[[var_name]], method = "pearson")
+  list(var_name = var_name, cor_result = cor_result)
+})
+
+# Print the correlation results
+correlation_results
+
+dispersion_vars <- names(ta)[-(1:5)]
+dispersion_vars <- c('mean(dist)', dispersion_vars)
+ta_subset <- ta[dispersion_vars]
+correlation_matrix <- cor(ta_subset, method = "pearson")
+correlation_matrix
+
+library(corrplot)
+
+correlation_matrices <- ta %>% 
+  group_by(condit) %>% 
+  nest() %>% 
+  mutate(correlation_matrix = map(data, ~ cor(.x[dispersion_vars], method = "pearson")))
+
+# Create a correlation plot for each condition
+correlation_plots <- correlation_matrices %>% 
+  mutate(plot = map(correlation_matrix, ~ corrplot(.x, method = "color")))
+
+# Print the correlation plots
+correlation_plots$plot
+
+
+GGally::ggcorr(ta[-2], aes(colour = condit), method = c("everything", "pearson"))
+
+```
+
+
+
 
 Empirical Bootstrap
 
@@ -161,7 +224,7 @@ eb2 |> group_by(condit) |> mutate(n=n()) |>
 
 ```{r}
 
-lm1 <- lmer(vx~)
+
 
 
 ```
@@ -591,6 +654,212 @@ df <- df %>%
     mclust_success = map_lgl(mc, ~ !is.null(.x$parameters))
   ) %>%
   filter(mclust_success)
+
+```
+
+
+
+```{r}
+library(EMCluster)
+library(patchwork)
+
+set.seed(1234)
+
+x <- list(test$vx,test$vy)
+out <- init.EM(x, nclass = 1)
+
+
+
+```
+
+
+```{r}
+
+fitK <- kmeans(test$vx,6)
+
+ggplot(test,aes(x=vx,group=as.factor(fitK$cluster),fill=as.factor(fitK$cluster)))+geom_histogram()
+ggplot(test,aes(x=vx,group=as.factor(fitK$cluster),fill=as.factor(fitK$cluster)))+geom_density()
+
+
+
+
+# Decide how many clusters to look at
+n_clusters <- 7
+
+# Initialize total within sum of squares error: wss
+wss <- numeric(n_clusters)
+
+set.seed(123)
+
+# Look over 1 to n possible clusters
+for (i in 1:n_clusters) {
+  # Fit the model: km.out
+  km.out <- kmeans(test$vx, centers = i, nstart = 20)
+  # Save the within cluster sum of squares
+  wss[i] <- km.out$tot.withinss
+}
+
+# Produce a scree plot
+wss_df <- tibble(clusters = 1:n_clusters, wss = wss)
+ 
+scree_plot <- ggplot(wss_df, aes(x = clusters, y = wss, group = 1)) +
+    geom_point(size = 4)+
+    geom_line() +
+    scale_x_continuous(breaks = c(2, 4, 6, 8, 10)) +
+    xlab('Number of clusters')
+scree_plot
+
+```
+
+
+
+```{r}
+library(mixR)
+
+mr1 <- mixfit(test$vx,ncomp=3)
+plot(mr1)
+mr1
+
+mr2 <- mixfit(test$vx,ncomp=6,family="gamma")
+plot(mr2)
+mr2
+```
+
+```{r}
+
+library(flexmix)
+#https://rdrr.io/cran/flexmix/man/flexmix.html
+
+fm1=flexmix(vx~1|id,data=test,k=6)
+summary(fm1)
+plot(fm1)
+parameters(fm1)
+
+test %>% group_by(vb) %>% summarise(mean(vx),mad(vx),sd(vx),IQR(vx))
+
+```
+
+```{r}
+#http://www.sthda.com/english/articles/29-cluster-validation-essentials/96-determining-the-optimal-number-of-clusters-3-must-known-methods/
+
+e1 <- readRDS(here("data/e1_08-04-23.rds"))
+test <- e1 |> filter(expMode2 == "Test") |> ungroup()
+library(factoextra)
+library(NbClust)
+
+
+
+fviz_nbclust(test |> select(vx), kmeans,method = "gap_stat")
+
+NbClust(testS |> select(vx),distance="euclidean",min.nc=2,max.nc=6,method="average")
+
+
+
+
+
+```
+
+
+
+```{r}
+#| eval: false
+
+library(brms)
+
+testS <- test |> filter(id %in% 1:20)
+
+options(mc.cores = 2, brms.backend = "cmdstanr")
+
+mix <- mixture(gaussian, gaussian, gaussian,gaussian,gaussian,gaussian)
+prior <- c(
+  prior(normal(200, 100), Intercept, dpar = mu1),
+  prior(normal(450, 100), Intercept, dpar = mu2),
+  prior(normal(700, 100), Intercept, dpar = mu3),
+  prior(normal(900, 100), Intercept, dpar = mu4),
+  prior(normal(1100, 100), Intercept, dpar = mu5),
+  prior(normal(1300, 100), Intercept, dpar = mu6)
+)
+fit1 <- brm(bf(vxC ~ 1), testS, family = mix,
+            prior = prior, chains = 2) 
+
+summary(fit1)
+pp_check(fit1,type="stat_grouped",ndraws=500,group="bandInt",stat="mean")
+
+# saveRDS(object = fit1,
+#         file = here("data/model_cache/mix6_vxC_test6.rda"), 
+#         compress = "xz")
+
+
+
+```
+
+7x speedup for scaled vx
+```{r}
+
+library(brms)
+
+test$scaleVx <- scale(test$vx)
+test %>% group_by(vb) %>% summarise(mean(scaleVx))
+# vb        `mean(scaleVx)`
+#   <fct>               <dbl>
+# 1 100-300           -0.544 
+# 2 350-550           -0.273 
+# 3 600-800           -0.0194
+# 4 800-1000           0.449 
+# 5 1000-1200          0.774 
+# 6 1200-1400          1.00  
+
+testS <- test |> filter(id %in% 1:20)
+
+options(mc.cores = 2, brms.backend = "cmdstanr")
+
+mix <- mixture(gaussian, gaussian, gaussian,gaussian,gaussian,gaussian)
+prior <- c(
+  prior(normal(-.5, 10), Intercept, dpar = mu1),
+  prior(normal(-.25, 10), Intercept, dpar = mu2),
+  prior(normal(-.02, 10), Intercept, dpar = mu3),
+  prior(normal(.4, 10), Intercept, dpar = mu4),
+  prior(normal(.7, 10), Intercept, dpar = mu5),
+  prior(normal(1, 10), Intercept, dpar = mu6)
+)
+fitScale <- brm(bf(scaleVx ~ 1), testS, family = mix,
+            prior = prior, chains = 2) 
+
+summary(fitScale)
+pp_check(fit1,type="stat_grouped",ndraws=500,group="bandInt",stat="mean")
+
+# saveRDS(object = fit1,
+#         file = here("data/model_cache/mix6_vxC_test6.rda"), 
+#         compress = "xz")
+
+
+```
+
+```{r}
+
+options(mc.cores = 4, brms.backend = "cmdstanr")
+
+mix <- mixture(gaussian, gaussian, gaussian,gaussian,gaussian,gaussian)
+prior <- c(
+  prior(normal(-.5, 10), Intercept, dpar = mu1),
+  prior(normal(-.25, 10), Intercept, dpar = mu2),
+  prior(normal(-.02, 10), Intercept, dpar = mu3),
+  prior(normal(.4, 10), Intercept, dpar = mu4),
+  prior(normal(.7, 10), Intercept, dpar = mu5),
+  prior(normal(1, 10), Intercept, dpar = mu6)
+)
+
+fitScaleInt <- brm(bf(scaleVx ~ 1 + (1|id)), test, family = mix,
+            prior = prior, chains = 4) 
+
+summary(fitScaleInt)
+pp_check(fitScaleInt,type="stat_grouped",ndraws=500,stat="mean")
+
+# saveRDS(object = fit1,
+#         file = here("data/model_cache/mix6_vxC_test6.rda"), 
+#         compress = "xz")
+
+
 
 ```
 
