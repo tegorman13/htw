@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.251">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="dcterms.date" content="2023-07-27">
+<title>HTW Project - Comparing, High/Low performers</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><style>html{ scroll-behavior: smooth; }</style>
+<script src="../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+</head>
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
+      HTW Project
+      </li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">HTW Project</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/tegorman13/htw" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Project</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Methods</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/Task.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Task</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/data_dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Data Dictionary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/data_organize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Organization</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Analyses</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/e1_Analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 1 Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/test_analysis-all.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Test Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/discrim.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Testing Discrimination Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Analysis</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Simulations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Simulations/simParameterRecovery.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Parameter Recovery Simulations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Simulations/DeLosh97_Sim.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Simulating DeLosh 1997</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Simulations/SimReplications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">General Simulations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Simulations/alm_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ALM Learning</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Model</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ALM &amp; EXAM Fitting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/abc_htw.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Approximate Bayesian Fitting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/group_fits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Group Level Fits</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Interactive</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/Visuals_Interactives/ojs_alm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OJS ALM</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/Visuals_Interactives/ALM_Shiny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ALM Shiny App Code</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Misc</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/Visuals_Interactives/model_viz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/htw_dp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Project 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/HTW_ToDo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW To-do and Notes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Misc/benchmarks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Benchmarking</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page-right" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Comparing, High/Low performers</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">Analysis</div>
+    <div class="quarto-category">R</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta column-page-right">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 27, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header><div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span>,<span class="va">gt</span>,<span class="va">gghalves</span><span class="op">)</span></span>
+<span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_07-27-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"Functions/Display_Functions.R"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">train</span> <span class="op">&lt;-</span> <span class="va">e1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"train"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">trainAvg</span> <span class="op">&lt;-</span> <span class="va">train</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>, <span class="va">condit</span>, <span class="va">vb</span>, <span class="va">bandInt</span>,<span class="va">trainStage</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>vx<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">vx</span><span class="op">)</span>,dist<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dist</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">test</span> <span class="op">&lt;-</span> <span class="va">e1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">testAvg</span> <span class="op">&lt;-</span> <span class="va">test</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>, <span class="va">condit</span>, <span class="va">vb</span>, <span class="va">bandInt</span>,<span class="va">bandType</span>,<span class="va">tOrder</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>vx<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">vx</span><span class="op">)</span>,dist<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dist</span><span class="op">)</span>,sdist<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">sdist</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">testAvg</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span>,<span class="va">vb</span><span class="op">)</span> <span class="op">%&gt;%</span>  </span>
+<span>  <span class="fu">reframe</span><span class="op">(</span><span class="fu">enframe</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">dist</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.0</span>,<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>, <span class="st">"quantile"</span>, <span class="st">"dist"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from<span class="op">=</span><span class="va">quantile</span>,values_from<span class="op">=</span><span class="va">dist</span>,names_prefix<span class="op">=</span><span class="st">"Q_"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">vb</span>,<span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"Q"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">mean</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 7
+# Groups:   vb [6]
+   vb    condit `Q_0%_mean` `Q_25%_mean` `Q_50%_mean` `Q_75%_mean` `Q_100%_mean`
+   &lt;fct&gt; &lt;fct&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;
+ 1 100-… Const…       0            110.          205.         393.          849.
+ 2 100-… Varied       1.81          82.4         249.         634.         1260.
+ 3 350-… Const…       7.34          91.5         149.         254.          757.
+ 4 350-… Varied       4.21          81.2         180.         433.          998.
+ 5 600-… Const…       9.52          78.9         117.         196.          523.
+ 6 600-… Varied      28.4          105.          182.         284.          787.
+ 7 800-… Const…      12.9           86.3         145.         252.          896.
+ 8 800-… Varied       0.670        128.          195.         308.          634.
+ 9 1000… Const…       2.99         122.          200.         317.          824.
+10 1000… Varied      14.5          111.          182.         298.          540.
+11 1200… Const…      26.9          158.          240.         398.          909.
+12 1200… Varied       3.65         141.          209.         320.          594.</code></pre>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">testAvg</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span>,<span class="va">vb</span><span class="op">)</span> <span class="op">%&gt;%</span>  </span>
+<span>  <span class="fu">reframe</span><span class="op">(</span><span class="fu">enframe</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">dist</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">/</span><span class="fl">8</span><span class="op">)</span><span class="op">)</span>, <span class="st">"quantile"</span>, <span class="st">"dist"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from<span class="op">=</span><span class="va">quantile</span>,values_from<span class="op">=</span><span class="va">dist</span>,names_prefix<span class="op">=</span><span class="st">"Q_"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">vb</span>,<span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"Q"</span><span class="op">)</span>,<span class="va">round</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>format<span class="op">=</span><span class="st">"html"</span>,escape<span class="op">=</span><span class="cn">F</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">vb</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">condit</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Q_0%</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Q_12.5%</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Q_25%</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Q_37.5%</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Q_50%</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Q_62.5%</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Q_75%</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Q_87.5%</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Q_100%</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">100-300</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">46.1</td>
+<td style="text-align: right;">109.7</td>
+<td style="text-align: right;">141.1</td>
+<td style="text-align: right;">205.0</td>
+<td style="text-align: right;">261.5</td>
+<td style="text-align: right;">393.2</td>
+<td style="text-align: right;">603.3</td>
+<td style="text-align: right;">849.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">100-300</td>
+<td style="text-align: left;">Varied</td>
+<td style="text-align: right;">1.8</td>
+<td style="text-align: right;">32.1</td>
+<td style="text-align: right;">82.4</td>
+<td style="text-align: right;">170.8</td>
+<td style="text-align: right;">248.9</td>
+<td style="text-align: right;">520.7</td>
+<td style="text-align: right;">633.9</td>
+<td style="text-align: right;">852.8</td>
+<td style="text-align: right;">1259.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">350-550</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: right;">7.3</td>
+<td style="text-align: right;">50.9</td>
+<td style="text-align: right;">91.5</td>
+<td style="text-align: right;">111.8</td>
+<td style="text-align: right;">149.5</td>
+<td style="text-align: right;">187.3</td>
+<td style="text-align: right;">253.9</td>
+<td style="text-align: right;">440.1</td>
+<td style="text-align: right;">757.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">350-550</td>
+<td style="text-align: left;">Varied</td>
+<td style="text-align: right;">4.2</td>
+<td style="text-align: right;">41.4</td>
+<td style="text-align: right;">81.2</td>
+<td style="text-align: right;">130.9</td>
+<td style="text-align: right;">180.1</td>
+<td style="text-align: right;">279.5</td>
+<td style="text-align: right;">433.1</td>
+<td style="text-align: right;">699.3</td>
+<td style="text-align: right;">997.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">600-800</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: right;">9.5</td>
+<td style="text-align: right;">59.2</td>
+<td style="text-align: right;">78.9</td>
+<td style="text-align: right;">98.7</td>
+<td style="text-align: right;">117.0</td>
+<td style="text-align: right;">148.5</td>
+<td style="text-align: right;">195.6</td>
+<td style="text-align: right;">305.8</td>
+<td style="text-align: right;">522.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">600-800</td>
+<td style="text-align: left;">Varied</td>
+<td style="text-align: right;">28.4</td>
+<td style="text-align: right;">68.8</td>
+<td style="text-align: right;">104.9</td>
+<td style="text-align: right;">139.1</td>
+<td style="text-align: right;">181.7</td>
+<td style="text-align: right;">211.6</td>
+<td style="text-align: right;">284.2</td>
+<td style="text-align: right;">478.9</td>
+<td style="text-align: right;">786.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">800-1000</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: right;">12.9</td>
+<td style="text-align: right;">45.2</td>
+<td style="text-align: right;">86.3</td>
+<td style="text-align: right;">111.7</td>
+<td style="text-align: right;">145.0</td>
+<td style="text-align: right;">197.9</td>
+<td style="text-align: right;">251.9</td>
+<td style="text-align: right;">364.7</td>
+<td style="text-align: right;">896.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">800-1000</td>
+<td style="text-align: left;">Varied</td>
+<td style="text-align: right;">0.7</td>
+<td style="text-align: right;">70.6</td>
+<td style="text-align: right;">127.8</td>
+<td style="text-align: right;">156.8</td>
+<td style="text-align: right;">195.1</td>
+<td style="text-align: right;">226.9</td>
+<td style="text-align: right;">308.2</td>
+<td style="text-align: right;">385.5</td>
+<td style="text-align: right;">633.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1000-1200</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">83.0</td>
+<td style="text-align: right;">122.2</td>
+<td style="text-align: right;">156.1</td>
+<td style="text-align: right;">200.1</td>
+<td style="text-align: right;">236.3</td>
+<td style="text-align: right;">317.2</td>
+<td style="text-align: right;">441.5</td>
+<td style="text-align: right;">823.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1000-1200</td>
+<td style="text-align: left;">Varied</td>
+<td style="text-align: right;">14.5</td>
+<td style="text-align: right;">69.4</td>
+<td style="text-align: right;">110.7</td>
+<td style="text-align: right;">147.3</td>
+<td style="text-align: right;">181.7</td>
+<td style="text-align: right;">217.6</td>
+<td style="text-align: right;">298.3</td>
+<td style="text-align: right;">368.9</td>
+<td style="text-align: right;">539.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1200-1400</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: right;">26.9</td>
+<td style="text-align: right;">125.5</td>
+<td style="text-align: right;">157.9</td>
+<td style="text-align: right;">193.0</td>
+<td style="text-align: right;">240.5</td>
+<td style="text-align: right;">308.4</td>
+<td style="text-align: right;">397.7</td>
+<td style="text-align: right;">503.8</td>
+<td style="text-align: right;">908.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1200-1400</td>
+<td style="text-align: left;">Varied</td>
+<td style="text-align: right;">3.6</td>
+<td style="text-align: right;">96.7</td>
+<td style="text-align: right;">141.3</td>
+<td style="text-align: right;">170.6</td>
+<td style="text-align: right;">208.7</td>
+<td style="text-align: right;">287.1</td>
+<td style="text-align: right;">320.2</td>
+<td style="text-align: right;">389.0</td>
+<td style="text-align: right;">593.9</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">raw_table</span> <span class="op">&lt;-</span> <span class="va">testAvg</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span>,<span class="va">vb</span><span class="op">)</span> <span class="op">%&gt;%</span>  </span>
+<span>  <span class="fu">reframe</span><span class="op">(</span><span class="fu">enframe</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">dist</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">/</span><span class="fl">8</span><span class="op">)</span><span class="op">)</span>, <span class="st">"quantile"</span>, <span class="st">"dist"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from<span class="op">=</span><span class="va">quantile</span>,values_from<span class="op">=</span><span class="va">dist</span>,names_prefix<span class="op">=</span><span class="st">"Q_"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">vb</span>,<span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"Q"</span><span class="op">)</span>, <span class="va">round</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">long_data</span> <span class="op">&lt;-</span> <span class="va">raw_table</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="fu">starts_with</span><span class="op">(</span><span class="st">"Q"</span><span class="op">)</span>,</span>
+<span>    names_to <span class="op">=</span> <span class="st">"Quartile"</span>,</span>
+<span>    values_to <span class="op">=</span> <span class="st">"Value"</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>Quart <span class="op">=</span> <span class="fu">str_remove_all</span><span class="op">(</span><span class="va">Quartile</span>, <span class="st">"Q_|%"</span><span class="op">)</span>, <span class="co"># Remove "Q_" and "%"</span></span>
+<span>         Quart <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">Quart</span><span class="op">)</span>, <span class="co"># Convert Quart to numeric</span></span>
+<span>         Quart <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">Quart</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">Quart</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> </span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="va">bold_lower</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">by_group</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">data</span> <span class="op">&lt;</span> <span class="va">by_group</span>, <span class="fu">cell_spec</span><span class="op">(</span><span class="va">data</span>, <span class="st">"html"</span>, bold <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Separate data by condition</span></span>
+<span><span class="va">constant_data</span> <span class="op">&lt;-</span> <span class="va">raw_table</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">condit</span> <span class="op">==</span> <span class="st">"Constant"</span><span class="op">)</span></span>
+<span><span class="va">varied_data</span> <span class="op">&lt;-</span> <span class="va">raw_table</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">condit</span> <span class="op">==</span> <span class="st">"Varied"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Apply function to varied data</span></span>
+<span><span class="va">varied_data</span> <span class="op">&lt;-</span> <span class="va">varied_data</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">vb</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"Q"</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">col_name</span> <span class="op">&lt;-</span> <span class="fu">cur_column</span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="va">by_group</span> <span class="op">&lt;-</span> <span class="va">constant_data</span><span class="op">[[</span><span class="va">col_name</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">constant_data</span><span class="op">$</span><span class="va">vb</span> <span class="op">==</span> <span class="fu">first</span><span class="op">(</span><span class="va">vb</span><span class="op">)</span><span class="op">]</span></span>
+<span>    <span class="fu">bold_lower</span><span class="op">(</span><span class="va">.x</span>, <span class="va">by_group</span><span class="op">)</span></span>
+<span>  <span class="op">}</span>, .names <span class="op">=</span> <span class="st">"{.col}"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Format the constant_data to match the varied_data</span></span>
+<span><span class="va">constant_data</span> <span class="op">&lt;-</span> <span class="va">constant_data</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">vb</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"Q"</span><span class="op">)</span>, <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span>, .names <span class="op">=</span> <span class="st">"{.col}"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Join the constant and varied data frames back together</span></span>
+<span><span class="va">final_table</span> <span class="op">&lt;-</span> <span class="fu">bind_rows</span><span class="op">(</span><span class="va">constant_data</span>, <span class="va">varied_data</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">vb</span>, <span class="va">condit</span>, <span class="fu">ends_with</span><span class="op">(</span><span class="st">"%"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">vb</span>, <span class="va">condit</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Print the table</span></span>
+<span><span class="va">final_table</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span><span class="st">"html"</span>, escape <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pack_rows</span><span class="op">(</span>index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">final_table</span><span class="op">$</span><span class="va">vb</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">vb</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">condit</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Q_0%</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Q_12.5%</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Q_25%</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Q_37.5%</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Q_50%</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Q_62.5%</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Q_75%</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Q_87.5%</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Q_100%</th>
+</tr></thead>
+<tbody>
+<tr class="odd" data-grouplength="2">
+<td colspan="11" style="border-bottom: 1px solid"><strong>100-300</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">100-300</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">46.1</td>
+<td style="text-align: left;">109.7</td>
+<td style="text-align: left;">141.1</td>
+<td style="text-align: left;">205</td>
+<td style="text-align: left;">261.5</td>
+<td style="text-align: left;">393.2</td>
+<td style="text-align: left;">603.3</td>
+<td style="text-align: left;">849.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">100-300</td>
+<td style="text-align: left;">Varied</td>
+<td style="text-align: left;">1.8</td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">32.1</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">82.4</span></td>
+<td style="text-align: left;">170.8</td>
+<td style="text-align: left;">248.9</td>
+<td style="text-align: left;">520.7</td>
+<td style="text-align: left;">633.9</td>
+<td style="text-align: left;">852.8</td>
+<td style="text-align: left;">1259.7</td>
+</tr>
+<tr class="even" data-grouplength="2">
+<td colspan="11" style="border-bottom: 1px solid"><strong>350-550</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">350-550</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: left;">7.3</td>
+<td style="text-align: left;">50.9</td>
+<td style="text-align: left;">91.5</td>
+<td style="text-align: left;">111.8</td>
+<td style="text-align: left;">149.5</td>
+<td style="text-align: left;">187.3</td>
+<td style="text-align: left;">253.9</td>
+<td style="text-align: left;">440.1</td>
+<td style="text-align: left;">757.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">350-550</td>
+<td style="text-align: left;">Varied</td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">4.2</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">41.4</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">81.2</span></td>
+<td style="text-align: left;">130.9</td>
+<td style="text-align: left;">180.1</td>
+<td style="text-align: left;">279.5</td>
+<td style="text-align: left;">433.1</td>
+<td style="text-align: left;">699.3</td>
+<td style="text-align: left;">997.8</td>
+</tr>
+<tr class="odd" data-grouplength="2">
+<td colspan="11" style="border-bottom: 1px solid"><strong>600-800</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">600-800</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: left;">9.5</td>
+<td style="text-align: left;">59.2</td>
+<td style="text-align: left;">78.9</td>
+<td style="text-align: left;">98.7</td>
+<td style="text-align: left;">117</td>
+<td style="text-align: left;">148.5</td>
+<td style="text-align: left;">195.6</td>
+<td style="text-align: left;">305.8</td>
+<td style="text-align: left;">522.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">600-800</td>
+<td style="text-align: left;">Varied</td>
+<td style="text-align: left;">28.4</td>
+<td style="text-align: left;">68.8</td>
+<td style="text-align: left;">104.9</td>
+<td style="text-align: left;">139.1</td>
+<td style="text-align: left;">181.7</td>
+<td style="text-align: left;">211.6</td>
+<td style="text-align: left;">284.2</td>
+<td style="text-align: left;">478.9</td>
+<td style="text-align: left;">786.6</td>
+</tr>
+<tr class="even" data-grouplength="2">
+<td colspan="11" style="border-bottom: 1px solid"><strong>800-1000</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">800-1000</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: left;">12.9</td>
+<td style="text-align: left;">45.2</td>
+<td style="text-align: left;">86.3</td>
+<td style="text-align: left;">111.7</td>
+<td style="text-align: left;">145</td>
+<td style="text-align: left;">197.9</td>
+<td style="text-align: left;">251.9</td>
+<td style="text-align: left;">364.7</td>
+<td style="text-align: left;">896.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">800-1000</td>
+<td style="text-align: left;">Varied</td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">0.7</span></td>
+<td style="text-align: left;">70.6</td>
+<td style="text-align: left;">127.8</td>
+<td style="text-align: left;">156.8</td>
+<td style="text-align: left;">195.1</td>
+<td style="text-align: left;">226.9</td>
+<td style="text-align: left;">308.2</td>
+<td style="text-align: left;">385.5</td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">633.8</span></td>
+</tr>
+<tr class="odd" data-grouplength="2">
+<td colspan="11" style="border-bottom: 1px solid"><strong>1000-1200</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">1000-1200</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">83</td>
+<td style="text-align: left;">122.2</td>
+<td style="text-align: left;">156.1</td>
+<td style="text-align: left;">200.1</td>
+<td style="text-align: left;">236.3</td>
+<td style="text-align: left;">317.2</td>
+<td style="text-align: left;">441.5</td>
+<td style="text-align: left;">823.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">1000-1200</td>
+<td style="text-align: left;">Varied</td>
+<td style="text-align: left;">14.5</td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">69.4</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">110.7</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">147.3</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">181.7</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">217.6</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">298.3</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">368.9</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">539.9</span></td>
+</tr>
+<tr class="even" data-grouplength="2">
+<td colspan="11" style="border-bottom: 1px solid"><strong>1200-1400</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">1200-1400</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: left;">26.9</td>
+<td style="text-align: left;">125.5</td>
+<td style="text-align: left;">157.9</td>
+<td style="text-align: left;">193</td>
+<td style="text-align: left;">240.5</td>
+<td style="text-align: left;">308.4</td>
+<td style="text-align: left;">397.7</td>
+<td style="text-align: left;">503.8</td>
+<td style="text-align: left;">908.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding-left: 2em;" data-indentlevel="1">1200-1400</td>
+<td style="text-align: left;">Varied</td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">3.6</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">96.7</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">141.3</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">170.6</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">208.7</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">287.1</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">320.2</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">389</span></td>
+<td style="text-align: left;"><span style=" font-weight: bold;    ">593.9</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">long_data</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Quart</span>, y <span class="op">=</span> <span class="va">Value</span>, color <span class="op">=</span> <span class="va">condit</span>, group <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">vb</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>, hjust<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Comparison of Varied and Constant Conditions across Octiles"</span>, </span>
+<span>       x <span class="op">=</span> <span class="st">"Octile"</span>, </span>
+<span>       y <span class="op">=</span> <span class="st">"Distance from target"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="quartile_splits_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span><span class="va">Value</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">Quart</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">vb</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">long_data</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: Value ~ condit * Quart + (1 | vb)
+   Data: long_data
+
+REML criterion at convergence: 1115.1
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.5486 -0.4061  0.0253  0.3715  4.0652 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ vb       (Intercept) 2096     45.79   
+ Residual             8970     94.71   
+Number of obs: 108, groups:  vb, 6
+
+Fixed effects:
+                       Estimate Std. Error t value
+(Intercept)               9.933     42.946   0.231
+conditVaried             -1.067     54.680  -0.020
+Quart12.5                58.383     54.680   1.068
+Quart25                  97.817     54.680   1.789
+Quart37.5               125.467     54.680   2.295
+Quart50                 166.250     54.680   3.040
+Quart62.5               213.383     54.680   3.902
+Quart75                 291.650     54.680   5.334
+Quart87.5               433.267     54.680   7.924
+Quart100                783.100     54.680  14.321
+conditVaried:Quart12.5   -4.083     77.330  -0.053
+conditVaried:Quart25      1.367     77.330   0.018
+conditVaried:Quart37.5   18.250     77.330   0.236
+conditVaried:Quart50     24.250     77.330   0.314
+conditVaried:Quart62.5   68.317     77.330   0.883
+conditVaried:Quart75     79.133     77.330   1.023
+conditVaried:Quart87.5   86.933     77.330   1.124
+conditVaried:Quart100     9.983     77.330   0.129</code></pre>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://multcomp.R-forge.R-project.org">multcomp</a></span><span class="op">)</span></span>
+<span><span class="va">comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/multcomp/man/glht.html">glht</a></span><span class="op">(</span><span class="va">model</span>, linfct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/multcomp/man/glht.html">mcp</a></span><span class="op">(</span>condit <span class="op">=</span> <span class="st">"Tukey"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">comparison</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>
+     Simultaneous Tests for General Linear Hypotheses
+
+Multiple Comparisons of Means: Tukey Contrasts
+
+
+Fit: lmer(formula = Value ~ condit * Quart + (1 | vb), data = long_data)
+
+Linear Hypotheses:
+                       Estimate Std. Error z value Pr(&gt;|z|)
+Varied - Constant == 0   -1.067     54.680   -0.02    0.984
+(Adjusted p values reported -- single-step method)</code></pre>
+</div>
+</div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">raw_table</span> <span class="op">&lt;-</span> <span class="va">test</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>,<span class="va">vb</span><span class="op">)</span> <span class="op">%&gt;%</span>  </span>
+<span>  <span class="fu">reframe</span><span class="op">(</span><span class="fu">enframe</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">dist</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">/</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span>, <span class="st">"quantile"</span>, <span class="st">"dist"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from<span class="op">=</span><span class="va">quantile</span>,values_from<span class="op">=</span><span class="va">dist</span>,names_prefix<span class="op">=</span><span class="st">"Q_"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">vb</span>,<span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"Q"</span><span class="op">)</span>, <span class="va">round</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">long_data</span> <span class="op">&lt;-</span> <span class="va">raw_table</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="fu">starts_with</span><span class="op">(</span><span class="st">"Q"</span><span class="op">)</span>,</span>
+<span>    names_to <span class="op">=</span> <span class="st">"Quartile"</span>,</span>
+<span>    values_to <span class="op">=</span> <span class="st">"Value"</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>Quart <span class="op">=</span> <span class="fu">str_remove_all</span><span class="op">(</span><span class="va">Quartile</span>, <span class="st">"Q_|%"</span><span class="op">)</span>, <span class="co"># Remove "Q_" and "%"</span></span>
+<span>         Quart <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">Quart</span><span class="op">)</span>, <span class="co"># Convert Quart to numeric</span></span>
+<span>         Quart <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">Quart</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">Quart</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> </span>
+<span></span>
+<span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">long_data</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Quart</span>, y <span class="op">=</span> <span class="va">Value</span>, fill <span class="op">=</span> <span class="va">condit</span>, color<span class="op">=</span><span class="va">condit</span>,group <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">vb</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">stat_summary</span><span class="op">(</span>geom<span class="op">=</span><span class="st">"line"</span>,fun<span class="op">=</span><span class="va">mean</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">stat_summary</span><span class="op">(</span>geom<span class="op">=</span><span class="st">"errorbar"</span>,fun.data<span class="op">=</span><span class="va">mean_se</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>, hjust<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Comparison of Varied and Constant Conditions across Octiles"</span>, </span>
+<span>       x <span class="op">=</span> <span class="st">"Octile"</span>, </span>
+<span>       y <span class="op">=</span> <span class="st">"Distance from target"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="quartile_splits_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span><span class="va">Value</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">Quart</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">vb</span><span class="op">)</span><span class="op">+</span><span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">long_data</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: Value ~ condit * Quart + (1 | vb) + (1 | id)
+   Data: long_data
+
+REML criterion at convergence: 91516.1
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.5591 -0.5577 -0.0522  0.4545  7.2509 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ id       (Intercept) 16898    129.99  
+ vb       (Intercept)  2466     49.66  
+ Residual             36196    190.25  
+Number of obs: 6832, groups:  id, 166; vb, 6
+
+Fixed effects:
+                           Estimate Std. Error t value
+(Intercept)                   32.90      25.86   1.273
+conditVaried                  11.29      23.65   0.477
+Quart16.66667                 44.20      11.80   3.746
+Quart33.33333                 96.86      11.80   8.209
+Quart50                      158.69      11.80  13.449
+Quart66.66667                234.59      11.80  19.882
+Quart83.33333                334.62      11.80  28.360
+Quart100                     521.83      11.80  44.226
+conditVaried:Quart16.66667    17.30      17.26   1.002
+conditVaried:Quart33.33333    26.67      17.26   1.545
+conditVaried:Quart50          28.93      17.26   1.676
+conditVaried:Quart66.66667    30.17      17.26   1.748
+conditVaried:Quart83.33333    39.94      17.26   2.314
+conditVaried:Quart100         40.22      17.26   2.330</code></pre>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/multcomp/man/glht.html">glht</a></span><span class="op">(</span><span class="va">model</span>, linfct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/multcomp/man/glht.html">mcp</a></span><span class="op">(</span>condit <span class="op">=</span> <span class="st">"Tukey"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">comparison</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>
+     Simultaneous Tests for General Linear Hypotheses
+
+Multiple Comparisons of Means: Tukey Contrasts
+
+
+Fit: lmer(formula = Value ~ condit * Quart + (1 | vb) + (1 | id), 
+    data = long_data)
+
+Linear Hypotheses:
+                       Estimate Std. Error z value Pr(&gt;|z|)
+Varied - Constant == 0    11.29      23.65   0.477    0.633
+(Adjusted p values reported -- single-step method)</code></pre>
+</div>
+</div>
+
+
+<!-- -->
+
+
+</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        for (let i = 0; i < 2; i++) {
+          container.appendChild(note.children[i].cloneNode(true));
+        }
+        return container.innerHTML
+      } else {
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb16" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> Comparing, High/Low performers</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> last-modified</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Analysis, R]</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="an">page-layout:</span><span class="co"> full</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># fig-width: 15</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># fig-height: 8</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="an">code-fold:</span><span class="co"> true</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="an">code-tools:</span><span class="co"> true</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> false</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">  eval: true</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt,gghalves)</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="in">e1 &lt;- readRDS(here("data/e1_07-27-23.rds"))</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="in">source(here("Functions/Display_Functions.R"))</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="in">train &lt;- e1 |&gt; filter(expMode %in% c("train"))</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="in">trainAvg &lt;- train %&gt;% group_by(id, condit, vb, bandInt,trainStage) %&gt;%</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="in">  summarise(vx=mean(vx),dist=mean(dist))</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="in">test &lt;- e1 |&gt; filter(expMode %in% c("test-Nf","test-train-nf"))</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="in">testAvg &lt;- test %&gt;% group_by(id, condit, vb, bandInt,bandType,tOrder) %&gt;%</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="in">  summarise(vx=mean(vx),dist=mean(dist),sdist=mean(sdist))</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>testAvg <span class="sc">%&gt;%</span> </span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit,vb) <span class="sc">%&gt;%</span>  </span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="fu">enframe</span>(<span class="fu">quantile</span>(dist, <span class="fu">c</span>(<span class="fl">0.0</span>,<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>,<span class="dv">1</span>)), <span class="st">"quantile"</span>, <span class="st">"dist"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>quantile,<span class="at">values_from=</span>dist,<span class="at">names_prefix=</span><span class="st">"Q_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(vb,condit) <span class="sc">|&gt;</span></span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>), <span class="fu">list</span>(<span class="at">mean =</span> mean)))</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>testAvg <span class="sc">%&gt;%</span> </span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit,vb) <span class="sc">%&gt;%</span>  </span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="fu">enframe</span>(<span class="fu">quantile</span>(dist, <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>)), <span class="st">"quantile"</span>, <span class="st">"dist"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>quantile,<span class="at">values_from=</span>dist,<span class="at">names_prefix=</span><span class="st">"Q_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(vb,condit) <span class="sc">|&gt;</span></span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>),round,<span class="dv">1</span>)) <span class="sc">%&gt;%</span> <span class="fu">kable</span>(<span class="at">format=</span><span class="st">"html"</span>,<span class="at">escape=</span>F) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>() </span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>raw_table <span class="ot">&lt;-</span> testAvg <span class="sc">%&gt;%</span> </span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit,vb) <span class="sc">%&gt;%</span>  </span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="fu">enframe</span>(<span class="fu">quantile</span>(dist, <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>)), <span class="st">"quantile"</span>, <span class="st">"dist"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>quantile,<span class="at">values_from=</span>dist,<span class="at">names_prefix=</span><span class="st">"Q_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(vb,condit) <span class="sc">|&gt;</span></span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>), round,<span class="dv">1</span>))</span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>long_data <span class="ot">&lt;-</span> raw_table <span class="sc">%&gt;%</span> </span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"Q"</span>),</span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Quartile"</span>,</span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Value"</span></span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Quart =</span> <span class="fu">str_remove_all</span>(Quartile, <span class="st">"Q_|%"</span>), <span class="co"># Remove "Q_" and "%"</span></span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a>         <span class="at">Quart =</span> <span class="fu">as.numeric</span>(Quart), <span class="co"># Convert Quart to numeric</span></span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>         <span class="at">Quart =</span> <span class="fu">factor</span>(Quart, <span class="at">levels =</span> <span class="fu">sort</span>(<span class="fu">unique</span>(Quart)))) </span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a>bold_lower <span class="ot">&lt;-</span> <span class="cf">function</span>(data, by_group) {</span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(data <span class="sc">&lt;</span> by_group, <span class="fu">cell_spec</span>(data, <span class="st">"html"</span>, <span class="at">bold =</span> T), <span class="fu">as.character</span>(data))</span>
+<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Separate data by condition</span></span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a>constant_data <span class="ot">&lt;-</span> raw_table <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit <span class="sc">==</span> <span class="st">"Constant"</span>)</span>
+<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a>varied_data <span class="ot">&lt;-</span> raw_table <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit <span class="sc">==</span> <span class="st">"Varied"</span>)</span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply function to varied data</span></span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a>varied_data <span class="ot">&lt;-</span> varied_data <span class="sc">%&gt;%</span></span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(vb) <span class="sc">%&gt;%</span></span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>), <span class="cf">function</span>(.x) {</span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a>    col_name <span class="ot">&lt;-</span> <span class="fu">cur_column</span>()</span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a>    by_group <span class="ot">&lt;-</span> constant_data[[col_name]][constant_data<span class="sc">$</span>vb <span class="sc">==</span> <span class="fu">first</span>(vb)]</span>
+<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bold_lower</span>(.x, by_group)</span>
+<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">.names =</span> <span class="st">"{.col}"</span>))</span>
+<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a><span class="co"># Format the constant_data to match the varied_data</span></span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a>constant_data <span class="ot">&lt;-</span> constant_data <span class="sc">%&gt;%</span></span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(vb) <span class="sc">%&gt;%</span></span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>), <span class="sc">~</span><span class="fu">as.character</span>(.x), <span class="at">.names =</span> <span class="st">"{.col}"</span>))</span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a><span class="co"># Join the constant and varied data frames back together</span></span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a>final_table <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(constant_data, varied_data) <span class="sc">%&gt;%</span></span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(vb, condit, <span class="fu">ends_with</span>(<span class="st">"%"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(vb, condit)</span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the table</span></span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a>final_table <span class="sc">%&gt;%</span> <span class="fu">kable</span>(<span class="st">"html"</span>, <span class="at">escape =</span> F) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pack_rows</span>(<span class="at">index =</span> <span class="fu">table</span>(final_table<span class="sc">$</span>vb))</span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(long_data, <span class="fu">aes</span>(<span class="at">x =</span> Quart, <span class="at">y =</span> Value, <span class="at">color =</span> condit, <span class="at">group =</span> condit)) <span class="sc">+</span></span>
+<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> vb) <span class="sc">+</span></span>
+<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Comparison of Varied and Constant Conditions across Octiles"</span>, </span>
+<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Octile"</span>, </span>
+<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Distance from target"</span>)</span>
+<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Value <span class="sc">~</span> condit <span class="sc">*</span> Quart <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>vb), <span class="at">data =</span> long_data)</span>
+<span id="cb16-133"><a href="#cb16-133" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span>
+<span id="cb16-134"><a href="#cb16-134" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span>
+<span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a>comparison <span class="ot">&lt;-</span> <span class="fu">glht</span>(model, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">condit =</span> <span class="st">"Tukey"</span>))</span>
+<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(comparison)</span>
+<span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-144"><a href="#cb16-144" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a>raw_table <span class="ot">&lt;-</span> test <span class="sc">%&gt;%</span> </span>
+<span id="cb16-146"><a href="#cb16-146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,vb) <span class="sc">%&gt;%</span>  </span>
+<span id="cb16-147"><a href="#cb16-147" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="fu">enframe</span>(<span class="fu">quantile</span>(dist, <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>)), <span class="st">"quantile"</span>, <span class="st">"dist"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>quantile,<span class="at">values_from=</span>dist,<span class="at">names_prefix=</span><span class="st">"Q_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,vb,condit) <span class="sc">|&gt;</span></span>
+<span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>), round,<span class="dv">1</span>))</span>
+<span id="cb16-151"><a href="#cb16-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-152"><a href="#cb16-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-153"><a href="#cb16-153" aria-hidden="true" tabindex="-1"></a>long_data <span class="ot">&lt;-</span> raw_table <span class="sc">%&gt;%</span> </span>
+<span id="cb16-154"><a href="#cb16-154" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb16-155"><a href="#cb16-155" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"Q"</span>),</span>
+<span id="cb16-156"><a href="#cb16-156" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Quartile"</span>,</span>
+<span id="cb16-157"><a href="#cb16-157" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Value"</span></span>
+<span id="cb16-158"><a href="#cb16-158" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-159"><a href="#cb16-159" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Quart =</span> <span class="fu">str_remove_all</span>(Quartile, <span class="st">"Q_|%"</span>), <span class="co"># Remove "Q_" and "%"</span></span>
+<span id="cb16-160"><a href="#cb16-160" aria-hidden="true" tabindex="-1"></a>         <span class="at">Quart =</span> <span class="fu">as.numeric</span>(Quart), <span class="co"># Convert Quart to numeric</span></span>
+<span id="cb16-161"><a href="#cb16-161" aria-hidden="true" tabindex="-1"></a>         <span class="at">Quart =</span> <span class="fu">factor</span>(Quart, <span class="at">levels =</span> <span class="fu">sort</span>(<span class="fu">unique</span>(Quart)))) </span>
+<span id="cb16-162"><a href="#cb16-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-163"><a href="#cb16-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-164"><a href="#cb16-164" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(long_data, <span class="fu">aes</span>(<span class="at">x =</span> Quart, <span class="at">y =</span> Value, <span class="at">fill =</span> condit, <span class="at">color=</span>condit,<span class="at">group =</span> condit)) <span class="sc">+</span></span>
+<span id="cb16-165"><a href="#cb16-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> vb) <span class="sc">+</span></span>
+<span id="cb16-166"><a href="#cb16-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"line"</span>,<span class="at">fun=</span>mean)<span class="sc">+</span></span>
+<span id="cb16-167"><a href="#cb16-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"errorbar"</span>,<span class="at">fun.data=</span>mean_se)<span class="sc">+</span></span>
+<span id="cb16-168"><a href="#cb16-168" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb16-169"><a href="#cb16-169" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Comparison of Varied and Constant Conditions across Octiles"</span>, </span>
+<span id="cb16-170"><a href="#cb16-170" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Octile"</span>, </span>
+<span id="cb16-171"><a href="#cb16-171" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Distance from target"</span>)</span>
+<span id="cb16-172"><a href="#cb16-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-173"><a href="#cb16-173" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Value <span class="sc">~</span> condit <span class="sc">*</span> Quart <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>vb)<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id), <span class="at">data =</span> long_data)</span>
+<span id="cb16-174"><a href="#cb16-174" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span>
+<span id="cb16-175"><a href="#cb16-175" aria-hidden="true" tabindex="-1"></a>comparison <span class="ot">&lt;-</span> <span class="fu">glht</span>(model, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">condit =</span> <span class="st">"Tukey"</span>))</span>
+<span id="cb16-176"><a href="#cb16-176" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(comparison)</span>
+<span id="cb16-177"><a href="#cb16-177" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/quartile_splits.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/quartile_splits.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
