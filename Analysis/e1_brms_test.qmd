@@ -8,8 +8,6 @@ code-fold: true
 
 
 
-
-
 ```{r}
 pacman::p_load(tidyverse,tidybayes,brms,bayesplot,broom,broom.mixed,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist)
 e1 <- readRDS(here("data/e1_08-04-23.rds"))
@@ -23,97 +21,33 @@ test <- e1 |>
 
 options(brms.backend="cmdstanr",mc.cores=4)
 
-
-
-test %>% group_by(condit) |> summarise(mean=mean(dist),sd=sd(dist),sk=moments::skewness(dist)) 
-test %>% group_by(vb) |> summarise(mean=mean(dist),sd=sd(dist),sk=moments::skewness(dist)) 
-
-
-
-
-
-
 ```
-
-
-```{r fig.width=12}
-
-test |> ggplot(aes(x=dist))+geom_histogram() + facet_wrap(~vb) + ggtitle("empirical_dist")  +
-test |> ggplot(aes(x=distS))+geom_histogram() + facet_wrap(~vb) + ggtitle("centered dist")  +
-test |> ggplot(aes(x=distS2))+geom_histogram() + facet_wrap(~vb) + ggtitle("scaled dist")
-
-test |> filter(id %in% 1:5) |> ggplot(aes(x=dist))+geom_histogram() + facet_wrap(id~vb) + ggtitle("empirical_dist")  
-
-
-```
-
 
 ```{r}
+#| results: asis
 
-sk1 <- brm(dist ~ vb,family=skew_normal(),data=test,iter=800,chains=2)
-g1 <- brm(dist ~ vb,family=gaussian(),data=test,iter=800,chains=2)
-ga2 <- brm(dist+.01 ~ vb,family=Gamma(),data=test,iter=800,chains=2)
-ln1 <- brm(dist+.01 ~ vb,family=lognormal(),data=test,iter=800,chains=2)
-ln2 <- brm(dist+.0001 ~ vb,family=lognormal(link="inverse"),data=test,iter=800,chains=2)
-
-g2 <- brm(bf(dist+.001|trunc(lb=0) ~ vb),data=testS,iter=800,chains=2,family=gaussian())
-bayesplot::ppc_dens_overlay_grouped(testS$dist,yrep=posterior_predict(g2,ndraws=200),group=testS$vb)
-pp_check(g2,type="stat_grouped",ndraws=200, group="vb",stat="mean")
-
-
-
-
-bayesplot::ppc_dens_overlay_grouped(test$dist,yrep=posterior_predict(sk1,ndraws=200),group=test$vb)
-bayesplot::ppc_dens_overlay_grouped(test$dist,yrep=posterior_predict(g1,ndraws=200),group=test$vb)
-bayesplot::ppc_dens_overlay_grouped(test$dist,yrep=posterior_predict(ga2,ndraws=200),group=test$vb)
-bayesplot::ppc_dens_overlay_grouped(test$dist,yrep=posterior_predict(ln1,ndraws=200),group=test$vb)
+#Example of predictor_to_label data frame:
+predictor_to_label <- data.frame(
+predictor  = c("Intercept","vb350M550",
+               "vb600M800", "vb800M1000",
+               "vb1000M12000", "vb1200M1400"),
+label = c("{\\sc Intercept}", "{\\sc Prime Structure}",
+          "{\\sc Target-Message Bias}", "{\\sc Meaning Accuracy}",
+          "{\\sc Syntactic Accuracy}", "{\\sc Input}")
+)
+kf = brmsfit_to_df(e1_testDistRF,predictor_to_label)
+kf
 
 
+table_caption <- paste0(
+  "Summary of the fixed effects in the Bayesian logistic mixed-effects model (N = ", 
+  nrow(e1_testDistRF$data), ") for Experiment 1.")
 
-bayes_R2(g1)
-bayes_R2(ga1)
-bayes_R2(sk1)
-bayes_R2(sk1)
-bayes_R2(g1S)
-
-
-#testS <- test %>% group_by(id,vb) |> filter(id %in% c("1","2","139")) |> select(id,vb,gt.stage,trial,condit,vx,dist,distS,distS2)
-testS <- test %>% group_by(id,vb) |> filter(id %in% 1:15) |> select(id,vb,gt.stage,trial,condit,vx,dist,distS,distS2)
-
-testS |> ggplot(aes(x=trial,y=dist,col=vb))+geom_line()+facet_wrap(~id)
-testS |> ggplot(aes(x=trial,y=distS2,col=vb))+geom_line()+facet_wrap(~id)
-
-
-
-g1S <- brm(distS ~ 0+ vb + condit,family=gaussian(),data=test,iter=1000,chains=4)
-bayesplot::ppc_dens_overlay_grouped(test$distS,yrep=posterior_predict(g1S,ndraws=200),group=test$vb)
-
-g1S2 <- brm(distS2 ~ vb,family=gaussian(),data=test,iter=1000,chains=4)
-bayesplot::ppc_dens_overlay_grouped(test$distS2,yrep=posterior_predict(g1S2,ndraws=200),group=test$vb)
-
-
-g1S_F <- brm(distS ~ 0+ vb + condit + (0+vb|id),family=gaussian(),data=test,iter=1000,chains=4,
-             file=paste0(here::here("data/model_cache","e1_test_centeredDistS")))
-
-bayesplot::ppc_dens_overlay_grouped(test$distS,yrep=posterior_predict(g1S_F,ndraws=200),group=test$vb)
-bayesplot::ppc_dens_overlay_grouped(test$distS,yrep=posterior_predict(g1S_F,ndraws=200),group=test$vb)
-
-
-
-g1S_gamma <- brm(dist+.001 ~ 1+ vb + condit + (0+vb|id),family=Gamma(),data=test,iter=1000,chains=4,
-             file=paste0(here::here("data/model_cache","e1_test_Gamma")))
-bayesplot::ppc_dens_overlay_grouped(test$dist,yrep=posterior_predict(g1S_gamma,ndraws=200),group=test$vb)
-
-pp_check(g1S_weibull)+ xlim(c(-300,300))
-
-
-g1S_exG <- brm(dist ~ 0 + vb + condit + (0+vb|id),family=exgaussian(),data=test,iter=1000,chains=4,
-             file=paste0(here::here("data/model_cache","e1_test_exgauss")))
-bayesplot::ppc_dens_overlay_grouped(test$dist,yrep=posterior_predict(g1S_exG,ndraws=200),group=test$vb)
-
-
-
+print(xtable::xtable(kf, align=c("l", "l", "r", "r", "r"), 
+             caption =  table_caption,type="html"), 
+      include.rownames=FALSE, sanitize.text.function = function(x){x})
 ```
+
 
 
 
@@ -136,11 +70,13 @@ brms_eq_tidy <-tidyMCMC(e1_testDist0, conf.int = TRUE, conf.level = 0.95,
 
 
 modelName <- "e1_testDist_uneq"
+
 e1_testDist_uneq <- brm(bf(dist ~ condit,sigma~condit),data=test,file=paste0(here::here("data/model_cache",modelName)))
+
 brms_eq_tidy_uneq <-tidyMCMC(e1_testDist_uneq, conf.int = TRUE, conf.level = 0.95,
            estimate.method = "median", conf.method = "HPDinterval")
-brms_eq_tidy_uneq %>%
-  mutate_at(vars(estimate, std.error, conf.low, conf.high),
+
+brms_eq_tidy_uneq |> mutate_at(vars(estimate, std.error, conf.low, conf.high),
             funs(ifelse(str_detect(term, "sigma"), exp(.), .)))
 
 
@@ -156,7 +92,7 @@ brms_uneq_robust_tidy
 
 
 
-brm(dist ~ (0+vb)+(1+condit),data=test)
+#brm(dist ~ (0+vb)+(1+condit),data=test)
 
 
 bayes_R2(e1_testDist)
@@ -176,13 +112,17 @@ bayes_R2(e1_testDistRF)
 sjPlot::tab_model(e1_testDistRF)
 
 
-
-
-
-
 ```
 
-
+plot(e1_testDistRF2_0,"^b_")
+pp_check(e1_testDistRF2_0, type= "loo_pit")
+plot(conditional_effects(egt_rf_vb),points=FALSE)
+plot(conditional_effects(e1_testDistRF2_0),points=FALSE
+pp_check(egt5k,type = "stat_2d")
+pp_check(egt5k,type = "scatter_avg")
+pp_check(egt5k,type = "error_hist")
+pp_check(egt5k,type = "ribbon_grouped", group="vb")
+pp_check(egt5k,type = "stat_grouped", group="vb",ndraws=150)
 
 ## Random Effects - Interaction condit x vb
 ```{r}
@@ -323,12 +263,19 @@ coef(e1Test_conditVb_RS1)$id
 
 ```
 
+
+
 ```{r}
 
 
 
 
 ```
+
+
+
+
+
 
 ```{r}
 
