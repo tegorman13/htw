@@ -1,0 +1,87 @@
+---
+title: "My First Flipbook"
+subtitle: "With flipbookr and xaringan"
+author: Thomas Gorman
+date: last-modified
+format:
+ revealjs:
+   embed-resources: true
+  # smaller: true
+---
+
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(socviz)
+library(flipbookr)
+
+knitr::opts_chunk$set(fig.width = 6, message = FALSE, 
+                      warning = FALSE, comment = "", 
+                      cache = F)
+```
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 80%}
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+```
+
+
+### Book 1 
+```{r my_cars, include = FALSE}
+cars %>% 
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) + #BREAK
+  geom_point(
+             shape = 21,
+             size = 7, #BREAK2
+             color = "magenta", #BREAK3
+             alpha = .8 #BREAK4
+             ) + #BREAK
+  aes(fill = speed) + 
+  scale_fill_viridis_c() + 
+  theme_minimal() #BREAK
+```
+
+---
+
+`r chunk_reveal(chunk_name = "my_cars",platform="quarto" ,title = "### First flipbook!")`
+
+
+
+### Book 2
+
+```{r}
+#| label: flipbookexample
+#| echo: false
+#| eval: false
+gss_sm |> 
+  group_by(bigregion, religion) |> 
+  tally() |> 
+  mutate(pct = round((n/sum(n))*100, 1)) |> 
+  drop_na() |> 
+  ggplot(mapping = 
+           aes(x = pct, 
+               y = reorder(religion, -pct), 
+               fill = religion)) +
+  geom_col() +
+    labs(x = "Percent", y = NULL) +
+    guides(fill = "none") + 
+    facet_wrap(~ bigregion, ncol = 2)
+
+```
+
+
+---
+
+`r chunk_reveal("flipbookexample", platform = "quarto", title = "Flipbookr Runthrough")`
+
+
+
+
+
