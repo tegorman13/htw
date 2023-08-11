@@ -1,0 +1,101 @@
+---
+title: "HTW Project"
+# toc: true
+# toc-location: left
+#title-block-banner: false
+comments: false
+date-format: 'MMM YYYY'
+format:
+  html:
+    grid:
+      sidebar-width: 250px
+      body-width: 1400px
+      margin-width: 170px
+      gutter-width: 1.5rem
+    self-contained: false
+listing:
+ - id: Modeling
+   type: grid
+   filter-ui: [date, title, categories]
+   sort-ui: [date, title, categories]
+   include:
+    categories: "{Modeling}"
+ - id: Simulations
+   type: grid
+   grid-columns: 3
+   #max-items: 6
+   page-size: 6
+   grid-item-border: true
+   sort-ui: false
+   filter-ui: false
+   categories: true
+   include:
+     categories: "Simulation*"
+   exclude:
+     categories: "{Shiny*,Interactive,OJS}"
+     filename: "*.md*"
+ - id: Analyses
+   type: grid
+   filter-ui: [date, title, categories]
+   sort-ui: [date, title, categories]
+   include:
+     categories: "{*Analysis*}"
+ - id: Misc
+   type: grid
+   sort-ui: [date, title, categories]
+   include:
+     categories: "{Task,Interactive,Shiny,js,OJS, Visualization}*"
+---
+
+
+## Modeling Empircal Data
+:::{#Modeling}
+:::
+
+## Simulations
+:::{#Simulations}
+:::
+
+## Analyses
+:::{#Analyses}
+:::
+
+## Misc
+:::{#Misc}
+:::
+
+
+
+<!-- 
+https://quarto.org/docs/websites/website-listings.html#yaml-listing-content
+---
+title: "HTW Project"
+date: last-modified
+format:
+  html:
+    grid:
+      sidebar-width: 50px
+      body-width: 1400px
+      margin-width: 100px
+      gutter-width: 1.5rem
+    self-contained: false
+    toc: false 
+listing:
+  type: grid
+  sort: "date desc"
+  sort-ui: [date, title, categories]
+  filter-ui: [date, title, categories]
+  categories: true
+  contents:
+    - "*.qmd"
+    - "!ME*"
+    - "!model_viz.qmd"
+    - "!quarto_shiny.qmd"
+    - "!quartoP5.qmd"
+    - "!group_fits.qmd"
+    - "!abc*"
+    - "!alm_hidden.qmd"
+    - "!analysis.qmd"
+    - "!bayes*"
+    - "!htw_expGPT.qmd"
+--- -->
