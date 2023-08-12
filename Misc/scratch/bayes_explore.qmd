@@ -7,22 +7,32 @@ code-fold: true
 ---
 
 ```{r setup}
-pacman::p_load(tidyverse,tidybayes,brms,broom,broom.mixed,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist)
+pacman::p_load(tidyverse,tidybayes,bayesplot,brms,broom,broom.mixed,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist)
 e1 <- readRDS(here("data/e1_08-04-23.rds"))
 source(here("Functions/Display_Functions.R"))
 source(here("Functions/org_functions.R"))
 
+options(mc.cores = 4, brms.backend = "cmdstanr")
 
 
 test <- e1 |> filter(expMode2 == "Test")  
 
  test <- test |> mutate(id=factor(id,levels=unique(id)),
-         vxbn=vxb/max(test$vxb),vxn=vx/max(test$vx),bandIntn=bandInt/max(test$vx),bandIntnb=bandInt/max(test$vxb),svx=scale(vx, scale = TRUE),
+         vxbn=vxb/max(test$vxb),vxn=vx/max(test$vx),
+         bandIntn=bandInt/max(test$vx),bandIntnb=bandInt/max(test$vxb),
+         svx=scale(vx, scale = TRUE),
          vxC=ifelse(vx>2000,2000,vx))
 
 testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vxMean=mean(vx),vxMed=median(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
+
+
+
+```
+
+
+```{r}
 
 
 select(test,id,condit,bandInt,bandIntn,bandIntnb,vx,vxn,vxb,vxbn,svx)
@@ -35,7 +45,6 @@ test2 <- test %>% filter(expMode=="test-Nf")
 stest <- test |> filter(id %in% 1:40)
 
 options(mc.cores = 4, brms.backend = "cmdstanr")
-
 ```
 
 
@@ -51,6 +60,7 @@ fit_int_norm <- brm(vx ~ 1+bandInt+(1|id), # 2.1 sec execution time with 4 cores
     prior(normal(400, 10), class = sigma)
   )
 )
+
 bayesplot::ppc_dens_overlay_grouped(test$vx,
   yrep = posterior_predict(fit_int_norm, ndraws = 100),
   group = test$bandInt
