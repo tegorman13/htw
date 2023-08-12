@@ -285,22 +285,29 @@ plotDist <- function(df,title="",fcap=""){
 }
 
 
-brms_posterior_checks <- function(brmModel, dat, yvar, gvar, ndraws = 50) {
+
+brms_posterior_checks <- function(brmModel, dat=test, yvar=vx, gvar=vb, ndraws = 50) {
   yvar_name <- deparse(substitute(yvar))
   gvar_name <- deparse(substitute(gvar))
   
   y_data <- dat[[yvar_name]]
   g_data <- dat[[gvar_name]]
+  
   print(summary(brmModel))
-  print(conditional_effects(brmModel))
-  print(pp_check(brmModel, type = "stat_grouped", group = "vb", ndraws = ndraws))
+  if (brmModel$family$family == "gaussian") {
+    print(conditional_effects(brmModel))
+    print(pp_check(brmModel, type = "stat_grouped", group = "vb", ndraws = ndraws))
+    print(bayes_R2(brmModel))
+    
+  }
+  
+  rstan::get_elapsed_time(brmModel[["fit"]]) |> 
+    as_tibble(rownames = "chain") |>  mutate(total_seconds = warmup + sample) |> print()
+  
   print(bayesplot::ppc_dens_overlay_grouped(y_data, posterior_predict(brmModel, ndraws = ndraws), g_data))
-  bayes_R2(brmModel)
   #fixef(brmModel,summary=TRUE)
   
 }
-
-
 
 #vp1 / gridExtra::tableGrob(vt1)
 
