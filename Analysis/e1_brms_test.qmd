@@ -6,7 +6,11 @@ categories: [Analysis, R, Bayesian]
 code-fold: true
 ---
 
-
+individual_coefs <- coef(gt_vx)$id %>%
+    as_tibble(rownames = "id") %>%
+    select(id, starts_with("Estim")) %>%
+    pivot_longer(cols = -id, names_to = "variable", values_to = "value") %>%
+    separate(variable, c("type", "effect"), sep = "\\.")
 
 ```{r}
 pacman::p_load(tidyverse,tidybayes,brms,bayesplot,broom,broom.mixed,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist)
@@ -195,6 +199,9 @@ plot(e1_testDistRF2_0,variable=c("b_conditConstant","b_conditVaried"))
 
 bayesplot::ppc_dens_overlay_grouped(test$dist,yrep=posterior_predict(e1_testDistRF2_0,ndraws=200),group=test$vb)
 
+
+mcmc_hist(e1_testDistRF2_0,prob=.5,regex_pars=c("^r_id\\[1,.*\\]"))
+
 #plot(residuals(e1_testDistRF2_0))
 
 ```
@@ -355,6 +362,51 @@ sjPlot::tab_model(e1_testDist)
 
 ```{r}
 
+bform1 <- bf(mvbind(vx, dist) ~ condit * vb + (1|p|id)) + set_rescor(TRUE)
+mv1 <- brm(bform1, data = test, chains = 2, cores = 2)
+
+conditional_effects(mv1)
+pp_check(mv1,resp="dist")
+pp_check(mv1,resp="vx")
+
+
+ppc_dens_overlay_grouped(test$vx,posterior_predict(mv1,ndraws=200),test$vb)
+bayes_R2(mv1)
+
+
+bf_dist <- bf(dist|trunc(lb=-70) ~ condit * vb + (0 + vb|id) ) + gaussian()
+bf_vx <- bf(vx|trunc(lb=0) ~ condit * vb + (0 + vb|id)) + gaussian()
+
+mv3 <- brm(bf_dist + bf_vx + set_rescor(FALSE),
+            data = test, chains = 2, cores = 2,iter=1300, silent=0,
+           file=here::here("data/model_cache/mv_trunc2"))
+bayes_R2(mv3)
+pp_check(mv3,resp="dist")
+
+ppc_dens_overlay_grouped(test$vx,posterior_predict(mv3,ndraws=200),test$vb)
+
+
+
+bform2 <- bf(mvbind(vx, vy) ~ condit * vb + (0+vb|id)) + set_rescor(FALSE)
+mv3 <- brm(bform2, data = test, chains = 2, cores = 2,silent=0)
+bayes_R2(mv3)
+pp_check(mv3,resp="vx")
+pp_check(mv3,resp="vy")
+
+
+
+fitted(mv3) %>%
+  as_tibble() %>%
+  bind_cols(test %>% select(id,condit,vx,vy,vb,bandInt)) %>%
+  ggplot(aes(x = vx, y = Estimate.vx)) +
+  geom_abline(linetype = 2, color = "grey50", linewidth = .5) +  
+  geom_point(size = 1.5, aes(color=), alpha = 3/4) +
+  geom_linerange(aes(ymin = Q2.5.vx, ymax = Q97.5.vx),
+                 size = 1/4, color = "firebrick4") +
+  facet_wrap(~vb)
+
+
+
 ```
 
 
@@ -363,6 +415,34 @@ sjPlot::tab_model(e1_testDist)
 
 
 
+
+```
+
+
+```{r}
+
+vx_mm4 <- brm(vx ~ (1+vb|id), data=test,chains=2,silent=0)
+
+mcmc_areas(vx_mm4,prob=.5,regex_pars=c("^r_id\\[1,.*\\]"),regex=T)
+
+
+vx_mm5<- brm(vx ~ 0 + (0+vb|id), data=test,chains=2,silent=0,iter=1200)
+mcmc_areas(vx_mm5,prob=.5,regex_pars=c("^r_id\\[1,.*\\]"),regex=T)
+
+mcmc_areas(vx_mm5,prob=.5,regex_pars=c("^r_id\\[2,.*\\]"),regex=T)
+
+mcmc_areas(vx_mm5,prob=.5,regex_pars=c("^r_id\\[3,.*\\]"),regex=T) +
+  geom_point(size=.1,alpha=.4)+ggtitle("test")
+
+
+plot_subject_fits <- function(model, subject_code) {
+  pattern <- glue("^r_id\\[{subject_code},.*\\]")
+  plot <- mcmc_areas(model, prob = .5, regex_pars = c(pattern)) +
+            ggtitle(glue("fit for subject #{subject_code}:"))
+  return(plot)
+}
+
+plot_subject_fits(vx_mm5,86)
 
 ```
 

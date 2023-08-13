@@ -312,6 +312,16 @@ brms_posterior_checks <- function(brmModel, dat=test, yvar=vx, gvar=vb, ndraws =
 #vp1 / gridExtra::tableGrob(vt1)
 
 
+plot_subject_fits <- function(model, subject_code) {
+  pattern <- glue("^r_id\\[{subject_code},.*\\]")
+  plot <- mcmc_areas(model, prob = .5, regex_pars = c(pattern)) +
+    ggtitle(glue("fit for subject #{subject_code}:"))
+  return(plot)
+}
+
+
+
+
 # map(c("dist", "vx"), ~{
 #   train %>%
 #     learn_curve_bins(
