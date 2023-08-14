@@ -1,0 +1,31 @@
+---
+title: "E1 Testing"
+date: last-modified
+categories: [Analysis, R, Bayesian]
+code-fold: true
+---
+
+```{r setup, include=FALSE}
+source(here::here("Functions", "packages.R"))
+
+test <- readRDS(here("data/e1_08-04-23.rds")) |> 
+  filter(expMode2 == "Test") |> 
+  mutate(distS2 = custom_scale(dist))
+
+options(brms.backend="cmdstanr",mc.cores=4)
+
+```
+
+
+
+```{r}
+
+e1_testDistRF2_0 <- brm(dist ~ 0 + (condit * vb) + (0 + vb|id),
+                        data=test,file=paste0(here::here("data/model_cache","e1_testDistRF2_0")), 
+                        iter=5000,chains=4)
+
+model_parameters(e1_testDistRF2_0,effects="fixed")
+
+kable(GetModelStats(e1_testDistRF2_0)) |> column_spec(1:9,width="5em")
+```
+
