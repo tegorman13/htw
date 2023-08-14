@@ -1,5 +1,8 @@
 
 
+#walk(paste0("Functions/", c("Display_Functions.R", "org_functions.R")), ~source(here::here(.)))
+
+
 gen_trials <- function(blocks=3,numinputs=3,shuffle=FALSE) {
   if (shuffle) {
     examples <- as.vector(apply(replicate(blocks,seq(1, numinputs)), 2,
@@ -30,6 +33,90 @@ normal_predictive_distribution <- function(mu_samples,
     # .id is always a string and
     # needs to be converted to a number
     mutate(iter = as.numeric(iter))
+}
+
+
+
+
+GetModelStats <- function(model, type="brms") {
+  
+    # Get current model stats for brms model
+    if (type == "brms") {
+      m1 <- as.data.frame(describe_posterior(model, centrality = "Median"))
+      m2 <- fixef(model)
+      df <- cbind(m1[, c(1,2)], m2[, 2], m1[, c(4,5, 6, 11, 12)])
+      colnames(df) <- c("Coefficient", "$\\beta_{Median}$", "$SE$", 
+                        "95% CrI \nLower", "95% CrI \nUpper", "$P_{posterior}$", "$\\widehat R$", "ESS")
+      # Add model name and re-order columns
+      #df$Model <- mnames[n]
+      #df <- df[, c(9, 1:8)]
+      
+      # Get current model stats for lmer model
+    } else {
+      df <- data.frame(summary(model$coefficients))
+      df$Parameter <- rownames(df)
+      df <- df[, c(7, 6, 1:5)]
+    }
+
+  
+  df <- df |> mutate(across(where(is.numeric), \(x) round(x, 2)))
+  return(df)
+}
+
+
+GetBrmsModelStats <- function(model1, model2 = NA, BF = NA) {
+  
+  cat("Calculating stats for model1....\n")
+  LL1 <- logLik(model1) %>% apply(., 2, map_estimate) %>% sum()
+  cat(paste("Model1 logLikelihood:", LL1, "\n"))
+  Deviance1 <- -2 * LL1
+  cat(paste("Model1 Deviance:", Deviance1, "\n"))
+  
+  if (class(model2) == "logical") {
+    loo1 <- loo(model1)$loo
+    cat(paste("Model1 loo:", loo1, "\n"))
+    waic1 <- waic(model1)$waic
+    cat(paste("Model1 WAIC:", waic1, "\n\n"))
+    return(c("logLik" = LL1, "Deviance" = Deviance1, "loo" = loo1, "WAIC" = waic1))
+  }
+  
+  
+  cat("\nCalculating stats for model2....\n")
+  LL2 <- logLik(model2) %>% apply(., 2, map_estimate) %>% sum()
+  cat(paste("Model2 logLikelihood:", LL2, "\n"))
+  Deviance2 <- -2 * LL2
+  cat(paste("Model2 Deviance:", Deviance2, "\n"))
+  
+  modelsLoo <- loo_compare(add_criterion(model1, "loo"), add_criterion(model2, "loo")) %>% data.frame()
+  modelsWaic <- loo_compare(add_criterion(model1, "waic"), add_criterion(model2, "waic"), criterion = "waic") %>% data.frame()
+  
+  loo1 <- modelsLoo["add_criterion(model1, \"loo\")", c("looic", "se_looic")]
+  loo2 <- modelsLoo["add_criterion(model2, \"loo\")", c("looic", "se_looic")]
+  cat(paste("\nModel1 loo:", loo1[1], "SE:", loo1[2], "\n"))
+  cat(paste("\nModel2 loo:", loo2[1], "SE:", loo2[2], "\n"))
+  
+  waic1 <- modelsWaic["add_criterion(model1, \"waic\")",  c("waic", "se_waic")]
+  waic2 <- modelsWaic["add_criterion(model2, \"waic\")", c("waic", "se_waic")]
+  cat(paste("\nModel1 waic:", waic1[1], "SE:", waic1[2], "\n"))
+  cat(paste("\nModel2 waic:", waic2[1], "SE:", waic2[2], "\n"))
+  
+  model1 = c("logLik" = LL1, "Deviance" = Deviance1, "loo" = loo1, "WAIC" = waic1)    
+  model2 = c("logLik" = LL2, "Deviance" = Deviance2, "loo" = loo2, "WAIC" = waic2)
+  
+  cat(paste("\nWaic difference:", -2 * modelsWaic[2, 1], "SE:", 2 * modelsWaic[2, 2],  "\n"))
+  cat(paste("\nLoo difference:", -2 * modelsLoo[2, 1], "SE:", 2 * modelsLoo[2, 2],  "\n"))
+  
+  if (!class(BF) == "logical") {
+    cat("\nExtracting BF stats...\n")
+    BF = BF$bf
+    cat(paste("Bayes Factor:", BF, "\n"))
+    pProb = BF/(1+BF)
+    cat(paste("Posterior probability in favour of model1:", pProb, "\n"))
+    Comparisons = c("loo_diff" = c(-2 * modelsLoo[2, 1], 2 * modelsLoo[2, 2]), "waic_diff" = c(-2 * modelsWaic[2, 1], 2 * modelsWaic[2, 2]), "BF" = BF, "pProb" = pProb)
+    
+  } else {Comparisons = c("loo_diff" = c(-2 * modelsLoo[2, 1], 2 * modelsLoo[2, 2]), "waic_diff" = c(-2 * modelsWaic[2, 1], 2 * modelsWaic[2, 2]))}
+  
+  return(list("Model1" = model1, "Model2" = model2, "Comparisons" = Comparisons))
 }
 
 

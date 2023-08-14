@@ -1,6 +1,6 @@
 
 
-pacman::p_load(ggplot2,wesanderson,glue)
+pacman::p_load(ggplot2,wesanderson,glue, ggdist,ggforce,patchwork,gghalves)
 #pacman::p_load(ggplot2,ggpattern,viridis,scales,wesanderson,ggthemer)
 options(dplyr.summarise.inform=FALSE)
 
@@ -8,6 +8,82 @@ select <- dplyr::select
 mutate <- dplyr::mutate
 filter <- dplyr::filter
 map <- purrr::map
+
+
+
+#### Bayesian/Brms functions
+
+brms_posterior_checks <- function(brmModel, yvar, gvar, ndraws = 50) {
+  
+  dat <- brmModel$data
+  
+  yvar_name <- deparse(substitute(yvar))
+  gvar_name <- deparse(substitute(gvar))
+  
+  y_data <- dat[[yvar_name]]
+  g_data <- dat[[gvar_name]]
+  
+  msum <- summary(brmModel)
+  pt <- posterior_table(brmModel)
+  timeTab <- rstan::get_elapsed_time(brmModel[["fit"]]) |> 
+    as_tibble(rownames = "chain") |>  mutate(total_seconds = warmup + sample) 
+  
+  print(msum)
+  print(pt)
+  print(timeTab)
+  
+  if (brmModel$family$family == "gaussian") {
+   # print(conditional_effects(brmModel))
+    print(pp_check(brmModel, type = "stat_grouped", group = "vb", ndraws = ndraws))
+  #  print(bayes_R2(brmModel))
+    
+  }
+  
+
+  
+  print(bayesplot::ppc_dens_overlay_grouped(y_data, posterior_predict(brmModel, ndraws = ndraws), g_data))
+  #fixef(brmModel,summary=TRUE)
+  
+}
+
+
+
+
+plot_subject_fits <- function(model, subject_code) {
+  pattern <- glue("^r_id\\[{subject_code},.*\\]")
+  plot <- mcmc_areas(model, prob = .5, regex_pars = c(pattern)) +
+    ggtitle(glue("fit for subject #{subject_code}:"))
+  return(plot)
+}
+
+
+
+posterior_table <- function(model){
+  bayestestR::describe_posterior(model,
+                                 verbose=FALSE,
+                                 test=c("p_direction","p_significance"),
+                                 centrality=c("median"),
+                                 dispersion=FALSE)
+  
+}
+
+
+# bayes_R2(e1_testDistRF)
+# 
+# tidyMCMC(e1_testDistRF, conf.int = TRUE, conf.level = 0.95,
+#          estimate.method = "median", conf.method = "HPDinterval")
+# 
+# (r_fit <- e1_testDistRF %>% 
+#     tidy() %>% filter(effect=="fixed") |> select(-effect,-component, -group) |> 
+#     mutate(term = janitor::make_clean_names(term)) |>
+#     mutate(across(where(is.numeric), \(x) round(x, 0))) |> kbl() )
+
+# brms_eq_tidy <-tidyMCMC(e1_testDistRF, conf.int = TRUE, conf.level = 0.95,
+#                         estimate.method = "median", conf.method = "HPDinterval")
+
+############
+
+
 
 # Custom theme for data visualizations
 plot_theme <- function(title_size = NULL, 
@@ -286,38 +362,7 @@ plotDist <- function(df,title="",fcap=""){
 
 
 
-brms_posterior_checks <- function(brmModel, dat=test, yvar=vx, gvar=vb, ndraws = 50) {
-  yvar_name <- deparse(substitute(yvar))
-  gvar_name <- deparse(substitute(gvar))
-  
-  y_data <- dat[[yvar_name]]
-  g_data <- dat[[gvar_name]]
-  
-  print(summary(brmModel))
-  if (brmModel$family$family == "gaussian") {
-    print(conditional_effects(brmModel))
-    print(pp_check(brmModel, type = "stat_grouped", group = "vb", ndraws = ndraws))
-    print(bayes_R2(brmModel))
-    
-  }
-  
-  rstan::get_elapsed_time(brmModel[["fit"]]) |> 
-    as_tibble(rownames = "chain") |>  mutate(total_seconds = warmup + sample) |> print()
-  
-  print(bayesplot::ppc_dens_overlay_grouped(y_data, posterior_predict(brmModel, ndraws = ndraws), g_data))
-  #fixef(brmModel,summary=TRUE)
-  
-}
 
-#vp1 / gridExtra::tableGrob(vt1)
-
-
-plot_subject_fits <- function(model, subject_code) {
-  pattern <- glue("^r_id\\[{subject_code},.*\\]")
-  plot <- mcmc_areas(model, prob = .5, regex_pars = c(pattern)) +
-    ggtitle(glue("fit for subject #{subject_code}:"))
-  return(plot)
-}
 
 
 
