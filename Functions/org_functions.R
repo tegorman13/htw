@@ -21,6 +21,35 @@ custom_scale <- function(x) {
 }
 
 
+
+# ks2 = model_parameters(e1_testDistRF2_0,effects="random",keep="^r_id*") 
+# ks2 <- ks2 %>%
+#   mutate(
+#     id = str_extract(Parameter, "(?<=\\[)\\d+"), # Extract digits after the opening square bracket
+#     vb = str_extract(Parameter, "\\d+M\\d+") %>%
+#       str_remove("vb") %>%
+#       str_replace("M", "-")
+#   )
+
+GetIndvFits <- function(model) {
+ks2 = parameters::model_parameters(model,effects="random",keep="^r_id*") 
+ks2 <- ks2 |>
+  mutate(
+    id = factor(gsub(".*\\[([0-9]+),.*", "\\1", Parameter)),
+    vb = factor(gsub(".*vb([0-9]+)M([0-9]+).*", "\\1-\\2", Parameter), levels = levels(test$vb))
+  ) |>
+  left_join(select(model$data,id,condit) |> distinct(),by=join_by("id"),keep=FALSE) |>
+  select(-Group) |> relocate(id,condit,vb)
+}
+
+
+
+
+
+
+
+
+
 normal_predictive_distribution <- function(mu_samples,
                                            sigma_samples,
                                            N_obs) {
@@ -34,6 +63,9 @@ normal_predictive_distribution <- function(mu_samples,
     # needs to be converted to a number
     mutate(iter = as.numeric(iter))
 }
+
+
+
 
 
 

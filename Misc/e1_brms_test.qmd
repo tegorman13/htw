@@ -195,13 +195,13 @@ bayesplot::ppc_dens_overlay_grouped(test$dist,yrep=posterior_predict(e1_testDist
 mcmc_hist(e1_testDistRF2_0,prob=.5,regex_pars=c("^r_id\\[1,.*\\]"))
 
 
-e1_testDistRF2_0 |> spread_draws(b_conditConstant,b_conditVaried,b_vb[vb,])
+model_parameters(e1_testDistRF2_0,effects="random",keep="^r_id\\[3,.*\\]")
+plot_subject_fits(e1_testDistRF2_0,3)
 
 
-e1_testDistRF2_0 |> spread_draws(r_id[id,term]) |> head(10)
+indvFit <- GetIndvFits(e1_testDistRF2_0)
 
-
-e1_testDistRF2_0 |> spread_draws(b_conditConstant,b_conditVaried) |> compare_levels(condit)
+indvFit |> ggplot(aes(x=condit,y=Median,fill=condit))+stat_halfeye()+facet_wrap(~vb)
 
 ```
 
