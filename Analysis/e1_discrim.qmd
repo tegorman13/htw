@@ -21,7 +21,8 @@ testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
 ```
 
 ```{r}
-
+#| eval: false
+#| 
 lmerFit <- function(mform,df) {
 m=lmer(mform, df)
   fe <- fixef(m)
@@ -140,7 +141,7 @@ $$
 \end{aligned}
 $$
 
-`r cat(extract_eq(m1, use_coefs = TRUE))`
+<!-- `#r cat(extract_eq(m1, use_coefs = TRUE))` -->
 
 $$
 \begin{aligned}
@@ -179,6 +180,8 @@ $$
 
 
 ```{r}
+#| eval: false
+
 m1_bayes <- brm(vx ~ 1 + bandInt + condit + (1 + bandInt | id), 
 data = test, family = gaussian(), file="band_gauss_vx")
 
@@ -196,6 +199,7 @@ summary(m1_bayes)
 ```
 
 ```{r}
+#| eval: false
 # Calculate the standard deviation of the estimates for each level of id
 m_all %>%
   summarise(across(starts_with("group_"), sd, na.rm = TRUE))

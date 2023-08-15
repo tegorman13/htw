@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.251">
+<meta name="generator" content="quarto-1.4.303">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="dcterms.date" content="2023-07-30">
 <title>HTW Project - HTW Test Analysis</title>
@@ -104,7 +104,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/e1_Analysis.html">Analyses</a></li><li class="breadcrumb-item"><a href="../Analysis/test_analysis-all.html">HTW Test Analysis</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/e1_test.html">Analyses</a></li><li class="breadcrumb-item"><a href="../Analysis/test_analysis-all.html">HTW Test Analysis</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -157,13 +157,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Analysis/data_dictionary.html" class="sidebar-item-text sidebar-link">
+  <a href="../Misc/data_dictionary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HTW Data Dictionary</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Analysis/data_organize.html" class="sidebar-item-text sidebar-link">
+  <a href="../Misc/data_organize.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Organization</span></a>
   </div>
 </li>
@@ -180,6 +180,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/e1_test.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">E1 Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Analysis/e1_Analysis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Experiment 1 Analysis</span></a>
@@ -339,7 +345,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         
     </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/e1_Analysis.html">Analyses</a></li><li class="breadcrumb-item"><a href="../Analysis/test_analysis-all.html">HTW Test Analysis</a></li></ol></nav><div class="quarto-title">
+<main class="content column-page-right" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/e1_test.html">Analyses</a></li><li class="breadcrumb-item"><a href="../Analysis/test_analysis-all.html">HTW Test Analysis</a></li></ol></nav><div class="quarto-title">
 <h1 class="title">HTW Test Analysis</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Analysis</div>
@@ -1003,6 +1009,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        console.log("RESIZE");
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
