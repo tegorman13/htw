@@ -2,12 +2,23 @@
 title: "E1 Testing"
 date: last-modified
 categories: [Analysis, R, Bayesian]
+#bibliography: ../Assets/Bib/htw.bib
 code-fold: true
 execute:
   echo: true
   message: true
   warning: true
+editor: 
+  markdown: 
+    wrap: 72
 ---
+
+Analyses were done using @burknerBrmsPackageBayesian2017 and
+@makowskiBayestestRDescribingEffects2019a
+
+[@deloshExtrapolationSineQua1997]
+
+[@adkinsHeuristicsContributeSensorimotor2022]
 
 ```{r setup, include=FALSE}
 source(here::here("Functions", "packages.R"))
@@ -24,7 +35,6 @@ options(digits = 2, width = 120,
         knitr.kable.NA = "")
 
 ```
-
 
 ```{r}
 #| label: Distance model
@@ -52,7 +62,6 @@ e1_testDistRF2_0 %>%
   kbl() |> 
   kable_styling(full_width = F)
 ```
-
 
 ```{r ALM_Table}
 #| results: asis
@@ -98,3 +107,29 @@ cat(almTable)
 ```
 
 
+Here is a footnote reference,[^1] and another.[^2]
+
+[^1]: Here is the footnote.
+
+[^2]: Here's one with multiple blocks. Subsequent paragraphs are
+    indented to show that they belong to the previous footnote.
+
+    ```         
+    { some.code }
+    ```
+
+    The whole paragraph can be indented, or just the first line. In this
+    way, multi-paragraph footnotes work like multi-paragraph list items.
+
+This paragraph won't be part of the note, because it isn't indented.
+
+Here is an inline note.[^3]
+
+[^3]: Inlines notes are easier to write, since you don't have to pick an
+    identifier and move down to type the note.
+
+
+### References
+
+::: {#refs}
+:::

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.303">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2023-08-14">
+<meta name="dcterms.date" content="2023-08-15">
 <title>HTW Project - E1 Testing</title>
 <style>
 code{white-space: pre-wrap;}
@@ -52,7 +52,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
@@ -363,7 +382,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 14, 2023</p>
+      <p class="date">August 15, 2023</p>
     </div>
   </div>
   
@@ -372,7 +391,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><div>
+</header><p>Analyses were done using <span class="citation" data-cites="burknerBrmsPackageBayesian2017">Bürkner (<a href="#ref-burknerBrmsPackageBayesian2017" role="doc-biblioref">2017</a>)</span> and <span class="citation" data-cites="makowskiBayestestRDescribingEffects2019a">Makowski et al. (<a href="#ref-makowskiBayestestRDescribingEffects2019a" role="doc-biblioref">2019</a>)</span></p>
+<p><span class="citation" data-cites="deloshExtrapolationSineQua1997">(<a href="#ref-deloshExtrapolationSineQua1997" role="doc-biblioref">DeLosh et al., 1997</a>)</span></p>
+<p><span class="citation" data-cites="adkinsHeuristicsContributeSensorimotor2022">(<a href="#ref-adkinsHeuristicsContributeSensorimotor2022" role="doc-biblioref">Adkins et al., 2022</a>)</span></p>
+<div>
 <details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">e1_testDistRF2_0</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="op">(</span><span class="va">condit</span> <span class="op">*</span> <span class="va">vb</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">0</span> <span class="op">+</span> <span class="va">vb</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
 <span>                        data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>,<span class="st">"e1_testDistRF2_0"</span><span class="op">)</span><span class="op">)</span>, </span>
 <span>                        iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span>
@@ -739,10 +761,36 @@ Slope value computed from nearest training instances and then added to the respo
 </tr>
 </tbody>
 </table>
+<p>Here is a footnote reference,<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and another.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>This paragraph won’t be part of the note, because it isn’t indented.</p>
+<p>Here is an inline note.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-adkinsHeuristicsContributeSensorimotor2022" class="csl-entry" role="listitem">
+Adkins, T., Lewis, R., &amp; Lee, T. (2022). Heuristics contribute to sensorimotor decision-making under risk. <em>Psychonomic Bulletin &amp; Review</em>, <em>29</em>(1), 145–158. <a href="https://doi.org/10.3758/s13423-021-01986-x">https://doi.org/10.3758/s13423-021-01986-x</a>
+</div>
+<div id="ref-burknerBrmsPackageBayesian2017" class="csl-entry" role="listitem">
+Bürkner, P.-C. (2017). Brms: <span>An R Package</span> for <span>Bayesian Multilevel Models Using Stan</span>. <em>Journal of Statistical Software</em>, <em>80</em>, 1–28. <a href="https://doi.org/10.18637/jss.v080.i01">https://doi.org/10.18637/jss.v080.i01</a>
+</div>
+<div id="ref-deloshExtrapolationSineQua1997" class="csl-entry" role="listitem">
+DeLosh, E. L., McDaniel, M. A., &amp; Busemeyer, J. R. (1997). Extrapolation: <span>The Sine Qua Non</span> for <span>Abstraction</span> in <span>Function Learning</span>. <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, 19.
+</div>
+<div id="ref-makowskiBayestestRDescribingEffects2019a" class="csl-entry" role="listitem">
+Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). <span class="nocase">bayestestR</span>: <span>Describing Effects</span> and their <span>Uncertainty</span>, <span>Existence</span> and <span>Significance</span> within the <span>Bayesian Framework</span>. <em>Journal of Open Source Software</em>, <em>4</em>(40), 1541. <a href="https://doi.org/10.21105/joss.01541">https://doi.org/10.21105/joss.01541</a>
+</div>
+</div>
 
 
-
-</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><div id="quarto-appendix" class="default"><aside id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<ol>
+<li id="fn1"><p>Here is the footnote.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2">
+<p>Here’s one with multiple blocks. Subsequent paragraphs are indented to show that they belong to the previous footnote.</p>
+<pre><code>{ some.code }</code></pre>
+<p>The whole paragraph can be indented, or just the first line. In this way, multi-paragraph footnotes work like multi-paragraph list items.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p>
+</li>
+<li id="fn3"><p>Inlines notes are easier to write, since you don’t have to pick an identifier and move down to type the note.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></aside></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
