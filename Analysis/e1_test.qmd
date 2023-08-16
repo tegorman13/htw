@@ -1,43 +1,29 @@
 ---
 title: "E1 Testing"
-date: last-modified
 categories: [Analysis, R, Bayesian]
-#bibliography: ../Assets/Bib/htw.bib
-code-fold: true
-execute:
-  echo: true
-  message: true
-  warning: true
-editor: 
-  markdown: 
-    wrap: 72
 ---
 
-Analyses were done using @burknerBrmsPackageBayesian2017 and
-@makowskiBayestestRDescribingEffects2019a
+## Analyses Strategy
 
-[@deloshExtrapolationSineQua1997]
+To assess differences between groups, we used Bayesian Mixed Effects Regression. Analyses were done using @burknerBrmsPackageBayesian2017 and @makowskiBayestestRDescribingEffects2019a. 
 
-[@adkinsHeuristicsContributeSensorimotor2022]
+## Results
+
+### Testing Phase - No feedback. 
+
+In the first part of the testing phase, participants are tested from each of the velocity bands, and receive no feedback after each throw. 
 
 ```{r setup, include=FALSE}
 source(here::here("Functions", "packages.R"))
-
 test <- readRDS(here("data/e1_08-04-23.rds")) |> 
-  filter(expMode2 == "Test") |> 
-  mutate(distS2 = custom_scale(dist))
-
+  filter(expMode2 == "Test") 
 options(brms.backend="cmdstanr",mc.cores=4)
-
-
-options(digits = 2, width = 120,
-        dplyr.summarise.inform = FALSE,
-        knitr.kable.NA = "")
 
 ```
 
+
 ```{r}
-#| label: Distance model
+#| label: Band Deviation
 #| tbl-cap: "Deviations from target"
 #| layout: [[70, 30],[-5]]
 e1_testDistRF2_0 <- brm(dist ~ 0 + (condit * vb) + (0 + vb|id),
@@ -48,88 +34,41 @@ p1 <- GetModelStats(e1_testDistRF2_0)
 
 kable(p1,escape=F, booktabs=T) |> column_spec(1:8,width="1.5em") |> 
   kable_styling(full_width = F)
-#rempsyc::nice_table(p1) 
 
 ```
 
-```{r}
-#| layout: [[65, 65],[-5]]
-e1_testDistRF2_0 %>%
-  tidy() %>%
-  slice(1:4) %>% select(term, estimate) |> 
-  mutate(Parameter = c("\\(\\beta_0\\)", "\\(\\beta_1\\)",
-                       "\\(\\sigma_0\\)", "\\(\\sigma_y\\)")) |> 
-  kbl() |> 
-  kable_styling(full_width = F)
-```
-
-```{r ALM_Table}
-#| results: asis
-text_tbl <- data.frame(
-    'Step'=c("Input Activation","Output Activation","Output Probability","Mean Output","Feedback Activation","Update Weights","Extrapolation",""),
-    'Equation' = c("$a_i(X) = \\frac{e^{-c \\cdot (X-X_i)^2}}{ \\sum_{k=1}^Me^{-c \\cdot (X-X_i)^2}}$", 
-                   '$O_j(X) = \\sum_{k=1}^Mw_{ji} \\cdot a_i(X)$',
-                   '$P[Y_j | X] = \\frac{O_i(X)}{\\sum_{k=1}^Mo_k(X)}$',
-                   "$m(x) = \\sum_{j=1}^LY_j \\cdot \\bigg[\\frac{O_j(X)}{\\sum_{k=1}^Lo_k(X)}\\bigg]$",
-                   "$f_j(Z)=e^{-c\\cdot(Z-Y_j)^2}$",
-                   "$w_{ji}(t+1)=w_{ji}(t)+\\alpha \\cdot {f_i(Z(t))-O_j(X(t))} \\cdot a_i(X(t))$",
-                   "$P[X_i|X] = \\frac{a_i(X)}{\\sum_{k=1}^Ma_k(X)}$",
-                   "$E[Y|X_i]=m(X_i) + \\bigg[\\frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1} - X_{i-1}} \\bigg] \\cdot[X-X_i]$"),
-    
-    'Description'= c(
-            "Activation of each input node, $X_i$, is a function of the Gaussian similarity between the node value and stimulus X. ",
-            "Activation of each Output unit $O_j$ is the weighted sum of the input activations and association weights",
-            "Each output node has associated response, $Y_j$. The probability of response $Y_j$ is determined by the ratio of output activations",
-            "The response to stimulus x is the weighted average of the response probabilities",
-            "After responding, feedback signal Z is presented, activating each output node via the Gaussian similarity to the ideal response  ",
-            "Delta rule to update weights. Magnitude of weight changes controlled by learning rate parameter alpha.",
-            "Novel test stimulus X activates input nodes associated with trained stimuli",
-            "Slope value computed from nearest training instances and then added to the response associated with the nearest training instance,m(x)")
-)
-text_tbl$Step=cell_spec(text_tbl$Step,font_size=12)
-text_tbl$Equation=cell_spec(text_tbl$Equation,font_size=18)
-almTable=kable(text_tbl, 'html', 
-  booktabs=T, escape = F, align='l',
-  caption = '<span style = "color:black;"><center><strong>Table 1: ALM & EXAM Equations</strong></center></span>',
-  col.names=c("","Equation","Description")) %>%
-  kable_styling(position="left",bootstrap_options = c("hover")) %>%
-  column_spec(1, bold = F,border_right=T) %>%
-  column_spec(2, width = '10cm')%>%
-  column_spec(3, width = '15cm') %>%
-  pack_rows("ALM Activation & Response",1,4,bold=FALSE,italic=TRUE) %>%
-  pack_rows("ALM Learning",5,6,bold=FALSE,italic=TRUE) %>%
-  pack_rows("EXAM",7,8,bold=FALSE,italic=TRUE)
-  #save_kable(file="almTable.html",self_contained=T)
-#almTable
 
 
-cat(almTable)
-```
+
+
+
+
+
+## Misc 
+
+{{< include "../Misc/alm_table.qmd" >}}
+
+
+
+
+
 
 
 Here is a footnote reference,[^1] and another.[^2]
 
 [^1]: Here is the footnote.
-
 [^2]: Here's one with multiple blocks. Subsequent paragraphs are
     indented to show that they belong to the previous footnote.
-
     ```         
     { some.code }
     ```
-
-    The whole paragraph can be indented, or just the first line. In this
-    way, multi-paragraph footnotes work like multi-paragraph list items.
-
-This paragraph won't be part of the note, because it isn't indented.
-
 Here is an inline note.[^3]
 
 [^3]: Inlines notes are easier to write, since you don't have to pick an
     identifier and move down to type the note.
 
 
-### References
+## References
 
 ::: {#refs}
 :::

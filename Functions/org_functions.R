@@ -3,6 +3,11 @@
 #walk(paste0("Functions/", c("Display_Functions.R", "org_functions.R")), ~source(here::here(.)))
 
 
+# options(digits = 2, width = 120,
+#         dplyr.summarise.inform = FALSE,
+#         knitr.kable.NA = "")
+
+
 gen_trials <- function(blocks=3,numinputs=3,shuffle=FALSE) {
   if (shuffle) {
     examples <- as.vector(apply(replicate(blocks,seq(1, numinputs)), 2,
