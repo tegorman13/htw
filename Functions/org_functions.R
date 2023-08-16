@@ -87,6 +87,10 @@ mc_tribble <- function(indf, indents = 4, mdformat = TRUE) {
 }
 
 
+# p1 <- GetModelStats(e1_testDistRF2_0)
+# 
+# kable(p1,escape=F, booktabs=T) |> column_spec(1:8,width="1.5em") |> 
+#   kable_styling(full_width = F)
 
 GetModelStats <- function(model, type="brms") {
   

@@ -12,11 +12,12 @@ pacman::p_load(tidyverse,tidybayes,brms, lme4, bayesplot,bayestestR,parameters,m
                )
 
 # show loaded packages ------------------------------------------------------------------
-cat("loaded packages\n")
-print(pacman::p_loaded())
+# cat("loaded packages\n")
+# print(pacman::p_loaded())
 
 select <- dplyr::select
 mutate <- dplyr::mutate
 filter <- dplyr::filter
 map <- purrr::map
-walk(c(here("Functions/Display_Functions.R"), here("Functions/org_functions.R")), source)
+walk(c(here("Functions/Display_Functions.R"), here("Functions/org_functions.R"), 
+       here("Functions/Table_Functions.R")), source)
