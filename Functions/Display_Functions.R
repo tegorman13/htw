@@ -466,3 +466,14 @@ trainTab <- function(df,nBlocks=6,groupVars=c("id","c","lr","inNodes","outNodes"
   print(distTab)
   return(distTab)
 }
+
+theme_clean <- function() {
+  theme_minimal() +
+    theme(panel.grid.minor = element_blank(),
+          plot.background = element_rect(fill = "white", color = NA),
+          plot.title = element_text(face = "bold"),
+          axis.title = element_text(face = "bold"),
+          strip.text = element_text(face = "bold", size = rel(0.8), hjust = 0),
+          strip.background = element_rect(fill = "grey80", color = NA),
+          legend.title = element_text(face = "bold"))
+}

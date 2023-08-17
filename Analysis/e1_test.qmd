@@ -5,12 +5,11 @@ categories: [Analysis, R, Bayesian]
 
 ## Analyses Strategy
 
-To assess differences between groups, we used Bayesian Mixed Effects Regression. Analyses were done using brms package in R @burknerBrmsPackageBayesian2017 as well as  @makowskiBayestestRDescribingEffects2019a. 
+To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R @burknerBrmsPackageBayesian2017, and descriptive stats and tables were extracted with the BayestestR package @makowskiBayestestRDescribingEffects2019a. Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as circumventing convergence issues common to the frequentist analogues of our mixed models. For each model, we report the median values of the posterior distribution, and 95% credible intervals. 
 
-Unless otherwise stated, we ran each model with 4 chains, 5000 iterations per chain, the first 2500 of which were discarded as warmup chains. Rhat values were generally within an acceptable range, with values <=1.02. 
+Unless otherwise stated, we ran each model with 4 chains, 5000 iterations per chain, the first 2500 of which were discarded as warmup chains. Rhat values were generally within an acceptable range, with values <=1.02 (see appendix for diagnostic plots). We used uninformative priors for the fixed effects of the model (condition and velocity band), and weakly informative Student T distributions for for the random effects. 
 
-
-We made use of two separate performance metrics, deviation and discrimination. Deviation was quantified as the absolute deviation from the nearest boundary of the velocity band, or set to 0 if the throw velocity fell anywhere inside the target band. Thus, when the target band was 600-800, throws of 400, 650, and 1100 would result in deviation values of 200, 0, and 300, respectively. Discrimination was measured by fitting a linear model to the testing throws of each subjects, with the lower end of the target velocity band as the predicted variable, and the x velocity produced by the participants as the predictor variable. Participants who reliably discriminated between velocity bands tended to have positive slopes with values ~1, while participants who made throws irrespective of the current target band would have slopes ~0.  
+We compared varied and constant performance across two measures, deviation and discrimination. Deviation was quantified as the absolute deviation from the nearest boundary of the velocity band, or set to 0 if the throw velocity fell anywhere inside the target band. Thus, when the target band was 600-800, throws of 400, 650, and 1100 would result in deviation values of 200, 0, and 300, respectively. Discrimination was measured by fitting a linear model to the testing throws of each subjects, with the lower end of the target velocity band as the predicted variable, and the x velocity produced by the participants as the predictor variable. Participants who reliably discriminated between velocity bands tended to have positive slopes with values ~1, while participants who made throws irrespective of the current target band would have slopes ~0.  
 
 
 
@@ -25,46 +24,160 @@ source(here::here("Functions", "packages.R"))
 test <- readRDS(here("data/e1_08-04-23.rds")) |> 
   filter(expMode2 == "Test") 
 options(brms.backend="cmdstanr",mc.cores=4)
+
+e1Sbjs <- test |> group_by(id,condit) |> summarise(n=n())
+
 ```
 
 
 
 #### Deviation From Target Band
 
-
+See @tbl-e1-test-nf-deviation for descriptive statistics of the raw empirical data. 
 To assess differences in accuracy between groups, we used Bayesian mixed effects regression models implemented via brms in R. The primary model predicted the absolute deviation from the target velocity band (dist) as a function of training condition (condit), target velocity band (vb), and their interaction, with random intercepts and slopes for each participant (id). 
 
+
 ```{r}
-#contrasts(test$condit) 
-#  Varied
-# Constant      0
-# Varied        1
+#| label: tbl-e1-test-nf-deviation
+#| tbl-cap: "Testing Deviation - Empirical Summary"
+#| tbl-subcap: ["Constant Testing - Deviation", "Varied Testing - Deviation"]
+#| layout-ncol: 2
+#| echo: fenced
 
-# contrasts(test$vb)
-#           350-550 600-800 800-1000 1000-1200 1200-1400
-# 100-300         0       0        0         0         0
-# 350-550         1       0        0         0         0
-# 600-800         0       1        0         0         0
-# 800-1000        0       0        1         0         0
-# 1000-1200       0       0        0         1         0
-# 1200-1400       0       0        0         0         1
+result <- test_summary_table(test, "dist", mfun = list(mean = mean, median = median, sd = sd))
+result$constant
+result$varied
 
-modelName <- "e1_testDistRF2"
-e1_testDistRF2 <- brm(dist ~ condit * vb + (1 + vb|id),
-                      data=test,file=paste0(here::here("data/model_cache",modelName)),
-                      iter=5000,chains=4)
-mp1 <- model_parameters(e1_testDistRF2,effects="fixed",diagnostic=c("ESS"),verbose=FALSE)
 ```
 
 
+```{r}
+#| label: tbl-e1-bmm-dist
+#| tbl-cap: "Experiment 1. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band"
+#contrasts(test$condit) 
 
-The model predicting absolute deviation (dist) showed clear effects of both training condition and target velocity band (Table X). Overall, the varied training group showed a larger deviation relative to the constant training group (β = 119, 95% CI [37, 202]). Deviation also depended on target velocity band, with lower bands showing less deviation. 
+# contrasts(test$vb)
+
+modelName <- "e1_testDistBand_RF_5K_Ml1"
+e1_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
+                      data=test,file=paste0(here::here("data/model_cache",modelName)),
+                      iter=5000,chains=4)
+mp1 <- GetModelStats(e1_distBMM) |> kable(escape=F,booktabs=T)
+mp1
+```
+
+Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs.Varied) and Velocity Band
+
+| Term              | Estimate | Est.Error | 95% CrI Lower | 95% CrI Upper | pd   | Rhat | ESS    |
+|-------------------|----------|-----------|---------------|---------------|------|------|--------|
+| Intercept         | 226.03   | 32.32     | 162.33        | 287.60        | 1.00 | 1.01 | 414.11 |
+| conditVaried      | 135.16   | 47.79     | 43.63         | 231.74        | 1.00 | 1.01 | 430.61 |
+| Band              | -0.02    | 0.03      | -0.09         | 0.04          | 0.74 | 1.01 | 505.15 |
+| conditVaried:Band | -0.13    | 0.05      | -0.23         | -0.03         | 1.00 | 1.01 | 532.83 |
+
+
+
+
+The model predicting absolute deviation (dist) showed clear effects of both training condition and target velocity band (Table X). Overall, the varied training group showed a larger deviation relative to the constant training group (β = 135, 95% CI [43, 231]). Deviation also depended on target velocity band, with lower bands showing less deviation. See @tbl-e1-bmm-dist for full model output. 
 
 
 
 #### Discrimination between Velocity Bands
 
-In addition to accuracy/deviation. We also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). 
+table below
+
+```{r}
+#| label: tbl-e1-test-nf-vx
+#| tbl-cap: "Testing vx - Empirical Summary"
+#| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]
+#| layout-ncol: 2
+#| echo: fenced
+
+result <- test_summary_table(test, "vx", mfun = list(mean = mean, median = median, sd = sd))
+result$constant 
+result$varied 
+
+```
+
+
+In addition to accuracy/deviation. We also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). @tbl-e1-test-nf-vx shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants. 
+
+```{r}
+#| label: tbl-e1-bmm-vx
+#| tbl-cap: "Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
+e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
+                        data=test,file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k_Ml1")),
+                        iter=5000,chains=4,silent=0,
+                        control=list(adapt_delta=0.94, max_treedepth=13))
+mt2 <-GetModelStats(e1_vxBMM ) |> kable(escape=F,booktabs=T)
+mt2
+```
+
+See @tbl-e1-bmm-vx for the full model results. The estimated coefficient for training condition (β = 146, 95% CI [35.96, 254.70]) suggests that the varied group tends to produce harder throws than the constant group. More relevant to the issue of discrimination is the slope on Velocity Band (β = 0.69, 95% CI [.59, .77]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibted some discrimination between bands. The slope coefficient (β = 0.69 ) also seems in accordance with an examination of @tbl-e1-test-nf-vx, which shows that average x-velocity fell within the range of the target band for four out of six of the bands ($4/6$=.67). 
+
+```{r}
+
+conditional_effects(e1_vxBMM,effects = "bandInt:condit") 
+
+
+```
+
+
+
+
+```{r}
+#| eval: false
+indv_coefs <- coef(e1_vxBMM)$id |> 
+  as_tibble(rownames="id") |> 
+  select(id, starts_with("Est")) |>
+  left_join(e1Sbjs, by=join_by(id) ) |> 
+  # rank by Estimate.bandInt - within condit, higher is better
+  group_by(condit) |> 
+  mutate(rank = rank(desc(Estimate.bandInt))) 
+
+top_indv_coefs <- indv_coefs %>%
+  filter(rank <= 1)
+
+# Extract ids for top 10 subjects
+top_ids <- top_indv_coefs$id
+new_data=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")]))) |> dplyr::arrange(id,bandInt) %>% filter(id %in% top_ids)
+new_data$p <- predict(e1_vxBMM, newdata = new_data)
+
+predictions <- t(posterior_predict(e1_vxBMM, newdata = new_data,ndraws=10))
+new_data$prediction <- rowMeans(predictions)
+
+
+# Generate predicted values
+preds <- e1_vxBMM %>%
+  epred_draws(newdata = new_data) %>%
+  as_tibble() %>%
+  left_join(newdata, by = "id")
+
+# Plot
+ggplot(preds, aes(x = bandInt, y = .epred, group = id, color = id)) +
+  stat_lineribbon(alpha = 0.5) +
+  labs(title = "Top 10 High Estimate.bandInt",
+       x = "BandInt", y = "Predicted vx") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+```
+
 
 NEEDS TO BE WRITTEN
 

@@ -17,7 +17,7 @@
 # create_summary_table(test, "vx", mfun = list(mean = mean, median = median, sd = sd))
 
 
-create_summary_table <- function(data, DV, mfun = list(mean = mean, sd = sd)) {
+test_summary_table <- function(data, DV, mfun = list(mean = mean, sd = sd)) {
   # Grouping by required variables and computing statistics specified in mfun
   summarization <- data %>%
     group_by(vb, bandType, condit) %>%

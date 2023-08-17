@@ -81,6 +81,27 @@ if (nrow(model_inventory) != nrow(model_inventory_updated)) {
 
 
 
+######### Inspecting/comparing models
+
+model_inventory <- readRDS(here::here("data", "model_inventory.rds"))
+vxModels <- model_inventory |> filter(model_dv=="vx") |> arrange(desc(bayesR2))
+
+distModels <- model_inventory |> filter(model_dv=="dist") |> 
+  arrange(desc(bayesR2)) |> # filter for models that have bandInt in the forumula
+  filter(grepl("bandInt", model_formula)) 
+
+
+
+
+
+
+#################
+
+
+###### OLD
+
+
+
 
 # Handle any error files if needed
 error_files <- setdiff(file_list, model_inventory$file_name)
