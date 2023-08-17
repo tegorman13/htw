@@ -22,8 +22,6 @@ testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
 
 ```
 
-
-
 ```{r}
 #| label: test vx table
 #| tbl-cap: "Testing - No Feedback"
@@ -36,41 +34,6 @@ result$constant #|> kable_styling(full_width = F)
 result$varied #|> kable_styling(full_width = F)
 
 ```
-
-
-
-
-
-<!-- ::: panel-tabset -->
-<!-- ## Figure -->
-<!-- ```{r} -->
-<!-- #| column: page-inset-right -->
-<!-- #| fig-cap: "Mean Vx over training blocks" -->
-
-<!-- # vpt1=plotWithTable(vp1,vt1,arrange="V") -->
-<!-- nb=5 -->
-<!-- vp1=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,vx,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) -->
-<!-- vp1 -->
-
-<!-- ``` -->
-
-
-<!-- ## Table -->
-<!-- ```{r} -->
-<!-- #| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)" -->
-<!-- #| tbl-cap-location: top -->
-
-<!-- vt1=e1 |> filter(expMode=="train") |> -->
-<!--   learn_curve_table(gt.train,vx,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |> -->
-<!--   rename("Band"=vb,"Group"=condit) -->
-<!-- vt1 %>% kable() -->
-
-
-<!-- ``` -->
-<!-- ::: -->
-
-
-
 
 <!-- ::: {layout="[ [1,4],[1,5],[1,10]]"} -->
 
@@ -90,7 +53,7 @@ vt1 %>% kable() %>% add_header_above(c(" "=2, "Training Block "=1," " = ncol(vt1
 ```
 
 
-
+# Training Performance
 
 ```{r}
 #| fig-cap: "Mean Vx over training blocks"
@@ -822,3 +785,34 @@ e1 |> group_by(id, condit, vb, bandInt,bandType,tOrder,expMode2) %>%
 ---
 
 
+
+
+
+
+<!-- ::: panel-tabset -->
+<!-- ## Figure -->
+<!-- ```{r} -->
+<!-- #| column: page-inset-right -->
+<!-- #| fig-cap: "Mean Vx over training blocks" -->
+
+<!-- # vpt1=plotWithTable(vp1,vt1,arrange="V") -->
+<!-- nb=5 -->
+<!-- vp1=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,vx,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) -->
+<!-- vp1 -->
+
+<!-- ``` -->
+
+
+<!-- ## Table -->
+<!-- ```{r} -->
+<!-- #| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)" -->
+<!-- #| tbl-cap-location: top -->
+
+<!-- vt1=e1 |> filter(expMode=="train") |> -->
+<!--   learn_curve_table(gt.train,vx,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |> -->
+<!--   rename("Band"=vb,"Group"=condit) -->
+<!-- vt1 %>% kable() -->
+
+
+<!-- ``` -->
+<!-- ::: -->

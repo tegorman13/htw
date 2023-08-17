@@ -1,7 +1,7 @@
 ---
 title: "Project 2"
 subtitle: " Variability and Function Learning "
-#bibliography: "../Misc/Bib/HTW.bib"
+bibliography: "../Assets/Bib/HTW.bib"
 date: last-modified
 keep-tex: true
 code-fold: true
@@ -14,6 +14,7 @@ library(knitr)
 library(here)
 
 ```
+
 
 # Introduction
 

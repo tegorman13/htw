@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.303">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2023-08-15">
+<meta name="dcterms.date" content="2023-08-16">
 <title>HTW Project - HTW Data Dictionary</title>
 <style>
 code{white-space: pre-wrap;}
@@ -371,7 +371,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 15, 2023</p>
+      <p class="date">August 16, 2023</p>
     </div>
   </div>
   
@@ -520,9 +520,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 2 Varied   &lt;NA&gt;  &lt;NA&gt;        216</code></pre>
 </div>
 </div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">summarize</span><span class="op">(</span>n<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>n<span class="op">=</span><span class="fu">fct_infreq</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">id</span>,y<span class="op">=</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_col</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="data_dictionary_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sorted_bars</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu">mutate</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span> <span class="op">:=</span> <span class="fu">fct_rev</span><span class="op">(</span><span class="fu">fct_infreq</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>  <span class="op">|&gt;</span></span>
+<span>    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">geom_bar</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">conditional_bars</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">condition</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">condition</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">geom_bar</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">histogram</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">var</span>, <span class="va">binwidth</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">label</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/englue.html">englue</a></span><span class="op">(</span><span class="st">"A histogram of {{var}} with binwidth {binwidth}"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">geom_histogram</span><span class="op">(</span>binwidth <span class="op">=</span> <span class="va">binwidth</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="va">label</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># sorted_bars(d |&gt; filter(id %in% 1:30),id) </span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># test |&gt; conditional_bars(id %in% 1:10, id)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section><section id="tibble1" class="level2"><h2 class="anchored" data-anchor-id="tibble1">Tibble1</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create the tribble</span></span>
+<details><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create the tribble</span></span>
 <span><span class="va">data_tbl</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
 <span>  Variable_Name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"condit"</span>, <span class="st">"fb"</span>, <span class="st">"bandOrder"</span>, <span class="st">"tOrder"</span>, <span class="st">"expMode"</span>, <span class="st">"trainStage"</span>, <span class="st">"expStage"</span>, <span class="st">"band"</span>, <span class="st">"vb"</span>, <span class="st">"lowBound"</span>, <span class="st">"feedback"</span>, <span class="st">"stage"</span><span class="op">)</span>,</span>
 <span>  Variable_Levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Constant, Varied"</span>, <span class="st">"Continuous, Ordinal"</span>, <span class="st">"Original, Reverse"</span>, <span class="st">"Test First, Train First"</span>, <span class="st">"train, train-Nf, test-Nf, test-train-nf, test-feedback"</span>, <span class="st">"Beginning, Middle, End, Test"</span>, <span class="st">"TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3"</span>, <span class="st">"1, 2, 3, 4, 5, 6"</span>, <span class="st">"100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400"</span>, <span class="st">"100, 350, 600, 800, 1000, 1200"</span>, <span class="st">"0, 1"</span>, <span class="st">"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23"</span><span class="op">)</span>,</span>
@@ -532,23 +568,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co"># Print the tribble</span></span>
 <span><span class="va">data_tbl</span> <span class="op">%&gt;%</span> <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="wgerhioltm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#wgerhioltm table {
+<div id="oszmvkqgsf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#oszmvkqgsf table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#wgerhioltm thead, #wgerhioltm tbody, #wgerhioltm tfoot, #wgerhioltm tr, #wgerhioltm td, #wgerhioltm th {
+#oszmvkqgsf thead, #oszmvkqgsf tbody, #oszmvkqgsf tfoot, #oszmvkqgsf tr, #oszmvkqgsf td, #oszmvkqgsf th {
   border-style: none;
 }
 
-#wgerhioltm p {
+#oszmvkqgsf p {
   margin: 0;
   padding: 0;
 }
 
-#wgerhioltm .gt_table {
+#oszmvkqgsf .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -574,12 +610,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#wgerhioltm .gt_caption {
+#oszmvkqgsf .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#wgerhioltm .gt_title {
+#oszmvkqgsf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -591,7 +627,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#wgerhioltm .gt_subtitle {
+#oszmvkqgsf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -603,7 +639,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#wgerhioltm .gt_heading {
+#oszmvkqgsf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -615,13 +651,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#wgerhioltm .gt_bottom_border {
+#oszmvkqgsf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wgerhioltm .gt_col_headings {
+#oszmvkqgsf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -636,7 +672,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#wgerhioltm .gt_col_heading {
+#oszmvkqgsf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -656,7 +692,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#wgerhioltm .gt_column_spanner_outer {
+#oszmvkqgsf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -668,15 +704,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#wgerhioltm .gt_column_spanner_outer:first-child {
+#oszmvkqgsf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wgerhioltm .gt_column_spanner_outer:last-child {
+#oszmvkqgsf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wgerhioltm .gt_column_spanner {
+#oszmvkqgsf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -688,11 +724,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#wgerhioltm .gt_spanner_row {
+#oszmvkqgsf .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#wgerhioltm .gt_group_heading {
+#oszmvkqgsf .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -718,7 +754,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#wgerhioltm .gt_empty_group_heading {
+#oszmvkqgsf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -733,15 +769,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#wgerhioltm .gt_from_md > :first-child {
+#oszmvkqgsf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#wgerhioltm .gt_from_md > :last-child {
+#oszmvkqgsf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#wgerhioltm .gt_row {
+#oszmvkqgsf .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -760,7 +796,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#wgerhioltm .gt_stub {
+#oszmvkqgsf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -773,7 +809,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#wgerhioltm .gt_stub_row_group {
+#oszmvkqgsf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -787,15 +823,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#wgerhioltm .gt_row_group_first td {
+#oszmvkqgsf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#wgerhioltm .gt_row_group_first th {
+#oszmvkqgsf .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#wgerhioltm .gt_summary_row {
+#oszmvkqgsf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -805,16 +841,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#wgerhioltm .gt_first_summary_row {
+#oszmvkqgsf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#wgerhioltm .gt_first_summary_row.thick {
+#oszmvkqgsf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#wgerhioltm .gt_last_summary_row {
+#oszmvkqgsf .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -824,7 +860,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#wgerhioltm .gt_grand_summary_row {
+#oszmvkqgsf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -834,7 +870,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#wgerhioltm .gt_first_grand_summary_row {
+#oszmvkqgsf .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -844,7 +880,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#wgerhioltm .gt_last_grand_summary_row_top {
+#oszmvkqgsf .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -854,11 +890,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#wgerhioltm .gt_striped {
+#oszmvkqgsf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wgerhioltm .gt_table_body {
+#oszmvkqgsf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -867,7 +903,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#wgerhioltm .gt_footnotes {
+#oszmvkqgsf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -881,7 +917,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#wgerhioltm .gt_footnote {
+#oszmvkqgsf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -890,7 +926,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#wgerhioltm .gt_sourcenotes {
+#oszmvkqgsf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -904,7 +940,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#wgerhioltm .gt_sourcenote {
+#oszmvkqgsf .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -912,63 +948,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#wgerhioltm .gt_left {
+#oszmvkqgsf .gt_left {
   text-align: left;
 }
 
-#wgerhioltm .gt_center {
+#oszmvkqgsf .gt_center {
   text-align: center;
 }
 
-#wgerhioltm .gt_right {
+#oszmvkqgsf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wgerhioltm .gt_font_normal {
+#oszmvkqgsf .gt_font_normal {
   font-weight: normal;
 }
 
-#wgerhioltm .gt_font_bold {
+#oszmvkqgsf .gt_font_bold {
   font-weight: bold;
 }
 
-#wgerhioltm .gt_font_italic {
+#oszmvkqgsf .gt_font_italic {
   font-style: italic;
 }
 
-#wgerhioltm .gt_super {
+#oszmvkqgsf .gt_super {
   font-size: 65%;
 }
 
-#wgerhioltm .gt_footnote_marks {
+#oszmvkqgsf .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#wgerhioltm .gt_asterisk {
+#oszmvkqgsf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#wgerhioltm .gt_indent_1 {
+#oszmvkqgsf .gt_indent_1 {
   text-indent: 5px;
 }
 
-#wgerhioltm .gt_indent_2 {
+#oszmvkqgsf .gt_indent_2 {
   text-indent: 10px;
 }
 
-#wgerhioltm .gt_indent_3 {
+#oszmvkqgsf .gt_indent_3 {
   text-indent: 15px;
 }
 
-#wgerhioltm .gt_indent_4 {
+#oszmvkqgsf .gt_indent_4 {
   text-indent: 20px;
 }
 
-#wgerhioltm .gt_indent_5 {
+#oszmvkqgsf .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1046,7 +1082,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="tibble" class="level2"><h2 class="anchored" data-anchor-id="tibble">Tibble</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
+<details><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
 <span>  `Variable Name` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"condit"</span>, <span class="st">"fb"</span>, <span class="st">"bandOrder"</span>, <span class="st">"tOrder"</span>, <span class="st">"expMode"</span>, <span class="st">"trainStage"</span>,</span>
 <span>                      <span class="st">"expStage"</span>, <span class="st">"band"</span>, <span class="st">"vb"</span>, <span class="st">"lowBound"</span>, <span class="st">"feedback"</span>, <span class="st">"stage"</span><span class="op">)</span>,</span>
 <span>  `Levels` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Constant, Varied"</span>, </span>
@@ -1076,23 +1112,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">)</span></span>
 <span><span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="dyjkkxnzar" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dyjkkxnzar table {
+<div id="gjbdammpfe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#gjbdammpfe table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dyjkkxnzar thead, #dyjkkxnzar tbody, #dyjkkxnzar tfoot, #dyjkkxnzar tr, #dyjkkxnzar td, #dyjkkxnzar th {
+#gjbdammpfe thead, #gjbdammpfe tbody, #gjbdammpfe tfoot, #gjbdammpfe tr, #gjbdammpfe td, #gjbdammpfe th {
   border-style: none;
 }
 
-#dyjkkxnzar p {
+#gjbdammpfe p {
   margin: 0;
   padding: 0;
 }
 
-#dyjkkxnzar .gt_table {
+#gjbdammpfe .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1118,12 +1154,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#dyjkkxnzar .gt_caption {
+#gjbdammpfe .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dyjkkxnzar .gt_title {
+#gjbdammpfe .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1135,7 +1171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#dyjkkxnzar .gt_subtitle {
+#gjbdammpfe .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1147,7 +1183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#dyjkkxnzar .gt_heading {
+#gjbdammpfe .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1159,13 +1195,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dyjkkxnzar .gt_bottom_border {
+#gjbdammpfe .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dyjkkxnzar .gt_col_headings {
+#gjbdammpfe .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1180,7 +1216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dyjkkxnzar .gt_col_heading {
+#gjbdammpfe .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1200,7 +1236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#dyjkkxnzar .gt_column_spanner_outer {
+#gjbdammpfe .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1212,15 +1248,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#dyjkkxnzar .gt_column_spanner_outer:first-child {
+#gjbdammpfe .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dyjkkxnzar .gt_column_spanner_outer:last-child {
+#gjbdammpfe .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dyjkkxnzar .gt_column_spanner {
+#gjbdammpfe .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1232,11 +1268,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#dyjkkxnzar .gt_spanner_row {
+#gjbdammpfe .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dyjkkxnzar .gt_group_heading {
+#gjbdammpfe .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1262,7 +1298,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#dyjkkxnzar .gt_empty_group_heading {
+#gjbdammpfe .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1277,15 +1313,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#dyjkkxnzar .gt_from_md > :first-child {
+#gjbdammpfe .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dyjkkxnzar .gt_from_md > :last-child {
+#gjbdammpfe .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dyjkkxnzar .gt_row {
+#gjbdammpfe .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1304,7 +1340,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#dyjkkxnzar .gt_stub {
+#gjbdammpfe .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1317,7 +1353,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dyjkkxnzar .gt_stub_row_group {
+#gjbdammpfe .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1331,15 +1367,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#dyjkkxnzar .gt_row_group_first td {
+#gjbdammpfe .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dyjkkxnzar .gt_row_group_first th {
+#gjbdammpfe .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dyjkkxnzar .gt_summary_row {
+#gjbdammpfe .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1349,16 +1385,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dyjkkxnzar .gt_first_summary_row {
+#gjbdammpfe .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dyjkkxnzar .gt_first_summary_row.thick {
+#gjbdammpfe .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dyjkkxnzar .gt_last_summary_row {
+#gjbdammpfe .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1368,7 +1404,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#dyjkkxnzar .gt_grand_summary_row {
+#gjbdammpfe .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1378,7 +1414,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dyjkkxnzar .gt_first_grand_summary_row {
+#gjbdammpfe .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1388,7 +1424,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#dyjkkxnzar .gt_last_grand_summary_row_top {
+#gjbdammpfe .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1398,11 +1434,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#dyjkkxnzar .gt_striped {
+#gjbdammpfe .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dyjkkxnzar .gt_table_body {
+#gjbdammpfe .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1411,7 +1447,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#dyjkkxnzar .gt_footnotes {
+#gjbdammpfe .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1425,7 +1461,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dyjkkxnzar .gt_footnote {
+#gjbdammpfe .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1434,7 +1470,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dyjkkxnzar .gt_sourcenotes {
+#gjbdammpfe .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1448,7 +1484,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dyjkkxnzar .gt_sourcenote {
+#gjbdammpfe .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1456,63 +1492,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dyjkkxnzar .gt_left {
+#gjbdammpfe .gt_left {
   text-align: left;
 }
 
-#dyjkkxnzar .gt_center {
+#gjbdammpfe .gt_center {
   text-align: center;
 }
 
-#dyjkkxnzar .gt_right {
+#gjbdammpfe .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dyjkkxnzar .gt_font_normal {
+#gjbdammpfe .gt_font_normal {
   font-weight: normal;
 }
 
-#dyjkkxnzar .gt_font_bold {
+#gjbdammpfe .gt_font_bold {
   font-weight: bold;
 }
 
-#dyjkkxnzar .gt_font_italic {
+#gjbdammpfe .gt_font_italic {
   font-style: italic;
 }
 
-#dyjkkxnzar .gt_super {
+#gjbdammpfe .gt_super {
   font-size: 65%;
 }
 
-#dyjkkxnzar .gt_footnote_marks {
+#gjbdammpfe .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dyjkkxnzar .gt_asterisk {
+#gjbdammpfe .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dyjkkxnzar .gt_indent_1 {
+#gjbdammpfe .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dyjkkxnzar .gt_indent_2 {
+#gjbdammpfe .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dyjkkxnzar .gt_indent_3 {
+#gjbdammpfe .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dyjkkxnzar .gt_indent_4 {
+#gjbdammpfe .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dyjkkxnzar .gt_indent_5 {
+#gjbdammpfe .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1590,7 +1626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="tribble" class="level2"><h2 class="anchored" data-anchor-id="tribble">Tribble</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">tribble</span><span class="op">(</span></span>
+<details><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">tribble</span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">Variable</span>, <span class="op">~</span><span class="va">Levels</span>, <span class="op">~</span><span class="va">Description</span>,</span>
 <span>  <span class="st">"condit"</span>, <span class="st">"Constant, Varied"</span>, <span class="st">"Conditions under which training was performed. In 'Constant' only one velocity band was used, in 'Varied' three different bands were used."</span>,</span>
 <span>  <span class="st">"fb"</span>, <span class="st">"Continuous, Ordinal"</span>, <span class="st">"Two types of feedback given to the subjects. The 'Continuous' type involved ongoing feedback whereas 'Ordinal' feedback type was rank-based"</span>,</span>
@@ -1610,23 +1646,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>                locations <span class="op">=</span> <span class="fu">cells_column_labels</span><span class="op">(</span><span class="op">)</span></span>
 <span>        <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="blxchzimhy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#blxchzimhy table {
+<div id="fjbatskkfd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fjbatskkfd table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#blxchzimhy thead, #blxchzimhy tbody, #blxchzimhy tfoot, #blxchzimhy tr, #blxchzimhy td, #blxchzimhy th {
+#fjbatskkfd thead, #fjbatskkfd tbody, #fjbatskkfd tfoot, #fjbatskkfd tr, #fjbatskkfd td, #fjbatskkfd th {
   border-style: none;
 }
 
-#blxchzimhy p {
+#fjbatskkfd p {
   margin: 0;
   padding: 0;
 }
 
-#blxchzimhy .gt_table {
+#fjbatskkfd .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1652,12 +1688,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#blxchzimhy .gt_caption {
+#fjbatskkfd .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#blxchzimhy .gt_title {
+#fjbatskkfd .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1669,7 +1705,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#blxchzimhy .gt_subtitle {
+#fjbatskkfd .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1681,7 +1717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#blxchzimhy .gt_heading {
+#fjbatskkfd .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1693,13 +1729,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#blxchzimhy .gt_bottom_border {
+#fjbatskkfd .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#blxchzimhy .gt_col_headings {
+#fjbatskkfd .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1714,7 +1750,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#blxchzimhy .gt_col_heading {
+#fjbatskkfd .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1734,7 +1770,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#blxchzimhy .gt_column_spanner_outer {
+#fjbatskkfd .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1746,15 +1782,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#blxchzimhy .gt_column_spanner_outer:first-child {
+#fjbatskkfd .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#blxchzimhy .gt_column_spanner_outer:last-child {
+#fjbatskkfd .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#blxchzimhy .gt_column_spanner {
+#fjbatskkfd .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1766,11 +1802,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#blxchzimhy .gt_spanner_row {
+#fjbatskkfd .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#blxchzimhy .gt_group_heading {
+#fjbatskkfd .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1796,7 +1832,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#blxchzimhy .gt_empty_group_heading {
+#fjbatskkfd .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1811,15 +1847,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#blxchzimhy .gt_from_md > :first-child {
+#fjbatskkfd .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#blxchzimhy .gt_from_md > :last-child {
+#fjbatskkfd .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#blxchzimhy .gt_row {
+#fjbatskkfd .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1838,7 +1874,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#blxchzimhy .gt_stub {
+#fjbatskkfd .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1851,7 +1887,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#blxchzimhy .gt_stub_row_group {
+#fjbatskkfd .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1865,15 +1901,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#blxchzimhy .gt_row_group_first td {
+#fjbatskkfd .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#blxchzimhy .gt_row_group_first th {
+#fjbatskkfd .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#blxchzimhy .gt_summary_row {
+#fjbatskkfd .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1883,16 +1919,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#blxchzimhy .gt_first_summary_row {
+#fjbatskkfd .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#blxchzimhy .gt_first_summary_row.thick {
+#fjbatskkfd .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#blxchzimhy .gt_last_summary_row {
+#fjbatskkfd .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1902,7 +1938,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#blxchzimhy .gt_grand_summary_row {
+#fjbatskkfd .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1912,7 +1948,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#blxchzimhy .gt_first_grand_summary_row {
+#fjbatskkfd .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1922,7 +1958,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#blxchzimhy .gt_last_grand_summary_row_top {
+#fjbatskkfd .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1932,11 +1968,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#blxchzimhy .gt_striped {
+#fjbatskkfd .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#blxchzimhy .gt_table_body {
+#fjbatskkfd .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1945,7 +1981,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#blxchzimhy .gt_footnotes {
+#fjbatskkfd .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1959,7 +1995,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#blxchzimhy .gt_footnote {
+#fjbatskkfd .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1968,7 +2004,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#blxchzimhy .gt_sourcenotes {
+#fjbatskkfd .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1982,7 +2018,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#blxchzimhy .gt_sourcenote {
+#fjbatskkfd .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1990,63 +2026,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#blxchzimhy .gt_left {
+#fjbatskkfd .gt_left {
   text-align: left;
 }
 
-#blxchzimhy .gt_center {
+#fjbatskkfd .gt_center {
   text-align: center;
 }
 
-#blxchzimhy .gt_right {
+#fjbatskkfd .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#blxchzimhy .gt_font_normal {
+#fjbatskkfd .gt_font_normal {
   font-weight: normal;
 }
 
-#blxchzimhy .gt_font_bold {
+#fjbatskkfd .gt_font_bold {
   font-weight: bold;
 }
 
-#blxchzimhy .gt_font_italic {
+#fjbatskkfd .gt_font_italic {
   font-style: italic;
 }
 
-#blxchzimhy .gt_super {
+#fjbatskkfd .gt_super {
   font-size: 65%;
 }
 
-#blxchzimhy .gt_footnote_marks {
+#fjbatskkfd .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#blxchzimhy .gt_asterisk {
+#fjbatskkfd .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#blxchzimhy .gt_indent_1 {
+#fjbatskkfd .gt_indent_1 {
   text-indent: 5px;
 }
 
-#blxchzimhy .gt_indent_2 {
+#fjbatskkfd .gt_indent_2 {
   text-indent: 10px;
 }
 
-#blxchzimhy .gt_indent_3 {
+#fjbatskkfd .gt_indent_3 {
   text-indent: 15px;
 }
 
-#blxchzimhy .gt_indent_4 {
+#fjbatskkfd .gt_indent_4 {
   text-indent: 20px;
 }
 
-#blxchzimhy .gt_indent_5 {
+#fjbatskkfd .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2435,7 +2471,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<details><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create a data frame</span></span>
+<details><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create a data frame</span></span>
 <span><span class="va">var_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>  condit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Constant"</span>, <span class="st">"Varied"</span><span class="op">)</span>,</span>
 <span>  fb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Continuous"</span>, <span class="st">"Ordinal"</span><span class="op">)</span>,</span>
@@ -3107,313 +3143,356 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb10" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> HTW Data Dictionary</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> last-modified</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Analysis, R]</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="an">page-layout:</span><span class="co"> full</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="an">code-fold:</span><span class="co"> true</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="an">code-tools:</span><span class="co"> true</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">  eval: true</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="fu">### Trial-level data - variables</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>id - unique subject identifier </span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>condit - primary training manipulation, Constant vs. Varied. </span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>tOrder - order of blocks in no-feedback testing stage (extrapolation first or re-do train first)</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>bandType - whether band was trained on (trained) or novel in test phase (extrapolation)</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>expMode2 - Phase of Experiment - Train, Train-Nf, Test, Test-Fb</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>gt.train - training trial number - running total </span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>vb - velocity band on current trial - Levels: 100-300 350-550 600-800 800-1000 1000-1200 1200-1400</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>bandInt - numeric value of lower bound of vb: 100, 350, 600, 800, 1000, 1200</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>vx - X velocity generated by subject on current trial </span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>dist - absolute distance from edge of target velocity band (0 if vx falls within band)</span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>sdist - signed distance from edge of target velocity band</span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>vy - y velocity generated by subject (not relevant to task)</span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>result - categorical result of throw in relation to target band - Levels: Over, Under, Hit</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>vxCat - which velocity band the current trial throw falls into</span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>prev - Target velocity band on previous throw</span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>bandSeq - Previous Target Band and current Target Band, e.g. 800-&gt;1000  1000-&gt;1200 etc. </span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, lme4, emmeans, here, knitr, kableExtra,gt)</span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dplyr.summarise.inform =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/dPrune-07-27-23.rds"</span>)) <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>()</span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>stage <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>stage, <span class="at">ordered =</span> <span class="cn">TRUE</span>, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>, <span class="st">"9"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span>, <span class="st">"13"</span>, <span class="st">"14"</span>, <span class="st">"15"</span>, <span class="st">"16"</span>, <span class="st">"17"</span>, <span class="st">"18"</span>, <span class="st">"19"</span>, <span class="st">"20"</span>, <span class="st">"21"</span>, <span class="st">"22"</span>, <span class="st">"23"</span>))</span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>tOrder <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>tOrder, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"testFirst"</span>, <span class="st">"trainFirst"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Test First"</span>, <span class="st">"Train First"</span>))</span>
-<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>bandOrder <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>bandOrder, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"orig"</span>, <span class="st">"rev"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Original"</span>, <span class="st">"Reverse"</span>))</span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>fb <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>fb, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"continuous"</span>, <span class="st">"ordinal"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Continuous"</span>, <span class="st">"Ordinal"</span>))</span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">as.factor</span>(d<span class="sc">$</span>id), <span class="at">fullCond =</span> <span class="fu">as.factor</span>(fullCond)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">relocate</span>(bandOrder, <span class="at">.after =</span> fb)</span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a><span class="co"># create table with number of unique ids per condition, use kable</span></span>
-<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> <span class="fu">select</span>(fullCond,id) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(fullCond) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
-<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>t1<span class="ot">=</span>d <span class="sc">%&gt;%</span> <span class="fu">select</span>(condit,fb,bandOrder,tOrder,id) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit,fb,bandOrder,tOrder) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>()) </span>
-<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>t1 <span class="sc">%&gt;%</span> <span class="fu">kbl</span>(<span class="at">col.names=</span><span class="fu">c</span>(<span class="st">"Condition"</span>,<span class="st">"Feedback"</span>,<span class="st">"Band_Order"</span>,<span class="st">"Test Order"</span>,<span class="st">"N"</span>),<span class="at">escape=</span><span class="cn">FALSE</span>) </span>
-<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>t1<span class="ot">=</span>d <span class="sc">%&gt;%</span> <span class="fu">select</span>(condit,fb,bandOrder,id) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit,fb,bandOrder) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>()) </span>
-<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>t1</span>
-<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tibble1</span></span>
-<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the tribble</span></span>
-<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>data_tbl <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable_Name =</span> <span class="fu">c</span>(<span class="st">"condit"</span>, <span class="st">"fb"</span>, <span class="st">"bandOrder"</span>, <span class="st">"tOrder"</span>, <span class="st">"expMode"</span>, <span class="st">"trainStage"</span>, <span class="st">"expStage"</span>, <span class="st">"band"</span>, <span class="st">"vb"</span>, <span class="st">"lowBound"</span>, <span class="st">"feedback"</span>, <span class="st">"stage"</span>),</span>
-<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable_Levels =</span> <span class="fu">c</span>(<span class="st">"Constant, Varied"</span>, <span class="st">"Continuous, Ordinal"</span>, <span class="st">"Original, Reverse"</span>, <span class="st">"Test First, Train First"</span>, <span class="st">"train, train-Nf, test-Nf, test-train-nf, test-feedback"</span>, <span class="st">"Beginning, Middle, End, Test"</span>, <span class="st">"TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3"</span>, <span class="st">"1, 2, 3, 4, 5, 6"</span>, <span class="st">"100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400"</span>, <span class="st">"100, 350, 600, 800, 1000, 1200"</span>, <span class="st">"0, 1"</span>, <span class="st">"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23"</span>),</span>
-<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a>  <span class="at">Description =</span> <span class="fu">rep</span>(<span class="st">"Unknown"</span>, <span class="dv">12</span>)</span>
-<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the tribble</span></span>
-<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a>data_tbl <span class="sc">%&gt;%</span> gt<span class="sc">::</span><span class="fu">gt</span>()</span>
-<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tibble</span></span>
-<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Variable Name</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"condit"</span>, <span class="st">"fb"</span>, <span class="st">"bandOrder"</span>, <span class="st">"tOrder"</span>, <span class="st">"expMode"</span>, <span class="st">"trainStage"</span>,</span>
-<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"expStage"</span>, <span class="st">"band"</span>, <span class="st">"vb"</span>, <span class="st">"lowBound"</span>, <span class="st">"feedback"</span>, <span class="st">"stage"</span>),</span>
-<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Levels</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Constant, Varied"</span>, </span>
-<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Continuous, Ordinal"</span>,</span>
-<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Original, Reverse"</span>,</span>
-<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Test First, Train First"</span>,</span>
-<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a>               <span class="st">"train, train-Nf, test-Nf, test-train-nf, test-feedback"</span>,</span>
-<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Beginning, Middle, End, Test"</span>,</span>
-<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a>               <span class="st">"TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3"</span>,</span>
-<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a>               <span class="st">"1, 2, 3, 4, 5, 6"</span>,</span>
-<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a>               <span class="st">"100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400"</span>,</span>
-<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a>               <span class="st">"100, 350, 600, 800, 1000, 1200"</span>,</span>
-<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a>               <span class="st">"0, 1"</span>,</span>
-<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a>               <span class="st">"1 to 23"</span>),</span>
-<span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Description</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Conditions under which training was performed. In 'Constant' only one velocity band was used, in 'Varied' three different bands were used."</span>,</span>
-<span id="cb10-104"><a href="#cb10-104" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Two types of feedback given to the subjects. The 'Continuous' type involved ongoing feedback whereas 'Ordinal' feedback type was rank-based"</span>,</span>
-<span id="cb10-105"><a href="#cb10-105" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"The order in which the velocity bands were presented for the 'Hit The Wall' task - either 'Original' or 'Reverse'."</span>,</span>
-<span id="cb10-106"><a href="#cb10-106" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"The order of test and train stages."</span>,</span>
-<span id="cb10-107"><a href="#cb10-107" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Specifies the mode of the experiment. Can be one of the training stages, no-feedback testing from the training or novel extrapolation band, or feedback testing."</span>,</span>
-<span id="cb10-108"><a href="#cb10-108" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"The stage of training for the individual - starting, middle, end, or if they're testing."</span>,</span>
-<span id="cb10-109"><a href="#cb10-109" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"The stages in the experiment which includes the start and end of training, intermediate tests, and final test stages."</span>,</span>
-<span id="cb10-110"><a href="#cb10-110" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Identifies the 6 different velocity bands used in the experiment."</span>,</span>
-<span id="cb10-111"><a href="#cb10-111" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Specifies the range of each velocity band used in the experiment."</span>,</span>
-<span id="cb10-112"><a href="#cb10-112" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"The lower boundary of each velocity band."</span>,</span>
-<span id="cb10-113"><a href="#cb10-113" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Binary representation of whether feedback was provided (1) or not (0)"</span>,</span>
-<span id="cb10-114"><a href="#cb10-114" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"The various stages during testing and feedback, represented by numbers from 1 to 23."</span>)</span>
-<span id="cb10-115"><a href="#cb10-115" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-116"><a href="#cb10-116" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> gt<span class="sc">::</span><span class="fu">gt</span>()</span>
-<span id="cb10-117"><a href="#cb10-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-118"><a href="#cb10-118" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-119"><a href="#cb10-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-120"><a href="#cb10-120" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tribble</span></span>
-<span id="cb10-123"><a href="#cb10-123" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-124"><a href="#cb10-124" aria-hidden="true" tabindex="-1"></a><span class="fu">tribble</span>(</span>
-<span id="cb10-125"><a href="#cb10-125" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Variable, <span class="sc">~</span>Levels, <span class="sc">~</span>Description,</span>
-<span id="cb10-126"><a href="#cb10-126" aria-hidden="true" tabindex="-1"></a>  <span class="st">"condit"</span>, <span class="st">"Constant, Varied"</span>, <span class="st">"Conditions under which training was performed. In 'Constant' only one velocity band was used, in 'Varied' three different bands were used."</span>,</span>
-<span id="cb10-127"><a href="#cb10-127" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fb"</span>, <span class="st">"Continuous, Ordinal"</span>, <span class="st">"Two types of feedback given to the subjects. The 'Continuous' type involved ongoing feedback whereas 'Ordinal' feedback type was rank-based"</span>,</span>
-<span id="cb10-128"><a href="#cb10-128" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bandOrder"</span>, <span class="st">"Original, Reverse"</span>, <span class="st">"The order in which the velocity bands were presented for the 'Hit The Wall' task - either 'Original' or 'Reverse'."</span>,</span>
-<span id="cb10-129"><a href="#cb10-129" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tOrder"</span>, <span class="st">"Test First, Train First"</span>, <span class="st">"The order of test and train stages."</span>,</span>
-<span id="cb10-130"><a href="#cb10-130" aria-hidden="true" tabindex="-1"></a>  <span class="st">"expMode"</span>, <span class="st">"train, train-Nf, test-Nf, test-train-nf, test-feedback"</span>, <span class="st">"Specifies the mode of the experiment. Can be one of the training stages, no-feedback testing from the training or novel extrapolation band, or feedback testing."</span>,</span>
-<span id="cb10-131"><a href="#cb10-131" aria-hidden="true" tabindex="-1"></a>  <span class="st">"trainStage"</span>, <span class="st">"Beginning, Middle, End, Test"</span>, <span class="st">"The stage of training for the individual - starting, middle, end, or if they're testing."</span>,</span>
-<span id="cb10-132"><a href="#cb10-132" aria-hidden="true" tabindex="-1"></a>  <span class="st">"expStage"</span>, <span class="st">"TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3"</span>, <span class="st">"The stages in the experiment which includes the start and end of training, intermediate tests, and final test stages."</span>,</span>
-<span id="cb10-133"><a href="#cb10-133" aria-hidden="true" tabindex="-1"></a>  <span class="st">"band"</span>, <span class="st">"1, 2, 3, 4, 5, 6"</span>, <span class="st">"Identifies the 6 different velocity bands used in the experiment."</span>,</span>
-<span id="cb10-134"><a href="#cb10-134" aria-hidden="true" tabindex="-1"></a>  <span class="st">"vb"</span>, <span class="st">"100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400"</span>, <span class="st">"Specifies the range of each velocity band used in the experiment."</span>,</span>
-<span id="cb10-135"><a href="#cb10-135" aria-hidden="true" tabindex="-1"></a>  <span class="st">"lowBound"</span>, <span class="st">"100, 350, 600, 800, 1000, 1200"</span>, <span class="st">"The lower boundary of each velocity band."</span>,</span>
-<span id="cb10-136"><a href="#cb10-136" aria-hidden="true" tabindex="-1"></a>  <span class="st">"feedback"</span>, <span class="st">"0, 1"</span>, <span class="st">"Binary representation of whether feedback was provided (1) or not (0)"</span>,</span>
-<span id="cb10-137"><a href="#cb10-137" aria-hidden="true" tabindex="-1"></a>  <span class="st">"stage"</span>, <span class="st">"1 to 23"</span>, <span class="st">"The various stages during testing and feedback, represented by numbers from 1 to 23."</span></span>
-<span id="cb10-138"><a href="#cb10-138" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> gt<span class="sc">::</span><span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb10-139"><a href="#cb10-139" aria-hidden="true" tabindex="-1"></a>        gt<span class="sc">::</span><span class="fu">tab_style</span>(</span>
-<span id="cb10-140"><a href="#cb10-140" aria-hidden="true" tabindex="-1"></a>                <span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>),</span>
-<span id="cb10-141"><a href="#cb10-141" aria-hidden="true" tabindex="-1"></a>                <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()</span>
-<span id="cb10-142"><a href="#cb10-142" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb10-143"><a href="#cb10-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-144"><a href="#cb10-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-145"><a href="#cb10-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-146"><a href="#cb10-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-147"><a href="#cb10-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-148"><a href="#cb10-148" aria-hidden="true" tabindex="-1"></a>| Variable Name | Levels | Description |</span>
-<span id="cb10-149"><a href="#cb10-149" aria-hidden="true" tabindex="-1"></a>| --- | --- | --- |</span>
-<span id="cb10-150"><a href="#cb10-150" aria-hidden="true" tabindex="-1"></a>| <span class="in">`condit`</span> | Constant, Varied | Conditions under which training was performed. In "Constant" only one velocity band was used, in "Varied" three different bands were used. |</span>
-<span id="cb10-151"><a href="#cb10-151" aria-hidden="true" tabindex="-1"></a>| <span class="in">`fb`</span> | Continuous, Ordinal | Two types of feedback given to the subjects. The "Continuous" type involved ongoing feedback whereas "Ordinal" feedback type was rank-based |</span>
-<span id="cb10-152"><a href="#cb10-152" aria-hidden="true" tabindex="-1"></a>| <span class="in">`bandOrder`</span> | Original, Reverse | The order in which the velocity bands were presented for the "Hit The Wall" task - either "Original" or "Reverse". |</span>
-<span id="cb10-153"><a href="#cb10-153" aria-hidden="true" tabindex="-1"></a>| <span class="in">`tOrder`</span> | Test First, Train First | The order of test and train stages. |</span>
-<span id="cb10-154"><a href="#cb10-154" aria-hidden="true" tabindex="-1"></a>| <span class="in">`expMode`</span> | train, train-Nf, test-Nf, test-train-nf, test-feedback | Specifies the mode of the experiment. Can be one of the training stages, no-feedback testing from the training or novel extrapolation band, or feedback testing. |</span>
-<span id="cb10-155"><a href="#cb10-155" aria-hidden="true" tabindex="-1"></a>| <span class="in">`trainStage`</span> | Beginning, Middle, End, Test | The stage of training for the individual - starting, middle, end, or if they're testing. |</span>
-<span id="cb10-156"><a href="#cb10-156" aria-hidden="true" tabindex="-1"></a>| <span class="in">`expStage`</span> | TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3 | The stages in the experiment which includes the start and end of training, intermediate tests, and final test stages. |</span>
-<span id="cb10-157"><a href="#cb10-157" aria-hidden="true" tabindex="-1"></a>| <span class="in">`band`</span> | 1, 2, 3, 4, 5, 6 | Identifies the 6 different velocity bands used in the experiment. |</span>
-<span id="cb10-158"><a href="#cb10-158" aria-hidden="true" tabindex="-1"></a>| <span class="in">`vb`</span> | 100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400 | Specifies the range of each velocity band used in the experiment. |</span>
-<span id="cb10-159"><a href="#cb10-159" aria-hidden="true" tabindex="-1"></a>| <span class="in">`lowBound`</span> | 100, 350, 600, 800, 1000, 1200 | The lower boundary of each velocity band. |</span>
-<span id="cb10-160"><a href="#cb10-160" aria-hidden="true" tabindex="-1"></a>| <span class="in">`feedback`</span> | 0, 1 | Binary representation of whether feedback was provided (1) or not (0) |</span>
-<span id="cb10-161"><a href="#cb10-161" aria-hidden="true" tabindex="-1"></a>| <span class="in">`stage`</span> | 1 to 23 | The various stages during testing and feedback, represented by numbers from 1 to 23. |</span>
-<span id="cb10-162"><a href="#cb10-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-163"><a href="#cb10-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-164"><a href="#cb10-164" aria-hidden="true" tabindex="-1"></a>----------</span>
-<span id="cb10-165"><a href="#cb10-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-166"><a href="#cb10-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-167"><a href="#cb10-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-168"><a href="#cb10-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-169"><a href="#cb10-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-170"><a href="#cb10-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-171"><a href="#cb10-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-172"><a href="#cb10-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-173"><a href="#cb10-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-174"><a href="#cb10-174" aria-hidden="true" tabindex="-1"></a><span class="fu">## Description table</span></span>
-<span id="cb10-175"><a href="#cb10-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-176"><a href="#cb10-176" aria-hidden="true" tabindex="-1"></a>| Variable Name | Variable Levels                 | Description                                                                               |</span>
-<span id="cb10-177"><a href="#cb10-177" aria-hidden="true" tabindex="-1"></a>|---------------|---------------------------------|-------------------------------------------------------------------------------------------|</span>
-<span id="cb10-178"><a href="#cb10-178" aria-hidden="true" tabindex="-1"></a>| condit        | Constant, Varied                | Condition of the experiment: constant or varied                                             |</span>
-<span id="cb10-179"><a href="#cb10-179" aria-hidden="true" tabindex="-1"></a>| fb            | Continuous, Ordinal             | Type of feedback received: continuous or ordinal                                           |</span>
-<span id="cb10-180"><a href="#cb10-180" aria-hidden="true" tabindex="-1"></a>| bandOrder     | Original, Reverse               | Order of bands: original or reverse                                                        |</span>
-<span id="cb10-181"><a href="#cb10-181" aria-hidden="true" tabindex="-1"></a>| tOrder        | Test First, Train First         | Order of testing and training stages: test first or train first                            |</span>
-<span id="cb10-182"><a href="#cb10-182" aria-hidden="true" tabindex="-1"></a>| expMode       | train, train-Nf, test-Nf, etc.  | Mode of the experiment: train, train-Nf, test-Nf, etc.                                    |</span>
-<span id="cb10-183"><a href="#cb10-183" aria-hidden="true" tabindex="-1"></a>| trainStage    | Beginning, Middle, End, Test    | Stage of the training: beginning, middle, end, or test                                    |</span>
-<span id="cb10-184"><a href="#cb10-184" aria-hidden="true" tabindex="-1"></a>| expStage      | TrainStart, intTest1, etc.      | Stage of the experiment: TrainStart, intTest1, TrainMid1, etc.                            |</span>
-<span id="cb10-185"><a href="#cb10-185" aria-hidden="true" tabindex="-1"></a>| band          | 1, 2, 3, 4, 5, 6               | Band number                                                                                 |</span>
-<span id="cb10-186"><a href="#cb10-186" aria-hidden="true" tabindex="-1"></a>| vb            | 100-300, 350-550, etc.         | Velocity band range                                                                         |</span>
-<span id="cb10-187"><a href="#cb10-187" aria-hidden="true" tabindex="-1"></a>| lowBound      | 100, 350, 600, etc.            | Lower bound of the velocity band range                                                      |</span>
-<span id="cb10-188"><a href="#cb10-188" aria-hidden="true" tabindex="-1"></a>| feedback      | 0, 1                           | Feedback type: 0 (no feedback), 1 (feedback)                                               |</span>
-<span id="cb10-189"><a href="#cb10-189" aria-hidden="true" tabindex="-1"></a>| stage         | 1, 2, 3, etc.                  | Stage number of the experiment                                                              |</span>
-<span id="cb10-190"><a href="#cb10-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-191"><a href="#cb10-191" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb10-192"><a href="#cb10-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-193"><a href="#cb10-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-194"><a href="#cb10-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-195"><a href="#cb10-195" aria-hidden="true" tabindex="-1"></a><span class="fu">## Ascii table</span></span>
-<span id="cb10-196"><a href="#cb10-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-197"><a href="#cb10-197" aria-hidden="true" tabindex="-1"></a>| Variable Name | Variable Levels                                            | Description                                                          |</span>
-<span id="cb10-198"><a href="#cb10-198" aria-hidden="true" tabindex="-1"></a>|---------------|------------------------------------------------------------|----------------------------------------------------------------------|</span>
-<span id="cb10-199"><a href="#cb10-199" aria-hidden="true" tabindex="-1"></a>| condit        | Constant, Varied                                           | Unknown                                                              |</span>
-<span id="cb10-200"><a href="#cb10-200" aria-hidden="true" tabindex="-1"></a>| fb            | Continuous, Ordinal                                        | Unknown                                                              |</span>
-<span id="cb10-201"><a href="#cb10-201" aria-hidden="true" tabindex="-1"></a>| bandOrder     | Original, Reverse                                          | Unknown                                                              |</span>
-<span id="cb10-202"><a href="#cb10-202" aria-hidden="true" tabindex="-1"></a>| tOrder        | Test First, Train First                                     | Unknown                                                              |</span>
-<span id="cb10-203"><a href="#cb10-203" aria-hidden="true" tabindex="-1"></a>| expMode       | train, train-Nf, test-Nf, test-train-nf, test-feedback      | Unknown                                                              |</span>
-<span id="cb10-204"><a href="#cb10-204" aria-hidden="true" tabindex="-1"></a>| trainStage    | Beginning, Middle, End, Test                                | Unknown                                                              |</span>
-<span id="cb10-205"><a href="#cb10-205" aria-hidden="true" tabindex="-1"></a>| expStage      | TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3 | Unknown                                                              |</span>
-<span id="cb10-206"><a href="#cb10-206" aria-hidden="true" tabindex="-1"></a>| band          | 1, 2, 3, 4, 5, 6                                           | Unknown                                                              |</span>
-<span id="cb10-207"><a href="#cb10-207" aria-hidden="true" tabindex="-1"></a>| vb            | 100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400 | Unknown                                                              |</span>
-<span id="cb10-208"><a href="#cb10-208" aria-hidden="true" tabindex="-1"></a>| lowBound      | 100, 350, 600, 800, 1000, 1200                             | Unknown                                                              |</span>
-<span id="cb10-209"><a href="#cb10-209" aria-hidden="true" tabindex="-1"></a>| feedback      | 0, 1                                                       | Unknown                                                              |</span>
-<span id="cb10-210"><a href="#cb10-210" aria-hidden="true" tabindex="-1"></a>| stage         | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 | Unknown                                                              |</span>
-<span id="cb10-211"><a href="#cb10-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-212"><a href="#cb10-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-213"><a href="#cb10-213" aria-hidden="true" tabindex="-1"></a>| Default | Left | Right | Center |</span>
-<span id="cb10-214"><a href="#cb10-214" aria-hidden="true" tabindex="-1"></a>|---------|:-----|------:|:------:|</span>
-<span id="cb10-215"><a href="#cb10-215" aria-hidden="true" tabindex="-1"></a>| 12      | 12   |    12 |   12   |</span>
-<span id="cb10-216"><a href="#cb10-216" aria-hidden="true" tabindex="-1"></a>| 123     | 123  |   123 |  123   |</span>
-<span id="cb10-217"><a href="#cb10-217" aria-hidden="true" tabindex="-1"></a>| 1       | 1    |     1 |   1    |</span>
-<span id="cb10-218"><a href="#cb10-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-219"><a href="#cb10-219" aria-hidden="true" tabindex="-1"></a>: Demonstration of pipe table syntax</span>
-<span id="cb10-220"><a href="#cb10-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-221"><a href="#cb10-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-222"><a href="#cb10-222" aria-hidden="true" tabindex="-1"></a><span class="fu">## smaller table</span></span>
-<span id="cb10-223"><a href="#cb10-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-224"><a href="#cb10-224" aria-hidden="true" tabindex="-1"></a>| Variable Name | Variable Levels                            |</span>
-<span id="cb10-225"><a href="#cb10-225" aria-hidden="true" tabindex="-1"></a>|---------------|--------------------------------------------|</span>
-<span id="cb10-226"><a href="#cb10-226" aria-hidden="true" tabindex="-1"></a>| condit        | "Constant", "Varied"                       |</span>
-<span id="cb10-227"><a href="#cb10-227" aria-hidden="true" tabindex="-1"></a>| fb            | "Continuous", "Ordinal"                    |</span>
-<span id="cb10-228"><a href="#cb10-228" aria-hidden="true" tabindex="-1"></a>| bandOrder     | "Original", "Reverse"                      |</span>
-<span id="cb10-229"><a href="#cb10-229" aria-hidden="true" tabindex="-1"></a>| tOrder        | "Test First", "Train First"                |</span>
-<span id="cb10-230"><a href="#cb10-230" aria-hidden="true" tabindex="-1"></a>| expMode       | "train", "train-Nf", "test-Nf", "test-train-nf", "test-feedback" |</span>
-<span id="cb10-231"><a href="#cb10-231" aria-hidden="true" tabindex="-1"></a>| trainStage    | "Beginning", "Middle", "End", "Test"        |</span>
-<span id="cb10-232"><a href="#cb10-232" aria-hidden="true" tabindex="-1"></a>| expStage      | "TrainStart", "intTest1", "TrainMid1", "intTest2", "TrainMid2", "intTest3", "TrainEnd", "Test1", "Test2", "Test3" |</span>
-<span id="cb10-233"><a href="#cb10-233" aria-hidden="true" tabindex="-1"></a>| band          | "1", "2", "3", "4", "5", "6"                |</span>
-<span id="cb10-234"><a href="#cb10-234" aria-hidden="true" tabindex="-1"></a>| vb            | "100-300", "350-550", "600-800", "800-1000", "1000-1200", "1200-1400" |</span>
-<span id="cb10-235"><a href="#cb10-235" aria-hidden="true" tabindex="-1"></a>| lowBound      | "100", "350", "600", "800", "1000", "1200" |</span>
-<span id="cb10-236"><a href="#cb10-236" aria-hidden="true" tabindex="-1"></a>| feedback      | "0", "1"                                   |</span>
-<span id="cb10-237"><a href="#cb10-237" aria-hidden="true" tabindex="-1"></a>| stage         | "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" |</span>
-<span id="cb10-238"><a href="#cb10-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-239"><a href="#cb10-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-240"><a href="#cb10-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-243"><a href="#cb10-243" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-244"><a href="#cb10-244" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: asis</span></span>
-<span id="cb10-245"><a href="#cb10-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-246"><a href="#cb10-246" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame</span></span>
-<span id="cb10-247"><a href="#cb10-247" aria-hidden="true" tabindex="-1"></a>var_levels <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb10-248"><a href="#cb10-248" aria-hidden="true" tabindex="-1"></a>  <span class="at">condit =</span> <span class="fu">c</span>(<span class="st">"Constant"</span>, <span class="st">"Varied"</span>),</span>
-<span id="cb10-249"><a href="#cb10-249" aria-hidden="true" tabindex="-1"></a>  <span class="at">fb =</span> <span class="fu">c</span>(<span class="st">"Continuous"</span>, <span class="st">"Ordinal"</span>),</span>
-<span id="cb10-250"><a href="#cb10-250" aria-hidden="true" tabindex="-1"></a>  <span class="at">bandOrder =</span> <span class="fu">c</span>(<span class="st">"Original"</span>, <span class="st">"Reverse"</span>),</span>
-<span id="cb10-251"><a href="#cb10-251" aria-hidden="true" tabindex="-1"></a>  <span class="at">tOrder =</span> <span class="fu">c</span>(<span class="st">"Test First"</span>, <span class="st">"Train First"</span>),</span>
-<span id="cb10-252"><a href="#cb10-252" aria-hidden="true" tabindex="-1"></a>  <span class="at">expMode =</span> <span class="fu">c</span>(<span class="st">"train"</span>, <span class="st">"train-Nf"</span>, <span class="st">"test-Nf"</span>, <span class="st">"test-train-nf"</span>, <span class="st">"test-feedback"</span>),</span>
-<span id="cb10-253"><a href="#cb10-253" aria-hidden="true" tabindex="-1"></a>  <span class="at">trainStage =</span> <span class="fu">c</span>(<span class="st">"Beginning"</span>, <span class="st">"Middle"</span>, <span class="st">"End"</span>, <span class="st">"Test"</span>),</span>
-<span id="cb10-254"><a href="#cb10-254" aria-hidden="true" tabindex="-1"></a>  <span class="at">expStage =</span> <span class="fu">c</span>(<span class="st">"TrainStart"</span>, <span class="st">"intTest1"</span>, <span class="st">"TrainMid1"</span>, <span class="st">"intTest2"</span>, <span class="st">"TrainMid2"</span>, <span class="st">"intTest3"</span>, <span class="st">"TrainEnd"</span>, <span class="st">"Test1"</span>, <span class="st">"Test2"</span>, <span class="st">"Test3"</span>),</span>
-<span id="cb10-255"><a href="#cb10-255" aria-hidden="true" tabindex="-1"></a>  <span class="at">band =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>),</span>
-<span id="cb10-256"><a href="#cb10-256" aria-hidden="true" tabindex="-1"></a>  <span class="at">vb =</span> <span class="fu">c</span>(<span class="st">"100-300"</span>, <span class="st">"350-550"</span>, <span class="st">"600-800"</span>, <span class="st">"800-1000"</span>, <span class="st">"1000-1200"</span>, <span class="st">"1200-1400"</span>),</span>
-<span id="cb10-257"><a href="#cb10-257" aria-hidden="true" tabindex="-1"></a>  <span class="at">lowBound =</span> <span class="fu">c</span>(<span class="st">"100"</span>, <span class="st">"350"</span>, <span class="st">"600"</span>, <span class="st">"800"</span>, <span class="st">"1000"</span>, <span class="st">"1200"</span>),</span>
-<span id="cb10-258"><a href="#cb10-258" aria-hidden="true" tabindex="-1"></a>  <span class="at">feedback =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
-<span id="cb10-259"><a href="#cb10-259" aria-hidden="true" tabindex="-1"></a>  <span class="at">stage =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>, <span class="st">"9"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span>, <span class="st">"13"</span>, <span class="st">"14"</span>, <span class="st">"15"</span>, <span class="st">"16"</span>, <span class="st">"17"</span>, <span class="st">"18"</span>, <span class="st">"19"</span>, <span class="st">"20"</span>, <span class="st">"21"</span>, <span class="st">"22"</span>, <span class="st">"23"</span>)</span>
-<span id="cb10-260"><a href="#cb10-260" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-261"><a href="#cb10-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-262"><a href="#cb10-262" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the list to a data frame</span></span>
-<span id="cb10-263"><a href="#cb10-263" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb10-264"><a href="#cb10-264" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable_Name =</span> <span class="fu">names</span>(var_levels),</span>
-<span id="cb10-265"><a href="#cb10-265" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable_Levels =</span> <span class="fu">sapply</span>(var_levels, <span class="cf">function</span>(x) <span class="fu">paste</span>(x, <span class="at">collapse =</span> <span class="st">", "</span>))</span>
-<span id="cb10-266"><a href="#cb10-266" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-267"><a href="#cb10-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-268"><a href="#cb10-268" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a markdown table</span></span>
-<span id="cb10-269"><a href="#cb10-269" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
-<span id="cb10-270"><a href="#cb10-270" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">format =</span> <span class="st">"markdown"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-271"><a href="#cb10-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>))</span>
-<span id="cb10-272"><a href="#cb10-272" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-273"><a href="#cb10-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-274"><a href="#cb10-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-275"><a href="#cb10-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-276"><a href="#cb10-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-277"><a href="#cb10-277" aria-hidden="true" tabindex="-1"></a>| Variable Name | Variable Levels           |</span>
-<span id="cb10-278"><a href="#cb10-278" aria-hidden="true" tabindex="-1"></a>| ------------- | ------------------------- |</span>
-<span id="cb10-279"><a href="#cb10-279" aria-hidden="true" tabindex="-1"></a>| condit        | Constant, Varied          |</span>
-<span id="cb10-280"><a href="#cb10-280" aria-hidden="true" tabindex="-1"></a>| fb            | Continuous, Ordinal       |</span>
-<span id="cb10-281"><a href="#cb10-281" aria-hidden="true" tabindex="-1"></a>| bandOrder     | Original, Reverse         |</span>
-<span id="cb10-282"><a href="#cb10-282" aria-hidden="true" tabindex="-1"></a>| tOrder        | Test First, Train First   |</span>
-<span id="cb10-283"><a href="#cb10-283" aria-hidden="true" tabindex="-1"></a>| expMode       | train, train-Nf, test-Nf, test-train-nf, test-feedback |</span>
-<span id="cb10-284"><a href="#cb10-284" aria-hidden="true" tabindex="-1"></a>| trainStage    | Beginning, Middle, End, Test |</span>
-<span id="cb10-285"><a href="#cb10-285" aria-hidden="true" tabindex="-1"></a>| expStage      | TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3 |</span>
-<span id="cb10-286"><a href="#cb10-286" aria-hidden="true" tabindex="-1"></a>| band          | 1, 2, 3, 4, 5, 6          |</span>
-<span id="cb10-287"><a href="#cb10-287" aria-hidden="true" tabindex="-1"></a>| vb            | 100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400 |</span>
-<span id="cb10-288"><a href="#cb10-288" aria-hidden="true" tabindex="-1"></a>| lowBound      | 100, 350, 600, 800, 1000, 1200 |</span>
-<span id="cb10-289"><a href="#cb10-289" aria-hidden="true" tabindex="-1"></a>| feedback      | 0, 1                     |</span>
-<span id="cb10-290"><a href="#cb10-290" aria-hidden="true" tabindex="-1"></a>| stage         | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 |</span>
-<span id="cb10-291"><a href="#cb10-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-292"><a href="#cb10-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-293"><a href="#cb10-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-294"><a href="#cb10-294" aria-hidden="true" tabindex="-1"></a><span class="fu">### Numeric variables</span></span>
-<span id="cb10-295"><a href="#cb10-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-296"><a href="#cb10-296" aria-hidden="true" tabindex="-1"></a>| Variable Name | Description |</span>
-<span id="cb10-297"><a href="#cb10-297" aria-hidden="true" tabindex="-1"></a>| ------------- | ----------- |</span>
-<span id="cb10-298"><a href="#cb10-298" aria-hidden="true" tabindex="-1"></a>| trial         | Trial number |</span>
-<span id="cb10-299"><a href="#cb10-299" aria-hidden="true" tabindex="-1"></a>| nGoodTrial    | Number of good trials |</span>
-<span id="cb10-300"><a href="#cb10-300" aria-hidden="true" tabindex="-1"></a>| gt.bandStage  | Band stage in game time |</span>
-<span id="cb10-301"><a href="#cb10-301" aria-hidden="true" tabindex="-1"></a>| gt.stage      | Stage in game time |</span>
-<span id="cb10-302"><a href="#cb10-302" aria-hidden="true" tabindex="-1"></a>| gt.train      | Training in game time |</span>
-<span id="cb10-303"><a href="#cb10-303" aria-hidden="true" tabindex="-1"></a>| input         | Input from the participant |</span>
-<span id="cb10-304"><a href="#cb10-304" aria-hidden="true" tabindex="-1"></a>| bandInt       | Band interval |</span>
-<span id="cb10-305"><a href="#cb10-305" aria-hidden="true" tabindex="-1"></a>| highBound     | High boundary of the velocity band |</span>
-<span id="cb10-306"><a href="#cb10-306" aria-hidden="true" tabindex="-1"></a>| runTotal      | Running total of trials |</span>
-<span id="cb10-307"><a href="#cb10-307" aria-hidden="true" tabindex="-1"></a>| dist          | Distance between produced x-velocity and the closest edge of the current velocity band |</span>
-<span id="cb10-308"><a href="#cb10-308" aria-hidden="true" tabindex="-1"></a>| sdist         | Standardized distance |</span>
-<span id="cb10-309"><a href="#cb10-309" aria-hidden="true" tabindex="-1"></a>| vx            | X-velocity of the projectile |</span>
-<span id="cb10-310"><a href="#cb10-310" aria-hidden="true" tabindex="-1"></a>| vxb           | X-velocity at the boundary |</span>
-<span id="cb10-311"><a href="#cb10-311" aria-hidden="true" tabindex="-1"></a>| vxi           | Initial X-velocity |</span>
-<span id="cb10-312"><a href="#cb10-312" aria-hidden="true" tabindex="-1"></a>| vy            | Y-velocity of the projectile |</span>
-<span id="cb10-313"><a href="#cb10-313" aria-hidden="true" tabindex="-1"></a>| nTrain        | Number of training trials |</span>
-<span id="cb10-314"><a href="#cb10-314" aria-hidden="true" tabindex="-1"></a>| nTestNf       | Number of no-feedback testing trials |</span>
-<span id="cb10-315"><a href="#cb10-315" aria-hidden="true" tabindex="-1"></a>| nInt          | Number of interleaved trials |</span>
-<span id="cb10-316"><a href="#cb10-316" aria-hidden="true" tabindex="-1"></a>| nTestF        | Number of feedback testing trials |</span>
-<span id="cb10-317"><a href="#cb10-317" aria-hidden="true" tabindex="-1"></a>| nTotal        | Total number of trials |</span>
-<span id="cb10-318"><a href="#cb10-318" aria-hidden="true" tabindex="-1"></a>| lastTrain     | Last training trial |</span>
-<span id="cb10-319"><a href="#cb10-319" aria-hidden="true" tabindex="-1"></a>| lastTrial     | Last trial |</span>
+<div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> HTW Data Dictionary</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> last-modified</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Analysis, R]</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="an">page-layout:</span><span class="co"> full</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="an">code-fold:</span><span class="co"> true</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="an">code-tools:</span><span class="co"> true</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">  eval: true</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="fu">### Trial-level data - variables</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>id - unique subject identifier </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>condit - primary training manipulation, Constant vs. Varied. </span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>tOrder - order of blocks in no-feedback testing stage (extrapolation first or re-do train first)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>bandType - whether band was trained on (trained) or novel in test phase (extrapolation)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>expMode2 - Phase of Experiment - Train, Train-Nf, Test, Test-Fb</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>gt.train - training trial number - running total </span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>vb - velocity band on current trial - Levels: 100-300 350-550 600-800 800-1000 1000-1200 1200-1400</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>bandInt - numeric value of lower bound of vb: 100, 350, 600, 800, 1000, 1200</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>vx - X velocity generated by subject on current trial </span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>dist - absolute distance from edge of target velocity band (0 if vx falls within band)</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>sdist - signed distance from edge of target velocity band</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>vy - y velocity generated by subject (not relevant to task)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>result - categorical result of throw in relation to target band - Levels: Over, Under, Hit</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>vxCat - which velocity band the current trial throw falls into</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>prev - Target velocity band on previous throw</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>bandSeq - Previous Target Band and current Target Band, e.g. 800-&gt;1000  1000-&gt;1200 etc. </span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, lme4, emmeans, here, knitr, kableExtra,gt)</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dplyr.summarise.inform =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/dPrune-07-27-23.rds"</span>)) <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>()</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>stage <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>stage, <span class="at">ordered =</span> <span class="cn">TRUE</span>, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>, <span class="st">"9"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span>, <span class="st">"13"</span>, <span class="st">"14"</span>, <span class="st">"15"</span>, <span class="st">"16"</span>, <span class="st">"17"</span>, <span class="st">"18"</span>, <span class="st">"19"</span>, <span class="st">"20"</span>, <span class="st">"21"</span>, <span class="st">"22"</span>, <span class="st">"23"</span>))</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>tOrder <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>tOrder, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"testFirst"</span>, <span class="st">"trainFirst"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Test First"</span>, <span class="st">"Train First"</span>))</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>bandOrder <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>bandOrder, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"orig"</span>, <span class="st">"rev"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Original"</span>, <span class="st">"Reverse"</span>))</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>fb <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>fb, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"continuous"</span>, <span class="st">"ordinal"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Continuous"</span>, <span class="st">"Ordinal"</span>))</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">as.factor</span>(d<span class="sc">$</span>id), <span class="at">fullCond =</span> <span class="fu">as.factor</span>(fullCond)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">relocate</span>(bandOrder, <span class="at">.after =</span> fb)</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="co"># create table with number of unique ids per condition, use kable</span></span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> <span class="fu">select</span>(fullCond,id) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(fullCond) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>t1<span class="ot">=</span>d <span class="sc">%&gt;%</span> <span class="fu">select</span>(condit,fb,bandOrder,tOrder,id) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit,fb,bandOrder,tOrder) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>()) </span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>t1 <span class="sc">%&gt;%</span> <span class="fu">kbl</span>(<span class="at">col.names=</span><span class="fu">c</span>(<span class="st">"Condition"</span>,<span class="st">"Feedback"</span>,<span class="st">"Band_Order"</span>,<span class="st">"Test Order"</span>,<span class="st">"N"</span>),<span class="at">escape=</span><span class="cn">FALSE</span>) </span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>t1<span class="ot">=</span>d <span class="sc">%&gt;%</span> <span class="fu">select</span>(condit,fb,bandOrder,id) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit,fb,bandOrder) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>()) </span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a>t1</span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id,condit) <span class="sc">|&gt;</span> </span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n=</span><span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n=</span><span class="fu">fct_infreq</span>(<span class="fu">factor</span>(n))) <span class="sc">|&gt;</span></span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>id,<span class="at">y=</span>n)) <span class="sc">+</span> <span class="fu">geom_col</span>()</span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>sorted_bars <span class="ot">&lt;-</span> <span class="cf">function</span>(df, var) {</span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span> </span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>({{ var }} <span class="sc">:</span><span class="er">=</span> <span class="fu">fct_rev</span>(<span class="fu">fct_infreq</span>({{ var }})))  <span class="sc">|&gt;</span></span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> {{ var }})) <span class="sc">+</span></span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>()</span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>conditional_bars <span class="ot">&lt;-</span> <span class="cf">function</span>(df, condition, var) {</span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span> </span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>({{ condition }}) <span class="sc">|&gt;</span> </span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> {{ var }})) <span class="sc">+</span> </span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>()</span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a>histogram <span class="ot">&lt;-</span> <span class="cf">function</span>(df, var, binwidth) {</span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>  label <span class="ot">&lt;-</span> rlang<span class="sc">::</span><span class="fu">englue</span>(<span class="st">"A histogram of {{var}} with binwidth {binwidth}"</span>)</span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span> </span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> {{ var }})) <span class="sc">+</span> </span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> binwidth) <span class="sc">+</span> </span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> label)</span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a><span class="co"># sorted_bars(d |&gt; filter(id %in% 1:30),id) </span></span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a><span class="co"># test |&gt; conditional_bars(id %in% 1:10, id)</span></span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tibble1</span></span>
+<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the tribble</span></span>
+<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>data_tbl <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable_Name =</span> <span class="fu">c</span>(<span class="st">"condit"</span>, <span class="st">"fb"</span>, <span class="st">"bandOrder"</span>, <span class="st">"tOrder"</span>, <span class="st">"expMode"</span>, <span class="st">"trainStage"</span>, <span class="st">"expStage"</span>, <span class="st">"band"</span>, <span class="st">"vb"</span>, <span class="st">"lowBound"</span>, <span class="st">"feedback"</span>, <span class="st">"stage"</span>),</span>
+<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable_Levels =</span> <span class="fu">c</span>(<span class="st">"Constant, Varied"</span>, <span class="st">"Continuous, Ordinal"</span>, <span class="st">"Original, Reverse"</span>, <span class="st">"Test First, Train First"</span>, <span class="st">"train, train-Nf, test-Nf, test-train-nf, test-feedback"</span>, <span class="st">"Beginning, Middle, End, Test"</span>, <span class="st">"TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3"</span>, <span class="st">"1, 2, 3, 4, 5, 6"</span>, <span class="st">"100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400"</span>, <span class="st">"100, 350, 600, 800, 1000, 1200"</span>, <span class="st">"0, 1"</span>, <span class="st">"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23"</span>),</span>
+<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a>  <span class="at">Description =</span> <span class="fu">rep</span>(<span class="st">"Unknown"</span>, <span class="dv">12</span>)</span>
+<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the tribble</span></span>
+<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a>data_tbl <span class="sc">%&gt;%</span> gt<span class="sc">::</span><span class="fu">gt</span>()</span>
+<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tibble</span></span>
+<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Variable Name</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"condit"</span>, <span class="st">"fb"</span>, <span class="st">"bandOrder"</span>, <span class="st">"tOrder"</span>, <span class="st">"expMode"</span>, <span class="st">"trainStage"</span>,</span>
+<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"expStage"</span>, <span class="st">"band"</span>, <span class="st">"vb"</span>, <span class="st">"lowBound"</span>, <span class="st">"feedback"</span>, <span class="st">"stage"</span>),</span>
+<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Levels</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Constant, Varied"</span>, </span>
+<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Continuous, Ordinal"</span>,</span>
+<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Original, Reverse"</span>,</span>
+<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Test First, Train First"</span>,</span>
+<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a>               <span class="st">"train, train-Nf, test-Nf, test-train-nf, test-feedback"</span>,</span>
+<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Beginning, Middle, End, Test"</span>,</span>
+<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a>               <span class="st">"TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3"</span>,</span>
+<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a>               <span class="st">"1, 2, 3, 4, 5, 6"</span>,</span>
+<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a>               <span class="st">"100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400"</span>,</span>
+<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>               <span class="st">"100, 350, 600, 800, 1000, 1200"</span>,</span>
+<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>               <span class="st">"0, 1"</span>,</span>
+<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>               <span class="st">"1 to 23"</span>),</span>
+<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Description</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Conditions under which training was performed. In 'Constant' only one velocity band was used, in 'Varied' three different bands were used."</span>,</span>
+<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Two types of feedback given to the subjects. The 'Continuous' type involved ongoing feedback whereas 'Ordinal' feedback type was rank-based"</span>,</span>
+<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"The order in which the velocity bands were presented for the 'Hit The Wall' task - either 'Original' or 'Reverse'."</span>,</span>
+<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"The order of test and train stages."</span>,</span>
+<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Specifies the mode of the experiment. Can be one of the training stages, no-feedback testing from the training or novel extrapolation band, or feedback testing."</span>,</span>
+<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"The stage of training for the individual - starting, middle, end, or if they're testing."</span>,</span>
+<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"The stages in the experiment which includes the start and end of training, intermediate tests, and final test stages."</span>,</span>
+<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Identifies the 6 different velocity bands used in the experiment."</span>,</span>
+<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Specifies the range of each velocity band used in the experiment."</span>,</span>
+<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"The lower boundary of each velocity band."</span>,</span>
+<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Binary representation of whether feedback was provided (1) or not (0)"</span>,</span>
+<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"The various stages during testing and feedback, represented by numbers from 1 to 23."</span>)</span>
+<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> gt<span class="sc">::</span><span class="fu">gt</span>()</span>
+<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tribble</span></span>
+<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a><span class="fu">tribble</span>(</span>
+<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Variable, <span class="sc">~</span>Levels, <span class="sc">~</span>Description,</span>
+<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a>  <span class="st">"condit"</span>, <span class="st">"Constant, Varied"</span>, <span class="st">"Conditions under which training was performed. In 'Constant' only one velocity band was used, in 'Varied' three different bands were used."</span>,</span>
+<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fb"</span>, <span class="st">"Continuous, Ordinal"</span>, <span class="st">"Two types of feedback given to the subjects. The 'Continuous' type involved ongoing feedback whereas 'Ordinal' feedback type was rank-based"</span>,</span>
+<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bandOrder"</span>, <span class="st">"Original, Reverse"</span>, <span class="st">"The order in which the velocity bands were presented for the 'Hit The Wall' task - either 'Original' or 'Reverse'."</span>,</span>
+<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tOrder"</span>, <span class="st">"Test First, Train First"</span>, <span class="st">"The order of test and train stages."</span>,</span>
+<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a>  <span class="st">"expMode"</span>, <span class="st">"train, train-Nf, test-Nf, test-train-nf, test-feedback"</span>, <span class="st">"Specifies the mode of the experiment. Can be one of the training stages, no-feedback testing from the training or novel extrapolation band, or feedback testing."</span>,</span>
+<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a>  <span class="st">"trainStage"</span>, <span class="st">"Beginning, Middle, End, Test"</span>, <span class="st">"The stage of training for the individual - starting, middle, end, or if they're testing."</span>,</span>
+<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a>  <span class="st">"expStage"</span>, <span class="st">"TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3"</span>, <span class="st">"The stages in the experiment which includes the start and end of training, intermediate tests, and final test stages."</span>,</span>
+<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a>  <span class="st">"band"</span>, <span class="st">"1, 2, 3, 4, 5, 6"</span>, <span class="st">"Identifies the 6 different velocity bands used in the experiment."</span>,</span>
+<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a>  <span class="st">"vb"</span>, <span class="st">"100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400"</span>, <span class="st">"Specifies the range of each velocity band used in the experiment."</span>,</span>
+<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a>  <span class="st">"lowBound"</span>, <span class="st">"100, 350, 600, 800, 1000, 1200"</span>, <span class="st">"The lower boundary of each velocity band."</span>,</span>
+<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a>  <span class="st">"feedback"</span>, <span class="st">"0, 1"</span>, <span class="st">"Binary representation of whether feedback was provided (1) or not (0)"</span>,</span>
+<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a>  <span class="st">"stage"</span>, <span class="st">"1 to 23"</span>, <span class="st">"The various stages during testing and feedback, represented by numbers from 1 to 23."</span></span>
+<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> gt<span class="sc">::</span><span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a>        gt<span class="sc">::</span><span class="fu">tab_style</span>(</span>
+<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a>                <span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>),</span>
+<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a>                <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()</span>
+<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a>| Variable Name | Levels | Description |</span>
+<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a>| --- | --- | --- |</span>
+<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a>| <span class="in">`condit`</span> | Constant, Varied | Conditions under which training was performed. In "Constant" only one velocity band was used, in "Varied" three different bands were used. |</span>
+<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a>| <span class="in">`fb`</span> | Continuous, Ordinal | Two types of feedback given to the subjects. The "Continuous" type involved ongoing feedback whereas "Ordinal" feedback type was rank-based |</span>
+<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a>| <span class="in">`bandOrder`</span> | Original, Reverse | The order in which the velocity bands were presented for the "Hit The Wall" task - either "Original" or "Reverse". |</span>
+<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a>| <span class="in">`tOrder`</span> | Test First, Train First | The order of test and train stages. |</span>
+<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a>| <span class="in">`expMode`</span> | train, train-Nf, test-Nf, test-train-nf, test-feedback | Specifies the mode of the experiment. Can be one of the training stages, no-feedback testing from the training or novel extrapolation band, or feedback testing. |</span>
+<span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a>| <span class="in">`trainStage`</span> | Beginning, Middle, End, Test | The stage of training for the individual - starting, middle, end, or if they're testing. |</span>
+<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a>| <span class="in">`expStage`</span> | TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3 | The stages in the experiment which includes the start and end of training, intermediate tests, and final test stages. |</span>
+<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a>| <span class="in">`band`</span> | 1, 2, 3, 4, 5, 6 | Identifies the 6 different velocity bands used in the experiment. |</span>
+<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a>| <span class="in">`vb`</span> | 100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400 | Specifies the range of each velocity band used in the experiment. |</span>
+<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a>| <span class="in">`lowBound`</span> | 100, 350, 600, 800, 1000, 1200 | The lower boundary of each velocity band. |</span>
+<span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a>| <span class="in">`feedback`</span> | 0, 1 | Binary representation of whether feedback was provided (1) or not (0) |</span>
+<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a>| <span class="in">`stage`</span> | 1 to 23 | The various stages during testing and feedback, represented by numbers from 1 to 23. |</span>
+<span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a>----------</span>
+<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-214"><a href="#cb12-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-216"><a href="#cb12-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a><span class="fu">## Description table</span></span>
+<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a>| Variable Name | Variable Levels                 | Description                                                                               |</span>
+<span id="cb12-222"><a href="#cb12-222" aria-hidden="true" tabindex="-1"></a>|---------------|---------------------------------|-------------------------------------------------------------------------------------------|</span>
+<span id="cb12-223"><a href="#cb12-223" aria-hidden="true" tabindex="-1"></a>| condit        | Constant, Varied                | Condition of the experiment: constant or varied                                             |</span>
+<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a>| fb            | Continuous, Ordinal             | Type of feedback received: continuous or ordinal                                           |</span>
+<span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a>| bandOrder     | Original, Reverse               | Order of bands: original or reverse                                                        |</span>
+<span id="cb12-226"><a href="#cb12-226" aria-hidden="true" tabindex="-1"></a>| tOrder        | Test First, Train First         | Order of testing and training stages: test first or train first                            |</span>
+<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a>| expMode       | train, train-Nf, test-Nf, etc.  | Mode of the experiment: train, train-Nf, test-Nf, etc.                                    |</span>
+<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a>| trainStage    | Beginning, Middle, End, Test    | Stage of the training: beginning, middle, end, or test                                    |</span>
+<span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a>| expStage      | TrainStart, intTest1, etc.      | Stage of the experiment: TrainStart, intTest1, TrainMid1, etc.                            |</span>
+<span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a>| band          | 1, 2, 3, 4, 5, 6               | Band number                                                                                 |</span>
+<span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a>| vb            | 100-300, 350-550, etc.         | Velocity band range                                                                         |</span>
+<span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a>| lowBound      | 100, 350, 600, etc.            | Lower bound of the velocity band range                                                      |</span>
+<span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a>| feedback      | 0, 1                           | Feedback type: 0 (no feedback), 1 (feedback)                                               |</span>
+<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a>| stage         | 1, 2, 3, etc.                  | Stage number of the experiment                                                              |</span>
+<span id="cb12-235"><a href="#cb12-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-236"><a href="#cb12-236" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb12-237"><a href="#cb12-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-238"><a href="#cb12-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-239"><a href="#cb12-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-240"><a href="#cb12-240" aria-hidden="true" tabindex="-1"></a><span class="fu">## Ascii table</span></span>
+<span id="cb12-241"><a href="#cb12-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-242"><a href="#cb12-242" aria-hidden="true" tabindex="-1"></a>| Variable Name | Variable Levels                                            | Description                                                          |</span>
+<span id="cb12-243"><a href="#cb12-243" aria-hidden="true" tabindex="-1"></a>|---------------|------------------------------------------------------------|----------------------------------------------------------------------|</span>
+<span id="cb12-244"><a href="#cb12-244" aria-hidden="true" tabindex="-1"></a>| condit        | Constant, Varied                                           | Unknown                                                              |</span>
+<span id="cb12-245"><a href="#cb12-245" aria-hidden="true" tabindex="-1"></a>| fb            | Continuous, Ordinal                                        | Unknown                                                              |</span>
+<span id="cb12-246"><a href="#cb12-246" aria-hidden="true" tabindex="-1"></a>| bandOrder     | Original, Reverse                                          | Unknown                                                              |</span>
+<span id="cb12-247"><a href="#cb12-247" aria-hidden="true" tabindex="-1"></a>| tOrder        | Test First, Train First                                     | Unknown                                                              |</span>
+<span id="cb12-248"><a href="#cb12-248" aria-hidden="true" tabindex="-1"></a>| expMode       | train, train-Nf, test-Nf, test-train-nf, test-feedback      | Unknown                                                              |</span>
+<span id="cb12-249"><a href="#cb12-249" aria-hidden="true" tabindex="-1"></a>| trainStage    | Beginning, Middle, End, Test                                | Unknown                                                              |</span>
+<span id="cb12-250"><a href="#cb12-250" aria-hidden="true" tabindex="-1"></a>| expStage      | TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3 | Unknown                                                              |</span>
+<span id="cb12-251"><a href="#cb12-251" aria-hidden="true" tabindex="-1"></a>| band          | 1, 2, 3, 4, 5, 6                                           | Unknown                                                              |</span>
+<span id="cb12-252"><a href="#cb12-252" aria-hidden="true" tabindex="-1"></a>| vb            | 100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400 | Unknown                                                              |</span>
+<span id="cb12-253"><a href="#cb12-253" aria-hidden="true" tabindex="-1"></a>| lowBound      | 100, 350, 600, 800, 1000, 1200                             | Unknown                                                              |</span>
+<span id="cb12-254"><a href="#cb12-254" aria-hidden="true" tabindex="-1"></a>| feedback      | 0, 1                                                       | Unknown                                                              |</span>
+<span id="cb12-255"><a href="#cb12-255" aria-hidden="true" tabindex="-1"></a>| stage         | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 | Unknown                                                              |</span>
+<span id="cb12-256"><a href="#cb12-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-257"><a href="#cb12-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-258"><a href="#cb12-258" aria-hidden="true" tabindex="-1"></a>| Default | Left | Right | Center |</span>
+<span id="cb12-259"><a href="#cb12-259" aria-hidden="true" tabindex="-1"></a>|---------|:-----|------:|:------:|</span>
+<span id="cb12-260"><a href="#cb12-260" aria-hidden="true" tabindex="-1"></a>| 12      | 12   |    12 |   12   |</span>
+<span id="cb12-261"><a href="#cb12-261" aria-hidden="true" tabindex="-1"></a>| 123     | 123  |   123 |  123   |</span>
+<span id="cb12-262"><a href="#cb12-262" aria-hidden="true" tabindex="-1"></a>| 1       | 1    |     1 |   1    |</span>
+<span id="cb12-263"><a href="#cb12-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-264"><a href="#cb12-264" aria-hidden="true" tabindex="-1"></a>: Demonstration of pipe table syntax</span>
+<span id="cb12-265"><a href="#cb12-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-266"><a href="#cb12-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-267"><a href="#cb12-267" aria-hidden="true" tabindex="-1"></a><span class="fu">## smaller table</span></span>
+<span id="cb12-268"><a href="#cb12-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-269"><a href="#cb12-269" aria-hidden="true" tabindex="-1"></a>| Variable Name | Variable Levels                            |</span>
+<span id="cb12-270"><a href="#cb12-270" aria-hidden="true" tabindex="-1"></a>|---------------|--------------------------------------------|</span>
+<span id="cb12-271"><a href="#cb12-271" aria-hidden="true" tabindex="-1"></a>| condit        | "Constant", "Varied"                       |</span>
+<span id="cb12-272"><a href="#cb12-272" aria-hidden="true" tabindex="-1"></a>| fb            | "Continuous", "Ordinal"                    |</span>
+<span id="cb12-273"><a href="#cb12-273" aria-hidden="true" tabindex="-1"></a>| bandOrder     | "Original", "Reverse"                      |</span>
+<span id="cb12-274"><a href="#cb12-274" aria-hidden="true" tabindex="-1"></a>| tOrder        | "Test First", "Train First"                |</span>
+<span id="cb12-275"><a href="#cb12-275" aria-hidden="true" tabindex="-1"></a>| expMode       | "train", "train-Nf", "test-Nf", "test-train-nf", "test-feedback" |</span>
+<span id="cb12-276"><a href="#cb12-276" aria-hidden="true" tabindex="-1"></a>| trainStage    | "Beginning", "Middle", "End", "Test"        |</span>
+<span id="cb12-277"><a href="#cb12-277" aria-hidden="true" tabindex="-1"></a>| expStage      | "TrainStart", "intTest1", "TrainMid1", "intTest2", "TrainMid2", "intTest3", "TrainEnd", "Test1", "Test2", "Test3" |</span>
+<span id="cb12-278"><a href="#cb12-278" aria-hidden="true" tabindex="-1"></a>| band          | "1", "2", "3", "4", "5", "6"                |</span>
+<span id="cb12-279"><a href="#cb12-279" aria-hidden="true" tabindex="-1"></a>| vb            | "100-300", "350-550", "600-800", "800-1000", "1000-1200", "1200-1400" |</span>
+<span id="cb12-280"><a href="#cb12-280" aria-hidden="true" tabindex="-1"></a>| lowBound      | "100", "350", "600", "800", "1000", "1200" |</span>
+<span id="cb12-281"><a href="#cb12-281" aria-hidden="true" tabindex="-1"></a>| feedback      | "0", "1"                                   |</span>
+<span id="cb12-282"><a href="#cb12-282" aria-hidden="true" tabindex="-1"></a>| stage         | "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" |</span>
+<span id="cb12-283"><a href="#cb12-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-284"><a href="#cb12-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-285"><a href="#cb12-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-288"><a href="#cb12-288" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-289"><a href="#cb12-289" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: asis</span></span>
+<span id="cb12-290"><a href="#cb12-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-291"><a href="#cb12-291" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame</span></span>
+<span id="cb12-292"><a href="#cb12-292" aria-hidden="true" tabindex="-1"></a>var_levels <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb12-293"><a href="#cb12-293" aria-hidden="true" tabindex="-1"></a>  <span class="at">condit =</span> <span class="fu">c</span>(<span class="st">"Constant"</span>, <span class="st">"Varied"</span>),</span>
+<span id="cb12-294"><a href="#cb12-294" aria-hidden="true" tabindex="-1"></a>  <span class="at">fb =</span> <span class="fu">c</span>(<span class="st">"Continuous"</span>, <span class="st">"Ordinal"</span>),</span>
+<span id="cb12-295"><a href="#cb12-295" aria-hidden="true" tabindex="-1"></a>  <span class="at">bandOrder =</span> <span class="fu">c</span>(<span class="st">"Original"</span>, <span class="st">"Reverse"</span>),</span>
+<span id="cb12-296"><a href="#cb12-296" aria-hidden="true" tabindex="-1"></a>  <span class="at">tOrder =</span> <span class="fu">c</span>(<span class="st">"Test First"</span>, <span class="st">"Train First"</span>),</span>
+<span id="cb12-297"><a href="#cb12-297" aria-hidden="true" tabindex="-1"></a>  <span class="at">expMode =</span> <span class="fu">c</span>(<span class="st">"train"</span>, <span class="st">"train-Nf"</span>, <span class="st">"test-Nf"</span>, <span class="st">"test-train-nf"</span>, <span class="st">"test-feedback"</span>),</span>
+<span id="cb12-298"><a href="#cb12-298" aria-hidden="true" tabindex="-1"></a>  <span class="at">trainStage =</span> <span class="fu">c</span>(<span class="st">"Beginning"</span>, <span class="st">"Middle"</span>, <span class="st">"End"</span>, <span class="st">"Test"</span>),</span>
+<span id="cb12-299"><a href="#cb12-299" aria-hidden="true" tabindex="-1"></a>  <span class="at">expStage =</span> <span class="fu">c</span>(<span class="st">"TrainStart"</span>, <span class="st">"intTest1"</span>, <span class="st">"TrainMid1"</span>, <span class="st">"intTest2"</span>, <span class="st">"TrainMid2"</span>, <span class="st">"intTest3"</span>, <span class="st">"TrainEnd"</span>, <span class="st">"Test1"</span>, <span class="st">"Test2"</span>, <span class="st">"Test3"</span>),</span>
+<span id="cb12-300"><a href="#cb12-300" aria-hidden="true" tabindex="-1"></a>  <span class="at">band =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>),</span>
+<span id="cb12-301"><a href="#cb12-301" aria-hidden="true" tabindex="-1"></a>  <span class="at">vb =</span> <span class="fu">c</span>(<span class="st">"100-300"</span>, <span class="st">"350-550"</span>, <span class="st">"600-800"</span>, <span class="st">"800-1000"</span>, <span class="st">"1000-1200"</span>, <span class="st">"1200-1400"</span>),</span>
+<span id="cb12-302"><a href="#cb12-302" aria-hidden="true" tabindex="-1"></a>  <span class="at">lowBound =</span> <span class="fu">c</span>(<span class="st">"100"</span>, <span class="st">"350"</span>, <span class="st">"600"</span>, <span class="st">"800"</span>, <span class="st">"1000"</span>, <span class="st">"1200"</span>),</span>
+<span id="cb12-303"><a href="#cb12-303" aria-hidden="true" tabindex="-1"></a>  <span class="at">feedback =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>),</span>
+<span id="cb12-304"><a href="#cb12-304" aria-hidden="true" tabindex="-1"></a>  <span class="at">stage =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>, <span class="st">"9"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span>, <span class="st">"13"</span>, <span class="st">"14"</span>, <span class="st">"15"</span>, <span class="st">"16"</span>, <span class="st">"17"</span>, <span class="st">"18"</span>, <span class="st">"19"</span>, <span class="st">"20"</span>, <span class="st">"21"</span>, <span class="st">"22"</span>, <span class="st">"23"</span>)</span>
+<span id="cb12-305"><a href="#cb12-305" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-306"><a href="#cb12-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-307"><a href="#cb12-307" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the list to a data frame</span></span>
+<span id="cb12-308"><a href="#cb12-308" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb12-309"><a href="#cb12-309" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable_Name =</span> <span class="fu">names</span>(var_levels),</span>
+<span id="cb12-310"><a href="#cb12-310" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable_Levels =</span> <span class="fu">sapply</span>(var_levels, <span class="cf">function</span>(x) <span class="fu">paste</span>(x, <span class="at">collapse =</span> <span class="st">", "</span>))</span>
+<span id="cb12-311"><a href="#cb12-311" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-312"><a href="#cb12-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-313"><a href="#cb12-313" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a markdown table</span></span>
+<span id="cb12-314"><a href="#cb12-314" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb12-315"><a href="#cb12-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">format =</span> <span class="st">"markdown"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-316"><a href="#cb12-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>))</span>
+<span id="cb12-317"><a href="#cb12-317" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-318"><a href="#cb12-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-319"><a href="#cb12-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-320"><a href="#cb12-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-321"><a href="#cb12-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-322"><a href="#cb12-322" aria-hidden="true" tabindex="-1"></a>| Variable Name | Variable Levels           |</span>
+<span id="cb12-323"><a href="#cb12-323" aria-hidden="true" tabindex="-1"></a>| ------------- | ------------------------- |</span>
+<span id="cb12-324"><a href="#cb12-324" aria-hidden="true" tabindex="-1"></a>| condit        | Constant, Varied          |</span>
+<span id="cb12-325"><a href="#cb12-325" aria-hidden="true" tabindex="-1"></a>| fb            | Continuous, Ordinal       |</span>
+<span id="cb12-326"><a href="#cb12-326" aria-hidden="true" tabindex="-1"></a>| bandOrder     | Original, Reverse         |</span>
+<span id="cb12-327"><a href="#cb12-327" aria-hidden="true" tabindex="-1"></a>| tOrder        | Test First, Train First   |</span>
+<span id="cb12-328"><a href="#cb12-328" aria-hidden="true" tabindex="-1"></a>| expMode       | train, train-Nf, test-Nf, test-train-nf, test-feedback |</span>
+<span id="cb12-329"><a href="#cb12-329" aria-hidden="true" tabindex="-1"></a>| trainStage    | Beginning, Middle, End, Test |</span>
+<span id="cb12-330"><a href="#cb12-330" aria-hidden="true" tabindex="-1"></a>| expStage      | TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3 |</span>
+<span id="cb12-331"><a href="#cb12-331" aria-hidden="true" tabindex="-1"></a>| band          | 1, 2, 3, 4, 5, 6          |</span>
+<span id="cb12-332"><a href="#cb12-332" aria-hidden="true" tabindex="-1"></a>| vb            | 100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400 |</span>
+<span id="cb12-333"><a href="#cb12-333" aria-hidden="true" tabindex="-1"></a>| lowBound      | 100, 350, 600, 800, 1000, 1200 |</span>
+<span id="cb12-334"><a href="#cb12-334" aria-hidden="true" tabindex="-1"></a>| feedback      | 0, 1                     |</span>
+<span id="cb12-335"><a href="#cb12-335" aria-hidden="true" tabindex="-1"></a>| stage         | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 |</span>
+<span id="cb12-336"><a href="#cb12-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-337"><a href="#cb12-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-338"><a href="#cb12-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-339"><a href="#cb12-339" aria-hidden="true" tabindex="-1"></a><span class="fu">### Numeric variables</span></span>
+<span id="cb12-340"><a href="#cb12-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-341"><a href="#cb12-341" aria-hidden="true" tabindex="-1"></a>| Variable Name | Description |</span>
+<span id="cb12-342"><a href="#cb12-342" aria-hidden="true" tabindex="-1"></a>| ------------- | ----------- |</span>
+<span id="cb12-343"><a href="#cb12-343" aria-hidden="true" tabindex="-1"></a>| trial         | Trial number |</span>
+<span id="cb12-344"><a href="#cb12-344" aria-hidden="true" tabindex="-1"></a>| nGoodTrial    | Number of good trials |</span>
+<span id="cb12-345"><a href="#cb12-345" aria-hidden="true" tabindex="-1"></a>| gt.bandStage  | Band stage in game time |</span>
+<span id="cb12-346"><a href="#cb12-346" aria-hidden="true" tabindex="-1"></a>| gt.stage      | Stage in game time |</span>
+<span id="cb12-347"><a href="#cb12-347" aria-hidden="true" tabindex="-1"></a>| gt.train      | Training in game time |</span>
+<span id="cb12-348"><a href="#cb12-348" aria-hidden="true" tabindex="-1"></a>| input         | Input from the participant |</span>
+<span id="cb12-349"><a href="#cb12-349" aria-hidden="true" tabindex="-1"></a>| bandInt       | Band interval |</span>
+<span id="cb12-350"><a href="#cb12-350" aria-hidden="true" tabindex="-1"></a>| highBound     | High boundary of the velocity band |</span>
+<span id="cb12-351"><a href="#cb12-351" aria-hidden="true" tabindex="-1"></a>| runTotal      | Running total of trials |</span>
+<span id="cb12-352"><a href="#cb12-352" aria-hidden="true" tabindex="-1"></a>| dist          | Distance between produced x-velocity and the closest edge of the current velocity band |</span>
+<span id="cb12-353"><a href="#cb12-353" aria-hidden="true" tabindex="-1"></a>| sdist         | Standardized distance |</span>
+<span id="cb12-354"><a href="#cb12-354" aria-hidden="true" tabindex="-1"></a>| vx            | X-velocity of the projectile |</span>
+<span id="cb12-355"><a href="#cb12-355" aria-hidden="true" tabindex="-1"></a>| vxb           | X-velocity at the boundary |</span>
+<span id="cb12-356"><a href="#cb12-356" aria-hidden="true" tabindex="-1"></a>| vxi           | Initial X-velocity |</span>
+<span id="cb12-357"><a href="#cb12-357" aria-hidden="true" tabindex="-1"></a>| vy            | Y-velocity of the projectile |</span>
+<span id="cb12-358"><a href="#cb12-358" aria-hidden="true" tabindex="-1"></a>| nTrain        | Number of training trials |</span>
+<span id="cb12-359"><a href="#cb12-359" aria-hidden="true" tabindex="-1"></a>| nTestNf       | Number of no-feedback testing trials |</span>
+<span id="cb12-360"><a href="#cb12-360" aria-hidden="true" tabindex="-1"></a>| nInt          | Number of interleaved trials |</span>
+<span id="cb12-361"><a href="#cb12-361" aria-hidden="true" tabindex="-1"></a>| nTestF        | Number of feedback testing trials |</span>
+<span id="cb12-362"><a href="#cb12-362" aria-hidden="true" tabindex="-1"></a>| nTotal        | Total number of trials |</span>
+<span id="cb12-363"><a href="#cb12-363" aria-hidden="true" tabindex="-1"></a>| lastTrain     | Last training trial |</span>
+<span id="cb12-364"><a href="#cb12-364" aria-hidden="true" tabindex="-1"></a>| lastTrial     | Last trial |</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
