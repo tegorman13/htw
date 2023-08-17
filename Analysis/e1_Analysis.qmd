@@ -670,6 +670,8 @@ test %>% group_by(id,vb,condit) %>%
   geom_text(data=sumStats2,aes(y=2090,label = sumStatLab),size=1.9)
 
 
+#test %>% group_by(id,vb,condit) |> plot_distByCondit()
+
 
 test %>% group_by(id,vb,condit) %>% 
   summarise(distMean=mean(dist)) %>% 

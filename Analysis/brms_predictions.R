@@ -42,8 +42,8 @@ indv_coefs <- coef(e1_vxBMM)$id |>
   mutate(rank = rank(desc(Estimate.bandInt))) 
 
 top_indv_coefs <- indv_coefs %>%
-  filter(rank <= 4) |>
-  select(id,condit,rank,Estimate.bandInt, Estimate.Intercept) 
+  filter(rank > 60) |>
+  select(id,condit,rank,Est.BandInt=Estimate.bandInt, Est.Intercept=Estimate.Intercept) 
 top_ids <- top_indv_coefs$id
 
 fixed_effects <- fixef(e1_vxBMM)
@@ -54,7 +54,7 @@ random_effects <- coef(e1_vxBMM)$id
 new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")]))) |> 
   dplyr::arrange(id,bandInt) |> 
   mutate(condit_dummy = ifelse(condit == "Varied", 1, 0)) |>
-  filter(id %in% top_ids) |>
+  filter(id %in% top_ids)
   
 
 
@@ -70,14 +70,14 @@ e1_vxBMM |> gather_draws(`^r_id.*$`,regex=TRUE)
 ## Method 0 -linear prediction
 linpred_manual <- new_data_grid |> 
   left_join(top_indv_coefs,by=join_by(id,condit)) |>
-  mutate(mu = Estimate.Intercept + (Estimate.bandInt * bandInt) + fixed_effects[2] * condit_dummy) |>
+  mutate(mu = Est.Intercept + (Est.BandInt * bandInt) + fixed_effects[2] * condit_dummy) |>
   left_join(testAvg,by=join_by(id,condit,bandInt))
 
 
 linpred_manual2 <- new_data_grid %>%
   left_join(top_indv_coefs, by=join_by(id,condit)) %>%
-  mutate(mu = Estimate.Intercept +
-           (Estimate.bandInt * bandInt) +
+  mutate(mu = Est.Intercept +
+           (Est.BandInt * bandInt) +
            fixed_effects[2] * condit_dummy +   # main effect of conditVaried
            fixed_effects[4] * bandInt * condit_dummy) |> # interaction term
   left_join(testAvg,by=join_by(id,condit,bandInt)) 
@@ -133,6 +133,14 @@ combined_df <- left_join(random_effects, fixed_effects, by = c(".chain", ".itera
 
 
 
+all_effects <- e1_vxBMM |> 
+  gather_draws(b_Intercept, b_conditVaried, b_bandInt, `b_conditVaried:bandInt`, `^r_id.*$`, regex = TRUE, ndraws = 1) |> 
+  separate(.variable, into = c("effect_type", "effect_details"), sep = "\\[", remove = FALSE, fill = "right", extra = "merge") |> 
+  mutate(id = str_extract(effect_details, "\\d+"),
+         term = str_extract(effect_details, "[A-Za-z]+")) |> 
+  pivot_wider(names_from = c(effect_type, term), values_from = .value, names_glue = "{effect_type}_{term}")
+
+
 
 
 ## Method 3 - epred
@@ -143,6 +151,40 @@ nd3 <- e1_vxBMM %>%
   left_join(top_indv_coefs, by=join_by(id,condit)) |>
   left_join(testAvg,by=join_by(id,condit,bandInt)) 
  
+
+
+
+###### Marginal Effects
+
+e1_distBMM |> emtrends(~bandInt+condit,var="bandInt",at=list(bandInt=c(100,350,600,800,1000,1200)))
+
+e1_distBMM |> marginaleffects(newdata = datagrid(bandInt=c(100,350,600,800,1000,1200)))
+
+new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")])))
+
+e1_distBMM |> marginaleffects(newdata = datagrid(new_data_grid))
+
+e1_distBMM |> plot_cme(variables="bandInt",condition="condit")
+e1_distBMM |> plot_cme(variables="condit",condition="condit")
+e1_distBMM |> plot_cme(variables="condit",by="bandInt")
+
+e1_distBMM |> 
+  marginaleffects(newdata="mean") |> 
+  tidy()
+
+
+e1_distBMM |> emmeans( ~condit +bandInt, at=list(bandInt=c(100,350,600,800,1000,1200) ))
+
+e1_distBMM |> emmeans( ~condit +bandInt, 
+                       at=list(bandInt=c(100,350,600,800,1000,1200) ),
+                       epred=TRUE, re_formula = NULL)
+
+
+e1_distBMM |> emmeans( ~condit +bandInt, 
+                       at=list(bandInt=c(100,350,600,800,1000,1200) )) |>
+  gather_emmeans_draws() |>
+  ggplot(aes(x=bandInt,y=.value,color=condit)) + stat_lineribbon(alpha=.25,size=1)
+  geom_half_violin()
 
 
 
@@ -173,3 +215,30 @@ top_indv_coefs |> left_join(test,by=join_by(id,condit)) |>
   ggplot(aes(x=bandInt,y=vx))+ stat_lineribbon(alpha = 0.3) +
   stat_halfeye(aes(fill=as.factor(bandInt))) +
   ggh4x::facet_nested (rank~condit)
+
+
+plotSlope <- function(df,title="",colour=NULL){
+  rectWidth=50
+  df |> ggplot(aes(x = bandInt, y = vx))+ 
+    geom_abline(
+      aes(intercept = Est.Intercept, slope = Est.BandInt,color="black"),
+      size = 1,alpha=.9
+    ) +
+    geom_point(aes(color=vb)) +
+    geom_half_violin(aes(fill=vb),position=position_dodge(.5)) +
+    geom_half_point(aes(fill=vb))+
+    stat_halfeye(aes(fill=vb))+
+    facet_wrap("id") +
+    geom_rect(aes(xmin=bandInt-rectWidth,xmax=bandInt+rectWidth,ymin=bandInt,ymax=highBound,fill=vb),alpha=.1)+
+    geom_segment(aes(x=bandInt-rectWidth,xend=bandInt+rectWidth,y=highBound,yend=highBound),alpha=1,linetype="dashed")+
+    geom_segment(aes(x=bandInt - rectWidth,xend=bandInt+rectWidth,y=bandInt,yend=bandInt),alpha=1,linetype="dashed")+
+    labs(x = "Velocity Band", y = "vxMean")+
+    scale_x_continuous(labels=sort(unique(df$bandInt)),breaks=sort(unique(df$bandInt)))+
+    ggtitle(title) + theme(legend.position = "none")+theme_classic()+guides(fill="none",color="none")
+}
+
+
+top_indv_coefs |> left_join(test,by=join_by(id,condit)) |> plotSlope()
+
+testSlopeIndv %>% left_join(dtestAgg, by = c("id","condit")) %>% filter(condit=="Varied",rank<=6) %>% 
+  plotSlope(.,colour="black",title="Largest Individually fit Varied Sbj. Slopes")
