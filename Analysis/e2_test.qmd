@@ -15,11 +15,10 @@ testE2Avg <- testE2 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
 
 
 
-
-
+@fig-design-e2 illustrates the design of Experiment 2. The stages of the experiment (i.e. training, testing no-feedback, test with feedback), are identical to that of Experiment 1. The only change is that Experiment 2 participants train, and then test, on bands in the reverse order of Experiment 1 (i.e. training on the softer bands; and testing on the harder bands). 
 ```{dot}
 //| label: fig-design-e2
-//| fig-cap: "Experiment 2 Design. Constant and Varied participants complete different training conditions."
+//| fig-cap: "Experiment 2 Design. Constant and Varied participants complete different training conditions. The training and testing bands are the reverse of Experiment 1. "
 //| fig-width: 8.0
 //| fig-height: 2.5
 //| fig-responsive: false
@@ -111,6 +110,7 @@ mp2
 ```
 
 
+As shown in @tbl-e2-bmm-dist, the posterior distribution for the effect of training condition in Experiment 2 is modestly suggestive of a beneficial effect of training variation (β = -70.0, 95% CI [-156.87, 16.66]), with 94% of the posterior falling in the direction of a varied advantage. (SHOULD PROBABLY DO ALTERNATE ANALYSIS THAT ONLY CONSIDERS THE NOVEL EXTRAPOLATION BANDS)
 
 
 ```{r}
@@ -295,7 +295,7 @@ cdMed %>% ggplot(aes(y=rankSlope, x=Slope,fill=condit,color=condit)) +
 
 ```{r}
 #| label: fig-e2-indv-slopes
-#| fig-cap: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. 
+#| fig-cap: Slope estimates by participant - ordered from lowest to highest within each condition. 
 #| fig-height: 11
 
 nTop <- 2
