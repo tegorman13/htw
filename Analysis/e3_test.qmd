@@ -34,6 +34,13 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 
 
 
+
+
+
+
+
+
+
 **need to make E3 tables differently since ppts do both original and reverse order** 
 
 ```{r}
@@ -77,7 +84,7 @@ mp3
 ```
 
 
-In experiment 3, the effect of training condition shows the opposite pattern of the previous two experiments. The moderately strong effect of condition is for the varied group to show less deviation (β = -91.09, 95% CI [-182.79, 3.75]), with 97% of the posterior distribution falling under 0. 
+In experiment 3, the overall effect of training condition shows a similar pattern to that of Experiment 2, with a  moderately strong effect tendency for the varied group to show lower deviation (β = -91.09, 95% CI [-182.79, 3.75]), with 97% of the posterior distribution falling under 0. (NEED TO CONTROL FOR BAND ORDER HERE)
 
 
 
@@ -210,7 +217,7 @@ e3_vxBMM |> emmeans( ~condit + bandInt,
 
 ```{r}
 #| label: fig-e3-slope-dist
-#| fig-cap: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 100 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. 
+#| fig-cap: Slope estimates by participant - ordered from lowest to highest within each condition. 
 #| fig-height: 9
 #| fig-width: 10
 

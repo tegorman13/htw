@@ -653,7 +653,7 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 
 </div>
 </div>
-<p>In experiment 3, the effect of training condition shows the opposite pattern of the previous two experiments. The moderately strong effect of condition is for the varied group to show less deviation (β = -91.09, 95% CI [-182.79, 3.75]), with 97% of the posterior distribution falling under 0.</p>
+<p>In experiment 3, the overall effect of training condition shows a similar pattern to that of Experiment 2, with a moderately strong effect tendency for the varied group to show lower deviation (β = -91.09, 95% CI [-182.79, 3.75]), with 97% of the posterior distribution falling under 0. (NEED TO CONTROL FOR BAND ORDER HERE)</p>
 <div class="cell">
 <details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">e3_distBMM</span> <span class="op">|&gt;</span> <span class="fu">emmeans</span><span class="op">(</span> <span class="op">~</span><span class="va">condit</span> <span class="op">+</span> <span class="va">bandInt</span>, </span>
 <span>                       at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>bandInt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">350</span>, <span class="fl">600</span>, <span class="fl">800</span>, <span class="fl">1000</span>, <span class="fl">1200</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1045,7 +1045,7 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 </details><div class="cell-output-display">
 <div id="fig-e3-slope-dist" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="e3_test_files/figure-html/fig-e3-slope-dist-1.png" class="img-fluid figure-img" width="960"></p>
-<figcaption class="figure-caption">Figure&nbsp;6: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 100 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;6: Slope estimates by participant - ordered from lowest to highest within each condition.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1555,301 +1555,308 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>**need to make E3 tables differently since ppts do both original and reverse order** </span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e3-test-nf-deviation</span></span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Testing Deviation - Empirical Summary"</span></span>
-<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-subcap: ["Constant Testing - Deviation", "Varied Testing - Deviation"]</span></span>
-<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
-<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">test_summary_table</span>(testE3, <span class="st">"dist"</span>, <span class="at">mfun =</span> <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">median =</span> median, <span class="at">sd =</span> sd))</span>
-<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>constant</span>
-<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>varied</span>
-<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-test-dev</span></span>
-<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: e3. Deviations from target band during testing without feedback stage. </span></span>
-<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>testE3 <span class="sc">|&gt;</span>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> vb, <span class="at">y =</span> dist,<span class="at">fill=</span>condit)) <span class="sc">+</span></span>
-<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_summary</span>(<span class="at">geom =</span> <span class="st">"bar"</span>, <span class="at">position=</span><span class="fu">position_dodge</span>(), <span class="at">fun =</span> mean) <span class="sc">+</span></span>
-<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_summary</span>(<span class="at">geom =</span> <span class="st">"errorbar"</span>, <span class="at">position=</span><span class="fu">position_dodge</span>(.<span class="dv">9</span>), <span class="at">fun.data =</span> mean_se, <span class="at">width =</span> .<span class="dv">4</span>, <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span> </span>
-<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Band"</span>, <span class="at">y=</span><span class="st">"Deviation From Target"</span>)</span>
-<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e3-bmm-dist</span></span>
-<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Experiment 3. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band"</span></span>
-<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a><span class="co">#contrasts(test$condit) </span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>**need to make E3 tables differently since ppts do both original and reverse order** </span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e3-test-nf-deviation</span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Testing Deviation - Empirical Summary"</span></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-subcap: ["Constant Testing - Deviation", "Varied Testing - Deviation"]</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">test_summary_table</span>(testE3, <span class="st">"dist"</span>, <span class="at">mfun =</span> <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">median =</span> median, <span class="at">sd =</span> sd))</span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>constant</span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>varied</span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-test-dev</span></span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: e3. Deviations from target band during testing without feedback stage. </span></span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a>testE3 <span class="sc">|&gt;</span>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> vb, <span class="at">y =</span> dist,<span class="at">fill=</span>condit)) <span class="sc">+</span></span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_summary</span>(<span class="at">geom =</span> <span class="st">"bar"</span>, <span class="at">position=</span><span class="fu">position_dodge</span>(), <span class="at">fun =</span> mean) <span class="sc">+</span></span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_summary</span>(<span class="at">geom =</span> <span class="st">"errorbar"</span>, <span class="at">position=</span><span class="fu">position_dodge</span>(.<span class="dv">9</span>), <span class="at">fun.data =</span> mean_se, <span class="at">width =</span> .<span class="dv">4</span>, <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span> </span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Band"</span>, <span class="at">y=</span><span class="st">"Deviation From Target"</span>)</span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a><span class="co"># contrasts(testE3$vb)</span></span>
-<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a>modelName <span class="ot">&lt;-</span> <span class="st">"e3_testDistBand_RF_5K"</span></span>
-<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a>e3_distBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(dist <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
-<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data=</span>testE3,<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>,modelName)),</span>
-<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a>                      <span class="at">iter=</span><span class="dv">5000</span>,<span class="at">chains=</span><span class="dv">4</span>)</span>
-<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a>mp3 <span class="ot">&lt;-</span> <span class="fu">GetModelStats</span>(e3_distBMM) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
-<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a>mp3</span>
-<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a>In experiment 3, the effect of training condition shows the opposite pattern of the previous two experiments. The moderately strong effect of condition is for the varied group to show less deviation (β = -91.09, 95% CI <span class="co">[</span><span class="ot">-182.79, 3.75</span><span class="co">]</span>), with 97% of the posterior distribution falling under 0. </span>
-<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-bmm-dist</span></span>
-<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: e3. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals. </span></span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e3-bmm-dist</span></span>
+<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Experiment 3. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band"</span></span>
+<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a><span class="co">#contrasts(test$condit) </span></span>
+<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a><span class="co"># contrasts(testE3$vb)</span></span>
+<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a>modelName <span class="ot">&lt;-</span> <span class="st">"e3_testDistBand_RF_5K"</span></span>
+<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a>e3_distBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(dist <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
+<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data=</span>testE3,<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>,modelName)),</span>
+<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a>                      <span class="at">iter=</span><span class="dv">5000</span>,<span class="at">chains=</span><span class="dv">4</span>)</span>
+<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a>mp3 <span class="ot">&lt;-</span> <span class="fu">GetModelStats</span>(e3_distBMM) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
+<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a>mp3</span>
+<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a>In experiment 3, the overall effect of training condition shows a similar pattern to that of Experiment 2, with a  moderately strong effect tendency for the varied group to show lower deviation (β = -91.09, 95% CI <span class="co">[</span><span class="ot">-182.79, 3.75</span><span class="co">]</span>), with 97% of the posterior distribution falling under 0. (NEED TO CONTROL FOR BAND ORDER HERE)</span>
+<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a>e3_distBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
-<span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb13-99"><a href="#cb13-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
-<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bandInt, <span class="at">y =</span> .value, <span class="at">color =</span> condit, <span class="at">fill =</span> condit)) <span class="sc">+</span> </span>
-<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_pointinterval</span>() <span class="sc">+</span></span>
-<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> .<span class="dv">25</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>)) <span class="sc">+</span></span>
-<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">"Predicted Deviation"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Velocity Band"</span>)<span class="sc">+</span></span>
-<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
-<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(testE3<span class="sc">$</span>vb), </span>
-<span id="cb13-106"><a href="#cb13-106" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
-<span id="cb13-107"><a href="#cb13-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) </span>
-<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-ame</span></span>
-<span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: e3. Predicted Means Per Condition and Band, and Average Marginal Effect (Constant - Varied)</span></span>
-<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
-<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 10</span></span>
-<span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a>new_data_grid<span class="ot">=</span><span class="fu">map_dfr</span>(<span class="dv">1</span>, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="fu">unique</span>(testE3[,<span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"bandInt"</span>)])))</span>
-<span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a>cSamp <span class="ot">&lt;-</span> e3_distBMM <span class="sc">|&gt;</span> </span>
-<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a>  <span class="fu">emmeans</span>(<span class="st">"condit"</span>,<span class="at">by=</span><span class="st">"bandInt"</span>,<span class="at">at=</span><span class="fu">list</span>(<span class="at">bandInt=</span><span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">350</span>,<span class="dv">600</span>,<span class="dv">800</span>,<span class="dv">1000</span>,<span class="dv">1200</span>)),</span>
-<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a>          <span class="at">epred =</span> <span class="cn">TRUE</span>, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pairs</span>() <span class="sc">|&gt;</span> <span class="fu">gather_emmeans_draws</span>()  <span class="sc">|&gt;</span></span>
-<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(contrast, .draw,bandInt) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">value=</span><span class="fu">mean</span>(.value), <span class="at">n=</span><span class="fu">n</span>())</span>
-<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a> ameBand <span class="ot">&lt;-</span> cSamp <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>value,<span class="at">y=</span><span class="st">""</span>)) <span class="sc">+</span> </span>
-<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>() <span class="sc">+</span> </span>
-<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">0</span>,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
-<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>bandInt,<span class="at">ncol=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Marginal Effect (Constant - Varied)"</span>, <span class="at">y=</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
-<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Average Marginal Effect"</span>)</span>
-<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a>bothConditGM <span class="ot">&lt;-</span> e3_distBMM <span class="sc">%&gt;%</span></span>
-<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a>  <span class="fu">epred_draws</span>(<span class="at">newdata =</span> new_data_grid,<span class="at">ndraws =</span> <span class="dv">2000</span>, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>.epred,<span class="at">y=</span><span class="st">"Mean"</span>,<span class="at">fill=</span>condit)) <span class="sc">+</span> </span>
-<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>() <span class="sc">+</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>bandInt, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Predicted Deviation"</span>, <span class="at">y=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
-<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Grand Means"</span>) <span class="sc">+</span><span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb13-99"><a href="#cb13-99" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-bmm-dist</span></span>
+<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: e3. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals. </span></span>
+<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a>e3_distBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
+<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb13-106"><a href="#cb13-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-107"><a href="#cb13-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bandInt, <span class="at">y =</span> .value, <span class="at">color =</span> condit, <span class="at">fill =</span> condit)) <span class="sc">+</span> </span>
+<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_pointinterval</span>() <span class="sc">+</span></span>
+<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> .<span class="dv">25</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>)) <span class="sc">+</span></span>
+<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">"Predicted Deviation"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Velocity Band"</span>)<span class="sc">+</span></span>
+<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
+<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(testE3<span class="sc">$</span>vb), </span>
+<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
+<span id="cb13-114"><a href="#cb13-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) </span>
+<span id="cb13-115"><a href="#cb13-115" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-ame</span></span>
+<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: e3. Predicted Means Per Condition and Band, and Average Marginal Effect (Constant - Varied)</span></span>
+<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
+<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 10</span></span>
+<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a>new_data_grid<span class="ot">=</span><span class="fu">map_dfr</span>(<span class="dv">1</span>, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="fu">unique</span>(testE3[,<span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"bandInt"</span>)])))</span>
+<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a>cSamp <span class="ot">&lt;-</span> e3_distBMM <span class="sc">|&gt;</span> </span>
+<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">emmeans</span>(<span class="st">"condit"</span>,<span class="at">by=</span><span class="st">"bandInt"</span>,<span class="at">at=</span><span class="fu">list</span>(<span class="at">bandInt=</span><span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">350</span>,<span class="dv">600</span>,<span class="dv">800</span>,<span class="dv">1000</span>,<span class="dv">1200</span>)),</span>
+<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a>          <span class="at">epred =</span> <span class="cn">TRUE</span>, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pairs</span>() <span class="sc">|&gt;</span> <span class="fu">gather_emmeans_draws</span>()  <span class="sc">|&gt;</span></span>
+<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(contrast, .draw,bandInt) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">value=</span><span class="fu">mean</span>(.value), <span class="at">n=</span><span class="fu">n</span>())</span>
+<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a> ameBand <span class="ot">&lt;-</span> cSamp <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>value,<span class="at">y=</span><span class="st">""</span>)) <span class="sc">+</span> </span>
+<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>() <span class="sc">+</span> </span>
+<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">0</span>,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
+<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>bandInt,<span class="at">ncol=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Marginal Effect (Constant - Varied)"</span>, <span class="at">y=</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Average Marginal Effect"</span>)</span>
 <span id="cb13-141"><a href="#cb13-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a>(bothConditGM <span class="sc">|</span> ameBand) <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="fl">1.0</span>))</span>
-<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Discrimination between Velocity Bands</span></span>
+<span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a>bothConditGM <span class="ot">&lt;-</span> e3_distBMM <span class="sc">%&gt;%</span></span>
+<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">epred_draws</span>(<span class="at">newdata =</span> new_data_grid,<span class="at">ndraws =</span> <span class="dv">2000</span>, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>.epred,<span class="at">y=</span><span class="st">"Mean"</span>,<span class="at">fill=</span>condit)) <span class="sc">+</span> </span>
+<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>() <span class="sc">+</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>bandInt, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Predicted Deviation"</span>, <span class="at">y=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Grand Means"</span>) <span class="sc">+</span><span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
 <span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a>In addition to accuracy/deviation. We also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). @tbl-e3-test-nf-vx shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants. </span>
-<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a>\begin{equation}</span>
-<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a>vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \beta_3 \cdot condit_{ij} \cdot bandInt_{ij} + b_{0i} + b_{1i} \cdot bandInt_{ij} + \epsilon_{ij}</span>
-<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a>\end{equation}</span>
-<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a>(bothConditGM <span class="sc">|</span> ameBand) <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="fl">1.0</span>))</span>
+<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Discrimination between Velocity Bands</span></span>
 <span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a>In addition to accuracy/deviation. We also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). @tbl-e3-test-nf-vx shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants. </span>
 <span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-test-vx</span></span>
-<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. </span></span>
-<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
-<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
-<span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a>testE3 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,vb,condit) <span class="sc">|&gt;</span> <span class="fu">plot_distByCondit</span>()</span>
-<span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a>**need to make E3 tables differently since ppts do both original and reverse order** </span>
-<span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e3-test-nf-vx</span></span>
-<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Testing vx - Empirical Summary"</span></span>
-<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]</span></span>
-<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
-<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">test_summary_table</span>(testE3, <span class="st">"vx"</span>, <span class="at">mfun =</span> <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">median =</span> median, <span class="at">sd =</span> sd))</span>
-<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>constant </span>
-<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>varied </span>
-<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a>\begin{equation}</span>
+<span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a>vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \beta_3 \cdot condit_{ij} \cdot bandInt_{ij} + b_{0i} + b_{1i} \cdot bandInt_{ij} + \epsilon_{ij}</span>
+<span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a>\end{equation}</span>
+<span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-test-vx</span></span>
+<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. </span></span>
+<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
+<span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
+<span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a>testE3 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,vb,condit) <span class="sc">|&gt;</span> <span class="fu">plot_distByCondit</span>()</span>
+<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a>**need to make E3 tables differently since ppts do both original and reverse order** </span>
+<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e3-test-nf-vx</span></span>
+<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Testing vx - Empirical Summary"</span></span>
+<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]</span></span>
+<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
 <span id="cb13-188"><a href="#cb13-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e3-bmm-vx</span></span>
-<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"</span></span>
-<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a>e3_vxBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(vx <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
-<span id="cb13-197"><a href="#cb13-197" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data=</span>testE3,<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>, <span class="st">"e3_testVxBand_RF_5k"</span>)),</span>
-<span id="cb13-198"><a href="#cb13-198" aria-hidden="true" tabindex="-1"></a>                        <span class="at">iter=</span><span class="dv">5000</span>,<span class="at">chains=</span><span class="dv">4</span>,<span class="at">silent=</span><span class="dv">0</span>,</span>
-<span id="cb13-199"><a href="#cb13-199" aria-hidden="true" tabindex="-1"></a>                        <span class="at">control=</span><span class="fu">list</span>(<span class="at">adapt_delta=</span><span class="fl">0.94</span>, <span class="at">max_treedepth=</span><span class="dv">13</span>))</span>
-<span id="cb13-200"><a href="#cb13-200" aria-hidden="true" tabindex="-1"></a>mt4 <span class="ot">&lt;-</span><span class="fu">GetModelStats</span>(e3_vxBMM ) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
-<span id="cb13-201"><a href="#cb13-201" aria-hidden="true" tabindex="-1"></a>mt4</span>
-<span id="cb13-202"><a href="#cb13-202" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-203"><a href="#cb13-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-204"><a href="#cb13-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-205"><a href="#cb13-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a>See @tbl-e3-bmm-vx for the full model results. The estimated coefficient for training condition (β = -166.75, 95% CI <span class="co">[</span><span class="ot">-277.14, -64.08</span><span class="co">]</span>) suggests that the varied group tends to produce softer throws than the constant group. More relevant to the issue of discrimination is the slope on Velocity Band (β = 0.44, 95% CI <span class="co">[</span><span class="ot">.35, .52</span><span class="co">]</span>). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibted some discrimination between bands. It's also noteworthy that the difference between the E3 slope and E1 &amp; E2 slope is quite strong, with the upper end of the 95% CI for E3 falling underneath the lower end of the 95% CI for both of the earlier experiments. </span>
-<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-bmm-vx</span></span>
-<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. </span></span>
-<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a>e3_vxBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
-<span id="cb13-215"><a href="#cb13-215" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb13-216"><a href="#cb13-216" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
-<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bandInt, <span class="at">y =</span> .value, <span class="at">color =</span> condit, <span class="at">fill =</span> condit)) <span class="sc">+</span> </span>
-<span id="cb13-218"><a href="#cb13-218" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_pointinterval</span>() <span class="sc">+</span></span>
-<span id="cb13-219"><a href="#cb13-219" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> .<span class="dv">25</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>)) <span class="sc">+</span></span>
-<span id="cb13-220"><a href="#cb13-220" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Predicted X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)<span class="sc">+</span></span>
-<span id="cb13-221"><a href="#cb13-221" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
-<span id="cb13-222"><a href="#cb13-222" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(testE3<span class="sc">$</span>vb), </span>
-<span id="cb13-223"><a href="#cb13-223" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
-<span id="cb13-224"><a href="#cb13-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) </span>
-<span id="cb13-225"><a href="#cb13-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-226"><a href="#cb13-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-227"><a href="#cb13-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-228"><a href="#cb13-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-231"><a href="#cb13-231" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-232"><a href="#cb13-232" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-slope-dist</span></span>
-<span id="cb13-233"><a href="#cb13-233" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 100 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
-<span id="cb13-234"><a href="#cb13-234" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
-<span id="cb13-235"><a href="#cb13-235" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
-<span id="cb13-236"><a href="#cb13-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-237"><a href="#cb13-237" aria-hidden="true" tabindex="-1"></a>new_data_grid<span class="ot">=</span><span class="fu">map_dfr</span>(<span class="dv">1</span>, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="fu">unique</span>(testE3[,<span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"bandInt"</span>)]))) <span class="sc">|&gt;</span> </span>
-<span id="cb13-238"><a href="#cb13-238" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(id,bandInt) <span class="sc">|&gt;</span> </span>
-<span id="cb13-239"><a href="#cb13-239" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">condit_dummy =</span> <span class="fu">ifelse</span>(condit <span class="sc">==</span> <span class="st">"Varied"</span>, <span class="dv">1</span>, <span class="dv">0</span>)) </span>
-<span id="cb13-240"><a href="#cb13-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-241"><a href="#cb13-241" aria-hidden="true" tabindex="-1"></a>indv_coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(e3_vxBMM)<span class="sc">$</span>id <span class="sc">|&gt;</span> </span>
-<span id="cb13-242"><a href="#cb13-242" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames=</span><span class="st">"id"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb13-243"><a href="#cb13-243" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="fu">starts_with</span>(<span class="st">"Est"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb13-244"><a href="#cb13-244" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e3Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id) ) <span class="sc">|&gt;</span> </span>
-<span id="cb13-245"><a href="#cb13-245" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span> </span>
-<span id="cb13-246"><a href="#cb13-246" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">rank</span>(<span class="fu">desc</span>(Estimate.bandInt)),</span>
-<span id="cb13-247"><a href="#cb13-247" aria-hidden="true" tabindex="-1"></a>         <span class="at">intErrorRank=</span><span class="fu">rank</span>((Est.Error.Intercept)),</span>
-<span id="cb13-248"><a href="#cb13-248" aria-hidden="true" tabindex="-1"></a>         <span class="at">bandErrorRank=</span><span class="fu">rank</span>((Est.Error.bandInt)),</span>
-<span id="cb13-249"><a href="#cb13-249" aria-hidden="true" tabindex="-1"></a>         <span class="at">nCond =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(intErrorRank)</span>
-<span id="cb13-250"><a href="#cb13-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-251"><a href="#cb13-251" aria-hidden="true" tabindex="-1"></a>fixed_effects <span class="ot">&lt;-</span> e3_vxBMM <span class="sc">|&gt;</span> </span>
-<span id="cb13-252"><a href="#cb13-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(<span class="st">`</span><span class="at">^b_.*</span><span class="st">`</span>,<span class="at">regex=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(.chain,.draw,.iteration)</span>
-<span id="cb13-253"><a href="#cb13-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-254"><a href="#cb13-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-255"><a href="#cb13-255" aria-hidden="true" tabindex="-1"></a>random_effects <span class="ot">&lt;-</span> e3_vxBMM <span class="sc">|&gt;</span> </span>
-<span id="cb13-256"><a href="#cb13-256" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">^r_id.*$</span><span class="st">`</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>, <span class="at">ndraws =</span> <span class="dv">2000</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb13-257"><a href="#cb13-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(.variable, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"effect"</span>, <span class="st">"id"</span>, <span class="st">"term"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">[|,|</span><span class="sc">\\</span><span class="st">]"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb13-258"><a href="#cb13-258" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(id,<span class="at">levels=</span><span class="fu">levels</span>(testE3<span class="sc">$</span>id))) <span class="sc">|&gt;</span> </span>
-<span id="cb13-259"><a href="#cb13-259" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> term, <span class="at">values_from =</span> .value) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(id,.chain,.draw,.iteration)</span>
+<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">test_summary_table</span>(testE3, <span class="st">"vx"</span>, <span class="at">mfun =</span> <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">median =</span> median, <span class="at">sd =</span> sd))</span>
+<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>constant </span>
+<span id="cb13-191"><a href="#cb13-191" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>varied </span>
+<span id="cb13-192"><a href="#cb13-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-197"><a href="#cb13-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-200"><a href="#cb13-200" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-201"><a href="#cb13-201" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e3-bmm-vx</span></span>
+<span id="cb13-202"><a href="#cb13-202" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"</span></span>
+<span id="cb13-203"><a href="#cb13-203" aria-hidden="true" tabindex="-1"></a>e3_vxBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(vx <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
+<span id="cb13-204"><a href="#cb13-204" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data=</span>testE3,<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>, <span class="st">"e3_testVxBand_RF_5k"</span>)),</span>
+<span id="cb13-205"><a href="#cb13-205" aria-hidden="true" tabindex="-1"></a>                        <span class="at">iter=</span><span class="dv">5000</span>,<span class="at">chains=</span><span class="dv">4</span>,<span class="at">silent=</span><span class="dv">0</span>,</span>
+<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a>                        <span class="at">control=</span><span class="fu">list</span>(<span class="at">adapt_delta=</span><span class="fl">0.94</span>, <span class="at">max_treedepth=</span><span class="dv">13</span>))</span>
+<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a>mt4 <span class="ot">&lt;-</span><span class="fu">GetModelStats</span>(e3_vxBMM ) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
+<span id="cb13-208"><a href="#cb13-208" aria-hidden="true" tabindex="-1"></a>mt4</span>
+<span id="cb13-209"><a href="#cb13-209" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a>See @tbl-e3-bmm-vx for the full model results. The estimated coefficient for training condition (β = -166.75, 95% CI <span class="co">[</span><span class="ot">-277.14, -64.08</span><span class="co">]</span>) suggests that the varied group tends to produce softer throws than the constant group. More relevant to the issue of discrimination is the slope on Velocity Band (β = 0.44, 95% CI <span class="co">[</span><span class="ot">.35, .52</span><span class="co">]</span>). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibted some discrimination between bands. It's also noteworthy that the difference between the E3 slope and E1 &amp; E2 slope is quite strong, with the upper end of the 95% CI for E3 falling underneath the lower end of the 95% CI for both of the earlier experiments. </span>
+<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-218"><a href="#cb13-218" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-bmm-vx</span></span>
+<span id="cb13-219"><a href="#cb13-219" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. </span></span>
+<span id="cb13-220"><a href="#cb13-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-221"><a href="#cb13-221" aria-hidden="true" tabindex="-1"></a>e3_vxBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
+<span id="cb13-222"><a href="#cb13-222" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb13-223"><a href="#cb13-223" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-224"><a href="#cb13-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bandInt, <span class="at">y =</span> .value, <span class="at">color =</span> condit, <span class="at">fill =</span> condit)) <span class="sc">+</span> </span>
+<span id="cb13-225"><a href="#cb13-225" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_pointinterval</span>() <span class="sc">+</span></span>
+<span id="cb13-226"><a href="#cb13-226" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> .<span class="dv">25</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>)) <span class="sc">+</span></span>
+<span id="cb13-227"><a href="#cb13-227" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Predicted X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)<span class="sc">+</span></span>
+<span id="cb13-228"><a href="#cb13-228" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
+<span id="cb13-229"><a href="#cb13-229" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(testE3<span class="sc">$</span>vb), </span>
+<span id="cb13-230"><a href="#cb13-230" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
+<span id="cb13-231"><a href="#cb13-231" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) </span>
+<span id="cb13-232"><a href="#cb13-232" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-233"><a href="#cb13-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-234"><a href="#cb13-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-235"><a href="#cb13-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-238"><a href="#cb13-238" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-239"><a href="#cb13-239" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-slope-dist</span></span>
+<span id="cb13-240"><a href="#cb13-240" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Slope estimates by participant - ordered from lowest to highest within each condition. </span></span>
+<span id="cb13-241"><a href="#cb13-241" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
+<span id="cb13-242"><a href="#cb13-242" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
+<span id="cb13-243"><a href="#cb13-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-244"><a href="#cb13-244" aria-hidden="true" tabindex="-1"></a>new_data_grid<span class="ot">=</span><span class="fu">map_dfr</span>(<span class="dv">1</span>, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="fu">unique</span>(testE3[,<span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"bandInt"</span>)]))) <span class="sc">|&gt;</span> </span>
+<span id="cb13-245"><a href="#cb13-245" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(id,bandInt) <span class="sc">|&gt;</span> </span>
+<span id="cb13-246"><a href="#cb13-246" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">condit_dummy =</span> <span class="fu">ifelse</span>(condit <span class="sc">==</span> <span class="st">"Varied"</span>, <span class="dv">1</span>, <span class="dv">0</span>)) </span>
+<span id="cb13-247"><a href="#cb13-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-248"><a href="#cb13-248" aria-hidden="true" tabindex="-1"></a>indv_coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(e3_vxBMM)<span class="sc">$</span>id <span class="sc">|&gt;</span> </span>
+<span id="cb13-249"><a href="#cb13-249" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames=</span><span class="st">"id"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-250"><a href="#cb13-250" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="fu">starts_with</span>(<span class="st">"Est"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb13-251"><a href="#cb13-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e3Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id) ) <span class="sc">|&gt;</span> </span>
+<span id="cb13-252"><a href="#cb13-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span> </span>
+<span id="cb13-253"><a href="#cb13-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">rank</span>(<span class="fu">desc</span>(Estimate.bandInt)),</span>
+<span id="cb13-254"><a href="#cb13-254" aria-hidden="true" tabindex="-1"></a>         <span class="at">intErrorRank=</span><span class="fu">rank</span>((Est.Error.Intercept)),</span>
+<span id="cb13-255"><a href="#cb13-255" aria-hidden="true" tabindex="-1"></a>         <span class="at">bandErrorRank=</span><span class="fu">rank</span>((Est.Error.bandInt)),</span>
+<span id="cb13-256"><a href="#cb13-256" aria-hidden="true" tabindex="-1"></a>         <span class="at">nCond =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(intErrorRank)</span>
+<span id="cb13-257"><a href="#cb13-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-258"><a href="#cb13-258" aria-hidden="true" tabindex="-1"></a>fixed_effects <span class="ot">&lt;-</span> e3_vxBMM <span class="sc">|&gt;</span> </span>
+<span id="cb13-259"><a href="#cb13-259" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(<span class="st">`</span><span class="at">^b_.*</span><span class="st">`</span>,<span class="at">regex=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(.chain,.draw,.iteration)</span>
 <span id="cb13-260"><a href="#cb13-260" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-261"><a href="#cb13-261" aria-hidden="true" tabindex="-1"></a>cd <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb13-262"><a href="#cb13-262" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt) <span class="sc">|&gt;</span></span>
-<span id="cb13-263"><a href="#cb13-263" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) </span>
-<span id="cb13-264"><a href="#cb13-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-265"><a href="#cb13-265" aria-hidden="true" tabindex="-1"></a>cdMed <span class="ot">&lt;-</span> cd <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> <span class="fu">median_qi</span>(Slope)  <span class="sc">|&gt;</span> </span>
-<span id="cb13-266"><a href="#cb13-266" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e3Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id)) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
-<span id="cb13-267"><a href="#cb13-267" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rankSlope=</span><span class="fu">rank</span>(Slope)) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(rankSlope)</span>
-<span id="cb13-268"><a href="#cb13-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-269"><a href="#cb13-269" aria-hidden="true" tabindex="-1"></a>cdMed <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>rankSlope, <span class="at">x=</span>Slope,<span class="at">fill=</span>condit,<span class="at">color=</span>condit)) <span class="sc">+</span> </span>
-<span id="cb13-270"><a href="#cb13-270" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>.lower , <span class="at">xmax=</span>.upper)) <span class="sc">+</span> </span>
-<span id="cb13-271"><a href="#cb13-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Estimated Slope"</span>, <span class="at">y=</span><span class="st">"Participant"</span>)  <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>condit)  </span>
-<span id="cb13-272"><a href="#cb13-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-273"><a href="#cb13-273" aria-hidden="true" tabindex="-1"></a><span class="co"># cdMed |&gt;  ggplot(aes(x = condit, y = Slope,fill=condit)) +</span></span>
-<span id="cb13-274"><a href="#cb13-274" aria-hidden="true" tabindex="-1"></a><span class="co">#     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +</span></span>
-<span id="cb13-275"><a href="#cb13-275" aria-hidden="true" tabindex="-1"></a><span class="co">#     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + </span></span>
-<span id="cb13-276"><a href="#cb13-276" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_jitter()</span></span>
-<span id="cb13-277"><a href="#cb13-277" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Band", y="Deviation From Target")</span></span>
-<span id="cb13-278"><a href="#cb13-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-279"><a href="#cb13-279" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-280"><a href="#cb13-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-281"><a href="#cb13-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-282"><a href="#cb13-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-283"><a href="#cb13-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-284"><a href="#cb13-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-261"><a href="#cb13-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-262"><a href="#cb13-262" aria-hidden="true" tabindex="-1"></a>random_effects <span class="ot">&lt;-</span> e3_vxBMM <span class="sc">|&gt;</span> </span>
+<span id="cb13-263"><a href="#cb13-263" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">^r_id.*$</span><span class="st">`</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>, <span class="at">ndraws =</span> <span class="dv">2000</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-264"><a href="#cb13-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(.variable, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"effect"</span>, <span class="st">"id"</span>, <span class="st">"term"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">[|,|</span><span class="sc">\\</span><span class="st">]"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-265"><a href="#cb13-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(id,<span class="at">levels=</span><span class="fu">levels</span>(testE3<span class="sc">$</span>id))) <span class="sc">|&gt;</span> </span>
+<span id="cb13-266"><a href="#cb13-266" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> term, <span class="at">values_from =</span> .value) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(id,.chain,.draw,.iteration)</span>
+<span id="cb13-267"><a href="#cb13-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-268"><a href="#cb13-268" aria-hidden="true" tabindex="-1"></a>cd <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb13-269"><a href="#cb13-269" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb13-270"><a href="#cb13-270" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) </span>
+<span id="cb13-271"><a href="#cb13-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-272"><a href="#cb13-272" aria-hidden="true" tabindex="-1"></a>cdMed <span class="ot">&lt;-</span> cd <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> <span class="fu">median_qi</span>(Slope)  <span class="sc">|&gt;</span> </span>
+<span id="cb13-273"><a href="#cb13-273" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e3Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id)) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
+<span id="cb13-274"><a href="#cb13-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rankSlope=</span><span class="fu">rank</span>(Slope)) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(rankSlope)</span>
+<span id="cb13-275"><a href="#cb13-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-276"><a href="#cb13-276" aria-hidden="true" tabindex="-1"></a>cdMed <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>rankSlope, <span class="at">x=</span>Slope,<span class="at">fill=</span>condit,<span class="at">color=</span>condit)) <span class="sc">+</span> </span>
+<span id="cb13-277"><a href="#cb13-277" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>.lower , <span class="at">xmax=</span>.upper)) <span class="sc">+</span> </span>
+<span id="cb13-278"><a href="#cb13-278" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Estimated Slope"</span>, <span class="at">y=</span><span class="st">"Participant"</span>)  <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>condit)  </span>
+<span id="cb13-279"><a href="#cb13-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-280"><a href="#cb13-280" aria-hidden="true" tabindex="-1"></a><span class="co"># cdMed |&gt;  ggplot(aes(x = condit, y = Slope,fill=condit)) +</span></span>
+<span id="cb13-281"><a href="#cb13-281" aria-hidden="true" tabindex="-1"></a><span class="co">#     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +</span></span>
+<span id="cb13-282"><a href="#cb13-282" aria-hidden="true" tabindex="-1"></a><span class="co">#     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + </span></span>
+<span id="cb13-283"><a href="#cb13-283" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_jitter()</span></span>
+<span id="cb13-284"><a href="#cb13-284" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Band", y="Deviation From Target")</span></span>
 <span id="cb13-285"><a href="#cb13-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-286"><a href="#cb13-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-289"><a href="#cb13-289" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-290"><a href="#cb13-290" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-indv-slopes</span></span>
-<span id="cb13-291"><a href="#cb13-291" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
-<span id="cb13-292"><a href="#cb13-292" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
+<span id="cb13-286"><a href="#cb13-286" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-287"><a href="#cb13-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-288"><a href="#cb13-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-289"><a href="#cb13-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-290"><a href="#cb13-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-291"><a href="#cb13-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-292"><a href="#cb13-292" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-293"><a href="#cb13-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-294"><a href="#cb13-294" aria-hidden="true" tabindex="-1"></a>nTop <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb13-295"><a href="#cb13-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-296"><a href="#cb13-296" aria-hidden="true" tabindex="-1"></a>combined_df <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb13-297"><a href="#cb13-297" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt) <span class="sc">|&gt;</span></span>
-<span id="cb13-298"><a href="#cb13-298" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(new_data_grid, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"id"</span>),<span class="at">relationship=</span><span class="st">"many-to-many"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb13-299"><a href="#cb13-299" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb13-300"><a href="#cb13-300" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed_effects =</span> b_Intercept <span class="sc">+</span></span>
-<span id="cb13-301"><a href="#cb13-301" aria-hidden="true" tabindex="-1"></a>      (bandInt <span class="sc">*</span> b_bandInt) <span class="sc">+</span></span>
-<span id="cb13-302"><a href="#cb13-302" aria-hidden="true" tabindex="-1"></a>      condit_dummy <span class="sc">*</span> b_conditVaried <span class="sc">+</span> </span>
-<span id="cb13-303"><a href="#cb13-303" aria-hidden="true" tabindex="-1"></a>      (bandInt <span class="sc">*</span> condit_dummy) <span class="sc">*</span> <span class="st">`</span><span class="at">b_conditVaried:bandInt</span><span class="st">`</span> ,  <span class="co"># Note: Replace : with correct operator</span></span>
-<span id="cb13-304"><a href="#cb13-304" aria-hidden="true" tabindex="-1"></a>    <span class="at">random_effects =</span> Intercept <span class="sc">+</span> bandInt_RF,  <span class="co"># Assuming random effects for intercept and bandInt</span></span>
-<span id="cb13-305"><a href="#cb13-305" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> fixed_effects <span class="sc">+</span> random_effects</span>
-<span id="cb13-306"><a href="#cb13-306" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb13-307"><a href="#cb13-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-308"><a href="#cb13-308" aria-hidden="true" tabindex="-1"></a>combined_df <span class="sc">|&gt;</span> </span>
-<span id="cb13-309"><a href="#cb13-309" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&lt;=</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id)) )  <span class="sc">|&gt;</span> </span>
-<span id="cb13-310"><a href="#cb13-310" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, bandInt) <span class="sc">|&gt;</span></span>
-<span id="cb13-311"><a href="#cb13-311" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">200</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-312"><a href="#cb13-312" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>estimate)) <span class="sc">+</span> </span>
-<span id="cb13-313"><a href="#cb13-313" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">intercept=</span>Intercept<span class="sc">+</span>b_Intercept, <span class="at">slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt), <span class="at">color=</span><span class="st">"grey50"</span>, <span class="at">alpha=</span>.<span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb13-314"><a href="#cb13-314" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">data=</span>indv_coefs <span class="sc">|&gt;</span> </span>
-<span id="cb13-315"><a href="#cb13-315" aria-hidden="true" tabindex="-1"></a>                <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&lt;=</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))),<span class="fu">aes</span>(<span class="at">intercept=</span>Estimate.Intercept,<span class="at">slope=</span>Estimate.bandInt),<span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb13-316"><a href="#cb13-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">data=</span>testE3 <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&lt;=</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))), <span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>vx, <span class="at">color=</span>vb)) <span class="sc">+</span></span>
-<span id="cb13-317"><a href="#cb13-317" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,id),<span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb13-318"><a href="#cb13-318" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
-<span id="cb13-319"><a href="#cb13-319" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(testE3<span class="sc">$</span>vb), </span>
-<span id="cb13-320"><a href="#cb13-320" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
-<span id="cb13-321"><a href="#cb13-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">"X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)</span>
-<span id="cb13-322"><a href="#cb13-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-323"><a href="#cb13-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-324"><a href="#cb13-324" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-325"><a href="#cb13-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-326"><a href="#cb13-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-327"><a href="#cb13-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-328"><a href="#cb13-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-331"><a href="#cb13-331" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-332"><a href="#cb13-332" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-indv-slopes-small</span></span>
-<span id="cb13-333"><a href="#cb13-333" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the smallest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
-<span id="cb13-334"><a href="#cb13-334" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
+<span id="cb13-296"><a href="#cb13-296" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-297"><a href="#cb13-297" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-indv-slopes</span></span>
+<span id="cb13-298"><a href="#cb13-298" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
+<span id="cb13-299"><a href="#cb13-299" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
+<span id="cb13-300"><a href="#cb13-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-301"><a href="#cb13-301" aria-hidden="true" tabindex="-1"></a>nTop <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb13-302"><a href="#cb13-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-303"><a href="#cb13-303" aria-hidden="true" tabindex="-1"></a>combined_df <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb13-304"><a href="#cb13-304" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb13-305"><a href="#cb13-305" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(new_data_grid, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"id"</span>),<span class="at">relationship=</span><span class="st">"many-to-many"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-306"><a href="#cb13-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb13-307"><a href="#cb13-307" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed_effects =</span> b_Intercept <span class="sc">+</span></span>
+<span id="cb13-308"><a href="#cb13-308" aria-hidden="true" tabindex="-1"></a>      (bandInt <span class="sc">*</span> b_bandInt) <span class="sc">+</span></span>
+<span id="cb13-309"><a href="#cb13-309" aria-hidden="true" tabindex="-1"></a>      condit_dummy <span class="sc">*</span> b_conditVaried <span class="sc">+</span> </span>
+<span id="cb13-310"><a href="#cb13-310" aria-hidden="true" tabindex="-1"></a>      (bandInt <span class="sc">*</span> condit_dummy) <span class="sc">*</span> <span class="st">`</span><span class="at">b_conditVaried:bandInt</span><span class="st">`</span> ,  <span class="co"># Note: Replace : with correct operator</span></span>
+<span id="cb13-311"><a href="#cb13-311" aria-hidden="true" tabindex="-1"></a>    <span class="at">random_effects =</span> Intercept <span class="sc">+</span> bandInt_RF,  <span class="co"># Assuming random effects for intercept and bandInt</span></span>
+<span id="cb13-312"><a href="#cb13-312" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> fixed_effects <span class="sc">+</span> random_effects</span>
+<span id="cb13-313"><a href="#cb13-313" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-314"><a href="#cb13-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-315"><a href="#cb13-315" aria-hidden="true" tabindex="-1"></a>combined_df <span class="sc">|&gt;</span> </span>
+<span id="cb13-316"><a href="#cb13-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&lt;=</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id)) )  <span class="sc">|&gt;</span> </span>
+<span id="cb13-317"><a href="#cb13-317" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb13-318"><a href="#cb13-318" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">200</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-319"><a href="#cb13-319" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>estimate)) <span class="sc">+</span> </span>
+<span id="cb13-320"><a href="#cb13-320" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">intercept=</span>Intercept<span class="sc">+</span>b_Intercept, <span class="at">slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt), <span class="at">color=</span><span class="st">"grey50"</span>, <span class="at">alpha=</span>.<span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb13-321"><a href="#cb13-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">data=</span>indv_coefs <span class="sc">|&gt;</span> </span>
+<span id="cb13-322"><a href="#cb13-322" aria-hidden="true" tabindex="-1"></a>                <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&lt;=</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))),<span class="fu">aes</span>(<span class="at">intercept=</span>Estimate.Intercept,<span class="at">slope=</span>Estimate.bandInt),<span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb13-323"><a href="#cb13-323" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">data=</span>testE3 <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&lt;=</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))), <span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>vx, <span class="at">color=</span>vb)) <span class="sc">+</span></span>
+<span id="cb13-324"><a href="#cb13-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,id),<span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb13-325"><a href="#cb13-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
+<span id="cb13-326"><a href="#cb13-326" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(testE3<span class="sc">$</span>vb), </span>
+<span id="cb13-327"><a href="#cb13-327" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
+<span id="cb13-328"><a href="#cb13-328" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">"X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)</span>
+<span id="cb13-329"><a href="#cb13-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-330"><a href="#cb13-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-331"><a href="#cb13-331" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-332"><a href="#cb13-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-333"><a href="#cb13-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-334"><a href="#cb13-334" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-335"><a href="#cb13-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-336"><a href="#cb13-336" aria-hidden="true" tabindex="-1"></a>nTop <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb13-337"><a href="#cb13-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-338"><a href="#cb13-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-339"><a href="#cb13-339" aria-hidden="true" tabindex="-1"></a>combined_df <span class="sc">|&gt;</span> </span>
-<span id="cb13-340"><a href="#cb13-340" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&gt;</span>nCond<span class="sc">-</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id)) )  <span class="sc">|&gt;</span> </span>
-<span id="cb13-341"><a href="#cb13-341" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, bandInt) <span class="sc">|&gt;</span></span>
-<span id="cb13-342"><a href="#cb13-342" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">200</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-343"><a href="#cb13-343" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>estimate)) <span class="sc">+</span> </span>
-<span id="cb13-344"><a href="#cb13-344" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">intercept=</span>Intercept<span class="sc">+</span>b_Intercept, <span class="at">slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt), <span class="at">color=</span><span class="st">"grey50"</span>, <span class="at">alpha=</span>.<span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb13-345"><a href="#cb13-345" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">data=</span>indv_coefs <span class="sc">|&gt;</span> </span>
-<span id="cb13-346"><a href="#cb13-346" aria-hidden="true" tabindex="-1"></a>                <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&gt;</span>nCond<span class="sc">-</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))),<span class="fu">aes</span>(<span class="at">intercept=</span>Estimate.Intercept,<span class="at">slope=</span>Estimate.bandInt),<span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb13-347"><a href="#cb13-347" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">data=</span>testE3 <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&gt;</span>nCond<span class="sc">-</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))), <span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>vx, <span class="at">color=</span>vb)) <span class="sc">+</span></span>
-<span id="cb13-348"><a href="#cb13-348" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,id),<span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb13-349"><a href="#cb13-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
-<span id="cb13-350"><a href="#cb13-350" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(testE3<span class="sc">$</span>vb), </span>
-<span id="cb13-351"><a href="#cb13-351" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
-<span id="cb13-352"><a href="#cb13-352" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">"X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)</span>
-<span id="cb13-353"><a href="#cb13-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-354"><a href="#cb13-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-355"><a href="#cb13-355" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-338"><a href="#cb13-338" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-339"><a href="#cb13-339" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e3-indv-slopes-small</span></span>
+<span id="cb13-340"><a href="#cb13-340" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the smallest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
+<span id="cb13-341"><a href="#cb13-341" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
+<span id="cb13-342"><a href="#cb13-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-343"><a href="#cb13-343" aria-hidden="true" tabindex="-1"></a>nTop <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb13-344"><a href="#cb13-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-345"><a href="#cb13-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-346"><a href="#cb13-346" aria-hidden="true" tabindex="-1"></a>combined_df <span class="sc">|&gt;</span> </span>
+<span id="cb13-347"><a href="#cb13-347" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&gt;</span>nCond<span class="sc">-</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id)) )  <span class="sc">|&gt;</span> </span>
+<span id="cb13-348"><a href="#cb13-348" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb13-349"><a href="#cb13-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">200</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-350"><a href="#cb13-350" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>estimate)) <span class="sc">+</span> </span>
+<span id="cb13-351"><a href="#cb13-351" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">intercept=</span>Intercept<span class="sc">+</span>b_Intercept, <span class="at">slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt), <span class="at">color=</span><span class="st">"grey50"</span>, <span class="at">alpha=</span>.<span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb13-352"><a href="#cb13-352" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">data=</span>indv_coefs <span class="sc">|&gt;</span> </span>
+<span id="cb13-353"><a href="#cb13-353" aria-hidden="true" tabindex="-1"></a>                <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&gt;</span>nCond<span class="sc">-</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))),<span class="fu">aes</span>(<span class="at">intercept=</span>Estimate.Intercept,<span class="at">slope=</span>Estimate.bandInt),<span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb13-354"><a href="#cb13-354" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">data=</span>testE3 <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&gt;</span>nCond<span class="sc">-</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))), <span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>vx, <span class="at">color=</span>vb)) <span class="sc">+</span></span>
+<span id="cb13-355"><a href="#cb13-355" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,id),<span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb13-356"><a href="#cb13-356" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
+<span id="cb13-357"><a href="#cb13-357" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(testE3<span class="sc">$</span>vb), </span>
+<span id="cb13-358"><a href="#cb13-358" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
+<span id="cb13-359"><a href="#cb13-359" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">"X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)</span>
+<span id="cb13-360"><a href="#cb13-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-361"><a href="#cb13-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-362"><a href="#cb13-362" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
