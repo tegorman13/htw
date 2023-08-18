@@ -35,14 +35,7 @@ e1Sbjs <- test |> group_by(id,condit) |> summarise(n=n())
 See @tbl-e1-test-nf-deviation for descriptive statistics of the raw empirical data, and @fig-e1-test-vx for a visual representation of the full distributions.  
 To assess differences in accuracy between groups, we used Bayesian mixed effects regression models implemented via brms in R. The primary model predicted the absolute deviation from the target velocity band (dist) as a function of training condition (condit), target velocity band (vb), and their interaction, with random intercepts and slopes for each participant (id). 
 
-```{r}
-#| label: fig-e1-test-vx
-#| fig-cap: E1 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. 
-#| fig-width: 11
-#| fig-height: 9
-test %>% group_by(id,vb,condit) |> plot_distByCondit()
 
-```
 
 
 
@@ -89,15 +82,54 @@ Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Con
 #| label: fig-e1-bmm-dist
 #| fig-cap: E1. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals. 
 
-e1_distBMM |> emmeans( ~condit +bandInt, 
-                       at=list(bandInt=c(100,350,600,800,1000,1200) )) |>
+
+e1_distBMM |> emmeans( ~condit + bandInt, 
+                       at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
   gather_emmeans_draws() |>
-  ggplot(aes(x=bandInt,y=.value,color=condit)) + 
-  stat_lineribbon(aes(color=condit,fill=condit),alpha=.45,size=1,.width=c(.95)) + 
-  ylab("Predicted Deviation") + xlab("Velocity Band")
+  ggplot(aes(x = bandInt, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() +
+  stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
+    ylab("Predicted Deviation") + xlab("Velocity Band")+
+  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                     labels = levels(test$vb), 
+                     limits = c(0, 1400)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+
  
 
 ```
+
+
+```{r}
+#| label: fig-e1-ame
+#| fig-cap: E1. Predicted Means Per Condition and Band, and Average Marginal Effect (Constant - Varied)
+#| fig-width: 10
+#| fig-height: 10
+new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")])))
+
+cSamp <- e1_distBMM |> 
+  emmeans("condit",by="bandInt",at=list(bandInt=c(100,350,600,800,1000,1200)),epred = TRUE) |> 
+  pairs() |> gather_emmeans_draws()  |>
+  group_by(contrast, .draw,bandInt) |> summarise(value=mean(.value), n=n())
+
+ ameBand <- cSamp |> ggplot(aes(x=value,y="")) + 
+  stat_halfeye() + 
+  geom_vline(xintercept=0,alpha=.4)+
+  facet_wrap(~bandInt,ncol=1) + labs(x="Marginal Effect (Constant - Varied)", y= NULL)+
+  ggtitle("Average Marginal Effect")
+
+bothConditGM <- e1_distBMM %>%
+  epred_draws(newdata = new_data_grid,ndraws = 2000, re_formula = NA) |>
+  ggplot(aes(x=.epred,y="Mean",fill=condit)) + 
+  stat_halfeye() +facet_wrap(~bandInt, ncol = 1) +
+  labs(x="Predicted Deviation", y=NULL)+
+  ggtitle("Grand Means") +theme(legend.position = "bottom")
+
+(bothConditGM | ameBand) + plot_layout(widths=c(2,1.0))
+```
+
+
 
 
 
@@ -108,6 +140,17 @@ The model predicting absolute deviation (dist) showed clear effects of both trai
 #### Discrimination between Velocity Bands
 
 table below
+
+
+```{r}
+#| label: fig-e1-test-vx
+#| fig-cap: E1 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. 
+#| fig-width: 11
+#| fig-height: 9
+test %>% group_by(id,vb,condit) |> plot_distByCondit()
+
+```
+
 
 ```{r}
 #| label: tbl-e1-test-nf-vx
@@ -139,7 +182,8 @@ mt2
 See @tbl-e1-bmm-vx for the full model results. The estimated coefficient for training condition (β = 146, 95% CI [35.96, 254.70]) suggests that the varied group tends to produce harder throws than the constant group. More relevant to the issue of discrimination is the slope on Velocity Band (β = 0.69, 95% CI [.59, .77]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibted some discrimination between bands. The slope coefficient (β = 0.69 ) also seems in accordance with an examination of @tbl-e1-test-nf-vx, which shows that average x-velocity fell within the range of the target band for four out of six of the bands ($4/6$=.67). 
 
 ```{r}
-
+#| label: fig-e1-bmm-vx
+#| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. 
 #conditional_effects(e1_vxBMM,effects = "bandInt:condit") 
 
 
@@ -151,6 +195,25 @@ e1_vxBMM |> emmeans( ~condit +bandInt,
   ylab("Predicted Vx") + xlab("Velocity Band")
 
 
+e1_vxBMM |> emmeans( ~condit + bandInt, 
+                       at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
+  gather_emmeans_draws() |>
+  ggplot(aes(x = bandInt, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() +
+  stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
+  ylab("Predicted X Velocity") + xlab("Band")+
+  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                     labels = levels(test$vb), 
+                     limits = c(0, 1400)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+
+
+
+
+
+
+  
 ```
 
 

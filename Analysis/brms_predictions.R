@@ -156,29 +156,61 @@ nd3 <- e1_vxBMM %>%
 
 ###### Marginal Effects
 
-e1_distBMM |> emtrends(~bandInt+condit,var="bandInt",at=list(bandInt=c(100,350,600,800,1000,1200)))
+e1_distBMM |> emmeans( ~condit +bandInt, at=list(bandInt=c(100,350,600,800,1000,1200) ))
+e1_distBMM |> emmeans( ~condit +bandInt, 
+                       at=list(bandInt=c(100,350,600,800,1000,1200) ),
+                       epred=TRUE, re_formula = NULL)
 
+e1_distBMM |> emtrends(~bandInt+condit,var="bandInt",at=list(bandInt=c(100,350,600,800,1000,1200)))
+e1_distBMM |> emtrends(~bandInt+condit,var="bandInt")
 e1_distBMM |> marginaleffects(newdata = datagrid(bandInt=c(100,350,600,800,1000,1200)))
 
 new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")])))
 
 e1_distBMM |> marginaleffects(newdata = datagrid(new_data_grid))
-
 e1_distBMM |> plot_cme(variables="bandInt",condition="condit")
-e1_distBMM |> plot_cme(variables="condit",condition="condit")
-e1_distBMM |> plot_cme(variables="condit",by="bandInt")
+
 
 e1_distBMM |> 
-  marginaleffects(newdata="mean") |> 
-  tidy()
+  emmeans("condit",by="bandInt",at=list(bandInt=c(100,350,600,800,1000,1200)),epred = TRUE) |> 
+  pairs() |> gather_emmeans_draws() |> mean_hdi(.width=.95)
+  
+
+cSamp <- e1_distBMM |> 
+  emmeans("condit",by="bandInt",at=list(bandInt=c(100,350,600,800,1000,1200)),epred = TRUE) |> 
+  pairs() |> gather_emmeans_draws()  |>
+  group_by(contrast, .draw,bandInt) |> summarise(value=mean(.value), n=n())
 
 
-e1_distBMM |> emmeans( ~condit +bandInt, at=list(bandInt=c(100,350,600,800,1000,1200) ))
+ cSamp |> ggplot(aes(value))+geom_histogram() + 
+  geom_vline(xintercept=0,alpha=.4)+
+  facet_wrap(~bandInt,ncol=1) +
+  ggtitle("Posterior of Constant - Varied contrasts")
 
-e1_distBMM |> emmeans( ~condit +bandInt, 
-                       at=list(bandInt=c(100,350,600,800,1000,1200) ),
-                       epred=TRUE, re_formula = NULL)
 
+
+ ameBand <- cSamp |> ggplot(aes(x=value,y="")) + 
+  stat_halfeye() + 
+  geom_vline(xintercept=0,alpha=.4)+
+  facet_wrap(~bandInt,ncol=1) + labs(x="Marginal Effect (Constant - Varied)", y= NULL)+
+  ggtitle("Average Marginal Effect")
+
+
+
+bothConditRf <- e1_distBMM %>%
+  epred_draws(newdata = new_data_grid,ndraws = 2000) |>
+  ggplot(aes(x=.epred,y="Mean",fill=condit)) + stat_halfeye() +facet_wrap(~bandInt)
+
+bothConditGM <- e1_distBMM %>%
+  epred_draws(newdata = new_data_grid,ndraws = 2000, re_formula = NA) |>
+  ggplot(aes(x=.epred,y="Mean",fill=condit)) + 
+  stat_halfeye() +facet_wrap(~bandInt, ncol = 1) +
+  labs(x="Predicted Deviation", y=NULL)+
+  ggtitle("Grand Means") +theme(legend.position = "bottom")
+
+
+bothConditGM | ameBand
+(bothConditGM | ameBand) + plot_layout(widths=c(2,1.5))
 
 e1_distBMM |> emmeans( ~condit +bandInt, 
                        at=list(bandInt=c(100,350,600,800,1000,1200) )) |>
