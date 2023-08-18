@@ -9,9 +9,10 @@ code-fold: true
 
 ```{r}
 #| output: false
-
-lapply(c('tidyverse','data.table','lme4','lmerTest','knitr','kableExtra','cowplot','gghalves','here'),library,character.only = TRUE)
-d <- readRDS(here("data/dPrune-01-19-23.rds"))
+#| 
+pacman::p_load('tidyverse','data.table','lme4','lmerTest','knitr','kableExtra','cowplot','gghalves','here')
+d <- readRDS(here("data/dPrune-07-27-23.rds"))
+source(here("Functions/Display_Functions.R"))
 
 dtest <- d %>% filter(expMode %in% c("test-Nf","test-train-nf")) %>% group_by(id,lowBound) %>% 
   mutate(nBand=n(),band=bandInt,id=factor(id)) %>% group_by(id) %>% mutate(nd=n_distinct(lowBound))
@@ -20,64 +21,33 @@ dtest <- dtest %>% group_by(id,lowBound) %>% filter(nBand>=5 & nd==6)
 # for any id that has at least 1 nBand >=5, remove all rows with that id. 
 dtest <- dtest %>% group_by(id) %>% filter(!id %in% unique(dtest$id[dtest$nBand<5]))
 
-dtestAgg <- dtest %>% group_by(id,condit,catOrder,feedbackType,vb,band,lowBound,highBound,input) %>% mutate(vxCapped=ifelse(vx>1600,1600,vx)) %>%
+dtestAgg <- dtest %>% group_by(id,condit,bandOrder,fb,vb,band,lowBound,highBound,bandInt) %>% mutate(vxCapped=ifelse(vx>1600,1600,vx)) %>%
   summarise(vxMean=mean(vx),devMean=mean(dist),vxMed=median(vx),devMed=median(dist),
             vxMeanCap=mean(vxCapped),.groups = "keep")
             
 ```
 
-```{r fig.width=11, fig.height=9}
+
+
+```{r}
 #| eval: false
 #| include: false
-dtest %>% group_by(id,lowBound,condit,catOrder,expMode) %>% summarise(n = n()) %>% ggplot(aes(x = n)) + geom_histogram(aes(fill = condit)) + facet_wrap(catOrder+expMode~lowBound,ncol=6)
+dtest %>% group_by(id,lowBound,condit,bandOrder,expMode) %>% summarise(n = n()) %>% ggplot(aes(x = n)) + geom_histogram(aes(fill = condit)) + facet_wrap(bandOrder+expMode~lowBound,ncol=6)
 
-dtest %>% group_by(id,lowBound,condit,catOrder,expMode) %>% summarise(n = n()) %>% mutate(nf=factor(n,levels=unique(n))) %>%
-  group_by(condit,expMode,catOrder,nf,n) %>% summarise(c=n()) %>% arrange(n) %>% select(-nf) %>% DT::datatable()
+dtest %>% group_by(id,lowBound,condit,bandOrder,expMode) %>% summarise(n = n()) %>% mutate(nf=factor(n,levels=unique(n))) %>%
+  group_by(condit,expMode,bandOrder,nf,n) %>% summarise(c=n()) %>% arrange(n) %>% select(-nf) %>% DT::datatable()
 
-dtest %>% group_by(id,lowBound,condit,catOrder) %>% summarise(n = n()) %>% group_by(lowBound,condit,catOrder) %>% summarise(mean = mean(n),sd = sd(n),n = n()) 
+dtest %>% group_by(id,lowBound,condit,bandOrder) %>% summarise(n = n()) %>% group_by(lowBound,condit,bandOrder) %>% summarise(mean = mean(n),sd = sd(n),n = n()) 
 
 # print number of subjects in each condition combination with less than 5 trials in any lowBound. 
-dtest %>% group_by(id,lowBound,condit,catOrder) %>% summarise(n = n()) %>% filter(n < 5) %>% DT::datatable()
-dtest %>% group_by(id,expMode,catOrder,lowBound) %>% select(nTestF,nTestNf,nBand) %>% slice(1) %>% arrange(nBand)
+dtest %>% group_by(id,lowBound,condit,bandOrder) %>% summarise(n = n()) %>% filter(n < 5) %>% DT::datatable()
+dtest %>% group_by(id,expMode,bandOrder,lowBound) %>% select(nTestF,nTestNf,nBand) %>% slice(1) %>% arrange(nBand)
 
 ```
 
 
 
-## Quick Reminder of General Patterns
 
-```{r fig.width=12, fig.height=10}
-#| column: page-inset-right
-
-fig1aCap=str_wrap("Figure 1a: Bands 100-300, 350-550 and 600-800 are novel extrapolations for both Original Order. Translucent rectangles indicate the correct band " ,width=170)
-
-fig1bCap=str_wrap("Figure 1b: Bands 800-1000, 1000-1200,  and 1200-1400 are novel extrapolations for both Reverse Order. Translucent rectangles indicate the correct band " ,width=170)
-
-plotDist <- function(df,title="",fcap=""){
-  rectWidth=30
-  df %>%ggplot()+aes(x = band, y = vxMeanCap, fill=vb) +
-    # Set the color mapping in this layer so the points don't get a color
-   geom_half_violin(color=NA)+ # remove border color
-  geom_half_boxplot(position=position_nudge(x=-0.05),side="r",outlier.shape = NA,center=TRUE,
-                    errorbar.draw = FALSE,width=20)+
-  geom_half_point(transformation = position_jitter(width = 0.05, height = 0.05),size=.3,aes(color=vb))+
-  facet_wrap(~condit,scale="free_x")+
-    geom_rect(aes(xmin=band-rectWidth,xmax=band+rectWidth,ymin=band,ymax=highBound,fill=vb),alpha=.01)+
-    geom_segment(aes(x=band-rectWidth,xend=band+rectWidth,y=highBound,yend=highBound),alpha=.8,linetype="dashed")+
-    geom_segment(aes(x=band-rectWidth,xend=band+rectWidth,y=band,yend=band),alpha=.8,linetype="dashed")+
-    labs(x = "Velocity Band", y = "vxMean",caption=fcap) +
-    scale_y_continuous(expand=expansion(add=100),breaks=round(seq(0,2000,by=200),2))+
-    scale_x_continuous(labels=sort(unique(df$band)),breaks=sort(unique(df$band)))+
-    ggtitle(title) + theme(legend.position = "none")+theme_classic()+guides(fill="none",color="none")+
-  theme(plot.caption=element_text(hjust=0,face="italic"))
-}
-
-
-#dtestAgg %>% plotDist()
-dtestAgg %>% filter(catOrder=="orig") %>% plotDist(title="Empirical Vx - Original Order",fcap=fig1aCap)
-dtestAgg %>% filter(catOrder=="rev") %>% plotDist(title="Empirical Vx - Reverse Order",fcap=fig1bCap)
-
-```
 
 
 ## naive model that fits single slope and intercept to all subjects
@@ -242,23 +212,23 @@ summary(gbd)
 
 
 
-gbmc <- lmer(vxMed ~ 1 + condit + band + catOrder + (1 + band | id), dtestAgg, control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
+gbmc <- lmer(vxMed ~ 1 + condit + band + bandOrder + (1 + band | id), dtestAgg, control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
 arm::display(gbmc)
 anova(gbmc)
 summary(gbmc)
 
-gbdc <- lmer(devMean ~ 1 + condit + band + catOrder + (1 + band | id), dtestAgg, control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
+gbdc <- lmer(devMean ~ 1 + condit + band + bandOrder + (1 + band | id), dtestAgg, control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
 arm::display(gbdc)
 anova(gbdc)
 summary(gbdc)
 
 
-gbm2 <- dtestAgg %>% filter(catOrder=="orig") %>% lmer(vxMed ~ 1 + condit + band + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
+gbm2 <- dtestAgg %>% filter(bandOrder=="Original") %>% lmer(vxMed ~ 1 + condit + band + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
 arm::display(gbm2)
 anova(gbm2)
 summary(gbm2)
 
-gbd2 <- dtestAgg %>% filter(catOrder=="orig") %>% lmer(devMean ~ 1 + condit + band + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
+gbd2 <- dtestAgg %>% filter(bandOrder=="Original") %>% lmer(devMean ~ 1 + condit + band + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
 arm::display(gbd2)
 anova(gbd2)
 summary(gbd2)
@@ -266,12 +236,12 @@ summary(gbd2)
 
 
 
-gbm2.i <- dtestAgg %>% filter(catOrder=="orig") %>% lmer(vxMed ~ 1 + (condit * band) + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
+gbm2.i <- dtestAgg %>% filter(bandOrder=="Original") %>% lmer(vxMed ~ 1 + (condit * band) + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
 arm::display(gbm2.i)
 anova(gbm2.i)
 summary(gbm2.i)
 
-gbd2.i <- dtestAgg %>% filter(catOrder=="orig") %>% lmer(devMean ~ 1 + (condit * band) + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
+gbd2.i <- dtestAgg %>% filter(bandOrder=="Original") %>% lmer(devMean ~ 1 + (condit * band) + (1 + band | id), data=., control = lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 3e5)))
 arm::display(gbd2.i)
 anova(gbd2.i)
 summary(gbd2.i)
@@ -281,30 +251,20 @@ summary(gbd2.i)
 
 
 ```{r fig.width=12, fig.height=9}
-#| eval: false
-#| include: false
-#| 
 #| column: page-inset-right
 df_models <- bind_rows(df_pooled, df_no_pooling, df_partial_pooling) %>% 
   left_join(dtestAgg, by = c("id"))
 
-# use base R to filter only testSlopeIndv with Rank < 3
+#filter only testSlopeIndv with Rank < 3
 testSlopeIndv[testSlopeIndv$rank<10,]$id
 
 df_models %>% filter(id %in% testSlopeIndv[testSlopeIndv$rank<10,]$id) %>%
-ggplot() + 
-  aes(x = band, y = vxMed) + 
-  # Set the color mapping in this layer so the points don't get a color
-  geom_abline(
-    aes(intercept = Intercept, slope = Slope_band, color = Model),
-     linewidth= .75
-  ) + 
-  geom_point() +
-  facet_wrap("id") +
-  labs(x = "band", y = "vxMean") + 
-  # Fix the color palette 
-  scale_color_brewer(palette = "Dark2") + 
-  theme(legend.position = "top", legend.justification = "left")
+ggplot() + aes(x = band, y = vxMed) + 
+  geom_abline(aes(intercept = Intercept, slope = Slope_band, color = Model),
+     linewidth= .75) + 
+  geom_point() + facet_wrap("id") +
+  labs(x = "band", y = "vxMean") 
+
 ```
 
 
@@ -411,7 +371,7 @@ df_models %>% filter(Model == "Partial pooling") %>%
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Slope (band)", y = "Median Vx") + 
   theme(legend.position = "top", legend.justification = "left") +
-  facet_grid(catOrder~vb)+ ggtitle("Correlation between Slope and Median VX")
+  facet_grid(bandOrder~vb)+ ggtitle("Correlation between Slope and Median VX")
 
 
 
@@ -422,7 +382,7 @@ df_models %>% filter(Model == "Partial pooling") %>%
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Intercept", y = "Median Vx") + 
   theme(legend.position = "top", legend.justification = "left") +
-  facet_grid(catOrder~vb)+ ggtitle("Correlation between Intercept and Median Vx")
+  facet_grid(bandOrder~vb)+ ggtitle("Correlation between Intercept and Median Vx")
 
 ```
 
@@ -444,7 +404,7 @@ df_models %>% filter(Model == "Partial pooling") %>%
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Slope (band)", y = "devMean") + 
   theme(legend.position = "top", legend.justification = "left") +
-  facet_grid(catOrder~vb)+ ggtitle("Correlation between Slope and Mean Deviation")
+  facet_grid(bandOrder~vb)+ ggtitle("Correlation between Slope and Mean Deviation")
 
 
 
@@ -455,7 +415,7 @@ df_models %>% filter(Model == "Partial pooling") %>%
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Intercept", y = "devMean") + 
   theme(legend.position = "top", legend.justification = "left") +
-  facet_grid(catOrder~vb)+ ggtitle("Correlation between Intercept and Mean Deviation")
+  facet_grid(bandOrder~vb)+ ggtitle("Correlation between Intercept and Mean Deviation")
 
 ```
 

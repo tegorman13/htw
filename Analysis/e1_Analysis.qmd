@@ -1,22 +1,17 @@
 ---
-title: Experiment 1 Analysis
+title: E1 Extras
 date: last-modified
 categories: [Analysis, R]
 page-layout: full
 # fig-width: 15
 # fig-height: 8
-code-fold: true
-code-tools: true
 toc: false
-execute: 
-  warning: false
-  eval: true
 ---
 
-```{r setup}
+```{r setup, echo=FALSE, include=FALSE}
 pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist)
-e1 <- readRDS(here("data/e1_07-27-23.rds"))
-source(here("Functions/Display_Functions.R"))
+e1 <- readRDS(here("data/e1_08-04-23.rds"))
+quietly( source(here::here("Functions", "packages.R")))
 
 train <- e1 |> filter(expMode %in% c("train"))
 trainAvg <- train %>% group_by(id, condit, vb, bandInt,trainStage) %>%
@@ -28,58 +23,18 @@ testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
 ```
 
 
-## Dictionary
+```{r}
+#| label: test vx table
+#| tbl-cap: "Testing - No Feedback"
+#| tbl-subcap: ["Constant Testing - X Velocity", "Varied Testing - X Velocity"]
+#| layout-ncol: 2
+#| echo: fenced
 
-| Variable Name | Variable Levels                 | Description                                                                               |
-|---------------|---------------------------------|-------------------------------------------------------------------------------------------|
-| condit        | Constant, Varied                | Condition of the experiment: constant or varied                                             |
-| tOrder        | Test First, Train First         | Order of testing and training stages: test first or train first                            |
-| expMode       | train, train-Nf, test-Nf, etc.  | Mode of the experiment: train, train-Nf, test-Nf, etc.                                    |
-| trainStage    | Beginning, Middle, End, Test    | Stage of the training: beginning, middle, end, or test                                    |
-| expStage      | TrainStart, intTest1, etc.      | Stage of the experiment: TrainStart, intTest1, TrainMid1, etc.                            |
-| band          | 1, 2, 3, 4, 5, 6               | Band number                                                                                 |
-| vb            | 100-300, 350-550, etc.         | Velocity band range                                                                         |
-| lowBound      | 100, 350, 600, etc.            | Lower bound of the velocity band range                                                      |
-| feedback      | 0, 1                           | Feedback type: 0 (no feedback), 1 (feedback)                                               |
-| stage         | 1, 2, 3, etc.                  | Stage number of the experiment                                                              |
+result <- test_summary_table(test, "vx", mfun = list(mean = mean, median = median, sd = sd))
+result$constant #|> kable_styling(full_width = F)
+result$varied #|> kable_styling(full_width = F)
 
----
-
-
-
-
-
-
-<!-- ::: panel-tabset -->
-<!-- ## Figure -->
-<!-- ```{r} -->
-<!-- #| column: page-inset-right -->
-<!-- #| fig-cap: "Mean Vx over training blocks" -->
-
-<!-- # vpt1=plotWithTable(vp1,vt1,arrange="V") -->
-<!-- nb=5 -->
-<!-- vp1=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,vx,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) -->
-<!-- vp1 -->
-
-<!-- ``` -->
-
-
-<!-- ## Table -->
-<!-- ```{r} -->
-<!-- #| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)" -->
-<!-- #| tbl-cap-location: top -->
-
-<!-- vt1=e1 |> filter(expMode=="train") |> -->
-<!--   learn_curve_table(gt.train,vx,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |> -->
-<!--   rename("Band"=vb,"Group"=condit) -->
-<!-- vt1 %>% kable() -->
-
-
-<!-- ``` -->
-<!-- ::: -->
-
-
-
+```
 
 <!-- ::: {layout="[ [1,4],[1,5],[1,10]]"} -->
 
@@ -90,17 +45,16 @@ nb=5
 vt1=e1 |> filter(expMode=="train") |>
   learn_curve_table(gt.train,vx,gw=Trial_Bin,groupVec=c(id,vb,condit),nbins=nb,prefix="Block_") |>
   rename("Band"=vb,"Group"=condit)
-vt1 %>% kable() 
+  
+vt1 %>% kable() %>% add_header_above(c(" "=2, "Training Block "=1," " = ncol(vt1)-3))
 
-vt1 %>% kable() %>% add_header_above(c(" "," "= 1, "Training Block"=5))
-
-vt1 %>% gt() %>% tab_options(column_labels.background.color = "#176940",
-                table.font.size = px(14))
+# vt1 %>% gt() %>% tab_options(column_labels.background.color = "#176940",
+#                 table.font.size = px(14))
 
 ```
 
 
-
+# Training Performance
 
 ```{r}
 #| fig-cap: "Mean Vx over training blocks"
@@ -205,7 +159,6 @@ vp4+big_text()
 ::: 
 
 
-
 # 33
 ```{r}
 #| layout: [[65, 65],[-5], [1,350, 350,10]]
@@ -302,7 +255,22 @@ e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = vb, y
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
 
-```
+# create a kable table to mirror plot of distance effects for vb and condit 
+
+
+e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |> group_by(vb,condit) %>% 
+  summarise(distMean=mean(dist),distSd=sd(dist)) %>% 
+  mutate(meanLab=paste0("Mean=",round(distMean,0)),sdLab=paste0("Sd=",round(distSd,0))) %>% 
+  mutate(sumStatLab=paste0(meanLab,"\n",sdLab)) %>% 
+  select(vb,condit,sumStatLab) %>% 
+  spread(condit,sumStatLab) %>% 
+  kable(format = "html",escape = FALSE) %>% 
+  kable_styling(font_size = 10)
+
+```     
+
+
+
 
 ### Vx
 ```{r}
@@ -314,6 +282,17 @@ e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |>  ggplot(aes(x = vb, y
 testAvg |>  ggplot(aes(x = vb, y = vx,fill=condit)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
+
+
+e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |> group_by(vb,condit) %>% 
+  summarise(vxMean=mean(vx),vxSd=sd(vx)) %>% 
+  mutate(meanLab=paste0("Mean=",round(vxMean,0)),sdLab=paste0("Sd=",round(vxSd,0))) %>% 
+  mutate(sumStatLab=paste0(meanLab,"\n",sdLab)) %>% 
+  select(vb,condit,sumStatLab) %>% 
+  spread(condit,sumStatLab) %>% 
+  kable(format = "html",escape = FALSE) %>% 
+  kable_styling(font_size = 10)
+
 
 ```
 
@@ -329,7 +308,20 @@ testAvg |>  ggplot(aes(x = vb, y = sdist,fill=condit)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
 
+e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |> group_by(vb,condit) %>% 
+  summarise(sdistMean=mean(sdist),sdistSd=sd(sdist)) %>% 
+  mutate(meanLab=paste0("Mean=",round(sdistMean,0)),sdLab=paste0("Sd=",round(sdistSd,0))) %>% 
+  mutate(sumStatLab=paste0(meanLab,"\n",sdLab)) %>% 
+  select(vb,condit,sumStatLab) %>% 
+  spread(condit,sumStatLab) %>% 
+  kable(format = "html",escape = FALSE) %>% 
+  kable_styling(font_size = 10)
+
+
+
 ```
+
+
 ### Percent Hit
 ```{r}
 
@@ -337,16 +329,251 @@ testAvg |>  ggplot(aes(x = vb, y = Percent_Hit,fill=condit)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) 
 
+testAvg |> group_by(vb,condit) %>% 
+  summarise(Percent_HitMean=mean(Percent_Hit),Percent_HitSd=sd(Percent_Hit)) %>% 
+  mutate(meanLab=paste0("Mean=",round(Percent_HitMean,3)),sdLab=paste0("Sd=",round(Percent_HitSd,2))) %>% 
+  mutate(sumStatLab=paste0(meanLab,"\n",sdLab)) %>% 
+  select(vb,condit,sumStatLab) %>% 
+  spread(condit,sumStatLab) %>% 
+  kable(format = "html",escape = FALSE) %>% 
+  kable_styling(font_size = 10)
+
+
 ```
+
+
+
+### Tables
+
+
+#### BandType
+
+
+```{r}
+
+create_table(test, "vx")
+create_table(test, "Percent_Hit")
+
+```
+
+
+
+
+####  Aggregation
+```{r}
+
+e1 %>%
+  filter(expMode %in% c("test-Nf","test-train-nf")) %>%
+  group_by(vb, condit, bandType) %>%
+  summarise(distMean = mean(dist), distSd = sd(dist)) %>%
+  mutate(
+    meanLab = paste0("Mean=", round(distMean, 0)),
+    sdLab = paste0("Sd=", round(distSd, 0))
+  ) %>%
+  mutate(sumStatLab = paste0(meanLab, "\n", sdLab)) %>%
+  pivot_wider(
+    id_cols = c(vb, bandType),
+    names_from = condit,
+    values_from = sumStatLab
+  ) %>%
+  arrange(vb, bandType) %>%
+  kable(format = "html", escape = FALSE)
+
+e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |> group_by(vb,condit) %>% 
+  summarise(vxMean=mean(vx),vxSd=sd(vx)) %>% 
+  mutate(meanLab=paste0("Mean=",round(vxMean,0)),sdLab=paste0("Sd=",round(vxSd,0))) %>% 
+  mutate(sumStatLab=paste0(meanLab,"\n",sdLab)) %>% 
+  select(vb,condit,sumStatLab) %>% 
+  spread(condit,sumStatLab) %>% 
+  kable(format = "html",escape = FALSE,caption = "Vx Mean") %>% 
+  kable_styling(font_size = 10)
+
+e1 |> filter(expMode %in% c("test-Nf","test-train-nf")) |> group_by(vb,condit) %>% 
+  summarise(sdistMean=mean(sdist),sdistSd=sd(sdist)) %>% 
+  mutate(meanLab=paste0("Mean=",round(sdistMean,0)),sdLab=paste0("Sd=",round(sdistSd,0))) %>% 
+  mutate(sumStatLab=paste0(meanLab,"\n",sdLab)) %>% 
+  select(vb,condit,sumStatLab) %>% 
+  spread(condit,sumStatLab) %>% 
+  kable(format = "html",escape = FALSE,caption = "Signed Deviation Mean") %>% 
+  kable_styling(font_size = 10)
+
+testAvg |> group_by(vb,condit) %>% 
+  summarise(Percent_HitMean=mean(Percent_Hit),Percent_HitSd=sd(Percent_Hit)) %>% 
+  mutate(meanLab=paste0("Mean=",round(Percent_HitMean,3)),sdLab=paste0("Sd=",round(Percent_HitSd,2))) %>% 
+  mutate(sumStatLab=paste0(meanLab,"\n",sdLab)) %>% 
+  select(vb,condit,sumStatLab) %>% 
+  spread(condit,sumStatLab) %>% 
+  kable(format = "html",escape = FALSE,caption = "Mean % Hit") %>% 
+  kable_styling(font_size = 10)
+
+
+
+
+
+
+
+
+
+```
+
+#### Tables Aggregating by Id first
+```{r}
+
+e1 %>% group_by(id, vb, condit) %>%
+  summarise(dist = mean(dist), .groups = 'drop') %>%
+  group_by(vb, condit) %>%
+  summarise(distMean = mean(dist), distSd = sd(dist), .groups = 'drop') %>%
+  mutate(
+    meanLab = paste0("Mean=", round(distMean, 0)),
+    sdLab = paste0("Sd=", round(distSd, 0))
+  ) %>%
+  mutate(sumStatLab = paste0(meanLab, "\n", sdLab)) %>%
+  select(vb, condit, sumStatLab) %>%
+  spread(condit, sumStatLab) %>%
+  kable(format = "html", escape = FALSE, caption = "Deviation Mean - Aggregate by Id") %>%
+  kable_styling(font_size = 11)
+
+e1 %>%
+  filter(expMode %in% c("test-Nf", "test-train-nf")) %>%
+  group_by(id, vb, condit) %>%
+  summarise(vx = mean(vx), .groups = 'drop') %>%
+  group_by(vb, condit) %>%
+  summarise(vxMean = mean(vx), vxSd = sd(vx), .groups = 'drop') %>%
+  mutate(
+    meanLab = paste0("Mean=", round(vxMean, 0)),
+    sdLab = paste0("Sd=", round(vxSd, 0))
+  ) %>%
+  mutate(sumStatLab = paste0(meanLab, "\n", sdLab)) %>%
+  select(vb, condit, sumStatLab) %>%
+  spread(condit, sumStatLab) %>%
+  kable(format = "html", escape = FALSE, caption = "Vx Mean - Aggregate by Id") %>%
+  kable_styling(font_size = 11)
+
+e1 %>%
+  filter(expMode %in% c("test-Nf", "test-train-nf")) %>%
+  group_by(id, vb, condit) %>%
+  summarise(sdist = mean(sdist), .groups = 'drop') %>%
+  group_by(vb, condit) %>%
+  summarise(sdistMean = mean(sdist), sdistSd = sd(sdist), .groups = 'drop') %>%
+  mutate(
+    meanLab = paste0("Mean=", round(sdistMean, 0)),
+    sdLab = paste0("Sd=", round(sdistSd, 0))
+  ) %>%
+  mutate(sumStatLab = paste0(meanLab, "\n", sdLab)) %>%
+  select(vb, condit, sumStatLab) %>%
+  spread(condit, sumStatLab) %>%
+  kable(format = "html", escape = FALSE, caption = "Signed Distance Mean - Aggregate by Id") %>%
+  kable_styling(font_size = 11)
+
+testAvg %>%
+  group_by(id, vb, condit) %>%
+  summarise(Percent_Hit = mean(Percent_Hit), .groups = 'drop') %>%
+  group_by(vb, condit) %>%
+  summarise(
+    Percent_HitMean = mean(Percent_Hit),
+    Percent_HitSd = sd(Percent_Hit),
+    .groups = 'drop'
+  ) %>%
+  mutate(
+    meanLab = paste0("Mean=", round(Percent_HitMean, 3)),
+    sdLab = paste0("Sd=", round(Percent_HitSd, 2))
+  ) %>%
+  mutate(sumStatLab = paste0(meanLab, "\n", sdLab)) %>%
+  select(vb, condit, sumStatLab) %>%
+  spread(condit, sumStatLab) %>%
+  kable(format = "html", escape = FALSE, caption = "Mean % Hit - Aggregate by Id") %>%
+  kable_styling(font_size = 10)
+
+
+```
+
+
+
+#### Tables that also indicate bandType
+```{r}
+
+# Create the Constant table
+constant_table <- e1 %>%
+  filter(expMode %in% c("test-Nf", "test-train-nf")) %>%
+  group_by(vb, bandType, condit) %>%
+  summarise(distMean = mean(dist), distSd = sd(dist)) %>%
+  filter(condit == "Constant") %>%
+  mutate(
+    meanLab = paste0("Mean=", round(distMean, 0)),
+    sdLab = paste0("Sd=", round(distSd, 0)),
+    sumStatLab = paste0(meanLab, "\n", sdLab)
+  ) %>%
+  select(vb, bandType, sumStatLab) %>%
+  rename(Constant = sumStatLab)
+
+# Create the Varied table
+varied_table <- e1 %>%
+  filter(expMode %in% c("test-Nf", "test-train-nf")) %>%
+  group_by(vb, bandType, condit) %>%
+  summarise(distMean = mean(dist), distSd = sd(dist)) %>%
+  filter(condit == "Varied") %>%
+  mutate(
+    meanLab = paste0("Mean=", round(distMean, 0)),
+    sdLab = paste0("Sd=", round(distSd, 0)),
+    sumStatLab = paste0(meanLab, "\n", sdLab)
+  ) %>%
+  select(vb, bandType, sumStatLab) %>%
+  rename(Varied = sumStatLab)
+
+# Merge tables
+final_table <- full_join(constant_table, varied_table, by = "vb")
+
+# Create the table
+final_table %>%
+  kbl(digits = c(0, 0, 0, 0, 0),
+      caption = "Data summary") %>%
+  kable_minimal(full_width = FALSE,
+      position = "left") %>%
+  add_header_above(c("vb" = 1, "Constant" = 2, "Varied" = 2))
+
+
+```
+
 
 
 ::: 
 
 
+
+
+
+```{r}
+
+
+
+
+
+```
+
+
+```{r}
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```{r}
 #| fig-height: 11
 #| fig-width: 12
-#| 
+#| eval: false
 rectWidth=.4
 vbRect<- e1 %>% group_by(vb) %>% 
   summarise(lowBound=first(bandInt),highBound=first(highBound)) %>% mutate(vbn=as.numeric(vb),
@@ -404,7 +631,7 @@ testAvg |>
 ```{r}
 #| fig-height: 11
 #| fig-width: 12
-#| 
+#| eval: false
 sumStats2 = test %>% group_by(id,condit,vb) %>%
   summarise(distMean=mean(dist),distMedian=median(dist),distSd=sd(dist)) %>%group_by(condit,vb) %>%
   summarise(groupMean=round(mean(distMean),0),groupMedian=round(mean(distMedian),0),groupSd=round(mean(distSd),0)) %>%
@@ -444,6 +671,8 @@ test %>% group_by(id,vb,condit) %>%
   geom_text(data=sumStats2,aes(y=2090,label = sumStatLab),size=1.9)
 
 
+#test %>% group_by(id,vb,condit) |> plot_distByCondit()
+
 
 test %>% group_by(id,vb,condit) %>% 
   summarise(distMean=mean(dist)) %>% 
@@ -470,6 +699,7 @@ test %>% group_by(id,vb,condit) %>%
 ```{r}
 #| fig-height: 11
 #| fig-width: 12
+#| eval: false
 test %>% group_by(sbjCode,condit,vb) %>% 
   summarise(distMean=mean(dist)) %>% 
   ggplot(aes(x=condit,y=distMean,fill=condit))+
@@ -540,3 +770,52 @@ e1 |> group_by(id, condit, vb, bandInt,bandType,tOrder,expMode2) %>%
 ```
 
 
+## Dictionary
+
+| Variable Name | Variable Levels                 | Description                                                                               |
+|---------------|---------------------------------|-------------------------------------------------------------------------------------------|
+| condit        | Constant, Varied                | Condition of the experiment: constant or varied                                             |
+| tOrder        | Test First, Train First         | Order of testing and training stages: test first or train first                            |
+| expMode       | train, train-Nf, test-Nf, etc.  | Mode of the experiment: train, train-Nf, test-Nf, etc.                                    |
+| trainStage    | Beginning, Middle, End, Test    | Stage of the training: beginning, middle, end, or test                                    |
+| expStage      | TrainStart, intTest1, etc.      | Stage of the experiment: TrainStart, intTest1, TrainMid1, etc.                            |
+| band          | 1, 2, 3, 4, 5, 6               | Band number                                                                                 |
+| vb            | 100-300, 350-550, etc.         | Velocity band range                                                                         |
+| lowBound      | 100, 350, 600, etc.            | Lower bound of the velocity band range                                                      |
+| feedback      | 0, 1                           | Feedback type: 0 (no feedback), 1 (feedback)                                               |
+| stage         | 1, 2, 3, etc.                  | Stage number of the experiment                                                              |
+
+---
+
+
+
+
+
+
+<!-- ::: panel-tabset -->
+<!-- ## Figure -->
+<!-- ```{r} -->
+<!-- #| column: page-inset-right -->
+<!-- #| fig-cap: "Mean Vx over training blocks" -->
+
+<!-- # vpt1=plotWithTable(vp1,vt1,arrange="V") -->
+<!-- nb=5 -->
+<!-- vp1=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,vx,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) -->
+<!-- vp1 -->
+
+<!-- ``` -->
+
+
+<!-- ## Table -->
+<!-- ```{r} -->
+<!-- #| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)" -->
+<!-- #| tbl-cap-location: top -->
+
+<!-- vt1=e1 |> filter(expMode=="train") |> -->
+<!--   learn_curve_table(gt.train,vx,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |> -->
+<!--   rename("Band"=vb,"Group"=condit) -->
+<!-- vt1 %>% kable() -->
+
+
+<!-- ``` -->
+<!-- ::: -->

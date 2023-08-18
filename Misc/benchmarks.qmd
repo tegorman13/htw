@@ -12,6 +12,306 @@ editor:
     wrap: 72
 ---
 
+
+
+
+
+
+
+https://cran.r-project.org/web/packages/brms/vignettes/brms_threading.html
+
+https://discourse.mc-stan.org/t/using-the-apple-m1-gpus-question-from-a-noob/23089/39?page=2
+
+```{r}
+#| warning: false
+
+pacman::p_load(tidyverse,tidybayes,brms,broom,broom.mixed,lme4,here,knitr,gt,gghalves,patchwork,ggdist,microbenchmark)
+e1 <- readRDS(here("data/e1_08-04-23.rds"))
+test <- e1 |> filter(expMode2 == "Test")  
+
+options(mc.cores = 4, brms.backend = "cmdstanr")
+
+n_cores=4
+bayes_seed <- 1234
+n_iter=20000
+n_threads=2
+
+
+gprior<- c( prior(normal(800, 100), class = Intercept),
+    prior(normal(400, 10), class = sigma)
+  )
+
+
+##############
+
+tf3 <- system.time(
+fit_int_norm <- brm(vx ~ 1 + condit, 
+  data = test,
+  family = gaussian(),
+  iter=n_iter,
+  prior = gprior,
+  silent=2,
+  cores=n_cores,
+  threads = threading(n_threads),
+  seed=bayes_seed
+)
+)
+tf3
+
+tf4 <- system.time(
+fit_int_norm <- brm(vx ~ 1 + condit +(1|bandInt) + (1 + bandInt|id),
+  data = test |> filter(id %in% 1:15),
+  family = gaussian(),
+  iter=n_iter,
+  prior = gprior,
+  silent=2,
+  cores=n_cores,
+  threads = threading(n_threads),
+  seed=bayes_seed
+) )
+tf4
+
+
+#########
+
+
+tf <- system.time(
+fit_int_norm <- brm(vx ~ 1 + condit, 
+  data = test,
+  family = gaussian(),
+  iter=n_iter,
+  prior = gprior,
+  silent=2,
+  cores=n_cores,
+  seed=bayes_seed
+)
+)
+tf
+
+tf2 <- system.time(
+fit_int_norm <- brm(vx ~ 1 + condit +(1|bandInt) + (1 + bandInt|id),
+  data = test |> filter(id %in% 1:15),
+  family = gaussian(),
+  iter=n_iter,
+  prior = gprior,
+  silent=2,
+  cores=n_cores,
+  seed=bayes_seed
+)
+)
+tf2
+
+
+##########
+
+
+cat(paste0("int only gaussian = ",round(tf["elapsed"],2)," \n ",
+          # "foreach parallel time=",round(tfP["elapsed"],2)," \n ",
+           "irt version = ",round(tf2["elapsed"],2), " \n ",
+           "int only threading = ",round(tf3["elapsed"],2)," \n ",
+          "irt  threading = ",round(tf4["elapsed"],2)," \n "
+            
+          ))
+
+```
+### default brms settings (2K iterations)
+int only gaussian = 6.85 
+irt version = 12.15
+
+int only gaussian = 7.51 
+irt version = 12
+
+int only gaussian = 6.67 
+irt version = 11.82 
+int only threading = 7.49 
+irt  threading = 11.33 
+
+
+### default brms settings (4K iterations) - 2 threads
+ int only gaussian = 8.1 
+irt version = 14.69 
+int only threading = 6.99 
+irt  threading = 15.24 
+
+
+### default brms settings (4K iterations) - 4 threads
+brms int only gaussian = 8.11 
+irt version = 15.05 
+int only threading = 7.28 
+irt  threading = 16.95 
+
+### default brms settings (4K iterations) - 4 threads - 2 cores
+int only gaussian = 11.27 
+irt version = 21.72 
+int only threading = 8.39 
+irt  threading = 22.67 
+
+### default brms settings (4K iterations) - 2 threads - 2 cores
+int only gaussian = 11.27 
+irt version = 21.81 
+int only threading = 9.38 
+irt  threading = 20.63 
+
+
+### default brms settings (4K iterations) - 8 threads - 4 cores
+int only gaussian = 8.27 
+irt version = 15.4 
+int only threading = 7.69 
+irt  threading = 21.28 
+ 
+int only gaussian = 8.37 
+irt version = 15.18 
+int only threading = 8.02 
+irt  threading = 21.47  
+
+
+### default brms settings (4K iterations) - 8 threads - 8 cores
+
+int only gaussian = 8.11 
+irt version = 14.88 
+int only threading = 7.92 
+irt  threading = 20.72 
+
+
+
+
+### default brms settings (10K iterations) - 8 threads - 8 cores
+
+int only gaussian = 11.38 
+irt version = 23.64 
+int only threading = 11.58 
+irt  threading = 37.1 
+
+int only gaussian = 11.53 
+irt version = 23.76 
+int only threading = 12 
+irt  threading = 37.45 
+
+### default brms settings (10K iterations) - 8 threads - 4 cores
+
+int only gaussian = 11.48 
+irt version = 23.29 
+int only threading = 10.91 
+irt  threading = 36.54
+
+
+### default brms settings (10K iterations) - 4 threads - 4 cores
+
+int only gaussian = 11.99 
+irt version = 24.25 
+int only threading = 10.13 
+irt  threading = 29.13 
+
+### default brms settings (10K iterations) - 4 threads - 1 cores
+
+int only gaussian = 29.35 
+irt version = 66.61 
+int only threading = 18.97 
+irt  threading = 71.21 
+
+
+### default brms settings (10K iterations) - 2 threads - 2 cores
+
+int only gaussian = 17.98 
+irt version = 38.31 
+int only threading = 13.87 
+irt  threading = 37.78 
+
+
+### default brms settings (10K iterations) - 1 threads - 4 cores
+
+int only gaussian = 11.14 
+irt version = 22.89 
+int only threading = 12.25 
+irt  threading = 27.03 
+
+int only gaussian = 11.35 
+ irt version = 22.99 
+ int only threading = 12.28 
+ irt  threading = 27.38 
+
+
+### default brms settings (10K iterations) - 2 threads - 4 cores
+
+int only gaussian = 11.22 
+irt version = 23.07 
+int only threading = 9 
+irt  threading = 22.34 
+
+int only gaussian = 11.31 
+ irt version = 23.14 
+ int only threading = 9.49 
+ irt  threading = 22.21 
+
+
+### default brms settings (10K iterations) - 3 threads - 4 cores
+
+int only gaussian = 11.15 
+irt version = 22.88 
+int only threading = 9.4 
+irt  threading = 26.75 
+
+int only gaussian = 11 
+ irt version = 22.88 
+ int only threading = 9.5 
+ irt  threading = 25.7 
+
+
+
+### (20K iterations) - 1 threads - 4 cores
+
+int only gaussian = 18.24 
+ irt version = 40.37 
+ int only threading = 20.32 
+ irt  threading = 48.94 
+
+int only gaussian = 17.8 
+ irt version = 39.26 
+ int only threading = 20.54 
+ irt  threading = 48.14 
+ 
+ 
+ int only gaussian = 18.12 
+ irt version = 40.31  
+ int only threading = 20.6 
+ irt  threading = 40.02 - when I commented out the threading specification
+  
+
+
+### (20K iterations) - 2 threads - 4 cores
+
+int only gaussian = 17.82 
+irt version = 39.34 
+int only threading = 14.22 
+irt  threading = 37.73 
+ 
+ 
+### (20K iterations) - adding condit factor -  2 threads - 4 cores
+int only gaussian = 7.78 
+ irt version = 45.66 
+ int only threading = 8.57 
+ irt  threading = 45.97 
+ 
+ 
+### (20K iterations) - adding condit factor -  3 threads - 4 cores
+
+int only gaussian = 8.58 
+irt version = 47.07 
+int only threading = 10.71 
+irt  threading = 57.87 
+
+
+### (20K iterations) - condit factor and bandInt RF slope -  2 threads - 4 cores
+
+int only gaussian = 7.85 
+ irt version = 80.71 
+ int only threading = 8.69 
+ irt  threading = 88.3 
+
+
+
+
+ 
 ```{r}
 
 pacman::p_load(tidyverse,foreach,doParallel,future,furrr,here)

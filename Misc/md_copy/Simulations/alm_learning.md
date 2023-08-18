@@ -79,13 +79,123 @@ tibble(crossing(
 
 ```
 
+# cleaner imlementation of above
+```{r}
+# Define parameters
+params <- tibble(crossing(
+  c = c(.5,5),
+  lr = c(.05,1),
+  noise = c(0),
+  inNodes = c(7),
+  outNodes = c(32),
+  trainVec = list(list(5,6,7)),
+  trainRep = c(9),
+  lossFun = list("MAE"),
+  simNum = 1:1,
+  update_func = list("update.weights"),
+  update_func_name = c("uW"),
+  noise_sd = c(0)
+))
 
+# Generate training data
+params <- params %>% 
+  mutate(
+    id = seq(1, nrow(.)),
+    td = pmap(list(trainVec, trainRep, noise), ~gen_train(trainVec = .x, trainRep = ..2, noise = ..3))
+  )
+
+# Run simulations
+params <- params %>% 
+  mutate(
+    d = pmap(list(td, c, lr, update_func, noise_sd, inNodes, outNodes), 
+              ~sim_data(dat = .x, c = ..2, lr = ..3, update_func = ..4, noise_sd = ..5, inNodes = ..6, outNodes = ..7)),
+    almTrainDat = map(d, "almTrain"),
+    weights = map(d, "weights")
+  )
+
+# Unnest and select relevant columns
+params <- params %>% 
+  unnest(c(almTrainDat, td)) %>% 
+  select(-d) %>% 
+  mutate(input = as.factor(input))
+
+# Apply pf function and trainTab
+result <- params %T>% 
+  {pf(.) } %>% 
+  trainTab
+
+```
 
 
 ```{r}
+# Define a function to fit the model and return the parameters
+fit_model <- function(data, initial_c, initial_lr) {
+  # Fit the model here and extract the parameters
+  # This is a placeholder and should be replaced with your actual model fitting code
+  fit_c = initial_c #+ rnorm(1, 0, 0.1)
+  fit_lr = initial_lr #+ rnorm(1, 0, 0.1)
+  
+  tibble(
+    gen_c = initial_c,
+    gen_lr = initial_lr,
+    fit_c = fit_c,
+    fit_lr = fit_lr,
+    error_c = fit_c - initial_c,
+    error_lr = fit_lr - initial_lr
+  )
+}
+
+params <- tibble(crossing(
+  c = seq(.01,2,length.out=10),
+  lr = seq(.01,2,length.out=10)
+))
+# Run the simulations
+results <- params %>%
+  mutate(simulation = map2(c, lr, ~fit_model(td, .x, .y))) %>%
+  unnest(simulation)
 
 
+fit_model <- function(data, initial_c, initial_lr) {
+  # Simulate data from the ALM model
+  sim_data <- sim_data(dat = data, c = initial_c, lr = initial_lr, 
+                       update_func = "update.weights", noise_sd = 0, 
+                       inNodes = 7, outNodes = 32)
+  
+  # Extract the fitted parameters
+  fit_c = sim_data$c
+  fit_lr = sim_data$lr
+  
+  tibble(
+    gen_c = initial_c,
+    gen_lr = initial_lr,
+    fit_c = fit_c,
+    fit_lr = fit_lr,
+    error_c = fit_c - initial_c,
+    error_lr = fit_lr - initial_lr
+  )
+}
 
+# Run the simulations
+results <- params %>%
+  mutate(simulation = map2(c, lr, ~fit_model(td, .x, .y))) %>%
+  unnest(simulation)
+
+# Print the results
+print(results)
+
+# Print the results
+print(results %>% select(c,lr,gen_c,gen_lr,fit_c,fit_lr,error_c,error_lr))
+
+ggplot(results, aes(x = gen_c, y = fit_c)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  labs(x = "Generating c", y = "Fitted c", title = "Parameter Recovery for c")
+
+# Plot for lr parameter
+ggplot(results, aes(x = gen_lr, y = fit_lr)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  labs(x = "Generating lr", y = "Fitted lr", title = "Parameter Recovery for lr")
 
 ```
 

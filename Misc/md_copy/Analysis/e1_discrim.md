@@ -1,0 +1,321 @@
+---
+title: "E1 Discrimination Analysis"
+subtitle: "Fitting mixed effects models"
+date: last-modified
+categories: [Analysis, R]
+code-fold: true
+---
+
+```{r setup}
+pacman::p_load(tidyverse,tidybayes,brms,broom,broom.mixed,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist,equatiomatic)
+e1 <- readRDS(here("data/e1_08-04-23.rds"))
+source(here("Functions/Display_Functions.R"))
+
+
+test <- e1 |> filter(expMode2 == "Test") 
+testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
+  summarise(nHits=sum(dist==0),vxMean=mean(vx),vxMed=median(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
+
+#test %>% filter(id==1, band==1) %>% select(vx) %>% unlist() %>% as.vector()
+
+```
+
+```{r}
+#| eval: false
+#| 
+lmerFit <- function(mform,df) {
+m=lmer(mform, df)
+  fe <- fixef(m)
+  dfm <- coef(m)$id %>% as.tibble(rownames="id") %>%rename("Intercept"=`(Intercept)`)
+  for (effect in names(fe)) {
+      dfm <- dfm %>% mutate(!!str_c("group_", effect) := fe[effect])
+  }
+  dfm
+}
+
+# Input formulas and corresponding dataframes
+formulas <- c("vx ~ 1 + bandInt + (1 + bandInt | id)", 
+              "vxMean ~ 1 + bandInt + (1 + bandInt | id)", 
+              "vxMed ~ 1 + bandInt + (1 + bandInt | id)")
+dfs <- list(test, testAvg, testAvg)
+
+# Run lmerFit function over all combinations of formulas and dataframes
+m_all <- map2_dfr(formulas, dfs, ~ lmerFit(.x, .y)) %>%
+  mutate(mformula = rep(formulas, each = length(unique(test$id))), 
+         dframe = rep(c('test', 'testAvg', 'testAvg'), each=length(unique(test$id))))
+
+head(m_all)
+m_all |> filter(id==1)
+
+# m1 <- lmerFit("vx ~ 1 + bandInt + (1 + bandInt | id)",test)
+# m2 <- lmerFit("vxMean ~ 1 + bandInt + (1 + bandInt | id)",testAvg)
+# m3 <- lmerFit("vxMed ~ 1 + bandInt + (1 + bandInt | id)",testAvg)
+
+
+m1 <- lmer(vx ~ 1 + bandInt + condit + (1 + bandInt | id),data=test)
+coef(m1)$id %>% as.tibble(rownames="id") %>%rename("Intercept"=`(Intercept)`)
+summary(m1)
+
+
+fitted(m1)
+new_data <- testAvg  |> ungroup() |> select(id,condit,bandInt) 
+  
+new_data=expand_grid(unique(test[, c("id", "condit")]), bandInt=unique(test$bandInt))
+new_data <- new_data[rep(row.names(new_data), each = 10), ]
+
+# Compute predictions
+new_data$p <- predict(m1, newdata = new_data)
+
+
+options(mc.cores = 4, brms.backend = "cmdstanr")
+
+m1_bayes <- brm(vx ~ 1 + bandInt + condit + (1 + bandInt | id), data = test, family = gaussian())
+summary(m1_bayes)
+
+new_data=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")]))) |> dplyr::arrange(id,bandInt)
+predictions <- t(posterior_predict(m1_bayes, newdata = new_data,ndraws=10))
+new_data$prediction <- rowMeans(predictions)
+
+
+predicted_draws <- new_data %>%
+  tidybayes::add_predicted_draws(m1_bayes,ndraws=5)
+
+
+test$censored_vx <- ifelse(test$vx < 50, 50, test$vx)
+test$censored_vx <- ifelse(test$censored_vx > 1600, 1600, test$censored_vx)
+test$censored <- ifelse((test$vx <50 | test$vx>1600), TRUE, FALSE)
+
+# fit model
+m1_bayes <- brm(vx~ 1 + bandInt + condit + (1 + bandInt | id), 
+                data = test, family = gaussian())
+
+
+
+m1_bayesSN <- brm(vx ~ 1 + bandInt + condit + (1 + bandInt | id), data = test, family = skew_normal(),chains = 4)
+summary(m1_bayesSN)
+
+
+pst <- posterior_samples(m1_bayes, "b")
+ggplot(testAvg, aes(x = bandInt, y = vxMean)) +
+    geom_point(shape = 1) +
+    geom_abline(
+        data = pst, alpha = .01, size = .1,
+        aes(intercept = b_Intercept, slope = b_bandInt)
+    )
+
+X <- cbind(test[,c("id","condit","trial","vb","bandInt","vx")], fitted(m1_bayes)[,-2]) %>% as_tibble()
+
+
+
+```
+
+$$
+\begin{aligned}
+  \operatorname{vx}_{i}  &\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{bandInt}), \sigma^2 \right) \\    
+\left(
+  \begin{array}{c} 
+    \begin{aligned}
+      &\alpha_{j} \\
+      &\beta_{1j}
+    \end{aligned}
+  \end{array}
+\right)
+  &\sim N \left(
+\left(
+  \begin{array}{c} 
+    \begin{aligned}
+      &\gamma_{0}^{\alpha} + \gamma_{1}^{\alpha}(\operatorname{condit}_{\operatorname{Varied}}) \\
+      &\mu_{\beta_{1j}}
+    \end{aligned}
+  \end{array}
+\right)
+, 
+\left(
+  \begin{array}{cc}
+     \sigma^2_{\alpha_{j}} & \rho_{\alpha_{j}\beta_{1j}} \\ 
+     \rho_{\beta_{1j}\alpha_{j}} & \sigma^2_{\beta_{1j}}
+  \end{array}
+\right)
+ \right)
+    \text{, for id j = 1,} \dots \text{,J}
+\end{aligned}
+$$
+
+<!-- `#r cat(extract_eq(m1, use_coefs = TRUE))` -->
+
+$$
+\begin{aligned}
+  \operatorname{\widehat{vx}}_{i}  &\sim N \left(480.37_{\alpha_{j[i]}} + 0.63_{\beta_{1j[i]}}(\operatorname{bandInt}), \sigma^2 \right) \\    
+\left(
+  \begin{array}{c} 
+    \begin{aligned}
+      &\alpha_{j} \\
+      &\beta_{1j}
+    \end{aligned}
+  \end{array}
+\right)
+  &\sim N \left(
+\left(
+  \begin{array}{c} 
+    \begin{aligned}
+      &56.83_{\gamma_{1}^{\alpha}}(\operatorname{condit}_{\operatorname{Varied}}) \\
+      &0
+    \end{aligned}
+  \end{array}
+\right)
+, 
+\left(
+  \begin{array}{cc}
+     351.8 & -0.8 \\ 
+     -0.8 & 0.38
+  \end{array}
+\right)
+ \right)
+    \text{, for id j = 1,} \dots \text{,J}
+\end{aligned}
+$$
+
+
+
+
+
+```{r}
+#| eval: false
+
+m1_bayes <- brm(vx ~ 1 + bandInt + condit + (1 + bandInt | id), 
+data = test, family = gaussian(), file="band_gauss_vx")
+
+m1_bayesb <- brm(vxb ~ 1 + bandInt + condit + (1 + bandInt | id), 
+data = test, family = gaussian(), file="band_gauss_vxb")
+
+m1_bayes0 <- brm(vx ~ 0 + bandInt + condit + (0 + bandInt | id), 
+data = test, family = gaussian(), file="band0_gauss_vx")
+
+m1_bayes0b <- brm(vxb ~ 0 + bandInt + condit + (0 + bandInt | id), 
+data = test, family = gaussian(), file="band0_gauss_vxb")
+
+summary(m1_bayes)
+
+```
+
+```{r}
+#| eval: false
+# Calculate the standard deviation of the estimates for each level of id
+m_all %>%
+  summarise(across(starts_with("group_"), sd, na.rm = TRUE))
+
+# Calculate the correlation between the estimates for each level of id
+m_all %>%
+  group_by(id) %>%
+  summarise(correlation = cor(`bandInt`, `Intercept`, use = "pairwise.complete.obs"))
+
+
+m_all |> filter(id==10)
+
+```
+
+```{r}
+#| eval: false
+
+options(mc.cores = 8,  # Use 4 cores
+        brms.backend = "cmdstanr")
+
+model_fixed <- brm(
+  bf(vxMean ~ bandInt + (1 +bandInt | id)),
+  data = testAvg,
+  control = list(adapt_delta = 0.95),
+  chains = 4, seed = 1234
+)
+
+
+
+fixef(model_fixed)
+
+mm_Mean_b <- coef(model_fixed)$id |> as.tibble(rownames="id") |> select(id,starts_with("Estimate"))
+head(mm_Mean_b)
+
+
+X <- cbind(testAvg[,1:8], fitted(model_fixed)[,-2]) %>% as_tibble()
+
+
+ggplot(X[1:90,],aes(y=Estimate,x=vb,group=id))+geom_point(aes(y=vxMean),shape=1)+
+  geom_line(aes(y=Q2.5),lty=2)+
+  geom_line(aes(y=Q97.5),lty=2)+
+  geom_smooth(aes(y=vxMean),method = "lm", fill = "dodgerblue", level = .95)+
+  facet_wrap(~id)
+
+conditional_effects(model_fixed)
+#conditional_effects(model_fixed,conditions=distinct(testAvg,id))
+
+
+predict(model_fixed,data.frame(id=1,bandInt=800))
+
+
+
+epred_draws(model_fixed,newdata=expand_grid(bandInt=unique(e1$bandInt),id=factor(e1$id,levels=unique(e1$id))),ndraws = 1)
+
+```
+
+```{r}
+#| eval: false
+
+log_m1 <- brm(
+  bf(vx ~ bandInt + (1 +bandInt | id)),
+  data = test,
+  family=shifted_lognormal(),
+  control = list(adapt_delta = 0.95),
+  chains = 2, seed = 1234
+)
+
+summary(log_m1)
+
+
+skew_m1 <- brm(
+  bf(vxMean ~ bandInt + (1 +bandInt | id)),
+  data = testAvg,
+  family=skew_normal(),
+  control = list(adapt_delta = 0.95),
+  chains = 2, seed = 1234
+)
+
+summary(skew_m1)
+
+
+
+```
+
+```{r}
+#| eval: false
+library(brms)
+
+bmerFit <- function(mform,df) {
+  m <- brm(mform, data = df, control = list(adapt_delta = 0.95), chains = 1, seed = 1234)
+  fe <- fixef(m)
+  dfm <- coef(m)$id %>% as.tibble(rownames="id") %>% select(id, starts_with("Estimate"))
+  
+  for (effect in names(fe)) {
+    dfm <- dfm %>% mutate(!!str_c("group_", effect) := fe[effect])
+  }
+  dfm
+}
+
+# Input formulas and corresponding dataframes
+formulas <- c("vx ~ 1 + bandInt + (1 + bandInt | id)", 
+              "vxMean ~ 1 + bandInt + (1 + bandInt | id)", 
+              "vxMed ~ 1 + bandInt + (1 + bandInt | id)")
+dfs <- list(test, testAvg, testAvg)
+
+# Run bmerFit function over all combinations of formulas and dataframes
+m_all_bayes <- map2_dfr(formulas, dfs, ~ bmerFit(.x, .y)) %>%
+  mutate(mformula = rep(formulas, each = length(unique(test$id))), 
+         dframe = rep(c('test', 'testAvg', 'testAvg'), each=length(unique(test$id))))
+
+m_all_bayes(m_all)
+m_all_bayes |> filter(id==10)
+
+```
+
+```{r}
+
+
+```
