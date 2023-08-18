@@ -1,0 +1,50 @@
+---
+title: "HTW E2 Testing"
+categories: [Analysis, R, Bayesian]
+---
+
+```{r setup, include=FALSE}
+source(here::here("Functions", "packages.R"))
+testE2 <- readRDS(here("data/e2_08-04-23.rds")) |> filter(expMode2 == "Test") 
+options(brms.backend="cmdstanr",mc.cores=4)
+e2Sbjs <- testE2 |> group_by(id,condit) |> summarise(n=n())
+testE2Avg <- testE2 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
+  summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
+```
+
+
+
+
+
+
+```{dot}
+//| label: fig-design-e2
+//| fig-cap: "Experiment 2 Design. Constant and Varied participants complete different training conditions."
+//| fig-width: 8.0
+//| fig-height: 2.5
+//| fig-responsive: false
+digraph {
+  graph [layout = dot, rankdir = LR]
+
+  // define the global styles of the nodes
+  node [shape = rectangle, style = filled]
+
+  data1 [label = " Varied Training \n100-300\n350-550\n600-800", fillcolor = "#FF0000"]
+  data2 [label = " Constant Training \n600-800", fillcolor = "#00A08A"]
+  Test3 [label = "    Final Test \n  Novel With Feedback  \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]
+
+  // edge definitions with the node IDs
+  data1 -> Test1
+  data2 -> Test1
+  subgraph cluster {
+    label = "Test Phase \n(Counterbalanced Order)"
+    Test1 [label = "Test  \nNovel Bands  \n800-1000\n1000-1200\n1200-1400", fillcolor = "#ECCBAE"]
+    Test2 [label = "  Test \n  Varied Training Bands  \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]
+    Test1 -> Test2
+  }
+
+  Test2 -> Test3
+}
+
+```
+

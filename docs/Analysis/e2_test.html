@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.322">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>HTW Project – bmm_table</title>
+<meta name="author" content="Thomas Gorman">
+<meta name="dcterms.date" content="2023-08-18">
+<title>HTW Project - HTW E2 Testing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -60,6 +62,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../Analysis/e1_Analysis.html" rel="next">
+<link href="../Analysis/e1_test.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -93,7 +97,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script><style>html{ scroll-behavior: smooth; }</style>
-<script src="../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="nav-sidebar docked">
 
@@ -102,9 +105,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
-      HTW Project
-      </li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/e1_test.html">Analyses</a></li><li class="breadcrumb-item"><a href="../Analysis/e2_test.html">HTW E2 Testing</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -148,26 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Misc/Task.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HTW Task</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Misc/data_dictionary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HTW Data Dictionary</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Misc/data_organize.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Organization</span></a>
-  </div>
-</li>
-      </ul>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show"></ul>
 </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
@@ -187,26 +169,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../Analysis/e2_test.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">HTW E2 Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+ <span class="menu-text">Analysis/e3_test.qmd</span>
+  </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../Analysis/e1_Analysis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Experiment 1 Analysis</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Analysis/test_analysis-all.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HTW Test Analysis</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Analysis/discrim.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Testing Discrimination Analysis</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Analysis/analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HTW Analysis</span></a>
   </div>
 </li>
       </ul>
@@ -345,115 +318,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         
     </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content"><div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create the data frame for the table</span></span>
-<span><span class="va">table_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
-<span>  Type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Population-Level Effects"</span>, <span class="fl">4</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Group-Level Effects"</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>    <span class="st">"Family Specific Parameters"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  Parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"\\(\\beta_0\\)"</span>, <span class="st">"\\(\\beta_1\\)"</span>, <span class="st">"\\(\\beta_2\\)"</span>, <span class="st">"\\(\\beta_3\\)"</span>,</span>
-<span>    <span class="st">"\\(\\sigma_{\\text{Intercept}}\\)"</span>, <span class="st">"\\(\\sigma_{\\text{bandInt}}\\)"</span>, <span class="st">"\\(\\sigma_{\\text{Observation}}\\)"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  Term <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"(Intercept)"</span>, <span class="st">"conditVaried"</span>, <span class="st">"bandInt"</span>, <span class="st">"conditVaried:bandInt"</span>,</span>
-<span>    <span class="st">"sd__(Intercept)"</span>, <span class="st">"sd__bandInt"</span>, <span class="st">"sd__Observation"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  Description <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"Intercept representing the baseline deviation"</span>, <span class="st">"Effect of condition (Varied vs. Constant) on deviation"</span>, <span class="st">"Effect of target velocity band (bandInt) on deviation"</span>, <span class="st">"Interaction effect between training condition and target velocity band on deviation"</span>,</span>
-<span>    <span class="st">"Standard deviation for (Intercept)"</span>, <span class="st">"Standard deviation for bandInt"</span>, <span class="st">"Standard deviation for Gaussian Family"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op">|&gt;</span>   <span class="fu">mutate</span><span class="op">(</span></span>
-<span>    Term <span class="op">=</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"&lt;code&gt;{Term}&lt;/code&gt;"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> </span>
-<span></span>
-<span><span class="co"># Create the table</span></span>
-<span><span class="va">kable_out</span> <span class="op">&lt;-</span> <span class="va">table_data</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">kbl</span><span class="op">(</span>format <span class="op">=</span> <span class="st">'html'</span>, escape <span class="op">=</span> <span class="cn">FALSE</span>, booktabs <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>      <span class="co">#caption = '&lt;span style = "color:black;"&gt;&lt;center&gt;&lt;strong&gt;Table 1: General Model Structure Information&lt;/strong&gt;&lt;/center&gt;&lt;/span&gt;',</span></span>
-<span>      col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Type"</span>, <span class="st">"Parameter"</span>, <span class="st">"Term"</span>, <span class="st">"Description"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">kable_styling</span><span class="op">(</span>position<span class="op">=</span><span class="st">"left"</span>, bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"hover"</span><span class="op">)</span>, full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">column_spec</span><span class="op">(</span><span class="fl">1</span>, bold <span class="op">=</span> <span class="cn">FALSE</span>, border_right <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">column_spec</span><span class="op">(</span><span class="fl">2</span>, width <span class="op">=</span> <span class="st">'4cm'</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">column_spec</span><span class="op">(</span><span class="fl">3</span>, width <span class="op">=</span> <span class="st">'4cm'</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">row_spec</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">7</span><span class="op">)</span>, extra_css <span class="op">=</span> <span class="st">"border-bottom: 2px solid black;"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">pack_rows</span><span class="op">(</span><span class="st">""</span>, <span class="fl">1</span>, <span class="fl">4</span>, bold <span class="op">=</span> <span class="cn">FALSE</span>, italic <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">pack_rows</span><span class="op">(</span><span class="st">""</span>, <span class="fl">5</span>, <span class="fl">6</span>, bold <span class="op">=</span> <span class="cn">FALSE</span>, italic <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">pack_rows</span><span class="op">(</span><span class="st">""</span>, <span class="fl">7</span>, <span class="fl">7</span>, bold <span class="op">=</span> <span class="cn">FALSE</span>, italic <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">kable_out</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<main class="content column-page-right" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/e1_test.html">Analyses</a></li><li class="breadcrumb-item"><a href="../Analysis/e2_test.html">HTW E2 Testing</a></li></ol></nav><div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">HTW E2 Testing</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">Analysis</div>
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">Bayesian</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta column-page-right">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://tegorman13.github.io">Thomas Gorman</a> </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 18, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header><div class="cell" data-fig-width="8" data-fig-height="2.5" data-fig-responsive="false">
 <div class="cell-output-display">
-<div id="tbl-bmm-structure" class="anchored">
-<table class="table table-hover table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Table&nbsp;1: Mixed model structure and coefficient descriptions</caption>
-<thead><tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Type</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Parameter</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Term</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Description</th>
-</tr></thead>
-<tbody>
-<tr class="odd" data-grouplength="4">
-<td colspan="4" style="border-bottom: 1px solid"><em></em></td>
-</tr>
-<tr class="even">
-<td style="text-align: left; border-right: 1px solid; padding-left: 2em;" data-indentlevel="1">Population-Level Effects</td>
-<td style="text-align: left; width: 4cm;">\(\beta_0\)</td>
-<td style="text-align: left; width: 4cm;"><code>(Intercept)</code></td>
-<td style="text-align: left;">Intercept representing the baseline deviation</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; border-right: 1px solid; padding-left: 2em;" data-indentlevel="1">Population-Level Effects</td>
-<td style="text-align: left; width: 4cm;">\(\beta_1\)</td>
-<td style="text-align: left; width: 4cm;"><code>conditVaried</code></td>
-<td style="text-align: left;">Effect of condition (Varied vs. Constant) on deviation</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; border-right: 1px solid; padding-left: 2em;" data-indentlevel="1">Population-Level Effects</td>
-<td style="text-align: left; width: 4cm;">\(\beta_2\)</td>
-<td style="text-align: left; width: 4cm;"><code>bandInt</code></td>
-<td style="text-align: left;">Effect of target velocity band (bandInt) on deviation</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; border-right: 1px solid; border-bottom: 2px solid black; padding-left: 2em;" data-indentlevel="1">Population-Level Effects</td>
-<td style="text-align: left; width: 4cm; border-bottom: 2px solid black;">\(\beta_3\)</td>
-<td style="text-align: left; width: 4cm; border-bottom: 2px solid black;"><code>conditVaried:bandInt</code></td>
-<td style="text-align: left; border-bottom: 2px solid black;">Interaction effect between training condition and target velocity band on deviation</td>
-</tr>
-<tr class="even" data-grouplength="2">
-<td colspan="4" style="border-bottom: 1px solid"><em></em></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; border-right: 1px solid; padding-left: 2em;" data-indentlevel="1">Group-Level Effects</td>
-<td style="text-align: left; width: 4cm;">\(\sigma_{\text{Intercept}}\)</td>
-<td style="text-align: left; width: 4cm;"><code>sd__(Intercept)</code></td>
-<td style="text-align: left;">Standard deviation for (Intercept)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; border-right: 1px solid; padding-left: 2em;" data-indentlevel="1">Group-Level Effects</td>
-<td style="text-align: left; width: 4cm;">\(\sigma_{\text{bandInt}}\)</td>
-<td style="text-align: left; width: 4cm;"><code>sd__bandInt</code></td>
-<td style="text-align: left;">Standard deviation for bandInt</td>
-</tr>
-<tr class="odd" data-grouplength="1">
-<td colspan="4" style="border-bottom: 1px solid"><em></em></td>
-</tr>
-<tr class="even">
-<td style="text-align: left; border-right: 1px solid; border-bottom: 2px solid black; padding-left: 2em;" data-indentlevel="1">Family Specific Parameters</td>
-<td style="text-align: left; width: 4cm; border-bottom: 2px solid black;">\(\sigma_{\text{Observation}}\)</td>
-<td style="text-align: left; width: 4cm; border-bottom: 2px solid black;"><code>sd__Observation</code></td>
-<td style="text-align: left; border-bottom: 2px solid black;">Standard deviation for Gaussian Family</td>
-</tr>
-</tbody>
-</table>
+<div id="fig-design-e2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><div>
+<svg width="768" height="240" viewbox="0.00 0.00 647.35 174.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 170)"><polygon fill="white" stroke="transparent" points="-4,4 -4,-170 643.35,-170 643.35,4 -4,4"></polygon><g id="clust1" class="cluster"><title>cluster</title>
+<polygon fill="none" stroke="black" points="152.49,-8 152.49,-158 458.5,-158 458.5,-8 152.49,-8"></polygon><text text-anchor="middle" x="305.49" y="-141.4" font-family="Times,serif" font-size="14.00">Test Phase </text><text text-anchor="middle" x="305.49" y="-124.6" font-family="Times,serif" font-size="14.00">(Counterbalanced Order)</text></g><!-- data1 --><g id="node1" class="node"><title>data1</title>
+<polygon fill="#ff0000" stroke="black" points="118.54,-137.7 5.95,-137.7 5.95,-62.3 118.54,-62.3 118.54,-137.7"></polygon><text text-anchor="middle" x="62.24" y="-121" font-family="Times,serif" font-size="14.00"> Varied Training </text><text text-anchor="middle" x="62.24" y="-104.2" font-family="Times,serif" font-size="14.00">100-300</text><text text-anchor="middle" x="62.24" y="-87.4" font-family="Times,serif" font-size="14.00">350-550</text><text text-anchor="middle" x="62.24" y="-70.6" font-family="Times,serif" font-size="14.00">600-800</text></g><!-- Test1 --><g id="node4" class="node"><title>Test1</title>
+<polygon fill="#eccbae" stroke="black" points="256.06,-108 160.63,-108 160.63,-16 256.06,-16 256.06,-108"></polygon><text text-anchor="middle" x="208.34" y="-91.4" font-family="Times,serif" font-size="14.00">Test &nbsp;</text><text text-anchor="middle" x="208.34" y="-74.6" font-family="Times,serif" font-size="14.00">Novel Bands &nbsp;</text><text text-anchor="middle" x="208.34" y="-57.8" font-family="Times,serif" font-size="14.00">800-1000</text><text text-anchor="middle" x="208.34" y="-41" font-family="Times,serif" font-size="14.00">1000-1200</text><text text-anchor="middle" x="208.34" y="-24.2" font-family="Times,serif" font-size="14.00">1200-1400</text></g><!-- data1&#45;&gt;Test1 --><g id="edge1" class="edge"><title>data1-&gt;Test1</title>
+<path fill="none" stroke="black" d="M118.54,-85.42C129.01,-82.66 139.97,-79.77 150.49,-76.99"></path><polygon fill="black" stroke="black" points="151.62,-80.31 160.4,-74.38 149.83,-73.55 151.62,-80.31"></polygon></g><!-- data2 --><g id="node2" class="node"><title>data2</title>
+<polygon fill="#00a08a" stroke="black" points="124.73,-44.6 -0.24,-44.6 -0.24,-3.4 124.73,-3.4 124.73,-44.6"></polygon><text text-anchor="middle" x="62.24" y="-28.2" font-family="Times,serif" font-size="14.00"> Constant Training </text><text text-anchor="middle" x="62.24" y="-11.4" font-family="Times,serif" font-size="14.00">600-800</text></g><!-- data2&#45;&gt;Test1 --><g id="edge2" class="edge"><title>data2-&gt;Test1</title>
+<path fill="none" stroke="black" d="M124.77,-40.23C133.35,-42.49 142.13,-44.8 150.61,-47.04"></path><polygon fill="black" stroke="black" points="149.84,-50.46 160.41,-49.62 151.63,-43.69 149.84,-50.46"></polygon></g><!-- Test3 --><g id="node3" class="node"><title>Test3</title>
+<polygon fill="#eccbae" stroke="black" points="639.27,-108 486.57,-108 486.57,-16 639.27,-16 639.27,-108"></polygon><text text-anchor="middle" x="562.92" y="-91.4" font-family="Times,serif" font-size="14.00"> &nbsp;&nbsp;&nbsp;Final Test </text><text text-anchor="middle" x="562.92" y="-74.6" font-family="Times,serif" font-size="14.00"> &nbsp;Novel With Feedback &nbsp;</text><text text-anchor="middle" x="562.92" y="-57.8" font-family="Times,serif" font-size="14.00">100-300</text><text text-anchor="middle" x="562.92" y="-41" font-family="Times,serif" font-size="14.00">350-550</text><text text-anchor="middle" x="562.92" y="-24.2" font-family="Times,serif" font-size="14.00">600-800</text></g><!-- Test2 --><g id="node5" class="node"><title>Test2</title>
+<polygon fill="#eccbae" stroke="black" points="450.65,-108 292.05,-108 292.05,-16 450.65,-16 450.65,-108"></polygon><text text-anchor="middle" x="371.35" y="-91.4" font-family="Times,serif" font-size="14.00"> &nbsp;Test </text><text text-anchor="middle" x="371.35" y="-74.6" font-family="Times,serif" font-size="14.00"> &nbsp;Varied Training Bands &nbsp;</text><text text-anchor="middle" x="371.35" y="-57.8" font-family="Times,serif" font-size="14.00">100-300</text><text text-anchor="middle" x="371.35" y="-41" font-family="Times,serif" font-size="14.00">350-550</text><text text-anchor="middle" x="371.35" y="-24.2" font-family="Times,serif" font-size="14.00">600-800</text></g><!-- Test1&#45;&gt;Test2 --><g id="edge3" class="edge"><title>Test1-&gt;Test2</title>
+<path fill="none" stroke="black" d="M256.35,-62C264.51,-62 273.22,-62 282.07,-62"></path><polygon fill="black" stroke="black" points="282.09,-65.5 292.09,-62 282.09,-58.5 282.09,-65.5"></polygon></g><!-- Test2&#45;&gt;Test3 --><g id="edge4" class="edge"><title>Test2-&gt;Test3</title>
+<path fill="none" stroke="black" d="M450.55,-62C459.05,-62 467.74,-62 476.33,-62"></path><polygon fill="black" stroke="black" points="476.34,-65.5 486.34,-62 476.34,-58.5 476.34,-65.5"></polygon></g></g></svg>
+</div>
+<figcaption class="figure-caption">Figure&nbsp;1: Experiment 2 Design. Constant and Varied participants complete different training conditions.</figcaption></figure>
+</div>
+</div>
 </div>
 
 
-</div>
-</div>
-
+<!-- -->
 
 
 </main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -535,6 +454,57 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -799,10 +769,71 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
+</script><nav class="page-navigation column-page-right"><div class="nav-page nav-page-previous">
+      <a href="../Analysis/e1_test.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">HTW E1 Testing</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../Analysis/e1_Analysis.html" class="pagination-link">
+        <span class="nav-page-text">Experiment 1 Analysis</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "HTW E2 Testing"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Analysis, R, Bayesian]</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include=FALSE}</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="in">source(here::here("Functions", "packages.R"))</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="in">testE2 &lt;- readRDS(here("data/e2_08-04-23.rds")) |&gt; filter(expMode2 == "Test") </span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="in">options(brms.backend="cmdstanr",mc.cores=4)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="in">e2Sbjs &lt;- testE2 |&gt; group_by(id,condit) |&gt; summarise(n=n())</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="in">testE2Avg &lt;- testE2 %&gt;% group_by(id, condit, vb, bandInt,bandType,tOrder) %&gt;%</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="in">  summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{dot}</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">//| label: fig-design-e2</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">//| fig-cap: "Experiment 2 Design. Constant and Varied participants complete different training conditions."</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">//| fig-width: 8.0</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in">//| fig-height: 2.5</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">//| fig-responsive: false</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="in">digraph {</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in">  graph [layout = dot, rankdir = LR]</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in">  // define the global styles of the nodes</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="in">  node [shape = rectangle, style = filled]</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in">  data1 [label = " Varied Training \n100-300\n350-550\n600-800", fillcolor = "#FF0000"]</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">  data2 [label = " Constant Training \n600-800", fillcolor = "#00A08A"]</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">  Test3 [label = "    Final Test \n  Novel With Feedback  \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in">  // edge definitions with the node IDs</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">  data1 -&gt; Test1</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="in">  data2 -&gt; Test1</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="in">  subgraph cluster {</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="in">    label = "Test Phase \n(Counterbalanced Order)"</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="in">    Test1 [label = "Test  \nNovel Bands  \n800-1000\n1000-1200\n1200-1400", fillcolor = "#ECCBAE"]</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="in">    Test2 [label = "  Test \n  Varied Training Bands  \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="in">    Test1 -&gt; Test2</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="in">  }</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="in">  Test2 -&gt; Test3</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Misc/bmm_table.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Misc/bmm_table.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e2_test.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e2_test.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

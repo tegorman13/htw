@@ -2,7 +2,7 @@
 
 
 ```{r setup2, include=FALSE}
-pacman::p_load(knitr,kableExtra)
+pacman::p_load(dplyr, knitr,kableExtra)
 ```
 
 
@@ -31,7 +31,9 @@ table_data <- data.frame(
     "Intercept representing the baseline deviation", "Effect of condition (Varied vs. Constant) on deviation", "Effect of target velocity band (bandInt) on deviation", "Interaction effect between training condition and target velocity band on deviation",
     "Standard deviation for (Intercept)", "Standard deviation for bandInt", "Standard deviation for Gaussian Family"
   )
-)
+) |>   mutate(
+    Term = glue::glue("<code>{Term}</code>")
+  ) 
 
 # Create the table
 kable_out <- table_data %>%
