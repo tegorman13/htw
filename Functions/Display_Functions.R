@@ -527,3 +527,7 @@ theme_clean <- function() {
           strip.background = element_rect(fill = "grey80", color = NA),
           legend.title = element_text(face = "bold"))
 }
+
+nested_settings <- strip_nested(
+  background_x = list(element_rect(fill = "grey92"), NULL),
+  by_layer_x = TRUE)

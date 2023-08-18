@@ -4,57 +4,48 @@ test <- readRDS(here("data/e1_08-04-23.rds")) |>
   filter(expMode2 == "Test") 
 options(brms.backend="cmdstanr",mc.cores=4)
 
+################
+### Setup #####
+################
 set.seed(12345)
 
 e1Sbjs <- test |> group_by(id,condit) |> summarise(n=n())
 testAvg <- test |> group_by(id,condit,vb,bandInt) |> 
-  summarise(meanVx=mean(vx),medianVx=median(vx),
-            sdVx=sd(vx))
+  summarise(meanVx=mean(vx),medianVx=median(vx),sdVx=sd(vx))
 
-
-nested_settings <- strip_nested(
-  background_x = list(element_rect(fill = "grey92"), NULL),
-  by_layer_x = TRUE)
-
-
-# e1_vxBMM <- brm(bf(vx ~ condit * bandInt + (1 + bandInt|id),
-#                    sigma ~ condit * bandInt + (1+bandInt|id)),
-#                 data=test,
-#                 file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k_Ml1")),
-#                 iter=5000,chains=4,silent=0,
-#                 control=list(adapt_delta=0.94, max_treedepth=13))
-
-
-e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
-                        data=test,file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k_Ml1")),
-                        iter=5000,chains=4,silent=0,
-                        control=list(adapt_delta=0.94, max_treedepth=13))
-mt2 <-GetModelStats(e1_vxBMM ) |> kable(escape=F,booktabs=T)
-mt2
+                 
+e1_vxBMM <- brm(bf(vx ~ condit * bandInt + (1 + bandInt|id),
+                   sigma ~ condit * bandInt + (1+bandInt|id)),
+                data=test,
+                file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k_Ml1")),
+                iter=5000,chains=4,silent=0,
+                control=list(adapt_delta=0.94, max_treedepth=13))
 
 
 indv_coefs <- coef(e1_vxBMM)$id |> 
   as_tibble(rownames="id") |> 
   select(id, starts_with("Est")) |>
   left_join(e1Sbjs, by=join_by(id) ) |> 
-  # rank by Estimate.bandInt - within condit, higher is better
   group_by(condit) |> 
   mutate(rank = rank(desc(Estimate.bandInt))) 
 
+nTop <- 5
 top_indv_coefs <- indv_coefs %>%
-  filter(rank > 60) |>
+  filter(rank <=nTop) |>
   select(id,condit,rank,Est.BandInt=Estimate.bandInt, Est.Intercept=Estimate.Intercept) 
-top_ids <- top_indv_coefs$id
+
+new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")]))) |> 
+  dplyr::arrange(id,bandInt) |> 
+  mutate(condit_dummy = ifelse(condit == "Varied", 1, 0)) # |>
+  #filter(id %in% top_indv_coefs$id)
 
 fixed_effects <- fixef(e1_vxBMM)
 random_effects <- coef(e1_vxBMM)$id
 
 
+################
 
-new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")]))) |> 
-  dplyr::arrange(id,bandInt) |> 
-  mutate(condit_dummy = ifelse(condit == "Varied", 1, 0)) |>
-  filter(id %in% top_ids)
+
   
 
 
@@ -113,15 +104,14 @@ random_effects <- e1_vxBMM |>
   gather_draws(`^r_id.*$`, regex = TRUE, ndraws = 1000) |> 
   separate(.variable, into = c("effect", "id", "term"), sep = "\\[|,|\\]") |> 
   mutate(id = factor(id,levels=levels(test$id))) |> 
-  pivot_wider(names_from = term, values_from = .value)
+  pivot_wider(names_from = term, values_from = .value) |> arrange(id,.chain,.draw,.iteration)
 
-# Combine with the fixed effects
 fixed_effects <- e1_vxBMM |> 
-  spread_draws(`^b_.*`,regex=TRUE,ndraws=1000) 
+  spread_draws(`^b_.*`,regex=TRUE) |> arrange(.chain,.draw,.iteration)
 
-combined_df <- left_join(random_effects, fixed_effects, by = c(".chain", ".iteration", ".draw")) |> 
+combined_df <- left_join(random_effects, fixed_effects, by = join_by(".chain", ".iteration", ".draw")) |> 
   rename(bandInt_RF = bandInt) |>
-  left_join(new_data_grid, by = join_by("id")) |> 
+  right_join(new_data_grid, by = join_by("id")) |> 
   mutate(
     fixed_effects = b_Intercept +
       (bandInt * b_bandInt) +
@@ -132,7 +122,7 @@ combined_df <- left_join(random_effects, fixed_effects, by = c(".chain", ".itera
   )
 
 
-
+# shouldn't need this as long as the entirety of fixed_effects is drawn
 all_effects <- e1_vxBMM |> 
   gather_draws(b_Intercept, b_conditVaried, b_bandInt, `b_conditVaried:bandInt`, `^r_id.*$`, regex = TRUE, ndraws = 1) |> 
   separate(.variable, into = c("effect_type", "effect_details"), sep = "\\[", remove = FALSE, fill = "right", extra = "merge") |> 
@@ -219,7 +209,38 @@ e1_distBMM |> emmeans( ~condit +bandInt,
   geom_half_violin()
 
 
-
+# Need to investiage whey including RF's changes the results so much
+  
+  new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")])))
+  
+  cSamp <- e1_distBMM |> 
+    emmeans("condit",by="bandInt",at=list(bandInt=c(100,350,600,800,1000,1200)),
+            epred = TRUE, re_formula = NULL) |> 
+    pairs() |> gather_emmeans_draws()  |>
+    group_by(contrast, .draw,bandInt) |> summarise(value=mean(.value), n=n())
+  
+  ameBand <- cSamp |> ggplot(aes(x=value,y="")) + 
+    stat_halfeye() + 
+    geom_vline(xintercept=0,alpha=.4)+
+    facet_wrap(~bandInt,ncol=1) + labs(x="Marginal Effect (Constant - Varied)", y= NULL)+
+    ggtitle("Average Marginal Effect")
+  
+  bothConditGM <- e1_distBMM %>%
+    epred_draws(newdata = new_data_grid,ndraws = 2000, re_formula = NULL) |>
+    ggplot(aes(x=.epred,y="Mean",fill=condit)) + 
+    stat_halfeye() +facet_wrap(~bandInt, ncol = 1) +
+    labs(x="Predicted Deviation", y=NULL)+
+    ggtitle("Grand Means") +theme(legend.position = "bottom")
+  
+  (bothConditGM | ameBand) + plot_layout(widths=c(2,1.0))
+  
+  
+  
+  
+  
+  
+  
+##################
 # Plot
 ggplot(nd3, aes(x = vb, y = .epred)) +
   #stat_lineribbon(alpha = 0.3) +

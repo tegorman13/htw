@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.4.322">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
-<meta name="dcterms.date" content="2023-08-16">
+<meta name="dcterms.date" content="2023-08-17">
 <title>HTW Project - Experiment 1 Analysis</title>
 <style>
 code{white-space: pre-wrap;}
@@ -119,7 +119,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="../">HTW Project</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/tegorman13/htw" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://github.com/tegorman13/htw" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -184,7 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Analysis/e1_test.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">E1 Testing</span></a>
+ <span class="menu-text">HTW E1 Testing</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -367,7 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 16, 2023</p>
+      <p class="date">August 17, 2023</p>
     </div>
   </div>
   
@@ -387,12 +387,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="in">result$constant #|&gt; kable_styling(full_width = F)</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="in">result$varied #|&gt; kable_styling(full_width = F)</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div id="tbl-anonymous-4982456" class="cell tbl-parent quarto-layout-panel anchored">
+</details><div id="tbl-anonymous-826328" class="cell tbl-parent quarto-layout-panel anchored">
 <div class="panel-caption table-caption">
 <p>Testing - No Feedback</p>
 </div>
 <div class="quarto-layout-row quarto-layout-valign-top">
-<div id="tbl-anonymous-4982456-1" class="quarto-layout-cell quarto-layout-cell-subref anchored" data-ref-parent="tbl-anonymous-4982456" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-anonymous-826328-1" class="quarto-layout-cell quarto-layout-cell-subref anchored" data-ref-parent="tbl-anonymous-826328" style="flex-basis: 50.0%;justify-content: center;">
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <caption>Constant Testing - X Velocity</caption>
 <thead><tr class="header">
@@ -448,7 +448,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </div>
-<div id="tbl-anonymous-4982456-2" class="quarto-layout-cell quarto-layout-cell-subref anchored" data-ref-parent="tbl-anonymous-4982456" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-anonymous-826328-2" class="quarto-layout-cell quarto-layout-cell-subref anchored" data-ref-parent="tbl-anonymous-826328" style="flex-basis: 50.0%;justify-content: center;">
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <caption>Varied Testing - X Velocity</caption>
 <thead><tr class="header">
@@ -2283,6 +2283,8 @@ Varied
 <span>  <span class="fu">geom_text</span><span class="op">(</span>data<span class="op">=</span><span class="va">sumStats2</span>,<span class="fu">aes</span><span class="op">(</span>y<span class="op">=</span><span class="fl">2090</span>,label <span class="op">=</span> <span class="va">sumStatLab</span><span class="op">)</span>,size<span class="op">=</span><span class="fl">1.9</span><span class="op">)</span></span>
 <span></span>
 <span></span>
+<span><span class="co">#test %&gt;% group_by(id,vb,condit) |&gt; plot_distByCondit()</span></span>
+<span></span>
 <span></span>
 <span><span class="va">test</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">vb</span>,<span class="va">condit</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">summarise</span><span class="op">(</span>distMean<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dist</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
@@ -2829,7 +2831,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation column-body"><div class="nav-page nav-page-previous">
       <a href="../Analysis/e1_test.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">E1 Testing</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">HTW E1 Testing</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -3495,147 +3497,149 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb56-705"><a href="#cb56-705" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data=</span>sumStats2,<span class="fu">aes</span>(<span class="at">y=</span><span class="dv">2090</span>,<span class="at">label =</span> sumStatLab),<span class="at">size=</span><span class="fl">1.9</span>)</span>
 <span id="cb56-706"><a href="#cb56-706" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-707"><a href="#cb56-707" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-708"><a href="#cb56-708" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-709"><a href="#cb56-709" aria-hidden="true" tabindex="-1"></a>test <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,vb,condit) <span class="sc">%&gt;%</span> </span>
-<span id="cb56-710"><a href="#cb56-710" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">distMean=</span><span class="fu">mean</span>(dist)) <span class="sc">%&gt;%</span> </span>
-<span id="cb56-711"><a href="#cb56-711" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>vb,<span class="at">y=</span>distMean,<span class="at">fill=</span>vb))<span class="sc">+</span></span>
-<span id="cb56-712"><a href="#cb56-712" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_half_violin</span>(<span class="at">color=</span><span class="cn">NA</span>)<span class="sc">+</span> <span class="co"># remove border color</span></span>
-<span id="cb56-713"><a href="#cb56-713" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_half_boxplot</span>(<span class="at">position=</span><span class="fu">position_nudge</span>(<span class="at">x=</span><span class="sc">-</span><span class="fl">0.05</span>),<span class="at">side=</span><span class="st">"r"</span>,<span class="at">outlier.shape =</span> <span class="cn">NA</span>,<span class="at">center=</span><span class="cn">TRUE</span>, </span>
-<span id="cb56-714"><a href="#cb56-714" aria-hidden="true" tabindex="-1"></a>                    <span class="at">errorbar.draw =</span> <span class="cn">FALSE</span>,<span class="at">width=</span>.<span class="dv">25</span>)<span class="sc">+</span></span>
-<span id="cb56-715"><a href="#cb56-715" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_half_point</span>(<span class="at">transformation =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.05</span>, <span class="at">height =</span> <span class="fl">0.05</span>),<span class="at">size=</span>.<span class="dv">3</span>,<span class="fu">aes</span>(<span class="at">color=</span>vb))<span class="sc">+</span></span>
-<span id="cb56-716"><a href="#cb56-716" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>condit,<span class="at">scale=</span><span class="st">"free_x"</span>)<span class="sc">+</span></span>
-<span id="cb56-717"><a href="#cb56-717" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand=</span><span class="fu">expansion</span>(<span class="at">add=</span><span class="dv">100</span>),<span class="at">breaks=</span><span class="fu">round</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">2000</span>,<span class="at">by=</span><span class="dv">200</span>),<span class="dv">2</span>))<span class="sc">+</span></span>
-<span id="cb56-718"><a href="#cb56-718" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">'none'</span>,</span>
-<span id="cb56-719"><a href="#cb56-719" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>),</span>
-<span id="cb56-720"><a href="#cb56-720" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>),</span>
-<span id="cb56-721"><a href="#cb56-721" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>),</span>
-<span id="cb56-722"><a href="#cb56-722" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="fl">9.0</span>))<span class="sc">+</span></span>
-<span id="cb56-723"><a href="#cb56-723" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Mean Distance From Boundary"</span>)<span class="sc">+</span><span class="fu">xlab</span>(<span class="st">"Target Velocity Band"</span>) <span class="sc">+</span> </span>
-<span id="cb56-724"><a href="#cb56-724" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Testing Performance (no-feedback) - Absolute Distance from Boundary"</span>)<span class="sc">+</span> </span>
-<span id="cb56-725"><a href="#cb56-725" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data=</span>sumStats2,<span class="fu">aes</span>(<span class="at">y=</span><span class="dv">1200</span>,<span class="at">label =</span> sumStatLab),<span class="at">size=</span><span class="dv">3</span>,<span class="at">fontface=</span><span class="st">"bold"</span>)</span>
-<span id="cb56-726"><a href="#cb56-726" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-727"><a href="#cb56-727" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-708"><a href="#cb56-708" aria-hidden="true" tabindex="-1"></a><span class="co">#test %&gt;% group_by(id,vb,condit) |&gt; plot_distByCondit()</span></span>
+<span id="cb56-709"><a href="#cb56-709" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-710"><a href="#cb56-710" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-711"><a href="#cb56-711" aria-hidden="true" tabindex="-1"></a>test <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,vb,condit) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-712"><a href="#cb56-712" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">distMean=</span><span class="fu">mean</span>(dist)) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-713"><a href="#cb56-713" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>vb,<span class="at">y=</span>distMean,<span class="at">fill=</span>vb))<span class="sc">+</span></span>
+<span id="cb56-714"><a href="#cb56-714" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_half_violin</span>(<span class="at">color=</span><span class="cn">NA</span>)<span class="sc">+</span> <span class="co"># remove border color</span></span>
+<span id="cb56-715"><a href="#cb56-715" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_half_boxplot</span>(<span class="at">position=</span><span class="fu">position_nudge</span>(<span class="at">x=</span><span class="sc">-</span><span class="fl">0.05</span>),<span class="at">side=</span><span class="st">"r"</span>,<span class="at">outlier.shape =</span> <span class="cn">NA</span>,<span class="at">center=</span><span class="cn">TRUE</span>, </span>
+<span id="cb56-716"><a href="#cb56-716" aria-hidden="true" tabindex="-1"></a>                    <span class="at">errorbar.draw =</span> <span class="cn">FALSE</span>,<span class="at">width=</span>.<span class="dv">25</span>)<span class="sc">+</span></span>
+<span id="cb56-717"><a href="#cb56-717" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_half_point</span>(<span class="at">transformation =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.05</span>, <span class="at">height =</span> <span class="fl">0.05</span>),<span class="at">size=</span>.<span class="dv">3</span>,<span class="fu">aes</span>(<span class="at">color=</span>vb))<span class="sc">+</span></span>
+<span id="cb56-718"><a href="#cb56-718" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>condit,<span class="at">scale=</span><span class="st">"free_x"</span>)<span class="sc">+</span></span>
+<span id="cb56-719"><a href="#cb56-719" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand=</span><span class="fu">expansion</span>(<span class="at">add=</span><span class="dv">100</span>),<span class="at">breaks=</span><span class="fu">round</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">2000</span>,<span class="at">by=</span><span class="dv">200</span>),<span class="dv">2</span>))<span class="sc">+</span></span>
+<span id="cb56-720"><a href="#cb56-720" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">'none'</span>,</span>
+<span id="cb56-721"><a href="#cb56-721" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>),</span>
+<span id="cb56-722"><a href="#cb56-722" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>),</span>
+<span id="cb56-723"><a href="#cb56-723" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>),</span>
+<span id="cb56-724"><a href="#cb56-724" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="fl">9.0</span>))<span class="sc">+</span></span>
+<span id="cb56-725"><a href="#cb56-725" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Mean Distance From Boundary"</span>)<span class="sc">+</span><span class="fu">xlab</span>(<span class="st">"Target Velocity Band"</span>) <span class="sc">+</span> </span>
+<span id="cb56-726"><a href="#cb56-726" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Testing Performance (no-feedback) - Absolute Distance from Boundary"</span>)<span class="sc">+</span> </span>
+<span id="cb56-727"><a href="#cb56-727" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data=</span>sumStats2,<span class="fu">aes</span>(<span class="at">y=</span><span class="dv">1200</span>,<span class="at">label =</span> sumStatLab),<span class="at">size=</span><span class="dv">3</span>,<span class="at">fontface=</span><span class="st">"bold"</span>)</span>
 <span id="cb56-728"><a href="#cb56-728" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-729"><a href="#cb56-729" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb56-729"><a href="#cb56-729" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-730"><a href="#cb56-730" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-733"><a href="#cb56-733" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb56-734"><a href="#cb56-734" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
-<span id="cb56-735"><a href="#cb56-735" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
-<span id="cb56-736"><a href="#cb56-736" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb56-737"><a href="#cb56-737" aria-hidden="true" tabindex="-1"></a>test <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(sbjCode,condit,vb) <span class="sc">%&gt;%</span> </span>
-<span id="cb56-738"><a href="#cb56-738" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">distMean=</span><span class="fu">mean</span>(dist)) <span class="sc">%&gt;%</span> </span>
-<span id="cb56-739"><a href="#cb56-739" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>condit,<span class="at">y=</span>distMean,<span class="at">fill=</span>condit))<span class="sc">+</span></span>
-<span id="cb56-740"><a href="#cb56-740" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"bar"</span>,<span class="at">fun=</span>mean,<span class="at">position=</span><span class="fu">position_nudge</span>(<span class="at">x=</span>.<span class="dv">21</span>),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">width=</span>.<span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb56-741"><a href="#cb56-741" aria-hidden="true" tabindex="-1"></a>   <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"errorbar"</span>,<span class="at">fun.data=</span>mean_se,<span class="at">position=</span><span class="fu">position_nudge</span>(<span class="at">x=</span>.<span class="dv">21</span>),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">width=</span>.<span class="dv">1</span>,)<span class="sc">+</span></span>
-<span id="cb56-742"><a href="#cb56-742" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_half_violin</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(.<span class="dv">5</span>),<span class="at">alpha=</span>.<span class="dv">55</span>,<span class="at">color=</span><span class="cn">NA</span>)<span class="sc">+</span> <span class="co"># remove border color</span></span>
-<span id="cb56-743"><a href="#cb56-743" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_half_boxplot</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(.<span class="dv">5</span>),<span class="at">side=</span><span class="st">"r"</span>,<span class="at">outlier.shape =</span> <span class="cn">NA</span>,<span class="at">center=</span><span class="cn">TRUE</span>, </span>
-<span id="cb56-744"><a href="#cb56-744" aria-hidden="true" tabindex="-1"></a>                    <span class="at">errorbar.draw =</span> <span class="cn">FALSE</span>,<span class="at">width=</span>.<span class="dv">25</span>,<span class="at">alpha=</span>.<span class="dv">55</span>)<span class="sc">+</span></span>
-<span id="cb56-745"><a href="#cb56-745" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_half_point</span>(<span class="at">transformation =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.05</span>, <span class="at">height =</span> <span class="fl">0.05</span>),<span class="at">alpha=</span>.<span class="dv">2</span>,<span class="at">size=</span>.<span class="dv">3</span>)<span class="sc">+</span></span>
-<span id="cb56-746"><a href="#cb56-746" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>vb,<span class="at">scale=</span><span class="st">"free_x"</span>)<span class="sc">+</span></span>
-<span id="cb56-747"><a href="#cb56-747" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand=</span><span class="fu">expansion</span>(<span class="at">add=</span><span class="dv">200</span>),<span class="at">breaks=</span><span class="fu">round</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">2000</span>,<span class="at">by=</span><span class="dv">200</span>),<span class="dv">2</span>))<span class="sc">+</span></span>
-<span id="cb56-748"><a href="#cb56-748" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">'none'</span>,</span>
-<span id="cb56-749"><a href="#cb56-749" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>),</span>
-<span id="cb56-750"><a href="#cb56-750" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>),</span>
-<span id="cb56-751"><a href="#cb56-751" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>),</span>
-<span id="cb56-752"><a href="#cb56-752" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="fl">9.0</span>))<span class="sc">+</span></span>
-<span id="cb56-753"><a href="#cb56-753" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Mean Distance From Boundary"</span>)<span class="sc">+</span><span class="fu">xlab</span>(<span class="st">"Training Condition"</span>) <span class="sc">+</span> </span>
-<span id="cb56-754"><a href="#cb56-754" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Testing Performance (no-feedback) - Absolute Distance from Boundary"</span>)<span class="sc">+</span> </span>
-<span id="cb56-755"><a href="#cb56-755" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data=</span>sumStats2,<span class="fu">aes</span>(<span class="at">y=</span><span class="dv">1390</span>,<span class="at">label =</span> sumStatLab),<span class="at">position=</span><span class="fu">position_dodge</span>(.<span class="dv">5</span>),<span class="at">size=</span><span class="dv">3</span>,<span class="at">fontface=</span><span class="st">"bold"</span>)</span>
-<span id="cb56-756"><a href="#cb56-756" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-757"><a href="#cb56-757" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-731"><a href="#cb56-731" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb56-732"><a href="#cb56-732" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-735"><a href="#cb56-735" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb56-736"><a href="#cb56-736" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
+<span id="cb56-737"><a href="#cb56-737" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb56-738"><a href="#cb56-738" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb56-739"><a href="#cb56-739" aria-hidden="true" tabindex="-1"></a>test <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(sbjCode,condit,vb) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-740"><a href="#cb56-740" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">distMean=</span><span class="fu">mean</span>(dist)) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-741"><a href="#cb56-741" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>condit,<span class="at">y=</span>distMean,<span class="at">fill=</span>condit))<span class="sc">+</span></span>
+<span id="cb56-742"><a href="#cb56-742" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"bar"</span>,<span class="at">fun=</span>mean,<span class="at">position=</span><span class="fu">position_nudge</span>(<span class="at">x=</span>.<span class="dv">21</span>),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">width=</span>.<span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb56-743"><a href="#cb56-743" aria-hidden="true" tabindex="-1"></a>   <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"errorbar"</span>,<span class="at">fun.data=</span>mean_se,<span class="at">position=</span><span class="fu">position_nudge</span>(<span class="at">x=</span>.<span class="dv">21</span>),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">width=</span>.<span class="dv">1</span>,)<span class="sc">+</span></span>
+<span id="cb56-744"><a href="#cb56-744" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_half_violin</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(.<span class="dv">5</span>),<span class="at">alpha=</span>.<span class="dv">55</span>,<span class="at">color=</span><span class="cn">NA</span>)<span class="sc">+</span> <span class="co"># remove border color</span></span>
+<span id="cb56-745"><a href="#cb56-745" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_half_boxplot</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(.<span class="dv">5</span>),<span class="at">side=</span><span class="st">"r"</span>,<span class="at">outlier.shape =</span> <span class="cn">NA</span>,<span class="at">center=</span><span class="cn">TRUE</span>, </span>
+<span id="cb56-746"><a href="#cb56-746" aria-hidden="true" tabindex="-1"></a>                    <span class="at">errorbar.draw =</span> <span class="cn">FALSE</span>,<span class="at">width=</span>.<span class="dv">25</span>,<span class="at">alpha=</span>.<span class="dv">55</span>)<span class="sc">+</span></span>
+<span id="cb56-747"><a href="#cb56-747" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_half_point</span>(<span class="at">transformation =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.05</span>, <span class="at">height =</span> <span class="fl">0.05</span>),<span class="at">alpha=</span>.<span class="dv">2</span>,<span class="at">size=</span>.<span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb56-748"><a href="#cb56-748" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>vb,<span class="at">scale=</span><span class="st">"free_x"</span>)<span class="sc">+</span></span>
+<span id="cb56-749"><a href="#cb56-749" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand=</span><span class="fu">expansion</span>(<span class="at">add=</span><span class="dv">200</span>),<span class="at">breaks=</span><span class="fu">round</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">2000</span>,<span class="at">by=</span><span class="dv">200</span>),<span class="dv">2</span>))<span class="sc">+</span></span>
+<span id="cb56-750"><a href="#cb56-750" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">'none'</span>,</span>
+<span id="cb56-751"><a href="#cb56-751" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>),</span>
+<span id="cb56-752"><a href="#cb56-752" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>),</span>
+<span id="cb56-753"><a href="#cb56-753" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>),</span>
+<span id="cb56-754"><a href="#cb56-754" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="fl">9.0</span>))<span class="sc">+</span></span>
+<span id="cb56-755"><a href="#cb56-755" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Mean Distance From Boundary"</span>)<span class="sc">+</span><span class="fu">xlab</span>(<span class="st">"Training Condition"</span>) <span class="sc">+</span> </span>
+<span id="cb56-756"><a href="#cb56-756" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Testing Performance (no-feedback) - Absolute Distance from Boundary"</span>)<span class="sc">+</span> </span>
+<span id="cb56-757"><a href="#cb56-757" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data=</span>sumStats2,<span class="fu">aes</span>(<span class="at">y=</span><span class="dv">1390</span>,<span class="at">label =</span> sumStatLab),<span class="at">position=</span><span class="fu">position_dodge</span>(.<span class="dv">5</span>),<span class="at">size=</span><span class="dv">3</span>,<span class="at">fontface=</span><span class="st">"bold"</span>)</span>
 <span id="cb56-758"><a href="#cb56-758" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-759"><a href="#cb56-759" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-760"><a href="#cb56-760" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-761"><a href="#cb56-761" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-762"><a href="#cb56-762" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-763"><a href="#cb56-763" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb56-763"><a href="#cb56-763" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-764"><a href="#cb56-764" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-765"><a href="#cb56-765" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-768"><a href="#cb56-768" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb56-769"><a href="#cb56-769" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb56-770"><a href="#cb56-770" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-771"><a href="#cb56-771" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-765"><a href="#cb56-765" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb56-766"><a href="#cb56-766" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-767"><a href="#cb56-767" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-770"><a href="#cb56-770" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb56-771"><a href="#cb56-771" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb56-772"><a href="#cb56-772" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-773"><a href="#cb56-773" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-774"><a href="#cb56-774" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-775"><a href="#cb56-775" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-778"><a href="#cb56-778" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb56-779"><a href="#cb56-779" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 13</span></span>
-<span id="cb56-780"><a href="#cb56-780" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
-<span id="cb56-781"><a href="#cb56-781" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggforce)</span>
-<span id="cb56-782"><a href="#cb56-782" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-783"><a href="#cb56-783" aria-hidden="true" tabindex="-1"></a>testAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>vx,<span class="at">y=</span>condit,<span class="at">col=</span>condit))<span class="sc">+</span> ggdist<span class="sc">::</span><span class="fu">stat_halfeye</span>()<span class="sc">+</span><span class="fu">facet_col</span>(<span class="at">facets=</span><span class="st">"vb"</span>)</span>
-<span id="cb56-784"><a href="#cb56-784" aria-hidden="true" tabindex="-1"></a>testAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>sdist,<span class="at">y=</span>condit,<span class="at">col=</span>condit))<span class="sc">+</span> <span class="fu">geom_boxplot</span>()<span class="sc">+</span><span class="fu">facet_col</span>(<span class="at">facets=</span><span class="st">"vb"</span>)<span class="sc">+</span><span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">0</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()</span>
-<span id="cb56-785"><a href="#cb56-785" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-786"><a href="#cb56-786" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggh4x)</span>
-<span id="cb56-787"><a href="#cb56-787" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span>
-<span id="cb56-788"><a href="#cb56-788" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-789"><a href="#cb56-789" aria-hidden="true" tabindex="-1"></a>testAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>vx,<span class="at">y=</span>vb,<span class="at">col=</span>bandType)) <span class="sc">+</span>  ggdist<span class="sc">::</span><span class="fu">stat_halfeye</span>(<span class="at">normalize=</span><span class="st">"groups"</span>)<span class="sc">+</span> <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,tOrder),<span class="at">nrow=</span><span class="dv">2</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()</span>
+<span id="cb56-776"><a href="#cb56-776" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-777"><a href="#cb56-777" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-780"><a href="#cb56-780" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb56-781"><a href="#cb56-781" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 13</span></span>
+<span id="cb56-782"><a href="#cb56-782" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb56-783"><a href="#cb56-783" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggforce)</span>
+<span id="cb56-784"><a href="#cb56-784" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-785"><a href="#cb56-785" aria-hidden="true" tabindex="-1"></a>testAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>vx,<span class="at">y=</span>condit,<span class="at">col=</span>condit))<span class="sc">+</span> ggdist<span class="sc">::</span><span class="fu">stat_halfeye</span>()<span class="sc">+</span><span class="fu">facet_col</span>(<span class="at">facets=</span><span class="st">"vb"</span>)</span>
+<span id="cb56-786"><a href="#cb56-786" aria-hidden="true" tabindex="-1"></a>testAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>sdist,<span class="at">y=</span>condit,<span class="at">col=</span>condit))<span class="sc">+</span> <span class="fu">geom_boxplot</span>()<span class="sc">+</span><span class="fu">facet_col</span>(<span class="at">facets=</span><span class="st">"vb"</span>)<span class="sc">+</span><span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">0</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()</span>
+<span id="cb56-787"><a href="#cb56-787" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-788"><a href="#cb56-788" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggh4x)</span>
+<span id="cb56-789"><a href="#cb56-789" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span>
 <span id="cb56-790"><a href="#cb56-790" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-791"><a href="#cb56-791" aria-hidden="true" tabindex="-1"></a>testAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>vx,<span class="at">y=</span>vb,<span class="at">col=</span>bandType)) <span class="sc">+</span>  ggdist<span class="sc">::</span><span class="fu">stat_histinterval</span>(<span class="at">normalize=</span><span class="st">"groups"</span>)<span class="sc">+</span> <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,tOrder),<span class="at">nrow=</span><span class="dv">2</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()</span>
+<span id="cb56-791"><a href="#cb56-791" aria-hidden="true" tabindex="-1"></a>testAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>vx,<span class="at">y=</span>vb,<span class="at">col=</span>bandType)) <span class="sc">+</span>  ggdist<span class="sc">::</span><span class="fu">stat_halfeye</span>(<span class="at">normalize=</span><span class="st">"groups"</span>)<span class="sc">+</span> <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,tOrder),<span class="at">nrow=</span><span class="dv">2</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()</span>
 <span id="cb56-792"><a href="#cb56-792" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-793"><a href="#cb56-793" aria-hidden="true" tabindex="-1"></a>testAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>vx,<span class="at">y=</span>vb,<span class="at">col=</span>bandType)) <span class="sc">+</span>  ggdist<span class="sc">::</span><span class="fu">stat_histinterval</span>(<span class="at">normalize=</span><span class="st">"groups"</span>)<span class="sc">+</span> <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,tOrder),<span class="at">nrow=</span><span class="dv">2</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()</span>
 <span id="cb56-794"><a href="#cb56-794" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-795"><a href="#cb56-795" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-796"><a href="#cb56-796" aria-hidden="true" tabindex="-1"></a>e1 <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id, condit, vb, bandInt,bandType,tOrder,expMode2) <span class="sc">%&gt;%</span></span>
-<span id="cb56-797"><a href="#cb56-797" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">vx=</span><span class="fu">mean</span>(vx),<span class="at">dist=</span><span class="fu">mean</span>(dist),<span class="at">sdist=</span><span class="fu">mean</span>(sdist)) <span class="sc">%&gt;%</span></span>
-<span id="cb56-798"><a href="#cb56-798" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>vx,<span class="at">y=</span>condit,<span class="at">col=</span>condit)) <span class="sc">+</span>  ggdist<span class="sc">::</span><span class="fu">stat_histinterval</span>(<span class="at">normalize=</span><span class="st">"groups"</span>)<span class="sc">+</span> <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(vb,expMode2),<span class="at">nrow=</span><span class="dv">6</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()</span>
-<span id="cb56-799"><a href="#cb56-799" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-800"><a href="#cb56-800" aria-hidden="true" tabindex="-1"></a>e1 <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id, condit, vb, bandInt,bandType,tOrder,expMode2) <span class="sc">%&gt;%</span></span>
-<span id="cb56-801"><a href="#cb56-801" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">vx=</span><span class="fu">mean</span>(vx),<span class="at">dist=</span><span class="fu">mean</span>(dist),<span class="at">sdist=</span><span class="fu">mean</span>(sdist)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>sdist,<span class="at">y=</span>vb,<span class="at">col=</span>condit))<span class="sc">+</span> <span class="fu">stat_histinterval</span>(<span class="at">normalize=</span><span class="st">"groups"</span>,<span class="at">position=</span><span class="fu">position_dodge</span>())<span class="sc">+</span><span class="fu">facet_col</span>(<span class="at">facets=</span><span class="st">"expMode2"</span>)<span class="sc">+</span><span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">0</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()</span>
-<span id="cb56-802"><a href="#cb56-802" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-803"><a href="#cb56-803" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb56-795"><a href="#cb56-795" aria-hidden="true" tabindex="-1"></a>testAvg <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>vx,<span class="at">y=</span>vb,<span class="at">col=</span>bandType)) <span class="sc">+</span>  ggdist<span class="sc">::</span><span class="fu">stat_histinterval</span>(<span class="at">normalize=</span><span class="st">"groups"</span>)<span class="sc">+</span> <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,tOrder),<span class="at">nrow=</span><span class="dv">2</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()</span>
+<span id="cb56-796"><a href="#cb56-796" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-797"><a href="#cb56-797" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-798"><a href="#cb56-798" aria-hidden="true" tabindex="-1"></a>e1 <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id, condit, vb, bandInt,bandType,tOrder,expMode2) <span class="sc">%&gt;%</span></span>
+<span id="cb56-799"><a href="#cb56-799" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">vx=</span><span class="fu">mean</span>(vx),<span class="at">dist=</span><span class="fu">mean</span>(dist),<span class="at">sdist=</span><span class="fu">mean</span>(sdist)) <span class="sc">%&gt;%</span></span>
+<span id="cb56-800"><a href="#cb56-800" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>vx,<span class="at">y=</span>condit,<span class="at">col=</span>condit)) <span class="sc">+</span>  ggdist<span class="sc">::</span><span class="fu">stat_histinterval</span>(<span class="at">normalize=</span><span class="st">"groups"</span>)<span class="sc">+</span> <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(vb,expMode2),<span class="at">nrow=</span><span class="dv">6</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()</span>
+<span id="cb56-801"><a href="#cb56-801" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-802"><a href="#cb56-802" aria-hidden="true" tabindex="-1"></a>e1 <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id, condit, vb, bandInt,bandType,tOrder,expMode2) <span class="sc">%&gt;%</span></span>
+<span id="cb56-803"><a href="#cb56-803" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">vx=</span><span class="fu">mean</span>(vx),<span class="at">dist=</span><span class="fu">mean</span>(dist),<span class="at">sdist=</span><span class="fu">mean</span>(sdist)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>sdist,<span class="at">y=</span>vb,<span class="at">col=</span>condit))<span class="sc">+</span> <span class="fu">stat_histinterval</span>(<span class="at">normalize=</span><span class="st">"groups"</span>,<span class="at">position=</span><span class="fu">position_dodge</span>())<span class="sc">+</span><span class="fu">facet_col</span>(<span class="at">facets=</span><span class="st">"expMode2"</span>)<span class="sc">+</span><span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">0</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()</span>
 <span id="cb56-804"><a href="#cb56-804" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-805"><a href="#cb56-805" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-806"><a href="#cb56-806" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dictionary</span></span>
+<span id="cb56-805"><a href="#cb56-805" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb56-806"><a href="#cb56-806" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-807"><a href="#cb56-807" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-808"><a href="#cb56-808" aria-hidden="true" tabindex="-1"></a>| Variable Name | Variable Levels                 | Description                                                                               |</span>
-<span id="cb56-809"><a href="#cb56-809" aria-hidden="true" tabindex="-1"></a>|---------------|---------------------------------|-------------------------------------------------------------------------------------------|</span>
-<span id="cb56-810"><a href="#cb56-810" aria-hidden="true" tabindex="-1"></a>| condit        | Constant, Varied                | Condition of the experiment: constant or varied                                             |</span>
-<span id="cb56-811"><a href="#cb56-811" aria-hidden="true" tabindex="-1"></a>| tOrder        | Test First, Train First         | Order of testing and training stages: test first or train first                            |</span>
-<span id="cb56-812"><a href="#cb56-812" aria-hidden="true" tabindex="-1"></a>| expMode       | train, train-Nf, test-Nf, etc.  | Mode of the experiment: train, train-Nf, test-Nf, etc.                                    |</span>
-<span id="cb56-813"><a href="#cb56-813" aria-hidden="true" tabindex="-1"></a>| trainStage    | Beginning, Middle, End, Test    | Stage of the training: beginning, middle, end, or test                                    |</span>
-<span id="cb56-814"><a href="#cb56-814" aria-hidden="true" tabindex="-1"></a>| expStage      | TrainStart, intTest1, etc.      | Stage of the experiment: TrainStart, intTest1, TrainMid1, etc.                            |</span>
-<span id="cb56-815"><a href="#cb56-815" aria-hidden="true" tabindex="-1"></a>| band          | 1, 2, 3, 4, 5, 6               | Band number                                                                                 |</span>
-<span id="cb56-816"><a href="#cb56-816" aria-hidden="true" tabindex="-1"></a>| vb            | 100-300, 350-550, etc.         | Velocity band range                                                                         |</span>
-<span id="cb56-817"><a href="#cb56-817" aria-hidden="true" tabindex="-1"></a>| lowBound      | 100, 350, 600, etc.            | Lower bound of the velocity band range                                                      |</span>
-<span id="cb56-818"><a href="#cb56-818" aria-hidden="true" tabindex="-1"></a>| feedback      | 0, 1                           | Feedback type: 0 (no feedback), 1 (feedback)                                               |</span>
-<span id="cb56-819"><a href="#cb56-819" aria-hidden="true" tabindex="-1"></a>| stage         | 1, 2, 3, etc.                  | Stage number of the experiment                                                              |</span>
-<span id="cb56-820"><a href="#cb56-820" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-821"><a href="#cb56-821" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb56-808"><a href="#cb56-808" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dictionary</span></span>
+<span id="cb56-809"><a href="#cb56-809" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-810"><a href="#cb56-810" aria-hidden="true" tabindex="-1"></a>| Variable Name | Variable Levels                 | Description                                                                               |</span>
+<span id="cb56-811"><a href="#cb56-811" aria-hidden="true" tabindex="-1"></a>|---------------|---------------------------------|-------------------------------------------------------------------------------------------|</span>
+<span id="cb56-812"><a href="#cb56-812" aria-hidden="true" tabindex="-1"></a>| condit        | Constant, Varied                | Condition of the experiment: constant or varied                                             |</span>
+<span id="cb56-813"><a href="#cb56-813" aria-hidden="true" tabindex="-1"></a>| tOrder        | Test First, Train First         | Order of testing and training stages: test first or train first                            |</span>
+<span id="cb56-814"><a href="#cb56-814" aria-hidden="true" tabindex="-1"></a>| expMode       | train, train-Nf, test-Nf, etc.  | Mode of the experiment: train, train-Nf, test-Nf, etc.                                    |</span>
+<span id="cb56-815"><a href="#cb56-815" aria-hidden="true" tabindex="-1"></a>| trainStage    | Beginning, Middle, End, Test    | Stage of the training: beginning, middle, end, or test                                    |</span>
+<span id="cb56-816"><a href="#cb56-816" aria-hidden="true" tabindex="-1"></a>| expStage      | TrainStart, intTest1, etc.      | Stage of the experiment: TrainStart, intTest1, TrainMid1, etc.                            |</span>
+<span id="cb56-817"><a href="#cb56-817" aria-hidden="true" tabindex="-1"></a>| band          | 1, 2, 3, 4, 5, 6               | Band number                                                                                 |</span>
+<span id="cb56-818"><a href="#cb56-818" aria-hidden="true" tabindex="-1"></a>| vb            | 100-300, 350-550, etc.         | Velocity band range                                                                         |</span>
+<span id="cb56-819"><a href="#cb56-819" aria-hidden="true" tabindex="-1"></a>| lowBound      | 100, 350, 600, etc.            | Lower bound of the velocity band range                                                      |</span>
+<span id="cb56-820"><a href="#cb56-820" aria-hidden="true" tabindex="-1"></a>| feedback      | 0, 1                           | Feedback type: 0 (no feedback), 1 (feedback)                                               |</span>
+<span id="cb56-821"><a href="#cb56-821" aria-hidden="true" tabindex="-1"></a>| stage         | 1, 2, 3, etc.                  | Stage number of the experiment                                                              |</span>
 <span id="cb56-822"><a href="#cb56-822" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-823"><a href="#cb56-823" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-823"><a href="#cb56-823" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb56-824"><a href="#cb56-824" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-825"><a href="#cb56-825" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-826"><a href="#cb56-826" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-827"><a href="#cb56-827" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-828"><a href="#cb56-828" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ::: panel-tabset --&gt;</span></span>
-<span id="cb56-829"><a href="#cb56-829" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ## Figure --&gt;</span></span>
-<span id="cb56-830"><a href="#cb56-830" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ```{r} --&gt;</span></span>
-<span id="cb56-831"><a href="#cb56-831" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- #| column: page-inset-right --&gt;</span></span>
-<span id="cb56-832"><a href="#cb56-832" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- #| fig-cap: "Mean Vx over training blocks" --&gt;</span></span>
-<span id="cb56-833"><a href="#cb56-833" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-834"><a href="#cb56-834" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- # vpt1=plotWithTable(vp1,vt1,arrange="V") --&gt;</span></span>
-<span id="cb56-835"><a href="#cb56-835" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- nb=5 --&gt;</span></span>
-<span id="cb56-836"><a href="#cb56-836" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- vp1=e1 |&gt; filter(expMode=="train") |&gt; learn_curve_plot(gt.train,vx,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) --&gt;</span></span>
-<span id="cb56-837"><a href="#cb56-837" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- vp1 --&gt;</span></span>
-<span id="cb56-838"><a href="#cb56-838" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-839"><a href="#cb56-839" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ``` --&gt;</span></span>
+<span id="cb56-828"><a href="#cb56-828" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-829"><a href="#cb56-829" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-830"><a href="#cb56-830" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ::: panel-tabset --&gt;</span></span>
+<span id="cb56-831"><a href="#cb56-831" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ## Figure --&gt;</span></span>
+<span id="cb56-832"><a href="#cb56-832" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ```{r} --&gt;</span></span>
+<span id="cb56-833"><a href="#cb56-833" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- #| column: page-inset-right --&gt;</span></span>
+<span id="cb56-834"><a href="#cb56-834" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- #| fig-cap: "Mean Vx over training blocks" --&gt;</span></span>
+<span id="cb56-835"><a href="#cb56-835" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-836"><a href="#cb56-836" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- # vpt1=plotWithTable(vp1,vt1,arrange="V") --&gt;</span></span>
+<span id="cb56-837"><a href="#cb56-837" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- nb=5 --&gt;</span></span>
+<span id="cb56-838"><a href="#cb56-838" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- vp1=e1 |&gt; filter(expMode=="train") |&gt; learn_curve_plot(gt.train,vx,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) --&gt;</span></span>
+<span id="cb56-839"><a href="#cb56-839" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- vp1 --&gt;</span></span>
 <span id="cb56-840"><a href="#cb56-840" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-841"><a href="#cb56-841" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-842"><a href="#cb56-842" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ## Table --&gt;</span></span>
-<span id="cb56-843"><a href="#cb56-843" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ```{r} --&gt;</span></span>
-<span id="cb56-844"><a href="#cb56-844" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- #| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)" --&gt;</span></span>
-<span id="cb56-845"><a href="#cb56-845" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- #| tbl-cap-location: top --&gt;</span></span>
-<span id="cb56-846"><a href="#cb56-846" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-847"><a href="#cb56-847" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- vt1=e1 |&gt; filter(expMode=="train") |&gt; --&gt;</span></span>
-<span id="cb56-848"><a href="#cb56-848" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--   learn_curve_table(gt.train,vx,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |&gt; --&gt;</span></span>
-<span id="cb56-849"><a href="#cb56-849" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--   rename("Band"=vb,"Group"=condit) --&gt;</span></span>
-<span id="cb56-850"><a href="#cb56-850" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- vt1 %&gt;% kable() --&gt;</span></span>
-<span id="cb56-851"><a href="#cb56-851" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-852"><a href="#cb56-852" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-853"><a href="#cb56-853" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ``` --&gt;</span></span>
-<span id="cb56-854"><a href="#cb56-854" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ::: --&gt;</span></span>
+<span id="cb56-841"><a href="#cb56-841" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ``` --&gt;</span></span>
+<span id="cb56-842"><a href="#cb56-842" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-843"><a href="#cb56-843" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-844"><a href="#cb56-844" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ## Table --&gt;</span></span>
+<span id="cb56-845"><a href="#cb56-845" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ```{r} --&gt;</span></span>
+<span id="cb56-846"><a href="#cb56-846" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- #| tbl-cap: "Mean Vx over blocks. Mean (Standard Error)" --&gt;</span></span>
+<span id="cb56-847"><a href="#cb56-847" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- #| tbl-cap-location: top --&gt;</span></span>
+<span id="cb56-848"><a href="#cb56-848" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-849"><a href="#cb56-849" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- vt1=e1 |&gt; filter(expMode=="train") |&gt; --&gt;</span></span>
+<span id="cb56-850"><a href="#cb56-850" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--   learn_curve_table(gt.train,vx,gw=Trial_Bin,groupVec=c(vb,condit),nbins=nb,prefix="Block_") |&gt; --&gt;</span></span>
+<span id="cb56-851"><a href="#cb56-851" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--   rename("Band"=vb,"Group"=condit) --&gt;</span></span>
+<span id="cb56-852"><a href="#cb56-852" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- vt1 %&gt;% kable() --&gt;</span></span>
+<span id="cb56-853"><a href="#cb56-853" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-854"><a href="#cb56-854" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-855"><a href="#cb56-855" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ``` --&gt;</span></span>
+<span id="cb56-856"><a href="#cb56-856" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ::: --&gt;</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
