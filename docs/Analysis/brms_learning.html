@@ -2,8 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.303">
+<meta name="generator" content="quarto-1.4.322">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Gorman">
 <meta name="dcterms.date" content="2023-08-09">
 <title>HTW Project - Bayesian Mixed Effects Models - Training Data</title>
 <style>
@@ -117,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="../">HTW Project</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/tegorman13/htw" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://github.com/tegorman13/htw" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -148,26 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Misc/Task.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HTW Task</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Misc/data_dictionary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HTW Data Dictionary</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Misc/data_organize.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Organization</span></a>
-  </div>
-</li>
-      </ul>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show"></ul>
 </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
@@ -182,31 +164,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Analysis/e1_test.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">E1 Testing</span></a>
+ <span class="menu-text">HTW E1 Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/e2_test.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW E2 Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Analysis/e3_test.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW E3 Testing</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Analysis/e1_Analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Experiment 1 Analysis</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Analysis/test_analysis-all.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HTW Test Analysis</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Analysis/discrim.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Testing Discrimination Analysis</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Analysis/analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HTW Analysis</span></a>
+ <span class="menu-text">E1 Extras</span></a>
   </div>
 </li>
       </ul>
@@ -346,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content column-page-right" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title">Bayesian Mixed Effects Models - Training Data</h1>
+<div class="quarto-title-block"><div><h1 class="title">Bayesian Mixed Effects Models - Training Data</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 <p class="subtitle lead">Fitting mixed effects models</p>
   <div class="quarto-categories">
     <div class="quarto-category">Analysis</div>
@@ -359,6 +335,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="quarto-title-meta column-page-right">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://tegorman13.github.io">Thomas Gorman</a> </p>
+          </div>
+  </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
@@ -499,6 +481,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>b_mod3 &lt;- bf(dist ~ betaMu + (alphaMu - betaMu) * exp(-exp(gammaMu) * gt.train), betaMu ~ 1 + condit + bandInt + (1|id), alphaMu ~ 1 + condit + bandInt + (1|id), gammaMu ~ 1 + condit + bandInt + (1|id), nl = TRUE)</p>
 
 
+<!-- -->
+
 
 </main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -579,6 +563,57 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -843,7 +878,117 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb6" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Bayesian Mixed Effects Models - Training Data"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Fitting mixed effects models"</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> last-modified</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Analysis, R, Bayesian]</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="an">code-fold:</span><span class="co"> true</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse,tidybayes,brms,bayesplot,broom,broom.mixed,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>e1 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/e1_08-04-23.rds"</span>))</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"Functions/Display_Functions.R"</span>))</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> e1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(expMode2 <span class="sc">==</span> <span class="st">"Train"</span>)  </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>train<span class="sc">$</span>bandIntS <span class="ot">&lt;-</span> <span class="fu">scale</span>(train<span class="sc">$</span>bandInt)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>train<span class="sc">$</span>distS <span class="ot">&lt;-</span> <span class="fu">scale</span>(train<span class="sc">$</span>dist)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">brms.backend=</span><span class="st">"cmdstanr"</span>,<span class="at">mc.cores=</span><span class="dv">4</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>mod_train_expo3_dist <span class="ot">&lt;-</span><span class="fu">bf</span>(dist <span class="sc">~</span> betaMu <span class="sc">+</span> (alphaMu <span class="sc">-</span> betaMu) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">exp</span>(gammaMu) <span class="sc">*</span> gt.train),</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>                 betaMu <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id), </span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>                 alphaMu <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span>   (<span class="dv">1</span><span class="sc">|</span>id), </span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>                 gammaMu <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span>  (<span class="dv">1</span><span class="sc">|</span>id), </span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nl =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>e1_train_expo3_dist <span class="ot">&lt;-</span> <span class="fu">brm</span>(mod_train_expo3_dist,</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>                            <span class="at">chains=</span><span class="dv">4</span>, <span class="at">iter=</span><span class="dv">2000</span>, <span class="at">silent=</span><span class="dv">0</span>,</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>                            <span class="at">file=</span>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache/e1_train_expo3_dist"</span>))</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>mod_train_expo3_condit_dist <span class="ot">&lt;-</span> <span class="fu">bf</span>(dist <span class="sc">~</span> betaMu <span class="sc">+</span> (alphaMu <span class="sc">-</span> betaMu) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">exp</span>(gammaMu) <span class="sc">*</span> gt.train),</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>                 betaMu <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> condit <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id), </span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>                 alphaMu <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> condit <span class="sc">+</span>   (<span class="dv">1</span><span class="sc">|</span>id), </span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>                 gammaMu <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> condit <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id), </span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nl =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>e1_train_expo3_condit_dist <span class="ot">&lt;-</span> <span class="fu">brm</span>(mod_train_expo3_condit_dist,</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>                            <span class="at">chains=</span><span class="dv">4</span>, <span class="at">iter=</span><span class="dv">2000</span>, <span class="at">silent=</span><span class="dv">0</span>,</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>                            <span class="at">file=</span>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache/e1_train_expo3_condit_dist"</span>))</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>mod_train_expo3_conditBandit_dist <span class="ot">&lt;-</span> <span class="fu">bf</span>(dist <span class="sc">~</span> betaMu <span class="sc">+</span> (alphaMu <span class="sc">-</span> betaMu) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">exp</span>(gammaMu) <span class="sc">*</span> gt.train),</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>                 betaMu <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> condit <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id<span class="sc">:</span>bandInt), </span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>                 alphaMu <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> condit <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id<span class="sc">:</span>bandInt), </span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>                 gammaMu <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> condit  <span class="sc">+</span>  (<span class="dv">1</span><span class="sc">|</span>id) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id<span class="sc">:</span>bandInt), </span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nl =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>e1_train_expo3_conditBanditS_dist <span class="ot">&lt;-</span> <span class="fu">brm</span>(mod_train_expo3_conditBandit_dist,</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>                            <span class="at">chains=</span><span class="dv">4</span>, <span class="at">iter=</span><span class="dv">2000</span>, <span class="at">silent=</span><span class="dv">0</span>,</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data=</span>train,</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>                            <span class="at">file=</span>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache/e1_train_expo3_conditBanditSdist"</span>))</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>mod_train_expo3_band_distS <span class="ot">&lt;-</span> <span class="fu">bf</span>(distS <span class="sc">~</span> betaMu <span class="sc">+</span> (alphaMu <span class="sc">-</span> betaMu) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">exp</span>(gammaMu) <span class="sc">*</span> gt.train),</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>                 betaMu <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> bandIntS <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id), </span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>                 alphaMu <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> bandIntS <span class="sc">+</span>   (<span class="dv">1</span><span class="sc">|</span>id), </span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>                 gammaMu <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> bandIntS <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id), </span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nl =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>e1_train_expo3_band_distS <span class="ot">&lt;-</span> <span class="fu">brm</span>(mod_train_expo3_band_distS,</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>                            <span class="at">chains=</span><span class="dv">4</span>, <span class="at">iter=</span><span class="dv">2000</span>, <span class="at">silent=</span><span class="dv">0</span>,</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data=</span>train,</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>                            <span class="at">file=</span>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache/e1_train_expo3_band_distS"</span>))</span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(e1_train_expo3_band_distS)<span class="sc">$</span>id <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>(<span class="at">rownames=</span><span class="st">"id"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Esti"</span>)) <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">n=</span><span class="dv">15</span>)</span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a> mod_train_expo3_bandCondit_distS <span class="ot">&lt;-</span> <span class="fu">bf</span>(distS <span class="sc">~</span> betaMu <span class="sc">+</span> (alphaMu <span class="sc">-</span> betaMu) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">exp</span>(gammaMu) <span class="sc">*</span> gt.train),</span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>                 betaMu <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> bandIntS <span class="sc">+</span> condit <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id), </span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>                 alphaMu <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> bandIntS <span class="sc">+</span> condit <span class="sc">+</span>  (<span class="dv">1</span><span class="sc">|</span>id), </span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>                 gammaMu <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> bandIntS <span class="sc">+</span> condit <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>id), </span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nl =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>e1_train_expo3_bandCondit_distS <span class="ot">&lt;-</span> <span class="fu">brm</span>(mod_train_expo3_bandCondit_distS,</span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a>                            <span class="at">chains=</span><span class="dv">4</span>, <span class="at">iter=</span><span class="dv">2000</span>, <span class="at">silent=</span><span class="dv">0</span>,</span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data=</span>train,</span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>                            <span class="at">file=</span>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache/e1_train_expo3_bandCondit_distS"</span>))                           </span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(e1_train_expo3_bandCondit_distS)<span class="sc">$</span>id <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>(<span class="at">rownames=</span><span class="st">"id"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Esti"</span>)) <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">n=</span><span class="dv">15</span>)</span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a>b_mod3 &lt;- bf(dist ~ betaMu + (alphaMu - betaMu) * exp(-exp(gammaMu) * gt.train),</span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a>                 betaMu ~ 1 + condit + bandInt + (1|id), </span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a>                 alphaMu ~ 1 + condit + bandInt +   (1|id), </span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a>                 gammaMu ~ 1 + condit + bandInt + (1|id), </span>
+<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>                 nl = TRUE)</span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
 </div> <!-- /content -->
 
 

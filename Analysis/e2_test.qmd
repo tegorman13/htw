@@ -205,7 +205,7 @@ result$varied
 
 ```{r}
 #| label: tbl-e2-bmm-vx
-#| tbl-cap: "Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
+#| tbl-cap: "Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
 e2_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                         data=testE2,file=paste0(here::here("data/model_cache", "e2_testVxBand_RF_5k")),
                         iter=5000,chains=4,silent=0,
@@ -216,7 +216,7 @@ mt3
 
 
 
-See @tbl-e2-bmm-vx for the full model results. The estimated coefficient for training condition (β = 146, 95% CI [35.96, 254.70]) suggests that the varied group tends to produce harder throws than the constant group. More relevant to the issue of discrimination is the slope on Velocity Band (β = 0.69, 95% CI [.59, .77]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibted some discrimination between bands. The slope coefficient (β = 0.69 ) also seems in accordance with an examination of @tbl-e2-test-nf-vx, which shows that average x-velocity fell within the range of the target band for four out of six of the bands ($4/6$=.67). 
+See @tbl-e2-bmm-vx for the full model results. The estimated coefficient for training condition (β = 63.49, 95% CI [-133.97, 113.98]) suggests that the varied group tends to produce harder throws than the constant group. More relevant to the issue of discrimination is the slope on Velocity Band (β = 0.71, 95% CI [.58, .84]), which is quite similar to best fitting slope value obtained in Experiment 1 (β = 0.69)
 
 ```{r}
 #| label: fig-e2-bmm-vx

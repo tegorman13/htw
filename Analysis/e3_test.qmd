@@ -12,7 +12,7 @@ testE3Avg <- testE3 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 ```
 
-
+The major manipulation adjustment of experiment 3 is for participants to receive ordinal feedback, in contrast to the continuous feedback of the earlier experiments. Experiment 3 participants were randomly assigned to both a training condition (Constant vs. Varied) and a Band Order condition (original order used in Experiment 1, or the Reverse order of Experiment 2). 
 
 
 
@@ -20,7 +20,7 @@ testE3Avg <- testE3 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
 
 ### Testing Phase - No feedback. 
 
-In the first part of the testing phase, participants are tested from each of the velocity bands, and receive no feedback after each throw. 
+In the first part of the testing phase, participants are tested from each of the velocity bands, and receive no feedback after each throw. Note that these no-feedback testing trials are identical to those of Experiment 1 and 2, as the ordinal feedback only occurs during the training phase, and final testing phase, of Experiment 3. 
 
 
 #### Deviation From Target Band
@@ -31,6 +31,10 @@ To model differences in accuracy between groups, we used Bayesian mixed effects 
 \begin{equation}
 dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \beta_3 \cdot condit_{ij} \cdot band_{ij} + b_{0i} + b_{1i} \cdot band_{ij} + \epsilon_{ij}
 \end{equation}
+
+
+
+**need to make E3 tables differently since ppts do both original and reverse order** 
 
 ```{r}
 #| label: tbl-e3-test-nf-deviation
@@ -59,7 +63,7 @@ testE3 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
 
 ```{r}
 #| label: tbl-e3-bmm-dist
-#| tbl-cap: "Experiment 2. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band"
+#| tbl-cap: "Experiment 3. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band"
 #contrasts(test$condit) 
 
 # contrasts(testE3$vb)
@@ -72,6 +76,8 @@ mp3 <- GetModelStats(e3_distBMM) |> kable(escape=F,booktabs=T)
 mp3
 ```
 
+
+In experiment 3, the effect of training condition shows the opposite pattern of the previous two experiments. The moderately strong effect of condition is for the varied group to show less deviation (β = -91.09, 95% CI [-182.79, 3.75]), with 97% of the posterior distribution falling under 0. 
 
 
 
@@ -149,6 +155,9 @@ testE3 %>% group_by(id,vb,condit) |> plot_distByCondit()
 ```
 
 
+**need to make E3 tables differently since ppts do both original and reverse order** 
+
+
 ```{r}
 #| label: tbl-e3-test-nf-vx
 #| tbl-cap: "Testing vx - Empirical Summary"
@@ -167,7 +176,7 @@ result$varied
 
 ```{r}
 #| label: tbl-e3-bmm-vx
-#| tbl-cap: "Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
+#| tbl-cap: "Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
 e3_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                         data=testE3,file=paste0(here::here("data/model_cache", "e3_testVxBand_RF_5k")),
                         iter=5000,chains=4,silent=0,
@@ -178,7 +187,7 @@ mt4
 
 
 
-See @tbl-e3-bmm-vx for the full model results. The estimated coefficient for training condition (β = 146, 95% CI [35.96, 254.70]) suggests that the varied group tends to produce harder throws than the constant group. More relevant to the issue of discrimination is the slope on Velocity Band (β = 0.69, 95% CI [.59, .77]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibted some discrimination between bands. The slope coefficient (β = 0.69 ) also seems in accordance with an examination of @tbl-e3-test-nf-vx, which shows that average x-velocity fell within the range of the target band for four out of six of the bands ($4/6$=.67). 
+See @tbl-e3-bmm-vx for the full model results. The estimated coefficient for training condition (β = -166.75, 95% CI [-277.14, -64.08]) suggests that the varied group tends to produce softer throws than the constant group. More relevant to the issue of discrimination is the slope on Velocity Band (β = 0.44, 95% CI [.35, .52]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibted some discrimination between bands. It's also noteworthy that the difference between the E3 slope and E1 & E2 slope is quite strong, with the upper end of the 95% CI for E3 falling underneath the lower end of the 95% CI for both of the earlier experiments. 
 
 ```{r}
 #| label: fig-e3-bmm-vx
