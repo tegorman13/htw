@@ -62,6 +62,52 @@ t1=d %>% select(condit,fb,bandOrder,id) %>% distinct() %>%
 t1
 ```
 
+
+```{r}
+
+
+
+d |> group_by(id,condit) |> 
+  summarize(n=n()) |> 
+  mutate(n=fct_infreq(factor(n))) |>
+  ggplot(aes(x=id,y=n)) + geom_col()
+
+sorted_bars <- function(df, var) {
+  df |> 
+    mutate({{ var }} := fct_rev(fct_infreq({{ var }})))  |>
+    ggplot(aes(y = {{ var }})) +
+    geom_bar()
+}
+
+conditional_bars <- function(df, condition, var) {
+  df |> 
+    filter({{ condition }}) |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_bar()
+}
+
+histogram <- function(df, var, binwidth) {
+  label <- rlang::englue("A histogram of {{var}} with binwidth {binwidth}")
+  
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth) + 
+    labs(title = label)
+}
+# 
+# sorted_bars(d |> filter(id %in% 1:30),id) 
+# 
+# test |> conditional_bars(id %in% 1:10, id)
+
+
+
+
+
+
+```
+
+
+
 ## Tibble1
 ```{r}
 # Create the tribble
