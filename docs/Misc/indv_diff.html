@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.322">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2023-08-18">
+<meta name="dcterms.date" content="2023-08-20">
 <title>HTW Project - Individual Differenes</title>
 <style>
 code{white-space: pre-wrap;}
@@ -341,7 +341,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 18, 2023</p>
+      <p class="date">August 20, 2023</p>
     </div>
   </div>
   
@@ -395,7 +395,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    fixed_effects <span class="op">=</span> <span class="va">b_Intercept</span> <span class="op">+</span></span>
 <span>      <span class="op">(</span><span class="va">bandInt</span> <span class="op">*</span> <span class="va">b_bandInt</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="va">condit_dummy</span> <span class="op">*</span> <span class="va">b_conditVaried</span> <span class="op">+</span> </span>
-<span>      <span class="op">(</span><span class="va">bandInt</span> <span class="op">*</span> <span class="va">condit_dummy</span><span class="op">)</span> <span class="op">*</span> <span class="va">`b_conditVaried:bandInt`</span> ,  <span class="co"># Note: Replace : with correct operator</span></span>
+<span>      <span class="op">(</span><span class="va">bandInt</span> <span class="op">*</span> <span class="va">condit_dummy</span><span class="op">)</span> <span class="op">*</span> <span class="va">`b_conditVaried:bandInt`</span> ,  </span>
 <span>    random_effects <span class="op">=</span> <span class="va">Intercept</span> <span class="op">+</span> <span class="va">bandInt_RF</span>,  <span class="co"># Assuming random effects for intercept and bandInt</span></span>
 <span>    estimate <span class="op">=</span> <span class="va">fixed_effects</span> <span class="op">+</span> <span class="va">random_effects</span></span>
 <span>  <span class="op">)</span></span>
@@ -414,12 +414,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span></span>
 <span><span class="va">combined_df</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">well_fit</span><span class="op">$</span><span class="va">id</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="op">(</span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu">slice_min</span><span class="op">(</span><span class="va">Est.Error.Intercept</span>,n<span class="op">=</span><span class="fl">5</span>,by<span class="op">=</span><span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">pull</span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>, <span class="va">bandInt</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">sample_n</span><span class="op">(</span><span class="fl">50</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">bandInt</span>,y<span class="op">=</span><span class="va">estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_abline</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>intercept<span class="op">=</span><span class="va">Intercept</span><span class="op">+</span><span class="va">b_Intercept</span>, slope<span class="op">=</span><span class="va">bandInt_RF</span><span class="op">+</span><span class="va">b_bandInt</span><span class="op">)</span>, color<span class="op">=</span><span class="st">"grey50"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_abline</span><span class="op">(</span>data<span class="op">=</span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">well_fit</span><span class="op">$</span><span class="va">id</span><span class="op">)</span>,<span class="fu">aes</span><span class="op">(</span>intercept<span class="op">=</span><span class="va">Estimate.Intercept</span>,slope<span class="op">=</span><span class="va">Estimate.bandInt</span>,color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_abline</span><span class="op">(</span>data<span class="op">=</span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu">slice_min</span><span class="op">(</span><span class="va">Est.Error.Intercept</span>,n<span class="op">=</span><span class="fl">5</span>,by<span class="op">=</span><span class="va">condit</span><span class="op">)</span>,<span class="fu">aes</span><span class="op">(</span>intercept<span class="op">=</span><span class="va">Estimate.Intercept</span>,slope<span class="op">=</span><span class="va">Estimate.bandInt</span>,color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">stat_halfeye</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">stat_halfeye</span><span class="op">(</span>data<span class="op">=</span><span class="va">testAvg</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">well_fit</span><span class="op">$</span><span class="va">id</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">bandInt</span>,y<span class="op">=</span><span class="va">vx</span><span class="op">)</span>,color<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggh4x</span><span class="fu">::</span><span class="fu"><a href="https://teunbrand.github.io/ggh4x/reference/facet_nested_wrap.html">facet_nested_wrap</a></span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">condit</span>,<span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
@@ -455,28 +455,121 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>   <span class="fu">spread_draws</span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">b_bandInt</span>, <span class="va">`b_conditVaried`</span>,<span class="va">`b_conditVaried:bandInt`</span>,  <span class="va">r_id</span><span class="op">[</span><span class="va">id</span>,<span class="va">term</span><span class="op">]</span>, ndraws<span class="op">=</span><span class="fl">10</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">top_indv_coefs</span><span class="op">$</span><span class="va">id</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">bandInt</span>,y<span class="op">=</span><span class="va">estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">geom_abline</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>intercept<span class="op">=</span><span class="va">Intercept</span><span class="op">+</span><span class="va">b_Intercept</span>, slope<span class="op">=</span><span class="va">bandInt_RF</span><span class="op">+</span><span class="va">b_bandInt</span><span class="op">)</span>, color<span class="op">=</span><span class="st">"grey50"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">stat_halfeye</span><span class="op">(</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_pred</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">posterior_predict</span><span class="op">(</span><span class="va">e1_distBMM</span>, ndraws <span class="op">=</span> <span class="fl">500</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">array_branch</span><span class="op">(</span>margin<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>   <span class="fu">map_dfr</span><span class="op">(</span> </span>
+<span>    <span class="kw">function</span><span class="op">(</span><span class="va">yrep_iter</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">test</span> <span class="op">%&gt;%</span></span>
+<span>        <span class="fu">mutate</span><span class="op">(</span>dist_pred <span class="op">=</span> <span class="va">yrep_iter</span><span class="op">)</span></span>
+<span>    <span class="op">}</span>,</span>
+<span>    .id <span class="op">=</span> <span class="st">'iter'</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>iter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">iter</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
+<span><span class="va">df_pred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fl">1</span><span class="op">:</span><span class="fl">162</span> <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">iter</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">dist_pred</span>, group <span class="op">=</span> <span class="va">iter</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.05</span>, stat <span class="op">=</span> <span class="st">'density'</span>, color <span class="op">=</span> <span class="st">'blue'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_density</span><span class="op">(</span>data <span class="op">=</span> <span class="va">test</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fl">1</span><span class="op">:</span><span class="fl">162</span><span class="op">)</span>,</span>
+<span>               <span class="fu">aes</span><span class="op">(</span><span class="va">dist</span>,col<span class="op">=</span><span class="va">vb</span><span class="op">)</span>,</span>
+<span>               inherit.aes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>               size <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span> <span class="co"># 1</span></span>
+<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">condit</span> <span class="op">~</span> <span class="va">vb</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">xlab</span><span class="op">(</span><span class="st">'vx'</span><span class="op">)</span></span>
 <span></span>
-<span></span>
-<span><span class="va">all_effects</span> <span class="op">&lt;-</span> <span class="va">e1_vxBMM</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">gather_draws</span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">b_conditVaried</span>, <span class="va">b_bandInt</span>, <span class="va">`b_conditVaried:bandInt`</span>, <span class="va">`^r_id.*$`</span>, regex <span class="op">=</span> <span class="cn">TRUE</span>, ndraws <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">all_effects</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span> <span class="va">nd</span> <span class="op">&lt;-</span> <span class="va">e1_vxBMM</span> <span class="op">|&gt;</span>  </span>
-<span>   <span class="fu">spread_draws</span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">b_bandInt</span>, <span class="va">`b_conditVaried`</span>,<span class="va">`b_conditVaried:bandInt`</span>,  <span class="va">r_id</span><span class="op">[</span><span class="va">id</span>,<span class="va">term</span><span class="op">]</span>, ndraws<span class="op">=</span><span class="fl">10</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">df_pred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">iter</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">dist_pred</span>, group <span class="op">=</span> <span class="va">iter</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.05</span>, stat <span class="op">=</span> <span class="st">'density'</span>, color <span class="op">=</span> <span class="st">'blue'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_density</span><span class="op">(</span>data <span class="op">=</span> <span class="va">test</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>,</span>
+<span>               <span class="fu">aes</span><span class="op">(</span><span class="va">dist</span><span class="op">)</span>,</span>
+<span>               inherit.aes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>               size <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span> <span class="co"># 1</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="va">id</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">xlab</span><span class="op">(</span><span class="st">'vx'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_posterior</span> <span class="op">&lt;-</span> <span class="va">e1_vxBMM</span> <span class="op">|&gt;</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vx_pred</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">posterior_predict</span><span class="op">(</span><span class="va">e1_vxBMM</span>, ndraws <span class="op">=</span> <span class="fl">500</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">array_branch</span><span class="op">(</span>margin<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>   <span class="fu">map_dfr</span><span class="op">(</span> </span>
+<span>    <span class="kw">function</span><span class="op">(</span><span class="va">yrep_iter</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">test</span> <span class="op">%&gt;%</span></span>
+<span>        <span class="fu">mutate</span><span class="op">(</span>vx_pred <span class="op">=</span> <span class="va">yrep_iter</span><span class="op">)</span></span>
+<span>    <span class="op">}</span>,</span>
+<span>    .id <span class="op">=</span> <span class="st">'iter'</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>iter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">iter</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">vx_pred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span> <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">iter</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">vx_pred</span>, group <span class="op">=</span> <span class="va">iter</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.05</span>, stat <span class="op">=</span> <span class="st">'density'</span>, color <span class="op">=</span> <span class="st">'blue'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_density</span><span class="op">(</span>data <span class="op">=</span> <span class="va">test</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>               <span class="fu">aes</span><span class="op">(</span><span class="va">vx</span>,col<span class="op">=</span><span class="va">vb</span><span class="op">)</span>,</span>
+<span>               inherit.aes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>               size <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span> <span class="co"># 1</span></span>
+<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">id</span> <span class="op">~</span> <span class="va">vb</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">xlab</span><span class="op">(</span><span class="st">'vx'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">vx_pred</span>  <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">iter</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">vx_pred</span>, group <span class="op">=</span> <span class="va">iter</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.05</span>, stat <span class="op">=</span> <span class="st">'density'</span>, color <span class="op">=</span> <span class="st">'blue'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_density</span><span class="op">(</span>data <span class="op">=</span> <span class="va">test</span>,</span>
+<span>               <span class="fu">aes</span><span class="op">(</span><span class="va">vx</span>,col<span class="op">=</span><span class="va">vb</span><span class="op">)</span>,</span>
+<span>               inherit.aes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>               size <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span> <span class="co"># 1</span></span>
+<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">condit</span> <span class="op">~</span> <span class="va">vb</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">xlab</span><span class="op">(</span><span class="st">'vx'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">vx_pred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fl">1</span><span class="op">:</span><span class="fl">9</span> <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">iter</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">vx_pred</span>, group <span class="op">=</span> <span class="va">iter</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.05</span>, stat <span class="op">=</span> <span class="st">'density'</span>, color <span class="op">=</span> <span class="st">'blue'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_density</span><span class="op">(</span>data <span class="op">=</span> <span class="va">test</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">)</span>,</span>
+<span>               <span class="fu">aes</span><span class="op">(</span><span class="va">vx</span><span class="op">)</span>,</span>
+<span>               inherit.aes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>               size <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span> <span class="co"># 1</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="va">id</span> <span class="op">~</span> <span class="va">.</span>,ncol<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">xlab</span><span class="op">(</span><span class="st">'vx'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>
+
+::: {.cell}
+
+```{.r .cell-code}
+indv_coefs |&gt; 
+  filter(id %in% top_indv_coefs$id) |&gt; ggplot(aes(x=bandInt,y=estimate)) + 
+  geom_abline(aes(intercept=Intercept+b_Intercept, slope=bandInt_RF+b_bandInt), color="grey50") +
+  stat_halfeye()
+
+
+
+all_effects &lt;- e1_vxBMM |&gt; 
+  gather_draws(b_Intercept, b_conditVaried, b_bandInt, `b_conditVaried:bandInt`, `^r_id.*$`, regex = TRUE, ndraws = 1)
+
+head(all_effects)
+
+
+ nd &lt;- e1_vxBMM |&gt;  
+   spread_draws(b_Intercept, b_bandInt, `b_conditVaried`,`b_conditVaried:bandInt`,  r_id[id,term], ndraws=10)  </code></pre>
+<p>:::</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_posterior</span> <span class="op">&lt;-</span> <span class="va">e1_vxBMM</span> <span class="op">|&gt;</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="va">df_posterior</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">b_Intercept</span>, y <span class="op">=</span> <span class="va">b_bandInt</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">stat_density_2d</span><span class="op">(</span> geom <span class="op">=</span> <span class="st">"polygon"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">df_posterior</span> <span class="op">|&gt;</span> <span class="fu">sample_n</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">b_Intercept</span>, y <span class="op">=</span> <span class="va">b_bandInt</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_raster</span><span class="op">(</span>interpolate <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df_posterior</span> <span class="op">|&gt;</span> <span class="fu">sample_n</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">b_Intercept</span>, y <span class="op">=</span> <span class="va">b_bandInt</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">stat_ellipse</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"polygon"</span>, level <span class="op">=</span> <span class="fl">0.1</span>, alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df_posterior</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">sample_n</span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span> <span class="op">|&gt;</span></span>

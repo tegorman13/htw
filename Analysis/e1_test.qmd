@@ -320,7 +320,9 @@ combined_df |>
 ```
 
 
+## Acknowledgments {.appendix}
 
+I am grateful for the insightful comments offered by the anonymous peer reviewers at Books & Texts. The generosity and expertise of one and all have improved this study in innumerable ways and saved me from many errors; those that inevitably remain are entirely my own responsibility.
 
 
 
@@ -360,7 +362,13 @@ NEEDS TO BE WRITTEN
 ## Appendix
 
 Posterior Predictive
-```{r fig.width=12, fig.height=12}
+```{r}
+#| label: fig-post-pred
+#| fig-cap: Posterior Predictive distributions for Deviation and Vx. 
+#| fig-subcap: ["Posterior Predictive Distribution - Deviation", "Posterior Predictive Distribution - X Velocity"]
+#| fig-width: 13
+#| fig-height: 12
+
 
 vx_pred <- 
   posterior_predict(e1_vxBMM, ndraws = 500) |> 
@@ -374,6 +382,33 @@ vx_pred <-
   ) |>
   mutate(iter = as.numeric(iter))
 
+
+dist_pred <- 
+  posterior_predict(e1_distBMM, ndraws = 500) |> 
+  array_branch(margin=1) |> 
+   map_dfr( 
+    function(yrep_iter) {
+      test  |>
+        mutate(dist_pred = yrep_iter)
+    },
+    .id = 'iter'
+  ) |>
+  mutate(iter = as.numeric(iter))
+
+
+
+dist_pred  |>
+  filter(iter < 100) %>%
+  ggplot(aes(dist_pred, group = iter)) +
+  geom_line(alpha = .05, stat = 'density', color = 'blue') +
+  geom_density(data = test,
+               aes(dist,col=vb),
+               inherit.aes = FALSE,
+               size = 0.5) + # 1
+  facet_grid(condit ~ vb) +
+  xlab('Deviation')
+
+
 vx_pred  |>
   filter(iter < 100) %>%
   ggplot(aes(vx_pred, group = iter)) +
@@ -383,25 +418,32 @@ vx_pred  |>
                inherit.aes = FALSE,
                size = 0.5) + # 1
   facet_grid(condit ~ vb) +
-  xlab('vx')
+  xlab('Vx')
+
+
+```
+
+
+
+```{r}
+#| label: fig-empVsPred
+#| fig-cap: Bayesian Mixed Model predictions vs. Empirical Predictions - X velocity
+#| fig-height: 15
+#| fig-width: 12
 
 
 {
 vx_pred  |>
   filter(iter < 100)  |> group_by(id,condit,vb,iter) |>
   summarise(vx_pred=mean(vx_pred)) %>%
-  ggplot(aes(x=vb,y=vx_pred, group = vb,fill=vb)) + 
+  ggplot(aes(x=vb,y=vx_pred,fill=condit)) + 
   geom_flat_violin( position = position_nudge(x = 0.1, y = 0),
                    adjust = 1.5,
-                   trim = FALSE,
-                   alpha = .5,
-                   colour = NA) +
-  geom_point(aes(x = as.numeric(vb) - 0.15, y = vx_pred, colour = vb),
-             # position = position_jitter(width = 0.05),
-             position = position_jitter(width = 0.05, height = 0),
-             size = 1,
-             shape = 20) +
-  geom_boxplot(aes(x = vb, y = vx_pred, fill = vb),
+                   trim = FALSE, alpha = .5, colour = NA) +
+  # geom_point(aes(x = as.numeric(vb) - 0.15, y = vx_pred, colour = vb),
+  #            position = position_jitter(width = 0.05, height = 0),
+  #            size = 1, shape = 20) +
+  geom_boxplot(aes(x = vb, y = vx_pred, fill = condit),
                outlier.shape = NA,
                alpha = 0.5,
                width = 0.1,
@@ -410,18 +452,18 @@ vx_pred  |>
              linetype = 'dashed',
              color = 'red',
              size = 0.4) + 
-  coord_flip() + facet_wrap(~condit,ncol=2) + ggtitle("Predicted Vx")  } /
+  coord_flip() + ggtitle("Predicted Vx")  } /
 {
 vx_pred  |>
   filter(iter < 2)  |> group_by(id,condit,vb) |>
   summarise(vx=mean(vx)) %>%
-  ggplot(aes(x=vb,y=vx, group = vb,fill=vb)) + 
+  ggplot(aes(x=vb,y=vx,fill=condit)) + 
   geom_flat_violin( position = position_nudge(x = 0.1, y = 0),
                    adjust = 1.5,
                    trim = FALSE,
                    alpha = .5,
                    colour = NA) +
-  geom_point(aes(x = as.numeric(vb) - 0.15),
+  geom_point(aes(x = as.numeric(vb) - 0.15,col=condit),
              # position = position_jitter(width = 0.05),
              position = position_jitter(width = 0.05, height = 0),
              size = 1,
@@ -435,6 +477,104 @@ vx_pred  |>
              linetype = 'dashed',
              color = 'red',
              size = 0.4) + 
-  coord_flip() + facet_wrap(~condit,ncol=2) + ggtitle("Empirical Vx") }
+  coord_flip() + ggtitle("Empirical Vx") }
 ```
+
+
+
+
+```{r fig.width=14, fig.height=13}
+#| label: fig-empirical-vxGrp
+#| fig-cap: E1. Distribution of vx at Participant and Trial level
+#| fig-width: 13
+#| fig-height: 14
+epId <- vx_pred  |>
+  filter(iter < 2)  |> group_by(id,condit,vb) |>
+  summarise(vx=median(vx)) |>
+  ggplot(aes(x=vb,y=vx,fill=condit)) + 
+  geom_flat_violin(aes(fill=condit), position = position_nudge(x = 0.1, y = 0),
+                   adjust = 1.5,trim = FALSE, alpha = .5, colour = NA) +
+  geom_point(aes(x = as.numeric(vb) - 0.15, col=condit),
+             position = position_jitter(width = 0.05, height = 0),
+             size = 1, shape = 20, alpha=.7) +
+  geom_boxplot(aes(x=vb,y=vx,fill=condit),
+               outlier.shape = NA,
+               alpha = 0.5, width = 0.1) +
+  geom_hline(yintercept = 0,
+             linetype = 'dashed',
+             color = 'red',
+             size = 0.4) + 
+  coord_flip() + ggtitle("Empirical Vx - Subject level averaging") 
+
+epTrial <- vx_pred  |>
+  filter(iter < 2)  |> group_by(id,condit,vb) |>
+  ggplot(aes(x=vb,y=vx,fill=condit)) + 
+  geom_flat_violin(aes(fill=condit), position = position_nudge(x = 0.1, y = 0),
+                   adjust = 1.5,trim = FALSE, alpha = .5, colour = NA) +
+  geom_point(aes(x = as.numeric(vb) - 0.15, col=condit),
+             position = position_jitter(width = 0.05, height = 0),
+             size = .5, shape = 20, alpha=.7) +
+  geom_boxplot(aes(x=vb,y=vx,fill=condit),
+               outlier.shape = NA,
+               alpha = 0.5, width = 0.1) +
+  geom_hline(yintercept = 0,
+             linetype = 'dashed',
+             color = 'red',
+             size = 0.4) + 
+  coord_flip() + ggtitle("Empirical Vx - Raw Trial") +
+   theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank())
+
+epId + epTrial
+```
+
+
+
+
+```{r fig.width=14, fig.height=13}
+#| label: fig-empirical-distGrp
+#| fig-cap: E1. Distribution of Vx  at Participant and Trial level
+#| fig-width: 13
+#| fig-height: 14
+epId <- dist_pred  |>
+  filter(iter < 2)  |> group_by(id,condit,vb) |>
+  summarise(dist=median(dist)) |>
+  ggplot(aes(x=vb,y=dist,fill=condit)) + 
+  geom_flat_violin(aes(fill=condit), position = position_nudge(x = 0.1, y = 0),
+                   adjust = 1.5,trim = FALSE, alpha = .5, colour = NA) +
+  geom_point(aes(x = as.numeric(vb) - 0.15, col=condit),
+             position = position_jitter(width = 0.05, height = 0),
+             size = 1, shape = 20, alpha=.7) +
+  geom_boxplot(aes(x=vb,y=dist,fill=condit),
+               outlier.shape = NA,
+               alpha = 0.5, width = 0.1) +
+  geom_hline(yintercept = 0,
+             linetype = 'dashed',
+             color = 'red',
+             size = 0.4) + 
+  coord_flip() + ggtitle("Empirical Deviation - Subject level averaging") 
+
+epTrial <- dist_pred  |>
+  filter(iter < 2)  |> group_by(id,condit,vb) |>
+  ggplot(aes(x=vb,y=dist,fill=condit)) + 
+  geom_flat_violin(aes(fill=condit), position = position_nudge(x = 0.1, y = 0),
+                   adjust = 1.5,trim = FALSE, alpha = .5, colour = NA) +
+  geom_point(aes(x = as.numeric(vb) - 0.15, col=condit),
+             position = position_jitter(width = 0.05, height = 0),
+             size = .5, shape = 20, alpha=.7) +
+  geom_boxplot(aes(x=vb,y=dist,fill=condit),
+               outlier.shape = NA,
+               alpha = 0.5, width = 0.1) +
+  geom_hline(yintercept = 0,
+             linetype = 'dashed',
+             color = 'red',
+             size = 0.4) + 
+  coord_flip() + ggtitle("Empirical Deviation - Raw Trial") +
+   theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank())
+
+epId + epTrial
+```
+
+
 
