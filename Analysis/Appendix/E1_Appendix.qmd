@@ -20,13 +20,13 @@ e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
 ```
 
 
-
 ## E1 Appendix
 
-Posterior Predictive
+### Posterior Predictive Distributions
+
 ```{r}
 #| label: fig-post-pred
-#| fig-cap: Posterior Predictive distributions for Deviation and Vx. 
+#| fig-cap: Posterior Predictive distributions for Deviation and Vx. Posterior Draws in Blue, colored lines are empirical data. 
 #| fig-subcap: ["Posterior Predictive Distribution - Deviation", "Posterior Predictive Distribution - X Velocity"]
 #| fig-width: 13
 #| fig-height: 12
@@ -62,11 +62,11 @@ dist_pred <-
 dist_pred  |>
   filter(iter < 100) %>%
   ggplot(aes(dist_pred, group = iter)) +
-  geom_line(alpha = .05, stat = 'density', color = 'blue') +
+  geom_line(alpha = .03, stat = 'density', color = 'blue') +
   geom_density(data = test,
                aes(dist,col=vb),
                inherit.aes = FALSE,
-               size = 0.5) + # 1
+               size = 0.7) + # 1
   facet_grid(condit ~ vb) +
   xlab('Deviation')
 
@@ -74,11 +74,11 @@ dist_pred  |>
 vx_pred  |>
   filter(iter < 100) %>%
   ggplot(aes(vx_pred, group = iter)) +
-  geom_line(alpha = .05, stat = 'density', color = 'blue') +
+  geom_line(alpha = .03, stat = 'density', color = 'blue') +
   geom_density(data = test,
                aes(vx,col=vb),
                inherit.aes = FALSE,
-               size = 0.5) + # 1
+               size = 0.7) + # 1
   facet_grid(condit ~ vb) +
   xlab('Vx')
 
@@ -86,6 +86,8 @@ vx_pred  |>
 ```
 
 
+
+### Empirical vs. Predicted
 
 ```{r}
 #| label: fig-empVsPred
@@ -143,7 +145,7 @@ vx_pred  |>
 ```
 
 
-
+### Different Aggregations
 
 ```{r fig.width=14, fig.height=13}
 #| label: fig-empirical-vxGrp
