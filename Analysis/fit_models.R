@@ -14,6 +14,8 @@ testE3 <- readRDS(here("data/e3_08-04-23.rds")) |> filter(expMode2 == "Test")
 #   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
 
+######## Testing Models Fit to All 6 Bands
+
 modelName <- "e1_testDistBand_RF_5K_Ml1"
 e1_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
                       data=test,file=paste0(here::here("data/model_cache",modelName)),
@@ -45,12 +47,6 @@ mt3
 
 
 
-
-
-
-
-
-
 modelName <- "e3_testDistBand_RF_5K"
 e3_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
                       data=testE3,file=paste0(here::here("data/model_cache",modelName)),
@@ -69,8 +65,72 @@ mt4
 
 
 
+######## Testing Models Fit to 3 Extrapolation Bands
+
+
+modelName <- "e1_extrap_testDistBand"
+e1_extrap_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
+                  data=test |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4)
+
+modelName <- "e1_extrap_testVxBand"
+e1_extrap_VxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
+                  data=test |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4)
+
+
+modelName <- "e2_extrap_testDistBand"
+e2_extrap_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
+                  data=testE2 |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4)
+
+modelName <- "e2_extrap_testVxBand"
+e2_extrap_VxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
+                  data=testE2 |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4)
+
+
+modelName <- "e3_extrap_testDistBand"
+e3_extrap_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
+                  data=testE3 |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4)
+
+modelName <- "e3_extrap_testVxBand"
+e3_extrap_VxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
+                  data=testE3 |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4)
+
+
+
+
+
+
+
+
+
+
+
+
+
+######## No Correlation - Testing Models Fit to 3 Extrapolation Bands
+
+
+modelName <- "e1_NC_extrap_testDistBand"
+e1_NC_extrap_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt||id),
+                  data=test |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4)
+
+modelName <- "e1_NC_extrap_testVxBand"
+e1_NC_extrap_VxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt||id),
+                  data=test |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4)
+
+
+
+
 
 ###########
+# GAMS
 ############
 
 
