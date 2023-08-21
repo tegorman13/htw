@@ -66,3 +66,110 @@ e3_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                         control=list(adapt_delta=0.90, max_treedepth=11))
 mt4<-GetModelStats(e3_vxBMM ) |> kable(escape=F,booktabs=T)
 mt4
+
+
+
+
+
+
+###########
+############
+
+
+library(mgcv)
+mod_lm = gam(vx ~ 1 + bandInt, data = test)
+
+mod_gam1 = gam(vx ~ condit+ s(bandInt, bs = "cr",k=4) + s(id, bandInt,bs='re'), data = test)
+summary(mod_gam1)
+plot(ggeffects::ggpredict(mod_gam1))
+gratia::draw(mod_gam1)
+gam.check(mod_gam1)
+
+
+mod_gam2 = gam(vx ~ condit * s(bandInt, bs = "cr",k=4) + s(id, bandInt,bs='re'), data = test)
+summary(mod_gam2)
+plot(ggeffects::ggpredict(mod_gam1))
+gratia::draw(mod_gam1)
+
+brmGam <- brm(
+  vx ~ condit + 
+    s(bandInt,k=4) +
+    s(bandInt, id, bs="re",k=4) + 
+    (1 + bandInt || id), 
+  data = test, 
+  family = gaussian()
+)
+
+coef(brmGam)$id %>% as_tibble(rownames="id") 
+
+
+
+brmGam2 <- brm(
+  vx ~ condit + 
+    s(bandInt,k=4) +
+    s(bandInt, id, bs="re",k=4) + 
+    s(id,bs="re") + 
+    (1 + bandInt || id), 
+  data = test, 
+  family = gaussian()
+)
+
+
+coef(brmGam2)$id %>% as_tibble(rownames="id") 
+
+
+brmGam2 <- brm(
+  vx ~  
+    s(bandInt,condit,k=2) +
+    s(bandInt, id, bs="re",k=22) + 
+    (1 + bandInt || id), 
+  data = test, 
+  family = gaussian()
+)
+
+gam1 <- brm(vx ~ s(bandInt, k=4) + (1 + bandInt | id), 
+    data = test, 
+    family = gaussian())
+
+gam1
+
+gam5 <- brm(vx ~ s(bandInt, k=5) + (1 + bandInt | id), 
+            data = test, 
+            family = gaussian())
+
+gam5 <- brm(vx ~ s(bandInt, k=3) + (1 + bandInt | id), 
+            data = test, 
+            family = gaussian())
+
+gam1
+
+
+cr1 <- brm(vx ~ s(bandInt, bs="cr", k=5) + (1 + bandInt | id),
+    data = test, 
+    family = gaussian())
+
+
+
+cr1 <- brm(vx ~ s(bandInt, bs="cr", k=1) + (1 + bandInt | id),
+           data = test, 
+           family = gaussian())
+
+
+
+
+cr2 <- brm(vx ~ s(bandInt, bs="cr", k=2) + (1 + bandInt | id),
+           data = test, 
+           family = gaussian())
+
+
+
+
+indv_coefs <- coef(gam1)$id |> 
+  as_tibble(rownames="id") |> 
+  select(id, starts_with("Est")) |>
+  left_join(e1Sbjs, by=join_by(id) ) |> 
+  group_by(condit) |> 
+  mutate(rank = rank(desc(Estimate.bandInt))) 
+
+
+

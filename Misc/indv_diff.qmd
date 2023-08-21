@@ -44,6 +44,8 @@ indv_coefs <- coef(e1_vxBMM)$id |>
          bandErrorRank=rank((Est.Error.bandInt)),
          nCond = n()) |> arrange(intErrorRank) |> ungroup()
 
+indv_coefs %>% group_by(condit) |> top_n(n=5, wt=Est.Error.Intercept)
+indv_coefs |> slice_max(n=5, Est.Error.Intercept,by=condit)
 
 
 top_indv_coefs <- indv_coefs %>%
@@ -114,7 +116,7 @@ combined_df <- left_join(random_effects, fixed_effects, by = join_by(".chain", "
     fixed_effects = b_Intercept +
       (bandInt * b_bandInt) +
       condit_dummy * b_conditVaried + 
-      (bandInt * condit_dummy) * `b_conditVaried:bandInt` ,  # Note: Replace : with correct operator
+      (bandInt * condit_dummy) * `b_conditVaried:bandInt` ,  
     random_effects = Intercept + bandInt_RF,  # Assuming random effects for intercept and bandInt
     estimate = fixed_effects + random_effects
   )
@@ -133,12 +135,12 @@ combined_df |>
 
 
 combined_df |> 
-  filter(id %in% well_fit$id) |> 
+  filter(id %in% (indv_coefs |> slice_min(Est.Error.Intercept,n=5,by=condit) |> pull(id))) |> 
   group_by(id, bandInt) |>
   sample_n(50) |>
   ggplot(aes(x=bandInt,y=estimate)) + 
   geom_abline(aes(intercept=Intercept+b_Intercept, slope=bandInt_RF+b_bandInt), color="grey50") +
-  geom_abline(data=indv_coefs |> filter(id %in% well_fit$id),aes(intercept=Estimate.Intercept,slope=Estimate.bandInt,color="red")) +
+  geom_abline(data=indv_coefs |> slice_min(Est.Error.Intercept,n=5,by=condit),aes(intercept=Estimate.Intercept,slope=Estimate.bandInt,color="red")) +
   stat_halfeye() +
   stat_halfeye(data=testAvg |> filter(id %in% well_fit$id), aes(x=bandInt,y=vx),color="blue") +
   ggh4x::facet_nested_wrap(vars(condit,id))
@@ -183,8 +185,92 @@ head(all_effects)
 
 
 
+```{r}
 
+df_pred <- 
+  posterior_predict(e1_distBMM, ndraws = 500) |>
+  array_branch(margin=1) |> 
+   map_dfr( 
+    function(yrep_iter) {
+      test %>%
+        mutate(dist_pred = yrep_iter)
+    },
+    .id = 'iter'
+  ) |>
+  mutate(iter = as.numeric(iter))
 
+df_pred %>% filter(id %in% 1:162 ) |>
+  filter(iter < 100) %>%
+  ggplot(aes(dist_pred, group = iter)) +
+  geom_line(alpha = .05, stat = 'density', color = 'blue') +
+  geom_density(data = test |> filter(id %in% 1:162),
+               aes(dist,col=vb),
+               inherit.aes = FALSE,
+               size = 0.8) + # 1
+  facet_grid(condit ~ vb) +
+  xlab('vx')
+
+df_pred %>% filter(id %in% 1:10 ) |>
+  filter(iter < 100) %>%
+  ggplot(aes(dist_pred, group = iter)) +
+  geom_line(alpha = .05, stat = 'density', color = 'blue') +
+  geom_density(data = test |> filter(id %in% 1:10),
+               aes(dist),
+               inherit.aes = FALSE,
+               size = 0.5) + # 1
+  facet_wrap(id ~ .) +
+  xlab('vx')
+```
+
+```{r}
+
+vx_pred <- 
+  posterior_predict(e1_vxBMM, ndraws = 500) |> 
+  array_branch(margin=1) |> 
+   map_dfr( 
+    function(yrep_iter) {
+      test %>%
+        mutate(vx_pred = yrep_iter)
+    },
+    .id = 'iter'
+  ) %>%
+  mutate(iter = as.numeric(iter))
+
+vx_pred %>% filter(id %in% 1:2 ) |>
+  filter(iter < 100) %>%
+  ggplot(aes(vx_pred, group = iter)) +
+  geom_line(alpha = .05, stat = 'density', color = 'blue') +
+  geom_density(data = test |> filter(id %in% 1:2),
+               aes(vx,col=vb),
+               inherit.aes = FALSE,
+               size = 0.5) + # 1
+  facet_grid(id ~ vb) +
+  xlab('vx')
+
+vx_pred  |>
+  filter(iter < 100) %>%
+  ggplot(aes(vx_pred, group = iter)) +
+  geom_line(alpha = .05, stat = 'density', color = 'blue') +
+  geom_density(data = test,
+               aes(vx,col=vb),
+               inherit.aes = FALSE,
+               size = 0.5) + # 1
+  facet_grid(condit ~ vb) +
+  xlab('vx')
+
+vx_pred %>% filter(id %in% 1:9 ) |>
+  filter(iter < 100) %>%
+  ggplot(aes(vx_pred, group = iter)) +
+  geom_line(alpha = .05, stat = 'density', color = 'blue') +
+  geom_density(data = test |> filter(id %in% 1:9),
+               aes(vx),
+               inherit.aes = FALSE,
+               size = 0.5) + # 1
+  facet_wrap(id ~ .,ncol=3) +
+  xlab('vx')
+
+```
+```
 
 
 ```{r}
@@ -219,6 +305,14 @@ df_posterior <- e1_vxBMM |> as_tibble()
 ggplot(df_posterior) + 
   aes(x = b_Intercept, y = b_bandInt) + 
   stat_density_2d( geom = "polygon")
+
+
+df_posterior |> sample_n(100) |> ggplot() + 
+  aes(x = b_Intercept, y = b_bandInt) + 
+  geom_raster(interpolate = T)
+
+df_posterior |> sample_n(100) |> ggplot(aes(x = b_Intercept, y = b_bandInt)) + 
+  stat_ellipse(geom = "polygon", level = 0.1, alpha = 1/2)
 
 df_posterior |> 
   sample_n(1000) |>
