@@ -66,6 +66,27 @@ posterior_table <- function(model){
 }
 
 
+indv_model_plot <- function(combined_df, indv_coefs, testAvg, rank_variable = "Estimate.Intercept", n_sbj = 5, order = "min") {
+  slice_fn <- if (order == "min") slice_min else slice_max
+  combined_df  |> 
+    filter(id %in% (indv_coefs  |> 
+                      slice_fn({{ rank_variable }}, n = n_sbj, by = condit) |> 
+                      pull(id)))  |> 
+    group_by(id, bandInt)  |> 
+    sample_n(50)  |> 
+    ggplot(aes(x = bandInt, y = estimate)) +
+    geom_abline(aes(intercept = Intercept + b_Intercept, slope = bandInt_RF + b_bandInt), color = "grey50") +
+    geom_abline(data = indv_coefs  |> 
+                  slice_fn({{ rank_variable }}, n = n_sbj, by = condit),
+                aes(intercept = Estimate.Intercept, slope = Estimate.bandInt), color = "red") +
+    stat_halfeye() +
+    stat_halfeye(data = testAvg  |> 
+                   filter(id %in% (indv_coefs |> slice_fn(Estimate.Intercept, n = n_sbj, by = condit))), 
+                 aes(x = bandInt, y = vx), color = "blue") +
+    ggh4x::facet_nested_wrap(vars(condit, id),ncol=2)
+}
+
+
 # bayes_R2(e1_testDistRF)
 # 
 # tidyMCMC(e1_testDistRF, conf.int = TRUE, conf.level = 0.95,

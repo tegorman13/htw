@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.322">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2023-08-20">
+<meta name="dcterms.date" content="2023-08-21">
 <title>HTW Project - Individual Differenes</title>
 <style>
 code{white-space: pre-wrap;}
@@ -341,7 +341,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 20, 2023</p>
+      <p class="date">August 21, 2023</p>
     </div>
   </div>
   
@@ -351,17 +351,88 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y<span class="op">=</span><span class="va">id</span>, x<span class="op">=</span><span class="va">Estimate.bandInt</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_pointrange</span><span class="op">(</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">indv_model_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">combined_df</span>, <span class="va">indv_coefs</span>, <span class="va">testAvg</span>, <span class="va">rank_variable</span> <span class="op">=</span> <span class="st">"Estimate.Intercept"</span>, <span class="va">n_sbj</span> <span class="op">=</span> <span class="fl">5</span>, <span class="va">order</span> <span class="op">=</span> <span class="st">"min"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">slice_fn</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="va">order</span> <span class="op">==</span> <span class="st">"min"</span><span class="op">)</span> <span class="va">slice_min</span> <span class="kw">else</span> <span class="va">slice_max</span></span>
+<span>  <span class="va">combined_df</span>  <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="op">(</span><span class="va">indv_coefs</span>  <span class="op">|&gt;</span> </span>
+<span>                      <span class="fu">slice_fn</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">rank_variable</span> <span class="op">}</span><span class="op">}</span>, n <span class="op">=</span> <span class="va">n_sbj</span>, by <span class="op">=</span> <span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>                      <span class="fu">pull</span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>  <span class="op">|&gt;</span> </span>
+<span>    <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>, <span class="va">bandInt</span><span class="op">)</span>  <span class="op">|&gt;</span> </span>
+<span>    <span class="fu">sample_n</span><span class="op">(</span><span class="fl">50</span><span class="op">)</span>  <span class="op">|&gt;</span> </span>
+<span>    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">bandInt</span>, y <span class="op">=</span> <span class="va">estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">geom_abline</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>intercept <span class="op">=</span> <span class="va">Intercept</span> <span class="op">+</span> <span class="va">b_Intercept</span>, slope <span class="op">=</span> <span class="va">bandInt_RF</span> <span class="op">+</span> <span class="va">b_bandInt</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"grey50"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">geom_abline</span><span class="op">(</span>data <span class="op">=</span> <span class="va">indv_coefs</span>  <span class="op">|&gt;</span> </span>
+<span>                  <span class="fu">slice_fn</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">rank_variable</span> <span class="op">}</span><span class="op">}</span>, n <span class="op">=</span> <span class="va">n_sbj</span>, by <span class="op">=</span> <span class="va">condit</span><span class="op">)</span>,</span>
+<span>                <span class="fu">aes</span><span class="op">(</span>intercept <span class="op">=</span> <span class="va">Estimate.Intercept</span>, slope <span class="op">=</span> <span class="va">Estimate.bandInt</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">stat_halfeye</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">stat_halfeye</span><span class="op">(</span>data <span class="op">=</span> <span class="va">testAvg</span>  <span class="op">|&gt;</span> </span>
+<span>                   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="op">(</span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu">slice_fn</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">rank_variable</span> <span class="op">}</span><span class="op">}</span>, n <span class="op">=</span> <span class="va">n_sbj</span>, by <span class="op">=</span> <span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>                      <span class="fu">pull</span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, </span>
+<span>                 <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">bandInt</span>, y <span class="op">=</span> <span class="va">vx</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggh4x</span><span class="fu">::</span><span class="fu"><a href="https://teunbrand.github.io/ggh4x/reference/facet_nested_wrap.html">facet_nested_wrap</a></span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">condit</span>, <span class="va">id</span><span class="op">)</span>,ncol<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">fixed_effects</span> <span class="op">&lt;-</span> <span class="va">e1_vxBMM</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">spread_draws</span><span class="op">(</span><span class="va">`^b_.*`</span>,regex<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">arrange</span><span class="op">(</span><span class="va">.chain</span>,<span class="va">.draw</span>,<span class="va">.iteration</span><span class="op">)</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># indv_model_plot &lt;- function(combined_df, indv_coefs, testAvg, rank_variable = "Estimate.Intercept", n_sbj = 5, order = "min") {</span></span>
+<span><span class="co">#   slice_fn &lt;- if (order == "min") slice_min else slice_max</span></span>
+<span><span class="co">#     rank_variable_name &lt;- deparse(substitute(rank_variable))</span></span>
+<span><span class="co">#   selected_ids &lt;- indv_coefs %&gt;%</span></span>
+<span><span class="co">#     slice_fn({{ rank_variable }}, n = n_sbj, by = condit) %&gt;%</span></span>
+<span><span class="co">#     select(id, rank_var = {{ rank_variable }})</span></span>
+<span><span class="co">#   print(head(selected_ids))</span></span>
+<span><span class="co">#    cdf &lt;- combined_df %&gt;%</span></span>
+<span><span class="co">#     inner_join(selected_ids, by = join_by(id)) %&gt;%</span></span>
+<span><span class="co">#     mutate(label = paste0("Subject ", id, "; ", rank_variable_name, "=", round(rank_var, 2)))</span></span>
+<span><span class="co">#     #print(head(cdf))</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co">#     cdf |&gt;</span></span>
+<span><span class="co">#     group_by(id, bandInt)  |&gt;</span></span>
+<span><span class="co">#     sample_n(50) %&gt;%</span></span>
+<span><span class="co">#     ggplot(aes(x = bandInt, y = estimate)) +</span></span>
+<span><span class="co">#     geom_abline(aes(intercept = Intercept + b_Intercept, slope = bandInt_RF + b_bandInt), color = "grey50") +</span></span>
+<span><span class="co">#     geom_abline(data = indv_coefs %&gt;%</span></span>
+<span><span class="co">#                   slice_fn({{ rank_variable }}, n = n_sbj, by = condit),</span></span>
+<span><span class="co">#                 aes(intercept = {{ rank_variable }}, slope = {{ rank_variable }}), color = "red") +</span></span>
+<span><span class="co">#     stat_halfeye() +</span></span>
+<span><span class="co">#     stat_halfeye(data = testAvg %&gt;%</span></span>
+<span><span class="co">#                    filter(id %in% selected_ids$id),</span></span>
+<span><span class="co">#                  aes(x = bandInt, y = vx), color = "blue") +</span></span>
+<span><span class="co">#     ggh4x::facet_nested_wrap(vars(condit, label)) +</span></span>
+<span><span class="co">#        ggtitle(glue("Order {n_sbj} Individuals for {rank_variable_name}"))</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># }</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">combined_df</span> <span class="op">|&gt;</span> <span class="fu">indv_model_plot</span><span class="op">(</span><span class="va">indv_coefs</span>, <span class="va">testAvg</span>, rank_variable<span class="op">=</span><span class="va">Estimate.Intercept</span>,n_sbj<span class="op">=</span><span class="fl">6</span>,<span class="st">"min"</span><span class="op">)</span></span>
+<span><span class="va">combined_df</span> <span class="op">|&gt;</span> <span class="fu">indv_model_plot</span><span class="op">(</span><span class="va">indv_coefs</span>, <span class="va">testAvg</span>, rank_variable<span class="op">=</span><span class="va">Estimate.Intercept</span>,n_sbj<span class="op">=</span><span class="fl">6</span>,<span class="st">"max"</span><span class="op">)</span></span>
+<span><span class="va">combined_df</span> <span class="op">|&gt;</span> <span class="fu">indv_model_plot</span><span class="op">(</span><span class="va">indv_coefs</span>, <span class="va">testAvg</span>, rank_variable<span class="op">=</span><span class="va">Estimate.bandInt</span>,n_sbj<span class="op">=</span><span class="fl">6</span>,<span class="st">"min"</span><span class="op">)</span></span>
+<span><span class="va">combined_df</span> <span class="op">|&gt;</span> <span class="fu">indv_model_plot</span><span class="op">(</span><span class="va">indv_coefs</span>, <span class="va">testAvg</span>, rank_variable<span class="op">=</span><span class="va">Estimate.bandInt</span>,n_sbj<span class="op">=</span><span class="fl">6</span>,<span class="st">"max"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">combined_df</span> <span class="op">|&gt;</span> <span class="fu">indv_model_plot</span><span class="op">(</span><span class="va">indv_coefs</span>, <span class="va">testAvg</span>, rank_variable<span class="op">=</span><span class="va">Est.Error.Intercept</span>,n_sbj<span class="op">=</span><span class="fl">6</span>,<span class="st">"min"</span><span class="op">)</span></span>
+<span><span class="va">combined_df</span> <span class="op">|&gt;</span> <span class="fu">indv_model_plot</span><span class="op">(</span><span class="va">indv_coefs</span>, <span class="va">testAvg</span>, rank_variable<span class="op">=</span><span class="va">Est.Error.Intercept</span>,n_sbj<span class="op">=</span><span class="fl">6</span>,<span class="st">"max"</span><span class="op">)</span></span>
 <span></span>
 <span></span>
-<span><span class="va">random_effects</span> <span class="op">&lt;-</span> <span class="va">e1_vxBMM</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">gather_draws</span><span class="op">(</span><span class="va">`^r_id.*$`</span>, regex <span class="op">=</span> <span class="cn">TRUE</span>, ndraws <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">separate</span><span class="op">(</span><span class="va">.variable</span>, into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"effect"</span>, <span class="st">"id"</span>, <span class="st">"term"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\\[|,|\\]"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">id</span>,levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">test</span><span class="op">$</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">term</span>, values_from <span class="op">=</span> <span class="va">.value</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">arrange</span><span class="op">(</span><span class="va">id</span>,<span class="va">.chain</span>,<span class="va">.draw</span>,<span class="va">.iteration</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Sort by intercept </span></span>
+<span><span class="va">combined_df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="op">(</span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu">slice_min</span><span class="op">(</span><span class="va">Estimate.Intercept</span>,n<span class="op">=</span><span class="fl">5</span>,by<span class="op">=</span><span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">pull</span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>, <span class="va">bandInt</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">sample_n</span><span class="op">(</span><span class="fl">50</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">bandInt</span>,y<span class="op">=</span><span class="va">estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_abline</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>intercept<span class="op">=</span><span class="va">Intercept</span><span class="op">+</span><span class="va">b_Intercept</span>, slope<span class="op">=</span><span class="va">bandInt_RF</span><span class="op">+</span><span class="va">b_bandInt</span><span class="op">)</span>, color<span class="op">=</span><span class="st">"grey50"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_abline</span><span class="op">(</span>data<span class="op">=</span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu">slice_min</span><span class="op">(</span><span class="va">Estimate.Intercept</span>,n<span class="op">=</span><span class="fl">5</span>,by<span class="op">=</span><span class="va">condit</span><span class="op">)</span>,<span class="fu">aes</span><span class="op">(</span>intercept<span class="op">=</span><span class="va">Estimate.Intercept</span>,slope<span class="op">=</span><span class="va">Estimate.bandInt</span>,color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">stat_halfeye</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">stat_halfeye</span><span class="op">(</span>data<span class="op">=</span><span class="va">testAvg</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="op">(</span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu">slice_min</span><span class="op">(</span><span class="va">Estimate.Intercept</span>,n<span class="op">=</span><span class="fl">5</span>,by<span class="op">=</span><span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">pull</span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">bandInt</span>,y<span class="op">=</span><span class="va">vx</span><span class="op">)</span>,color<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggh4x</span><span class="fu">::</span><span class="fu"><a href="https://teunbrand.github.io/ggh4x/reference/facet_nested_wrap.html">facet_nested_wrap</a></span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">condit</span>,<span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y<span class="op">=</span><span class="va">id</span>, x<span class="op">=</span><span class="va">Estimate.bandInt</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_pointrange</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
 <span></span>
 <span><span class="va">cd</span> <span class="op">&lt;-</span> <span class="fu">left_join</span><span class="op">(</span><span class="va">random_effects</span>, <span class="va">fixed_effects</span>, by <span class="op">=</span> <span class="fu">join_by</span><span class="op">(</span><span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">rename</span><span class="op">(</span>bandInt_RF <span class="op">=</span> <span class="va">bandInt</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -376,8 +447,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">cd</span> <span class="op">|&gt;</span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y<span class="op">=</span><span class="va">id</span>, x<span class="op">=</span><span class="va">Slope</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_pointrange</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">e1_vxBMM</span><span class="op">)</span><span class="op">$</span><span class="va">id</span> <span class="op">%&gt;%</span> <span class="fu">as_tibble</span><span class="op">(</span>rownames<span class="op">=</span><span class="st">"id"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">id</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">"Est"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">15</span><span class="op">)</span></span>
-<span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">e1_vxBMM</span><span class="op">)</span><span class="op">$</span><span class="va">id</span> <span class="op">%&gt;%</span> <span class="fu">as_tibble</span><span class="op">(</span>rownames<span class="op">=</span><span class="st">"id"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">id</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">"Est"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">15</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">n_lines</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/fitted.values.html">fitted</a></span><span class="op">(</span><span class="va">e1_vxBMM</span>, newdata <span class="op">=</span> <span class="va">new_data_grid</span>, re_formula <span class="op">=</span> <span class="cn">NA</span>, summary<span class="op">=</span><span class="cn">F</span>, ndraws<span class="op">=</span><span class="va">n_lines</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -388,17 +458,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span></span>
 <span></span>
-<span><span class="va">combined_df</span> <span class="op">&lt;-</span> <span class="fu">left_join</span><span class="op">(</span><span class="va">random_effects</span>, <span class="va">fixed_effects</span>, by <span class="op">=</span> <span class="fu">join_by</span><span class="op">(</span><span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">rename</span><span class="op">(</span>bandInt_RF <span class="op">=</span> <span class="va">bandInt</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">right_join</span><span class="op">(</span><span class="va">new_data_grid</span>, by <span class="op">=</span> <span class="fu">join_by</span><span class="op">(</span><span class="st">"id"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span></span>
-<span>    fixed_effects <span class="op">=</span> <span class="va">b_Intercept</span> <span class="op">+</span></span>
-<span>      <span class="op">(</span><span class="va">bandInt</span> <span class="op">*</span> <span class="va">b_bandInt</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="va">condit_dummy</span> <span class="op">*</span> <span class="va">b_conditVaried</span> <span class="op">+</span> </span>
-<span>      <span class="op">(</span><span class="va">bandInt</span> <span class="op">*</span> <span class="va">condit_dummy</span><span class="op">)</span> <span class="op">*</span> <span class="va">`b_conditVaried:bandInt`</span> ,  </span>
-<span>    random_effects <span class="op">=</span> <span class="va">Intercept</span> <span class="op">+</span> <span class="va">bandInt_RF</span>,  <span class="co"># Assuming random effects for intercept and bandInt</span></span>
-<span>    estimate <span class="op">=</span> <span class="va">fixed_effects</span> <span class="op">+</span> <span class="va">random_effects</span></span>
-<span>  <span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">combined_df</span> <span class="op">|&gt;</span> </span>
@@ -413,6 +472,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">id</span><span class="op">)</span></span>
 <span></span>
 <span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Sort by intercept </span></span>
+<span><span class="va">combined_df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="op">(</span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu">slice_min</span><span class="op">(</span><span class="va">Estimate.Intercept</span>,n<span class="op">=</span><span class="fl">5</span>,by<span class="op">=</span><span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">pull</span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>, <span class="va">bandInt</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">sample_n</span><span class="op">(</span><span class="fl">50</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">bandInt</span>,y<span class="op">=</span><span class="va">estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_abline</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>intercept<span class="op">=</span><span class="va">Intercept</span><span class="op">+</span><span class="va">b_Intercept</span>, slope<span class="op">=</span><span class="va">bandInt_RF</span><span class="op">+</span><span class="va">b_bandInt</span><span class="op">)</span>, color<span class="op">=</span><span class="st">"grey50"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_abline</span><span class="op">(</span>data<span class="op">=</span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu">slice_min</span><span class="op">(</span><span class="va">Estimate.Intercept</span>,n<span class="op">=</span><span class="fl">5</span>,by<span class="op">=</span><span class="va">condit</span><span class="op">)</span>,<span class="fu">aes</span><span class="op">(</span>intercept<span class="op">=</span><span class="va">Estimate.Intercept</span>,slope<span class="op">=</span><span class="va">Estimate.bandInt</span>,color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">stat_halfeye</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">stat_halfeye</span><span class="op">(</span>data<span class="op">=</span><span class="va">testAvg</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="op">(</span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu">slice_min</span><span class="op">(</span><span class="va">Estimate.Intercept</span>,n<span class="op">=</span><span class="fl">5</span>,by<span class="op">=</span><span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">pull</span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">bandInt</span>,y<span class="op">=</span><span class="va">vx</span><span class="op">)</span>,color<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggh4x</span><span class="fu">::</span><span class="fu"><a href="https://teunbrand.github.io/ggh4x/reference/facet_nested_wrap.html">facet_nested_wrap</a></span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">condit</span>,<span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Sort by intercept fit error</span></span>
 <span><span class="va">combined_df</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="op">(</span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> <span class="fu">slice_min</span><span class="op">(</span><span class="va">Est.Error.Intercept</span>,n<span class="op">=</span><span class="fl">5</span>,by<span class="op">=</span><span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">pull</span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>, <span class="va">bandInt</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -438,7 +514,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu">ggh4x</span><span class="fu">::</span><span class="fu"><a href="https://teunbrand.github.io/ggh4x/reference/facet_nested_wrap.html">facet_nested_wrap</a></span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">condit</span>,<span class="va">id</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">indv_coefs</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">top_indv_coefs</span><span class="op">$</span><span class="va">id</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">bandInt</span>,y<span class="op">=</span><span class="va">estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_abline</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>intercept<span class="op">=</span><span class="va">Intercept</span><span class="op">+</span><span class="va">b_Intercept</span>, slope<span class="op">=</span><span class="va">bandInt_RF</span><span class="op">+</span><span class="va">b_bandInt</span><span class="op">)</span>, color<span class="op">=</span><span class="st">"grey50"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">stat_halfeye</span><span class="op">(</span><span class="op">)</span></span>
@@ -455,7 +531,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>   <span class="fu">spread_draws</span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">b_bandInt</span>, <span class="va">`b_conditVaried`</span>,<span class="va">`b_conditVaried:bandInt`</span>,  <span class="va">r_id</span><span class="op">[</span><span class="va">id</span>,<span class="va">term</span><span class="op">]</span>, ndraws<span class="op">=</span><span class="fl">10</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_pred</span> <span class="op">&lt;-</span> </span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_pred</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">posterior_predict</span><span class="op">(</span><span class="va">e1_distBMM</span>, ndraws <span class="op">=</span> <span class="fl">500</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">array_branch</span><span class="op">(</span>margin<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>   <span class="fu">map_dfr</span><span class="op">(</span> </span>
@@ -490,7 +566,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu">xlab</span><span class="op">(</span><span class="st">'vx'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vx_pred</span> <span class="op">&lt;-</span> </span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vx_pred</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">posterior_predict</span><span class="op">(</span><span class="va">e1_vxBMM</span>, ndraws <span class="op">=</span> <span class="fl">500</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">array_branch</span><span class="op">(</span>margin<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>   <span class="fu">map_dfr</span><span class="op">(</span> </span>
@@ -557,7 +633,7 @@ head(all_effects)
    spread_draws(b_Intercept, b_bandInt, `b_conditVaried`,`b_conditVaried:bandInt`,  r_id[id,term], ndraws=10)  </code></pre>
 <p>:::</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_posterior</span> <span class="op">&lt;-</span> <span class="va">e1_vxBMM</span> <span class="op">|&gt;</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_posterior</span> <span class="op">&lt;-</span> <span class="va">e1_vxBMM</span> <span class="op">|&gt;</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="va">df_posterior</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">b_Intercept</span>, y <span class="op">=</span> <span class="va">b_bandInt</span><span class="op">)</span> <span class="op">+</span> </span>

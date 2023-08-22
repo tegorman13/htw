@@ -31,6 +31,9 @@ d <- d |> mutate(Exp=case_when(
   TRUE ~ NA_character_
 ))
 
+alt <- d |> filter(expMode2=="Test") |> group_by(id,condit,Exp) |> summarise(n=n_distinct(bandInt)) |> 
+  filter(n<=4) |> pull(id) |> droplevels()
+d <- d |> filter(!(id %in% alt))
 
 d <- d |> mutate(vxC = ifelse(vx>1800,1800,vx))
 d <- d %>% relocate(vxC,.after=vx)
@@ -40,6 +43,8 @@ d <- d |> select(-goodThrow, -trainVec, -fullCond)
 # rtest <- test |> filter(bandOrder=="Reverse")
 # rtest |> group_by(vb,bandType,condit,tOrder) |> summarise(n=n()) 
 
+
+
 ```
 
 ```{r}
@@ -48,7 +53,7 @@ e1 <- d |> filter(fb=="Continuous" & bandOrder=="Original") |> mutate(id=factor(
 e2 <- d |> filter(fb=="Continuous" & bandOrder=="Reverse") |> mutate(id=factor(id,levels=unique(id)))
 e3 <- d |> filter(fb=="Ordinal") |> mutate(id=factor(id,levels=unique(id)))
 
-date.append="08-04-23"
+date.append="08-21-23"
 
 # saveRDS(d,here(paste0("data/dAll_",date.append,".rds")))
 # saveRDS(e1,here(paste0("data/e1_",date.append,".rds")))
@@ -56,7 +61,7 @@ date.append="08-04-23"
 # saveRDS(e3,here(paste0("data/e3_",date.append,".rds")))
 
 # save csv versions
-#d %>% write_csv(here(paste0("data/dAll_",date.append,".csv")))
+# d %>% write_csv(here(paste0("data/dAll_",date.append,".csv")))
 # e1 %>% write_csv(here(paste0("data/e1_",date.append,".csv")))
 # e2 %>% write_csv(here(paste0("data/e2_",date.append,".csv")))
 # e3 %>% write_csv(here(paste0("data/e3_",date.append,".csv")))

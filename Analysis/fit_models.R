@@ -3,10 +3,11 @@ source(here::here("Functions", "packages.R"))
 options(brms.backend="cmdstanr",mc.cores=4)
 
 
-test <- readRDS(here("data/e1_08-04-23.rds")) |> filter(expMode2 == "Test") 
+test <- readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Test") 
 testE2 <- readRDS(here("data/e2_08-04-23.rds")) |> filter(expMode2 == "Test") 
 testE3 <- readRDS(here("data/e3_08-04-23.rds")) |> filter(expMode2 == "Test") 
 
+prior = c(prior(normal(30,200),lb=0,class= Intercept))
 
 
 # e1Sbjs <- test |> group_by(id,condit) |> summarise(n=n())
@@ -16,16 +17,17 @@ testE3 <- readRDS(here("data/e3_08-04-23.rds")) |> filter(expMode2 == "Test")
 
 ######## Testing Models Fit to All 6 Bands
 
-modelName <- "e1_testDistBand_RF_5K_Ml1"
+modelName <- "e1_testDistBand_RF_5K"
 e1_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
                       data=test,file=paste0(here::here("data/model_cache",modelName)),
-                      iter=5000,chains=4)
+                      iter=5000,chains=4, prior=prior)
 mp1 <- GetModelStats(e1_distBMM) |> kable(escape=F,booktabs=T)
 mp1
 
+modelName <- "e1_testVxBand_RF_5k"
 e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
-                        data=test,file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k_Ml1")),
-                        iter=5000,chains=4,silent=0,
+                        data=test,file=paste0(here::here("data/model_cache", modelName)),
+                        iter=5000,chains=4,silent=0,, prior=prior, 
                         control=list(adapt_delta=0.94, max_treedepth=13))
 mt2 <-GetModelStats(e1_vxBMM ) |> kable(escape=F,booktabs=T)
 mt2
@@ -71,12 +73,12 @@ mt4
 modelName <- "e1_extrap_testDistBand"
 e1_extrap_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
                   data=test |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
-                  iter=5000,chains=4)
+                  iter=5000,chains=4, prior=prior)
 
 modelName <- "e1_extrap_testVxBand"
 e1_extrap_VxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                   data=test |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
-                  iter=5000,chains=4)
+                  iter=5000,chains=4, prior=prior)
 
 
 modelName <- "e2_extrap_testDistBand"
@@ -105,6 +107,20 @@ e3_extrap_VxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
 
 
 
+######## TRUNC Testing Models Fit to All 6 Bands
+
+
+prior = c(prior(normal(30,200),lb=0,class= Intercept))
+modelName <- "e1_trncInt_testVxBand"
+e1_trncInt_vxBMM <-  brm(vx ~ condit * bandInt + (1 + bandInt|id),
+                        data=test,
+                        file=paste0(here::here("data/model_cache", modelName)),
+                        iter=1000,chains=4,silent=0, prior=prior,
+                        control=list(adapt_delta=0.91, max_treedepth=11))
+
+
+
+
 
 
 
@@ -126,6 +142,12 @@ e1_NC_extrap_VxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt||id),
                   iter=5000,chains=4)
 
 
+######## No Correlation - Alt Spec - Testing Models Fit to 3 Extrapolation Bands
+# - identical to specifying models with || 
+modelName <- "e1_NC2_extrap_testVxBand"
+e1_NC2_extrap_VxBMM <- brm(vx ~ condit * bandInt + (0 + bandInt|id) + (1|id),
+                  data=test |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4)
 
 
 

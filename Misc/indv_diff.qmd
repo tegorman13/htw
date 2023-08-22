@@ -13,7 +13,7 @@ execute:
 
 ```{r setup, include=FALSE}
 source(here::here("Functions", "packages.R"))
-test <- readRDS(here("data/e1_08-04-23.rds")) |> filter(expMode2 == "Test") 
+test <- readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Test") 
 options(brms.backend="cmdstanr",mc.cores=4)
 e1Sbjs <- test |> group_by(id,condit) |> summarise(n=n())
 
@@ -32,7 +32,31 @@ new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")])))
   mutate(condit_dummy = ifelse(condit == "Varied", 1, 0)) 
 
 
-nTop <- 5
+
+fixed_effects <- e1_vxBMM |> 
+  spread_draws(`^b_.*`,regex=TRUE) |> arrange(.chain,.draw,.iteration)
+
+
+random_effects <- e1_vxBMM |> 
+  gather_draws(`^r_id.*$`, regex = TRUE, ndraws = 1000) |> 
+  separate(.variable, into = c("effect", "id", "term"), sep = "\\[|,|\\]") |> 
+  mutate(id = factor(id,levels=levels(test$id))) |> 
+  pivot_wider(names_from = term, values_from = .value) |> arrange(id,.chain,.draw,.iteration)
+
+
+combined_df <- left_join(random_effects, fixed_effects, by = join_by(".chain", ".iteration", ".draw")) |> 
+  rename(bandInt_RF = bandInt) |>
+  right_join(new_data_grid, by = join_by("id")) |> 
+  mutate(
+    fixed_effects = b_Intercept +
+      (bandInt * b_bandInt) +
+      condit_dummy * b_conditVaried + 
+      (bandInt * condit_dummy) * `b_conditVaried:bandInt` ,  
+    random_effects = Intercept + bandInt_RF,  # Assuming random effects for intercept and bandInt
+    estimate = (b_Intercept + Intercept) + (bandInt*(b_bandInt+bandInt_RF)) + (bandInt * condit_dummy) * `b_conditVaried:bandInt`
+  )
+
+
 
 indv_coefs <- coef(e1_vxBMM)$id |> 
   as_tibble(rownames="id") |> 
@@ -44,39 +68,118 @@ indv_coefs <- coef(e1_vxBMM)$id |>
          bandErrorRank=rank((Est.Error.bandInt)),
          nCond = n()) |> arrange(intErrorRank) |> ungroup()
 
-indv_coefs %>% group_by(condit) |> top_n(n=5, wt=Est.Error.Intercept)
-indv_coefs |> slice_max(n=5, Est.Error.Intercept,by=condit)
 
 
-top_indv_coefs <- indv_coefs %>%
-  filter(rank <=nTop) |>
-  select(id,condit,rank,Est.BandInt=Estimate.bandInt, Est.Intercept=Estimate.Intercept) 
-
-small_slope <- indv_coefs %>%
-  filter(rank >=nCond - nTop) |>
-  select(id,condit,rank,Est.BandInt=Estimate.bandInt, Est.Intercept=Estimate.Intercept) 
+# nTop <- 5
+# top_indv_coefs <- indv_coefs %>%
+#   filter(rank <=nTop) |>
+#   select(id,condit,rank,Est.BandInt=Estimate.bandInt, Est.Intercept=Estimate.Intercept) 
+```
 
 
 
-well_fit <- indv_coefs %>%
-  filter(intErrorRank<=nTop)
+
+```{r fig.width=11, fig.height=10}
+
+indv_model_plot <- function(combined_df, indv_coefs, testAvg, rank_variable = "Estimate.Intercept", n_sbj = 5, order = "min") {
+  slice_fn <- if (order == "min") slice_min else slice_max
+  combined_df  |> 
+    filter(id %in% (indv_coefs  |> 
+                      slice_fn({{ rank_variable }}, n = n_sbj, by = condit) |> 
+                      pull(id)))  |> 
+    group_by(id, bandInt)  |> 
+    sample_n(50)  |> 
+    ggplot(aes(x = bandInt, y = estimate)) +
+    geom_abline(aes(intercept = Intercept + b_Intercept, slope = bandInt_RF + b_bandInt), color = "grey50") +
+    geom_abline(data = indv_coefs  |> 
+                  slice_fn({{ rank_variable }}, n = n_sbj, by = condit),
+                aes(intercept = Estimate.Intercept, slope = Estimate.bandInt), color = "red") +
+    stat_halfeye() +
+    stat_halfeye(data = testAvg  |> 
+                   filter(id %in% (indv_coefs |> slice_fn({{ rank_variable }}, n = n_sbj, by = condit) |> 
+                      pull(id))), 
+                 aes(x = bandInt, y = vx), color = "blue") +
+    ggh4x::facet_nested_wrap(vars(condit, id),ncol=3)
+}
+
+# 
+# indv_model_plot <- function(combined_df, indv_coefs, testAvg, rank_variable = "Estimate.Intercept", n_sbj = 5, order = "min") {
+#   slice_fn <- if (order == "min") slice_min else slice_max
+#     rank_variable_name <- deparse(substitute(rank_variable))
+#   selected_ids <- indv_coefs %>%
+#     slice_fn({{ rank_variable }}, n = n_sbj, by = condit) %>%
+#     select(id, rank_var = {{ rank_variable }})
+#   print(head(selected_ids))
+#    cdf <- combined_df %>%
+#     inner_join(selected_ids, by = join_by(id)) %>%
+#     mutate(label = paste0("Subject ", id, "; ", rank_variable_name, "=", round(rank_var, 2)))
+#     #print(head(cdf))
+# 
+#     cdf |>
+#     group_by(id, bandInt)  |>
+#     sample_n(50) %>%
+#     ggplot(aes(x = bandInt, y = estimate)) +
+#     geom_abline(aes(intercept = Intercept + b_Intercept, slope = bandInt_RF + b_bandInt), color = "grey50") +
+#     geom_abline(data = indv_coefs %>%
+#                   slice_fn({{ rank_variable }}, n = n_sbj, by = condit),
+#                 aes(intercept = {{ rank_variable }}, slope = {{ rank_variable }}), color = "red") +
+#     stat_halfeye() +
+#     stat_halfeye(data = testAvg %>%
+#                    filter(id %in% selected_ids$id),
+#                  aes(x = bandInt, y = vx), color = "blue") +
+#     ggh4x::facet_nested_wrap(vars(condit, label)) +
+#        ggtitle(glue("Order {n_sbj} Individuals for {rank_variable_name}"))
+# 
+# }
+
 
 ```
 
 
-```{r}
+
+
+
+
+
+
+
+
+
+```{r fig.width=11, fig.height=10}
+#| eval: false
+
+
+
+combined_df |> indv_model_plot(indv_coefs, testAvg, rank_variable=Estimate.Intercept,n_sbj=6,"min")
+combined_df |> indv_model_plot(indv_coefs, testAvg, rank_variable=Estimate.Intercept,n_sbj=6,"max")
+combined_df |> indv_model_plot(indv_coefs, testAvg, rank_variable=Estimate.bandInt,n_sbj=6,"min")
+combined_df |> indv_model_plot(indv_coefs, testAvg, rank_variable=Estimate.bandInt,n_sbj=6,"max")
+
+combined_df |> indv_model_plot(indv_coefs, testAvg, rank_variable=Est.Error.Intercept,n_sbj=6,"min")
+combined_df |> indv_model_plot(indv_coefs, testAvg, rank_variable=Est.Error.Intercept,n_sbj=6,"max")
+
+
+
+
+## Sort by intercept 
+combined_df |> 
+  filter(id %in% (indv_coefs |> slice_min(Estimate.Intercept,n=5,by=condit) |> pull(id))) |> 
+  group_by(id, bandInt) |>
+  sample_n(50) |>
+  ggplot(aes(x=bandInt,y=estimate)) + 
+  geom_abline(aes(intercept=Intercept+b_Intercept, slope=bandInt_RF+b_bandInt), color="grey50") +
+  geom_abline(data=indv_coefs |> slice_min(Estimate.Intercept,n=5,by=condit),aes(intercept=Estimate.Intercept,slope=Estimate.bandInt,color="red")) +
+  stat_halfeye() +
+  stat_halfeye(data=testAvg |> filter(id %in% (indv_coefs |> slice_min(Estimate.Intercept,n=5,by=condit) |> pull(id))), aes(x=bandInt,y=vx),color="blue") +
+  ggh4x::facet_nested_wrap(vars(condit,id))
+
+
 
 indv_coefs |> ggplot(aes(y=id, x=Estimate.bandInt)) + geom_pointrange()
 
-fixed_effects <- e1_vxBMM |> 
-  spread_draws(`^b_.*`,regex=TRUE) |> arrange(.chain,.draw,.iteration)
 
 
-random_effects <- e1_vxBMM |> 
-  gather_draws(`^r_id.*$`, regex = TRUE, ndraws = 2000) |> 
-  separate(.variable, into = c("effect", "id", "term"), sep = "\\[|,|\\]") |> 
-  mutate(id = factor(id,levels=levels(test$id))) |> 
-  pivot_wider(names_from = term, values_from = .value) |> arrange(id,.chain,.draw,.iteration)
+
 
 cd <- left_join(random_effects, fixed_effects, by = join_by(".chain", ".iteration", ".draw")) |> 
   rename(bandInt_RF = bandInt) |>
@@ -92,13 +195,13 @@ cd |>  ggplot(aes(y=id, x=Slope)) + geom_pointrange()
 ```
 
 
-```{r}
 
 
 
+
+```{r fig.width=12, fig.height=11}
 
 coef(e1_vxBMM)$id %>% as_tibble(rownames="id") %>% select(id, starts_with("Est")) |> print(n=15)
-
 
 n_lines <- 20
 f <- fitted(e1_vxBMM, newdata = new_data_grid, re_formula = NA, summary=F, ndraws=n_lines) |> 
@@ -109,17 +212,6 @@ f <- fitted(e1_vxBMM, newdata = new_data_grid, re_formula = NA, summary=F, ndraw
 
 
 
-combined_df <- left_join(random_effects, fixed_effects, by = join_by(".chain", ".iteration", ".draw")) |> 
-  rename(bandInt_RF = bandInt) |>
-  right_join(new_data_grid, by = join_by("id")) |> 
-  mutate(
-    fixed_effects = b_Intercept +
-      (bandInt * b_bandInt) +
-      condit_dummy * b_conditVaried + 
-      (bandInt * condit_dummy) * `b_conditVaried:bandInt` ,  
-    random_effects = Intercept + bandInt_RF,  # Assuming random effects for intercept and bandInt
-    estimate = fixed_effects + random_effects
-  )
 
 
 combined_df |> 
@@ -134,6 +226,23 @@ combined_df |>
   facet_wrap(~id)
 
 
+
+
+
+## Sort by intercept 
+combined_df |> 
+  filter(id %in% (indv_coefs |> slice_min(Estimate.Intercept,n=5,by=condit) |> pull(id))) |> 
+  group_by(id, bandInt) |>
+  sample_n(50) |>
+  ggplot(aes(x=bandInt,y=estimate)) + 
+  geom_abline(aes(intercept=Intercept+b_Intercept, slope=bandInt_RF+b_bandInt), color="grey50") +
+  geom_abline(data=indv_coefs |> slice_min(Estimate.Intercept,n=5,by=condit),aes(intercept=Estimate.Intercept,slope=Estimate.bandInt,color="red")) +
+  stat_halfeye() +
+  stat_halfeye(data=testAvg |> filter(id %in% (indv_coefs |> slice_min(Estimate.Intercept,n=5,by=condit) |> pull(id))), aes(x=bandInt,y=vx),color="blue") +
+  ggh4x::facet_nested_wrap(vars(condit,id))
+
+
+## Sort by intercept fit error
 combined_df |> 
   filter(id %in% (indv_coefs |> slice_min(Est.Error.Intercept,n=5,by=condit) |> pull(id))) |> 
   group_by(id, bandInt) |>
@@ -182,6 +291,10 @@ head(all_effects)
  
 
 ```
+
+
+
+
 
 
 

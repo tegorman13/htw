@@ -171,6 +171,36 @@ GetBrmsModelStats <- function(model1, model2 = NA, BF = NA) {
 
 
 
+## convert model prior to df - without missing cells for prior labels
+get_prior_df <- function(model) {
+  # Extracting the priors
+  priors <- model$prior
+  
+  # Getting the vector of unique priors
+  prior_vec <- priors[[1]]
+  
+  # Handling the repeated empty strings by repeating the last filled prior
+  for (i in 2:length(prior_vec)) {
+    if (prior_vec[i] == "" & prior_vec[i - 1] != "") {
+      prior_vec[i] <- prior_vec[i - 1]
+    }
+  }
+  
+  # Replacing the priors in the original dataframe
+  priors$prior <- prior_vec
+  
+  # Handling the flat priors by placing the specific label "(flat)" for them
+  priors$prior[priors$prior == ""] <- "(flat)"
+  
+  # Convert to a data frame
+  prior_df <- as.data.frame(priors)
+  
+  # Return the resulting data frame
+  return(prior_df)
+}
+
+
+
 
 
 
