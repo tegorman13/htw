@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.4.322">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
-<meta name="dcterms.date" content="2023-08-21">
+<meta name="dcterms.date" content="2023-08-24">
 <title>HTW Project - HTW E1 Testing</title>
 <style>
 code{white-space: pre-wrap;}
@@ -380,7 +380,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 21, 2023</p>
+      <p class="date">August 24, 2023</p>
     </div>
   </div>
   
@@ -539,30 +539,30 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 <tr class="odd">
 <td style="text-align: left;">100-300</td>
 <td style="text-align: left;">Extrapolation</td>
-<td style="text-align: right;">271</td>
-<td style="text-align: right;">161</td>
-<td style="text-align: right;">308</td>
+<td style="text-align: right;">254</td>
+<td style="text-align: right;">148</td>
+<td style="text-align: right;">298</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">350-550</td>
 <td style="text-align: left;">Extrapolation</td>
-<td style="text-align: right;">201</td>
-<td style="text-align: right;">116</td>
-<td style="text-align: right;">238</td>
+<td style="text-align: right;">191</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">229</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">600-800</td>
 <td style="text-align: left;">Extrapolation</td>
-<td style="text-align: right;">155</td>
-<td style="text-align: right;">85</td>
-<td style="text-align: right;">194</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">184</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">800-1000</td>
 <td style="text-align: left;">Trained</td>
-<td style="text-align: right;">192</td>
-<td style="text-align: right;">119</td>
-<td style="text-align: right;">238</td>
+<td style="text-align: right;">184</td>
+<td style="text-align: right;">106</td>
+<td style="text-align: right;">242</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1000-1200</td>
@@ -663,12 +663,11 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 <span></span>
 <span><span class="co"># contrasts(test$vb)</span></span>
 <span></span>
-<span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDistBand_RF_5K_Ml1"</span></span>
+<span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDistBand_RF_5K"</span></span>
 <span><span class="va">e1_distBMM</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
 <span>                      data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>,<span class="va">modelName</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                      iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span>
-<span><span class="va">mp1</span> <span class="op">&lt;-</span> <span class="fu">GetModelStats</span><span class="op">(</span><span class="va">e1_distBMM</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">kable</span><span class="op">(</span>escape<span class="op">=</span><span class="cn">F</span>,booktabs<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="va">mp1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu">GetModelStats</span><span class="op">(</span><span class="va">e1_distBMM</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">kable</span><span class="op">(</span>escape<span class="op">=</span><span class="cn">F</span>,booktabs<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div id="tbl-e1-bmm-dist" class="anchored">
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">
@@ -686,43 +685,43 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Intercept</td>
-<td style="text-align: right;">226.03</td>
-<td style="text-align: right;">32.32</td>
-<td style="text-align: right;">162.33</td>
-<td style="text-align: right;">287.60</td>
+<td style="text-align: right;">204.91</td>
+<td style="text-align: right;">35.24</td>
+<td style="text-align: right;">136.86</td>
+<td style="text-align: right;">274.06</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">1.01</td>
-<td style="text-align: right;">414.11</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">705.21</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried</td>
-<td style="text-align: right;">135.16</td>
-<td style="text-align: right;">47.79</td>
-<td style="text-align: right;">43.63</td>
-<td style="text-align: right;">231.74</td>
+<td style="text-align: right;">157.35</td>
+<td style="text-align: right;">49.39</td>
+<td style="text-align: right;">60.53</td>
+<td style="text-align: right;">254.90</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">1.01</td>
-<td style="text-align: right;">430.61</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">688.83</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Band</td>
-<td style="text-align: right;">-0.02</td>
-<td style="text-align: right;">0.03</td>
-<td style="text-align: right;">-0.09</td>
+<td style="text-align: right;">0.01</td>
 <td style="text-align: right;">0.04</td>
-<td style="text-align: right;">0.74</td>
-<td style="text-align: right;">1.01</td>
-<td style="text-align: right;">505.15</td>
+<td style="text-align: right;">-0.07</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">778.60</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried:Band</td>
-<td style="text-align: right;">-0.13</td>
+<td style="text-align: right;">-0.16</td>
 <td style="text-align: right;">0.05</td>
-<td style="text-align: right;">-0.23</td>
-<td style="text-align: right;">-0.03</td>
+<td style="text-align: right;">-0.26</td>
+<td style="text-align: right;">-0.06</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">1.01</td>
-<td style="text-align: right;">532.83</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">751.56</td>
 </tr>
 </tbody>
 </table>
@@ -825,30 +824,30 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <tr class="odd">
 <td style="text-align: left;">100-300</td>
 <td style="text-align: left;">Extrapolation</td>
-<td style="text-align: right;">544</td>
-<td style="text-align: right;">461</td>
-<td style="text-align: right;">335</td>
+<td style="text-align: right;">524</td>
+<td style="text-align: right;">448</td>
+<td style="text-align: right;">327</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">350-550</td>
 <td style="text-align: left;">Extrapolation</td>
-<td style="text-align: right;">674</td>
-<td style="text-align: right;">638</td>
-<td style="text-align: right;">309</td>
+<td style="text-align: right;">659</td>
+<td style="text-align: right;">624</td>
+<td style="text-align: right;">303</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">600-800</td>
 <td style="text-align: left;">Extrapolation</td>
-<td style="text-align: right;">786</td>
-<td style="text-align: right;">742</td>
-<td style="text-align: right;">305</td>
+<td style="text-align: right;">770</td>
+<td style="text-align: right;">724</td>
+<td style="text-align: right;">300</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">800-1000</td>
 <td style="text-align: left;">Trained</td>
-<td style="text-align: right;">1010</td>
-<td style="text-align: right;">952</td>
-<td style="text-align: right;">358</td>
+<td style="text-align: right;">1001</td>
+<td style="text-align: right;">940</td>
+<td style="text-align: right;">357</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1000-1200</td>
@@ -934,13 +933,14 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 </div>
 <div>
 <details><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">e1_vxBMM</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
-<span>                        data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>, <span class="st">"e1_testVxBand_RF_5k_Ml1"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                        data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>, <span class="st">"e1_testVxBand_RF_5k"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                        iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span>,silent<span class="op">=</span><span class="fl">0</span>,</span>
 <span>                        control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta<span class="op">=</span><span class="fl">0.94</span>, max_treedepth<span class="op">=</span><span class="fl">13</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">GetModelStats</span><span class="op">(</span><span class="va">e1_vxBMM</span> <span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">kable</span><span class="op">(</span>escape<span class="op">=</span><span class="cn">F</span>,booktabs<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
 <span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_extrap_testVxBand"</span></span>
 <span><span class="va">e1_extrap_VxBMM</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
-<span>                  data<span class="op">=</span><span class="va">test</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span><span class="op">==</span><span class="st">"test-Nf"</span><span class="op">)</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>,<span class="va">modelName</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                  data<span class="op">=</span><span class="va">test</span> <span class="op">|&gt;</span></span>
+<span>                    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span><span class="op">==</span><span class="st">"test-Nf"</span><span class="op">)</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>,<span class="va">modelName</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                  iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu">GetModelStats</span><span class="op">(</span><span class="va">e1_extrap_VxBMM</span> <span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">kable</span><span class="op">(</span>escape<span class="op">=</span><span class="cn">F</span>,booktabs<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div id="tbl-e1-bmm-vx" class="cell tbl-parent quarto-layout-panel anchored">
@@ -964,43 +964,43 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Intercept</td>
-<td style="text-align: right;">439.42</td>
-<td style="text-align: right;">39.13</td>
-<td style="text-align: right;">362.91</td>
-<td style="text-align: right;">517.87</td>
+<td style="text-align: right;">408.49</td>
+<td style="text-align: right;">40.50</td>
+<td style="text-align: right;">327.00</td>
+<td style="text-align: right;">490.61</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">1.00</td>
-<td style="text-align: right;">497.68</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">616.67</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried</td>
-<td style="text-align: right;">146.06</td>
-<td style="text-align: right;">55.81</td>
-<td style="text-align: right;">35.96</td>
-<td style="text-align: right;">254.70</td>
-<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">164.67</td>
+<td style="text-align: right;">57.99</td>
+<td style="text-align: right;">45.50</td>
+<td style="text-align: right;">278.85</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">569.96</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">624.57</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Band</td>
-<td style="text-align: right;">0.69</td>
+<td style="text-align: right;">0.71</td>
 <td style="text-align: right;">0.04</td>
-<td style="text-align: right;">0.59</td>
-<td style="text-align: right;">0.77</td>
+<td style="text-align: right;">0.62</td>
+<td style="text-align: right;">0.80</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">1.00</td>
-<td style="text-align: right;">672.14</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">716.20</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried:Band</td>
-<td style="text-align: right;">-0.12</td>
+<td style="text-align: right;">-0.14</td>
 <td style="text-align: right;">0.06</td>
-<td style="text-align: right;">-0.25</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">0.97</td>
-<td style="text-align: right;">1.01</td>
-<td style="text-align: right;">750.18</td>
+<td style="text-align: right;">-0.26</td>
+<td style="text-align: right;">-0.01</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">772.14</td>
 </tr>
 </tbody>
 </table>
@@ -1029,43 +1029,43 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Intercept</td>
-<td style="text-align: right;">497.55</td>
-<td style="text-align: right;">34.56</td>
-<td style="text-align: right;">431.26</td>
-<td style="text-align: right;">566.17</td>
+<td style="text-align: right;">478.54</td>
+<td style="text-align: right;">37.37</td>
+<td style="text-align: right;">404.00</td>
+<td style="text-align: right;">551.45</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1772.47</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">1297.89</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried</td>
-<td style="text-align: right;">124.14</td>
-<td style="text-align: right;">50.25</td>
-<td style="text-align: right;">26.61</td>
-<td style="text-align: right;">224.75</td>
-<td style="text-align: right;">0.99</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1724.63</td>
+<td style="text-align: right;">141.66</td>
+<td style="text-align: right;">53.89</td>
+<td style="text-align: right;">37.17</td>
+<td style="text-align: right;">247.59</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1504.38</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Band</td>
-<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.50</td>
 <td style="text-align: right;">0.04</td>
 <td style="text-align: right;">0.42</td>
-<td style="text-align: right;">0.56</td>
+<td style="text-align: right;">0.57</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">4206.84</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3496.83</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried:Band</td>
-<td style="text-align: right;">-0.06</td>
+<td style="text-align: right;">-0.07</td>
 <td style="text-align: right;">0.05</td>
-<td style="text-align: right;">-0.16</td>
+<td style="text-align: right;">-0.17</td>
 <td style="text-align: right;">0.04</td>
-<td style="text-align: right;">0.88</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">3738.13</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3548.93</td>
 </tr>
 </tbody>
 </table>
@@ -1139,14 +1139,14 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <span>  <span class="fu">mutate</span><span class="op">(</span>rank <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">Estimate.bandInt</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>         intErrorRank<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="op">(</span><span class="va">Est.Error.Intercept</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>         bandErrorRank<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="op">(</span><span class="va">Est.Error.bandInt</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>         nCond <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">arrange</span><span class="op">(</span><span class="va">intErrorRank</span><span class="op">)</span></span>
+<span>         nCond <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">arrange</span><span class="op">(</span><span class="va">intErrorRank</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fixed_effects</span> <span class="op">&lt;-</span> <span class="va">e1_vxBMM</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">spread_draws</span><span class="op">(</span><span class="va">`^b_.*`</span>,regex<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">arrange</span><span class="op">(</span><span class="va">.chain</span>,<span class="va">.draw</span>,<span class="va">.iteration</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">random_effects</span> <span class="op">&lt;-</span> <span class="va">e1_vxBMM</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">gather_draws</span><span class="op">(</span><span class="va">`^r_id.*$`</span>, regex <span class="op">=</span> <span class="cn">TRUE</span>, ndraws <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">gather_draws</span><span class="op">(</span><span class="va">`^r_id.*$`</span>, regex <span class="op">=</span> <span class="cn">TRUE</span>, ndraws <span class="op">=</span> <span class="fl">1500</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">separate</span><span class="op">(</span><span class="va">.variable</span>, into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"effect"</span>, <span class="st">"id"</span>, <span class="st">"term"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\\[|,|\\]"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">id</span>,levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">test</span><span class="op">$</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">term</span>, values_from <span class="op">=</span> <span class="va">.value</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">arrange</span><span class="op">(</span><span class="va">id</span>,<span class="va">.chain</span>,<span class="va">.draw</span>,<span class="va">.iteration</span><span class="op">)</span></span>
@@ -1182,19 +1182,19 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Constant</td>
-<td style="text-align: right;">-0.3471085</td>
-<td style="text-align: right;">0.4310262</td>
-<td style="text-align: right;">0.6829222</td>
-<td style="text-align: right;">0.9104015</td>
-<td style="text-align: right;">1.395967</td>
+<td style="text-align: right;">-0.1106335</td>
+<td style="text-align: right;">0.4780359</td>
+<td style="text-align: right;">0.6891479</td>
+<td style="text-align: right;">0.9292549</td>
+<td style="text-align: right;">1.392915</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Varied</td>
-<td style="text-align: right;">-0.0831555</td>
-<td style="text-align: right;">0.3921965</td>
-<td style="text-align: right;">0.7093788</td>
-<td style="text-align: right;">1.0205340</td>
-<td style="text-align: right;">1.426934</td>
+<td style="text-align: right;">-0.0614805</td>
+<td style="text-align: right;">0.4106606</td>
+<td style="text-align: right;">0.7274138</td>
+<td style="text-align: right;">1.0377441</td>
+<td style="text-align: right;">1.444079</td>
 </tr>
 </tbody>
 </table>
@@ -1207,8 +1207,6 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <details><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cdMed</span> <span class="op">%&gt;%</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y<span class="op">=</span><span class="va">rankSlope</span>, x<span class="op">=</span><span class="va">Slope</span>,fill<span class="op">=</span><span class="va">condit</span>,color<span class="op">=</span><span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_pointrange</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin<span class="op">=</span><span class="va">.lower</span> , xmax<span class="op">=</span><span class="va">.upper</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Estimated Slope"</span>, y<span class="op">=</span><span class="st">"Participant"</span><span class="op">)</span>  <span class="op">+</span> <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">condit</span><span class="op">)</span>  </span>
-<span></span>
-<span></span>
 <span></span>
 <span><span class="co"># cdMed %&gt;% ggplot(aes(x=Slope)) + </span></span>
 <span><span class="co">#   stat_halfeye(alpha=.5) +facet_wrap(~condit)</span></span>
@@ -1230,14 +1228,14 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <span></span>
 <span><span class="va">combined_df</span> <span class="op">&lt;-</span> <span class="fu">left_join</span><span class="op">(</span><span class="va">random_effects</span>, <span class="va">fixed_effects</span>, by <span class="op">=</span> <span class="fu">join_by</span><span class="op">(</span><span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">rename</span><span class="op">(</span>bandInt_RF <span class="op">=</span> <span class="va">bandInt</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">right_join</span><span class="op">(</span><span class="va">new_data_grid</span>, by <span class="op">=</span> <span class="fu">join_by</span><span class="op">(</span><span class="st">"id"</span><span class="op">)</span>,relationship<span class="op">=</span><span class="st">"many-to-many"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">right_join</span><span class="op">(</span><span class="va">new_data_grid</span>, by <span class="op">=</span> <span class="fu">join_by</span><span class="op">(</span><span class="st">"id"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    fixed_effects <span class="op">=</span> <span class="va">b_Intercept</span> <span class="op">+</span></span>
 <span>      <span class="op">(</span><span class="va">bandInt</span> <span class="op">*</span> <span class="va">b_bandInt</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="va">condit_dummy</span> <span class="op">*</span> <span class="va">b_conditVaried</span> <span class="op">+</span> </span>
-<span>      <span class="op">(</span><span class="va">bandInt</span> <span class="op">*</span> <span class="va">condit_dummy</span><span class="op">)</span> <span class="op">*</span> <span class="va">`b_conditVaried:bandInt`</span> ,  <span class="co"># Note: Replace : with correct operator</span></span>
+<span>      <span class="op">(</span><span class="va">bandInt</span> <span class="op">*</span> <span class="va">condit_dummy</span><span class="op">)</span> <span class="op">*</span> <span class="va">`b_conditVaried:bandInt`</span> ,  </span>
 <span>    random_effects <span class="op">=</span> <span class="va">Intercept</span> <span class="op">+</span> <span class="va">bandInt_RF</span>,  <span class="co"># Assuming random effects for intercept and bandInt</span></span>
-<span>    estimate <span class="op">=</span> <span class="va">fixed_effects</span> <span class="op">+</span> <span class="va">random_effects</span></span>
+<span>    estimate <span class="op">=</span> <span class="op">(</span><span class="va">b_Intercept</span> <span class="op">+</span> <span class="va">Intercept</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="va">bandInt</span><span class="op">*</span><span class="op">(</span><span class="va">b_bandInt</span><span class="op">+</span><span class="va">bandInt_RF</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="va">bandInt</span> <span class="op">*</span> <span class="va">condit_dummy</span><span class="op">)</span> <span class="op">*</span> <span class="va">`b_conditVaried:bandInt`</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">combined_df</span> <span class="op">|&gt;</span> </span>
@@ -1253,11 +1251,28 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <span>  <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">350</span>, <span class="fl">600</span>, <span class="fl">800</span>, <span class="fl">1000</span>, <span class="fl">1200</span><span class="op">)</span>, </span>
 <span>                     labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">test</span><span class="op">$</span><span class="va">vb</span><span class="op">)</span>, </span>
 <span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1400</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="fu">ylab</span><span class="op">(</span><span class="st">"X Velocity"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">xlab</span><span class="op">(</span><span class="st">"Band"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="fu">ylab</span><span class="op">(</span><span class="st">"X Velocity"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">xlab</span><span class="op">(</span><span class="st">"Band"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="va">combined_df</span> <span class="op">|&gt;</span> <span class="fu">indv_model_plot</span><span class="op">(</span><span class="va">indv_coefs</span>, <span class="va">testAvg</span>, rank_variable<span class="op">=</span><span class="va">Estimate.bandInt</span>,n_sbj<span class="op">=</span><span class="fl">4</span>,<span class="st">"max"</span><span class="op">)</span></span>
+<span><span class="va">combined_df</span> <span class="op">|&gt;</span> <span class="fu">indv_model_plot</span><span class="op">(</span><span class="va">indv_coefs</span>, <span class="va">testAvg</span>, rank_variable<span class="op">=</span><span class="va">Estimate.bandInt</span>,n_sbj<span class="op">=</span><span class="fl">4</span>,<span class="st">"min"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e1-indv-slopes" class="quarto-figure quarto-figure-center anchored">
+<div id="fig-e1-indv-slopes-1" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="e1_test_files/figure-html/fig-e1-indv-slopes-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption class="figure-caption">Figure&nbsp;7: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.</figcaption></figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div id="fig-e1-indv-slopes-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="e1_test_files/figure-html/fig-e1-indv-slopes-2.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;8: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.</figcaption></figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div id="fig-e1-indv-slopes-3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="e1_test_files/figure-html/fig-e1-indv-slopes-3.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;9: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1281,7 +1296,7 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 </details><div class="cell-output-display">
 <div id="fig-e1-indv-slopes-small" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="e1_test_files/figure-html/fig-e1-indv-slopes-small-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;8: Subset of Varied and Constant Participants with the smallest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;10: Subset of Varied and Constant Participants with the smallest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1359,7 +1374,7 @@ Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). <span class="nocase
 <figcaption class="figure-caption">(b) Posterior Predictive Distribution - X Velocity</figcaption></figure>
 </div>
 </div>
-<figcaption class="figure-caption">Figure&nbsp;9: Posterior Predictive distributions for Deviation and Vx. Posterior Draws in Blue, colored lines are empirical data.</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;11: Posterior Predictive distributions for Deviation and Vx. Posterior Draws in Blue, colored lines are empirical data.</figcaption></figure>
 </div>
 </section><section id="empirical-vs.-predicted" class="level3"><h3 class="anchored" data-anchor-id="empirical-vs.-predicted">Empirical vs.&nbsp;Predicted</h3>
 <div class="cell">
@@ -1412,7 +1427,7 @@ Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). <span class="nocase
 </details><div class="cell-output-display">
 <div id="fig-empVsPred" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="e1_test_files/figure-html/fig-empVsPred-1.png" class="img-fluid figure-img" width="1152"></p>
-<figcaption class="figure-caption">Figure&nbsp;10: Bayesian Mixed Model predictions vs.&nbsp;Empirical Predictions - X velocity</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;12: Bayesian Mixed Model predictions vs.&nbsp;Empirical Predictions - X velocity</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1459,7 +1474,7 @@ Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). <span class="nocase
 </details><div class="cell-output-display">
 <div id="fig-empirical-vxGrp" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="e1_test_files/figure-html/fig-empirical-vxGrp-1.png" class="img-fluid figure-img" width="1248"></p>
-<figcaption class="figure-caption">Figure&nbsp;11: E1. Distribution of vx at Participant and Trial level</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;13: E1. Distribution of vx at Participant and Trial level</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1505,7 +1520,7 @@ Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). <span class="nocase
 </details><div class="cell-output-display">
 <div id="fig-empirical-distGrp" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="e1_test_files/figure-html/fig-empirical-distGrp-1.png" class="img-fluid figure-img" width="1248"></p>
-<figcaption class="figure-caption">Figure&nbsp;12: E1. Distribution of Vx at Participant and Trial level</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;14: E1. Distribution of Vx at Participant and Trial level</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1929,7 +1944,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include=FALSE}</span></span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="in">source(here::here("Functions", "packages.R"))</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="in">test &lt;- readRDS(here("data/e1_08-04-23.rds")) |&gt; filter(expMode2 == "Test") </span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="in">test &lt;- readRDS(here("data/e1_08-21-23.rds")) |&gt; filter(expMode2 == "Test") </span></span>
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="in">options(brms.backend="cmdstanr",mc.cores=4)</span></span>
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="in">e1Sbjs &lt;- test |&gt; group_by(id,condit) |&gt; summarise(n=n())</span></span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="in">testAvg &lt;- test %&gt;% group_by(id, condit, vb, bandInt,bandType,tOrder) %&gt;%</span></span>
@@ -1993,12 +2008,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb19-75"><a href="#cb19-75" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-76"><a href="#cb19-76" aria-hidden="true" tabindex="-1"></a><span class="co"># contrasts(test$vb)</span></span>
 <span id="cb19-77"><a href="#cb19-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-78"><a href="#cb19-78" aria-hidden="true" tabindex="-1"></a>modelName <span class="ot">&lt;-</span> <span class="st">"e1_testDistBand_RF_5K_Ml1"</span></span>
+<span id="cb19-78"><a href="#cb19-78" aria-hidden="true" tabindex="-1"></a>modelName <span class="ot">&lt;-</span> <span class="st">"e1_testDistBand_RF_5K"</span></span>
 <span id="cb19-79"><a href="#cb19-79" aria-hidden="true" tabindex="-1"></a>e1_distBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(dist <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
 <span id="cb19-80"><a href="#cb19-80" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data=</span>test,<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>,modelName)),</span>
 <span id="cb19-81"><a href="#cb19-81" aria-hidden="true" tabindex="-1"></a>                      <span class="at">iter=</span><span class="dv">5000</span>,<span class="at">chains=</span><span class="dv">4</span>)</span>
-<span id="cb19-82"><a href="#cb19-82" aria-hidden="true" tabindex="-1"></a>mp1 <span class="ot">&lt;-</span> <span class="fu">GetModelStats</span>(e1_distBMM) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
-<span id="cb19-83"><a href="#cb19-83" aria-hidden="true" tabindex="-1"></a>mp1</span>
+<span id="cb19-82"><a href="#cb19-82" aria-hidden="true" tabindex="-1"></a><span class="fu">GetModelStats</span>(e1_distBMM) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
+<span id="cb19-83"><a href="#cb19-83" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-84"><a href="#cb19-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb19-85"><a href="#cb19-85" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-86"><a href="#cb19-86" aria-hidden="true" tabindex="-1"></a></span>
@@ -2006,334 +2021,329 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb19-90"><a href="#cb19-90" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-bmm-dist</span></span>
 <span id="cb19-91"><a href="#cb19-91" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: E1. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals. </span></span>
 <span id="cb19-92"><a href="#cb19-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-93"><a href="#cb19-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-94"><a href="#cb19-94" aria-hidden="true" tabindex="-1"></a>e1_distBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
-<span id="cb19-95"><a href="#cb19-95" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb19-96"><a href="#cb19-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
-<span id="cb19-97"><a href="#cb19-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bandInt, <span class="at">y =</span> .value, <span class="at">color =</span> condit, <span class="at">fill =</span> condit)) <span class="sc">+</span> </span>
-<span id="cb19-98"><a href="#cb19-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_pointinterval</span>() <span class="sc">+</span></span>
-<span id="cb19-99"><a href="#cb19-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> .<span class="dv">25</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>)) <span class="sc">+</span></span>
-<span id="cb19-100"><a href="#cb19-100" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">"Predicted Deviation"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Velocity Band"</span>)<span class="sc">+</span></span>
-<span id="cb19-101"><a href="#cb19-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
-<span id="cb19-102"><a href="#cb19-102" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(test<span class="sc">$</span>vb), </span>
-<span id="cb19-103"><a href="#cb19-103" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
-<span id="cb19-104"><a href="#cb19-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) </span>
-<span id="cb19-105"><a href="#cb19-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-93"><a href="#cb19-93" aria-hidden="true" tabindex="-1"></a>e1_distBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
+<span id="cb19-94"><a href="#cb19-94" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb19-95"><a href="#cb19-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-96"><a href="#cb19-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bandInt, <span class="at">y =</span> .value, <span class="at">color =</span> condit, <span class="at">fill =</span> condit)) <span class="sc">+</span> </span>
+<span id="cb19-97"><a href="#cb19-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_pointinterval</span>() <span class="sc">+</span></span>
+<span id="cb19-98"><a href="#cb19-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> .<span class="dv">25</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>)) <span class="sc">+</span></span>
+<span id="cb19-99"><a href="#cb19-99" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">"Predicted Deviation"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Velocity Band"</span>)<span class="sc">+</span></span>
+<span id="cb19-100"><a href="#cb19-100" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
+<span id="cb19-101"><a href="#cb19-101" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(test<span class="sc">$</span>vb), </span>
+<span id="cb19-102"><a href="#cb19-102" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
+<span id="cb19-103"><a href="#cb19-103" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) </span>
+<span id="cb19-104"><a href="#cb19-104" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-105"><a href="#cb19-105" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-106"><a href="#cb19-106" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-107"><a href="#cb19-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-108"><a href="#cb19-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-111"><a href="#cb19-111" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb19-112"><a href="#cb19-112" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-ame</span></span>
-<span id="cb19-113"><a href="#cb19-113" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: E1. Predicted Means Per Condition and Band, and Average Marginal Effect (Constant - Varied)</span></span>
-<span id="cb19-114"><a href="#cb19-114" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
-<span id="cb19-115"><a href="#cb19-115" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 10</span></span>
-<span id="cb19-116"><a href="#cb19-116" aria-hidden="true" tabindex="-1"></a>new_data_grid<span class="ot">=</span><span class="fu">map_dfr</span>(<span class="dv">1</span>, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="fu">unique</span>(test[,<span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"bandInt"</span>)])))</span>
-<span id="cb19-117"><a href="#cb19-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-118"><a href="#cb19-118" aria-hidden="true" tabindex="-1"></a>cSamp <span class="ot">&lt;-</span> e1_distBMM <span class="sc">|&gt;</span> </span>
-<span id="cb19-119"><a href="#cb19-119" aria-hidden="true" tabindex="-1"></a>  <span class="fu">emmeans</span>(<span class="st">"condit"</span>,<span class="at">by=</span><span class="st">"bandInt"</span>,<span class="at">at=</span><span class="fu">list</span>(<span class="at">bandInt=</span><span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">350</span>,<span class="dv">600</span>,<span class="dv">800</span>,<span class="dv">1000</span>,<span class="dv">1200</span>)),</span>
-<span id="cb19-120"><a href="#cb19-120" aria-hidden="true" tabindex="-1"></a>          <span class="at">epred =</span> <span class="cn">TRUE</span>, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb19-121"><a href="#cb19-121" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pairs</span>() <span class="sc">|&gt;</span> <span class="fu">gather_emmeans_draws</span>()  <span class="sc">|&gt;</span></span>
-<span id="cb19-122"><a href="#cb19-122" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(contrast, .draw,bandInt) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">value=</span><span class="fu">mean</span>(.value), <span class="at">n=</span><span class="fu">n</span>())</span>
-<span id="cb19-123"><a href="#cb19-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-124"><a href="#cb19-124" aria-hidden="true" tabindex="-1"></a> ameBand <span class="ot">&lt;-</span> cSamp <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>value,<span class="at">y=</span><span class="st">""</span>)) <span class="sc">+</span> </span>
-<span id="cb19-125"><a href="#cb19-125" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>() <span class="sc">+</span> </span>
-<span id="cb19-126"><a href="#cb19-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">0</span>,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
-<span id="cb19-127"><a href="#cb19-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>bandInt,<span class="at">ncol=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Marginal Effect (Constant - Varied)"</span>, <span class="at">y=</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
-<span id="cb19-128"><a href="#cb19-128" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Average Marginal Effect"</span>)</span>
-<span id="cb19-129"><a href="#cb19-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-130"><a href="#cb19-130" aria-hidden="true" tabindex="-1"></a>bothConditGM <span class="ot">&lt;-</span> e1_distBMM <span class="sc">%&gt;%</span></span>
-<span id="cb19-131"><a href="#cb19-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">epred_draws</span>(<span class="at">newdata =</span> new_data_grid,<span class="at">ndraws =</span> <span class="dv">2000</span>, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-132"><a href="#cb19-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>.epred,<span class="at">y=</span><span class="st">"Mean"</span>,<span class="at">fill=</span>condit)) <span class="sc">+</span> </span>
-<span id="cb19-133"><a href="#cb19-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>() <span class="sc">+</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>bandInt, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb19-134"><a href="#cb19-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Predicted Deviation"</span>, <span class="at">y=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
-<span id="cb19-135"><a href="#cb19-135" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Grand Means"</span>) <span class="sc">+</span><span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
-<span id="cb19-136"><a href="#cb19-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-137"><a href="#cb19-137" aria-hidden="true" tabindex="-1"></a>(bothConditGM <span class="sc">|</span> ameBand) <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="fl">1.0</span>))</span>
-<span id="cb19-138"><a href="#cb19-138" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-110"><a href="#cb19-110" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb19-111"><a href="#cb19-111" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-ame</span></span>
+<span id="cb19-112"><a href="#cb19-112" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: E1. Predicted Means Per Condition and Band, and Average Marginal Effect (Constant - Varied)</span></span>
+<span id="cb19-113"><a href="#cb19-113" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
+<span id="cb19-114"><a href="#cb19-114" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 10</span></span>
+<span id="cb19-115"><a href="#cb19-115" aria-hidden="true" tabindex="-1"></a>new_data_grid<span class="ot">=</span><span class="fu">map_dfr</span>(<span class="dv">1</span>, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="fu">unique</span>(test[,<span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"bandInt"</span>)])))</span>
+<span id="cb19-116"><a href="#cb19-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-117"><a href="#cb19-117" aria-hidden="true" tabindex="-1"></a>cSamp <span class="ot">&lt;-</span> e1_distBMM <span class="sc">|&gt;</span> </span>
+<span id="cb19-118"><a href="#cb19-118" aria-hidden="true" tabindex="-1"></a>  <span class="fu">emmeans</span>(<span class="st">"condit"</span>,<span class="at">by=</span><span class="st">"bandInt"</span>,<span class="at">at=</span><span class="fu">list</span>(<span class="at">bandInt=</span><span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">350</span>,<span class="dv">600</span>,<span class="dv">800</span>,<span class="dv">1000</span>,<span class="dv">1200</span>)),</span>
+<span id="cb19-119"><a href="#cb19-119" aria-hidden="true" tabindex="-1"></a>          <span class="at">epred =</span> <span class="cn">TRUE</span>, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb19-120"><a href="#cb19-120" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pairs</span>() <span class="sc">|&gt;</span> <span class="fu">gather_emmeans_draws</span>()  <span class="sc">|&gt;</span></span>
+<span id="cb19-121"><a href="#cb19-121" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(contrast, .draw,bandInt) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">value=</span><span class="fu">mean</span>(.value), <span class="at">n=</span><span class="fu">n</span>())</span>
+<span id="cb19-122"><a href="#cb19-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-123"><a href="#cb19-123" aria-hidden="true" tabindex="-1"></a> ameBand <span class="ot">&lt;-</span> cSamp <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>value,<span class="at">y=</span><span class="st">""</span>)) <span class="sc">+</span> </span>
+<span id="cb19-124"><a href="#cb19-124" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>() <span class="sc">+</span> </span>
+<span id="cb19-125"><a href="#cb19-125" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">0</span>,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span></span>
+<span id="cb19-126"><a href="#cb19-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>bandInt,<span class="at">ncol=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Marginal Effect (Constant - Varied)"</span>, <span class="at">y=</span> <span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb19-127"><a href="#cb19-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Average Marginal Effect"</span>)</span>
+<span id="cb19-128"><a href="#cb19-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-129"><a href="#cb19-129" aria-hidden="true" tabindex="-1"></a>bothConditGM <span class="ot">&lt;-</span> e1_distBMM <span class="sc">%&gt;%</span></span>
+<span id="cb19-130"><a href="#cb19-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">epred_draws</span>(<span class="at">newdata =</span> new_data_grid,<span class="at">ndraws =</span> <span class="dv">2000</span>, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-131"><a href="#cb19-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>.epred,<span class="at">y=</span><span class="st">"Mean"</span>,<span class="at">fill=</span>condit)) <span class="sc">+</span> </span>
+<span id="cb19-132"><a href="#cb19-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>() <span class="sc">+</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>bandInt, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb19-133"><a href="#cb19-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Predicted Deviation"</span>, <span class="at">y=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb19-134"><a href="#cb19-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Grand Means"</span>) <span class="sc">+</span><span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb19-135"><a href="#cb19-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-136"><a href="#cb19-136" aria-hidden="true" tabindex="-1"></a>(bothConditGM <span class="sc">|</span> ameBand) <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="fl">1.0</span>))</span>
+<span id="cb19-137"><a href="#cb19-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-138"><a href="#cb19-138" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-139"><a href="#cb19-139" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-140"><a href="#cb19-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-141"><a href="#cb19-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-142"><a href="#cb19-142" aria-hidden="true" tabindex="-1"></a>The model predicting absolute deviation (dist) showed clear effects of both training condition and target velocity band (Table X). Overall, the varied training group showed a larger deviation relative to the constant training group (β = 135, 95% CI <span class="co">[</span><span class="ot">43, 231</span><span class="co">]</span>). Deviation also depended on target velocity band, with lower bands showing less deviation. See @tbl-e1-bmm-dist for full model output. </span>
+<span id="cb19-141"><a href="#cb19-141" aria-hidden="true" tabindex="-1"></a>The model predicting absolute deviation (dist) showed clear effects of both training condition and target velocity band (Table X). Overall, the varied training group showed a larger deviation relative to the constant training group (β = 135, 95% CI <span class="co">[</span><span class="ot">43, 231</span><span class="co">]</span>). Deviation also depended on target velocity band, with lower bands showing less deviation. See @tbl-e1-bmm-dist for full model output. </span>
+<span id="cb19-142"><a href="#cb19-142" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-143"><a href="#cb19-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-144"><a href="#cb19-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-145"><a href="#cb19-145" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Discrimination between Velocity Bands</span></span>
-<span id="cb19-146"><a href="#cb19-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-147"><a href="#cb19-147" aria-hidden="true" tabindex="-1"></a>In addition to accuracy/deviation. We also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). @tbl-e1-test-nf-vx shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants on each testing trial. </span>
-<span id="cb19-148"><a href="#cb19-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-149"><a href="#cb19-149" aria-hidden="true" tabindex="-1"></a>\begin{equation}</span>
-<span id="cb19-150"><a href="#cb19-150" aria-hidden="true" tabindex="-1"></a>vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \beta_3 \cdot condit_{ij} \cdot bandInt_{ij} + b_{0i} + b_{1i} \cdot bandInt_{ij} + \epsilon_{ij}</span>
-<span id="cb19-151"><a href="#cb19-151" aria-hidden="true" tabindex="-1"></a>\end{equation}</span>
+<span id="cb19-144"><a href="#cb19-144" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Discrimination between Velocity Bands</span></span>
+<span id="cb19-145"><a href="#cb19-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-146"><a href="#cb19-146" aria-hidden="true" tabindex="-1"></a>In addition to accuracy/deviation. We also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). @tbl-e1-test-nf-vx shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants on each testing trial. </span>
+<span id="cb19-147"><a href="#cb19-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-148"><a href="#cb19-148" aria-hidden="true" tabindex="-1"></a>\begin{equation}</span>
+<span id="cb19-149"><a href="#cb19-149" aria-hidden="true" tabindex="-1"></a>vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \beta_3 \cdot condit_{ij} \cdot bandInt_{ij} + b_{0i} + b_{1i} \cdot bandInt_{ij} + \epsilon_{ij}</span>
+<span id="cb19-150"><a href="#cb19-150" aria-hidden="true" tabindex="-1"></a>\end{equation}</span>
+<span id="cb19-151"><a href="#cb19-151" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-152"><a href="#cb19-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-153"><a href="#cb19-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-156"><a href="#cb19-156" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb19-157"><a href="#cb19-157" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-test-vx</span></span>
-<span id="cb19-158"><a href="#cb19-158" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: E1 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. </span></span>
-<span id="cb19-159"><a href="#cb19-159" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
-<span id="cb19-160"><a href="#cb19-160" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
-<span id="cb19-161"><a href="#cb19-161" aria-hidden="true" tabindex="-1"></a>test <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,vb,condit) <span class="sc">|&gt;</span> <span class="fu">plot_distByCondit</span>()</span>
-<span id="cb19-162"><a href="#cb19-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-163"><a href="#cb19-163" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-155"><a href="#cb19-155" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb19-156"><a href="#cb19-156" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-test-vx</span></span>
+<span id="cb19-157"><a href="#cb19-157" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: E1 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. </span></span>
+<span id="cb19-158"><a href="#cb19-158" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
+<span id="cb19-159"><a href="#cb19-159" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
+<span id="cb19-160"><a href="#cb19-160" aria-hidden="true" tabindex="-1"></a>test <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,vb,condit) <span class="sc">|&gt;</span> <span class="fu">plot_distByCondit</span>()</span>
+<span id="cb19-161"><a href="#cb19-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-162"><a href="#cb19-162" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-163"><a href="#cb19-163" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-164"><a href="#cb19-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-165"><a href="#cb19-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-168"><a href="#cb19-168" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb19-169"><a href="#cb19-169" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e1-test-nf-vx</span></span>
-<span id="cb19-170"><a href="#cb19-170" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Testing vx - Empirical Summary"</span></span>
-<span id="cb19-171"><a href="#cb19-171" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]</span></span>
-<span id="cb19-172"><a href="#cb19-172" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb19-173"><a href="#cb19-173" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
-<span id="cb19-174"><a href="#cb19-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-175"><a href="#cb19-175" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">test_summary_table</span>(test, <span class="st">"vx"</span>, <span class="at">mfun =</span> <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">median =</span> median, <span class="at">sd =</span> sd))</span>
-<span id="cb19-176"><a href="#cb19-176" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>constant </span>
-<span id="cb19-177"><a href="#cb19-177" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>varied </span>
-<span id="cb19-178"><a href="#cb19-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-179"><a href="#cb19-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-167"><a href="#cb19-167" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb19-168"><a href="#cb19-168" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e1-test-nf-vx</span></span>
+<span id="cb19-169"><a href="#cb19-169" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Testing vx - Empirical Summary"</span></span>
+<span id="cb19-170"><a href="#cb19-170" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]</span></span>
+<span id="cb19-171"><a href="#cb19-171" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb19-172"><a href="#cb19-172" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
+<span id="cb19-173"><a href="#cb19-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-174"><a href="#cb19-174" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">test_summary_table</span>(test, <span class="st">"vx"</span>, <span class="at">mfun =</span> <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">median =</span> median, <span class="at">sd =</span> sd))</span>
+<span id="cb19-175"><a href="#cb19-175" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>constant </span>
+<span id="cb19-176"><a href="#cb19-176" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>varied </span>
+<span id="cb19-177"><a href="#cb19-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-178"><a href="#cb19-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-179"><a href="#cb19-179" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-180"><a href="#cb19-180" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-181"><a href="#cb19-181" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-182"><a href="#cb19-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-183"><a href="#cb19-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-186"><a href="#cb19-186" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb19-187"><a href="#cb19-187" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e1-bmm-vx</span></span>
-<span id="cb19-188"><a href="#cb19-188" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"</span></span>
-<span id="cb19-189"><a href="#cb19-189" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-subcap: ["Model fit to all 6 bands", "Model fit to 3 extrapolation bands"]</span></span>
-<span id="cb19-190"><a href="#cb19-190" aria-hidden="true" tabindex="-1"></a>e1_vxBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(vx <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
-<span id="cb19-191"><a href="#cb19-191" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data=</span>test,<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>, <span class="st">"e1_testVxBand_RF_5k_Ml1"</span>)),</span>
-<span id="cb19-192"><a href="#cb19-192" aria-hidden="true" tabindex="-1"></a>                        <span class="at">iter=</span><span class="dv">5000</span>,<span class="at">chains=</span><span class="dv">4</span>,<span class="at">silent=</span><span class="dv">0</span>,</span>
-<span id="cb19-193"><a href="#cb19-193" aria-hidden="true" tabindex="-1"></a>                        <span class="at">control=</span><span class="fu">list</span>(<span class="at">adapt_delta=</span><span class="fl">0.94</span>, <span class="at">max_treedepth=</span><span class="dv">13</span>))</span>
-<span id="cb19-194"><a href="#cb19-194" aria-hidden="true" tabindex="-1"></a><span class="fu">GetModelStats</span>(e1_vxBMM ) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
+<span id="cb19-185"><a href="#cb19-185" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb19-186"><a href="#cb19-186" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e1-bmm-vx</span></span>
+<span id="cb19-187"><a href="#cb19-187" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"</span></span>
+<span id="cb19-188"><a href="#cb19-188" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-subcap: ["Model fit to all 6 bands", "Model fit to 3 extrapolation bands"]</span></span>
+<span id="cb19-189"><a href="#cb19-189" aria-hidden="true" tabindex="-1"></a>e1_vxBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(vx <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
+<span id="cb19-190"><a href="#cb19-190" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data=</span>test,<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>, <span class="st">"e1_testVxBand_RF_5k"</span>)),</span>
+<span id="cb19-191"><a href="#cb19-191" aria-hidden="true" tabindex="-1"></a>                        <span class="at">iter=</span><span class="dv">5000</span>,<span class="at">chains=</span><span class="dv">4</span>,<span class="at">silent=</span><span class="dv">0</span>,</span>
+<span id="cb19-192"><a href="#cb19-192" aria-hidden="true" tabindex="-1"></a>                        <span class="at">control=</span><span class="fu">list</span>(<span class="at">adapt_delta=</span><span class="fl">0.94</span>, <span class="at">max_treedepth=</span><span class="dv">13</span>))</span>
+<span id="cb19-193"><a href="#cb19-193" aria-hidden="true" tabindex="-1"></a><span class="fu">GetModelStats</span>(e1_vxBMM ) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
+<span id="cb19-194"><a href="#cb19-194" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-195"><a href="#cb19-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-196"><a href="#cb19-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-197"><a href="#cb19-197" aria-hidden="true" tabindex="-1"></a>modelName <span class="ot">&lt;-</span> <span class="st">"e1_extrap_testVxBand"</span></span>
-<span id="cb19-198"><a href="#cb19-198" aria-hidden="true" tabindex="-1"></a>e1_extrap_VxBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(vx <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
-<span id="cb19-199"><a href="#cb19-199" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>test <span class="sc">|&gt;</span> <span class="fu">filter</span>(expMode<span class="sc">==</span><span class="st">"test-Nf"</span>),<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>,modelName)),</span>
+<span id="cb19-196"><a href="#cb19-196" aria-hidden="true" tabindex="-1"></a>modelName <span class="ot">&lt;-</span> <span class="st">"e1_extrap_testVxBand"</span></span>
+<span id="cb19-197"><a href="#cb19-197" aria-hidden="true" tabindex="-1"></a>e1_extrap_VxBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(vx <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
+<span id="cb19-198"><a href="#cb19-198" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>test <span class="sc">|&gt;</span></span>
+<span id="cb19-199"><a href="#cb19-199" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">filter</span>(expMode<span class="sc">==</span><span class="st">"test-Nf"</span>),<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>,modelName)),</span>
 <span id="cb19-200"><a href="#cb19-200" aria-hidden="true" tabindex="-1"></a>                  <span class="at">iter=</span><span class="dv">5000</span>,<span class="at">chains=</span><span class="dv">4</span>)</span>
 <span id="cb19-201"><a href="#cb19-201" aria-hidden="true" tabindex="-1"></a><span class="fu">GetModelStats</span>(e1_extrap_VxBMM ) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
 <span id="cb19-202"><a href="#cb19-202" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb19-203"><a href="#cb19-203" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-204"><a href="#cb19-204" aria-hidden="true" tabindex="-1"></a>See @tbl-e1-bmm-vx for the full model results. The estimated coefficient for training condition (β = 146, 95% CI <span class="co">[</span><span class="ot">35.96, 254.70</span><span class="co">]</span>) suggests that the varied group tends to produce harder throws than the constant group. Most relevant to the issue of discrimination is the slope on Velocity Band (β = 0.69, 95% CI <span class="co">[</span><span class="ot">.59, .77</span><span class="co">]</span>). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The slope coefficient (β = 0.69 ) also seems in accordance with an examination of @tbl-e1-test-nf-vx, which shows that average x-velocity fell within the range of the target band for four out of six of the bands ($4/6$=.67). The estimate for the interaction between slope and condition (β = -.12, 95% CI <span class="co">[</span><span class="ot">-.25, 0.00</span><span class="co">]</span>), suggests that the varied condition had significantly lower slopes than did the constant group. This difference is depicted visually in @fig-e1-bmm-bx. </span>
 <span id="cb19-205"><a href="#cb19-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-208"><a href="#cb19-208" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb19-209"><a href="#cb19-209" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-210"><a href="#cb19-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-211"><a href="#cb19-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-214"><a href="#cb19-214" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb19-215"><a href="#cb19-215" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-bmm-vx</span></span>
-<span id="cb19-216"><a href="#cb19-216" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. </span></span>
-<span id="cb19-217"><a href="#cb19-217" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-subcap: ["Model fit to all 6 bands", "Model fit to only 3 extrapolation bands"]</span></span>
-<span id="cb19-218"><a href="#cb19-218" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb19-219"><a href="#cb19-219" aria-hidden="true" tabindex="-1"></a>e1_vxBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
-<span id="cb19-220"><a href="#cb19-220" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb19-221"><a href="#cb19-221" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
-<span id="cb19-222"><a href="#cb19-222" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bandInt, <span class="at">y =</span> .value, <span class="at">color =</span> condit, <span class="at">fill =</span> condit)) <span class="sc">+</span> </span>
-<span id="cb19-223"><a href="#cb19-223" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_pointinterval</span>() <span class="sc">+</span> <span class="fu">stat_halfeye</span>(<span class="at">alpha=</span>.<span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb19-224"><a href="#cb19-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> .<span class="dv">25</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>)) <span class="sc">+</span></span>
-<span id="cb19-225"><a href="#cb19-225" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb19-226"><a href="#cb19-226" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Predicted X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)<span class="sc">+</span></span>
-<span id="cb19-227"><a href="#cb19-227" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
-<span id="cb19-228"><a href="#cb19-228" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(test<span class="sc">$</span>vb), </span>
-<span id="cb19-229"><a href="#cb19-229" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
-<span id="cb19-230"><a href="#cb19-230" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) </span>
-<span id="cb19-231"><a href="#cb19-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-232"><a href="#cb19-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-233"><a href="#cb19-233" aria-hidden="true" tabindex="-1"></a>e1_extrap_VxBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
-<span id="cb19-234"><a href="#cb19-234" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb19-235"><a href="#cb19-235" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
-<span id="cb19-236"><a href="#cb19-236" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bandInt, <span class="at">y =</span> .value, <span class="at">color =</span> condit, <span class="at">fill =</span> condit)) <span class="sc">+</span> </span>
-<span id="cb19-237"><a href="#cb19-237" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_pointinterval</span>() <span class="sc">+</span> <span class="fu">stat_halfeye</span>(<span class="at">alpha=</span>.<span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb19-238"><a href="#cb19-238" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> .<span class="dv">25</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>)) <span class="sc">+</span></span>
-<span id="cb19-239"><a href="#cb19-239" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb19-240"><a href="#cb19-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Predicted X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)<span class="sc">+</span></span>
-<span id="cb19-241"><a href="#cb19-241" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>), </span>
-<span id="cb19-242"><a href="#cb19-242" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(test<span class="sc">$</span>vb)[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], </span>
-<span id="cb19-243"><a href="#cb19-243" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1000</span>)) <span class="sc">+</span></span>
-<span id="cb19-244"><a href="#cb19-244" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) </span>
+<span id="cb19-206"><a href="#cb19-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-207"><a href="#cb19-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-210"><a href="#cb19-210" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb19-211"><a href="#cb19-211" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-bmm-vx</span></span>
+<span id="cb19-212"><a href="#cb19-212" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. </span></span>
+<span id="cb19-213"><a href="#cb19-213" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-subcap: ["Model fit to all 6 bands", "Model fit to only 3 extrapolation bands"]</span></span>
+<span id="cb19-214"><a href="#cb19-214" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb19-215"><a href="#cb19-215" aria-hidden="true" tabindex="-1"></a>e1_vxBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
+<span id="cb19-216"><a href="#cb19-216" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb19-217"><a href="#cb19-217" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-218"><a href="#cb19-218" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bandInt, <span class="at">y =</span> .value, <span class="at">color =</span> condit, <span class="at">fill =</span> condit)) <span class="sc">+</span> </span>
+<span id="cb19-219"><a href="#cb19-219" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_pointinterval</span>() <span class="sc">+</span> <span class="fu">stat_halfeye</span>(<span class="at">alpha=</span>.<span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb19-220"><a href="#cb19-220" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> .<span class="dv">25</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>)) <span class="sc">+</span></span>
+<span id="cb19-221"><a href="#cb19-221" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-222"><a href="#cb19-222" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Predicted X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)<span class="sc">+</span></span>
+<span id="cb19-223"><a href="#cb19-223" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
+<span id="cb19-224"><a href="#cb19-224" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(test<span class="sc">$</span>vb), </span>
+<span id="cb19-225"><a href="#cb19-225" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
+<span id="cb19-226"><a href="#cb19-226" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) </span>
+<span id="cb19-227"><a href="#cb19-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-228"><a href="#cb19-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-229"><a href="#cb19-229" aria-hidden="true" tabindex="-1"></a>e1_extrap_VxBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
+<span id="cb19-230"><a href="#cb19-230" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb19-231"><a href="#cb19-231" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-232"><a href="#cb19-232" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bandInt, <span class="at">y =</span> .value, <span class="at">color =</span> condit, <span class="at">fill =</span> condit)) <span class="sc">+</span> </span>
+<span id="cb19-233"><a href="#cb19-233" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_pointinterval</span>() <span class="sc">+</span> <span class="fu">stat_halfeye</span>(<span class="at">alpha=</span>.<span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb19-234"><a href="#cb19-234" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> .<span class="dv">25</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>)) <span class="sc">+</span></span>
+<span id="cb19-235"><a href="#cb19-235" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-236"><a href="#cb19-236" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Predicted X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)<span class="sc">+</span></span>
+<span id="cb19-237"><a href="#cb19-237" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>), </span>
+<span id="cb19-238"><a href="#cb19-238" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(test<span class="sc">$</span>vb)[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], </span>
+<span id="cb19-239"><a href="#cb19-239" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1000</span>)) <span class="sc">+</span></span>
+<span id="cb19-240"><a href="#cb19-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) </span>
+<span id="cb19-241"><a href="#cb19-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-242"><a href="#cb19-242" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-243"><a href="#cb19-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-244"><a href="#cb19-244" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-245"><a href="#cb19-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-246"><a href="#cb19-246" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-247"><a href="#cb19-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-248"><a href="#cb19-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-249"><a href="#cb19-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-252"><a href="#cb19-252" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb19-253"><a href="#cb19-253" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e1-slope-quartile</span></span>
-<span id="cb19-254"><a href="#cb19-254" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Mean slopes for each quartile, by condition"</span></span>
+<span id="cb19-248"><a href="#cb19-248" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb19-249"><a href="#cb19-249" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e1-slope-quartile</span></span>
+<span id="cb19-250"><a href="#cb19-250" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Mean slopes for each quartile, by condition"</span></span>
+<span id="cb19-251"><a href="#cb19-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-252"><a href="#cb19-252" aria-hidden="true" tabindex="-1"></a>new_data_grid<span class="ot">=</span><span class="fu">map_dfr</span>(<span class="dv">1</span>, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="fu">unique</span>(test[,<span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"bandInt"</span>)]))) <span class="sc">|&gt;</span> </span>
+<span id="cb19-253"><a href="#cb19-253" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(id,bandInt) <span class="sc">|&gt;</span> </span>
+<span id="cb19-254"><a href="#cb19-254" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">condit_dummy =</span> <span class="fu">ifelse</span>(condit <span class="sc">==</span> <span class="st">"Varied"</span>, <span class="dv">1</span>, <span class="dv">0</span>)) </span>
 <span id="cb19-255"><a href="#cb19-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-256"><a href="#cb19-256" aria-hidden="true" tabindex="-1"></a>new_data_grid<span class="ot">=</span><span class="fu">map_dfr</span>(<span class="dv">1</span>, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="fu">unique</span>(test[,<span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"bandInt"</span>)]))) <span class="sc">|&gt;</span> </span>
-<span id="cb19-257"><a href="#cb19-257" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(id,bandInt) <span class="sc">|&gt;</span> </span>
-<span id="cb19-258"><a href="#cb19-258" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">condit_dummy =</span> <span class="fu">ifelse</span>(condit <span class="sc">==</span> <span class="st">"Varied"</span>, <span class="dv">1</span>, <span class="dv">0</span>)) </span>
-<span id="cb19-259"><a href="#cb19-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-260"><a href="#cb19-260" aria-hidden="true" tabindex="-1"></a>indv_coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(e1_vxBMM)<span class="sc">$</span>id <span class="sc">|&gt;</span> </span>
-<span id="cb19-261"><a href="#cb19-261" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames=</span><span class="st">"id"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb19-262"><a href="#cb19-262" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="fu">starts_with</span>(<span class="st">"Est"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb19-263"><a href="#cb19-263" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e1Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id) ) <span class="sc">|&gt;</span> </span>
-<span id="cb19-264"><a href="#cb19-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span> </span>
-<span id="cb19-265"><a href="#cb19-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">rank</span>(<span class="fu">desc</span>(Estimate.bandInt)),</span>
-<span id="cb19-266"><a href="#cb19-266" aria-hidden="true" tabindex="-1"></a>         <span class="at">intErrorRank=</span><span class="fu">rank</span>((Est.Error.Intercept)),</span>
-<span id="cb19-267"><a href="#cb19-267" aria-hidden="true" tabindex="-1"></a>         <span class="at">bandErrorRank=</span><span class="fu">rank</span>((Est.Error.bandInt)),</span>
-<span id="cb19-268"><a href="#cb19-268" aria-hidden="true" tabindex="-1"></a>         <span class="at">nCond =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(intErrorRank)</span>
+<span id="cb19-256"><a href="#cb19-256" aria-hidden="true" tabindex="-1"></a>indv_coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(e1_vxBMM)<span class="sc">$</span>id <span class="sc">|&gt;</span> </span>
+<span id="cb19-257"><a href="#cb19-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames=</span><span class="st">"id"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb19-258"><a href="#cb19-258" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="fu">starts_with</span>(<span class="st">"Est"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb19-259"><a href="#cb19-259" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e1Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id) ) <span class="sc">|&gt;</span> </span>
+<span id="cb19-260"><a href="#cb19-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span> </span>
+<span id="cb19-261"><a href="#cb19-261" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">rank</span>(<span class="fu">desc</span>(Estimate.bandInt)),</span>
+<span id="cb19-262"><a href="#cb19-262" aria-hidden="true" tabindex="-1"></a>         <span class="at">intErrorRank=</span><span class="fu">rank</span>((Est.Error.Intercept)),</span>
+<span id="cb19-263"><a href="#cb19-263" aria-hidden="true" tabindex="-1"></a>         <span class="at">bandErrorRank=</span><span class="fu">rank</span>((Est.Error.bandInt)),</span>
+<span id="cb19-264"><a href="#cb19-264" aria-hidden="true" tabindex="-1"></a>         <span class="at">nCond =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(intErrorRank) <span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span>
+<span id="cb19-265"><a href="#cb19-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-266"><a href="#cb19-266" aria-hidden="true" tabindex="-1"></a>fixed_effects <span class="ot">&lt;-</span> e1_vxBMM <span class="sc">|&gt;</span> </span>
+<span id="cb19-267"><a href="#cb19-267" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(<span class="st">`</span><span class="at">^b_.*</span><span class="st">`</span>,<span class="at">regex=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(.chain,.draw,.iteration)</span>
+<span id="cb19-268"><a href="#cb19-268" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-269"><a href="#cb19-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-270"><a href="#cb19-270" aria-hidden="true" tabindex="-1"></a>fixed_effects <span class="ot">&lt;-</span> e1_vxBMM <span class="sc">|&gt;</span> </span>
-<span id="cb19-271"><a href="#cb19-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(<span class="st">`</span><span class="at">^b_.*</span><span class="st">`</span>,<span class="at">regex=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(.chain,.draw,.iteration)</span>
-<span id="cb19-272"><a href="#cb19-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-273"><a href="#cb19-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-274"><a href="#cb19-274" aria-hidden="true" tabindex="-1"></a>random_effects <span class="ot">&lt;-</span> e1_vxBMM <span class="sc">|&gt;</span> </span>
-<span id="cb19-275"><a href="#cb19-275" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">^r_id.*$</span><span class="st">`</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>, <span class="at">ndraws =</span> <span class="dv">2000</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb19-276"><a href="#cb19-276" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(.variable, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"effect"</span>, <span class="st">"id"</span>, <span class="st">"term"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">[|,|</span><span class="sc">\\</span><span class="st">]"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb19-277"><a href="#cb19-277" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(id,<span class="at">levels=</span><span class="fu">levels</span>(test<span class="sc">$</span>id))) <span class="sc">|&gt;</span> </span>
-<span id="cb19-278"><a href="#cb19-278" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> term, <span class="at">values_from =</span> .value) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(id,.chain,.draw,.iteration)</span>
-<span id="cb19-279"><a href="#cb19-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-280"><a href="#cb19-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-270"><a href="#cb19-270" aria-hidden="true" tabindex="-1"></a>random_effects <span class="ot">&lt;-</span> e1_vxBMM <span class="sc">|&gt;</span> </span>
+<span id="cb19-271"><a href="#cb19-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">^r_id.*$</span><span class="st">`</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>, <span class="at">ndraws =</span> <span class="dv">1500</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb19-272"><a href="#cb19-272" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(.variable, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"effect"</span>, <span class="st">"id"</span>, <span class="st">"term"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">[|,|</span><span class="sc">\\</span><span class="st">]"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb19-273"><a href="#cb19-273" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(id,<span class="at">levels=</span><span class="fu">levels</span>(test<span class="sc">$</span>id))) <span class="sc">|&gt;</span> </span>
+<span id="cb19-274"><a href="#cb19-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> term, <span class="at">values_from =</span> .value) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(id,.chain,.draw,.iteration)</span>
+<span id="cb19-275"><a href="#cb19-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-276"><a href="#cb19-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-277"><a href="#cb19-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-278"><a href="#cb19-278" aria-hidden="true" tabindex="-1"></a>cd <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb19-279"><a href="#cb19-279" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb19-280"><a href="#cb19-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) </span>
 <span id="cb19-281"><a href="#cb19-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-282"><a href="#cb19-282" aria-hidden="true" tabindex="-1"></a>cd <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb19-283"><a href="#cb19-283" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt) <span class="sc">|&gt;</span></span>
-<span id="cb19-284"><a href="#cb19-284" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) </span>
+<span id="cb19-282"><a href="#cb19-282" aria-hidden="true" tabindex="-1"></a>cdMed <span class="ot">&lt;-</span> cd <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> <span class="fu">median_qi</span>(Slope)  <span class="sc">|&gt;</span> </span>
+<span id="cb19-283"><a href="#cb19-283" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e1Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id)) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
+<span id="cb19-284"><a href="#cb19-284" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rankSlope=</span><span class="fu">rank</span>(Slope)) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(rankSlope)</span>
 <span id="cb19-285"><a href="#cb19-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-286"><a href="#cb19-286" aria-hidden="true" tabindex="-1"></a>cdMed <span class="ot">&lt;-</span> cd <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> <span class="fu">median_qi</span>(Slope)  <span class="sc">|&gt;</span> </span>
-<span id="cb19-287"><a href="#cb19-287" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e1Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id)) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
-<span id="cb19-288"><a href="#cb19-288" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rankSlope=</span><span class="fu">rank</span>(Slope)) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(rankSlope)</span>
-<span id="cb19-289"><a href="#cb19-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-290"><a href="#cb19-290" aria-hidden="true" tabindex="-1"></a>cdMed <span class="sc">%&gt;%</span> </span>
-<span id="cb19-291"><a href="#cb19-291" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">%&gt;%</span>  </span>
-<span id="cb19-292"><a href="#cb19-292" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="fu">enframe</span>(<span class="fu">quantile</span>(Slope, <span class="fu">c</span>(<span class="fl">0.0</span>,<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>,<span class="dv">1</span>)), <span class="st">"quantile"</span>, <span class="st">"Slope"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb19-293"><a href="#cb19-293" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>quantile,<span class="at">values_from=</span>Slope,<span class="at">names_prefix=</span><span class="st">"Q_"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-294"><a href="#cb19-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
-<span id="cb19-295"><a href="#cb19-295" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>), <span class="fu">list</span>(<span class="at">mean =</span> mean))) <span class="sc">|&gt;</span> <span class="fu">kbl</span>()</span>
-<span id="cb19-296"><a href="#cb19-296" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-297"><a href="#cb19-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-298"><a href="#cb19-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-299"><a href="#cb19-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-302"><a href="#cb19-302" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb19-303"><a href="#cb19-303" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-slope-dist</span></span>
-<span id="cb19-304"><a href="#cb19-304" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Slope estimates by participant - ordered from lowest to highest within each condition. </span></span>
-<span id="cb19-305"><a href="#cb19-305" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
-<span id="cb19-306"><a href="#cb19-306" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
+<span id="cb19-286"><a href="#cb19-286" aria-hidden="true" tabindex="-1"></a>cdMed <span class="sc">%&gt;%</span> </span>
+<span id="cb19-287"><a href="#cb19-287" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">%&gt;%</span>  </span>
+<span id="cb19-288"><a href="#cb19-288" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="fu">enframe</span>(<span class="fu">quantile</span>(Slope, <span class="fu">c</span>(<span class="fl">0.0</span>,<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>,<span class="dv">1</span>)), <span class="st">"quantile"</span>, <span class="st">"Slope"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb19-289"><a href="#cb19-289" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>quantile,<span class="at">values_from=</span>Slope,<span class="at">names_prefix=</span><span class="st">"Q_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-290"><a href="#cb19-290" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
+<span id="cb19-291"><a href="#cb19-291" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>), <span class="fu">list</span>(<span class="at">mean =</span> mean))) <span class="sc">|&gt;</span> <span class="fu">kbl</span>()</span>
+<span id="cb19-292"><a href="#cb19-292" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-293"><a href="#cb19-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-294"><a href="#cb19-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-295"><a href="#cb19-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-298"><a href="#cb19-298" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb19-299"><a href="#cb19-299" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-slope-dist</span></span>
+<span id="cb19-300"><a href="#cb19-300" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Slope estimates by participant - ordered from lowest to highest within each condition. </span></span>
+<span id="cb19-301"><a href="#cb19-301" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
+<span id="cb19-302"><a href="#cb19-302" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
+<span id="cb19-303"><a href="#cb19-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-304"><a href="#cb19-304" aria-hidden="true" tabindex="-1"></a>cdMed <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>rankSlope, <span class="at">x=</span>Slope,<span class="at">fill=</span>condit,<span class="at">color=</span>condit)) <span class="sc">+</span> </span>
+<span id="cb19-305"><a href="#cb19-305" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>.lower , <span class="at">xmax=</span>.upper)) <span class="sc">+</span> </span>
+<span id="cb19-306"><a href="#cb19-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Estimated Slope"</span>, <span class="at">y=</span><span class="st">"Participant"</span>)  <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>condit)  </span>
 <span id="cb19-307"><a href="#cb19-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-308"><a href="#cb19-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-309"><a href="#cb19-309" aria-hidden="true" tabindex="-1"></a>cdMed <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>rankSlope, <span class="at">x=</span>Slope,<span class="at">fill=</span>condit,<span class="at">color=</span>condit)) <span class="sc">+</span> </span>
-<span id="cb19-310"><a href="#cb19-310" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>.lower , <span class="at">xmax=</span>.upper)) <span class="sc">+</span> </span>
-<span id="cb19-311"><a href="#cb19-311" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Estimated Slope"</span>, <span class="at">y=</span><span class="st">"Participant"</span>)  <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>condit)  </span>
-<span id="cb19-312"><a href="#cb19-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-313"><a href="#cb19-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-314"><a href="#cb19-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-315"><a href="#cb19-315" aria-hidden="true" tabindex="-1"></a><span class="co"># cdMed %&gt;% ggplot(aes(x=Slope)) + </span></span>
-<span id="cb19-316"><a href="#cb19-316" aria-hidden="true" tabindex="-1"></a><span class="co">#   stat_halfeye(alpha=.5) +facet_wrap(~condit)</span></span>
-<span id="cb19-317"><a href="#cb19-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-318"><a href="#cb19-318" aria-hidden="true" tabindex="-1"></a><span class="co"># cdMed |&gt;  ggplot(aes(x = condit, y = Slope,fill=condit)) +</span></span>
-<span id="cb19-319"><a href="#cb19-319" aria-hidden="true" tabindex="-1"></a><span class="co">#     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +</span></span>
-<span id="cb19-320"><a href="#cb19-320" aria-hidden="true" tabindex="-1"></a><span class="co">#     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + </span></span>
-<span id="cb19-321"><a href="#cb19-321" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_jitter()</span></span>
-<span id="cb19-322"><a href="#cb19-322" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Band", y="Deviation From Target")</span></span>
-<span id="cb19-323"><a href="#cb19-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-324"><a href="#cb19-324" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-325"><a href="#cb19-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-308"><a href="#cb19-308" aria-hidden="true" tabindex="-1"></a><span class="co"># cdMed %&gt;% ggplot(aes(x=Slope)) + </span></span>
+<span id="cb19-309"><a href="#cb19-309" aria-hidden="true" tabindex="-1"></a><span class="co">#   stat_halfeye(alpha=.5) +facet_wrap(~condit)</span></span>
+<span id="cb19-310"><a href="#cb19-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-311"><a href="#cb19-311" aria-hidden="true" tabindex="-1"></a><span class="co"># cdMed |&gt;  ggplot(aes(x = condit, y = Slope,fill=condit)) +</span></span>
+<span id="cb19-312"><a href="#cb19-312" aria-hidden="true" tabindex="-1"></a><span class="co">#     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +</span></span>
+<span id="cb19-313"><a href="#cb19-313" aria-hidden="true" tabindex="-1"></a><span class="co">#     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + </span></span>
+<span id="cb19-314"><a href="#cb19-314" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_jitter()</span></span>
+<span id="cb19-315"><a href="#cb19-315" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Band", y="Deviation From Target")</span></span>
+<span id="cb19-316"><a href="#cb19-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-317"><a href="#cb19-317" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-318"><a href="#cb19-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-319"><a href="#cb19-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-322"><a href="#cb19-322" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb19-323"><a href="#cb19-323" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-indv-slopes</span></span>
+<span id="cb19-324"><a href="#cb19-324" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
+<span id="cb19-325"><a href="#cb19-325" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
 <span id="cb19-326"><a href="#cb19-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-327"><a href="#cb19-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-327"><a href="#cb19-327" aria-hidden="true" tabindex="-1"></a>nTop <span class="ot">&lt;-</span> <span class="dv">2</span></span>
 <span id="cb19-328"><a href="#cb19-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-329"><a href="#cb19-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-332"><a href="#cb19-332" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb19-333"><a href="#cb19-333" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-indv-slopes</span></span>
-<span id="cb19-334"><a href="#cb19-334" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
-<span id="cb19-335"><a href="#cb19-335" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
-<span id="cb19-336"><a href="#cb19-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-337"><a href="#cb19-337" aria-hidden="true" tabindex="-1"></a>nTop <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb19-338"><a href="#cb19-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-339"><a href="#cb19-339" aria-hidden="true" tabindex="-1"></a>combined_df <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb19-340"><a href="#cb19-340" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt) <span class="sc">|&gt;</span></span>
-<span id="cb19-341"><a href="#cb19-341" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(new_data_grid, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"id"</span>),<span class="at">relationship=</span><span class="st">"many-to-many"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb19-342"><a href="#cb19-342" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb19-343"><a href="#cb19-343" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed_effects =</span> b_Intercept <span class="sc">+</span></span>
-<span id="cb19-344"><a href="#cb19-344" aria-hidden="true" tabindex="-1"></a>      (bandInt <span class="sc">*</span> b_bandInt) <span class="sc">+</span></span>
-<span id="cb19-345"><a href="#cb19-345" aria-hidden="true" tabindex="-1"></a>      condit_dummy <span class="sc">*</span> b_conditVaried <span class="sc">+</span> </span>
-<span id="cb19-346"><a href="#cb19-346" aria-hidden="true" tabindex="-1"></a>      (bandInt <span class="sc">*</span> condit_dummy) <span class="sc">*</span> <span class="st">`</span><span class="at">b_conditVaried:bandInt</span><span class="st">`</span> ,  <span class="co"># Note: Replace : with correct operator</span></span>
-<span id="cb19-347"><a href="#cb19-347" aria-hidden="true" tabindex="-1"></a>    <span class="at">random_effects =</span> Intercept <span class="sc">+</span> bandInt_RF,  <span class="co"># Assuming random effects for intercept and bandInt</span></span>
-<span id="cb19-348"><a href="#cb19-348" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> fixed_effects <span class="sc">+</span> random_effects</span>
-<span id="cb19-349"><a href="#cb19-349" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb19-350"><a href="#cb19-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-351"><a href="#cb19-351" aria-hidden="true" tabindex="-1"></a>combined_df <span class="sc">|&gt;</span> </span>
-<span id="cb19-352"><a href="#cb19-352" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&lt;=</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id)) )  <span class="sc">|&gt;</span> </span>
-<span id="cb19-353"><a href="#cb19-353" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, bandInt) <span class="sc">|&gt;</span></span>
-<span id="cb19-354"><a href="#cb19-354" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">200</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-355"><a href="#cb19-355" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>estimate)) <span class="sc">+</span> </span>
-<span id="cb19-356"><a href="#cb19-356" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">intercept=</span>Intercept<span class="sc">+</span>b_Intercept, <span class="at">slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt), <span class="at">color=</span><span class="st">"grey50"</span>, <span class="at">alpha=</span>.<span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb19-357"><a href="#cb19-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">data=</span>indv_coefs <span class="sc">|&gt;</span> </span>
-<span id="cb19-358"><a href="#cb19-358" aria-hidden="true" tabindex="-1"></a>                <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&lt;=</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))),<span class="fu">aes</span>(<span class="at">intercept=</span>Estimate.Intercept,<span class="at">slope=</span>Estimate.bandInt),<span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb19-359"><a href="#cb19-359" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">data=</span>test <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&lt;=</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))), <span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>vx, <span class="at">color=</span>vb)) <span class="sc">+</span></span>
-<span id="cb19-360"><a href="#cb19-360" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,id),<span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb19-361"><a href="#cb19-361" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
-<span id="cb19-362"><a href="#cb19-362" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(test<span class="sc">$</span>vb), </span>
-<span id="cb19-363"><a href="#cb19-363" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
-<span id="cb19-364"><a href="#cb19-364" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">"X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)</span>
+<span id="cb19-329"><a href="#cb19-329" aria-hidden="true" tabindex="-1"></a>combined_df <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb19-330"><a href="#cb19-330" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb19-331"><a href="#cb19-331" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(new_data_grid, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"id"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb19-332"><a href="#cb19-332" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb19-333"><a href="#cb19-333" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed_effects =</span> b_Intercept <span class="sc">+</span></span>
+<span id="cb19-334"><a href="#cb19-334" aria-hidden="true" tabindex="-1"></a>      (bandInt <span class="sc">*</span> b_bandInt) <span class="sc">+</span></span>
+<span id="cb19-335"><a href="#cb19-335" aria-hidden="true" tabindex="-1"></a>      condit_dummy <span class="sc">*</span> b_conditVaried <span class="sc">+</span> </span>
+<span id="cb19-336"><a href="#cb19-336" aria-hidden="true" tabindex="-1"></a>      (bandInt <span class="sc">*</span> condit_dummy) <span class="sc">*</span> <span class="st">`</span><span class="at">b_conditVaried:bandInt</span><span class="st">`</span> ,  </span>
+<span id="cb19-337"><a href="#cb19-337" aria-hidden="true" tabindex="-1"></a>    <span class="at">random_effects =</span> Intercept <span class="sc">+</span> bandInt_RF,  <span class="co"># Assuming random effects for intercept and bandInt</span></span>
+<span id="cb19-338"><a href="#cb19-338" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> (b_Intercept <span class="sc">+</span> Intercept) <span class="sc">+</span> (bandInt<span class="sc">*</span>(b_bandInt<span class="sc">+</span>bandInt_RF)) <span class="sc">+</span> (bandInt <span class="sc">*</span> condit_dummy) <span class="sc">*</span> <span class="st">`</span><span class="at">b_conditVaried:bandInt</span><span class="st">`</span></span>
+<span id="cb19-339"><a href="#cb19-339" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-340"><a href="#cb19-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-341"><a href="#cb19-341" aria-hidden="true" tabindex="-1"></a>combined_df <span class="sc">|&gt;</span> </span>
+<span id="cb19-342"><a href="#cb19-342" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&lt;=</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id)) )  <span class="sc">|&gt;</span> </span>
+<span id="cb19-343"><a href="#cb19-343" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb19-344"><a href="#cb19-344" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">200</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-345"><a href="#cb19-345" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>estimate)) <span class="sc">+</span> </span>
+<span id="cb19-346"><a href="#cb19-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">intercept=</span>Intercept<span class="sc">+</span>b_Intercept, <span class="at">slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt), <span class="at">color=</span><span class="st">"grey50"</span>, <span class="at">alpha=</span>.<span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb19-347"><a href="#cb19-347" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">data=</span>indv_coefs <span class="sc">|&gt;</span> </span>
+<span id="cb19-348"><a href="#cb19-348" aria-hidden="true" tabindex="-1"></a>                <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&lt;=</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))),<span class="fu">aes</span>(<span class="at">intercept=</span>Estimate.Intercept,<span class="at">slope=</span>Estimate.bandInt),<span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb19-349"><a href="#cb19-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">data=</span>test <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&lt;=</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))), <span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>vx, <span class="at">color=</span>vb)) <span class="sc">+</span></span>
+<span id="cb19-350"><a href="#cb19-350" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,id),<span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb19-351"><a href="#cb19-351" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
+<span id="cb19-352"><a href="#cb19-352" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(test<span class="sc">$</span>vb), </span>
+<span id="cb19-353"><a href="#cb19-353" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
+<span id="cb19-354"><a href="#cb19-354" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">"X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)</span>
+<span id="cb19-355"><a href="#cb19-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-356"><a href="#cb19-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-357"><a href="#cb19-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-358"><a href="#cb19-358" aria-hidden="true" tabindex="-1"></a>combined_df <span class="sc">|&gt;</span> <span class="fu">indv_model_plot</span>(indv_coefs, testAvg, <span class="at">rank_variable=</span>Estimate.bandInt,<span class="at">n_sbj=</span><span class="dv">4</span>,<span class="st">"max"</span>)</span>
+<span id="cb19-359"><a href="#cb19-359" aria-hidden="true" tabindex="-1"></a>combined_df <span class="sc">|&gt;</span> <span class="fu">indv_model_plot</span>(indv_coefs, testAvg, <span class="at">rank_variable=</span>Estimate.bandInt,<span class="at">n_sbj=</span><span class="dv">4</span>,<span class="st">"min"</span>)</span>
+<span id="cb19-360"><a href="#cb19-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-361"><a href="#cb19-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-362"><a href="#cb19-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-363"><a href="#cb19-363" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-364"><a href="#cb19-364" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-365"><a href="#cb19-365" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-366"><a href="#cb19-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-367"><a href="#cb19-367" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-368"><a href="#cb19-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-369"><a href="#cb19-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-370"><a href="#cb19-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-373"><a href="#cb19-373" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb19-374"><a href="#cb19-374" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-indv-slopes-small</span></span>
-<span id="cb19-375"><a href="#cb19-375" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the smallest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
-<span id="cb19-376"><a href="#cb19-376" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
-<span id="cb19-377"><a href="#cb19-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-378"><a href="#cb19-378" aria-hidden="true" tabindex="-1"></a>nTop <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb19-379"><a href="#cb19-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-380"><a href="#cb19-380" aria-hidden="true" tabindex="-1"></a>combined_df <span class="sc">|&gt;</span> </span>
-<span id="cb19-381"><a href="#cb19-381" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&gt;</span>nCond<span class="sc">-</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id)) )  <span class="sc">|&gt;</span> </span>
-<span id="cb19-382"><a href="#cb19-382" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, bandInt) <span class="sc">|&gt;</span></span>
-<span id="cb19-383"><a href="#cb19-383" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">200</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-384"><a href="#cb19-384" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>estimate)) <span class="sc">+</span> </span>
-<span id="cb19-385"><a href="#cb19-385" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">intercept=</span>Intercept<span class="sc">+</span>b_Intercept, <span class="at">slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt), <span class="at">color=</span><span class="st">"grey50"</span>, <span class="at">alpha=</span>.<span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb19-386"><a href="#cb19-386" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">data=</span>indv_coefs <span class="sc">|&gt;</span> </span>
-<span id="cb19-387"><a href="#cb19-387" aria-hidden="true" tabindex="-1"></a>                <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&gt;</span>nCond<span class="sc">-</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))),<span class="fu">aes</span>(<span class="at">intercept=</span>Estimate.Intercept,<span class="at">slope=</span>Estimate.bandInt),<span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb19-388"><a href="#cb19-388" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">data=</span>test <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&gt;</span>nCond<span class="sc">-</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))), <span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>vx, <span class="at">color=</span>vb)) <span class="sc">+</span></span>
-<span id="cb19-389"><a href="#cb19-389" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,id),<span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb19-390"><a href="#cb19-390" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
-<span id="cb19-391"><a href="#cb19-391" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(test<span class="sc">$</span>vb), </span>
-<span id="cb19-392"><a href="#cb19-392" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
-<span id="cb19-393"><a href="#cb19-393" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">"X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)</span>
-<span id="cb19-394"><a href="#cb19-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-369"><a href="#cb19-369" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb19-370"><a href="#cb19-370" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-indv-slopes-small</span></span>
+<span id="cb19-371"><a href="#cb19-371" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the smallest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
+<span id="cb19-372"><a href="#cb19-372" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
+<span id="cb19-373"><a href="#cb19-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-374"><a href="#cb19-374" aria-hidden="true" tabindex="-1"></a>nTop <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb19-375"><a href="#cb19-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-376"><a href="#cb19-376" aria-hidden="true" tabindex="-1"></a>combined_df <span class="sc">|&gt;</span> </span>
+<span id="cb19-377"><a href="#cb19-377" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&gt;</span>nCond<span class="sc">-</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id)) )  <span class="sc">|&gt;</span> </span>
+<span id="cb19-378"><a href="#cb19-378" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb19-379"><a href="#cb19-379" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">200</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-380"><a href="#cb19-380" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>estimate)) <span class="sc">+</span> </span>
+<span id="cb19-381"><a href="#cb19-381" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">intercept=</span>Intercept<span class="sc">+</span>b_Intercept, <span class="at">slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt), <span class="at">color=</span><span class="st">"grey50"</span>, <span class="at">alpha=</span>.<span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb19-382"><a href="#cb19-382" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">data=</span>indv_coefs <span class="sc">|&gt;</span> </span>
+<span id="cb19-383"><a href="#cb19-383" aria-hidden="true" tabindex="-1"></a>                <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&gt;</span>nCond<span class="sc">-</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))),<span class="fu">aes</span>(<span class="at">intercept=</span>Estimate.Intercept,<span class="at">slope=</span>Estimate.bandInt),<span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb19-384"><a href="#cb19-384" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">data=</span>test <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> (indv_coefs <span class="sc">|&gt;</span> <span class="fu">filter</span>(rank<span class="sc">&gt;</span>nCond<span class="sc">-</span>nTop) <span class="sc">|&gt;</span> <span class="fu">pull</span>(id))), <span class="fu">aes</span>(<span class="at">x=</span>bandInt,<span class="at">y=</span>vx, <span class="at">color=</span>vb)) <span class="sc">+</span></span>
+<span id="cb19-385"><a href="#cb19-385" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_nested_wrap</span>(<span class="fu">vars</span>(condit,id),<span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb19-386"><a href="#cb19-386" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
+<span id="cb19-387"><a href="#cb19-387" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(test<span class="sc">$</span>vb), </span>
+<span id="cb19-388"><a href="#cb19-388" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
+<span id="cb19-389"><a href="#cb19-389" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">"X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)</span>
+<span id="cb19-390"><a href="#cb19-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-391"><a href="#cb19-391" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-392"><a href="#cb19-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-393"><a href="#cb19-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-394"><a href="#cb19-394" aria-hidden="true" tabindex="-1"></a><span class="fu">## Acknowledgments {.appendix}</span></span>
 <span id="cb19-395"><a href="#cb19-395" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-396"><a href="#cb19-396" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-396"><a href="#cb19-396" aria-hidden="true" tabindex="-1"></a>I am grateful for the insightful comments offered by the anonymous peer reviewers at Books &amp; Texts. The generosity and expertise of one and all have improved this study in innumerable ways and saved me from many errors; those that inevitably remain are entirely my own responsibility.</span>
 <span id="cb19-397"><a href="#cb19-397" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-398"><a href="#cb19-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-399"><a href="#cb19-399" aria-hidden="true" tabindex="-1"></a><span class="fu">## Acknowledgments {.appendix}</span></span>
+<span id="cb19-399"><a href="#cb19-399" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-400"><a href="#cb19-400" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-401"><a href="#cb19-401" aria-hidden="true" tabindex="-1"></a>I am grateful for the insightful comments offered by the anonymous peer reviewers at Books &amp; Texts. The generosity and expertise of one and all have improved this study in innumerable ways and saved me from many errors; those that inevitably remain are entirely my own responsibility.</span>
+<span id="cb19-401"><a href="#cb19-401" aria-hidden="true" tabindex="-1"></a><span class="fu">#### E1 Results Discussion</span></span>
 <span id="cb19-402"><a href="#cb19-402" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-403"><a href="#cb19-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-403"><a href="#cb19-403" aria-hidden="true" tabindex="-1"></a>NEEDS TO BE WRITTEN</span>
 <span id="cb19-404"><a href="#cb19-404" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-405"><a href="#cb19-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-406"><a href="#cb19-406" aria-hidden="true" tabindex="-1"></a><span class="fu">#### E1 Results Discussion</span></span>
-<span id="cb19-407"><a href="#cb19-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-408"><a href="#cb19-408" aria-hidden="true" tabindex="-1"></a>NEEDS TO BE WRITTEN</span>
-<span id="cb19-409"><a href="#cb19-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-410"><a href="#cb19-410" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-411"><a href="#cb19-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-414"><a href="#cb19-414" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb19-415"><a href="#cb19-415" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: Band Deviation</span></span>
-<span id="cb19-416"><a href="#cb19-416" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Deviations from target"</span></span>
-<span id="cb19-417"><a href="#cb19-417" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout: [[70, 30],[-5]]</span></span>
+<span id="cb19-406"><a href="#cb19-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-409"><a href="#cb19-409" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb19-410"><a href="#cb19-410" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: Band Deviation</span></span>
+<span id="cb19-411"><a href="#cb19-411" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Deviations from target"</span></span>
+<span id="cb19-412"><a href="#cb19-412" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout: [[70, 30],[-5]]</span></span>
+<span id="cb19-413"><a href="#cb19-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-414"><a href="#cb19-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-415"><a href="#cb19-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-416"><a href="#cb19-416" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-417"><a href="#cb19-417" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-418"><a href="#cb19-418" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-419"><a href="#cb19-419" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-420"><a href="#cb19-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-421"><a href="#cb19-421" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-421"><a href="#cb19-421" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-422"><a href="#cb19-422" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-423"><a href="#cb19-423" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-424"><a href="#cb19-424" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-425"><a href="#cb19-425" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-426"><a href="#cb19-426" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-427"><a href="#cb19-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-427"><a href="#cb19-427" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
 <span id="cb19-428"><a href="#cb19-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-429"><a href="#cb19-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-430"><a href="#cb19-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-429"><a href="#cb19-429" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb19-430"><a href="#cb19-430" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb19-431"><a href="#cb19-431" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-432"><a href="#cb19-432" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-433"><a href="#cb19-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-434"><a href="#cb19-434" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
-<span id="cb19-435"><a href="#cb19-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-436"><a href="#cb19-436" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb19-437"><a href="#cb19-437" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb19-438"><a href="#cb19-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-439"><a href="#cb19-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-440"><a href="#cb19-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-441"><a href="#cb19-441" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix</span></span>
-<span id="cb19-442"><a href="#cb19-442" aria-hidden="true" tabindex="-1"></a>{{&lt; include Appendix/E1_Appendix.qmd &gt;}}</span>
+<span id="cb19-434"><a href="#cb19-434" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix</span></span>
+<span id="cb19-435"><a href="#cb19-435" aria-hidden="true" tabindex="-1"></a>{{&lt; include Appendix/E1_Appendix.qmd &gt;}}</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

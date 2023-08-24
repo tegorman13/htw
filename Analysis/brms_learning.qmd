@@ -13,8 +13,8 @@ code-fold: true
 
 ```{r}
 pacman::p_load(tidyverse,tidybayes,brms,bayesplot,broom,broom.mixed,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist)
-e1 <- readRDS(here("data/e1_08-04-23.rds"))
-source(here("Functions/Display_Functions.R"))
+e1 <- readRDS(here("data/e1_08-21-23.rds"))
+source(here("Functions/Packages.R"))
 train <- e1 |> filter(expMode2 == "Train")  
 train$bandIntS <- scale(train$bandInt)
 train$distS <- scale(train$dist)

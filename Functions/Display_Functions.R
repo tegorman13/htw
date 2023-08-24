@@ -81,7 +81,8 @@ indv_model_plot <- function(combined_df, indv_coefs, testAvg, rank_variable = "E
                 aes(intercept = Estimate.Intercept, slope = Estimate.bandInt), color = "red") +
     stat_halfeye() +
     stat_halfeye(data = testAvg  |> 
-                   filter(id %in% (indv_coefs |> slice_fn(Estimate.Intercept, n = n_sbj, by = condit))), 
+                   filter(id %in% (indv_coefs |> slice_fn({{ rank_variable }}, n = n_sbj, by = condit) |> 
+                                     pull(id))), 
                  aes(x = bandInt, y = vx), color = "blue") +
     ggh4x::facet_nested_wrap(vars(condit, id),ncol=2)
 }

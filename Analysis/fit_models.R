@@ -81,6 +81,8 @@ e1_extrap_VxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                   iter=5000,chains=4, prior=prior)
 
 
+
+
 modelName <- "e2_extrap_testDistBand"
 e2_extrap_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
                   data=testE2 |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),

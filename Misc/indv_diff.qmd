@@ -21,7 +21,7 @@ testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
 e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
-                        data=test,file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k_Ml1")),
+                        data=test,file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k")),
                         iter=5000,chains=4,silent=0,
                         control=list(adapt_delta=0.94, max_treedepth=13))
 mt2 <-GetModelStats(e1_vxBMM ) |> kable(escape=F,booktabs=T)
