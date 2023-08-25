@@ -1,0 +1,359 @@
+---
+title: "HTW E2 Testing"
+categories: [Analysis, R, Bayesian]
+---
+
+```{r setup, include=FALSE}
+source(here::here("Functions", "packages.R"))
+testE2 <- readRDS(here("data/e2_08-04-23.rds")) |> filter(expMode2 == "Test") 
+options(brms.backend="cmdstanr",mc.cores=4)
+e2Sbjs <- testE2 |> group_by(id,condit) |> summarise(n=n())
+testE2Avg <- testE2 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
+  summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
+```
+
+
+@fig-design-e2 illustrates the design of Experiment 2. The stages of the experiment (i.e. training, testing no-feedback, test with feedback), are identical to that of Experiment 1. The only change is that Experiment 2 participants train, and then test, on bands in the reverse order of Experiment 1 (i.e. training on the softer bands; and testing on the harder bands). 
+```{dot}
+//| label: fig-design-e2
+//| fig-cap: "Experiment 2 Design. Constant and Varied participants complete different training conditions. The training and testing bands are the reverse of Experiment 1. "
+//| fig-width: 8.0
+//| fig-height: 2.5
+//| fig-responsive: false
+digraph {
+  graph [layout = dot, rankdir = LR]
+
+  // define the global styles of the nodes
+  node [shape = rectangle, style = filled]
+
+  data1 [label = " Varied Training \n100-300\n350-550\n600-800", fillcolor = "#FF0000"]
+  data2 [label = " Constant Training \n600-800", fillcolor = "#00A08A"]
+  Test3 [label = "    Final Test \n  Novel With Feedback  \n800-1000\n1000-1200\n1200-1400", fillcolor = "#ECCBAE"]
+
+  // edge definitions with the node IDs
+  data1 -> Test1
+  data2 -> Test1
+  subgraph cluster {
+    label = "Test Phase \n(Counterbalanced Order)"
+    Test1 [label = "Test  \nNovel Bands  \n800-1000\n1000-1200\n1200-1400", fillcolor = "#ECCBAE"]
+    Test2 [label = "  Test \n  Varied Training Bands  \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]
+    Test1 -> Test2
+  }
+
+  Test2 -> Test3
+}
+
+```
+
+
+
+
+
+
+
+## Results
+
+### Testing Phase - No feedback. 
+
+In the first part of the testing phase, participants are tested from each of the velocity bands, and receive no feedback after each throw. 
+
+
+#### Deviation From Target Band
+
+Descriptive summaries testing deviation data are provided in @tbl-e2-test-nf-deviation and @fig-e2-test-dev. 
+To model differences in accuracy between groups, we used Bayesian mixed effects regression models to the trial level data from the testing phase. The primary model predicted the absolute deviation from the target velocity band (dist) as a function of training condition (condit), target velocity band (band), and their interaction, with random intercepts and slopes for each participant (id). 
+
+\begin{equation}
+dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \beta_3 \cdot condit_{ij} \cdot band_{ij} + b_{0i} + b_{1i} \cdot band_{ij} + \epsilon_{ij}
+\end{equation}
+
+```{r}
+#| label: tbl-e2-test-nf-deviation
+#| tbl-cap: "Testing Deviation - Empirical Summary"
+#| tbl-subcap: ["Constant Testing - Deviation", "Varied Testing - Deviation"]
+#| layout-ncol: 2
+#| echo: fenced
+
+result <- test_summary_table(testE2, "dist", mfun = list(mean = mean, median = median, sd = sd))
+result$constant
+result$varied
+
+```
+
+```{r}
+#| label: fig-e2-test-dev
+#| fig-cap: E2. Deviations from target band during testing without feedback stage. 
+testE2 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+  labs(x="Band", y="Deviation From Target")
+```
+
+
+
+
+```{r}
+#| label: tbl-e2-bmm-dist
+#| tbl-cap: "Experiment 2. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band"
+#contrasts(test$condit) 
+
+# contrasts(testE2$vb)
+
+modelName <- "e2_testDistBand_RF_5K"
+e2_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
+                      data=testE2,file=paste0(here::here("data/model_cache",modelName)),
+                      iter=5000,chains=4)
+mp2 <- GetModelStats(e2_distBMM) |> kable(escape=F,booktabs=T)
+mp2
+```
+
+
+As shown in @tbl-e2-bmm-dist, the posterior distribution for the effect of training condition in Experiment 2 is modestly suggestive of a beneficial effect of training variation (β = -70.0, 95% CI [-156.87, 16.66]), with 94% of the posterior falling in the direction of a varied advantage. (SHOULD PROBABLY DO ALTERNATE ANALYSIS THAT ONLY CONSIDERS THE NOVEL EXTRAPOLATION BANDS)
+
+
+```{r}
+#| label: fig-e2-bmm-dist
+#| fig-cap: E2. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals. 
+
+
+e2_distBMM |> emmeans( ~condit + bandInt, 
+                       at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
+  gather_emmeans_draws() |>
+  ggplot(aes(x = bandInt, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() +
+  stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
+    ylab("Predicted Deviation") + xlab("Velocity Band")+
+  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                     labels = levels(testE2$vb), 
+                     limits = c(0, 1400)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+```
+
+
+
+
+
+```{r}
+#| label: fig-e2-ame
+#| fig-cap: E2. Predicted Means Per Condition and Band, and Average Marginal Effect (Constant - Varied)
+#| fig-width: 10
+#| fig-height: 10
+new_data_grid=map_dfr(1, ~data.frame(unique(testE2[,c("id","condit","bandInt")])))
+
+cSamp <- e2_distBMM |> 
+  emmeans("condit",by="bandInt",at=list(bandInt=c(100,350,600,800,1000,1200)),
+          epred = TRUE, re_formula = NA) |> 
+  pairs() |> gather_emmeans_draws()  |>
+  group_by(contrast, .draw,bandInt) |> summarise(value=mean(.value), n=n())
+
+ ameBand <- cSamp |> ggplot(aes(x=value,y="")) + 
+  stat_halfeye() + 
+  geom_vline(xintercept=0,alpha=.4)+
+  facet_wrap(~bandInt,ncol=1) + labs(x="Marginal Effect (Constant - Varied)", y= NULL)+
+  ggtitle("Average Marginal Effect")
+
+bothConditGM <- e2_distBMM %>%
+  epred_draws(newdata = new_data_grid,ndraws = 2000, re_formula = NA) |>
+  ggplot(aes(x=.epred,y="Mean",fill=condit)) + 
+  stat_halfeye() +facet_wrap(~bandInt, ncol = 1) +
+  labs(x="Predicted Deviation", y=NULL)+
+  ggtitle("Grand Means") +theme(legend.position = "bottom")
+
+(bothConditGM | ameBand) + plot_layout(widths=c(2,1.0))
+```
+
+
+
+#### Discrimination between Velocity Bands
+
+In addition to accuracy/deviation. We also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). @tbl-e2-test-nf-vx shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants. 
+
+\begin{equation}
+vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \beta_3 \cdot condit_{ij} \cdot bandInt_{ij} + b_{0i} + b_{1i} \cdot bandInt_{ij} + \epsilon_{ij}
+\end{equation}
+
+
+
+
+```{r}
+#| label: fig-e2-test-vx
+#| fig-cap: E2 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. 
+#| fig-width: 11
+#| fig-height: 9
+testE2 %>% group_by(id,vb,condit) |> plot_distByCondit()
+
+```
+
+
+```{r}
+#| label: tbl-e2-test-nf-vx
+#| tbl-cap: "Testing vx - Empirical Summary"
+#| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]
+#| layout-ncol: 2
+#| echo: fenced
+
+result <- test_summary_table(testE2, "vx", mfun = list(mean = mean, median = median, sd = sd))
+result$constant 
+result$varied 
+
+```
+
+
+
+
+```{r}
+#| label: tbl-e2-bmm-vx
+#| tbl-cap: "Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
+e2_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
+                        data=testE2,file=paste0(here::here("data/model_cache", "e2_testVxBand_RF_5k")),
+                        iter=5000,chains=4,silent=0,
+                        control=list(adapt_delta=0.94, max_treedepth=13))
+mt3 <-GetModelStats(e2_vxBMM ) |> kable(escape=F,booktabs=T)
+mt3
+```
+
+
+
+See @tbl-e2-bmm-vx for the full model results. The estimated coefficient for training condition (β = 63.49, 95% CI [-133.97, 113.98]) suggests that the varied group tends to produce harder throws than the constant group. More relevant to the issue of discrimination is the slope on Velocity Band (β = 0.71, 95% CI [.58, .84]), which is quite similar to best fitting slope value obtained in Experiment 1 (β = 0.69)
+
+```{r}
+#| label: fig-e2-bmm-vx
+#| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. 
+
+e2_vxBMM |> emmeans( ~condit + bandInt, 
+                       at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
+  gather_emmeans_draws() |>
+  ggplot(aes(x = bandInt, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() +
+  stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
+  ylab("Predicted X Velocity") + xlab("Band")+
+  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                     labels = levels(testE2$vb), 
+                     limits = c(0, 1400)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+```
+
+
+
+```{r}
+#| label: fig-e2-slope-dist
+#| fig-cap: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 100 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. 
+#| fig-height: 9
+#| fig-width: 10
+
+new_data_grid=map_dfr(1, ~data.frame(unique(testE2[,c("id","condit","bandInt")]))) |> 
+  dplyr::arrange(id,bandInt) |> 
+  mutate(condit_dummy = ifelse(condit == "Varied", 1, 0)) 
+
+indv_coefs <- coef(e2_vxBMM)$id |> 
+  as_tibble(rownames="id") |> 
+  select(id, starts_with("Est")) |>
+  left_join(e2Sbjs, by=join_by(id) ) |> 
+  group_by(condit) |> 
+  mutate(rank = rank(desc(Estimate.bandInt)),
+         intErrorRank=rank((Est.Error.Intercept)),
+         bandErrorRank=rank((Est.Error.bandInt)),
+         nCond = n()) |> arrange(intErrorRank)
+
+fixed_effects <- e2_vxBMM |> 
+  spread_draws(`^b_.*`,regex=TRUE) |> arrange(.chain,.draw,.iteration)
+
+
+random_effects <- e2_vxBMM |> 
+  gather_draws(`^r_id.*$`, regex = TRUE, ndraws = 2000) |> 
+  separate(.variable, into = c("effect", "id", "term"), sep = "\\[|,|\\]") |> 
+  mutate(id = factor(id,levels=levels(testE2$id))) |> 
+  pivot_wider(names_from = term, values_from = .value) |> arrange(id,.chain,.draw,.iteration)
+
+cd <- left_join(random_effects, fixed_effects, by = join_by(".chain", ".iteration", ".draw")) |> 
+  rename(bandInt_RF = bandInt) |>
+  mutate(Slope=bandInt_RF+b_bandInt) |> group_by(id) 
+
+cdMed <- cd |> group_by(id) |> median_qi(Slope)  |> 
+  left_join(e2Sbjs, by=join_by(id)) |> group_by(condit) |>
+  mutate(rankSlope=rank(Slope)) |> arrange(rankSlope)
+
+cdMed %>% ggplot(aes(y=rankSlope, x=Slope,fill=condit,color=condit)) + 
+  geom_pointrange(aes(xmin=.lower , xmax=.upper)) + 
+  labs(x="Estimated Slope", y="Participant")  + facet_wrap(~condit)  
+
+# cdMed |>  ggplot(aes(x = condit, y = Slope,fill=condit)) +
+#     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+#     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+#   geom_jitter()
+#   labs(x="Band", y="Deviation From Target")
+
+```
+
+
+
+
+
+
+
+```{r}
+#| label: fig-e2-indv-slopes
+#| fig-cap: Slope estimates by participant - ordered from lowest to highest within each condition. 
+#| fig-height: 11
+
+nTop <- 2
+
+combined_df <- left_join(random_effects, fixed_effects, by = join_by(".chain", ".iteration", ".draw")) |> 
+  rename(bandInt_RF = bandInt) |>
+  right_join(new_data_grid, by = join_by("id"),relationship="many-to-many") |> 
+  mutate(
+    fixed_effects = b_Intercept +
+      (bandInt * b_bandInt) +
+      condit_dummy * b_conditVaried + 
+      (bandInt * condit_dummy) * `b_conditVaried:bandInt` ,  # Note: Replace : with correct operator
+    random_effects = Intercept + bandInt_RF,  # Assuming random effects for intercept and bandInt
+    estimate = fixed_effects + random_effects
+  )
+
+combined_df |> 
+  filter(id %in% (indv_coefs |> filter(rank<=nTop) |> pull(id)) )  |> 
+  group_by(id, bandInt) |>
+  sample_n(200) |>
+  ggplot(aes(x=bandInt,y=estimate)) + 
+  geom_abline(aes(intercept=Intercept+b_Intercept, slope=bandInt_RF+b_bandInt), color="grey50", alpha=.1) +
+  geom_abline(data=indv_coefs |> 
+                filter(id %in% (indv_coefs |> filter(rank<=nTop) |> pull(id))),aes(intercept=Estimate.Intercept,slope=Estimate.bandInt),color="red") +
+  stat_pointinterval(data=testE2 |> filter(id %in% (indv_coefs |> filter(rank<=nTop) |> pull(id))), aes(x=bandInt,y=vx, color=vb)) +
+  facet_nested_wrap(vars(condit,id),ncol = 2) +
+  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                     labels = levels(testE2$vb), 
+                     limits = c(0, 1400)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +  ylab("X Velocity") + xlab("Band")
+
+
+```
+
+
+
+
+```{r}
+#| label: fig-e2-indv-slopes-small
+#| fig-cap: Subset of Varied and Constant Participants with the smallest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. 
+#| fig-height: 11
+
+nTop <- 2
+
+
+combined_df |> 
+  filter(id %in% (indv_coefs |> filter(rank>nCond-nTop) |> pull(id)) )  |> 
+  group_by(id, bandInt) |>
+  sample_n(200) |>
+  ggplot(aes(x=bandInt,y=estimate)) + 
+  geom_abline(aes(intercept=Intercept+b_Intercept, slope=bandInt_RF+b_bandInt), color="grey50", alpha=.1) +
+  geom_abline(data=indv_coefs |> 
+                filter(id %in% (indv_coefs |> filter(rank>nCond-nTop) |> pull(id))),aes(intercept=Estimate.Intercept,slope=Estimate.bandInt),color="red") +
+  stat_pointinterval(data=testE2 |> filter(id %in% (indv_coefs |> filter(rank>nCond-nTop) |> pull(id))), aes(x=bandInt,y=vx, color=vb)) +
+  facet_nested_wrap(vars(condit,id),ncol = 2) +
+  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                     labels = levels(testE2$vb), 
+                     limits = c(0, 1400)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +  ylab("X Velocity") + xlab("Band")
+
+
+```
+
