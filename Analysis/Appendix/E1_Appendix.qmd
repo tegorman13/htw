@@ -240,3 +240,38 @@ epTrial <- dist_pred  |>
 
 epId + epTrial
 ```
+
+
+
+
+```{r}
+#| label: fig-e1-ame
+#| fig-cap: E1. Predicted Means Per Condition and Band, and Average Marginal Effect (Constant - Varied)
+#| fig-width: 10
+#| fig-height: 10
+
+
+new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")])))
+
+cSamp <- e1_distBMM  |> 
+  emmeans("condit",by="bandInt",at=list(bandInt=c(100,350,600,800,1000,1200)),
+          epred = TRUE, re_formula = NA) |> 
+  pairs() |> gather_emmeans_draws()  |>
+  group_by(contrast, .draw,bandInt) |> summarise(value=mean(.value), n=n())
+
+
+ ameBand <- cSamp |> ggplot(aes(x=value,y="")) + 
+  stat_halfeye() + 
+  geom_vline(xintercept=0,alpha=.4)+
+  facet_wrap(~bandInt,ncol=1) + labs(x="Marginal Effect (Constant - Varied)", y= NULL)+
+  ggtitle("Average Marginal Effect")
+
+bothConditGM <- e1_distBMM %>%
+  epred_draws(newdata = new_data_grid,ndraws = 2000, re_formula = NA) |>
+  ggplot(aes(x=.epred,y="Mean",fill=condit)) + 
+  stat_halfeye() +facet_wrap(~bandInt, ncol = 1) +
+  labs(x="Predicted Deviation", y=NULL)+
+  ggtitle("Grand Means") +theme(legend.position = "bottom")
+
+(bothConditGM | ameBand) + plot_layout(widths=c(2,1.0))
+```
