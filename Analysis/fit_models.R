@@ -138,10 +138,10 @@ e1_gr_vxBMM <- brm(bf, data=test,file=paste0(here::here("data/model_cache", mode
 
 
 modelName <- "e1_testVxCondit_grRF2"
-b.eq2 <- bf(vx ~ condit  + (bandInt|condit) + (1 + bandInt|gr(id, by = condit)))
+b.eq2 <- bf(vx ~ condit  + (bandInt||condit) + (1 + bandInt||id))
 e1_gr2_vxBMM <- brm(b.eq2, data=test,file=paste0(here::here("data/model_cache", modelName)),
-                   iter=5000,chains=4,silent=0, prior=prior, 
-                   control=list(adapt_delta=0.94, max_treedepth=13))
+                   iter=2000,chains=3,silent=0, prior=prior, 
+                   control=list(adapt_delta=0.90, max_treedepth=11))
 
 
 
