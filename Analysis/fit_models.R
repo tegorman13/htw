@@ -204,6 +204,10 @@ e1_condRF_vx <- brm(vx ~ condit + (1|bandInt) + (1 + bandInt||condit) + (1 + ban
                   iter=5000,chains=4)
 
 
+modelName <- "e1__condRF_vx2"
+e1_condRF_vx <- brm(vx ~ condit + (1+condit|bandInt) + (1 + bandInt||id),
+                    data=test,file=paste0(here::here("data/model_cache",modelName)),
+                    iter=2000,chains=3)
 
 
 
