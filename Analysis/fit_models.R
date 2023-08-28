@@ -124,6 +124,12 @@ e1_vxB_CpB<- brm(vx ~ condit + bandInt + (1 + bandInt|id),
                         iter=2000,chains=4,silent=0, prior=prior, 
                         control=list(adapt_delta=0.92, max_treedepth=11))
 
+modelName <- "e1_conditPlusBand_RF_gr"
+e1_vxB_CpB<- brm(vx ~ condit + bandInt + (1 + bandInt|gr(id,by=condit)),
+                        data=test,file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, prior=prior, 
+                        control=list(adapt_delta=0.92, max_treedepth=11))
+
 
 
 #### Grouped RF models
