@@ -1,21 +1,77 @@
 source(here::here("Functions", "packages.R"))
-test <- readRDS(here("data/e1_08-21-23.rds")) |>  filter(expMode2 == "Test") 
+
+test <- readRDS(here("data/e1_08-21-23.rds")) |>  filter(expMode2 == "Test") |>
+  select(id,condit,bandInt,vb,vx,dist,sdist,bandType)
+
+
+
+get_preds <- function(model) {
+  vx_pred <- 
+    posterior_predict(model, ndraws = 500) |> 
+    array_branch(margin=1) |> 
+    map_dfr( 
+      function(yrep_iter) {
+        test  |>
+          mutate(vx_pred = yrep_iter)
+      },
+      .id = 'iter'
+    ) |>
+    mutate(iter = as.numeric(iter))
+  
+  
+  vx_pred_agg <- vx_pred |> group_by(id,condit,bandInt) |> 
+    mutate(resid=vx-vx_pred) |> summarise(vx=mean(vx),vx_pred=mean(vx_pred),resid=mean(resid))
+  
+  (vx_pred_agg |> group_by(condit) |> summarise(resid=mean(resid)) |> pandoc.table())
+  vx_pred_agg |> group_by(condit) |> summarise(resid=mean(abs(resid))) |> pandoc.table()
+  
+  testAvgResid <- testAvg |> select(id,condit,vx,vb,bandInt) |> 
+    left_join(vx_pred |> group_by(id,bandInt) |> median_qi(vx_pred), by=join_by(id,bandInt)) |>
+    mutate(resid=vx-vx_pred) |> relocate(vx,resid,.before=vx_pred)
+  
+  (testAvgResid |> group_by(condit) |> summarise(resid=mean(resid)))
+  return(list(trialPred=vx_pred_agg,avgPred=testAvgResid))
+}
+
+c.t.b <- get_preds(e1_vxBMM)
+
+c.t.b |> map(head)
+
+c.b.gr <- get_preds(e1_testVx_grRF8)
+c.t.b.gr <- get_preds(e1_testVxBand_grRF)
+
+
+
+vx_pred |> ggplot(aes(x=vx_pred,fill=condit)) + geom_density() + facet_wrap(~vb)
+vx_pred |> ggplot(aes(x=vx_pred,fill=condit)) + geom_histogram() + facet_wrap(~vb)
+
+vx_pred |> ggplot(aes(x=vx,fill=condit)) + geom_density() + facet_wrap(~vb)
+vx_pred |> ggplot(aes(x=vx,fill=condit)) + geom_histogram() + facet_wrap(~vb)
+
+
+vx_pred |> ggplot(aes(x=(vx-vx_pred),fill=condit)) + geom_density(alpha=.4) + facet_wrap(~vb)
+vx_pred |> ggplot(aes(x=(vx-vx_pred),fill=condit)) + geom_histogram(alpha=.4) + facet_wrap(~vb)
 
 
 
 
+vx_pred <- 
+  posterior_predict(e1_vxBMM, ndraws = 500) |> 
+  array_branch(margin=1) |> 
+  map_dfr( 
+    function(yrep_iter) {
+      test  |>
+        mutate(vx_pred = yrep_iter)
+    },
+    .id = 'iter'
+  ) |>
+  mutate(iter = as.numeric(iter))
 
 
+vx_pred_agg <- vx_pred |> group_by(id,condit,bandInt) |> 
+  mutate(resid=vx-vx_pred) |> summarise(vx=mean(vx),vx_pred=mean(vx_pred),resid=mean(resid))
 
-
-
-
-
-
-
-
-
-
+vx_pred_agg |> group_by(condit) |> summarise(resid=mean(resid))
 
 
 

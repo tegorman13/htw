@@ -15,37 +15,33 @@ prior = c(prior(normal(30,200),lb=0,class= Intercept))
 #   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
 
+
+
 ######## Testing Models Fit to All 6 Bands
 
 modelName <- "e1_testDistBand_RF_5K"
 e1_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
                       data=test,file=paste0(here::here("data/model_cache",modelName)),
                       iter=5000,chains=4, prior=prior)
-mp1 <- GetModelStats(e1_distBMM) |> kable(escape=F,booktabs=T)
-mp1
+
 
 modelName <- "e1_testVxBand_RF_5k"
 e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                         data=test,file=paste0(here::here("data/model_cache", modelName)),
                         iter=5000,chains=4,silent=0,, prior=prior, 
                         control=list(adapt_delta=0.94, max_treedepth=13))
-mt2 <-GetModelStats(e1_vxBMM ) |> kable(escape=F,booktabs=T)
-mt2
+
 
 
 modelName <- "e2_testDistBand_RF_5K"
 e2_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
                       data=testE2,file=paste0(here::here("data/model_cache",modelName)),
                       iter=5000,chains=4)
-mp2 <- GetModelStats(e2_distBMM) |> kable(escape=F,booktabs=T)
-mp2
 
 e2_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                         data=testE2,file=paste0(here::here("data/model_cache", "e2_testVxBand_RF_5k")),
                         iter=5000,chains=4,silent=0,
                         control=list(adapt_delta=0.90, max_treedepth=11))
-mt3<-GetModelStats(e2_vxBMM ) |> kable(escape=F,booktabs=T)
-mt3
 
 
 
@@ -53,15 +49,13 @@ modelName <- "e3_testDistBand_RF_5K"
 e3_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
                       data=testE3,file=paste0(here::here("data/model_cache",modelName)),
                       iter=5000,chains=4)
-mp3 <- GetModelStats(e3_distBMM) |> kable(escape=F,booktabs=T)
-mp3
+
 
 e3_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                         data=testE3,file=paste0(here::here("data/model_cache", "e3_testVxBand_RF_5k")),
                         iter=5000,chains=4,silent=0,
                         control=list(adapt_delta=0.90, max_treedepth=11))
-mt4<-GetModelStats(e3_vxBMM ) |> kable(escape=F,booktabs=T)
-mt4
+
 
 
 
@@ -201,10 +195,13 @@ e1_gr8_vxBMM <- brm(b.eq8, data=test,file=paste0(here::here("data/model_cache", 
 
 
 
+#################
 
 
-
-
+modelName <- "e1__condRF_vx"
+e1_condRF_vx <- brm(vx ~ condit + (1|bandInt) + (1 + bandInt||condit) + (1 + bandInt||id),
+                  data=test,file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4)
 
 
 

@@ -28,15 +28,49 @@ e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
 mt2 <-GetModelStats(e1_vxBMM ) |> kable(escape=F,booktabs=T)
 
 
+ 
+# nTop <- 5
+# top_indv_coefs <- indv_coefs %>%
+#   filter(rank <=nTop) |>
+#   select(id,condit,rank,Est.BandInt=Estimate.bandInt, Est.Intercept=Estimate.Intercept) 
+```
+
+
+
+```{r}
+
+
 indv_coefs <- coef(e1_vxBMM)$id |> 
   as_tibble(rownames="id") |> 
-  select(id, starts_with("Est")) |>
-  left_join(e1Sbjs, by=join_by(id) ) |> 
-  group_by(condit) |> 
-  mutate(rank = rank(desc(Estimate.bandInt)),
-         intErrorRank=rank((Est.Error.Intercept)),
-         bandErrorRank=rank((Est.Error.bandInt)),
-         nCond = n()) |> arrange(intErrorRank) |> ungroup()
+  select(id, starts_with("Esti")) |>
+  left_join(e1Sbjs, by=join_by(id))
+
+indv_coefs_preds <- new_data_grid |> left_join(indv_coefs,by=join_by(id,condit,condit_dummy)) |>
+  mutate(
+    estimate = (Estimate.Intercept) + 
+      (bandInt*(Estimate.bandInt)) + 
+      (condit_dummy*Estimate.conditVaried) +
+      (bandInt * condit_dummy) * `Estimate.conditVaried:bandInt`)
+  
+indv_linpred <- e1_vxBMM |> linpred_draws(new_data_grid) |> 
+  summarize(across(.linpred, lst(mean, sd, median), .names = "{.fn}"))
+
+indv_epred <- e1_vxBMM |> epred_draws(new_data_grid) |>
+  summarize(across(.epred, lst(mean, sd, median), .names = "{.fn}"))
+
+indv_pred <- e1_vxBMM |> predicted_draws(new_data_grid) |>
+   summarize(across(.prediction, lst(mean, sd, median), .names = "{.fn}"))
+
+fitted(e1_vxBMM,re_formula=NA)
+fitted(e1_vxBMM,re_formula=NULL) # matches epred 
+
+
+# |> 
+#   group_by(condit) |> 
+#   mutate(rank = rank(desc(Estimate.bandInt)),
+#          intErrorRank=rank((Est.Error.Intercept)),
+#          bandErrorRank=rank((Est.Error.bandInt)),
+#          nCond = n()) |> arrange(id) |> ungroup()
 
 
 new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")]))) |> 
@@ -60,7 +94,10 @@ random_effects <- e1_vxBMM |>
   mutate(
     Slope = bandInt_RF+b_bandInt,
     Intercept= RF_Intercept + b_Intercept,
-    estimate = (b_Intercept + RF_Intercept) + (bandInt*(b_bandInt+bandInt_RF)) + (bandInt * condit_dummy) * `b_conditVaried:bandInt`,
+    estimate = (b_Intercept + RF_Intercept) + 
+      (bandInt*(b_bandInt+bandInt_RF)) + 
+      (condit_dummy*b_conditVaried)+
+      (bandInt * condit_dummy) * `b_conditVaried:bandInt`,
     SlopeInt=bandInt_RF+b_bandInt + ((`b_conditVaried:bandInt` + bandInt_RF)*condit_dummy),
     SlopeInt2=bandInt_RF+b_bandInt + ((`b_conditVaried:bandInt` + b_bandInt)*condit_dummy)
   ) 
@@ -68,26 +105,31 @@ random_effects <- e1_vxBMM |>
   indvSlopes <- indvDraws |> group_by(id) |> median_qi(Slope,SlopeInt,SlopeInt2, Intercept,b_Intercept,b_bandInt) |>
   left_join(e1Sbjs, by=join_by(id)) |> group_by(condit) |>
     select(id,condit,condit_dummy,Intercept,b_Intercept,Slope,SlopeInt,SlopeInt2,b_bandInt, n) |>
-  mutate(rankSlope=rank(Slope)) |> arrange(rankSlope)   |> ungroup()
- 
-# nTop <- 5
-# top_indv_coefs <- indv_coefs %>%
-#   filter(rank <=nTop) |>
-#   select(id,condit,rank,Est.BandInt=Estimate.bandInt, Est.Intercept=Estimate.Intercept) 
+  mutate(rankSlope=rank(Slope)) #|> arrange(rankSlope)   |> ungroup()
+
 ```
+
 
 
 ```{r}
 
+
 full_tab <- testAvg |> select(id,condit,vx,vb,bandInt) |> 
   left_join(indvDraws |> group_by(id,bandInt) |> median_qi(estimate,Intercept,Slope), by=join_by(id,bandInt)) |>
   mutate(resid=vx-estimate) |> relocate(vx,resid,.before=estimate) |>
-  mutate(across(where(is.numeric), \(x) round(x,0))) 
+  mutate(across(where(is.numeric), \(x) round(x,2))) 
+
+
+indvResid <- full_tab |> group_by(id,condit,bandInt) |> summarize(across(where(is.numeric), \(x) mean(x))) |>
+  group_by(id,condit) |> mutate(meanResid=mean(resid)) |>
+  arrange(meanResid)
 
 full_tab |> group_by(condit) |> summarise(mean(resid),sd(resid))
 full_tab |> group_by(condit,id) |> summarise(m=mean(resid),s=sd(resid)) |> summarise(m=mean(m),s=sd(s)) 
 
-full_tab |> DT::datatable(options = list(pageLength=15))
+
+
+full_tab |> DT::datatable(options = list(pageLength=10))
 ```
 
 
@@ -163,8 +205,8 @@ indvDraws |> filter(condit=="Varied")  |>
 {indvDraws  |> indv_model_plot(indvSlopes, test,slopeVar=Slope, rank_variable=Slope,n_sbj=n_sbj,"max") + 
      ggtitle("Slope = bandInt_RF+b_bandInt") } /
  {ggplot(indvSlopes, aes(x = Slope, color = condit)) + geom_density() } /
-#gridExtra::tableGrob( indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) + 
-  gt_temp(indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) +
+ gridExtra::tableGrob( indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) + 
+  #gt_temp(indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) +
   plot_layout(heights=unit(c(16,6,3),c('cm'))) + plot_annotation("vx ~ condit * bandInt + (1 + bandInt | id) ")
 ```
 
@@ -212,18 +254,12 @@ indvSlopes <- indvDraws |> group_by(id) |> median_qi(RF_Intercept,b_Intercept,In
          Slope2 = ((coef(e1_testVx_grRF8)$id |> as_tibble(rownames="id") ) |> pull(Estimate.bandInt)) )
  
 
-
-
-
-
 { indvDraws |> indv_model_plot(indvSlopes ,test, slopeVar=Slope, rank_variable=Slope,n_sbj=n_sbj,"max") + 
      ggtitle("Slope = bandInt_RF+b_bandInt") } /
  {ggplot(indvSlopes, aes(x = Slope, color = condit)) + geom_density() } /
 #gridExtra::tableGrob( indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) + 
   gt_temp(indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) +
   plot_layout(heights=unit(c(16,6,2),c('cm'))) + plot_annotation("vx ~ bandInt + (1 + bandInt || gr(id, by = condit))  ")
-
-
 
 ```
 
