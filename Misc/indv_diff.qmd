@@ -6,7 +6,7 @@ page-layout: full
 toc: false
 execute: 
   warning: false
-  eval: false
+  eval: true
 ---
 
 
@@ -15,47 +15,17 @@ execute:
 source(here::here("Functions", "packages.R"))
 test <- readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Test") 
 options(brms.backend="cmdstanr",mc.cores=4)
-e1Sbjs <- test |> group_by(id,condit) |> summarise(n=n())
+e1Sbjs <- test |> group_by(id,condit) |> summarise(n=n()) |>
+  mutate(condit_dummy = ifelse(condit == "Varied", 1, 0))
 
 testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
-  summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
+  summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n) |> ungroup()
 
 e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                         data=test,file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k")),
                         iter=5000,chains=4,silent=0,
                         control=list(adapt_delta=0.94, max_treedepth=13))
 mt2 <-GetModelStats(e1_vxBMM ) |> kable(escape=F,booktabs=T)
-
-
-new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")]))) |> 
-  dplyr::arrange(id,bandInt) |> 
-  mutate(condit_dummy = ifelse(condit == "Varied", 1, 0)) 
-
-
-
-fixed_effects <- e1_vxBMM |> 
-  spread_draws(`^b_.*`,regex=TRUE) |> arrange(.chain,.draw,.iteration)
-
-
-random_effects <- e1_vxBMM |> 
-  gather_draws(`^r_id.*$`, regex = TRUE, ndraws = 1000) |> 
-  separate(.variable, into = c("effect", "id", "term"), sep = "\\[|,|\\]") |> 
-  mutate(id = factor(id,levels=levels(test$id))) |> 
-  pivot_wider(names_from = term, values_from = .value) |> arrange(id,.chain,.draw,.iteration)
-
-
-combined_df <- left_join(random_effects, fixed_effects, by = join_by(".chain", ".iteration", ".draw")) |> 
-  rename(bandInt_RF = bandInt) |>
-  right_join(new_data_grid, by = join_by("id")) |> 
-  mutate(
-    fixed_effects = b_Intercept +
-      (bandInt * b_bandInt) +
-      condit_dummy * b_conditVaried + 
-      (bandInt * condit_dummy) * `b_conditVaried:bandInt` ,  
-    random_effects = Intercept + bandInt_RF,  # Assuming random effects for intercept and bandInt
-    estimate = (b_Intercept + Intercept) + (bandInt*(b_bandInt+bandInt_RF)) + (bandInt * condit_dummy) * `b_conditVaried:bandInt`
-  )
-
 
 
 indv_coefs <- coef(e1_vxBMM)$id |> 
@@ -69,7 +39,37 @@ indv_coefs <- coef(e1_vxBMM)$id |>
          nCond = n()) |> arrange(intErrorRank) |> ungroup()
 
 
+new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")]))) |> 
+  dplyr::arrange(id,bandInt) |> 
+  mutate(condit_dummy = ifelse(condit == "Varied", 1, 0)) 
 
+fixed_effects <- e1_vxBMM |> 
+  spread_draws(`^b_.*`,regex=TRUE) |> arrange(.chain,.draw,.iteration)
+
+
+random_effects <- e1_vxBMM |> 
+  gather_draws(`^r_id.*$`, regex = TRUE, ndraws = 1000) |> 
+  separate(.variable, into = c("effect", "id", "term"), sep = "\\[|,|\\]") |> 
+  mutate(id = factor(id,levels=levels(test$id))) |> 
+  pivot_wider(names_from = term, values_from = .value) |> arrange(id,.chain,.draw,.iteration)
+
+
+ indvDraws <- left_join(random_effects, fixed_effects, by = join_by(".chain", ".iteration", ".draw")) |> 
+  rename(bandInt_RF = bandInt,RF_Intercept=Intercept) |>
+  right_join(new_data_grid, by = join_by("id")) |> 
+  mutate(
+    Slope = bandInt_RF+b_bandInt,
+    Intercept= RF_Intercept + b_Intercept,
+    estimate = (b_Intercept + RF_Intercept) + (bandInt*(b_bandInt+bandInt_RF)) + (bandInt * condit_dummy) * `b_conditVaried:bandInt`,
+    SlopeInt=bandInt_RF+b_bandInt + ((`b_conditVaried:bandInt` + bandInt_RF)*condit_dummy),
+    SlopeInt2=bandInt_RF+b_bandInt + ((`b_conditVaried:bandInt` + b_bandInt)*condit_dummy)
+  ) 
+
+  indvSlopes <- indvDraws |> group_by(id) |> median_qi(Slope,SlopeInt,SlopeInt2, Intercept,b_Intercept,b_bandInt) |>
+  left_join(e1Sbjs, by=join_by(id)) |> group_by(condit) |>
+    select(id,condit,condit_dummy,Intercept,b_Intercept,Slope,SlopeInt,SlopeInt2,b_bandInt, n) |>
+  mutate(rankSlope=rank(Slope)) |> arrange(rankSlope)   |> ungroup()
+ 
 # nTop <- 5
 # top_indv_coefs <- indv_coefs %>%
 #   filter(rank <=nTop) |>
@@ -77,30 +77,339 @@ indv_coefs <- coef(e1_vxBMM)$id |>
 ```
 
 
+```{r}
+
+full_tab <- testAvg |> select(id,condit,vx,vb,bandInt) |> 
+  left_join(indvDraws |> group_by(id,bandInt) |> median_qi(estimate,Intercept,Slope), by=join_by(id,bandInt)) |>
+  mutate(resid=vx-estimate) |> relocate(vx,resid,.before=estimate) |>
+  mutate(across(where(is.numeric), \(x) round(x,0))) 
+
+full_tab |> group_by(condit) |> summarise(mean(resid),sd(resid))
+full_tab |> group_by(condit,id) |> summarise(m=mean(resid),s=sd(resid)) |> summarise(m=mean(m),s=sd(s)) 
+
+full_tab |> DT::datatable(options = list(pageLength=15))
+```
+
+
+
+```{r}
+  indvSlopes |> group_by(condit) |> reframe(enframe(quantile(Slope, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "Slope")) |> 
+  pivot_wider(names_from=quantile,values_from=Slope,names_prefix="Q_") |>
+  group_by(condit) |>
+  summarise(across(starts_with("Q"), list(mean = mean))) |> kbl()
+  
+  indvSlopes |> group_by(condit)  |> reframe(enframe(quantile(SlopeInt, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "SlopeInt")) |> 
+  pivot_wider(names_from=quantile,values_from=SlopeInt,names_prefix="Q_") |>
+  group_by(condit) |>
+  summarise(across(starts_with("Q"), list(mean = mean))) |> kbl()
+  
+  indvSlopes |> group_by(condit)  |> reframe(enframe(quantile(SlopeInt2, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "SlopeInt2")) |> 
+  pivot_wider(names_from=quantile,values_from=SlopeInt2,names_prefix="Q_") |>
+  group_by(condit) |>
+  summarise(across(starts_with("Q"), list(mean = mean))) |> kbl()
+  
+
+  ggplot(indvSlopes, aes(x = Slope, color = condit)) + 
+  geom_density() 
+    ggplot(indvSlopes, aes(x = SlopeInt, color = condit)) + 
+  geom_density() 
+```
+
+
+```{r fig.width=13, fig.height=12.5}
+
+    
+  n_sbj = 3
+  
+  
+{indvDraws |> filter(condit=="Varied")  |> 
+   indv_model_plot(indvSlopes |> filter(condit=="Varied"), 
+                   testAvg |> filter(condit=="Varied"),slopeVar=Slope, rank_variable=Slope,n_sbj=n_sbj,"max") + 
+     ggtitle("Slope = bandInt_RF+b_bandInt") } /
+ 
+{indvDraws |> filter(condit=="Varied")  |> 
+  indv_model_plot(indvSlopes |> filter(condit=="Varied"), 
+                  testAvg |> filter(condit=="Varied"),slopeVar=SlopeInt, rank_variable=Slope,n_sbj=n_sbj,"max")  + 
+     ggtitle("SlopeInt=bandInt_RF+b_bandInt + ((`b_conditVaried:bandInt` + bandInt_RF)*condit_dummy)") } /
+
+indvDraws |> filter(condit=="Varied")  |> 
+  indv_model_plot(indvSlopes |> filter(condit=="Varied"), 
+                  testAvg |> filter(condit=="Varied"),slopeVar=SlopeInt2, rank_variable=Slope,n_sbj=n_sbj,"max") + 
+     ggtitle("SlopeInt2=bandInt_RF+b_bandInt + ((`b_conditVaried:bandInt` + b_bandInt)*condit_dummy)") 
+
+  
+{indvDraws |> filter(condit=="Varied")  |> 
+   indv_model_plot(indvSlopes |> filter(condit=="Varied"), 
+                   test |> filter(condit=="Varied"),slopeVar=Slope, rank_variable=Slope,n_sbj=n_sbj,"max") + 
+     ggtitle("Slope = bandInt_RF+b_bandInt") } /
+ 
+{indvDraws |> filter(condit=="Varied")  |> 
+  indv_model_plot(indvSlopes |> filter(condit=="Varied"), 
+                  test |> filter(condit=="Varied"),slopeVar=SlopeInt, rank_variable=Slope,n_sbj=n_sbj,"max")  + 
+     ggtitle("SlopeInt=bandInt_RF+b_bandInt + ((`b_conditVaried:bandInt` + bandInt_RF)*condit_dummy)") } /
+
+indvDraws |> filter(condit=="Varied")  |> 
+  indv_model_plot(indvSlopes |> filter(condit=="Varied"), 
+                  test |> filter(condit=="Varied"),slopeVar=SlopeInt2, rank_variable=Slope,n_sbj=n_sbj,"max") + 
+     ggtitle("SlopeInt2=bandInt_RF+b_bandInt + ((`b_conditVaried:bandInt` + b_bandInt)*condit_dummy)") 
+    
+```
+
+
+
+```{r fig.height=15, fig.width=12}
+#| fig-height: 16
+#| fig-width: 12
+{indvDraws  |> indv_model_plot(indvSlopes, test,slopeVar=Slope, rank_variable=Slope,n_sbj=n_sbj,"max") + 
+     ggtitle("Slope = bandInt_RF+b_bandInt") } /
+ {ggplot(indvSlopes, aes(x = Slope, color = condit)) + geom_density() } /
+#gridExtra::tableGrob( indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) + 
+  gt_temp(indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) +
+  plot_layout(heights=unit(c(16,6,3),c('cm'))) + plot_annotation("vx ~ condit * bandInt + (1 + bandInt | id) ")
+```
+
+
+
+Band Only Model
+```{r fig.width=11, fig.height=15}
+#| fig-height: 16
+#| fig-width: 12
+e1_testVx_grRF8 <- readRDS(here::here("data/model_cache/e1_testVx_grRF8.rds"))
+# e1_testVx_grRF8$formula
+# vx ~ bandInt + (1 + bandInt || gr(id, by = condit)) 
+
+
+new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","bandInt")]))) |> 
+  dplyr::arrange(id,bandInt) 
+
+
+fixed_effects <- e1_testVx_grRF8 |> 
+  spread_draws(`^b_.*`,regex=TRUE) |> arrange(.chain,.draw,.iteration)
+
+
+random_effects <- e1_testVx_grRF8 |> 
+  gather_draws(`^r_id.*$`, regex = TRUE, ndraws = 1000) |> 
+  separate(.variable, into = c("effect", "id", "term"), sep = "\\[|,|\\]") |> 
+  mutate(id = factor(id,levels=levels(test$id))) |> 
+  pivot_wider(names_from = term, values_from = .value) |> arrange(id,.chain,.draw,.iteration)
+
+
+indvDraws <- left_join(random_effects, fixed_effects, by = join_by(".chain", ".iteration", ".draw")) |> 
+  rename(bandInt_RF = bandInt,RF_Intercept=Intercept) %>%
+  right_join(e1Sbjs,., by=join_by(id)) |>
+  right_join(new_data_grid, by = join_by("id")) |> 
+  mutate(
+    Slope = bandInt_RF+b_bandInt,
+    Intercept= RF_Intercept + b_Intercept,
+    estimate = (b_Intercept + RF_Intercept) + (bandInt*(b_bandInt+bandInt_RF)),
+  ) 
+
+indvSlopes <- indvDraws |> group_by(id) |> median_qi(RF_Intercept,b_Intercept,Intercept,bandInt_RF,b_bandInt,Slope) |>
+  left_join(e1Sbjs, by=join_by(id)) |> group_by(condit) |>
+    select(id,condit,RF_Intercept,b_Intercept,Intercept,bandInt_RF,b_bandInt,Slope, n) |>
+  ungroup() |>
+  mutate(rankSlope=rank(Slope), 
+         Slope2 = ((coef(e1_testVx_grRF8)$id |> as_tibble(rownames="id") ) |> pull(Estimate.bandInt)) )
+ 
+
+
+
+
+
+{ indvDraws |> indv_model_plot(indvSlopes ,test, slopeVar=Slope, rank_variable=Slope,n_sbj=n_sbj,"max") + 
+     ggtitle("Slope = bandInt_RF+b_bandInt") } /
+ {ggplot(indvSlopes, aes(x = Slope, color = condit)) + geom_density() } /
+#gridExtra::tableGrob( indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) + 
+  gt_temp(indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) +
+  plot_layout(heights=unit(c(16,6,2),c('cm'))) + plot_annotation("vx ~ bandInt + (1 + bandInt || gr(id, by = condit))  ")
+
+
+
+```
+
+```{r}
+noInt_tab <- testAvg |> select(id,condit,vx,vb,bandInt) |> 
+  left_join(indvDraws |> group_by(id,bandInt) |> median_qi(estimate,Intercept,Slope), by=join_by(id,bandInt)) |>
+  mutate(resid=vx-estimate) |> relocate(vx,resid,.before=estimate) |>
+  mutate(across(where(is.numeric), \(x) round(x,0))) 
+
+noInt_tab |> group_by(condit) |> summarise(mean(resid),sd(resid))
+noInt_tab |> group_by(condit,id) |> summarise(m=mean(resid),s=sd(resid)) |> summarise(m=mean(m),s=sd(s)) 
+
+
+noInt_tab |> DT::datatable(options = list(pageLength=15))
+```
+
+
+
+
+
+```{r fig.height=9,fig.width=10}
+#| eval: false
+random_effects |> group_by(id) |> median_hdi()
+
+indv_coefs |> select(id,condit,Estimate.bandInt)
+indv_coefs |> select(id,condit,Estimate.bandInt) |> group_by(condit) |> summarise(mean(Estimate.bandInt))
+
+
+fixef(e1_vxBMM)
+ranef(e1_vxBMM)$id[, ,"bandInt"] |> as_tibble(rownames="id") |> 
+  left_join(e1Sbjs,by=join_by(id)) |>
+  group_by(condit) |> summarise(mean(Estimate))
+
+ranef(e1_vxBMM)$id[, ,"bandInt"] |> as_tibble(rownames="id") |> 
+  left_join(e1Sbjs,by=join_by(id)) |> ggplot(aes(Estimate,color=condit)) + geom_density()
+
+
+popSlope <- tidy(e1_vxBMM, effects = "fixed") |> filter(term=="bandInt") |> pull(estimate)
+popInteraction <- tidy(e1_vxBMM, effects = "fixed") |> filter(term=="conditVaried:bandInt") |> pull(estimate)
+
+
+e1Vx <- ranef(e1_vxBMM)$id[, ,"bandInt"] |> as_tibble(rownames="id") %>%
+  left_join(e1Sbjs,., by=join_by(id)) |> select(id,condit,condit_dummy,Estimate) |> 
+  mutate(pop=popSlope,Slope1=Estimate + pop) |> 
+  left_join(indv_coefs |> select(id,Slope2=Estimate.bandInt), join_by(id)) |>
+  mutate(Slope3=Estimate + pop + ((popInteraction + Estimate)*condit_dummy))
+  
+e1Vx |> group_by(condit) |> summarise(Slope_with_int=mean(Slope3), sd_Slope=sd(Slope3))
+
+e1Vx |> group_by(condit) |> reframe(enframe(quantile(Slope3, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "Slope3")) |> 
+  pivot_wider(names_from=quantile,values_from=Slope3,names_prefix="Q_") |>
+  group_by(condit) |>
+  summarise(across(starts_with("Q"), list(mean = mean))) |> kbl()
+
+{ e1Vx |> ggplot(aes(Slope1,color=condit)) + geom_density() +ggtitle("RF_Estimate + Population_Est") } /
+e1Vx |> ggplot(aes(Slope3,color=condit)) + geom_density() + 
+  ggtitle("Slope3=Estimate + pop + ((popInteraction + Estimate)*condit_dummy)")
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+Examine slopes from different models
+
+```{r fig.height=10,fig.width=9}
+#| eval: false 
+#| 
+# vx ~ bandInt + (1 + bandInt || gr(id, by = condit)) 
+bandOnly <- ranef(e1_testVx_grRF8)$id[, ,"bandInt"] |> as_tibble(rownames="id") |> 
+  left_join(e1Sbjs,by=join_by(id)) |> select(id,condit,condit_dummy,starts_with("Estimate")) |>
+ # group_by(condit) |> 
+  #summarise(Estimate=mean(Estimate)) |>
+  mutate(pop = tidy(e1_testVx_grRF8, effects = "fixed") |> filter(term=="bandInt") |> pull(estimate),
+         Slope1=pop+Estimate,
+         Slope2 = (coef(e1_testVx_grRF8)$id |> as_tibble(rownames="id") |> pull(Estimate.bandInt))) 
+
+# vx ~ condit + bandInt + (1 + bandInt | id) 
+noInt <- ranef(e1_conditPlusBand_RF)$id[, ,"bandInt"] |> as_tibble(rownames="id") |> 
+  left_join(e1Sbjs,by=join_by(id)) |> select(id,condit,condit_dummy,starts_with("Estimate")) |>
+ # group_by(condit) |> 
+  #summarise(Estimate=mean(Estimate)) |>
+  mutate(pop = tidy(e1_conditPlusBand_RF, effects = "fixed") |> filter(term=="bandInt") |> pull(estimate),
+         Slope1=pop+Estimate,
+         Slope2 = (coef(e1_conditPlusBand_RF)$id |> as_tibble(rownames="id") |> pull(Estimate.bandInt))) 
+
+
+# vx ~ condit * bandInt + (1 + bandInt | gr(id, by = condit)) 
+popSlope <- tidy(e1_testVxBand_grRF, effects = "fixed") |> filter(term=="bandInt") |> pull(estimate)
+popInteraction <- tidy(e1_testVxBand_grRF, effects = "fixed") |> filter(term=="conditVaried:bandInt") |> pull(estimate)
+vx_grRF <- ranef(e1_testVxBand_grRF)$id[, ,"bandInt"] |> as_tibble(rownames="id") |> 
+  left_join(e1Sbjs,by=join_by(id)) |> select(id,condit,condit_dummy,starts_with("Estimate")) |>
+ # group_by(condit) |> 
+  #summarise(Estimate=mean(Estimate)) |>
+  mutate(pop = tidy(e1_testVxBand_grRF, effects = "fixed") |> filter(term=="bandInt") |> pull(estimate),
+         Slope1=pop+Estimate,
+         Slope2 = (coef(e1_testVxBand_grRF)$id |> as_tibble(rownames="id") |> pull(Estimate.bandInt)), 
+         Slope3=Estimate + pop + ((popInteraction + Estimate)*condit_dummy)) 
+
+
+bandOnly |> group_by(condit) |> summarise(Estimate=mean(Slope1))
+noInt |> group_by(condit) |> summarise(Estimate=mean(Slope1))
+vx_grRF |> group_by(condit) |> summarise(Estimate=mean(Slope3))
+
+
+modelsummary(list("Band Only" = e1_testVx_grRF8,
+                  "No Interaction" = e1_conditPlusBand_RF,
+                  "Full Model - Gr" = e1_testVxBand_grRF,
+                  "Full Model" = e1_vxBMM),
+             coef_map = c("b_Intercept"="Intercept","b_bandInt"="Band Slope", "b_conditVaried"="Condition",
+                          'b_conditVaried:bandInt'="Interaction","sigma"="Sigma"),
+             output="markdown",gof_map=NA,fmt=2)
+
+{ bandOnly |> ggplot(aes(Slope1,color=condit)) + geom_density() + 
+  ggtitle("vx ~ bandInt + (1 + bandInt || gr(id, by = condit))") } /
+  { noInt |> ggplot(aes(Slope1,color=condit)) + geom_density() + 
+  ggtitle("vx ~ condit + bandInt + (1 + bandInt | id)  ") } / 
+{ vx_grRF |> ggplot(aes(Slope3,color=condit)) + geom_density() + 
+  ggtitle("vx ~ condit * bandInt + (1 + bandInt | gr(id, by = condit)) ") } /
+{ e1Vx |> ggplot(aes(Slope3,color=condit)) + geom_density() + 
+  ggtitle("vx ~ condit * bandInt + (1 + bandInt | id) ") }
+
+
+bandOnly |> group_by(condit) |> reframe(enframe(quantile(Slope1, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "Slope1")) |> 
+  pivot_wider(names_from=quantile,values_from=Slope1,names_prefix="Q_") |>
+  group_by(condit) |>
+  summarise(across(starts_with("Q"), list(mean = mean))) |> 
+  pandoc.table(caption="vx ~ bandInt + (1 + bandInt || gr(id, by = condit))")
+
+noInt |> group_by(condit) |> reframe(enframe(quantile(Slope1, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "Slope1")) |> 
+  pivot_wider(names_from=quantile,values_from=Slope1,names_prefix="Q_") |>
+  group_by(condit) |>
+  summarise(across(starts_with("Q"), list(mean = mean))) |> 
+  pandoc.table(caption="vx ~ condit + bandInt + (1 + bandInt | id)  ")
+
+vx_grRF |> group_by(condit) |> reframe(enframe(quantile(Slope3, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "Slope1")) |> 
+  pivot_wider(names_from=quantile,values_from=Slope1,names_prefix="Q_") |>
+  group_by(condit) |>
+  summarise(across(starts_with("Q"), list(mean = mean))) |> 
+  pandoc.table(caption="vx ~ condit * bandInt + (1 + bandInt | gr(id, by = condit))  ")
+
+e1Vx |> group_by(condit) |> reframe(enframe(quantile(Slope3, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "Slope3")) |> 
+  pivot_wider(names_from=quantile,values_from=Slope3,names_prefix="Q_") |>
+  group_by(condit) |>
+  summarise(across(starts_with("Q"), list(mean = mean))) |>
+  pandoc.table(caption="vx ~ condit * bandInt + (1 + bandInt | id)  ")
+
+
+```
+
+
+
+
+
+
+```{r}
+
+
+
+
+
+```
+
+
+
+
+
+
+
 
 
 ```{r fig.width=11, fig.height=10}
 
-indv_model_plot <- function(combined_df, indv_coefs, testAvg, rank_variable = "Estimate.Intercept", n_sbj = 5, order = "min") {
-  slice_fn <- if (order == "min") slice_min else slice_max
-  combined_df  |> 
-    filter(id %in% (indv_coefs  |> 
-                      slice_fn({{ rank_variable }}, n = n_sbj, by = condit) |> 
-                      pull(id)))  |> 
-    group_by(id, bandInt)  |> 
-    sample_n(50)  |> 
-    ggplot(aes(x = bandInt, y = estimate)) +
-    geom_abline(aes(intercept = Intercept + b_Intercept, slope = bandInt_RF + b_bandInt), color = "grey50") +
-    geom_abline(data = indv_coefs  |> 
-                  slice_fn({{ rank_variable }}, n = n_sbj, by = condit),
-                aes(intercept = Estimate.Intercept, slope = Estimate.bandInt), color = "red") +
-    stat_halfeye() +
-    stat_halfeye(data = testAvg  |> 
-                   filter(id %in% (indv_coefs |> slice_fn({{ rank_variable }}, n = n_sbj, by = condit) |> 
-                      pull(id))), 
-                 aes(x = bandInt, y = vx), color = "blue") +
-    ggh4x::facet_nested_wrap(vars(condit, id),ncol=3)
-}
+
+
+
+
 
 # 
 # indv_model_plot <- function(combined_df, indv_coefs, testAvg, rank_variable = "Estimate.Intercept", n_sbj = 5, order = "min") {
@@ -200,7 +509,7 @@ cd |>  ggplot(aes(y=id, x=Slope)) + geom_pointrange()
 
 
 ```{r fig.width=12, fig.height=11}
-
+#| eval: false
 coef(e1_vxBMM)$id %>% as_tibble(rownames="id") %>% select(id, starts_with("Est")) |> print(n=15)
 
 n_lines <- 20
@@ -270,7 +579,7 @@ combined_df |>
 ```
 
 ```{r}
-
+#| eval: false
 
 indv_coefs |> 
   filter(id %in% top_indv_coefs$id) |> ggplot(aes(x=bandInt,y=estimate)) + 
@@ -299,7 +608,7 @@ head(all_effects)
 
 
 ```{r}
-
+#| eval: false
 df_pred <- 
   posterior_predict(e1_distBMM, ndraws = 500) |>
   array_branch(margin=1) |> 
@@ -336,7 +645,7 @@ df_pred %>% filter(id %in% 1:10 ) |>
 ```
 
 ```{r}
-
+#| eval: false
 vx_pred <- 
   posterior_predict(e1_vxBMM, ndraws = 500) |> 
   array_branch(margin=1) |> 
@@ -387,7 +696,7 @@ vx_pred %>% filter(id %in% 1:9 ) |>
 
 
 ```{r}
-
+#| eval: false
 
 indv_coefs |> 
   filter(id %in% top_indv_coefs$id) |> ggplot(aes(x=bandInt,y=estimate)) + 
@@ -412,7 +721,7 @@ head(all_effects)
 
 
 ```{r}
-
+#| eval: false
 df_posterior <- e1_vxBMM |> as_tibble()
 
 ggplot(df_posterior) + 

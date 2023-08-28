@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.4.322">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
-<meta name="dcterms.date" content="2023-08-26">
+<meta name="dcterms.date" content="2023-08-27">
 <title>HTW Project - HTW E1 Testing</title>
 <style>
 code{white-space: pre-wrap;}
@@ -379,7 +379,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 26, 2023</p>
+      <p class="date">August 27, 2023</p>
     </div>
   </div>
   
@@ -1287,7 +1287,7 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 <span></span>
 <span></span>
 <span><span class="va">random_effects</span> <span class="op">&lt;-</span> <span class="va">e1_vxBMM</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">gather_draws</span><span class="op">(</span><span class="va">`^r_id.*$`</span>, regex <span class="op">=</span> <span class="cn">TRUE</span>, ndraws <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">gather_draws</span><span class="op">(</span><span class="va">`^r_id.*$`</span>, regex <span class="op">=</span> <span class="cn">TRUE</span>, ndraws <span class="op">=</span> <span class="fl">1500</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">separate</span><span class="op">(</span><span class="va">.variable</span>, into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"effect"</span>, <span class="st">"id"</span>, <span class="st">"term"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\\[|,|\\]"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">id</span>,levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">test</span><span class="op">$</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">term</span>, values_from <span class="op">=</span> <span class="va">.value</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">arrange</span><span class="op">(</span><span class="va">id</span>,<span class="va">.chain</span>,<span class="va">.draw</span>,<span class="va">.iteration</span><span class="op">)</span></span>
@@ -1305,6 +1305,9 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 <span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">e1Sbjs</span>, by<span class="op">=</span><span class="fu">join_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>rankSlope<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="va">Slope</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">arrange</span><span class="op">(</span><span class="va">rankSlope</span><span class="op">)</span>  </span>
 <span> </span>
+<span>  </span>
+<span>  </span>
+<span>  </span>
 <span>  <span class="va">indvSlopes</span> <span class="op">|&gt;</span> <span class="fu">reframe</span><span class="op">(</span><span class="fu">enframe</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">Slope</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.0</span>,<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>, <span class="st">"quantile"</span>, <span class="st">"Slope"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from<span class="op">=</span><span class="va">quantile</span>,values_from<span class="op">=</span><span class="va">Slope</span>,names_prefix<span class="op">=</span><span class="st">"Q_"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1324,19 +1327,19 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Constant</td>
-<td style="text-align: right;">-0.103430</td>
-<td style="text-align: right;">0.4843947</td>
-<td style="text-align: right;">0.6888640</td>
-<td style="text-align: right;">0.937370</td>
-<td style="text-align: right;">1.396913</td>
+<td style="text-align: right;">-0.105967</td>
+<td style="text-align: right;">0.4772101</td>
+<td style="text-align: right;">0.6917453</td>
+<td style="text-align: right;">0.9296052</td>
+<td style="text-align: right;">1.394195</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Varied</td>
-<td style="text-align: right;">-0.059331</td>
-<td style="text-align: right;">0.4096313</td>
-<td style="text-align: right;">0.7318109</td>
-<td style="text-align: right;">1.042152</td>
-<td style="text-align: right;">1.445316</td>
+<td style="text-align: right;">-0.060964</td>
+<td style="text-align: right;">0.4113275</td>
+<td style="text-align: right;">0.7227927</td>
+<td style="text-align: right;">1.0409040</td>
+<td style="text-align: right;">1.442374</td>
 </tr>
 </tbody>
 </table>
@@ -1361,22 +1364,23 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 </div>
 </div>
 </div>
-<div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nSbj</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
+<div id="fig-e1-indv-slopes" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><details><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nSbj</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
 <span><span class="va">indvDraws</span>  <span class="op">|&gt;</span> <span class="fu">indv_model_plot</span><span class="op">(</span><span class="va">indv_coefs</span>, <span class="va">testAvg</span>, rank_variable<span class="op">=</span><span class="va">Estimate.bandInt</span>,n_sbj<span class="op">=</span><span class="va">nSbj</span>,<span class="st">"max"</span><span class="op">)</span></span>
 <span><span class="va">indvDraws</span> <span class="op">|&gt;</span> <span class="fu">indv_model_plot</span><span class="op">(</span><span class="va">indv_coefs</span>, <span class="va">testAvg</span>, rank_variable<span class="op">=</span><span class="va">Estimate.bandInt</span>,n_sbj<span class="op">=</span><span class="va">nSbj</span>,<span class="st">"min"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div id="fig-e1-indv-slopes-1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="e1_test_files/figure-html/fig-e1-indv-slopes-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;6: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.</figcaption></figure>
+<figure class="figure"><p><img src="e1_test_files/figure-html/fig-e1-indv-slopes-1.png" class="img-fluid figure-img" data-ref-parent="fig-e1-indv-slopes" width="1152"></p>
+<figcaption class="figure-caption">(a) subset with largest slopes</figcaption></figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div id="fig-e1-indv-slopes-2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="e1_test_files/figure-html/fig-e1-indv-slopes-2.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;7: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.</figcaption></figure>
+<figure class="figure"><p><img src="e1_test_files/figure-html/fig-e1-indv-slopes-2.png" class="img-fluid figure-img" data-ref-parent="fig-e1-indv-slopes" width="1152"></p>
+<figcaption class="figure-caption">(b) subset with smallest slopes</figcaption></figure>
 </div>
 </div>
+<figcaption class="figure-caption">Figure&nbsp;6: Subset of Varied and Constant Participants with the smallest and largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.</figcaption></figure>
 </div>
 </section><section id="e1-results-discussion" class="level4"><h4 class="anchored" data-anchor-id="e1-results-discussion">E1 Results Discussion</h4>
 <p>NEEDS TO BE WRITTEN</p>
@@ -1457,7 +1461,7 @@ Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). <span class="nocase
 <figcaption class="figure-caption">(b) Posterior Predictive Distribution - X Velocity</figcaption></figure>
 </div>
 </div>
-<figcaption class="figure-caption">Figure&nbsp;8: Posterior Predictive distributions for Deviation and Vx. Posterior Draws in Blue, colored lines are empirical data.</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;7: Posterior Predictive distributions for Deviation and Vx. Posterior Draws in Blue, colored lines are empirical data.</figcaption></figure>
 </div>
 </section><section id="empirical-vs.-predicted" class="level3"><h3 class="anchored" data-anchor-id="empirical-vs.-predicted">Empirical vs.&nbsp;Predicted</h3>
 <div class="cell">
@@ -1510,7 +1514,7 @@ Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). <span class="nocase
 </details><div class="cell-output-display">
 <div id="fig-empVsPred" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="e1_test_files/figure-html/fig-empVsPred-1.png" class="img-fluid figure-img" width="1152"></p>
-<figcaption class="figure-caption">Figure&nbsp;9: Bayesian Mixed Model predictions vs.&nbsp;Empirical Predictions - X velocity</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;8: Bayesian Mixed Model predictions vs.&nbsp;Empirical Predictions - X velocity</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1557,7 +1561,7 @@ Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). <span class="nocase
 </details><div class="cell-output-display">
 <div id="fig-empirical-vxGrp" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="e1_test_files/figure-html/fig-empirical-vxGrp-1.png" class="img-fluid figure-img" width="1248"></p>
-<figcaption class="figure-caption">Figure&nbsp;10: E1. Distribution of vx at Participant and Trial level</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;9: E1. Distribution of vx at Participant and Trial level</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1603,7 +1607,7 @@ Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). <span class="nocase
 </details><div class="cell-output-display">
 <div id="fig-empirical-distGrp" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="e1_test_files/figure-html/fig-empirical-distGrp-1.png" class="img-fluid figure-img" width="1248"></p>
-<figcaption class="figure-caption">Figure&nbsp;11: E1. Distribution of Vx at Participant and Trial level</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;10: E1. Distribution of Vx at Participant and Trial level</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1634,7 +1638,7 @@ Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). <span class="nocase
 </details><div class="cell-output-display">
 <div id="fig-e1-ame" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="e1_test_files/figure-html/fig-e1-ame-1.png" class="img-fluid figure-img" width="960"></p>
-<figcaption class="figure-caption">Figure&nbsp;12: E1. Predicted Means Per Condition and Band, and Average Marginal Effect (Constant - Varied)</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;11: E1. Predicted Means Per Condition and Band, and Average Marginal Effect (Constant - Varied)</figcaption></figure>
 </div>
 </div>
 </div>
@@ -2290,91 +2294,102 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb20-264"><a href="#cb20-264" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-265"><a href="#cb20-265" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-266"><a href="#cb20-266" aria-hidden="true" tabindex="-1"></a>random_effects <span class="ot">&lt;-</span> e1_vxBMM <span class="sc">|&gt;</span> </span>
-<span id="cb20-267"><a href="#cb20-267" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">^r_id.*$</span><span class="st">`</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>, <span class="at">ndraws =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-267"><a href="#cb20-267" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">^r_id.*$</span><span class="st">`</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>, <span class="at">ndraws =</span> <span class="dv">1500</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb20-268"><a href="#cb20-268" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(.variable, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"effect"</span>, <span class="st">"id"</span>, <span class="st">"term"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">[|,|</span><span class="sc">\\</span><span class="st">]"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb20-269"><a href="#cb20-269" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(id,<span class="at">levels=</span><span class="fu">levels</span>(test<span class="sc">$</span>id))) <span class="sc">|&gt;</span> </span>
 <span id="cb20-270"><a href="#cb20-270" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> term, <span class="at">values_from =</span> .value) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(id,.chain,.draw,.iteration)</span>
 <span id="cb20-271"><a href="#cb20-271" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-272"><a href="#cb20-272" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-273"><a href="#cb20-273" aria-hidden="true" tabindex="-1"></a> indvDraws <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb20-274"><a href="#cb20-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb20-274"><a href="#cb20-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt,<span class="at">RF_Intercept=</span>Intercept) <span class="sc">|&gt;</span></span>
 <span id="cb20-275"><a href="#cb20-275" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(new_data_grid, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"id"</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb20-276"><a href="#cb20-276" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb20-277"><a href="#cb20-277" aria-hidden="true" tabindex="-1"></a>    <span class="at">Slope =</span> bandInt_RF<span class="sc">+</span>b_bandInt,</span>
-<span id="cb20-278"><a href="#cb20-278" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> (b_Intercept <span class="sc">+</span> Intercept) <span class="sc">+</span> (bandInt<span class="sc">*</span>(b_bandInt<span class="sc">+</span>bandInt_RF)) <span class="sc">+</span> (bandInt <span class="sc">*</span> condit_dummy) <span class="sc">*</span> <span class="st">`</span><span class="at">b_conditVaried:bandInt</span><span class="st">`</span></span>
-<span id="cb20-279"><a href="#cb20-279" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb20-280"><a href="#cb20-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-281"><a href="#cb20-281" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="ot">&lt;-</span> indvDraws <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> <span class="fu">median_qi</span>(Slope)  <span class="sc">|&gt;</span> </span>
-<span id="cb20-282"><a href="#cb20-282" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e1Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id)) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
-<span id="cb20-283"><a href="#cb20-283" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rankSlope=</span><span class="fu">rank</span>(Slope)) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(rankSlope)  </span>
-<span id="cb20-284"><a href="#cb20-284" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb20-285"><a href="#cb20-285" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="sc">|&gt;</span> <span class="fu">reframe</span>(<span class="fu">enframe</span>(<span class="fu">quantile</span>(Slope, <span class="fu">c</span>(<span class="fl">0.0</span>,<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>,<span class="dv">1</span>)), <span class="st">"quantile"</span>, <span class="st">"Slope"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb20-286"><a href="#cb20-286" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>quantile,<span class="at">values_from=</span>Slope,<span class="at">names_prefix=</span><span class="st">"Q_"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb20-287"><a href="#cb20-287" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
-<span id="cb20-288"><a href="#cb20-288" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>), <span class="fu">list</span>(<span class="at">mean =</span> mean))) <span class="sc">|&gt;</span> <span class="fu">kbl</span>()</span>
-<span id="cb20-289"><a href="#cb20-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-290"><a href="#cb20-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-291"><a href="#cb20-291" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(indvSlopes, <span class="fu">aes</span>(<span class="at">x =</span> Slope, <span class="at">color =</span> condit)) <span class="sc">+</span> </span>
-<span id="cb20-292"><a href="#cb20-292" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
-<span id="cb20-293"><a href="#cb20-293" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb20-294"><a href="#cb20-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-295"><a href="#cb20-295" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb20-296"><a href="#cb20-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-297"><a href="#cb20-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-298"><a href="#cb20-298" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-299"><a href="#cb20-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-278"><a href="#cb20-278" aria-hidden="true" tabindex="-1"></a>    <span class="at">Intercept=</span> RF_Intercept <span class="sc">+</span> b_Intercept,</span>
+<span id="cb20-279"><a href="#cb20-279" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> (b_Intercept <span class="sc">+</span> RF_Intercept) <span class="sc">+</span> (bandInt<span class="sc">*</span>(b_bandInt<span class="sc">+</span>bandInt_RF)) <span class="sc">+</span> (bandInt <span class="sc">*</span> condit_dummy) <span class="sc">*</span> <span class="st">`</span><span class="at">b_conditVaried:bandInt</span><span class="st">`</span>,</span>
+<span id="cb20-280"><a href="#cb20-280" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb20-281"><a href="#cb20-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-282"><a href="#cb20-282" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="ot">&lt;-</span> indvDraws <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> <span class="fu">median_qi</span>(Slope,SlopeInt,SlopeInt2, Intercept,b_Intercept,b_bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb20-283"><a href="#cb20-283" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e1Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id)) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
+<span id="cb20-284"><a href="#cb20-284" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(id,condit,condit_dummy,Intercept,b_Intercept,Slope,SlopeInt,SlopeInt2,b_bandInt, n) <span class="sc">|&gt;</span></span>
+<span id="cb20-285"><a href="#cb20-285" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rankSlope=</span><span class="fu">rank</span>(Slope)) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(rankSlope)   <span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span>
+<span id="cb20-286"><a href="#cb20-286" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb20-287"><a href="#cb20-287" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-288"><a href="#cb20-288" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-289"><a href="#cb20-289" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-290"><a href="#cb20-290" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="sc">|&gt;</span> <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span> <span class="fu">reframe</span>(<span class="fu">enframe</span>(<span class="fu">quantile</span>(Slope, <span class="fu">c</span>(<span class="fl">0.0</span>,<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>,<span class="dv">1</span>)), <span class="st">"quantile"</span>, <span class="st">"Slope"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb20-291"><a href="#cb20-291" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>quantile,<span class="at">values_from=</span>Slope,<span class="at">names_prefix=</span><span class="st">"Q_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-292"><a href="#cb20-292" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
+<span id="cb20-293"><a href="#cb20-293" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>), <span class="fu">list</span>(<span class="at">mean =</span> mean))) <span class="sc">|&gt;</span> <span class="fu">kbl</span>()</span>
+<span id="cb20-294"><a href="#cb20-294" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-295"><a href="#cb20-295" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="sc">|&gt;</span> <span class="fu">reframe</span>(<span class="fu">enframe</span>(<span class="fu">quantile</span>(SlopeInt, <span class="fu">c</span>(<span class="fl">0.0</span>,<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>,<span class="dv">1</span>)), <span class="st">"quantile"</span>, <span class="st">"SlopeInt"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb20-296"><a href="#cb20-296" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>quantile,<span class="at">values_from=</span>SlopeInt,<span class="at">names_prefix=</span><span class="st">"Q_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-297"><a href="#cb20-297" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
+<span id="cb20-298"><a href="#cb20-298" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>), <span class="fu">list</span>(<span class="at">mean =</span> mean))) <span class="sc">|&gt;</span> <span class="fu">kbl</span>()</span>
+<span id="cb20-299"><a href="#cb20-299" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb20-300"><a href="#cb20-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-301"><a href="#cb20-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-304"><a href="#cb20-304" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb20-305"><a href="#cb20-305" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-bmm-bx2</span></span>
-<span id="cb20-306"><a href="#cb20-306" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Slope estimates by participant - ordered from lowest to highest within each condition. </span></span>
-<span id="cb20-307"><a href="#cb20-307" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
-<span id="cb20-308"><a href="#cb20-308" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
+<span id="cb20-301"><a href="#cb20-301" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(indvSlopes, <span class="fu">aes</span>(<span class="at">x =</span> Slope, <span class="at">color =</span> condit)) <span class="sc">+</span> </span>
+<span id="cb20-302"><a href="#cb20-302" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
+<span id="cb20-303"><a href="#cb20-303" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb20-304"><a href="#cb20-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-305"><a href="#cb20-305" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb20-306"><a href="#cb20-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-307"><a href="#cb20-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-308"><a href="#cb20-308" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb20-309"><a href="#cb20-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-310"><a href="#cb20-310" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>rankSlope, <span class="at">x=</span>Slope,<span class="at">fill=</span>condit,<span class="at">color=</span>condit)) <span class="sc">+</span> </span>
-<span id="cb20-311"><a href="#cb20-311" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>.lower , <span class="at">xmax=</span>.upper)) <span class="sc">+</span> </span>
-<span id="cb20-312"><a href="#cb20-312" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Estimated Slope"</span>, <span class="at">y=</span><span class="st">"Participant"</span>)  <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>condit)</span>
-<span id="cb20-313"><a href="#cb20-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-314"><a href="#cb20-314" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-315"><a href="#cb20-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-316"><a href="#cb20-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-319"><a href="#cb20-319" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb20-320"><a href="#cb20-320" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-indv-slopes</span></span>
-<span id="cb20-321"><a href="#cb20-321" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
-<span id="cb20-322"><a href="#cb20-322" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
-<span id="cb20-323"><a href="#cb20-323" aria-hidden="true" tabindex="-1"></a>nSbj <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb20-324"><a href="#cb20-324" aria-hidden="true" tabindex="-1"></a>indvDraws  <span class="sc">|&gt;</span> <span class="fu">indv_model_plot</span>(indv_coefs, testAvg, <span class="at">rank_variable=</span>Estimate.bandInt,<span class="at">n_sbj=</span>nSbj,<span class="st">"max"</span>)</span>
-<span id="cb20-325"><a href="#cb20-325" aria-hidden="true" tabindex="-1"></a>indvDraws <span class="sc">|&gt;</span> <span class="fu">indv_model_plot</span>(indv_coefs, testAvg, <span class="at">rank_variable=</span>Estimate.bandInt,<span class="at">n_sbj=</span>nSbj,<span class="st">"min"</span>)</span>
-<span id="cb20-326"><a href="#cb20-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-327"><a href="#cb20-327" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-328"><a href="#cb20-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-329"><a href="#cb20-329" aria-hidden="true" tabindex="-1"></a><span class="fu">#### E1 Results Discussion</span></span>
-<span id="cb20-330"><a href="#cb20-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-331"><a href="#cb20-331" aria-hidden="true" tabindex="-1"></a>NEEDS TO BE WRITTEN</span>
-<span id="cb20-332"><a href="#cb20-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-333"><a href="#cb20-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-334"><a href="#cb20-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-337"><a href="#cb20-337" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb20-338"><a href="#cb20-338" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: Band Deviation</span></span>
-<span id="cb20-339"><a href="#cb20-339" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Deviations from target"</span></span>
-<span id="cb20-340"><a href="#cb20-340" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout: [[70, 30],[-5]]</span></span>
+<span id="cb20-310"><a href="#cb20-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-311"><a href="#cb20-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-314"><a href="#cb20-314" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-315"><a href="#cb20-315" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-bmm-bx2</span></span>
+<span id="cb20-316"><a href="#cb20-316" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Slope estimates by participant - ordered from lowest to highest within each condition. </span></span>
+<span id="cb20-317"><a href="#cb20-317" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
+<span id="cb20-318"><a href="#cb20-318" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
+<span id="cb20-319"><a href="#cb20-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-320"><a href="#cb20-320" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>rankSlope, <span class="at">x=</span>Slope,<span class="at">fill=</span>condit,<span class="at">color=</span>condit)) <span class="sc">+</span> </span>
+<span id="cb20-321"><a href="#cb20-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>.lower , <span class="at">xmax=</span>.upper)) <span class="sc">+</span> </span>
+<span id="cb20-322"><a href="#cb20-322" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Estimated Slope"</span>, <span class="at">y=</span><span class="st">"Participant"</span>)  <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>condit)</span>
+<span id="cb20-323"><a href="#cb20-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-324"><a href="#cb20-324" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-325"><a href="#cb20-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-328"><a href="#cb20-328" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-329"><a href="#cb20-329" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e1-indv-slopes</span></span>
+<span id="cb20-330"><a href="#cb20-330" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the smallest and largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
+<span id="cb20-331"><a href="#cb20-331" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-subcap: ["subset with largest slopes", "subset with smallest slopes"]</span></span>
+<span id="cb20-332"><a href="#cb20-332" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
+<span id="cb20-333"><a href="#cb20-333" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb20-334"><a href="#cb20-334" aria-hidden="true" tabindex="-1"></a>nSbj <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb20-335"><a href="#cb20-335" aria-hidden="true" tabindex="-1"></a>indvDraws  <span class="sc">|&gt;</span> <span class="fu">indv_model_plot</span>(indv_coefs, testAvg, Slope,<span class="at">rank_variable=</span>Estimate.bandInt,<span class="at">n_sbj=</span>nSbj,<span class="st">"max"</span>)</span>
+<span id="cb20-336"><a href="#cb20-336" aria-hidden="true" tabindex="-1"></a>indvDraws <span class="sc">|&gt;</span> <span class="fu">indv_model_plot</span>(indv_coefs, testAvg,Slope, <span class="at">rank_variable=</span>Estimate.bandInt,<span class="at">n_sbj=</span>nSbj,<span class="st">"min"</span>)</span>
+<span id="cb20-337"><a href="#cb20-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-338"><a href="#cb20-338" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-339"><a href="#cb20-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-340"><a href="#cb20-340" aria-hidden="true" tabindex="-1"></a><span class="fu">#### E1 Results Discussion</span></span>
 <span id="cb20-341"><a href="#cb20-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-342"><a href="#cb20-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-342"><a href="#cb20-342" aria-hidden="true" tabindex="-1"></a>NEEDS TO BE WRITTEN</span>
 <span id="cb20-343"><a href="#cb20-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-344"><a href="#cb20-344" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-344"><a href="#cb20-344" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-345"><a href="#cb20-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-346"><a href="#cb20-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-347"><a href="#cb20-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-348"><a href="#cb20-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-349"><a href="#cb20-349" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
-<span id="cb20-350"><a href="#cb20-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-351"><a href="#cb20-351" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb20-352"><a href="#cb20-352" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-348"><a href="#cb20-348" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-349"><a href="#cb20-349" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: Band Deviation</span></span>
+<span id="cb20-350"><a href="#cb20-350" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Deviations from target"</span></span>
+<span id="cb20-351"><a href="#cb20-351" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout: [[70, 30],[-5]]</span></span>
+<span id="cb20-352"><a href="#cb20-352" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-353"><a href="#cb20-353" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-354"><a href="#cb20-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-355"><a href="#cb20-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-356"><a href="#cb20-356" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix</span></span>
-<span id="cb20-357"><a href="#cb20-357" aria-hidden="true" tabindex="-1"></a>{{&lt; include Appendix/E1_Appendix.qmd &gt;}}</span>
+<span id="cb20-355"><a href="#cb20-355" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-356"><a href="#cb20-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-357"><a href="#cb20-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-358"><a href="#cb20-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-359"><a href="#cb20-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-360"><a href="#cb20-360" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
+<span id="cb20-361"><a href="#cb20-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-362"><a href="#cb20-362" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb20-363"><a href="#cb20-363" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-364"><a href="#cb20-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-365"><a href="#cb20-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-366"><a href="#cb20-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-367"><a href="#cb20-367" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix</span></span>
+<span id="cb20-368"><a href="#cb20-368" aria-hidden="true" tabindex="-1"></a>{{&lt; include Appendix/E1_Appendix.qmd &gt;}}</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

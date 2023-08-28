@@ -66,7 +66,7 @@ posterior_table <- function(model){
 }
 
 
-indv_model_plot <- function(combined_df, indv_coefs, testAvg, rank_variable = "Estimate.Intercept", n_sbj = 5, order = "min") {
+indv_model_plot <- function(combined_df, indv_coefs, testAvg,slopeVar, rank_variable = "Estimate.Intercept", n_sbj = 5, order = "min") {
   slice_fn <- if (order == "min") slice_min else slice_max
   combined_df  |> 
     filter(id %in% (indv_coefs  |> 
@@ -75,15 +75,19 @@ indv_model_plot <- function(combined_df, indv_coefs, testAvg, rank_variable = "E
     group_by(id, bandInt)  |> 
     sample_n(100)  |> 
     ggplot(aes(x = bandInt, y = estimate)) +
-    geom_abline(aes(intercept = Intercept + b_Intercept, slope = bandInt_RF + b_bandInt), color = "grey50") +
+    geom_abline(aes(intercept = Intercept, slope = {{slopeVar}}), color = "grey50") +
     geom_abline(data = indv_coefs  |> 
                   slice_fn({{ rank_variable }}, n = n_sbj, by = condit),
-                aes(intercept = Estimate.Intercept, slope = Estimate.bandInt), color = "red") +
+                aes(intercept = Intercept, slope = {{slopeVar}}), color = "red") +
     stat_halfeye() +
     stat_halfeye(data = testAvg  |> 
                    filter(id %in% (indv_coefs |> slice_fn({{ rank_variable }}, n = n_sbj, by = condit) |> 
                                      pull(id))), 
                  aes(x = bandInt, y = vx), color = "blue") +
+    scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                       labels = levels(test$vb), 
+                       limits = c(0, 1400)) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5,size=8.5)) +
     ggh4x::facet_nested_wrap(vars(condit, id),ncol=3)
 }
 

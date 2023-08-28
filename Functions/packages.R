@@ -7,6 +7,7 @@ pacman::p_load(tidyverse,tidybayes,brms, lme4, bayesplot,bayestestR,parameters,m
                 emmeans, equatiomatic, here, pacman,  broom,
                broom.mixed,lme4,emmeans,here,knitr,kableExtra,gt,
                 wesanderson,glue, ggdist,ggforce,patchwork,gghalves,ggh4x,
+                pander,
                 install = TRUE,
                 update = FALSE
                )

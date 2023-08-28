@@ -1,11 +1,7 @@
+
 source(here::here("Functions", "packages.R"))
 
-library(tidyverse)
-library(brms)
 
-
-# file = file_list[1]
-# result <- readRDS(file_list[1])
 
 extract_info <- function(file) {
   result <- try(readRDS(file), silent = TRUE)
@@ -81,11 +77,15 @@ if (nrow(model_inventory) != nrow(model_inventory_updated)) {
 
 
 
+
+#############################################
+#############################################
 ######### Inspecting/comparing models
 
 model_inventory <- readRDS(here::here("data", "model_inventory.rds")) |> arrange(desc(bayesR2))
-vxModels <- model_inventory |> filter(model_dv=="vx") |> arrange(desc(bayesR2))
-
+vxModels <- model_inventory |> filter(model_dv=="vx") |> 
+  #arrange(desc(bayesR2))
+  arrange(desc(md))
 
 noTrunc <- model_inventory |> filter(!grepl("trunc", model_formula)) |> arrange(desc(md))
 
@@ -100,8 +100,24 @@ extrapModels <- model_inventory |>
 
 
 
-#################
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#################
+#############################################
+#############################################
 
 ###### OLD
 
@@ -131,6 +147,18 @@ print(model_inventory)
 
 
 
+
+
+
+
+
+
+
+
+
+
+#############################################
+#############################################
 
 
 

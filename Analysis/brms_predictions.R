@@ -264,57 +264,8 @@ e1_distBMM |> emmeans( ~condit +bandInt,
   describe_posterior(indvDraws)  
   
 ###
-modelName <- "e1_testVxBand_grRF"
-
   
-
-b.eq <- bf(vx ~ condit * bandInt + (bandInt|condit) + (1 + bandInt|gr(id, by = condit)))
-e1_gr_vxBMM <- brm(b.eq, data=test,file=paste0(here::here("data/model_cache", modelName)),
-                   iter=5000,chains=4,silent=0, prior=prior, 
-                   control=list(adapt_delta=0.94, max_treedepth=13))
-e1_gr_vxBMM <- brm(bf, data=test,file=paste0(here::here("data/model_cache", modelName)),
-                   iter=5000,chains=4,silent=0,, prior=prior, 
-                   control=list(adapt_delta=0.94, max_treedepth=13))
-
-new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")]))) |> 
-  dplyr::arrange(id,bandInt) |> 
-  mutate(condit_dummy = ifelse(condit == "Varied", 1, 0)) 
-
-indv_coefs <- coef(e1_gr_vxBMM)$id |> 
-  as_tibble(rownames="id") |> 
-  select(id, starts_with("Est")) |>
-  left_join(e1Sbjs, by=join_by(id) ) 
-
-fixed_effects <- e1_gr_vxBMM |> 
-  spread_draws(`^b_.*`,regex=TRUE) |> arrange(.chain,.draw,.iteration)
-
-
-random_effects <- e1_gr_vxBMM |> 
-  gather_draws(`^r_id.*$`, regex = TRUE, ndraws = 1000) |> 
-  separate(.variable, into = c("effect", "id", "term"), sep = "\\[|,|\\]") |> 
-  mutate(id = factor(id,levels=levels(test$id))) |> 
-  pivot_wider(names_from = term, values_from = .value) |> arrange(id,.chain,.draw,.iteration)
-
-
-indvDraws <- left_join(random_effects, fixed_effects, by = join_by(".chain", ".iteration", ".draw")) |> 
-  rename(bandInt_RF = bandInt) |>
-  right_join(new_data_grid, by = join_by("id")) |> 
-  mutate(
-    Slope = bandInt_RF+b_bandInt,
-    estimate = (b_Intercept + Intercept) + (bandInt*(b_bandInt+bandInt_RF)) + (bandInt * condit_dummy) * `b_conditVaried:bandInt`
-  ) 
-
-indvSlopes <- indvDraws |> group_by(id) |> median_qi(Slope)  |> 
-  left_join(e1Sbjs, by=join_by(id)) |> group_by(condit) |>
-  mutate(rankSlope=rank(Slope)) |> arrange(rankSlope)  
-
-indvSlopes |> reframe(enframe(quantile(Slope, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "Slope")) |> 
-  pivot_wider(names_from=quantile,values_from=Slope,names_prefix="Q_") |>
-  group_by(condit) |>
-  summarise(across(starts_with("Q"), list(mean = mean))) |> kbl() 
   
-indvSlopes |> group_by(condit) |> 
-  summarise(mean_slope = mean(Slope), sd_slope = sd(Slope) )
 
 ##################
 # Plot
