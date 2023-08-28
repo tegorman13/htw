@@ -122,6 +122,13 @@ e1_trncInt_vxBMM <-  brm(vx ~ condit * bandInt + (1 + bandInt|id),
 
 
 
+###### No interaction
+
+modelName <- "e1_conditPlusBand_RF"
+e1_vxB_CpB<- brm(vx ~ condit + bandInt + (1 + bandInt|id),
+                        data=test,file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, prior=prior, 
+                        control=list(adapt_delta=0.92, max_treedepth=11))
 
 
 
@@ -132,7 +139,7 @@ e1_trncInt_vxBMM <-  brm(vx ~ condit * bandInt + (1 + bandInt|id),
 
 modelName <- "e1_testVxBand_grRF"
 b.eq <- bf(vx ~ condit * bandInt + (1 + bandInt|gr(id, by = condit)))
-e1_gr_vxBMM <- brm(bf, data=test,file=paste0(here::here("data/model_cache", modelName)),
+e1_gr_vxBMM <- brm(b.eq, data=test,file=paste0(here::here("data/model_cache", modelName)),
                    iter=5000,chains=4,silent=0,, prior=prior, 
                    control=list(adapt_delta=0.94, max_treedepth=13))
 
@@ -145,15 +152,49 @@ e1_gr2_vxBMM <- brm(b.eq2, data=test,file=paste0(here::here("data/model_cache", 
 
 
 
+modelName <- "e1_testVxCondit_grRF3"
+b.eq3 <- bf(vx ~ condit  + (0 + bandInt|condit) + (0 + bandInt|gr(id, by = condit)))
+e1_gr3_vxBMM <- brm(b.eq3, data=test,file=paste0(here::here("data/model_cache", modelName)),
+                   iter=2000,chains=3,silent=0, prior=prior, 
+                   control=list(adapt_delta=0.91, max_treedepth=12))
 
 
 
+modelName <- "e1_testVxCondit_grRF4"
+b.eq4 <- bf(vx ~ condit  + (1 + bandInt|gr(id, by = condit)))
+e1_gr4_vxBMM <- brm(b.eq4, data=test,file=paste0(here::here("data/model_cache", modelName)),
+                   iter=2000,chains=3,silent=0, prior=prior, 
+                   control=list(adapt_delta=0.91, max_treedepth=12))
 
 
 
+modelName <- "e1_testVxCondit_grRF5"
+b.eq5 <- bf(vx ~ 0+condit*bandInt  + (1 + bandInt||gr(id, by = condit)))
+e1_gr5_vxBMM <- brm(b.eq5, data=test,file=paste0(here::here("data/model_cache", modelName)),
+                   iter=2000,chains=3,silent=0,  
+                   control=list(adapt_delta=0.91, max_treedepth=12))
+
+
+modelName <- "e1_testVxCondit_grRF6"
+b.eq6 <- bf(vx ~ condit*bandInt  + (0 + bandInt||gr(id, by = condit)))
+e1_gr6_vxBMM <- brm(b.eq6, data=test,file=paste0(here::here("data/model_cache", modelName)),
+                   iter=2000,chains=3,silent=0,  
+                   control=list(adapt_delta=0.91, max_treedepth=12))
+
+
+modelName <- "e1_testVxCondit_grRF7"
+b.eq7 <- bf(vx ~ condit*bandInt  + (bandInt|condit) + ( 1 + bandInt||gr(id, by = condit)))
+e1_gr7_vxBMM <- brm(b.eq7, data=test,file=paste0(here::here("data/model_cache", modelName)),
+                   iter=2000,chains=3,silent=0,  
+                   control=list(adapt_delta=0.91, max_treedepth=12))
 
 
 
+modelName <- "e1_testVx_grRF8"
+b.eq8 <- bf(vx ~ bandInt + ( 1 + bandInt||gr(id, by = condit)))
+e1_gr8_vxBMM <- brm(b.eq8, data=test,file=paste0(here::here("data/model_cache", modelName)),
+                   iter=2000,chains=3,silent=0,  
+                   control=list(adapt_delta=0.91, max_treedepth=12))
 
 
 
