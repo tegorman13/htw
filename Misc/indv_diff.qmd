@@ -40,6 +40,10 @@ mt2 <-GetModelStats(e1_vxBMM ) |> kable(escape=F,booktabs=T)
 ```{r}
 
 
+new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")]))) |> 
+  dplyr::arrange(id,bandInt) |> 
+  mutate(condit_dummy = ifelse(condit == "Varied", 1, 0)) 
+
 indv_coefs <- coef(e1_vxBMM)$id |> 
   as_tibble(rownames="id") |> 
   select(id, starts_with("Esti")) |>
@@ -61,8 +65,8 @@ indv_epred <- e1_vxBMM |> epred_draws(new_data_grid) |>
 indv_pred <- e1_vxBMM |> predicted_draws(new_data_grid) |>
    summarize(across(.prediction, lst(mean, sd, median), .names = "{.fn}"))
 
-fitted(e1_vxBMM,re_formula=NA)
-fitted(e1_vxBMM,re_formula=NULL) # matches epred 
+# fitted(e1_vxBMM,re_formula=NA)
+# fitted(e1_vxBMM,re_formula=NULL) # matches epred 
 
 
 # |> 
@@ -73,9 +77,7 @@ fitted(e1_vxBMM,re_formula=NULL) # matches epred
 #          nCond = n()) |> arrange(id) |> ungroup()
 
 
-new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")]))) |> 
-  dplyr::arrange(id,bandInt) |> 
-  mutate(condit_dummy = ifelse(condit == "Varied", 1, 0)) 
+
 
 fixed_effects <- e1_vxBMM |> 
   spread_draws(`^b_.*`,regex=TRUE) |> arrange(.chain,.draw,.iteration)
@@ -99,7 +101,7 @@ random_effects <- e1_vxBMM |>
       (condit_dummy*b_conditVaried)+
       (bandInt * condit_dummy) * `b_conditVaried:bandInt`,
     SlopeInt=bandInt_RF+b_bandInt + ((`b_conditVaried:bandInt` + bandInt_RF)*condit_dummy),
-    SlopeInt2=bandInt_RF+b_bandInt + ((`b_conditVaried:bandInt` + b_bandInt)*condit_dummy)
+    SlopeInt2=bandInt_RF+b_bandInt + ((`b_conditVaried:bandInt`)*condit_dummy)
   ) 
 
   indvSlopes <- indvDraws |> group_by(id) |> median_qi(Slope,SlopeInt,SlopeInt2, Intercept,b_Intercept,b_bandInt) |>
@@ -153,9 +155,60 @@ full_tab |> DT::datatable(options = list(pageLength=10))
 
   ggplot(indvSlopes, aes(x = Slope, color = condit)) + 
   geom_density() 
-    ggplot(indvSlopes, aes(x = SlopeInt, color = condit)) + 
+    ggplot(indvSlopes, aes(x = SlopeInt2, color = condit)) + 
   geom_density() 
 ```
+
+```{r fig.width=15, fig.height=18}
+
+
+e1_vxBMM %>% as_draws_df(variable = c('^b_', 'sigma'), regex = TRUE) |>
+  select(starts_with("b_"),sigma) |> 
+  pivot_longer(
+    everything(),
+    names_to = 'key',
+    values_to = 'value') %>% 
+  ggplot(aes(x = value, fill = key)) +
+  stat_halfeye(
+    # plot the mode
+    point_interval = mode_hdi,
+    # plot HDIs be at both the 95% levels
+    .width = c(.95),
+    outline_bars = TRUE,
+    normalize = 'panels',
+    show.legend = FALSE
+  ) +
+  facet_wrap(~key, scales = 'free', ncol = 4) +
+  ggtitle('Posterior distributions')
+
+
+ indvDraws |> filter(id %in% 1:10) |> group_by(id,condit,.draw) |> summarise(Slope=mean(Slope)) |> 
+   ggplot(aes(x=Slope,col=condit))+geom_density() + facet_wrap(~id)
+ 
+  indvDraws  |> group_by(id,condit,.draw) |> summarise(Slope=mean(Slope)) |> 
+   ggplot(aes(x=Slope,col=condit,fill=condit))+stat_halfeye()
+  
+indvDraws |> group_by(condit,.draw) |> summarise(Slope=mean(Slope)) |> 
+   ggplot(aes(x=Slope,col=condit,fill=condit))+stat_halfeye()
+  
+ indvDraws |> group_by(id,condit) |> summarise(Slope=mean(Slope)) |> 
+   ggplot(aes(x=Slope,col=condit,fill=condit))+geom_density()
+ 
+  indvDraws |> group_by(id,condit,.draw) |> summarise(SlopeInt2=mean(SlopeInt2)) |> 
+   ggplot(aes(x=SlopeInt2,col=condit,fill=condit))+geom_density()
+  
+  
+  
+  
+  # pp_check(e1_vxBMM,
+  #        type = 'stat_grouped',
+  #        ndraws = 200,
+  #        group = 'id',
+  #        stat = 'mean')
+
+```
+
+
 
 
 ```{r fig.width=13, fig.height=12.5}
@@ -257,8 +310,8 @@ indvSlopes <- indvDraws |> group_by(id) |> median_qi(RF_Intercept,b_Intercept,In
 { indvDraws |> indv_model_plot(indvSlopes ,test, slopeVar=Slope, rank_variable=Slope,n_sbj=n_sbj,"max") + 
      ggtitle("Slope = bandInt_RF+b_bandInt") } /
  {ggplot(indvSlopes, aes(x = Slope, color = condit)) + geom_density() } /
-#gridExtra::tableGrob( indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) + 
-  gt_temp(indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) +
+ gridExtra::tableGrob( indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) + 
+ # gt_temp(indvSlopes |> group_by(condit) |> summarise(Mean=mean(Slope),Sd=sd(Slope)) ) +
   plot_layout(heights=unit(c(16,6,2),c('cm'))) + plot_annotation("vx ~ bandInt + (1 + bandInt || gr(id, by = condit))  ")
 
 ```

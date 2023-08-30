@@ -18,15 +18,189 @@ execute:
 
 ```{r}
 pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt,mgcv,data.table)
-e1 <- readRDS(here("data/e1_08-21-23.rds"))
-source(here("Functions/Display_Functions.R"))
+source(here::here("Functions", "packages.R"))
 
 
-test <- e1 |> filter(expMode %in% c("test-Nf","test-train-nf"))
+test <- readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Test")  |>
+  select(id,condit,expMode, trial, bandInt,vb,vx,dist,vy) |>   mutate(condit_dummy = ifelse(condit == "Varied", 1, 0))  |> data.table()
+
+train <-readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Train" | expMode=="train-Nf")  |>
+  select(id,condit,expMode,trial,bandInt,vb,vx,dist,vy) |> mutate(condit_dummy = ifelse(condit == "Varied", 1, 0))  |> data.table()
+
+
 testAvg <- test %>% group_by(id, condit, vb, bandInt) %>%
-  summarise(vx=mean(vx),dist=mean(dist)) %>% data.table()
+  summarise(vx=mean(vx)) %>% data.table()
+
+trainAvg <- train %>% group_by(id, condit, vb, bandInt) %>%
+  summarise(vx=mean(vx)) %>% data.table()
+
+
+
+
+
+est_gam <- function(k, train_data, test_data) 
+{
+
+  # define train and test data
+  train_data <- copy(train_data)
+  test_data <- copy(test_data)
+
+  #--- train a model ---#  
+  #trained_model <- gam(vx ~ condit + s(bandInt, k = k)+ s(id, bandInt,bs='re'), data = train_data)
+  trained_model <- gam(dist~  s(bandInt,k=2) + s(vy,k=k) + s(id,bs="re"), data = train_data)
+
+  #--- predict y for the train and test datasets ---#
+  train_data[, y_hat := predict(trained_model, newdata = train_data)] 
+  train_data[, type := "Train"]
+  test_data[, y_hat := predict(trained_model, newdata = test_data)] 
+  test_data[, type := "Test"]
+
+  #--- combine before returning ---#
+  return_data <- 
+    rbind(train_data, test_data) %>%
+    .[, num_knots := k]
+
+  return(return_data)
+}
+
+
+
+
+sim_results <- 
+  lapply(1:6, function(x) est_gam(x, train, test)) %>%
+  rbindlist()
+
+sim_results <- 
+  lapply(c(1,2,3,5,10,20,50), function(x) est_gam(x, train, test)) %>%
+  rbindlist()
+
+# sim_results <- 
+#   lapply(1:6, function(x) est_gam(x, trainAvg, testAvg)) %>%
+#   rbindlist()
+
+ggplot(sim_results) +
+  geom_point(data = train, aes(y = dist, x = bandInt), color = "grey") +
+  geom_line(aes(y = y_hat, x = vy, color = factor(num_knots))) +
+  theme_bw()
+
+ggplot(sim_results[num_knots  %in% 1:6, ],aes(fill=vb)) + 
+   stat_summary(data=train,geom = "bar", position=position_dodge(), fun = mean) +
+   geom_line(aes(y = y_hat, x = bandInt, color = factor(num_knots))) 
+
+
+summary <- 
+  sim_results[, .(mse = mean((y_hat - dist)^2)), by = .(num_knots, type)]
+
+ggplot(summary) +
+  geom_line(aes(y = mse, x = num_knots, color = type)) +
+  geom_point(aes(y = mse, x = num_knots, color = type)) +
+  xlab("Number of knots") +
+  ylab("MSE") +
+  scale_color_discrete(name = "") +
+  theme_bw()
 
 ```
+
+
+
+
+```{r}
+
+#https://fromthebottomoftheheap.net/2021/02/02/random-effects-in-gams/
+mod_gam1 = gam(vx ~ 1 + (bandInt, bs = "cr",k=4) + s(id, bandInt,bs='re'), data = test)
+
+
+gy = gam(vx ~ s(vy,k=2), data = test)
+summary(gy)
+coef(gy)
+gam.check(gy)
+
+gy = gam(vx ~ s(vy,k=6), data = test)
+summary(gy)
+coef(gy)
+gam.check(gy)
+
+gy = gam(vx ~ s(bandInt,k=5) + s(vy), data = test)
+summary(gy)
+coef(gy)
+gam.check(gy)
+
+
+gy = gam(vx ~ s(bandInt,k=2) + s(vy) + s(id,bs="re"), data = test)
+summary(gy)
+coef(gy)
+gam.check(gy)
+
+
+
+
+g1=gam(vx ~ s(bandInt,k=1),data=train)
+summary(g1)
+g1$coefficients
+
+
+g2=gam(vx ~ s(bandInt,k=2),data=trainAvg)
+summary(g2)
+g2$coefficients
+
+g3=gam(vx ~ s(bandInt,k=4),data=train)
+summary(g3)
+g3$coefficients
+
+
+k1=bam(condit_dummy ~ s(vx,k=12),data=train,family=binomial())
+summary(k1)
+
+k2=bam(bandInt ~ s(vx,k=5),data=train)
+summary(k2)
+
+g2=gam(vx ~ s(bandInt,k=6),data=trainAvg)
+
+
+
+id1 <- test |> filter(id==1)
+
+g2=gam(vx ~ 0 + s(bandInt,k=6),data=id1)
+summary(g2)
+g2$coefficients
+kmeans(id1$vx,6)
+
+kn=knnreg(vx ~ bandInt,data=test)
+summary(kn)
+
+g4 <- gam(vx ~ bandInt + s(id,bs="re"),data=test)
+summary(g4)
+g4$coefficients
+
+g5 <- gam(vx ~ condit+bandInt + s(id,bs="re",k=4),data=test)
+summary(g5)
+g5$coefficients
+coef(g5)
+
+g6 <- gam(vx ~ condit+bandInt + s(id,bs="re")+ s(id,bandInt,bs="re",k=6),data=test,method = 'REML')
+summary(g6)
+g6$coefficients
+
+
+
+
+hits = test |> filter(dist==0)
+
+hits |> ggplot(aes(x=bandInt,y=vx)) + geom_point()
+
+hg1 <- gam(vx ~ 0 + s(bandInt,k=2),data=hits)
+summary(hg1)
+hg1$coefficients
+plot(hg1)
+
+
+
+
+```
+
+
+
+
 
 
 ```{r}

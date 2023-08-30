@@ -76,13 +76,16 @@ if (nrow(model_inventory) != nrow(model_inventory_updated)) {
 
 
 
-
-
 #############################################
 #############################################
 ######### Inspecting/comparing models
 
-model_inventory <- readRDS(here::here("data", "model_inventory.rds")) |> arrange(desc(bayesR2))
+model_inventory <- readRDS(here::here("data", "model_inventory.rds")) |> 
+  #arrange(desc(bayesR2))
+  arrange(desc(md))
+
+
+
 vxModels <- model_inventory |> filter(model_dv=="vx") |> 
   #arrange(desc(bayesR2))
   arrange(desc(md))
@@ -102,6 +105,8 @@ extrapModels <- model_inventory |>
 
 
 
+###################
+##################
 
 
 
