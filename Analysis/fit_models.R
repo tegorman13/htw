@@ -130,6 +130,72 @@ e1_vxB_CpB<- brm(vx ~ condit + bandInt + (1 + bandInt|gr(id,by=condit)),
                         iter=2000,chains=4,silent=0, prior=prior, 
                         control=list(adapt_delta=0.92, max_treedepth=11))
 
+modelName <- "e1_conditPlusBand0_RF_gr"
+e1_vxB_CpB<- brm(vx ~ 0 + condit + bandInt + (1 + bandInt|gr(id,by=condit)),
+                        data=test,file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, 
+                        control=list(adapt_delta=0.92, max_treedepth=11))
+
+
+
+##### Separate Fits
+modelName <- "e1_varied_VxB_RF"
+e1_varied_VxB_RF <- brm(vx ~ 1 + bandInt + (1 + bandInt|id),
+                        data=test |> filter(condit=="Varied"),
+                        file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, 
+                        control=list(adapt_delta=0.92, max_treedepth=11))
+
+modelName <- "e1_constant_VxB_RF"
+e1_constant_VxB_RF <- brm(vx ~ 1 + bandInt + (1 + bandInt|id),
+                        data=test |> filter(condit=="Constant"),
+                        file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, 
+                        control=list(adapt_delta=0.92, max_treedepth=11))
+
+
+
+
+
+
+
+############# Distributional
+
+modelName <- "e1_conditPlusBand_RF_sig"
+e1_vxB_CpB_sig<- brm(bf(vx ~ condit + bandInt + (1 + bandInt||id),
+                sigma ~ condit),family=gaussian(),
+                        data=test,file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, prior=prior, 
+                        control=list(adapt_delta=0.94, max_treedepth=14))
+
+modelName <- "e1_conditPlusBand_RF_sig2"
+e1_vxB_CpB_sig2<- brm(bf(vx ~ condit + bandInt + (1 + bandInt||id),
+                sigma ~ 1 + (1|id)),family=gaussian(),
+                        data=test,file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, prior=prior, 
+                        control=list(adapt_delta=0.91, max_treedepth=12))
+
+modelName <- "e1_conditPlusBand_RF_sig3"
+e1_vxB_CpB_sig3<- brm(bf(vx ~ condit + bandInt + (1 + bandInt||id),
+                sigma ~ condit + (1|id)),family=gaussian(),
+                        data=test,file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, prior=prior, 
+                        control=list(adapt_delta=0.91, max_treedepth=12))
+                        
+modelName <- "e1_conditPlusBand_RF_sig4"
+e1_vxB_CpB_sig4<- brm(bf(vx ~ condit + bandInt + (1 + bandInt||id),
+                sigma ~ condit + (1|bandInt) + (1|id)),family=gaussian(),
+                        data=test,file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, prior=prior, 
+                        control=list(adapt_delta=0.91, max_treedepth=12))
+
+modelName <- "e1_conditPlusBand_RF_sig5"
+e1_vxB_CpB_sig5<- brm(bf(vx ~ condit + bandInt + (1 + bandInt||id),
+                sigma ~ condit + bandInt),family=gaussian(),
+                        data=test,
+                        file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, 
+                        control=list(adapt_delta=0.92, max_treedepth=13))
 
 
 #### Grouped RF models
@@ -202,7 +268,7 @@ e1_gr8_vxBMM <- brm(b.eq8, data=test,file=paste0(here::here("data/model_cache", 
 
 
 #################
-
+## Band as RF
 
 modelName <- "e1__condRF_vx"
 e1_condRF_vx <- brm(vx ~ condit + (1|bandInt) + (1 + bandInt||condit) + (1 + bandInt||id),
@@ -225,8 +291,35 @@ e1_condRF_vx3_gr <- brm(vx ~ condit + (1|bandInt) + (1 + bandInt||gr(id,by=condi
                      data=test,file=paste0(here::here("data/model_cache",modelName)),
                      iter=2000,chains=3,silent=0)
 
+modelName <- "e1__condRF_vx4_gr"
+e1__condRF_vx4_gr <- brm(vx ~ condit + (1+condit|bandInt) + (1 + bandInt|gr(id,by=condit)),
+                    data=test,file=paste0(here::here("data/model_cache",modelName)),
+                    iter=2000,chains=4,silent=0)
+
+modelName <- "e1__condRF_vx5_gr"
+e1__condRF_vx5_gr <- brm(vx ~ condit + (0+condit|bandInt) +(1|bandInt) + (1 + bandInt|gr(id,by=condit)),
+                    data=test,file=paste0(here::here("data/model_cache",modelName)),
+                    iter=2000,chains=4,silent=0)
+
+modelName <- "e1__condRF_vx6_gr"
+e1__condRF_vx6_gr <- brm(vx ~ condit + (1 + bandInt|gr(id,by=condit)),
+                    data=test,file=paste0(here::here("data/model_cache",modelName)),
+                    iter=2000,chains=4,silent=0)
+
+modelName <- "e1__condRF_vx7_gr"
+e1__condRF_vx7_gr <- brm(vx ~ condit + (1|condit:bandInt) + (1 + bandInt|gr(id,by=condit)),
+                    data=test,file=paste0(here::here("data/model_cache",modelName)),
+                    iter=2000,chains=4,silent=0)
+modelName <- "e1__RF_vx8"
+e1__condRF_vx8_gr <- brm(vx ~ (1|bandInt) + (1 | bandInt:id),
+                    data=test,file=paste0(here::here("data/model_cache",modelName)),
+                    iter=2000,chains=4,silent=0)
 
 
+modelName <- "e1_condRF_vx9"
+e1__condRF_vx8_gr <- brm(vx ~ condit + (1+condit|bandInt) + (0 +bandInt| id),
+                    data=test,file=paste0(here::here("data/model_cache",modelName)),
+                    iter=2000,chains=4,silent=0)
 
 
 ######## No Correlation - Testing Models Fit to 3 Extrapolation Bands
@@ -250,6 +343,147 @@ e1_NC2_extrap_VxBMM <- brm(vx ~ condit * bandInt + (0 + bandInt|id) + (1|id),
                   data=test |> filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
                   iter=5000,chains=4)
 
+
+
+
+
+
+
+
+
+#############
+# vy
+
+
+modelName <- "e1_cPb_vy"
+e1_cPb_vy <- brm(vx ~ condit + bandInt + vy + (1 + bandInt|id),
+                        data=test,file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, 
+                        control=list(adapt_delta=0.91, max_treedepth=11))
+
+modelName <- "e1_cPb_vy_tOrder"
+e1_cPb_vy_tOrder <- brm(vx ~ condit + bandInt + vy + tOrder + (1 + bandInt|id),
+                        data=test,file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, 
+                        control=list(adapt_delta=0.91, max_treedepth=11))
+
+modelName <- "e1_cPb_vy_tOrderType"
+e1_cPb_vy_tOrderType <- brm(vx ~ condit + bandInt + vy + tOrder +bandType + (1 + bandInt|id),
+                        data=test,file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, 
+                        control=list(adapt_delta=0.91, max_treedepth=11))
+
+
+modelName <- "e1_cPb_vy_full_rf1"
+e1_cPb_vy_tOrderType <- brm(vx ~ condit + bandInt + vy + tOrder +bandType + (1 + bandInt|id) +
+(0 +bandType|id),
+                        data=test,file=paste0(here::here("data/model_cache", modelName)),
+                        iter=2000,chains=4,silent=0, 
+                        control=list(adapt_delta=0.91, max_treedepth=11))
+
+
+
+
+
+############
+
+#mn_model1 <- brm(vxCat ~ bandInt + condit + (1 | id), family = categorical, data=test)
+
+modelName="e1_probitVx_1"
+# conver to ordered factor
+test$vxCat <- ordered(test$vxCat, levels=levels(test$vxCat))
+test$scaleBand <- scale(test$bandInt)
+test$orderedBand <- as.ordered(test$vb)
+
+mn_model2 <- brm(vxCat ~ 1, family = cumulative(probit),
+      prior(normal(0, 4), class = Intercept),
+      data=test,silent=0, iter=2000, chains=3,
+      file=paste0(here::here("data/model_cache", modelName)))
+
+draws <- as_draws_df(mn_model2)
+glimpse(draws)
+
+modelName="e1_probitVx_2"
+mn_model3 <- brm(vxCat ~ 1 + condit, family = cumulative(probit),
+      prior(normal(0, 4), class = Intercept),
+      data=test,silent=0, iter=2000, chains=3,
+      file=paste0(here::here("data/model_cache", modelName)))
+
+modelName="e1_probitVx_3"
+mn_model3 <- brm(vxCat ~ 1 + condit + scaleBand, family = cumulative(probit),
+      prior(normal(0, 4), class = Intercept),
+      data=test,silent=0, iter=2000, chains=3,
+      file=paste0(here::here("data/model_cache", modelName)))
+
+
+modelName="e1_probitVx_4"
+mn_model3 <- brm(vxCat ~ 1 + condit + orderedBand, family = cumulative(probit),
+      prior(normal(0, 4), class = Intercept),
+      data=test,silent=0, iter=2000, chains=3,
+      file=paste0(here::here("data/model_cache", modelName)))
+
+modelName="e1_probitVx_6"
+mn_model6 <- brm(vxCat ~ 1 + condit + orderedBand + (1|id), family = cumulative(probit),
+      prior(normal(0, 4), class = Intercept),
+      data=test,silent=0, iter=2000, chains=3,
+      file=paste0(here::here("data/model_cache", modelName)))
+
+modelName="e1_probitVx_7"
+mn_model7 <- brm(vxCat ~ 1 + condit + scaleBand + (1+scaleBand|id), family = cumulative(probit),
+      prior(normal(0, 4), class = Intercept),
+      data=test,silent=0, iter=2000, chains=3,
+      file=paste0(here::here("data/model_cache", modelName)))
+
+modelName="e1_probitVx_8"
+mn_model8 <- brm(vxCat ~ 1 + condit * scaleBand + (1+scaleBand||id), family = cumulative(probit),
+      prior = c(prior(normal(0, 4), class = Intercept),
+                prior(normal(0, 2), class = b),
+                prior(normal(0, 2), class = sd)),
+      data=test,silent=0, iter=2000, chains=4, init=.1,
+      file=paste0(here::here("data/model_cache", modelName)),
+      control=list(adapt_delta=0.90, max_treedepth=13))
+
+
+modelName="e1_probitVx_9"
+mn_model8 <- brm(vxCat ~ 1 + condit * orderedBand + (1+orderedBand||id), family = cumulative(probit),
+      prior = c(prior(normal(0, 4), class = Intercept),
+                prior(normal(0, 2), class = b),
+                prior(normal(0, 2), class = sd)),
+      data=test,silent=0, iter=2000, chains=4, init=.1,
+      file=paste0(here::here("data/model_cache", modelName)),
+      control=list(adapt_delta=0.90, max_treedepth=13))
+
+
+modelName="e1_probitVx_5"
+mn_model3 <- brm(vx ~ 1 + condit + orderedBand,
+      data=test,silent=0, iter=2000, chains=3,
+      file=paste0(here::here("data/model_cache", modelName)))
+
+modelName="e1_orderedBandVx_5"
+e1_orderedBandVx_5 <- brm(vx ~ 1 + condit + orderedBand + (1|id),
+      data=test,silent=0, iter=2000, chains=3,
+      file=paste0(here::here("data/model_cache", modelName)))
+
+modelName="e1_orderedBandVx_6"
+e1_orderedBandVx_6 <- brm(vx ~ 1 + condit + orderedBand + (1+ orderedBand|id),
+      data=test,silent=0, iter=2000, chains=3,
+      file=paste0(here::here("data/model_cache", modelName)))
+
+modelName="e1_orderedBandVx_7"
+e1_orderedBandVx_7 <- brm(vx ~ 1 + condit * orderedBand + (1+ orderedBand|id),
+      data=test,silent=0, iter=2000, chains=3,
+      file=paste0(here::here("data/model_cache", modelName)))
+
+
+modelName="e1_scaleBandVx_1"
+e1_scaleBandVx_1 <- brm(scale(vx) ~ 1 + condit * scaleBand + (1+ scaleBand|id),
+      data=test,silent=0, iter=2000, chains=3,
+      file=paste0(here::here("data/model_cache", modelName)))
+
+modelName="e1_scaleBandVx_2"
+e1_scaleBandVx_1 <- brm(scale(vx) ~ 1 + condit * orderedBand + (1+ scaleBand|id),
+      data=test,silent=0, iter=2000, chains=3,
+      file=paste0(here::here("data/model_cache", modelName)))
 
 
 ###########
