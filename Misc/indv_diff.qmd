@@ -25,7 +25,7 @@ e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                         data=test,file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k")),
                         iter=5000,chains=4,silent=0,
                         control=list(adapt_delta=0.94, max_treedepth=13))
-mt2 <-GetModelStats(e1_vxBMM ) |> kable(escape=F,booktabs=T)
+#mt2 <-GetModelStats(e1_vxBMM ) |> kable(escape=F,booktabs=T)
 
 
  
@@ -594,6 +594,29 @@ cd |>  ggplot(aes(y=id, x=Slope)) + geom_pointrange()
 
 
 
+```{r}
+
+
+testAvg |> select(id,condit,bandInt,vx) |>
+  group_by(bandInt) |>
+  mutate(across(c(vx), list(c = ~ . - mean(.)))) %>% 
+  group_by(id,bandInt) %>% 
+  mutate(
+    across(
+      c(vx_c), 
+      list(
+        # Between-person center (= person's mean)
+        b = ~ mean(.), 
+        # Within-person center (= deviation from person's mean)
+        w = ~ . - mean(.)
+      ),
+      .names = "{.col}{.fn}"
+    )
+  ) %>% 
+  ungroup()
+  
+testAvg |> select(id,condit,bandInt,vx) |> group_by(condit,bandInt) |> summarise(mean(vx))
+```
 
 
 
@@ -832,3 +855,10 @@ df_posterior |>
   stat_dist_dotsinterval()
 
 ```
+
+```{r}
+
+test |> ggplot(aes(x=vx,y=bandInt)) + geom_jitter(width=0,height=0.3) 
+
+```
+

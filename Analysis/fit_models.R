@@ -386,13 +386,15 @@ e1_cPb_vy_tOrderType <- brm(vx ~ condit + bandInt + vy + tOrder +bandType + (1 +
 
 
 ############
-
+# Probit & Multinomial
 #mn_model1 <- brm(vxCat ~ bandInt + condit + (1 | id), family = categorical, data=test)
 
 modelName="e1_probitVx_1"
 # conver to ordered factor
 test$vxCat <- ordered(test$vxCat, levels=levels(test$vxCat))
 test$scaleBand <- scale(test$bandInt)
+test$scaleBandO <- as.ordered(test$scaleBand)
+
 test$orderedBand <- as.ordered(test$vb)
 
 mn_model2 <- brm(vxCat ~ 1, family = cumulative(probit),
@@ -484,6 +486,19 @@ modelName="e1_scaleBandVx_2"
 e1_scaleBandVx_1 <- brm(scale(vx) ~ 1 + condit * orderedBand + (1+ scaleBand|id),
       data=test,silent=0, iter=2000, chains=3,
       file=paste0(here::here("data/model_cache", modelName)))
+
+####
+
+fit_ordinal <- brm(scaleBandO ~ scale(vx), data=test,family=cumulative(),chains=2,silent=0)
+fit_ordinalRF <- brm(scaleBandO ~ scale(vx) + (1+scale(vx)|id), 
+      data=test,family=cumulative(),chains=2,silent=0)
+k=coef(fit_ordinalRF)$id |> as_tibble(rownames(id)) |> select(starts_with("Estimate"))
+
+fit_ordinalRF2 <- brm(scaleBandO ~ scale(vx) +condit + (1+scale(vx)|id), 
+      data=test,family=cumulative(),chains=2,silent=0)
+
+fit_ordinalRF3 <- brm(bandInt ~ vx +condit + (1+vx|id), 
+      data=test,family=cumulative(),chains=2,silent=0)
 
 
 ###########
