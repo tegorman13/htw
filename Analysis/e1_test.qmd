@@ -73,6 +73,8 @@ participant (id).
 dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \beta_3 \cdot condit_{ij} \cdot band_{ij} + b_{0i} + b_{1i} \cdot band_{ij} + \epsilon_{ij}
 \end{equation}
 ```
+
+
 ```{r}
 #| label: tbl-e1-test-nf-deviation
 #| tbl-cap: "Testing Deviation - Empirical Summary"
@@ -299,11 +301,12 @@ random_effects <- e1_vxBMM |>
     Slope = bandInt_RF+b_bandInt,
     Intercept= RF_Intercept + b_Intercept,
     estimate = (b_Intercept + RF_Intercept) + (bandInt*(b_bandInt+bandInt_RF)) + (bandInt * condit_dummy) * `b_conditVaried:bandInt`,
+    SlopeInt = Slope + (`b_conditVaried:bandInt`*condit_dummy)
   ) 
 
-  indvSlopes <- indvDraws |> group_by(id) |> median_qi(Slope,SlopeInt,SlopeInt2, Intercept,b_Intercept,b_bandInt) |>
+  indvSlopes <- indvDraws |> group_by(id) |> median_qi(Slope,SlopeInt, Intercept,b_Intercept,b_bandInt) |>
   left_join(e1Sbjs, by=join_by(id)) |> group_by(condit) |>
-    select(id,condit,condit_dummy,Intercept,b_Intercept,Slope,SlopeInt,SlopeInt2,b_bandInt, n) |>
+    select(id,condit,Intercept,b_Intercept,starts_with("Slope"),b_bandInt, n) |>
   mutate(rankSlope=rank(Slope)) |> arrange(rankSlope)   |> ungroup()
  
   
@@ -314,20 +317,17 @@ random_effects <- e1_vxBMM |>
   group_by(condit) |>
   summarise(across(starts_with("Q"), list(mean = mean))) |> kbl()
   
-  indvSlopes |> reframe(enframe(quantile(SlopeInt, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "SlopeInt")) |> 
+  indvSlopes |> group_by(condit) |> reframe(enframe(quantile(SlopeInt, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "SlopeInt")) |> 
   pivot_wider(names_from=quantile,values_from=SlopeInt,names_prefix="Q_") |>
   group_by(condit) |>
   summarise(across(starts_with("Q"), list(mean = mean))) |> kbl()
   
 
- ggplot(indvSlopes, aes(x = Slope, color = condit)) + 
+ ggplot(indvSlopes, aes(x = SlopeInt, color = condit)) + 
   geom_density()
  
-
- 
-
-
 ```
+
 
 ```{r}
 #| label: fig-e1-bmm-bx2
@@ -335,8 +335,8 @@ random_effects <- e1_vxBMM |>
 #| fig-height: 9
 #| fig-width: 10
 
-  indvSlopes |> ggplot(aes(y=rankSlope, x=Slope,fill=condit,color=condit)) + 
-  geom_pointrange(aes(xmin=.lower , xmax=.upper)) + 
+  indvSlopes |> ggplot(aes(y=rankSlope, x=SlopeInt,fill=condit,color=condit)) + 
+  geom_pointrange(aes(xmin=SlopeInt.lower , xmax=SlopeInt.upper)) + 
   labs(x="Estimated Slope", y="Participant")  + facet_wrap(~condit)
 
 ```
@@ -348,8 +348,11 @@ random_effects <- e1_vxBMM |>
 #| fig-height: 11
 #| fig-width: 12
 nSbj <- 3
-indvDraws  |> indv_model_plot(indv_coefs, testAvg, Slope,rank_variable=Estimate.bandInt,n_sbj=nSbj,"max")
-indvDraws |> indv_model_plot(indv_coefs, testAvg,Slope, rank_variable=Estimate.bandInt,n_sbj=nSbj,"min")
+indvDraws  |> indv_model_plot(indvSlopes, testAvg, Slope,rank_variable=Slope,n_sbj=nSbj,"max")
+indvDraws |> indv_model_plot(indvSlopes, testAvg,Slope, rank_variable=Slope,n_sbj=nSbj,"min")
+
+indvDraws  |> indv_model_plot(indvSlopes, testAvg, SlopeInt,rank_variable=Slope,n_sbj=nSbj,"max")
+indvDraws |> indv_model_plot(indvSlopes, testAvg,SlopeInt, rank_variable=Slope,n_sbj=nSbj,"min")
 
 ```
 

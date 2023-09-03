@@ -56,14 +56,14 @@ indv_coefs_preds <- new_data_grid |> left_join(indv_coefs,by=join_by(id,condit,c
       (condit_dummy*Estimate.conditVaried) +
       (bandInt * condit_dummy) * `Estimate.conditVaried:bandInt`)
   
-indv_linpred <- e1_vxBMM |> linpred_draws(new_data_grid) |> 
-  summarize(across(.linpred, lst(mean, sd, median), .names = "{.fn}"))
-
-indv_epred <- e1_vxBMM |> epred_draws(new_data_grid) |>
-  summarize(across(.epred, lst(mean, sd, median), .names = "{.fn}"))
-
-indv_pred <- e1_vxBMM |> predicted_draws(new_data_grid) |>
-   summarize(across(.prediction, lst(mean, sd, median), .names = "{.fn}"))
+# indv_linpred <- e1_vxBMM |> linpred_draws(new_data_grid) |> 
+#   summarize(across(.linpred, lst(mean, sd, median), .names = "{.fn}"))
+# 
+# indv_epred <- e1_vxBMM |> epred_draws(new_data_grid) |>
+#   summarize(across(.epred, lst(mean, sd, median), .names = "{.fn}"))
+# 
+# indv_pred <- e1_vxBMM |> predicted_draws(new_data_grid) |>
+#    summarize(across(.prediction, lst(mean, sd, median), .names = "{.fn}"))
 
 # fitted(e1_vxBMM,re_formula=NA)
 # fitted(e1_vxBMM,re_formula=NULL) # matches epred 
@@ -107,7 +107,7 @@ random_effects <- e1_vxBMM |>
   indvSlopes <- indvDraws |> group_by(id) |> median_qi(Slope,SlopeInt,SlopeInt2, Intercept,b_Intercept,b_bandInt) |>
   left_join(e1Sbjs, by=join_by(id)) |> group_by(condit) |>
     select(id,condit,condit_dummy,Intercept,b_Intercept,Slope,SlopeInt,SlopeInt2,b_bandInt, n) |>
-  mutate(rankSlope=rank(Slope)) #|> arrange(rankSlope)   |> ungroup()
+  mutate(rankSlope=rank(Slope)) |> ungroup()  #|> arrange(rankSlope)   |> ungroup()
 
 ```
 
