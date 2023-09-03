@@ -11,7 +11,7 @@ execute:
 
 ```{r}
 pacman::p_load(tidyverse,tidybayes,brms,bayesplot,broom,broom.mixed,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist,moments)
-e1 <- readRDS(here("data/e1_08-04-23.rds"))
+e1 <- readRDS(here("data/e1_08-21-23.rds"))
 source(here("Functions/Display_Functions.R"))
 source(here("Functions/org_functions.R"))
 test <- e1 |> 

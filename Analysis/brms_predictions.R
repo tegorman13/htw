@@ -1,6 +1,6 @@
 
 source(here::here("Functions", "packages.R"))
-test <- readRDS(here("data/e1_08-04-23.rds")) |> 
+test <- readRDS(here("data/e1_08-21-23.rds")) |> 
   filter(expMode2 == "Test") 
 options(brms.backend="cmdstanr",mc.cores=4)
 
@@ -17,7 +17,7 @@ testAvg <- test |> group_by(id,condit,vb,bandInt) |>
 e1_vxBMM <- brm(bf(vx ~ condit * bandInt + (1 + bandInt|id),
                    sigma ~ condit * bandInt + (1+bandInt|id)),
                 data=test,
-                file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k_Ml1")),
+                file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k")),
                 iter=5000,chains=4,silent=0,
                 control=list(adapt_delta=0.94, max_treedepth=13))
 
@@ -94,7 +94,6 @@ postpred_manual <- new_data_grid %>%
   add_linpred_draws(e1_vxBMM, newdata = .) |> 
   mutate(condit_dummy = as.numeric(condit == "Varied")) |>
   mutate(y_new = round(rnorm(n(), mean = .linpred, sd = sigma_draws),1))
-
 
 ## 2B
 
@@ -237,9 +236,37 @@ e1_distBMM |> emmeans( ~condit +bandInt,
   
   
   
+############
+# Slope Comparisons  
   
   
+  indvSlopes |> group_by(condit) |> summarise(
+    mean_slope = mean(Slope), sd_slope = sd(Slope) )
   
+  e1_slope_compare <- brm(Slope ~ 0 + condit, 
+                          data = indvSlopes, 
+                          iter = 2000, 
+                          chains = 4,
+                          cores = 4,file=here::here("data/model_cache/e1_slope_compare"))
+  # 
+  # Summarize results
+  e1_slope_compare |>
+    spread_draws(b_conditConstant, b_conditVaried) |>
+    median_qi() |>
+    mutate(diff = b_conditVaried - b_conditConstant) |>
+    select(diff, starts_with("Slope"))
+  
+  t.test(Slope ~ condit,data=indvSlopes)
+  
+  BayesFactor::ttest.tstat(Slope ~ condit,data=indvSlopes)
+  
+  
+  describe_posterior(indvDraws)  
+  
+###
+  
+  
+
 ##################
 # Plot
 ggplot(nd3, aes(x = vb, y = .epred)) +

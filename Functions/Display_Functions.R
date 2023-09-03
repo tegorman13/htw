@@ -66,6 +66,32 @@ posterior_table <- function(model){
 }
 
 
+indv_model_plot <- function(combined_df, indv_coefs, testAvg,slopeVar, rank_variable = "Estimate.Intercept", n_sbj = 5, order = "min") {
+  slice_fn <- if (order == "min") slice_min else slice_max
+  combined_df  |> 
+    filter(id %in% (indv_coefs  |> 
+                      slice_fn({{ rank_variable }}, n = n_sbj, by = condit) |> 
+                      pull(id)))  |> 
+    group_by(id, bandInt)  |> 
+    sample_n(100)  |> 
+    ggplot(aes(x = bandInt, y = estimate)) +
+    geom_abline(aes(intercept = Intercept, slope = {{slopeVar}}), color = "grey50") +
+    geom_abline(data = indv_coefs  |> 
+                  slice_fn({{ rank_variable }}, n = n_sbj, by = condit),
+                aes(intercept = Intercept, slope = {{slopeVar}}), color = "red") +
+    stat_halfeye() +
+    stat_halfeye(data = testAvg  |> 
+                   filter(id %in% (indv_coefs |> slice_fn({{ rank_variable }}, n = n_sbj, by = condit) |> 
+                                     pull(id))), 
+                 aes(x = bandInt, y = vx), color = "blue") +
+    scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                       labels = levels(test$vb), 
+                       limits = c(0, 1400)) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5,size=8.5)) +
+    ggh4x::facet_nested_wrap(vars(condit, id),ncol=3)
+}
+
+
 # bayes_R2(e1_testDistRF)
 # 
 # tidyMCMC(e1_testDistRF, conf.int = TRUE, conf.level = 0.95,
@@ -531,3 +557,80 @@ theme_clean <- function() {
 nested_settings <- strip_nested(
   background_x = list(element_rect(fill = "grey92"), NULL),
   by_layer_x = TRUE)
+
+
+
+"%||%" <- function(a, b) {
+  if (!is.null(a)) a else b
+}
+
+geom_flat_violin <- function(mapping = NULL, data = NULL, stat = "ydensity",
+                             position = "dodge", trim = TRUE, scale = "area",
+                             show.legend = NA, inherit.aes = TRUE, ...) {
+  layer(
+    data = data,
+    mapping = mapping,
+    stat = stat,
+    geom = GeomFlatViolin,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(
+      trim = trim,
+      scale = scale,
+      ...
+    )
+  )
+}
+
+#' @rdname ggplot2-ggproto
+#' @format NULL
+#' @usage NULL
+#' @export
+GeomFlatViolin <-
+  ggproto("GeomFlatViolin", Geom,
+          setup_data = function(data, params) {
+            data$width <- data$width %||%
+              params$width %||% (resolution(data$x, FALSE) * 0.9)
+            
+            # ymin, ymax, xmin, and xmax define the bounding rectangle for each group
+            data %>%
+              group_by(group) %>%
+              mutate(
+                ymin = min(y),
+                ymax = max(y),
+                xmin = x,
+                xmax = x + width / 2
+              )
+          },
+          
+          draw_group = function(data, panel_scales, coord) {
+            # Find the points for the line to go all the way around
+            data <- transform(data,
+                              xminv = x,
+                              xmaxv = x + violinwidth * (xmax - x)
+            )
+            
+            # Make sure it's sorted properly to draw the outline
+            newdata <- rbind(
+              plyr::arrange(transform(data, x = xminv), y),
+              plyr::arrange(transform(data, x = xmaxv), -y)
+            )
+            
+            # Close the polygon: set first and last point the same
+            # Needed for coord_polar and such
+            newdata <- rbind(newdata, newdata[1, ])
+            
+            ggplot2:::ggname("geom_flat_violin",
+                             GeomPolygon$draw_panel(newdata, panel_scales, coord))
+          },
+          
+          draw_key = draw_key_polygon,
+          
+          default_aes = aes(
+            weight = 1, colour = "grey20", fill = "white", size = 0.5,
+            alpha = NA, linetype = "solid"
+          ),
+          
+          required_aes = c("x", "y")
+  )

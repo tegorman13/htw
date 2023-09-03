@@ -20,6 +20,9 @@ knitr::include_graphics(here::here("images/2023-04-19-16-20-55.png"))
 
 
 ## Live Task Demo
+
+Check the box at the bottom of the consent form, and then click Start Experiment. 
+
 ![HTW_Task](https://pcl.sitehost.iu.edu/tg/HTW/HTW_Index_Of.html){width="900" height="800"}
 
 

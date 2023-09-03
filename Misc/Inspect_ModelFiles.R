@@ -1,11 +1,7 @@
+
 source(here::here("Functions", "packages.R"))
 
-library(tidyverse)
-library(brms)
 
-
-# file = file_list[1]
-# result <- readRDS(file_list[1])
 
 extract_info <- function(file) {
   result <- try(readRDS(file), silent = TRUE)
@@ -80,15 +76,44 @@ if (nrow(model_inventory) != nrow(model_inventory_updated)) {
 
 
 
-
+#############################################
+#############################################
 ######### Inspecting/comparing models
 
-model_inventory <- readRDS(here::here("data", "model_inventory.rds"))
-vxModels <- model_inventory |> filter(model_dv=="vx") |> arrange(desc(bayesR2))
+model_inventory <- readRDS(here::here("data", "model_inventory.rds")) |> 
+  #arrange(desc(bayesR2))
+  arrange(desc(md))
+
+
+
+vxModels <- model_inventory |> filter(model_dv=="vx") |> 
+  #arrange(desc(bayesR2))
+  arrange(desc(md))
+
+noTrunc <- model_inventory |> filter(!grepl("trunc", model_formula)) |> arrange(desc(md))
 
 distModels <- model_inventory |> filter(model_dv=="dist") |> 
   arrange(desc(bayesR2)) |> # filter for models that have bandInt in the forumula
   filter(grepl("bandInt", model_formula)) 
+
+
+extrapModels <- model_inventory |> 
+  arrange(desc(bayesR2)) |> # filter for models that have bandInt in the forumula
+  filter(grepl("extrap", file_name)) 
+
+
+
+
+
+###################
+##################
+
+
+
+
+
+
+
 
 
 
@@ -96,7 +121,8 @@ distModels <- model_inventory |> filter(model_dv=="dist") |>
 
 
 #################
-
+#############################################
+#############################################
 
 ###### OLD
 
@@ -126,6 +152,18 @@ print(model_inventory)
 
 
 
+
+
+
+
+
+
+
+
+
+
+#############################################
+#############################################
 
 
 
