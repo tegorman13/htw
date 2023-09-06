@@ -309,9 +309,6 @@ random_effects <- e1_vxBMM |>
     select(id,condit,Intercept,b_Intercept,starts_with("Slope"),b_bandInt, n) |>
   mutate(rankSlope=rank(Slope)) |> arrange(rankSlope)   |> ungroup()
  
-  
-  
-  
   indvSlopes |> group_by(condit) |> reframe(enframe(quantile(Slope, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "Slope")) |> 
   pivot_wider(names_from=quantile,values_from=Slope,names_prefix="Q_") |>
   group_by(condit) |>
@@ -322,6 +319,16 @@ random_effects <- e1_vxBMM |>
   group_by(condit) |>
   summarise(across(starts_with("Q"), list(mean = mean))) |> kbl()
   
+  
+ 
+indvDraws |> group_by(condit) |> median_qi(SlopeInt) 
+
+   
+e1_vxBMM |> emmeans(~condit) |> gather_emmeans_draws()
+  
+  
+ ggplot(indvDraws, aes(x = SlopeInt, color = condit)) + 
+  geom_density()
 
  ggplot(indvSlopes, aes(x = SlopeInt, color = condit)) + 
   geom_density()
