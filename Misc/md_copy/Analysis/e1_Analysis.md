@@ -1,5 +1,5 @@
 ---
-title: Experiment 1 Analysis
+title: E1 Extras
 date: last-modified
 categories: [Analysis, R]
 page-layout: full
@@ -10,7 +10,7 @@ toc: false
 
 ```{r setup, echo=FALSE, include=FALSE}
 pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist)
-e1 <- readRDS(here("data/e1_08-04-23.rds"))
+e1 <- readRDS(here("data/e1_08-21-23.rds"))
 quietly( source(here::here("Functions", "packages.R")))
 
 train <- e1 |> filter(expMode %in% c("train"))
@@ -22,6 +22,7 @@ testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
 
 ```
 
+
 ```{r}
 #| label: test vx table
 #| tbl-cap: "Testing - No Feedback"
@@ -29,7 +30,7 @@ testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
 #| layout-ncol: 2
 #| echo: fenced
 
-result <- create_summary_table(test, "vx", mfun = list(mean = mean, median = median, sd = sd))
+result <- test_summary_table(test, "vx", mfun = list(mean = mean, median = median, sd = sd))
 result$constant #|> kable_styling(full_width = F)
 result$varied #|> kable_styling(full_width = F)
 
@@ -669,6 +670,8 @@ test %>% group_by(id,vb,condit) %>%
   ggtitle("Testing Performance (no-feedback) - X-Velocity Per Band")+ 
   geom_text(data=sumStats2,aes(y=2090,label = sumStatLab),size=1.9)
 
+
+#test %>% group_by(id,vb,condit) |> plot_distByCondit()
 
 
 test %>% group_by(id,vb,condit) %>% 

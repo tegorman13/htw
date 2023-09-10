@@ -17,6 +17,39 @@ editor:
 
 
 
+```{r}
+source(here::here("Functions", "packages.R"))
+test <- readRDS(here("data/e1_08-21-23.rds")) |>  filter(expMode2 == "Test") |>
+  select(id,condit,bandInt,vb,vx,dist,sdist,bandType)
+
+e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
+                        data=test,file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k")))
+new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")])))
+
+
+t1 <- system.time({
+tidy_pred <- test |> add_predicted_draws(e1_vxBMM) |> mutate(.residual = vx - .prediction); 
+predict_per_row <- tidy_pred |> group_by(.row) |> mean_hdi(.prediction,.residual)
+
+})
+
+m1 <- system.time({
+  predict_vx <- test |> cbind(predict(e1_vxBMM, test)) |> mutate(resid=vx-Estimate)
+}
+)
+
+cat(paste0("tidybayes preds = ",round(t1["elapsed"],2)," \n ",
+           "predict.brmsfit = ",round(m1["elapsed"],2)))
+
+
+predict_vx |> group_by(id,condit,bandInt) |> summarise(mean(vx),mean(Estimate),mean(resid))
+
+```
+tidybayes preds = 169.94 
+predict.brmsfit = 10.27
+
+
+
 
 https://cran.r-project.org/web/packages/brms/vignettes/brms_threading.html
 
@@ -26,7 +59,7 @@ https://discourse.mc-stan.org/t/using-the-apple-m1-gpus-question-from-a-noob/230
 #| warning: false
 
 pacman::p_load(tidyverse,tidybayes,brms,broom,broom.mixed,lme4,here,knitr,gt,gghalves,patchwork,ggdist,microbenchmark)
-e1 <- readRDS(here("data/e1_08-04-23.rds"))
+e1 <- readRDS(here("data/e1_08-21-23.rds"))
 test <- e1 |> filter(expMode2 == "Test")  
 
 options(mc.cores = 4, brms.backend = "cmdstanr")

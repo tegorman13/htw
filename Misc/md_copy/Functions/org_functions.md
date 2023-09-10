@@ -71,22 +71,6 @@ normal_predictive_distribution <- function(mu_samples,
 
 
 
-mc_tribble <- function(indf, indents = 4, mdformat = TRUE) {
-  name <- as.character(substitute(indf))
-  name <- name[length(name)]
-  
-  meat <- capture.output(write.csv(indf, quote = TRUE, row.names = FALSE))
-  meat <- paste0(
-    paste(rep(" ", indents), collapse = ""),
-    c(paste(sprintf("~%s", names(indf)), collapse = ", "),
-      meat[-1]))
-  
-  if (mdformat) meat <- paste0("    ", meat)
-  obj <- paste(name, " <- tribble(\n", paste(meat, collapse = ",\n"), ")", sep = "")
-  if (mdformat) cat(paste0("    ", obj)) else cat(obj)
-}
-
-
 # p1 <- GetModelStats(e1_testDistRF2_0)
 # 
 # kable(p1,escape=F, booktabs=T) |> column_spec(1:8,width="1.5em") |> 
@@ -98,12 +82,13 @@ GetModelStats <- function(model, type="brms") {
     if (type == "brms") {
       m1 <- as.data.frame(describe_posterior(model, centrality = "Median"))
       m2 <- fixef(model)
-      df <- cbind(m1[, c(1,2)], m2[, 2], m1[, c(4,5, 6, 11, 12)])
-      colnames(df) <- c("Term", "\\(\\beta_{Median}\\)", "SD",
-                        "95% CrI \nLower", "95% CrI \nUpper", "pd", "\\(\\widehat R\\)", "ESS")
+      df <- cbind(m1[, c(1,2)], m1[, c(4,5, 6)])
+      #df <- cbind(m1[, c(1,2)], m2[, 2], m1[, c(4,5, 6, 11, 12)])
+      # colnames(df) <- c("Term", "\\(\\beta_{Median}\\)", "SD",
+      #                   "95% CrI \nLower", "95% CrI \nUpper", "pd", "\\(\\widehat R\\)", "ESS")
       
-      # colnames(df) <- c("Coefficient", "Estimate", "SD", 
-      #                   "95% CrI \nLower", "95% CrI \nUpper", "pd", "Rhat", "ESS")
+      colnames(df) <- c("Term", "Estimate",
+                        "95% CrI Lower", "95% CrI Upper", "pd")
       
       # Add model name and re-order columns
       #df$Model <- mnames[n]
@@ -117,8 +102,16 @@ GetModelStats <- function(model, type="brms") {
     }
 
   
-  df <- df |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
-    tibble::remove_rownames()
+  df <- df |> 
+    mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+   # mutate(Rhat = round(Rhat, 3)) |>
+    tibble::remove_rownames() |> 
+    # Replace "bandInt" with "Band" wherever it occurs in the Term column
+    mutate(Term = stringr::str_replace_all(Term, "bandInt", "Band")) |>
+    # Remove "b_" from the start of the Term column if it's present
+    mutate(Term = stringr::str_replace_all(Term, "^b_", ""),
+           Term = stringr::str_replace_all(Term,"conditVaried:Band","condit*Band")) 
+  
   return(df)
 }
 
@@ -176,6 +169,36 @@ GetBrmsModelStats <- function(model1, model2 = NA, BF = NA) {
   } else {Comparisons = c("loo_diff" = c(-2 * modelsLoo[2, 1], 2 * modelsLoo[2, 2]), "waic_diff" = c(-2 * modelsWaic[2, 1], 2 * modelsWaic[2, 2]))}
   
   return(list("Model1" = model1, "Model2" = model2, "Comparisons" = Comparisons))
+}
+
+
+
+## convert model prior to df - without missing cells for prior labels
+get_prior_df <- function(model) {
+  # Extracting the priors
+  priors <- model$prior
+  
+  # Getting the vector of unique priors
+  prior_vec <- priors[[1]]
+  
+  # Handling the repeated empty strings by repeating the last filled prior
+  for (i in 2:length(prior_vec)) {
+    if (prior_vec[i] == "" & prior_vec[i - 1] != "") {
+      prior_vec[i] <- prior_vec[i - 1]
+    }
+  }
+  
+  # Replacing the priors in the original dataframe
+  priors$prior <- prior_vec
+  
+  # Handling the flat priors by placing the specific label "(flat)" for them
+  priors$prior[priors$prior == ""] <- "(flat)"
+  
+  # Convert to a data frame
+  prior_df <- as.data.frame(priors)
+  
+  # Return the resulting data frame
+  return(prior_df)
 }
 
 
