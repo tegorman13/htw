@@ -36,14 +36,9 @@ brms_posterior_checks <- function(brmModel, yvar, gvar, ndraws = 50) {
   #  print(bayes_R2(brmModel))
     
   }
-  
-
-  
   print(bayesplot::ppc_dens_overlay_grouped(y_data, posterior_predict(brmModel, ndraws = ndraws), g_data))
   #fixef(brmModel,summary=TRUE)
-  
 }
-
 
 
 
@@ -109,8 +104,7 @@ indv_model_plot <- function(combined_df, indv_coefs, testAvg,slopeVar, rank_vari
 
 
 
-
-
+## Learning Plots
 learn_curve_bins<- function(df, x_var, y_var,gw,groupVec, nbins, labels = FALSE,prefix="") {
   df |> 
     group_by(pick({{ groupVec }})) |> 
