@@ -1,4 +1,3 @@
-# nolint start
 #
 #
 #
@@ -11,6 +10,7 @@ options(brms.backend="cmdstanr",mc.cores=4)
 e1Sbjs <- test |> group_by(id,condit) |> summarise(n=n())
 testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
+#
 #
 #
 #

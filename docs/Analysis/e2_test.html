@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.322">
+<meta name="generator" content="quarto-1.4.376">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
 <meta name="dcterms.date" content="2023-09-03">
@@ -21,7 +21,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -84,6 +84,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "/",
     "s"
   ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -391,7 +392,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ot">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div id="fig-design-e2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><div>
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-design-e2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
 <svg width="768" height="240" viewbox="0.00 0.00 647.35 174.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 170)"><polygon fill="white" stroke="transparent" points="-4,4 -4,-170 643.35,-170 643.35,4 -4,4"></polygon><g id="clust1" class="cluster"><title>cluster</title>
 <polygon fill="none" stroke="black" points="152.49,-8 152.49,-158 458.5,-158 458.5,-8 152.49,-8"></polygon><text text-anchor="middle" x="305.49" y="-141.4" font-family="Times,serif" font-size="14.00">Test Phase </text><text text-anchor="middle" x="305.49" y="-124.6" font-family="Times,serif" font-size="14.00">(Counterbalanced Order)</text></g><!-- data1 --><g id="node1" class="node"><title>data1</title>
 <polygon fill="#ff0000" stroke="black" points="118.54,-137.7 5.95,-137.7 5.95,-62.3 118.54,-62.3 118.54,-137.7"></polygon><text text-anchor="middle" x="62.24" y="-121" font-family="Times,serif" font-size="14.00"> Varied Training </text><text text-anchor="middle" x="62.24" y="-104.2" font-family="Times,serif" font-size="14.00">100-300</text><text text-anchor="middle" x="62.24" y="-87.4" font-family="Times,serif" font-size="14.00">350-550</text><text text-anchor="middle" x="62.24" y="-70.6" font-family="Times,serif" font-size="14.00">600-800</text></g><!-- Test1 --><g id="node4" class="node"><title>Test1</title>
@@ -404,7 +406,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <path fill="none" stroke="black" d="M256.35,-62C264.51,-62 273.22,-62 282.07,-62"></path><polygon fill="black" stroke="black" points="282.09,-65.5 292.09,-62 282.09,-58.5 282.09,-65.5"></polygon></g><!-- Test2&#45;&gt;Test3 --><g id="edge4" class="edge"><title>Test2-&gt;Test3</title>
 <path fill="none" stroke="black" d="M450.55,-62C459.05,-62 467.74,-62 476.33,-62"></path><polygon fill="black" stroke="black" points="476.34,-65.5 486.34,-62 476.34,-58.5 476.34,-65.5"></polygon></g></g></svg>
 </div>
-<figcaption class="figure-caption">Figure&nbsp;1: Experiment 2 Design. Constant and Varied participants complete different training conditions. The training and testing bands are the reverse of Experiment 1.</figcaption></figure>
+</div>
+<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-design-e2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Experiment 2 Design. Constant and Varied participants complete different training conditions. The training and testing bands are the reverse of Experiment 1.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -416,7 +421,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><span class="math display">\[\begin{equation}
 dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \beta_3 \cdot condit_{ij} \cdot band_{ij} + b_{0i} + b_{1i} \cdot band_{ij} + \epsilon_{ij}
 \end{equation}\]</span></p>
-<div>
 <details><summary>Code</summary><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: tbl-e2-test-nf-deviation</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="in">#| tbl-cap: "Testing Deviation - Empirical Summary"</span></span>
@@ -427,14 +431,14 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="in">result$constant</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="in">result$varied</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div id="tbl-e2-test-nf-deviation" class="cell tbl-parent quarto-layout-panel anchored">
-<div class="panel-caption table-caption">
-<p>Table&nbsp;1: Testing Deviation - Empirical Summary</p>
-</div>
+</details><div id="tbl-e2-test-nf-deviation" class="quarto-layout-panel anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="table quarto-float-caption quarto-float-tbl" id="tbl-e2-test-nf-deviation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Testing Deviation - Empirical Summary
+</figcaption><div aria-describedby="tbl-e2-test-nf-deviation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row quarto-layout-valign-top">
-<div id="tbl-e2-test-nf-deviation-1" class="quarto-layout-cell quarto-layout-cell-subref anchored" data-ref-parent="tbl-e2-test-nf-deviation" style="flex-basis: 50.0%;justify-content: center;">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<caption>(a) Constant Testing - Deviation</caption>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<table data-quarto-postprocess="true" class="table">
+<caption>Summary of dist - Constant</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band Type</th>
@@ -488,9 +492,9 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 </tbody>
 </table>
 </div>
-<div id="tbl-e2-test-nf-deviation-2" class="quarto-layout-cell quarto-layout-cell-subref anchored" data-ref-parent="tbl-e2-test-nf-deviation" style="flex-basis: 50.0%;justify-content: center;">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<caption>(b) Varied Testing - Deviation</caption>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<table data-quarto-postprocess="true" class="table">
+<caption>Summary of dist - Varied</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band Type</th>
@@ -552,6 +556,7 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 </div>
 </div>
 </div>
+</figure>
 </div>
 <div class="cell">
 <details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">testE2</span> <span class="op">|&gt;</span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">vb</span>, y <span class="op">=</span> <span class="va">dist</span>,fill<span class="op">=</span><span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -559,9 +564,13 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 <span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"errorbar"</span>, position<span class="op">=</span><span class="fu">position_dodge</span><span class="op">(</span><span class="fl">.9</span><span class="op">)</span>, fun.data <span class="op">=</span> <span class="va">mean_se</span>, width <span class="op">=</span> <span class="fl">.4</span>, alpha <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Band"</span>, y<span class="op">=</span><span class="st">"Deviation From Target"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e2-test-dev" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="e2_test_files/figure-html/fig-e2-test-dev-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;2: E2. Deviations from target band during testing without feedback stage.</figcaption></figure>
+<div id="fig-e2-test-dev" class="quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e2-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="e2_test_files/figure-html/fig-e2-test-dev-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-e2-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: E2. Deviations from target band during testing without feedback stage.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -576,10 +585,13 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 <span>                      iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">mp2</span> <span class="op">&lt;-</span> <span class="fu">GetModelStats</span><span class="op">(</span><span class="va">e2_distBMM</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">kable</span><span class="op">(</span>escape<span class="op">=</span><span class="cn">F</span>,booktabs<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
 <span><span class="va">mp2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div id="tbl-e2-bmm-dist" class="anchored">
+</details><div id="tbl-e2-bmm-dist" class="cell anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="table quarto-float-caption quarto-float-tbl" id="tbl-e2-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Experiment 2. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs.&nbsp;Varied) and Velocity Band
+</figcaption><div aria-describedby="tbl-e2-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<div class="cell-output-display">
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<caption>Table&nbsp;2: Experiment 2. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs.&nbsp;Varied) and Velocity Band</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Term</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Estimate</th>
@@ -634,8 +646,9 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 </tbody>
 </table>
 </div>
-
-
+</div>
+</div>
+</figure>
 </div>
 </div>
 <p>As shown in <a href="#tbl-e2-bmm-dist" class="quarto-xref">Table&nbsp;2</a>, the posterior distribution for the effect of training condition in Experiment 2 is modestly suggestive of a beneficial effect of training variation (β = -70.0, 95% CI [-156.87, 16.66]), with 94% of the posterior falling in the direction of a varied advantage. (SHOULD PROBABLY DO ALTERNATE ANALYSIS THAT ONLY CONSIDERS THE NOVEL EXTRAPOLATION BANDS)</p>
@@ -652,9 +665,13 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 <span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1400</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e2-bmm-dist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="e2_test_files/figure-html/fig-e2-bmm-dist-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;3: E2. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals.</figcaption></figure>
+<div id="fig-e2-bmm-dist" class="quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e2-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="e2_test_files/figure-html/fig-e2-bmm-dist-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-e2-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: E2. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -682,9 +699,13 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 <span></span>
 <span><span class="op">(</span><span class="va">bothConditGM</span> <span class="op">|</span> <span class="va">ameBand</span><span class="op">)</span> <span class="op">+</span> <span class="fu">plot_layout</span><span class="op">(</span>widths<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1.0</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e2-ame" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="e2_test_files/figure-html/fig-e2-ame-1.png" class="img-fluid figure-img" width="960"></p>
-<figcaption class="figure-caption">Figure&nbsp;4: E2. Predicted Means Per Condition and Band, and Average Marginal Effect (Constant - Varied)</figcaption></figure>
+<div id="fig-e2-ame" class="quarto-figure quarto-figure-center anchored" width="960">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e2-ame-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="e2_test_files/figure-html/fig-e2-ame-1.png" class="img-fluid figure-img" width="960">
+</div>
+<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-e2-ame-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: E2. Predicted Means Per Condition and Band, and Average Marginal Effect (Constant - Varied)
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -696,13 +717,16 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <div class="cell">
 <details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">testE2</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">vb</span>,<span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">plot_distByCondit</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e2-test-vx" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="e2_test_files/figure-html/fig-e2-test-vx-1.png" class="img-fluid figure-img" width="1056"></p>
-<figcaption class="figure-caption">Figure&nbsp;5: E2 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band.</figcaption></figure>
+<div id="fig-e2-test-vx" class="quarto-figure quarto-figure-center anchored" width="1056">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e2-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="e2_test_files/figure-html/fig-e2-test-vx-1.png" class="img-fluid figure-img" width="1056">
+</div>
+<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-e2-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: E2 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<div>
 <details><summary>Code</summary><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: tbl-e2-test-nf-vx</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="in">#| tbl-cap: "Testing vx - Empirical Summary"</span></span>
@@ -713,14 +737,14 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="in">result$constant </span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="in">result$varied </span></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div id="tbl-e2-test-nf-vx" class="cell tbl-parent quarto-layout-panel anchored">
-<div class="panel-caption table-caption">
-<p>Table&nbsp;3: Testing vx - Empirical Summary</p>
-</div>
+</details><div id="tbl-e2-test-nf-vx" class="quarto-layout-panel anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="table quarto-float-caption quarto-float-tbl" id="tbl-e2-test-nf-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Testing vx - Empirical Summary
+</figcaption><div aria-describedby="tbl-e2-test-nf-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row quarto-layout-valign-top">
-<div id="tbl-e2-test-nf-vx-1" class="quarto-layout-cell quarto-layout-cell-subref anchored" data-ref-parent="tbl-e2-test-nf-vx" style="flex-basis: 50.0%;justify-content: center;">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<caption>(a) Constant Testing - vx</caption>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<table data-quarto-postprocess="true" class="table">
+<caption>Summary of vx - Constant</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band Type</th>
@@ -774,9 +798,9 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 </tbody>
 </table>
 </div>
-<div id="tbl-e2-test-nf-vx-2" class="quarto-layout-cell quarto-layout-cell-subref anchored" data-ref-parent="tbl-e2-test-nf-vx" style="flex-basis: 50.0%;justify-content: center;">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<caption>(b) Varied Testing - vx</caption>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<table data-quarto-postprocess="true" class="table">
+<caption>Summary of vx - Varied</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band Type</th>
@@ -838,6 +862,7 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 </div>
 </div>
 </div>
+</figure>
 </div>
 <div class="cell">
 <details><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">e2_vxBMM</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
@@ -846,10 +871,13 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <span>                        control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta<span class="op">=</span><span class="fl">0.94</span>, max_treedepth<span class="op">=</span><span class="fl">13</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">mt3</span> <span class="op">&lt;-</span><span class="fu">GetModelStats</span><span class="op">(</span><span class="va">e2_vxBMM</span> <span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">kable</span><span class="op">(</span>escape<span class="op">=</span><span class="cn">F</span>,booktabs<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
 <span><span class="va">mt3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div id="tbl-e2-bmm-vx" class="anchored">
+</details><div id="tbl-e2-bmm-vx" class="cell anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="table quarto-float-caption quarto-float-tbl" id="tbl-e2-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs.&nbsp;Varied) and Velocity Band
+</figcaption><div aria-describedby="tbl-e2-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<div class="cell-output-display">
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<caption>Table&nbsp;4: Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs.&nbsp;Varied) and Velocity Band</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Term</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Estimate</th>
@@ -904,8 +932,9 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 </tbody>
 </table>
 </div>
-
-
+</div>
+</div>
+</figure>
 </div>
 </div>
 <p>See <a href="#tbl-e2-bmm-vx" class="quarto-xref">Table&nbsp;4</a> for the full model results. The estimated coefficient for training condition (β = 63.49, 95% CI [-133.97, 113.98]) suggests that the varied group tends to produce harder throws than the constant group. More relevant to the issue of discrimination is the slope on Velocity Band (β = 0.71, 95% CI [.58, .84]), which is quite similar to best fitting slope value obtained in Experiment 1 (β = 0.69)</p>
@@ -922,9 +951,13 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1400</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e2-bmm-vx" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="e2_test_files/figure-html/fig-e2-bmm-vx-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;6: Conditional effect of training condition and Band. Ribbons indicate 95% HDI.</figcaption></figure>
+<div id="fig-e2-bmm-vx" class="quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e2-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="e2_test_files/figure-html/fig-e2-bmm-vx-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-e2-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Conditional effect of training condition and Band. Ribbons indicate 95% HDI.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -971,9 +1004,13 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <span><span class="co">#   geom_jitter()</span></span>
 <span><span class="co">#   labs(x="Band", y="Deviation From Target")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e2-slope-dist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="e2_test_files/figure-html/fig-e2-slope-dist-1.png" class="img-fluid figure-img" width="960"></p>
-<figcaption class="figure-caption">Figure&nbsp;7: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 100 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.</figcaption></figure>
+<div id="fig-e2-slope-dist" class="quarto-figure quarto-figure-center anchored" width="960">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e2-slope-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="e2_test_files/figure-html/fig-e2-slope-dist-1.png" class="img-fluid figure-img" width="960">
+</div>
+<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-e2-slope-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 100 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1007,9 +1044,13 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1400</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="fu">ylab</span><span class="op">(</span><span class="st">"X Velocity"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">xlab</span><span class="op">(</span><span class="st">"Band"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e2-indv-slopes" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="e2_test_files/figure-html/fig-e2-indv-slopes-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;8: Slope estimates by participant - ordered from lowest to highest within each condition.</figcaption></figure>
+<div id="fig-e2-indv-slopes" class="quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e2-indv-slopes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="e2_test_files/figure-html/fig-e2-indv-slopes-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-e2-indv-slopes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Slope estimates by participant - ordered from lowest to highest within each condition.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1032,9 +1073,13 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1400</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="fu">ylab</span><span class="op">(</span><span class="st">"X Velocity"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">xlab</span><span class="op">(</span><span class="st">"Band"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e2-indv-slopes-small" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="e2_test_files/figure-html/fig-e2-indv-slopes-small-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;9: Subset of Varied and Constant Participants with the smallest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.</figcaption></figure>
+<div id="fig-e2-indv-slopes-small" class="quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e2-indv-slopes-small-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="e2_test_files/figure-html/fig-e2-indv-slopes-small-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-e2-indv-slopes-small-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Subset of Varied and Constant Participants with the smallest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.
+</figcaption></figure>
 </div>
 </div>
 </div>
