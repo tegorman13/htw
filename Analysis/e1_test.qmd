@@ -14,7 +14,7 @@ testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
 
 ## Analyses Strategy
 
-To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R @burknerBrmsPackageBayesian2017, and descriptive stats and tables were extracted with the BayestestR package @makowskiBayestestRDescribingEffects2019a. Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as circumventing convergence issues common to the frequentist analogues of our mixed models. For each model, we report the median values of the posterior distribution, and 95% credible intervals.
+All data processing and statistical analyses were performed in R version 4.31 @rcoreteamLanguageEnvironmentStatistical2020. To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R @burknerBrmsPackageBayesian2017, and descriptive stats and tables were extracted with the BayestestR package @makowskiBayestestRDescribingEffects2019a. Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as circumventing convergence issues common to the frequentist analogues of our mixed models. For each model, we report the median values of the posterior distribution, and 95% credible intervals.
 
 Each model was set to run with 4 chains, 5000 iterations per chain, with the first 2500 of which were discarded as warmup chains. Rhat values were generally within an acceptable range, with values \<=1.02 (see appendix for diagnostic plots). We used uninformative priors for the fixed effects of the model (condition and velocity band), and weakly informative Student T distributions for for the random effects.
 
@@ -163,7 +163,9 @@ e1_extrap_VxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
 GetModelStats(e1_extrap_VxBMM ) |> kable(escape=F,booktabs=T)
 ```
 
-See @tbl-e1-bmm-vx for the full model results. The estimated coefficient for training condition (β = 164.67, 95% CrI [45.50, 278.85]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band (β = 0.71, 95% CrI [.62, .80]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The slope coefficient (β = 0.71 ) also seems in accordance with an examination of @tbl-e1-test-nf-vx, which shows that average x-velocity fell within the range of the target band for four out of six of the bands ($4/6$=.67). The estimate for the interaction between slope and condition (β = -.12, 95% CI [-.25, 0.00]), suggests that the varied condition had significantly lower slopes than did the constant group. This difference is depicted visually in @fig-e1-bmm-vx.
+See @tbl-e1-bmm-vx for the full model results. The estimated coefficient for training condition (β = 164.67, 95% CrI [45.50, 278.85]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band (β = 0.71, 95% CrI [.62, .80]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The slope coefficient (β = 0.71 ) also seems in accordance with an examination of @tbl-e1-test-nf-vx, which shows that average x-velocity fell within the range of the target band for four out of six of the bands ($4/6$=.67). The estimate for the interaction between slope and condition (β = -.14, 95% CI [-.26, -0.01]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less senitivity between vands than the constant condition. This difference is depicted visually in @fig-e1-bmm-vx.
+
+The second model, which focused solely on extrapolation bands, revealed similar patterns. The  Velocity Band term (β = 0.50, 95% CrI 0.42,0.570.42,0.57) still demonstrates a high degree of discrimination ability. However, the posterior distribution for interaction term (β = -0.07, 95% [CrI −0.17,0.04] ) does across over 0, suggesting that the evidence for decreased discrimination ability for the varied participants is not as strong when considering only the three extrapolation bands. 
 
 ```{r}
 #| label: tbl-vx-emmeans
@@ -223,15 +225,14 @@ e1_extrap_VxBMM |> emmeans( ~condit + bandInt,
 #| label: tbl-e1-slope-quartile
 #| tbl-cap: "Mean slopes for each quartile, by condition"
 
-
 new_data_grid=map_dfr(1, ~data.frame(unique(test[,c("id","condit","bandInt")]))) |> 
   dplyr::arrange(id,bandInt) |> 
   mutate(condit_dummy = ifelse(condit == "Varied", 1, 0)) 
 
-indv_coefs <- coef(e1_vxBMM)$id |> 
-  as_tibble(rownames="id") |> 
+indv_coefs <- as_tibble(coef(e1_vxBMM)$id, rownames="id")|> 
   select(id, starts_with("Est")) |>
   left_join(e1Sbjs, by=join_by(id) ) 
+
 
 fixed_effects <- e1_vxBMM |> 
   spread_draws(`^b_.*`,regex=TRUE) |> arrange(.chain,.draw,.iteration)
@@ -259,35 +260,20 @@ random_effects <- e1_vxBMM |>
     select(id,condit,Intercept,b_Intercept,starts_with("Slope"),b_bandInt, n) |>
   mutate(rankSlope=rank(Slope)) |> arrange(rankSlope)   |> ungroup()
  
-  indvSlopes |> group_by(condit) |> reframe(enframe(quantile(Slope, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "Slope")) |> 
-  pivot_wider(names_from=quantile,values_from=Slope,names_prefix="Q_") |>
-  group_by(condit) |>
-  summarise(across(starts_with("Q"), list(mean = mean))) |> kbl()
   
-  indvSlopes |> group_by(condit) |> reframe(enframe(quantile(SlopeInt, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "SlopeInt")) |> 
+  indvSlopes |> group_by(condit) |> 
+    reframe(enframe(quantile(SlopeInt, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "SlopeInt")) |> 
   pivot_wider(names_from=quantile,values_from=SlopeInt,names_prefix="Q_") |>
   group_by(condit) |>
   summarise(across(starts_with("Q"), list(mean = mean))) |> kbl()
-  
-  
- 
-indvDraws |> group_by(condit) |> median_qi(SlopeInt) 
 
-   
-e1_vxBMM |> emmeans(~condit) |> gather_emmeans_draws()
-  
-  
- ggplot(indvDraws, aes(x = SlopeInt, color = condit)) + 
-  geom_density()
-
- ggplot(indvSlopes, aes(x = SlopeInt, color = condit)) + 
-  geom_density()
- 
 ```
+
 
 ```{r}
 #| label: fig-e1-bmm-bx2
-#| fig-cap: Slope estimates by participant - ordered from lowest to highest within each condition. 
+#| fig-cap: Slope distributions between condition
+#| fig-subcap: ["Slope estimates by participant - ordered from lowest to highest within each condition. ", "Model fit to only 3 extrapolation bands"]
 #| fig-height: 9
 #| fig-width: 10
 
@@ -295,7 +281,12 @@ e1_vxBMM |> emmeans(~condit) |> gather_emmeans_draws()
   geom_pointrange(aes(xmin=SlopeInt.lower , xmax=SlopeInt.upper)) + 
   labs(x="Estimated Slope", y="Participant")  + facet_wrap(~condit)
 
+   ggplot(indvSlopes, aes(x = SlopeInt, color = condit)) + 
+  geom_density()
+
+
 ```
+
 
 ```{r}
 #| label: fig-e1-indv-slopes
@@ -313,14 +304,7 @@ indvDraws |> indv_model_plot(indvSlopes, testAvg,SlopeInt, rank_variable=Slope,n
 
 NEEDS TO BE WRITTEN
 
-```{r}
-#| label: Band Deviation
-#| tbl-cap: "Deviations from target"
-#| layout: [[70, 30],[-5]]
 
-
-
-```
 
 ## References
 
