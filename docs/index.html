@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.376">
+<meta name="generator" content="quarto-1.4.398">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -47,7 +47,7 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
   "keyboard-shortcut": [
     "f",
     "/",
@@ -452,6 +452,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 </header>
+
 
 <section id="modeling-empircal-data" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-empircal-data">Modeling Empircal Data</h2>
@@ -1201,7 +1202,7 @@ Aug 2023
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="11" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1695718097000" data-listing-file-modified-sort="1695718097751" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2271">
+<div class="g-col-1" data-index="11" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1696299074000" data-listing-file-modified-sort="1696299074896" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2312">
 <a href="./Analysis/e1_test.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Analysis/e1_test_files/figure-html/fig-e1-test-dev-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1221,14 +1222,14 @@ Bayesian
 </div>
 </div>
 <div class="card-text listing-description">
-To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R <span class="citation" data-cites="burknerBrmsPackageBayesian2017">Bürkner (2017)</span>, and descriptive stats…<span class="citation" data-cites="makowskiBayestestRDescribingEffects2019a"></span>
+All data processing and statistical analyses were performed in R version 4.31 <span class="citation" data-cites="rcoreteamLanguageEnvironmentStatistical2020">Team (2020)</span>. To assess differences between groups, we used Bayesian Mixed Effects Regression.…<span class="citation" data-cites="burknerBrmsPackageBayesian2017"></span><span class="citation" data-cites="makowskiBayestestRDescribingEffects2019a"></span>
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Thomas Gorman
 </div>
 <div class="listing-date">
-Sep 2023
+Oct 2023
 </div>
 </div>
 </div>
@@ -1904,15 +1905,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    if (id.startsWith('sec-')) {
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
+    if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
       if (note.children && note.children.length > 2) {
         for (let i = 0; i < 2; i++) {
           container.appendChild(note.children[i].cloneNode(true));
         }
+        typesetMath(container);
         return container.innerHTML
       } else {
+        typesetMath(note);
         return note.innerHTML;
       }
     } else {
@@ -1921,6 +1945,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
+      typesetMath(note);
       return note.innerHTML;
     }
   }
@@ -1963,6 +1988,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
       }
     }, function(instance) {
     });
@@ -2038,7 +2086,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     window.addEventListener(
       "resize",
       throttle(() => {
-        console.log("RESIZE");
         elRect = undefined;
         if (selectedAnnoteEl) {
           selectCodeLines(selectedAnnoteEl);
