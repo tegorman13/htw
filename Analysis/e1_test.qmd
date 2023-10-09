@@ -11,8 +11,6 @@ e1Sbjs <- test |> group_by(id,condit) |> summarise(n=n())
 testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
-
-
 ```
 
 ## Analyses Strategy
@@ -125,10 +123,6 @@ In addition to accuracy/deviation, we also assessed the ability of participants 
 vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \beta_3 \cdot condit_{ij} \cdot bandInt_{ij} + b_{0i} + b_{1i} \cdot bandInt_{ij} + \epsilon_{ij}
 \end{equation}
 ```
-
-
-
-$k(x,x') = \exp \left( - \frac{\|x - x'\|^2}{2\lambda^2} \right)$
 
 
 ```{r}

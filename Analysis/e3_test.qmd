@@ -14,7 +14,6 @@ testE3Avg <- testE3 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
 
 The major manipulation adjustment of experiment 3 is for participants to receive ordinal feedback, in contrast to the continuous feedback of the earlier experiments. Experiment 3 participants were randomly assigned to both a training condition (Constant vs. Varied) and a Band Order condition (original order used in Experiment 1, or the Reverse order of Experiment 2). 
 
-adlkdj
 
 ## Results
 
@@ -132,12 +131,15 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 ```{r}
 #| label: fig-e3-test-vx
 #| fig-cap: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. 
-#| fig-width: 13
-#| fig-height: 11
+#| fig-width: 14
+#| fig-height: 15
+#| column: screen-inset-right
 # testE3 |> filter(bandOrder=="Original")|> group_by(id,vb,condit) |> plot_distByCondit()
 # testE3 |> filter(bandOrder=="Reverse")|> group_by(id,vb,condit) |> plot_distByCondit() +ggtitle("test")
 
-testE3 |> group_by(id,vb,condit,bandOrder) |> plot_distByCondit() + facet_wrap(bandOrder~condit,scale="free_x")
+testE3 |> group_by(id,vb,condit,bandOrder) |> plot_distByCondit() + 
+  facet_wrap(bandOrder~condit,scale="free_x") 
+
 
 ```
 
