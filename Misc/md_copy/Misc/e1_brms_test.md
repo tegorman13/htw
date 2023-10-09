@@ -16,7 +16,7 @@ pacman::p_load(tidyverse,tidybayes,brms,bayesplot,bayestestR,
                broom.mixed,lme4,emmeans,here,knitr,kableExtra,gt)
 walk(c(here("Functions/Display_Functions.R"), here("Functions/org_functions.R")), source)
 
-test <- readRDS(here("data/e1_08-04-23.rds")) |> 
+test <- readRDS(here("data/e1_08-21-23.rds")) |> 
   filter(expMode2 == "Test") |> 
   mutate(distS2 = custom_scale(dist))
 
