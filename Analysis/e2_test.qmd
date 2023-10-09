@@ -97,7 +97,6 @@ testE2 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
 #| label: tbl-e2-bmm-dist
 #| tbl-cap: "Experiment 2. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band"
 #contrasts(test$condit) 
-
 # contrasts(testE2$vb)
 
 modelName <- "e2_testDistBand_RF_5K"
@@ -117,10 +116,8 @@ e2_distBMM |>
           pd=ifelse(value<0,1-pd,pd)) |>
    kbl(caption="Contrasts")
 
+coef_details <- get_coef_details(e2_distBMM, "conditVaried")
 
-coef_details <- broom.mixed::tidy(e2_distBMM) |>
-  filter(term == "conditVaried") |> 
-  select(estimate, conf.low, conf.high) |> mutate(across(where(is.numeric), \(x) round(x, 2)))
 
 ```
 

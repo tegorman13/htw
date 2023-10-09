@@ -76,6 +76,7 @@ e1_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
                       iter=5000,chains=4)
 GetModelStats(e1_distBMM) |> kable(escape=F,booktabs=T,caption="Model Coefficients")
 
+
 e1_distBMM |> 
   emmeans("condit",by="bandInt",at=list(bandInt=c(100,350,600,800,1000,1200)),
           epred = TRUE, re_formula = NA) |> 
@@ -86,11 +87,7 @@ e1_distBMM |>
           pd=ifelse(value<0,1-pd,pd)) |>
    kbl(caption="Contrasts")
 
-
-coef_details <- broom.mixed::tidy(e1_distBMM) |>
-  filter(term == "conditVaried") |> 
-  select(estimate, conf.low, conf.high) |> mutate(across(where(is.numeric), \(x) round(x, 2)))
-
+coef_details <- get_coef_details(e1_distBMM, "conditVaried")
 
 ```
 

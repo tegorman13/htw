@@ -84,7 +84,7 @@ GetModelStats <- function(model, type="brms") {
   
     # Get current model stats for brms model
     if (type == "brms") {
-      m1 <- as.data.frame(describe_posterior(model, centrality = "Median"))
+      m1 <- as.data.frame(describe_posterior(model, centrality = "Mean"))
       m2 <- fixef(model)
       df <- cbind(m1[, c(1,2)], m1[, c(4,5, 6)])
       #df <- cbind(m1[, c(1,2)], m2[, 2], m1[, c(4,5, 6, 11, 12)])

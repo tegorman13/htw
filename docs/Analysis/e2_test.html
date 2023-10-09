@@ -570,7 +570,6 @@ Figure&nbsp;2: E2. Deviations from target band during testing without feedback s
 </div>
 <div class="cell">
 <details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#contrasts(test$condit) </span></span>
-<span></span>
 <span><span class="co"># contrasts(testE2$vb)</span></span>
 <span></span>
 <span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e2_testDistBand_RF_5K"</span></span>
@@ -595,14 +594,14 @@ Table&nbsp;2: Experiment 2. Bayesian Mixed Model predicting absolute deviation a
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Intercept</td>
-<td style="text-align: right;">151.25</td>
+<td style="text-align: right;">151.71</td>
 <td style="text-align: right;">90.51</td>
 <td style="text-align: right;">215.86</td>
 <td style="text-align: right;">1.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried</td>
-<td style="text-align: right;">-70.00</td>
+<td style="text-align: right;">-70.33</td>
 <td style="text-align: right;">-156.87</td>
 <td style="text-align: right;">16.66</td>
 <td style="text-align: right;">0.94</td>
@@ -696,9 +695,7 @@ Table&nbsp;2: Experiment 2. Bayesian Mixed Model predicting absolute deviation a
 </tbody>
 </table>
 </div>
-<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">coef_details</span> <span class="op">&lt;-</span> <span class="fu">broom.mixed</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">e2_distBMM</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">term</span> <span class="op">==</span> <span class="st">"conditVaried"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">estimate</span>, <span class="va">conf.low</span>, <span class="va">conf.high</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">where</span><span class="op">(</span><span class="va">is.numeric</span><span class="op">)</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">coef_details</span> <span class="op">&lt;-</span> <span class="fu">get_coef_details</span><span class="op">(</span><span class="va">e2_distBMM</span>, <span class="st">"conditVaried"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </figure>
@@ -902,14 +899,14 @@ Table&nbsp;4: Experiment 2. Bayesian Mixed Model Predicting Vx as a function of 
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Intercept</td>
-<td style="text-align: right;">362.71</td>
+<td style="text-align: right;">362.64</td>
 <td style="text-align: right;">274.85</td>
 <td style="text-align: right;">450.02</td>
 <td style="text-align: right;">1.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried</td>
-<td style="text-align: right;">-7.73</td>
+<td style="text-align: right;">-8.56</td>
 <td style="text-align: right;">-133.97</td>
 <td style="text-align: right;">113.98</td>
 <td style="text-align: right;">0.55</td>
@@ -1066,19 +1063,19 @@ Table&nbsp;5: Slope coefficients by quartile, per condition
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Constant</td>
-<td style="text-align: right;">-0.2814380</td>
-<td style="text-align: right;">0.3914517</td>
-<td style="text-align: right;">0.6967174</td>
-<td style="text-align: right;">1.0753715</td>
-<td style="text-align: right;">1.617136</td>
+<td style="text-align: right;">-0.2790710</td>
+<td style="text-align: right;">0.3913850</td>
+<td style="text-align: right;">0.6934179</td>
+<td style="text-align: right;">1.0800287</td>
+<td style="text-align: right;">1.617187</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Varied</td>
-<td style="text-align: right;">-0.2422698</td>
-<td style="text-align: right;">0.3072817</td>
-<td style="text-align: right;">0.6854912</td>
-<td style="text-align: right;">0.9527519</td>
-<td style="text-align: right;">1.816490</td>
+<td style="text-align: right;">-0.2465514</td>
+<td style="text-align: right;">0.3054359</td>
+<td style="text-align: right;">0.6853911</td>
+<td style="text-align: right;">0.9519559</td>
+<td style="text-align: right;">1.812268</td>
 </tr>
 </tbody>
 </table>
@@ -1698,261 +1695,258 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb17-105"><a href="#cb17-105" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e2-bmm-dist</span></span>
 <span id="cb17-106"><a href="#cb17-106" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Experiment 2. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band"</span></span>
 <span id="cb17-107"><a href="#cb17-107" aria-hidden="true" tabindex="-1"></a><span class="co">#contrasts(test$condit) </span></span>
-<span id="cb17-108"><a href="#cb17-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-109"><a href="#cb17-109" aria-hidden="true" tabindex="-1"></a><span class="co"># contrasts(testE2$vb)</span></span>
-<span id="cb17-110"><a href="#cb17-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-111"><a href="#cb17-111" aria-hidden="true" tabindex="-1"></a>modelName <span class="ot">&lt;-</span> <span class="st">"e2_testDistBand_RF_5K"</span></span>
-<span id="cb17-112"><a href="#cb17-112" aria-hidden="true" tabindex="-1"></a>e2_distBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(dist <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
-<span id="cb17-113"><a href="#cb17-113" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data=</span>testE2,<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>,modelName)),</span>
-<span id="cb17-114"><a href="#cb17-114" aria-hidden="true" tabindex="-1"></a>                      <span class="at">iter=</span><span class="dv">5000</span>,<span class="at">chains=</span><span class="dv">4</span>)</span>
-<span id="cb17-115"><a href="#cb17-115" aria-hidden="true" tabindex="-1"></a>mp2 <span class="ot">&lt;-</span> <span class="fu">GetModelStats</span>(e2_distBMM) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
-<span id="cb17-116"><a href="#cb17-116" aria-hidden="true" tabindex="-1"></a>mp2</span>
-<span id="cb17-117"><a href="#cb17-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-118"><a href="#cb17-118" aria-hidden="true" tabindex="-1"></a>e2_distBMM <span class="sc">|&gt;</span> </span>
-<span id="cb17-119"><a href="#cb17-119" aria-hidden="true" tabindex="-1"></a>  <span class="fu">emmeans</span>(<span class="st">"condit"</span>,<span class="at">by=</span><span class="st">"bandInt"</span>,<span class="at">at=</span><span class="fu">list</span>(<span class="at">bandInt=</span><span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">350</span>,<span class="dv">600</span>,<span class="dv">800</span>,<span class="dv">1000</span>,<span class="dv">1200</span>)),</span>
-<span id="cb17-120"><a href="#cb17-120" aria-hidden="true" tabindex="-1"></a>          <span class="at">epred =</span> <span class="cn">TRUE</span>, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb17-121"><a href="#cb17-121" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pairs</span>() <span class="sc">|&gt;</span> <span class="fu">gather_emmeans_draws</span>()  <span class="sc">|&gt;</span> </span>
-<span id="cb17-122"><a href="#cb17-122" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarize</span>(<span class="fu">median_qi</span>(.value),<span class="at">pd=</span><span class="fu">sum</span>(.value<span class="sc">&gt;</span><span class="dv">0</span>)<span class="sc">/</span><span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb17-123"><a href="#cb17-123" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(contrast,<span class="at">Band=</span>bandInt,<span class="at">value=</span>y,<span class="at">lower=</span>ymin,<span class="at">upper=</span>ymax,pd) <span class="sc">|&gt;</span> </span>
-<span id="cb17-124"><a href="#cb17-124" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), \(x) <span class="fu">round</span>(x, <span class="dv">2</span>)),</span>
-<span id="cb17-125"><a href="#cb17-125" aria-hidden="true" tabindex="-1"></a>          <span class="at">pd=</span><span class="fu">ifelse</span>(value<span class="sc">&lt;</span><span class="dv">0</span>,<span class="dv">1</span><span class="sc">-</span>pd,pd)) <span class="sc">|&gt;</span></span>
-<span id="cb17-126"><a href="#cb17-126" aria-hidden="true" tabindex="-1"></a>   <span class="fu">kbl</span>(<span class="at">caption=</span><span class="st">"Contrasts"</span>)</span>
-<span id="cb17-127"><a href="#cb17-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-108"><a href="#cb17-108" aria-hidden="true" tabindex="-1"></a><span class="co"># contrasts(testE2$vb)</span></span>
+<span id="cb17-109"><a href="#cb17-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-110"><a href="#cb17-110" aria-hidden="true" tabindex="-1"></a>modelName <span class="ot">&lt;-</span> <span class="st">"e2_testDistBand_RF_5K"</span></span>
+<span id="cb17-111"><a href="#cb17-111" aria-hidden="true" tabindex="-1"></a>e2_distBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(dist <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
+<span id="cb17-112"><a href="#cb17-112" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data=</span>testE2,<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>,modelName)),</span>
+<span id="cb17-113"><a href="#cb17-113" aria-hidden="true" tabindex="-1"></a>                      <span class="at">iter=</span><span class="dv">5000</span>,<span class="at">chains=</span><span class="dv">4</span>)</span>
+<span id="cb17-114"><a href="#cb17-114" aria-hidden="true" tabindex="-1"></a>mp2 <span class="ot">&lt;-</span> <span class="fu">GetModelStats</span>(e2_distBMM) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
+<span id="cb17-115"><a href="#cb17-115" aria-hidden="true" tabindex="-1"></a>mp2</span>
+<span id="cb17-116"><a href="#cb17-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-117"><a href="#cb17-117" aria-hidden="true" tabindex="-1"></a>e2_distBMM <span class="sc">|&gt;</span> </span>
+<span id="cb17-118"><a href="#cb17-118" aria-hidden="true" tabindex="-1"></a>  <span class="fu">emmeans</span>(<span class="st">"condit"</span>,<span class="at">by=</span><span class="st">"bandInt"</span>,<span class="at">at=</span><span class="fu">list</span>(<span class="at">bandInt=</span><span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">350</span>,<span class="dv">600</span>,<span class="dv">800</span>,<span class="dv">1000</span>,<span class="dv">1200</span>)),</span>
+<span id="cb17-119"><a href="#cb17-119" aria-hidden="true" tabindex="-1"></a>          <span class="at">epred =</span> <span class="cn">TRUE</span>, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-120"><a href="#cb17-120" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pairs</span>() <span class="sc">|&gt;</span> <span class="fu">gather_emmeans_draws</span>()  <span class="sc">|&gt;</span> </span>
+<span id="cb17-121"><a href="#cb17-121" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarize</span>(<span class="fu">median_qi</span>(.value),<span class="at">pd=</span><span class="fu">sum</span>(.value<span class="sc">&gt;</span><span class="dv">0</span>)<span class="sc">/</span><span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb17-122"><a href="#cb17-122" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(contrast,<span class="at">Band=</span>bandInt,<span class="at">value=</span>y,<span class="at">lower=</span>ymin,<span class="at">upper=</span>ymax,pd) <span class="sc">|&gt;</span> </span>
+<span id="cb17-123"><a href="#cb17-123" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), \(x) <span class="fu">round</span>(x, <span class="dv">2</span>)),</span>
+<span id="cb17-124"><a href="#cb17-124" aria-hidden="true" tabindex="-1"></a>          <span class="at">pd=</span><span class="fu">ifelse</span>(value<span class="sc">&lt;</span><span class="dv">0</span>,<span class="dv">1</span><span class="sc">-</span>pd,pd)) <span class="sc">|&gt;</span></span>
+<span id="cb17-125"><a href="#cb17-125" aria-hidden="true" tabindex="-1"></a>   <span class="fu">kbl</span>(<span class="at">caption=</span><span class="st">"Contrasts"</span>)</span>
+<span id="cb17-126"><a href="#cb17-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-127"><a href="#cb17-127" aria-hidden="true" tabindex="-1"></a>coef_details <span class="ot">&lt;-</span> <span class="fu">get_coef_details</span>(e2_distBMM, <span class="st">"conditVaried"</span>)</span>
 <span id="cb17-128"><a href="#cb17-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-129"><a href="#cb17-129" aria-hidden="true" tabindex="-1"></a>coef_details <span class="ot">&lt;-</span> broom.mixed<span class="sc">::</span><span class="fu">tidy</span>(e2_distBMM) <span class="sc">|&gt;</span></span>
-<span id="cb17-130"><a href="#cb17-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"conditVaried"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb17-131"><a href="#cb17-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(estimate, conf.low, conf.high) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), \(x) <span class="fu">round</span>(x, <span class="dv">2</span>)))</span>
+<span id="cb17-129"><a href="#cb17-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-130"><a href="#cb17-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-131"><a href="#cb17-131" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-132"><a href="#cb17-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-133"><a href="#cb17-133" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-133"><a href="#cb17-133" aria-hidden="true" tabindex="-1"></a>As shown in @tbl-e2-bmm-dist, the posterior distribution for the effect of training condition in Experiment 2 is modestly suggestive of a beneficial effect of training variation (β = <span class="in">`r coef_details$estimate`</span>, 95% CI <span class="sc">\[</span><span class="in">`r coef_details$conf.low`</span>, <span class="in">`r coef_details$conf.high`</span><span class="sc">\]</span>), with 94% of the posterior falling in the direction of a varied advantage. (SHOULD PROBABLY DO ALTERNATE ANALYSIS THAT ONLY CONSIDERS THE NOVEL EXTRAPOLATION BANDS)</span>
 <span id="cb17-134"><a href="#cb17-134" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-135"><a href="#cb17-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-136"><a href="#cb17-136" aria-hidden="true" tabindex="-1"></a>As shown in @tbl-e2-bmm-dist, the posterior distribution for the effect of training condition in Experiment 2 is modestly suggestive of a beneficial effect of training variation (β = <span class="in">`r coef_details$estimate`</span>, 95% CI <span class="sc">\[</span><span class="in">`r coef_details$conf.low`</span>, <span class="in">`r coef_details$conf.high`</span><span class="sc">\]</span>), with 94% of the posterior falling in the direction of a varied advantage. (SHOULD PROBABLY DO ALTERNATE ANALYSIS THAT ONLY CONSIDERS THE NOVEL EXTRAPOLATION BANDS)</span>
-<span id="cb17-137"><a href="#cb17-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-138"><a href="#cb17-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-141"><a href="#cb17-141" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-142"><a href="#cb17-142" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-bmm-dist</span></span>
-<span id="cb17-143"><a href="#cb17-143" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: E2. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals. </span></span>
-<span id="cb17-144"><a href="#cb17-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-145"><a href="#cb17-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-146"><a href="#cb17-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-147"><a href="#cb17-147" aria-hidden="true" tabindex="-1"></a>e2_distBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
-<span id="cb17-148"><a href="#cb17-148" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb17-149"><a href="#cb17-149" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
-<span id="cb17-150"><a href="#cb17-150" aria-hidden="true" tabindex="-1"></a> <span class="fu">condEffects</span>()<span class="sc">+</span></span>
-<span id="cb17-151"><a href="#cb17-151" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
-<span id="cb17-152"><a href="#cb17-152" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(testE2<span class="sc">$</span>vb), </span>
-<span id="cb17-153"><a href="#cb17-153" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) </span>
-<span id="cb17-154"><a href="#cb17-154" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-138"><a href="#cb17-138" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-139"><a href="#cb17-139" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-bmm-dist</span></span>
+<span id="cb17-140"><a href="#cb17-140" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: E2. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals. </span></span>
+<span id="cb17-141"><a href="#cb17-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-142"><a href="#cb17-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-143"><a href="#cb17-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-144"><a href="#cb17-144" aria-hidden="true" tabindex="-1"></a>e2_distBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
+<span id="cb17-145"><a href="#cb17-145" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb17-146"><a href="#cb17-146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-147"><a href="#cb17-147" aria-hidden="true" tabindex="-1"></a> <span class="fu">condEffects</span>()<span class="sc">+</span></span>
+<span id="cb17-148"><a href="#cb17-148" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
+<span id="cb17-149"><a href="#cb17-149" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(testE2<span class="sc">$</span>vb), </span>
+<span id="cb17-150"><a href="#cb17-150" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) </span>
+<span id="cb17-151"><a href="#cb17-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-152"><a href="#cb17-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-153"><a href="#cb17-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-154"><a href="#cb17-154" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Discrimination between Velocity Bands</span></span>
 <span id="cb17-155"><a href="#cb17-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-156"><a href="#cb17-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-157"><a href="#cb17-157" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Discrimination between Velocity Bands</span></span>
-<span id="cb17-158"><a href="#cb17-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-159"><a href="#cb17-159" aria-hidden="true" tabindex="-1"></a>In addition to accuracy/deviation. We also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). @tbl-e2-test-nf-vx shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants. </span>
-<span id="cb17-160"><a href="#cb17-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-161"><a href="#cb17-161" aria-hidden="true" tabindex="-1"></a>\begin{equation}</span>
-<span id="cb17-162"><a href="#cb17-162" aria-hidden="true" tabindex="-1"></a>vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \beta_3 \cdot condit_{ij} \cdot bandInt_{ij} + b_{0i} + b_{1i} \cdot bandInt_{ij} + \epsilon_{ij}</span>
-<span id="cb17-163"><a href="#cb17-163" aria-hidden="true" tabindex="-1"></a>\end{equation}</span>
+<span id="cb17-156"><a href="#cb17-156" aria-hidden="true" tabindex="-1"></a>In addition to accuracy/deviation. We also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). @tbl-e2-test-nf-vx shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants. </span>
+<span id="cb17-157"><a href="#cb17-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-158"><a href="#cb17-158" aria-hidden="true" tabindex="-1"></a>\begin{equation}</span>
+<span id="cb17-159"><a href="#cb17-159" aria-hidden="true" tabindex="-1"></a>vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \beta_3 \cdot condit_{ij} \cdot bandInt_{ij} + b_{0i} + b_{1i} \cdot bandInt_{ij} + \epsilon_{ij}</span>
+<span id="cb17-160"><a href="#cb17-160" aria-hidden="true" tabindex="-1"></a>\end{equation}</span>
+<span id="cb17-161"><a href="#cb17-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-162"><a href="#cb17-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-163"><a href="#cb17-163" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-164"><a href="#cb17-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-165"><a href="#cb17-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-166"><a href="#cb17-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-167"><a href="#cb17-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-170"><a href="#cb17-170" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-171"><a href="#cb17-171" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-test-vx</span></span>
-<span id="cb17-172"><a href="#cb17-172" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: E2 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. </span></span>
-<span id="cb17-173"><a href="#cb17-173" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
-<span id="cb17-174"><a href="#cb17-174" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
-<span id="cb17-175"><a href="#cb17-175" aria-hidden="true" tabindex="-1"></a>testE2 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,vb,condit) <span class="sc">|&gt;</span> <span class="fu">plot_distByCondit</span>()</span>
+<span id="cb17-167"><a href="#cb17-167" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-168"><a href="#cb17-168" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-test-vx</span></span>
+<span id="cb17-169"><a href="#cb17-169" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: E2 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. </span></span>
+<span id="cb17-170"><a href="#cb17-170" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
+<span id="cb17-171"><a href="#cb17-171" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
+<span id="cb17-172"><a href="#cb17-172" aria-hidden="true" tabindex="-1"></a>testE2 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,vb,condit) <span class="sc">|&gt;</span> <span class="fu">plot_distByCondit</span>()</span>
+<span id="cb17-173"><a href="#cb17-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-174"><a href="#cb17-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-175"><a href="#cb17-175" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-176"><a href="#cb17-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-177"><a href="#cb17-177" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-178"><a href="#cb17-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-179"><a href="#cb17-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-182"><a href="#cb17-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-183"><a href="#cb17-183" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e2-test-nf-vx</span></span>
-<span id="cb17-184"><a href="#cb17-184" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Testing vx - Empirical Summary"</span></span>
-<span id="cb17-185"><a href="#cb17-185" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]</span></span>
-<span id="cb17-186"><a href="#cb17-186" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb17-187"><a href="#cb17-187" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
-<span id="cb17-188"><a href="#cb17-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-189"><a href="#cb17-189" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">test_summary_table</span>(testE2, <span class="st">"vx"</span>,<span class="st">"X Velocity"</span> ,<span class="at">mfun =</span> <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">median =</span> median, <span class="at">sd =</span> sd))</span>
-<span id="cb17-190"><a href="#cb17-190" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>constant </span>
-<span id="cb17-191"><a href="#cb17-191" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>varied </span>
+<span id="cb17-179"><a href="#cb17-179" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-180"><a href="#cb17-180" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e2-test-nf-vx</span></span>
+<span id="cb17-181"><a href="#cb17-181" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Testing vx - Empirical Summary"</span></span>
+<span id="cb17-182"><a href="#cb17-182" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]</span></span>
+<span id="cb17-183"><a href="#cb17-183" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb17-184"><a href="#cb17-184" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
+<span id="cb17-185"><a href="#cb17-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-186"><a href="#cb17-186" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">test_summary_table</span>(testE2, <span class="st">"vx"</span>,<span class="st">"X Velocity"</span> ,<span class="at">mfun =</span> <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">median =</span> median, <span class="at">sd =</span> sd))</span>
+<span id="cb17-187"><a href="#cb17-187" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>constant </span>
+<span id="cb17-188"><a href="#cb17-188" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>varied </span>
+<span id="cb17-189"><a href="#cb17-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-190"><a href="#cb17-190" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-191"><a href="#cb17-191" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-192"><a href="#cb17-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-193"><a href="#cb17-193" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-193"><a href="#cb17-193" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-194"><a href="#cb17-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-195"><a href="#cb17-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-196"><a href="#cb17-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-197"><a href="#cb17-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-200"><a href="#cb17-200" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-201"><a href="#cb17-201" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e2-bmm-vx</span></span>
-<span id="cb17-202"><a href="#cb17-202" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"</span></span>
-<span id="cb17-203"><a href="#cb17-203" aria-hidden="true" tabindex="-1"></a>e2_vxBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(vx <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
-<span id="cb17-204"><a href="#cb17-204" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data=</span>testE2,<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>, <span class="st">"e2_testVxBand_RF_5k"</span>)),</span>
-<span id="cb17-205"><a href="#cb17-205" aria-hidden="true" tabindex="-1"></a>                        <span class="at">iter=</span><span class="dv">5000</span>,<span class="at">chains=</span><span class="dv">4</span>,<span class="at">silent=</span><span class="dv">0</span>,</span>
-<span id="cb17-206"><a href="#cb17-206" aria-hidden="true" tabindex="-1"></a>                        <span class="at">control=</span><span class="fu">list</span>(<span class="at">adapt_delta=</span><span class="fl">0.94</span>, <span class="at">max_treedepth=</span><span class="dv">13</span>))</span>
-<span id="cb17-207"><a href="#cb17-207" aria-hidden="true" tabindex="-1"></a>mt3 <span class="ot">&lt;-</span><span class="fu">GetModelStats</span>(e2_vxBMM ) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
-<span id="cb17-208"><a href="#cb17-208" aria-hidden="true" tabindex="-1"></a>mt3</span>
-<span id="cb17-209"><a href="#cb17-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-210"><a href="#cb17-210" aria-hidden="true" tabindex="-1"></a>cd1 <span class="ot">&lt;-</span> <span class="fu">get_coef_details</span>(e2_vxBMM, <span class="st">"conditVaried"</span>)</span>
-<span id="cb17-211"><a href="#cb17-211" aria-hidden="true" tabindex="-1"></a>sc1 <span class="ot">&lt;-</span> <span class="fu">get_coef_details</span>(e2_vxBMM, <span class="st">"bandInt"</span>)</span>
-<span id="cb17-212"><a href="#cb17-212" aria-hidden="true" tabindex="-1"></a>intCoef1 <span class="ot">&lt;-</span> <span class="fu">get_coef_details</span>(e2_vxBMM, <span class="st">"conditVaried:bandInt"</span>)</span>
-<span id="cb17-213"><a href="#cb17-213" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-214"><a href="#cb17-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-197"><a href="#cb17-197" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-198"><a href="#cb17-198" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e2-bmm-vx</span></span>
+<span id="cb17-199"><a href="#cb17-199" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"</span></span>
+<span id="cb17-200"><a href="#cb17-200" aria-hidden="true" tabindex="-1"></a>e2_vxBMM <span class="ot">&lt;-</span> <span class="fu">brm</span>(vx <span class="sc">~</span> condit <span class="sc">*</span> bandInt <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> bandInt<span class="sc">|</span>id),</span>
+<span id="cb17-201"><a href="#cb17-201" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data=</span>testE2,<span class="at">file=</span><span class="fu">paste0</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/model_cache"</span>, <span class="st">"e2_testVxBand_RF_5k"</span>)),</span>
+<span id="cb17-202"><a href="#cb17-202" aria-hidden="true" tabindex="-1"></a>                        <span class="at">iter=</span><span class="dv">5000</span>,<span class="at">chains=</span><span class="dv">4</span>,<span class="at">silent=</span><span class="dv">0</span>,</span>
+<span id="cb17-203"><a href="#cb17-203" aria-hidden="true" tabindex="-1"></a>                        <span class="at">control=</span><span class="fu">list</span>(<span class="at">adapt_delta=</span><span class="fl">0.94</span>, <span class="at">max_treedepth=</span><span class="dv">13</span>))</span>
+<span id="cb17-204"><a href="#cb17-204" aria-hidden="true" tabindex="-1"></a>mt3 <span class="ot">&lt;-</span><span class="fu">GetModelStats</span>(e2_vxBMM ) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">escape=</span>F,<span class="at">booktabs=</span>T)</span>
+<span id="cb17-205"><a href="#cb17-205" aria-hidden="true" tabindex="-1"></a>mt3</span>
+<span id="cb17-206"><a href="#cb17-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-207"><a href="#cb17-207" aria-hidden="true" tabindex="-1"></a>cd1 <span class="ot">&lt;-</span> <span class="fu">get_coef_details</span>(e2_vxBMM, <span class="st">"conditVaried"</span>)</span>
+<span id="cb17-208"><a href="#cb17-208" aria-hidden="true" tabindex="-1"></a>sc1 <span class="ot">&lt;-</span> <span class="fu">get_coef_details</span>(e2_vxBMM, <span class="st">"bandInt"</span>)</span>
+<span id="cb17-209"><a href="#cb17-209" aria-hidden="true" tabindex="-1"></a>intCoef1 <span class="ot">&lt;-</span> <span class="fu">get_coef_details</span>(e2_vxBMM, <span class="st">"conditVaried:bandInt"</span>)</span>
+<span id="cb17-210"><a href="#cb17-210" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-211"><a href="#cb17-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-212"><a href="#cb17-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-213"><a href="#cb17-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-214"><a href="#cb17-214" aria-hidden="true" tabindex="-1"></a>See @tbl-e2-bmm-vx for the full model results. The estimated coefficient for training condition (β = <span class="in">`r cd1$estimate`</span>, 95% CrI <span class="sc">\[</span><span class="in">`r cd1$conf.low`</span>, <span class="in">`r cd1$conf.high`</span><span class="sc">\]</span>) suggests that the varied group tends to produce harder throws than the constant group. More relevant to the issue of discrimination is the slope on Velocity Band (β = <span class="in">`r sc1$estimate`</span>, 95% CrI <span class="sc">\[</span><span class="in">`r sc1$conf.low`</span>, <span class="in">`r sc1$conf.high`</span><span class="sc">\]</span>), which is quite similar to best fitting slope value obtained in Experiment 1 (β = 0.71).(β = <span class="in">`r intCoef1$estimate`</span>, 95% CrI <span class="sc">\[</span><span class="in">`r intCoef1$conf.low`</span>, <span class="in">`r intCoef1$conf.high`</span><span class="sc">\]</span>)</span>
 <span id="cb17-215"><a href="#cb17-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-216"><a href="#cb17-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-217"><a href="#cb17-217" aria-hidden="true" tabindex="-1"></a>See @tbl-e2-bmm-vx for the full model results. The estimated coefficient for training condition (β = <span class="in">`r cd1$estimate`</span>, 95% CrI <span class="sc">\[</span><span class="in">`r cd1$conf.low`</span>, <span class="in">`r cd1$conf.high`</span><span class="sc">\]</span>) suggests that the varied group tends to produce harder throws than the constant group. More relevant to the issue of discrimination is the slope on Velocity Band (β = <span class="in">`r sc1$estimate`</span>, 95% CrI <span class="sc">\[</span><span class="in">`r sc1$conf.low`</span>, <span class="in">`r sc1$conf.high`</span><span class="sc">\]</span>), which is quite similar to best fitting slope value obtained in Experiment 1 (β = 0.71).(β = <span class="in">`r intCoef1$estimate`</span>, 95% CrI <span class="sc">\[</span><span class="in">`r intCoef1$conf.low`</span>, <span class="in">`r intCoef1$conf.high`</span><span class="sc">\]</span>)</span>
-<span id="cb17-218"><a href="#cb17-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-221"><a href="#cb17-221" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-222"><a href="#cb17-222" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-bmm-vx</span></span>
-<span id="cb17-223"><a href="#cb17-223" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. </span></span>
-<span id="cb17-224"><a href="#cb17-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-225"><a href="#cb17-225" aria-hidden="true" tabindex="-1"></a>e2_vxBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
-<span id="cb17-226"><a href="#cb17-226" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb17-227"><a href="#cb17-227" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
-<span id="cb17-228"><a href="#cb17-228" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bandInt, <span class="at">y =</span> .value, <span class="at">color =</span> condit, <span class="at">fill =</span> condit)) <span class="sc">+</span> </span>
-<span id="cb17-229"><a href="#cb17-229" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_pointinterval</span>() <span class="sc">+</span></span>
-<span id="cb17-230"><a href="#cb17-230" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> .<span class="dv">25</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>)) <span class="sc">+</span></span>
-<span id="cb17-231"><a href="#cb17-231" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Predicted X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)<span class="sc">+</span></span>
-<span id="cb17-232"><a href="#cb17-232" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
-<span id="cb17-233"><a href="#cb17-233" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(testE2<span class="sc">$</span>vb), </span>
-<span id="cb17-234"><a href="#cb17-234" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
-<span id="cb17-235"><a href="#cb17-235" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) </span>
-<span id="cb17-236"><a href="#cb17-236" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-237"><a href="#cb17-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-238"><a href="#cb17-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-239"><a href="#cb17-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-242"><a href="#cb17-242" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-243"><a href="#cb17-243" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-slope-dist</span></span>
-<span id="cb17-244"><a href="#cb17-244" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 100 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
-<span id="cb17-245"><a href="#cb17-245" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
-<span id="cb17-246"><a href="#cb17-246" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
-<span id="cb17-247"><a href="#cb17-247" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb17-248"><a href="#cb17-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-249"><a href="#cb17-249" aria-hidden="true" tabindex="-1"></a>new_data_grid<span class="ot">=</span><span class="fu">map_dfr</span>(<span class="dv">1</span>, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="fu">unique</span>(testE2[,<span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"bandInt"</span>)]))) <span class="sc">|&gt;</span> </span>
-<span id="cb17-250"><a href="#cb17-250" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(id,bandInt) <span class="sc">|&gt;</span> </span>
-<span id="cb17-251"><a href="#cb17-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">condit_dummy =</span> <span class="fu">ifelse</span>(condit <span class="sc">==</span> <span class="st">"Varied"</span>, <span class="dv">1</span>, <span class="dv">0</span>)) </span>
-<span id="cb17-252"><a href="#cb17-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-253"><a href="#cb17-253" aria-hidden="true" tabindex="-1"></a>indv_coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(e2_vxBMM)<span class="sc">$</span>id <span class="sc">|&gt;</span> </span>
-<span id="cb17-254"><a href="#cb17-254" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames=</span><span class="st">"id"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb17-255"><a href="#cb17-255" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="fu">starts_with</span>(<span class="st">"Est"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb17-256"><a href="#cb17-256" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e2Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id) ) <span class="sc">|&gt;</span> </span>
-<span id="cb17-257"><a href="#cb17-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span> </span>
-<span id="cb17-258"><a href="#cb17-258" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">rank</span>(<span class="fu">desc</span>(Estimate.bandInt)),</span>
-<span id="cb17-259"><a href="#cb17-259" aria-hidden="true" tabindex="-1"></a>         <span class="at">intErrorRank=</span><span class="fu">rank</span>((Est.Error.Intercept)),</span>
-<span id="cb17-260"><a href="#cb17-260" aria-hidden="true" tabindex="-1"></a>         <span class="at">bandErrorRank=</span><span class="fu">rank</span>((Est.Error.bandInt)),</span>
-<span id="cb17-261"><a href="#cb17-261" aria-hidden="true" tabindex="-1"></a>         <span class="at">nCond =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(intErrorRank)</span>
+<span id="cb17-218"><a href="#cb17-218" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-219"><a href="#cb17-219" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-bmm-vx</span></span>
+<span id="cb17-220"><a href="#cb17-220" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. </span></span>
+<span id="cb17-221"><a href="#cb17-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-222"><a href="#cb17-222" aria-hidden="true" tabindex="-1"></a>e2_vxBMM <span class="sc">|&gt;</span> <span class="fu">emmeans</span>( <span class="sc">~</span>condit <span class="sc">+</span> bandInt, </span>
+<span id="cb17-223"><a href="#cb17-223" aria-hidden="true" tabindex="-1"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">bandInt =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb17-224"><a href="#cb17-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_emmeans_draws</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-225"><a href="#cb17-225" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bandInt, <span class="at">y =</span> .value, <span class="at">color =</span> condit, <span class="at">fill =</span> condit)) <span class="sc">+</span> </span>
+<span id="cb17-226"><a href="#cb17-226" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_pointinterval</span>() <span class="sc">+</span></span>
+<span id="cb17-227"><a href="#cb17-227" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> .<span class="dv">25</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>)) <span class="sc">+</span></span>
+<span id="cb17-228"><a href="#cb17-228" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Predicted X Velocity"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Band"</span>)<span class="sc">+</span></span>
+<span id="cb17-229"><a href="#cb17-229" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">350</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>), </span>
+<span id="cb17-230"><a href="#cb17-230" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">levels</span>(testE2<span class="sc">$</span>vb), </span>
+<span id="cb17-231"><a href="#cb17-231" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1400</span>)) <span class="sc">+</span></span>
+<span id="cb17-232"><a href="#cb17-232" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>)) </span>
+<span id="cb17-233"><a href="#cb17-233" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-234"><a href="#cb17-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-235"><a href="#cb17-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-236"><a href="#cb17-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-239"><a href="#cb17-239" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-240"><a href="#cb17-240" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-slope-dist</span></span>
+<span id="cb17-241"><a href="#cb17-241" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 100 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
+<span id="cb17-242"><a href="#cb17-242" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
+<span id="cb17-243"><a href="#cb17-243" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 10</span></span>
+<span id="cb17-244"><a href="#cb17-244" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb17-245"><a href="#cb17-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-246"><a href="#cb17-246" aria-hidden="true" tabindex="-1"></a>new_data_grid<span class="ot">=</span><span class="fu">map_dfr</span>(<span class="dv">1</span>, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="fu">unique</span>(testE2[,<span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"bandInt"</span>)]))) <span class="sc">|&gt;</span> </span>
+<span id="cb17-247"><a href="#cb17-247" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(id,bandInt) <span class="sc">|&gt;</span> </span>
+<span id="cb17-248"><a href="#cb17-248" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">condit_dummy =</span> <span class="fu">ifelse</span>(condit <span class="sc">==</span> <span class="st">"Varied"</span>, <span class="dv">1</span>, <span class="dv">0</span>)) </span>
+<span id="cb17-249"><a href="#cb17-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-250"><a href="#cb17-250" aria-hidden="true" tabindex="-1"></a>indv_coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(e2_vxBMM)<span class="sc">$</span>id <span class="sc">|&gt;</span> </span>
+<span id="cb17-251"><a href="#cb17-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames=</span><span class="st">"id"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-252"><a href="#cb17-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="fu">starts_with</span>(<span class="st">"Est"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb17-253"><a href="#cb17-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e2Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id) ) <span class="sc">|&gt;</span> </span>
+<span id="cb17-254"><a href="#cb17-254" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span> </span>
+<span id="cb17-255"><a href="#cb17-255" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">rank</span>(<span class="fu">desc</span>(Estimate.bandInt)),</span>
+<span id="cb17-256"><a href="#cb17-256" aria-hidden="true" tabindex="-1"></a>         <span class="at">intErrorRank=</span><span class="fu">rank</span>((Est.Error.Intercept)),</span>
+<span id="cb17-257"><a href="#cb17-257" aria-hidden="true" tabindex="-1"></a>         <span class="at">bandErrorRank=</span><span class="fu">rank</span>((Est.Error.bandInt)),</span>
+<span id="cb17-258"><a href="#cb17-258" aria-hidden="true" tabindex="-1"></a>         <span class="at">nCond =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(intErrorRank)</span>
+<span id="cb17-259"><a href="#cb17-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-260"><a href="#cb17-260" aria-hidden="true" tabindex="-1"></a>fixed_effects <span class="ot">&lt;-</span> e2_vxBMM <span class="sc">|&gt;</span> </span>
+<span id="cb17-261"><a href="#cb17-261" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(<span class="st">`</span><span class="at">^b_.*</span><span class="st">`</span>,<span class="at">regex=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(.chain,.draw,.iteration)</span>
 <span id="cb17-262"><a href="#cb17-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-263"><a href="#cb17-263" aria-hidden="true" tabindex="-1"></a>fixed_effects <span class="ot">&lt;-</span> e2_vxBMM <span class="sc">|&gt;</span> </span>
-<span id="cb17-264"><a href="#cb17-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(<span class="st">`</span><span class="at">^b_.*</span><span class="st">`</span>,<span class="at">regex=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(.chain,.draw,.iteration)</span>
-<span id="cb17-265"><a href="#cb17-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-266"><a href="#cb17-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-267"><a href="#cb17-267" aria-hidden="true" tabindex="-1"></a>random_effects <span class="ot">&lt;-</span> e2_vxBMM <span class="sc">|&gt;</span> </span>
-<span id="cb17-268"><a href="#cb17-268" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">^r_id.*$</span><span class="st">`</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>, <span class="at">ndraws =</span> <span class="dv">2000</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb17-269"><a href="#cb17-269" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(.variable, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"effect"</span>, <span class="st">"id"</span>, <span class="st">"term"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">[|,|</span><span class="sc">\\</span><span class="st">]"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb17-270"><a href="#cb17-270" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(id,<span class="at">levels=</span><span class="fu">levels</span>(testE2<span class="sc">$</span>id))) <span class="sc">|&gt;</span> </span>
-<span id="cb17-271"><a href="#cb17-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> term, <span class="at">values_from =</span> .value) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(id,.chain,.draw,.iteration)</span>
-<span id="cb17-272"><a href="#cb17-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-273"><a href="#cb17-273" aria-hidden="true" tabindex="-1"></a>cd <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb17-274"><a href="#cb17-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt) <span class="sc">|&gt;</span></span>
-<span id="cb17-275"><a href="#cb17-275" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) </span>
-<span id="cb17-276"><a href="#cb17-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-277"><a href="#cb17-277" aria-hidden="true" tabindex="-1"></a>cdMed <span class="ot">&lt;-</span> cd <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> <span class="fu">median_qi</span>(Slope)  <span class="sc">|&gt;</span> </span>
-<span id="cb17-278"><a href="#cb17-278" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e2Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id)) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
-<span id="cb17-279"><a href="#cb17-279" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rankSlope=</span><span class="fu">rank</span>(Slope)) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(rankSlope)</span>
-<span id="cb17-280"><a href="#cb17-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-281"><a href="#cb17-281" aria-hidden="true" tabindex="-1"></a>cdMed <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>rankSlope, <span class="at">x=</span>Slope,<span class="at">fill=</span>condit,<span class="at">color=</span>condit)) <span class="sc">+</span> </span>
-<span id="cb17-282"><a href="#cb17-282" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>.lower , <span class="at">xmax=</span>.upper)) <span class="sc">+</span> </span>
-<span id="cb17-283"><a href="#cb17-283" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Estimated Slope"</span>, <span class="at">y=</span><span class="st">"Participant"</span>)  <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>condit)  </span>
-<span id="cb17-284"><a href="#cb17-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-285"><a href="#cb17-285" aria-hidden="true" tabindex="-1"></a><span class="co"># cdMed |&gt;  ggplot(aes(x = condit, y = Slope,fill=condit)) +</span></span>
-<span id="cb17-286"><a href="#cb17-286" aria-hidden="true" tabindex="-1"></a><span class="co">#     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +</span></span>
-<span id="cb17-287"><a href="#cb17-287" aria-hidden="true" tabindex="-1"></a><span class="co">#     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + </span></span>
-<span id="cb17-288"><a href="#cb17-288" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_jitter()</span></span>
-<span id="cb17-289"><a href="#cb17-289" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Band", y="Deviation From Target")</span></span>
+<span id="cb17-263"><a href="#cb17-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-264"><a href="#cb17-264" aria-hidden="true" tabindex="-1"></a>random_effects <span class="ot">&lt;-</span> e2_vxBMM <span class="sc">|&gt;</span> </span>
+<span id="cb17-265"><a href="#cb17-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">^r_id.*$</span><span class="st">`</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>, <span class="at">ndraws =</span> <span class="dv">2000</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-266"><a href="#cb17-266" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(.variable, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"effect"</span>, <span class="st">"id"</span>, <span class="st">"term"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">[|,|</span><span class="sc">\\</span><span class="st">]"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-267"><a href="#cb17-267" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(id,<span class="at">levels=</span><span class="fu">levels</span>(testE2<span class="sc">$</span>id))) <span class="sc">|&gt;</span> </span>
+<span id="cb17-268"><a href="#cb17-268" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> term, <span class="at">values_from =</span> .value) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(id,.chain,.draw,.iteration)</span>
+<span id="cb17-269"><a href="#cb17-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-270"><a href="#cb17-270" aria-hidden="true" tabindex="-1"></a>cd <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb17-271"><a href="#cb17-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb17-272"><a href="#cb17-272" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Slope=</span>bandInt_RF<span class="sc">+</span>b_bandInt) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) </span>
+<span id="cb17-273"><a href="#cb17-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-274"><a href="#cb17-274" aria-hidden="true" tabindex="-1"></a>cdMed <span class="ot">&lt;-</span> cd <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> <span class="fu">median_qi</span>(Slope)  <span class="sc">|&gt;</span> </span>
+<span id="cb17-275"><a href="#cb17-275" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e2Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id)) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
+<span id="cb17-276"><a href="#cb17-276" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rankSlope=</span><span class="fu">rank</span>(Slope)) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(rankSlope)</span>
+<span id="cb17-277"><a href="#cb17-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-278"><a href="#cb17-278" aria-hidden="true" tabindex="-1"></a>cdMed <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>rankSlope, <span class="at">x=</span>Slope,<span class="at">fill=</span>condit,<span class="at">color=</span>condit)) <span class="sc">+</span> </span>
+<span id="cb17-279"><a href="#cb17-279" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>.lower , <span class="at">xmax=</span>.upper)) <span class="sc">+</span> </span>
+<span id="cb17-280"><a href="#cb17-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Estimated Slope"</span>, <span class="at">y=</span><span class="st">"Participant"</span>)  <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>condit)  </span>
+<span id="cb17-281"><a href="#cb17-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-282"><a href="#cb17-282" aria-hidden="true" tabindex="-1"></a><span class="co"># cdMed |&gt;  ggplot(aes(x = condit, y = Slope,fill=condit)) +</span></span>
+<span id="cb17-283"><a href="#cb17-283" aria-hidden="true" tabindex="-1"></a><span class="co">#     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +</span></span>
+<span id="cb17-284"><a href="#cb17-284" aria-hidden="true" tabindex="-1"></a><span class="co">#     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + </span></span>
+<span id="cb17-285"><a href="#cb17-285" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_jitter()</span></span>
+<span id="cb17-286"><a href="#cb17-286" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Band", y="Deviation From Target")</span></span>
+<span id="cb17-287"><a href="#cb17-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-288"><a href="#cb17-288" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-289"><a href="#cb17-289" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-290"><a href="#cb17-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-291"><a href="#cb17-291" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-291"><a href="#cb17-291" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-292"><a href="#cb17-292" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-293"><a href="#cb17-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-294"><a href="#cb17-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-295"><a href="#cb17-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-296"><a href="#cb17-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-299"><a href="#cb17-299" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-300"><a href="#cb17-300" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e2-slope-quartile</span></span>
-<span id="cb17-301"><a href="#cb17-301" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Slope coefficients by quartile, per condition"</span></span>
-<span id="cb17-302"><a href="#cb17-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-303"><a href="#cb17-303" aria-hidden="true" tabindex="-1"></a>new_data_grid<span class="ot">=</span><span class="fu">map_dfr</span>(<span class="dv">1</span>, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="fu">unique</span>(testE2[,<span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"bandInt"</span>)]))) <span class="sc">|&gt;</span> </span>
-<span id="cb17-304"><a href="#cb17-304" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(id,bandInt) <span class="sc">|&gt;</span> </span>
-<span id="cb17-305"><a href="#cb17-305" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">condit_dummy =</span> <span class="fu">ifelse</span>(condit <span class="sc">==</span> <span class="st">"Varied"</span>, <span class="dv">1</span>, <span class="dv">0</span>)) </span>
-<span id="cb17-306"><a href="#cb17-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-307"><a href="#cb17-307" aria-hidden="true" tabindex="-1"></a>indv_coefs <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">coef</span>(e2_vxBMM)<span class="sc">$</span>id, <span class="at">rownames=</span><span class="st">"id"</span>)<span class="sc">|&gt;</span> </span>
-<span id="cb17-308"><a href="#cb17-308" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="fu">starts_with</span>(<span class="st">"Est"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb17-309"><a href="#cb17-309" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e2Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id) ) </span>
-<span id="cb17-310"><a href="#cb17-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-296"><a href="#cb17-296" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-297"><a href="#cb17-297" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-e2-slope-quartile</span></span>
+<span id="cb17-298"><a href="#cb17-298" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Slope coefficients by quartile, per condition"</span></span>
+<span id="cb17-299"><a href="#cb17-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-300"><a href="#cb17-300" aria-hidden="true" tabindex="-1"></a>new_data_grid<span class="ot">=</span><span class="fu">map_dfr</span>(<span class="dv">1</span>, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="fu">unique</span>(testE2[,<span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"bandInt"</span>)]))) <span class="sc">|&gt;</span> </span>
+<span id="cb17-301"><a href="#cb17-301" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(id,bandInt) <span class="sc">|&gt;</span> </span>
+<span id="cb17-302"><a href="#cb17-302" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">condit_dummy =</span> <span class="fu">ifelse</span>(condit <span class="sc">==</span> <span class="st">"Varied"</span>, <span class="dv">1</span>, <span class="dv">0</span>)) </span>
+<span id="cb17-303"><a href="#cb17-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-304"><a href="#cb17-304" aria-hidden="true" tabindex="-1"></a>indv_coefs <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">coef</span>(e2_vxBMM)<span class="sc">$</span>id, <span class="at">rownames=</span><span class="st">"id"</span>)<span class="sc">|&gt;</span> </span>
+<span id="cb17-305"><a href="#cb17-305" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="fu">starts_with</span>(<span class="st">"Est"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb17-306"><a href="#cb17-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e2Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id) ) </span>
+<span id="cb17-307"><a href="#cb17-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-308"><a href="#cb17-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-309"><a href="#cb17-309" aria-hidden="true" tabindex="-1"></a>fixed_effects <span class="ot">&lt;-</span> e2_vxBMM <span class="sc">|&gt;</span> </span>
+<span id="cb17-310"><a href="#cb17-310" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(<span class="st">`</span><span class="at">^b_.*</span><span class="st">`</span>,<span class="at">regex=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(.chain,.draw,.iteration)</span>
 <span id="cb17-311"><a href="#cb17-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-312"><a href="#cb17-312" aria-hidden="true" tabindex="-1"></a>fixed_effects <span class="ot">&lt;-</span> e2_vxBMM <span class="sc">|&gt;</span> </span>
-<span id="cb17-313"><a href="#cb17-313" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(<span class="st">`</span><span class="at">^b_.*</span><span class="st">`</span>,<span class="at">regex=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(.chain,.draw,.iteration)</span>
-<span id="cb17-314"><a href="#cb17-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-315"><a href="#cb17-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-316"><a href="#cb17-316" aria-hidden="true" tabindex="-1"></a>random_effects <span class="ot">&lt;-</span> e2_vxBMM <span class="sc">|&gt;</span> </span>
-<span id="cb17-317"><a href="#cb17-317" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">^r_id.*$</span><span class="st">`</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>, <span class="at">ndraws =</span> <span class="dv">1500</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb17-318"><a href="#cb17-318" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(.variable, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"effect"</span>, <span class="st">"id"</span>, <span class="st">"term"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">[|,|</span><span class="sc">\\</span><span class="st">]"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb17-319"><a href="#cb17-319" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(id,<span class="at">levels=</span><span class="fu">levels</span>(testE2<span class="sc">$</span>id))) <span class="sc">|&gt;</span> </span>
-<span id="cb17-320"><a href="#cb17-320" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> term, <span class="at">values_from =</span> .value) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(id,.chain,.draw,.iteration)</span>
-<span id="cb17-321"><a href="#cb17-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-322"><a href="#cb17-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-323"><a href="#cb17-323" aria-hidden="true" tabindex="-1"></a> indvDraws <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb17-324"><a href="#cb17-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt,<span class="at">RF_Intercept=</span>Intercept) <span class="sc">|&gt;</span></span>
-<span id="cb17-325"><a href="#cb17-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(new_data_grid, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"id"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb17-326"><a href="#cb17-326" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb17-327"><a href="#cb17-327" aria-hidden="true" tabindex="-1"></a>    <span class="at">Slope =</span> bandInt_RF<span class="sc">+</span>b_bandInt,</span>
-<span id="cb17-328"><a href="#cb17-328" aria-hidden="true" tabindex="-1"></a>    <span class="at">Intercept=</span> RF_Intercept <span class="sc">+</span> b_Intercept,</span>
-<span id="cb17-329"><a href="#cb17-329" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> (b_Intercept <span class="sc">+</span> RF_Intercept) <span class="sc">+</span> (bandInt<span class="sc">*</span>(b_bandInt<span class="sc">+</span>bandInt_RF)) <span class="sc">+</span> (bandInt <span class="sc">*</span> condit_dummy) <span class="sc">*</span> <span class="st">`</span><span class="at">b_conditVaried:bandInt</span><span class="st">`</span>,</span>
-<span id="cb17-330"><a href="#cb17-330" aria-hidden="true" tabindex="-1"></a>    <span class="at">SlopeInt =</span> Slope <span class="sc">+</span> (<span class="st">`</span><span class="at">b_conditVaried:bandInt</span><span class="st">`</span><span class="sc">*</span>condit_dummy)</span>
-<span id="cb17-331"><a href="#cb17-331" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb17-332"><a href="#cb17-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-333"><a href="#cb17-333" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="ot">&lt;-</span> indvDraws <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> <span class="fu">median_qi</span>(Slope,SlopeInt, Intercept,b_Intercept,b_bandInt) <span class="sc">|&gt;</span></span>
-<span id="cb17-334"><a href="#cb17-334" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e2Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id)) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
-<span id="cb17-335"><a href="#cb17-335" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(id,condit,Intercept,b_Intercept,<span class="fu">starts_with</span>(<span class="st">"Slope"</span>),b_bandInt, n) <span class="sc">|&gt;</span></span>
-<span id="cb17-336"><a href="#cb17-336" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rankSlope=</span><span class="fu">rank</span>(Slope)) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(rankSlope)   <span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span>
-<span id="cb17-337"><a href="#cb17-337" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb17-338"><a href="#cb17-338" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb17-339"><a href="#cb17-339" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Condition=</span>condit) <span class="sc">|&gt;</span>  <span class="fu">group_by</span>(Condition) <span class="sc">|&gt;</span> </span>
-<span id="cb17-340"><a href="#cb17-340" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reframe</span>(<span class="fu">enframe</span>(<span class="fu">quantile</span>(SlopeInt, <span class="fu">c</span>(<span class="fl">0.0</span>,<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>,<span class="dv">1</span>)), <span class="st">"quantile"</span>, <span class="st">"SlopeInt"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb17-341"><a href="#cb17-341" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>quantile,<span class="at">values_from=</span>SlopeInt,<span class="at">names_prefix=</span><span class="st">"Q_"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb17-342"><a href="#cb17-342" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Condition) <span class="sc">|&gt;</span></span>
-<span id="cb17-343"><a href="#cb17-343" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>), <span class="fu">list</span>(<span class="at">mean =</span> mean))) <span class="sc">|&gt;</span> <span class="fu">kbl</span>()</span>
-<span id="cb17-344"><a href="#cb17-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-345"><a href="#cb17-345" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-346"><a href="#cb17-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-347"><a href="#cb17-347" aria-hidden="true" tabindex="-1"></a>@fig-e2-bmm-bx2 shows the distributions of estimated slopes relating velocity band to x velocity for each participant, ordered from lowest to highest within condition. Slope values are lower overall for varied training compared to constant training. Figure Xb plots the density of these slopes for each condition. The distribution for varied training has more mass at lower values than the constant training distribution. Both figures illustrate the model's estimate that varied training resulted in less discrimination between velocity bands, evidenced by lower slopes on average.</span>
-<span id="cb17-348"><a href="#cb17-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-351"><a href="#cb17-351" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-352"><a href="#cb17-352" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-bmm-bx2</span></span>
-<span id="cb17-353"><a href="#cb17-353" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Slope distributions between condition</span></span>
-<span id="cb17-354"><a href="#cb17-354" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-subcap: ["Slope estimates by participant - ordered from lowest to highest within each condition. ", "Destiny of slope coefficients by training group"]</span></span>
-<span id="cb17-355"><a href="#cb17-355" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
-<span id="cb17-356"><a href="#cb17-356" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
-<span id="cb17-357"><a href="#cb17-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-358"><a href="#cb17-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-359"><a href="#cb17-359" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>rankSlope, <span class="at">x=</span>SlopeInt,<span class="at">fill=</span>condit,<span class="at">color=</span>condit)) <span class="sc">+</span> </span>
-<span id="cb17-360"><a href="#cb17-360" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>SlopeInt.lower , <span class="at">xmax=</span>SlopeInt.upper)) <span class="sc">+</span> </span>
-<span id="cb17-361"><a href="#cb17-361" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Estimated Slope"</span>, <span class="at">y=</span><span class="st">"Participant"</span>)  <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>condit) <span class="sc">+</span></span>
-<span id="cb17-362"><a href="#cb17-362" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(indvSlopes, <span class="fu">aes</span>(<span class="at">x =</span> SlopeInt, <span class="at">color =</span> condit)) <span class="sc">+</span> </span>
-<span id="cb17-363"><a href="#cb17-363" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Slope Coefficient"</span>,<span class="at">y=</span><span class="st">"Density"</span>)</span>
+<span id="cb17-312"><a href="#cb17-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-313"><a href="#cb17-313" aria-hidden="true" tabindex="-1"></a>random_effects <span class="ot">&lt;-</span> e2_vxBMM <span class="sc">|&gt;</span> </span>
+<span id="cb17-314"><a href="#cb17-314" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">^r_id.*$</span><span class="st">`</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>, <span class="at">ndraws =</span> <span class="dv">1500</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-315"><a href="#cb17-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(.variable, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"effect"</span>, <span class="st">"id"</span>, <span class="st">"term"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">[|,|</span><span class="sc">\\</span><span class="st">]"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-316"><a href="#cb17-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(id,<span class="at">levels=</span><span class="fu">levels</span>(testE2<span class="sc">$</span>id))) <span class="sc">|&gt;</span> </span>
+<span id="cb17-317"><a href="#cb17-317" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> term, <span class="at">values_from =</span> .value) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(id,.chain,.draw,.iteration)</span>
+<span id="cb17-318"><a href="#cb17-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-319"><a href="#cb17-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-320"><a href="#cb17-320" aria-hidden="true" tabindex="-1"></a> indvDraws <span class="ot">&lt;-</span> <span class="fu">left_join</span>(random_effects, fixed_effects, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb17-321"><a href="#cb17-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bandInt_RF =</span> bandInt,<span class="at">RF_Intercept=</span>Intercept) <span class="sc">|&gt;</span></span>
+<span id="cb17-322"><a href="#cb17-322" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(new_data_grid, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"id"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb17-323"><a href="#cb17-323" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb17-324"><a href="#cb17-324" aria-hidden="true" tabindex="-1"></a>    <span class="at">Slope =</span> bandInt_RF<span class="sc">+</span>b_bandInt,</span>
+<span id="cb17-325"><a href="#cb17-325" aria-hidden="true" tabindex="-1"></a>    <span class="at">Intercept=</span> RF_Intercept <span class="sc">+</span> b_Intercept,</span>
+<span id="cb17-326"><a href="#cb17-326" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> (b_Intercept <span class="sc">+</span> RF_Intercept) <span class="sc">+</span> (bandInt<span class="sc">*</span>(b_bandInt<span class="sc">+</span>bandInt_RF)) <span class="sc">+</span> (bandInt <span class="sc">*</span> condit_dummy) <span class="sc">*</span> <span class="st">`</span><span class="at">b_conditVaried:bandInt</span><span class="st">`</span>,</span>
+<span id="cb17-327"><a href="#cb17-327" aria-hidden="true" tabindex="-1"></a>    <span class="at">SlopeInt =</span> Slope <span class="sc">+</span> (<span class="st">`</span><span class="at">b_conditVaried:bandInt</span><span class="st">`</span><span class="sc">*</span>condit_dummy)</span>
+<span id="cb17-328"><a href="#cb17-328" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb17-329"><a href="#cb17-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-330"><a href="#cb17-330" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="ot">&lt;-</span> indvDraws <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> <span class="fu">median_qi</span>(Slope,SlopeInt, Intercept,b_Intercept,b_bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb17-331"><a href="#cb17-331" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(e2Sbjs, <span class="at">by=</span><span class="fu">join_by</span>(id)) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(condit) <span class="sc">|&gt;</span></span>
+<span id="cb17-332"><a href="#cb17-332" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(id,condit,Intercept,b_Intercept,<span class="fu">starts_with</span>(<span class="st">"Slope"</span>),b_bandInt, n) <span class="sc">|&gt;</span></span>
+<span id="cb17-333"><a href="#cb17-333" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rankSlope=</span><span class="fu">rank</span>(Slope)) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(rankSlope)   <span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span>
+<span id="cb17-334"><a href="#cb17-334" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-335"><a href="#cb17-335" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-336"><a href="#cb17-336" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Condition=</span>condit) <span class="sc">|&gt;</span>  <span class="fu">group_by</span>(Condition) <span class="sc">|&gt;</span> </span>
+<span id="cb17-337"><a href="#cb17-337" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reframe</span>(<span class="fu">enframe</span>(<span class="fu">quantile</span>(SlopeInt, <span class="fu">c</span>(<span class="fl">0.0</span>,<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>,<span class="dv">1</span>)), <span class="st">"quantile"</span>, <span class="st">"SlopeInt"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb17-338"><a href="#cb17-338" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>quantile,<span class="at">values_from=</span>SlopeInt,<span class="at">names_prefix=</span><span class="st">"Q_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-339"><a href="#cb17-339" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Condition) <span class="sc">|&gt;</span></span>
+<span id="cb17-340"><a href="#cb17-340" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q"</span>), <span class="fu">list</span>(<span class="at">mean =</span> mean))) <span class="sc">|&gt;</span> <span class="fu">kbl</span>()</span>
+<span id="cb17-341"><a href="#cb17-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-342"><a href="#cb17-342" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-343"><a href="#cb17-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-344"><a href="#cb17-344" aria-hidden="true" tabindex="-1"></a>@fig-e2-bmm-bx2 shows the distributions of estimated slopes relating velocity band to x velocity for each participant, ordered from lowest to highest within condition. Slope values are lower overall for varied training compared to constant training. Figure Xb plots the density of these slopes for each condition. The distribution for varied training has more mass at lower values than the constant training distribution. Both figures illustrate the model's estimate that varied training resulted in less discrimination between velocity bands, evidenced by lower slopes on average.</span>
+<span id="cb17-345"><a href="#cb17-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-348"><a href="#cb17-348" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-349"><a href="#cb17-349" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-bmm-bx2</span></span>
+<span id="cb17-350"><a href="#cb17-350" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Slope distributions between condition</span></span>
+<span id="cb17-351"><a href="#cb17-351" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-subcap: ["Slope estimates by participant - ordered from lowest to highest within each condition. ", "Destiny of slope coefficients by training group"]</span></span>
+<span id="cb17-352"><a href="#cb17-352" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
+<span id="cb17-353"><a href="#cb17-353" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb17-354"><a href="#cb17-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-355"><a href="#cb17-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-356"><a href="#cb17-356" aria-hidden="true" tabindex="-1"></a>  indvSlopes <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>rankSlope, <span class="at">x=</span>SlopeInt,<span class="at">fill=</span>condit,<span class="at">color=</span>condit)) <span class="sc">+</span> </span>
+<span id="cb17-357"><a href="#cb17-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>SlopeInt.lower , <span class="at">xmax=</span>SlopeInt.upper)) <span class="sc">+</span> </span>
+<span id="cb17-358"><a href="#cb17-358" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Estimated Slope"</span>, <span class="at">y=</span><span class="st">"Participant"</span>)  <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>condit) <span class="sc">+</span></span>
+<span id="cb17-359"><a href="#cb17-359" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(indvSlopes, <span class="fu">aes</span>(<span class="at">x =</span> SlopeInt, <span class="at">color =</span> condit)) <span class="sc">+</span> </span>
+<span id="cb17-360"><a href="#cb17-360" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Slope Coefficient"</span>,<span class="at">y=</span><span class="st">"Density"</span>)</span>
+<span id="cb17-361"><a href="#cb17-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-362"><a href="#cb17-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-363"><a href="#cb17-363" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb17-364"><a href="#cb17-364" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-365"><a href="#cb17-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-366"><a href="#cb17-366" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-367"><a href="#cb17-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-370"><a href="#cb17-370" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-371"><a href="#cb17-371" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-indv-slopes</span></span>
-<span id="cb17-372"><a href="#cb17-372" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the smallest and largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
-<span id="cb17-373"><a href="#cb17-373" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-subcap: ["subset with largest slopes", "subset with smallest slopes"]</span></span>
-<span id="cb17-374"><a href="#cb17-374" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
-<span id="cb17-375"><a href="#cb17-375" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
-<span id="cb17-376"><a href="#cb17-376" aria-hidden="true" tabindex="-1"></a>nSbj <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb17-377"><a href="#cb17-377" aria-hidden="true" tabindex="-1"></a>indvDraws  <span class="sc">|&gt;</span> <span class="fu">indv_model_plot</span>(indvSlopes, testE2Avg, SlopeInt,<span class="at">rank_variable=</span>Slope,<span class="at">n_sbj=</span>nSbj,<span class="st">"max"</span>)</span>
-<span id="cb17-378"><a href="#cb17-378" aria-hidden="true" tabindex="-1"></a>indvDraws <span class="sc">|&gt;</span> <span class="fu">indv_model_plot</span>(indvSlopes, testE2Avg,SlopeInt, <span class="at">rank_variable=</span>Slope,<span class="at">n_sbj=</span>nSbj,<span class="st">"min"</span>)</span>
-<span id="cb17-379"><a href="#cb17-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-380"><a href="#cb17-380" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-367"><a href="#cb17-367" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-368"><a href="#cb17-368" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-indv-slopes</span></span>
+<span id="cb17-369"><a href="#cb17-369" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Subset of Varied and Constant Participants with the smallest and largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI. </span></span>
+<span id="cb17-370"><a href="#cb17-370" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-subcap: ["subset with largest slopes", "subset with smallest slopes"]</span></span>
+<span id="cb17-371"><a href="#cb17-371" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 11</span></span>
+<span id="cb17-372"><a href="#cb17-372" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb17-373"><a href="#cb17-373" aria-hidden="true" tabindex="-1"></a>nSbj <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb17-374"><a href="#cb17-374" aria-hidden="true" tabindex="-1"></a>indvDraws  <span class="sc">|&gt;</span> <span class="fu">indv_model_plot</span>(indvSlopes, testE2Avg, SlopeInt,<span class="at">rank_variable=</span>Slope,<span class="at">n_sbj=</span>nSbj,<span class="st">"max"</span>)</span>
+<span id="cb17-375"><a href="#cb17-375" aria-hidden="true" tabindex="-1"></a>indvDraws <span class="sc">|&gt;</span> <span class="fu">indv_model_plot</span>(indvSlopes, testE2Avg,SlopeInt, <span class="at">rank_variable=</span>Slope,<span class="at">n_sbj=</span>nSbj,<span class="st">"min"</span>)</span>
+<span id="cb17-376"><a href="#cb17-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-377"><a href="#cb17-377" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
