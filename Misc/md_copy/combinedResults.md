@@ -1,0 +1,632 @@
+# [HTW Project - HTW E1 Testing](http://localhost:4200/Analysis/e1_test.html)
+
+
+
+## Results
+
+### Testing Phase - No feedback.
+
+In the first part of the testing phase, participants are tested from each of the velocity bands, and receive no feedback after each throw.
+
+#### Deviation From Target Band
+
+Descriptive summaries testing deviation data are provided in [Table 2](http://localhost:4200/Analysis/e1_test.html#tbl-e1-test-nf-deviation) and [Figure 1](http://localhost:4200/Analysis/e1_test.html#fig-e1-test-dev). To model differences in accuracy between groups, we used Bayesian mixed effects regression models to the trial level data from the testing phase. The primary model predicted the absolute deviation from the target velocity band (dist) as a function of training condition (condit), target velocity band (band), and their interaction, with random intercepts and slopes for each participant (id).
+
+\\\[\\begin{equation} dist\_{ij} = \\beta\_0 + \\beta\_1 \\cdot condit\_{ij} + \\beta\_2 \\cdot band\_{ij} + \\beta\_3 \\cdot condit\_{ij} \\cdot band\_{ij} + b\_{0i} + b\_{1i} \\cdot band\_{ij} + \\epsilon\_{ij} \\end{equation}\\\] Code
+
+````
+```{r}
+#| label: tbl-e1-test-nf-deviation
+#| tbl-cap: "Testing Deviation - Empirical Summary"
+#| tbl-subcap: ["Constant Testing - Deviation", "Varied Testing - Deviation"]
+#| layout-ncol: 2
+
+result <- test_summary_table(test, "dist","Deviation", mfun = list(mean = mean, median = median, sd = sd))
+result$constant
+result$varied
+```
+````
+
+Table 2: Testing Deviation - Empirical Summary
+
+Summary of Deviation - Constant
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Extrapolation | 254 | 148 | 298 |
+| 350-550 | Extrapolation | 191 | 110 | 229 |
+| 600-800 | Extrapolation | 150 | 84 | 184 |
+| 800-1000 | Trained | 184 | 106 | 242 |
+| 1000-1200 | Extrapolation | 233 | 157 | 282 |
+| 1200-1400 | Extrapolation | 287 | 214 | 290 |
+
+Summary of Deviation - Varied
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Extrapolation | 386 | 233 | 426 |
+| 350-550 | Extrapolation | 285 | 149 | 340 |
+| 600-800 | Extrapolation | 234 | 144 | 270 |
+| 800-1000 | Trained | 221 | 149 | 248 |
+| 1000-1200 | Trained | 208 | 142 | 226 |
+| 1200-1400 | Trained | 242 | 182 | 235 |
+
+Code
+
+```
+test |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+  labs(x="Band", y="Deviation From Target")
+```
+
+![](md_extract/assets/fig-e1-test-dev-1.png)
+
+Figure 1: E1. Deviations from target band during testing without feedback stage.
+
+
+
+Table 3: Experiment 1. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band
+
+Model Coefficients
+| Term | Estimate | 95% CrI Lower | 95% CrI Upper | pd |
+| --- | --- | --- | --- | --- |
+| Intercept | 205.09 | 136.86 | 274.06 | 1.00 |
+| conditVaried | 157.44 | 60.53 | 254.90 | 1.00 |
+| Band | 0.01 | \-0.07 | 0.08 | 0.57 |
+| condit\*Band | \-0.16 | \-0.26 | \-0.06 | 1.00 |
+
+
+Contrasts
+| contrast | Band | value | lower | upper | pd |
+| --- | --- | --- | --- | --- | --- |
+| Constant - Varied | 100 | \-141.49 | \-229.19 | \-53.83 | 1.00 |
+| Constant - Varied | 350 | \-101.79 | \-165.62 | \-36.32 | 1.00 |
+| Constant - Varied | 600 | \-62.02 | \-106.21 | \-14.77 | 1.00 |
+| Constant - Varied | 800 | \-30.11 | \-65.08 | 6.98 | 0.94 |
+| Constant - Varied | 1000 | 2.05 | \-33.46 | 38.41 | 0.54 |
+| Constant - Varied | 1200 | 33.96 | \-11.94 | 81.01 | 0.92 |
+
+Code
+
+```
+coef_details <- get_coef_details(e1_distBMM, "conditVaried")
+```
+
+The model predicting absolute deviation (dist) showed clear effects of both training condition and target velocity band (Table X). Overall, the varied training group showed a larger deviation relative to the constant training group (β = 157.44, 95% CI \[60.53, 254.9\]). Deviation also depended on target velocity band, with lower bands showing less deviation. See [Table 3](http://localhost:4200/Analysis/e1_test.html#tbl-e1-bmm-dist) for full model output.
+
+
+
+
+Figure 2: E1. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals.
+
+#### Discrimination between bands
+
+In addition to accuracy/deviation, we also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). [Table 4](http://localhost:4200/Analysis/e1_test.html#tbl-e1-test-nf-vx) shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants on each testing trial.
+
+\\\[\\begin{equation} vx\_{ij} = \\beta\_0 + \\beta\_1 \\cdot condit\_{ij} + \\beta\_2 \\cdot bandInt\_{ij} + \\beta\_3 \\cdot condit\_{ij} \\cdot bandInt\_{ij} + b\_{0i} + b\_{1i} \\cdot bandInt\_{ij} + \\epsilon\_{ij} \\end{equation}\\\]
+
+
+
+
+Table 4: Testing vx - Empirical Summary
+
+Summary of X Velocity - Constant
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Extrapolation | 524 | 448 | 327 |
+| 350-550 | Extrapolation | 659 | 624 | 303 |
+| 600-800 | Extrapolation | 770 | 724 | 300 |
+| 800-1000 | Trained | 1001 | 940 | 357 |
+| 1000-1200 | Extrapolation | 1167 | 1104 | 430 |
+| 1200-1400 | Extrapolation | 1283 | 1225 | 483 |
+
+Summary of X Velocity - Varied
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Extrapolation | 664 | 533 | 448 |
+| 350-550 | Extrapolation | 768 | 677 | 402 |
+| 600-800 | Extrapolation | 876 | 813 | 390 |
+| 800-1000 | Trained | 1064 | 1029 | 370 |
+| 1000-1200 | Trained | 1180 | 1179 | 372 |
+| 1200-1400 | Trained | 1265 | 1249 | 412 |
+
+
+
+Table 5: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band
+
+Fit to all 6 bands
+| Term | Estimate | 95% CrI Lower | 95% CrI Upper | pd |
+| --- | --- | --- | --- | --- |
+| Intercept | 408.55 | 327.00 | 490.61 | 1.00 |
+| conditVaried | 164.05 | 45.50 | 278.85 | 1.00 |
+| Band | 0.71 | 0.62 | 0.80 | 1.00 |
+| condit\*Band | \-0.14 | \-0.26 | \-0.01 | 0.98 |
+
+Fit to 3 extrapolation bands
+| Term | Estimate | 95% CrI Lower | 95% CrI Upper | pd |
+| --- | --- | --- | --- | --- |
+| Intercept | 478.47 | 404.00 | 551.45 | 1.00 |
+| conditVaried | 142.04 | 37.17 | 247.59 | 1.00 |
+| Band | 0.50 | 0.42 | 0.57 | 1.00 |
+| condit\*Band | \-0.07 | \-0.17 | 0.04 | 0.89 |
+
+See [Table 5](http://localhost:4200/Analysis/e1_test.html#tbl-e1-bmm-vx) for the full model results. The estimated coefficient for training condition (β = 164.05, 95% CrI \[45.5, 278.85\]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band (β = 0.71, 95% CrI \[0.62, 0.8\]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition (β = -0.14, 95% CrI \[-0.26, -0.01\]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less senitivity between vands than the constant condition. This difference is depicted visually in [Figure 4](http://localhost:4200/Analysis/e1_test.html#fig-e1-bmm-vx).@tbl-e1-slope-quartile shows the average slope coefficients for varied and constant participants separately for each quartile. The constant participant participants appear to have larger slopes across quartiles, but the difference between conditions may be less pronounced for the top quartiles of subjects who show the strongest discrimination. Figure [Figure 5](http://localhost:4200/Analysis/e1_test.html#fig-e1-bmm-bx2) shows the distributions of slope values for each participant, and the compares the probability density of slope coefficients between training conditions. [Figure 6](http://localhost:4200/Analysis/e1_test.html#fig-e1-indv-slopes)
+
+The second model, which focused solely on extrapolation bands, revealed similar patterns. The Velocity Band term (β = 0.5, 95% CrI \[0.42, 0.57\]) still demonstrates a high degree of discrimination ability. However, the posterior distribution for interaction term (β = -0.07, 95% CrI \[-0.17, 0.04\] ) does across over 0, suggesting that the evidence for decreased discrimination ability for the varied participants is not as strong when considering only the three extrapolation bands.
+
+
+
+Figure 4: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.
+
+
+
+Table 6: Slope coefficients by quartile, per condition
+
+| Condition | Q\_0%\_mean | Q\_25%\_mean | Q\_50%\_mean | Q\_75%\_mean | Q\_100%\_mean |
+| --- | --- | --- | --- | --- | --- |
+| Constant | \-0.1025710 | 0.4796476 | 0.6891841 | 0.9284214 | 1.394802 |
+| Varied | \-0.2015313 | 0.2673139 | 0.5888388 | 0.8980842 | 1.295650 |
+
+[Figure 5](http://localhost:4200/Analysis/e1_test.html#fig-e1-bmm-bx2) shows the distributions of estimated slopes relating velocity band to x velocity for each participant, ordered from lowest to highest within condition. Slope values are lower overall for varied training compared to constant training. Figure Xb plots the density of these slopes for each condition. The distribution for varied training has more mass at lower values than the constant training distribution. Both figures illustrate the model’s estimate that varied training resulted in less discrimination between velocity bands, evidenced by lower slopes on average.
+
+
+
+Figure 5: Slope distributions between condition
+
+
+
+Figure 6: Subset of Varied and Constant Participants with the smallest and largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.
+
+
+# [HTW Project - HTW E2 Testing]
+
+[Figure 1](http://localhost:4200/Analysis/e2_test.html#fig-design-e2) illustrates the design of Experiment 2. The stages of the experiment (i.e. training, testing no-feedback, test with feedback), are identical to that of Experiment 1. The only change is that Experiment 2 participants train, and then test, on bands in the reverse order of Experiment 1 (i.e. training on the softer bands; and testing on the harder bands).
+
+
+
+Figure 1: Experiment 2 Design. Constant and Varied participants complete different training conditions. The training and testing bands are the reverse of Experiment 1.
+
+## Results
+
+### Testing Phase - No feedback.
+
+In the first part of the testing phase, participants are tested from each of the velocity bands, and receive no feedback after each throw.
+
+#### Deviation From Target Band
+
+Descriptive summaries testing deviation data are provided in [Table 1](http://localhost:4200/Analysis/e2_test.html#tbl-e2-test-nf-deviation) and [Figure 2](http://localhost:4200/Analysis/e2_test.html#fig-e2-test-dev). To model differences in accuracy between groups, we used Bayesian mixed effects regression models to the trial level data from the testing phase. The primary model predicted the absolute deviation from the target velocity band (dist) as a function of training condition (condit), target velocity band (band), and their interaction, with random intercepts and slopes for each participant (id).
+
+\\\[\\begin{equation} dist\_{ij} = \\beta\_0 + \\beta\_1 \\cdot condit\_{ij} + \\beta\_2 \\cdot band\_{ij} + \\beta\_3 \\cdot condit\_{ij} \\cdot band\_{ij} + b\_{0i} + b\_{1i} \\cdot band\_{ij} + \\epsilon\_{ij} \\end{equation}\\\]
+
+
+
+Table 1: Testing Deviation - Empirical Summary
+
+Summary of Deviation - Constant
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Extrapolation | 206 | 48 | 317 |
+| 350-550 | Extrapolation | 194 | 86 | 268 |
+| 600-800 | Trained | 182 | 112 | 240 |
+| 800-1000 | Extrapolation | 200 | 129 | 233 |
+| 1000-1200 | Extrapolation | 238 | 190 | 234 |
+| 1200-1400 | Extrapolation | 311 | 254 | 288 |
+
+Summary of Deviation - Varied
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Trained | 153 | 25 | 266 |
+| 350-550 | Trained | 138 | 53 | 233 |
+| 600-800 | Trained | 160 | 120 | 183 |
+| 800-1000 | Extrapolation | 261 | 207 | 257 |
+| 1000-1200 | Extrapolation | 305 | 258 | 273 |
+| 1200-1400 | Extrapolation | 363 | 314 | 297 |
+
+
+
+Figure 2: E2. Deviations from target band during testing without feedback stage.
+
+
+```
+
+modelName <- "e2_testDistBand_RF_5K"
+e2_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
+                      data=testE2,file=paste0(here::here("data/model_cache",modelName)),
+                      iter=5000,chains=4)
+mp2 <- GetModelStats(e2_distBMM) |> kable(escape=F,booktabs=T)
+mp2
+```
+
+Table 2: Experiment 2. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band
+
+| Term | Estimate | 95% CrI Lower | 95% CrI Upper | pd |
+| --- | --- | --- | --- | --- |
+| Intercept | 151.71 | 90.51 | 215.86 | 1.00 |
+| conditVaried | \-70.33 | \-156.87 | 16.66 | 0.94 |
+| Band | 0.10 | 0.02 | 0.18 | 1.00 |
+| condit\*Band | 0.12 | 0.02 | 0.23 | 0.99 |
+
+Code
+
+```
+e2_distBMM |> 
+  emmeans("condit",by="bandInt",at=list(bandInt=c(100,350,600,800,1000,1200)),
+          epred = TRUE, re_formula = NA) |> 
+  pairs() |> gather_emmeans_draws()  |> 
+   summarize(median_qi(.value),pd=sum(.value>0)/n()) |>
+   select(contrast,Band=bandInt,value=y,lower=ymin,upper=ymax,pd) |> 
+   mutate(across(where(is.numeric), \(x) round(x, 2)),
+          pd=ifelse(value<0,1-pd,pd)) |>
+   kbl(caption="Contrasts")
+```
+
+Contrasts
+| contrast | Band | value | lower | upper | pd |
+| --- | --- | --- | --- | --- | --- |
+| Constant - Varied | 100 | 57.57 | \-20.48 | 135.32 | 0.93 |
+| Constant - Varied | 350 | 26.60 | \-30.93 | 83.84 | 0.83 |
+| Constant - Varied | 600 | \-4.30 | \-46.73 | 38.52 | 0.58 |
+| Constant - Varied | 800 | \-29.30 | \-69.38 | 11.29 | 0.92 |
+| Constant - Varied | 1000 | \-54.62 | \-101.06 | \-5.32 | 0.98 |
+| Constant - Varied | 1200 | \-79.63 | \-139.47 | \-15.45 | 0.99 |
+
+
+The model predicting absolute deviation showed a modest tendency for the varied training group to have lower deviation compared to the constant training group (β = -70.33, 95% CI \[-156.87, 16.66\]),with 94% of the posterior distribution being less than 0. This suggests a potential benefit of training with variation, though the evidence is not definitive.
+
+(SHOULD PROBABLY DO ALTERNATE ANALYSIS THAT ONLY CONSIDERS THE NOVEL EXTRAPOLATION BANDS)
+
+Code
+
+```
+e2_distBMM |> emmeans( ~condit + bandInt, 
+                       at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
+  gather_emmeans_draws() |>
+ condEffects()+
+  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                     labels = levels(testE2$vb), 
+                     limits = c(0, 1400)) 
+``` 
+
+![](md_extract/assets/fig-e2-bmm-dist-1.png)
+
+Figure 3: E2. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals.
+
+#### Discrimination between Velocity Bands
+
+In addition to accuracy/deviation. We also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). [Table 3](http://localhost:4200/Analysis/e2_test.html#tbl-e2-test-nf-vx) shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants.
+
+\\\[\\begin{equation} vx\_{ij} = \\beta\_0 + \\beta\_1 \\cdot condit\_{ij} + \\beta\_2 \\cdot bandInt\_{ij} + \\beta\_3 \\cdot condit\_{ij} \\cdot bandInt\_{ij} + b\_{0i} + b\_{1i} \\cdot bandInt\_{ij} + \\epsilon\_{ij} \\end{equation}\\\]
+
+Code
+
+```
+testE2 %>% group_by(id,vb,condit) |> plot_distByCondit()
+```
+
+![](md_extract/assets/fig-e2-test-vx-1.png)
+
+Figure 4: E2 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band.
+
+
+
+Table 3: Testing vx - Empirical Summary
+
+Summary of X Velocity - Constant
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Extrapolation | 457 | 346 | 354 |
+| 350-550 | Extrapolation | 597 | 485 | 368 |
+| 600-800 | Trained | 728 | 673 | 367 |
+| 800-1000 | Extrapolation | 953 | 913 | 375 |
+| 1000-1200 | Extrapolation | 1064 | 1012 | 408 |
+| 1200-1400 | Extrapolation | 1213 | 1139 | 493 |
+
+Summary of X Velocity - Varied
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Trained | 410 | 323 | 297 |
+| 350-550 | Trained | 582 | 530 | 303 |
+| 600-800 | Trained | 696 | 641 | 316 |
+| 800-1000 | Extrapolation | 910 | 848 | 443 |
+| 1000-1200 | Extrapolation | 1028 | 962 | 482 |
+| 1200-1400 | Extrapolation | 1095 | 1051 | 510 |
+
+Code
+
+```
+e2_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
+                        data=testE2,file=paste0(here::here("data/model_cache", "e2_testVxBand_RF_5k")),
+                        iter=5000,chains=4,silent=0,
+                        control=list(adapt_delta=0.94, max_treedepth=13))
+mt3 <-GetModelStats(e2_vxBMM ) |> kable(escape=F,booktabs=T)
+mt3
+```
+
+Table 4: Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band
+
+| Term | Estimate | 95% CrI Lower | 95% CrI Upper | pd |
+| --- | --- | --- | --- | --- |
+| Intercept | 362.64 | 274.85 | 450.02 | 1.00 |
+| conditVaried | \-8.56 | \-133.97 | 113.98 | 0.55 |
+| Band | 0.71 | 0.58 | 0.84 | 1.00 |
+| condit\*Band | \-0.06 | \-0.24 | 0.13 | 0.73 |
+
+Code
+
+```
+cd1 <- get_coef_details(e2_vxBMM, "conditVaried")
+sc1 <- get_coef_details(e2_vxBMM, "bandInt")
+intCoef1 <- get_coef_details(e2_vxBMM, "conditVaried:bandInt")
+```
+
+See [Table 4](http://localhost:4200/Analysis/e2_test.html#tbl-e2-bmm-vx) for the full model results.
+
+When examining discrimination ability using the model predicting raw x-velocity, the results were less clear than those of the absolute deviation analysis. The slope on Velocity Band (β = 0.71, 95% CrI \[0.58, 0.84\]) indicates that participants showed good discrimination between bands overall. However, the interaction term suggested this effect was not modulated by training condition (β = -0.06, 95% CrI \[-0.24, 0.13\]) Thus, while varied training may provide some advantage for accuracy, it does not appear to impair the ability to discriminate between velocity bands relative to constant training.
+
+
+
+Figure 5: Conditional effect of training condition and Band. Ribbons indicate 95% HDI.
+
+Code
+
+```
+new_data_grid=map_dfr(1, ~data.frame(unique(testE2[,c("id","condit","bandInt")]))) |> 
+  dplyr::arrange(id,bandInt) |> 
+  mutate(condit_dummy = ifelse(condit == "Varied", 1, 0)) 
+
+indv_coefs <- coef(e2_vxBMM)$id |> 
+  as_tibble(rownames="id") |> 
+  select(id, starts_with("Est")) |>
+  left_join(e2Sbjs, by=join_by(id) ) |> 
+  group_by(condit) |> 
+  mutate(rank = rank(desc(Estimate.bandInt)),
+         intErrorRank=rank((Est.Error.Intercept)),
+         bandErrorRank=rank((Est.Error.bandInt)),
+         nCond = n()) |> arrange(intErrorRank)
+
+fixed_effects <- e2_vxBMM |> 
+  spread_draws(`^b_.*`,regex=TRUE) |> arrange(.chain,.draw,.iteration)
+
+
+random_effects <- e2_vxBMM |> 
+  gather_draws(`^r_id.*[[ReadItLater]] [[Article]]
+
+# [HTW Project - HTW E2 Testing](http://localhost:4200/Analysis/e2_test.html)
+
+, regex = TRUE, ndraws = 2000) |> 
+  separate(.variable, into = c("effect", "id", "term"), sep = "\\[|,|\\]") |> 
+  mutate(id = factor(id,levels=levels(testE2$id))) |> 
+  pivot_wider(names_from = term, values_from = .value) |> arrange(id,.chain,.draw,.iteration)
+
+cd <- left_join(random_effects, fixed_effects, by = join_by(".chain", ".iteration", ".draw")) |> 
+  rename(bandInt_RF = bandInt) |>
+  mutate(Slope=bandInt_RF+b_bandInt) |> group_by(id) 
+
+cdMed <- cd |> group_by(id) |> median_qi(Slope)  |> 
+  left_join(e2Sbjs, by=join_by(id)) |> group_by(condit) |>
+  mutate(rankSlope=rank(Slope)) |> arrange(rankSlope)
+
+cdMed %>% ggplot(aes(y=rankSlope, x=Slope,fill=condit,color=condit)) + 
+  geom_pointrange(aes(xmin=.lower , xmax=.upper)) + 
+  labs(x="Estimated Slope", y="Participant")  + facet_wrap(~condit)  
+
+# cdMed |>  ggplot(aes(x = condit, y = Slope,fill=condit)) +
+#     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+#     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+#   geom_jitter()
+#   labs(x="Band", y="Deviation From Target")
+```
+
+Table 5: Slope coefficients by quartile, per condition
+
+| Condition | Q\_0%\_mean | Q\_25%\_mean | Q\_50%\_mean | Q\_75%\_mean | Q\_100%\_mean |
+| --- | --- | --- | --- | --- | --- |
+| Constant | \-0.2874640 | 0.3911363 | 0.6988131 | 1.075805 | 1.617691 |
+| Varied | \-0.2427695 | 0.3050573 | 0.6919588 | 0.949496 | 1.811897 |
+
+[Figure 6](http://localhost:4200/Analysis/e2_test.html#fig-e2-bmm-bx2) shows the distributions of estimated slopes relating velocity band to x velocity for each participant, ordered from lowest to highest within condition. Slope values are lower overall for varied training compared to constant training. Figure Xb plots the density of these slopes for each condition. The distribution for varied training has more mass at lower values than the constant training distribution. Both figures illustrate the model’s estimate that varied training resulted in less discrimination between velocity bands, evidenced by lower slopes on average.
+
+
+
+
+(a) Slope estimates by participant - ordered from lowest to highest within each condition.
+
+Figure 6: Slope distributions between condition
+
+Code
+
+```
+nSbj <- 3
+indvDraws  |> indv_model_plot(indvSlopes, testE2Avg, SlopeInt,rank_variable=Slope,n_sbj=nSbj,"max")
+indvDraws |> indv_model_plot(indvSlopes, testE2Avg,SlopeInt, rank_variable=Slope,n_sbj=nSbj,"min")
+```
+
+![](md_extract/assets/fig-e2-indv-slopes-1.png)
+
+(a) subset with largest slopes
+
+![](md_extract/assets/fig-e2-indv-slopes-2.png)
+
+(b) subset with smallest slopes
+
+Figure 7: Subset of Varied and Constant Participants with the smallest and largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.
+
+
+# [HTW Project - HTW E3 Testing](http://localhost:4200/Analysis/e3_test.html)
+
+The major manipulation adjustment of experiment 3 is for participants to receive ordinal feedback during training, in contrast to the continuous feedback of the earlier experiments. Ordinal feedback informs participants whether a throw was too soft, too hard, or fell within the target velocity range. Experiment 3 participants were randomly assigned to both a training condition (Constant vs. Varied) and a Band Order condition (original order used in Experiment 1, or the Reverse order of Experiment 2).
+
+## Results
+
+### Testing Phase - No feedback.
+
+In the first part of the testing phase, participants are tested from each of the velocity bands, and receive no feedback after each throw. Note that these no-feedback testing trials are identical to those of Experiment 1 and 2, as the ordinal feedback only occurs during the training phase, and final testing phase, of Experiment 3.
+
+#### Deviation From Target Band
+
+Descriptive summaries testing deviation data are provided in [Table 1](http://localhost:4200/Analysis/e3_test.html#tbl-e3-test-nf-deviation) and [Figure 1](http://localhost:4200/Analysis/e3_test.html#fig-e3-test-dev). To model differences in accuracy between groups, we fit Bayesian mixed effects regression models to the trial level data from the testing phase. The primary model predicted the absolute deviation from the target velocity band (dist) as a function of training condition (condit), target velocity band (band), and their interaction, with random intercepts and slopes for each participant (id).
+
+
+
+Table 1: Testing Deviation - Empirical Summary
+
+Summary of Deviation - Constant
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Extrapolation | 396 | 325 | 350 |
+| 350-550 | Extrapolation | 278 | 176 | 299 |
+| 600-800 | Extrapolation | 173 | 102 | 215 |
+| 800-1000 | Trained | 225 | 126 | 284 |
+| 1000-1200 | Extrapolation | 253 | 192 | 271 |
+| 1200-1400 | Extrapolation | 277 | 210 | 262 |
+
+Summary of Deviation - Varied
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Extrapolation | 383 | 254 | 385 |
+| 350-550 | Extrapolation | 287 | 154 | 318 |
+| 600-800 | Extrapolation | 213 | 140 | 244 |
+| 800-1000 | Trained | 199 | 142 | 209 |
+| 1000-1200 | Trained | 222 | 163 | 221 |
+| 1200-1400 | Trained | 281 | 227 | 246 |
+
+Summary of Deviation - Constant
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Extrapolation | 403 | 334 | 383 |
+| 350-550 | Extrapolation | 246 | 149 | 287 |
+| 600-800 | Trained | 155 | 82 | 209 |
+| 800-1000 | Extrapolation | 207 | 151 | 241 |
+| 1000-1200 | Extrapolation | 248 | 220 | 222 |
+| 1200-1400 | Extrapolation | 322 | 281 | 264 |
+
+Summary of Deviation - Varied
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Trained | 153 | 0 | 307 |
+| 350-550 | Trained | 147 | 55 | 258 |
+| 600-800 | Trained | 159 | 107 | 192 |
+| 800-1000 | Extrapolation | 221 | 160 | 235 |
+| 1000-1200 | Extrapolation | 244 | 185 | 235 |
+| 1200-1400 | Extrapolation | 324 | 264 | 291 |
+
+
+
+
+```
+
+Table 2: Experiment 3. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band
+
+| Term | Estimate | 95% CrI Lower | 95% CrI Upper | pd |
+| --- | --- | --- | --- | --- |
+| Intercept | 306.47 | 243.89 | 368.75 | 1.00 |
+| conditVaried | \-90.65 | \-182.79 | 3.75 | 0.97 |
+| Band | \-0.07 | \-0.13 | 0.00 | 0.97 |
+| condit\*Band | 0.09 | \-0.01 | 0.19 | 0.96 |
+
+
+The effect of training condition in Experiment 3 showed a similar pattern to Experiment 2, with the varied group tending to have lower deviation than the constant group (β = -90.65, 95% CrI \[-182.79, 3.75\]), with 97% of the posterior distribution falling under 0.
+
+(NEED TO CONTROL FOR BAND ORDER HERE)
+
+
+
+Figure 2: e3. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals.
+
+#### Discrimination between Velocity Bands
+
+
+Figure 3: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band.
+
+
+
+Table 3: Testing vx - Empirical Summary
+
+Summary of X Velocity - Constant
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Extrapolation | 680 | 625 | 370 |
+| 350-550 | Extrapolation | 771 | 716 | 357 |
+| 600-800 | Extrapolation | 832 | 786 | 318 |
+| 800-1000 | Trained | 1006 | 916 | 417 |
+| 1000-1200 | Extrapolation | 1149 | 1105 | 441 |
+| 1200-1400 | Extrapolation | 1180 | 1112 | 443 |
+
+Summary of X Velocity - Varied
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Extrapolation | 667 | 554 | 403 |
+| 350-550 | Extrapolation | 770 | 688 | 383 |
+| 600-800 | Extrapolation | 869 | 814 | 358 |
+| 800-1000 | Trained | 953 | 928 | 359 |
+| 1000-1200 | Trained | 1072 | 1066 | 388 |
+| 1200-1400 | Trained | 1144 | 1093 | 426 |
+
+Summary of X Velocity - Constant
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Extrapolation | 684 | 634 | 406 |
+| 350-550 | Extrapolation | 729 | 679 | 350 |
+| 600-800 | Trained | 776 | 721 | 318 |
+| 800-1000 | Extrapolation | 941 | 883 | 387 |
+| 1000-1200 | Extrapolation | 1014 | 956 | 403 |
+| 1200-1400 | Extrapolation | 1072 | 1014 | 442 |
+
+Summary of X Velocity - Varied
+| Band | Band Type | Mean | Median | Sd |
+| --- | --- | --- | --- | --- |
+| 100-300 | Trained | 392 | 270 | 343 |
+| 350-550 | Trained | 540 | 442 | 343 |
+| 600-800 | Trained | 642 | 588 | 315 |
+| 800-1000 | Extrapolation | 943 | 899 | 394 |
+| 1000-1200 | Extrapolation | 1081 | 1048 | 415 |
+| 1200-1400 | Extrapolation | 1185 | 1129 | 500 |
+
+Code
+
+```
+e3_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
+                        data=testE3,file=paste0(here::here("data/model_cache", "e3_testVxBand_RF_5k")),
+                        iter=5000,chains=4,silent=0,
+                        control=list(adapt_delta=0.94, max_treedepth=13))
+mt4 <-GetModelStats(e3_vxBMM ) |> kable(escape=F,booktabs=T)
+mt4
+```
+
+Table 4: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band
+
+| Term | Estimate | 95% CrI Lower | 95% CrI Upper | pd |
+| --- | --- | --- | --- | --- |
+| Intercept | 607.67 | 536.02 | 679.87 | 1 |
+| conditVaried | \-167.76 | \-277.14 | \-64.08 | 1 |
+| Band | 0.44 | 0.35 | 0.52 | 1 |
+| condit\*Band | 0.18 | 0.06 | 0.31 | 1 |
+
+
+Slope estimates for experiment 3 suggest that participants were capable of distinguishing between velocity bands even when provided only ordinal feedback during training (β = 0.44, 95% CrI \[0.35, 0.52\]). Unlike the previous two experiments, the posterior distribution for the interaction between condition and band was consistently positive, suggestive of superior discrimination for the varied participants β = 0.18, 95% CrI \[0.06, 0.31\].
+
+Code
+
+```
+e3_vxBMM |> emmeans( ~condit + bandInt, 
+                       at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
+  gather_emmeans_draws() |>
+  ggplot(aes(x = bandInt, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() +
+  stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
+  ylab("Predicted X Velocity") + xlab("Band")+
+  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                     labels = levels(testE3$vb), 
+                     limits = c(0, 1400)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+``` 
+
+
+Table 5: Slope coefficients by quartile, per condition
+
+| Condition | Q\_0%\_mean | Q\_25%\_mean | Q\_50%\_mean | Q\_75%\_mean | Q\_100%\_mean |
+| --- | --- | --- | --- | --- | --- |
+| Constant | \-0.3546215 | 0.1158112 | 0.4250213 | 0.6400295 | 1.935485 |
+| Varied | \-0.3138630 | 0.2473060 | 0.5963830 | 0.9144855 | 1.753327 |
+
+[Figure 5](http://localhost:4200/Analysis/e3_test.html#fig-e3-bmm-bx2) shows the distributions of estimated slopes relating velocity band to x velocity for each participant, ordered from lowest to highest within condition. Slope values are lower overall for varied training compared to constant training. Figure Xb plots the density of these slopes for each condition. The distribution for varied training has more mass at lower values than the constant training distribution. Both figures illustrate the model’s estimate that varied training resulted in less discrimination between velocity bands, evidenced by lower slopes on average.
+
