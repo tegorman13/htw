@@ -80,7 +80,7 @@ indv_model_plot <- function(combined_df, indv_coefs, testAvg,slopeVar, rank_vari
                                      pull(id))), 
                  aes(x = bandInt, y = vx), color = "blue") +
     scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
-                       labels = levels(test$vb), 
+                       labels = levels(testAvg$vb), 
                        limits = c(0, 1400)) +
     theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5,size=8.5)) +
     ggh4x::facet_nested_wrap(vars(condit, id),ncol=3)
@@ -223,7 +223,7 @@ plot_distByCondit <- function(df) {
                    geom_segment(data=vbRect,aes(x=vbLag,xend=vbLead,y=lowBound,yend=lowBound),alpha=1,linetype="dashed"),
                    geom_text(data=vbRect,aes(x=vbLag-.03,y=lowBound+100,label=vb),angle=90,size=2.5,fontface="bold") )    
 
-df %>% group_by(id,vb,condit) %>% 
+df %>% group_by(id,vb,condit,bandOrder) %>% 
   summarise(vxMean=mean(vx)) %>%
   ggplot(aes(x=vb,y=vxMean,fill=vb))+
   gghalves::geom_half_violin(color=NA)+ # remove border color
@@ -506,7 +506,7 @@ big_text <- function() {
         plot.title = element_text(face = "bold",size=16),
         axis.title = element_text(face = "bold"),
         axis.title.x=element_text(face="bold",size=14),
-        axis.title.y=element_text(face="bold",size=14),
+        axis.title.y=element_text(face="bold",size=24),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         strip.text = element_text(face = "bold", size = rel(0.8), hjust = 0),

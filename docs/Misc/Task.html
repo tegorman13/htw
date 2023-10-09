@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.322">
+<meta name="generator" content="quarto-1.4.404">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="dcterms.date" content="2023-08-18">
 <title>HTW Project - HTW Task</title>
@@ -41,12 +41,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
   "keyboard-shortcut": [
     "f",
     "/",
     "s"
   ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -330,10 +331,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Experimental Task for the HTW Project. Programmed in Javascript, and making use of phaser.js.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="../images/2023-04-19-16-20-55.png" class="img-fluid figure-img" style="width:70.0%"></p>
-</figure>
-</div>
+<p><img src="../images/2023-04-19-16-20-55.png" class="img-fluid quarto-figure-center" style="width:70.0%"></p>
 </div>
 </div>
 <!-- ![](images/2023-04-19-16-20-55.png) -->
@@ -346,7 +344,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Check the box at the bottom of the consent form, and then click Start Experiment.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><embed src="https://pcl.sitehost.iu.edu/tg/HTW/HTW_Index_Of.html" width="900" height="800"></p>
-<figcaption class="figure-caption">HTW_Task</figcaption></figure>
+<figcaption>HTW_Task</figcaption></figure>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script><p><!-- load p5.js from CDN--> <!-- <script src = "/Shiny_HTW/testJs.js"></script> <!-- this will pick our script  --> <!-- <script src = "/Shiny_HTW/testp5.js"></script> this will pick our script  --> –&gt;</p>
 <!-- <script src = "/Shiny_HTW/p5_2.js"></script> <!-- this will pick our script  -->
@@ -487,15 +485,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    if (id.startsWith('sec-')) {
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
+    if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
       if (note.children && note.children.length > 2) {
         for (let i = 0; i < 2; i++) {
           container.appendChild(note.children[i].cloneNode(true));
         }
+        typesetMath(container);
         return container.innerHTML
       } else {
+        typesetMath(note);
         return note.innerHTML;
       }
     } else {
@@ -504,6 +525,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
+      typesetMath(note);
       return note.innerHTML;
     }
   }
@@ -546,6 +568,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
       }
     }, function(instance) {
     });
@@ -621,7 +666,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     window.addEventListener(
       "resize",
       throttle(() => {
-        console.log("RESIZE");
         elRect = undefined;
         if (selectedAnnoteEl) {
           selectCodeLines(selectedAnnoteEl);

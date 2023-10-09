@@ -92,6 +92,108 @@ font_opts2 <- list(extra.preamble = c("\\usepackage{amsmath}", #"alignment
 ```
 
 
+\
+
+## Alcove
+
+```{r, engine = 'tikz'}
+
+\usetikzlibrary{positioning}
+
+
+\begin{tikzpicture}[node distance=1cm]
+    \tikzset{
+        neuron/.style={
+            circle,
+            draw,
+            minimum size=1cm,
+        },
+        input neuron/.style={
+            neuron,
+            fill=green!20,
+        },
+        output neuron/.style={
+            neuron,
+            fill=red!20,
+        },
+        hidden neuron/.style={
+            neuron,
+            fill=blue!20,
+        },
+    }
+
+    \node[input neuron] (input-1) at (0, 0) {Stimulus dimension node 1};
+    \node[input neuron] (input-2) [below=of input-1] {Stimulus dimension node 2};
+    \node[hidden neuron] (hidden-1) [right=of input-1] {Exemplar node 1};
+    \node[hidden neuron] (hidden-2) [below=of hidden-1] {Exemplar node 2};
+    \node[hidden neuron] (hidden-3) [below=of hidden-2] {Exemplar node 3};
+    \node[output neuron] (output-1) [right=of hidden-2] {Category node 1};
+    \node[output neuron] (output-2) [right=of hidden-3] {Category node 2};
+
+    \draw[->] (input-1) -- (hidden-1);
+    \draw[->] (input-1) -- (hidden-2);
+    \draw[->] (input-1) -- (hidden-3);
+    \draw[->] (input-2) -- (hidden-1);
+    \draw[->] (input-2) -- (hidden-2);
+    \draw[->] (input-2) -- (hidden-3);
+    \draw[->] (hidden-1) -- node[midway, above, sloped]{Learned association weights} (output-1);
+    \draw[->] (hidden-2) -- node[midway, above, sloped]{Learned association weights} (output-1);
+    \draw[->] (hidden-3) -- node[midway, above, sloped]{Learned association weights} (output-2);
+\end{tikzpicture}
+
+```
+
+### Alcove 2
+```{r, engine = 'tikz'}
+#| eval: true
+#| cache: true
+
+\usetikzlibrary{positioning}
+
+\tikzset{
+    neuron/.style={
+        circle,
+        draw,
+        minimum size=1cm,
+    },
+    input neuron/.style={
+        neuron,
+        fill=green!20,
+    },
+    output neuron/.style={
+        neuron,
+        fill=red!20,
+    },
+    hidden neuron/.style={
+        neuron,
+        fill=blue!20,
+    },
+}
+
+\begin{tikzpicture}[node distance=1cm]
+    \node[input neuron] (input-1) at (0, 0) {Stimulus dimension node 1};
+    \node[input neuron] (input-2) [below=of input-1] {Stimulus dimension node 2};
+    \node[hidden neuron] (hidden-1) [right=of input-1] {Exemplar node 1};
+    \node[hidden neuron] (hidden-2) [below=of hidden-1] {Exemplar node 2};
+    \node[hidden neuron] (hidden-3) [below=of hidden-2] {Exemplar node 3};
+    \node[output neuron] (output-1) [right=of hidden-2] {Category node 1};
+    \node[output neuron] (output-2) [right=of hidden-3] {Category node 2};
+
+    \draw[->] (input-1) -- (hidden-1);
+    \draw[->] (input-1) -- (hidden-2);
+    \draw[->] (input-1) -- (hidden-3);
+    \draw[->] (input-2) -- (hidden-1);
+    \draw[->] (input-2) -- (hidden-2);
+    \draw[->] (input-2) -- (hidden-3);
+    \draw[->] (hidden-1) -- node[midway, above, sloped]{Learned association weights} (output-1);
+    \draw[->] (hidden-2) -- node[midway, above, sloped]{Learned association weights} (output-1);
+    \draw[->] (hidden-3) -- node[midway, above, sloped]{Learned association weights} (output-2);
+\end{tikzpicture}
+```
+
+
+
+
 
 ## Intro
 Here is a TikZ picture
@@ -1069,6 +1171,7 @@ cat(paste(nnd,"\n"))
 
 
 ```
+
 
 ### Latent Space Projection
 https://tikz.net/manifold/
