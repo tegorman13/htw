@@ -87,6 +87,7 @@ e3_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
 mp3 <- GetModelStats(e3_distBMM) |> kable(escape=F,booktabs=T)
 mp3
 
+
 cd1 <- get_coef_details(e3_distBMM, "conditVaried")
 sc1 <- get_coef_details(e3_distBMM, "bandInt")
 intCoef1 <- get_coef_details(e3_distBMM, "conditVaried:bandInt")
@@ -131,8 +132,8 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 ```{r}
 #| label: fig-e3-test-vx
 #| fig-cap: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. 
-#| fig-width: 11
-#| fig-height: 9
+#| fig-width: 13
+#| fig-height: 11
 # testE3 |> filter(bandOrder=="Original")|> group_by(id,vb,condit) |> plot_distByCondit()
 # testE3 |> filter(bandOrder=="Reverse")|> group_by(id,vb,condit) |> plot_distByCondit() +ggtitle("test")
 
