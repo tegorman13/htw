@@ -1,7 +1,7 @@
 ---
 title: "HTW"
 short-title: "Variability and Extrapolation"
-date: last-modified
+date: 10-11-2023
 author:
 - name: Thomas Gorman
   affiliation: Indiana University
@@ -678,19 +678,19 @@ Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The
 <tbody>
   <tr>
    <td style="text-align:left;"> Constant </td>
-   <td style="text-align:right;"> -0.105 </td>
-   <td style="text-align:right;"> 0.482 </td>
-   <td style="text-align:right;"> 0.689 </td>
-   <td style="text-align:right;"> 0.932 </td>
+   <td style="text-align:right;"> -0.108 </td>
+   <td style="text-align:right;"> 0.479 </td>
+   <td style="text-align:right;"> 0.690 </td>
+   <td style="text-align:right;"> 0.934 </td>
    <td style="text-align:right;"> 1.39 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Varied </td>
-   <td style="text-align:right;"> -0.207 </td>
-   <td style="text-align:right;"> 0.265 </td>
-   <td style="text-align:right;"> 0.590 </td>
-   <td style="text-align:right;"> 0.900 </td>
-   <td style="text-align:right;"> 1.30 </td>
+   <td style="text-align:right;"> -0.198 </td>
+   <td style="text-align:right;"> 0.270 </td>
+   <td style="text-align:right;"> 0.585 </td>
+   <td style="text-align:right;"> 0.897 </td>
+   <td style="text-align:right;"> 1.29 </td>
   </tr>
 </tbody>
 </table>

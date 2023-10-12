@@ -1,7 +1,7 @@
 ---
 title: "HTW"
 short-title: "Variability and Extrapolation"
-date: last-modified
+date: 10-11-2023
 author:
 - name: Thomas Gorman
   affiliation: Indiana University
@@ -354,9 +354,9 @@ Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The
 \hline
 Condition & Q\_0\%\_mean & Q\_25\%\_mean & Q\_50\%\_mean & Q\_75\%\_mean & Q\_100\%\_mean\\
 \hline
-Constant & -0.106 & 0.478 & 0.691 & 0.929 & 1.4\\
+Constant & -0.104 & 0.480 & 0.695 & 0.932 & 1.39\\
 \hline
-Varied & -0.201 & 0.272 & 0.589 & 0.897 & 1.3\\
+Varied & -0.200 & 0.264 & 0.587 & 0.901 & 1.30\\
 \hline
 \end{tabular}
 

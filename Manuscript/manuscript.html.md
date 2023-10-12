@@ -1,7 +1,7 @@
 ---
 title: "HTW"
 short-title: "Variability and Extrapolation"
-date: last-modified
+date: 10-11-2023
 author:
 - name: Thomas Gorman
   affiliation: Indiana University
@@ -63,7 +63,7 @@ After completing the experiment, participants were debriefed and provided with a
 
 
 
-:::{.cell .column-screen-inset-right fig-width="7" fig-height="2.5" fig-responsive=false}
+:::{.cell .column-screen-inset-right fig-width="6" fig-height="2.5" fig-responsive=false}
 
 :::{.cell-output-display}
 
@@ -71,7 +71,7 @@ After completing the experiment, participants were debriefed and provided with a
 
 :::{}
 ```{=html}
-<svg width="672" height="240" viewbox="0.00 0.00 643.85 174.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<svg width="576" height="240" viewbox="0.00 0.00 643.85 174.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 170)">
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-170 639.85,-170 639.85,4 -4,4"></polygon>
 <g id="clust1" class="cluster">
@@ -749,18 +749,18 @@ Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The
 <tbody>
   <tr>
    <td style="text-align:left;"> Constant </td>
-   <td style="text-align:right;"> -0.115 </td>
-   <td style="text-align:right;"> 0.478 </td>
-   <td style="text-align:right;"> 0.691 </td>
-   <td style="text-align:right;"> 0.933 </td>
+   <td style="text-align:right;"> -0.109 </td>
+   <td style="text-align:right;"> 0.481 </td>
+   <td style="text-align:right;"> 0.690 </td>
+   <td style="text-align:right;"> 0.935 </td>
    <td style="text-align:right;"> 1.4 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Varied </td>
-   <td style="text-align:right;"> -0.201 </td>
-   <td style="text-align:right;"> 0.271 </td>
-   <td style="text-align:right;"> 0.587 </td>
-   <td style="text-align:right;"> 0.897 </td>
+   <td style="text-align:right;"> -0.207 </td>
+   <td style="text-align:right;"> 0.268 </td>
+   <td style="text-align:right;"> 0.588 </td>
+   <td style="text-align:right;"> 0.900 </td>
    <td style="text-align:right;"> 1.3 </td>
   </tr>
 </tbody>
