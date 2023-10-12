@@ -1,7 +1,7 @@
 ---
 title: "HTW"
 short-title: "Variability and Extrapolation"
-date: last-modified
+date: 10-11-2023
 author:
 - name: Thomas Gorman
   affiliation: Indiana University
@@ -63,7 +63,7 @@ After completing the experiment, participants were debriefed and provided with a
 
 
 
-:::{.cell .column-screen-inset-right fig-width="7" fig-height="2.5" fig-responsive=false}
+:::{.cell .column-screen-inset-right fig-width="6" fig-height="2.5" fig-responsive=false}
 
 :::{.cell-output-display}
 
@@ -71,7 +71,7 @@ After completing the experiment, participants were debriefed and provided with a
 
 :::{}
 
-![](manuscript_files/figure-latex/dot-figure-1.png){width="7in" height="2.5in" fig-pos='H' fig-env='figure'}
+![](manuscript_files/figure-latex/dot-figure-1.png){width="6in" height="2.5in" fig-pos='H' fig-env='figure'}
 :::
 
 
@@ -99,7 +99,59 @@ We compared varied and constant performance across two measures, deviation and d
 
 
 ::: {#tbl-e1-test-nf-deviation .cell layout-ncol="1" layout-align="center" tbl-cap='Testing Deviation - Empirical Summary' tbl-subcap='["Full datasets","Intersection of samples with all labels available"]'}
+::: {.cell-output-display}
+\begin{table}
 
+\caption{\label{tab:tbl-e1-test-nf-deviation}Summary of Deviation- Constant}
+\centering
+\begin{tabular}[t]{llrrr}
+\toprule
+Band & Band Type & Mean & Median & Sd\\
+\midrule
+100-300 & Extrapolation & 254 & 148 & 298\\
+\addlinespace[0.5em]
+350-550 & Extrapolation & 191 & 110 & 229\\
+\addlinespace[0.5em]
+600-800 & Extrapolation & 150 & 84 & 184\\
+\addlinespace[0.5em]
+800-1000 & Trained & 184 & 106 & 242\\
+\addlinespace[0.5em]
+1000-1200 & Extrapolation & 233 & 157 & 282\\
+\addlinespace[0.5em]
+1200-1400 & Extrapolation & 287 & 214 & 290\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+:::
+
+::: {.cell-output-display}
+\begin{table}
+
+\caption{\label{tab:tbl-e1-test-nf-deviation}Summary of Deviation- Varied}
+\centering
+\begin{tabular}[t]{llrrr}
+\toprule
+Band & Band Type & Mean & Median & Sd\\
+\midrule
+100-300 & Extrapolation & 386 & 233 & 426\\
+\addlinespace[0.5em]
+350-550 & Extrapolation & 285 & 149 & 340\\
+\addlinespace[0.5em]
+600-800 & Extrapolation & 234 & 144 & 270\\
+\addlinespace[0.5em]
+800-1000 & Trained & 221 & 149 & 248\\
+\addlinespace[0.5em]
+1000-1200 & Trained & 208 & 142 & 226\\
+\addlinespace[0.5em]
+1200-1400 & Trained & 242 & 182 & 235\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+:::
 :::
 
 
@@ -123,7 +175,9 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 
 
 ::: {.cell layout-align="center"}
-
+::: {.cell-output-display}
+![E1. Deviations from target band during testing without feedback stage.](manuscript_files/figure-pdf/fig-e1-test-dev-1.pdf){#fig-e1-test-dev fig-align='center' width=100%}
+:::
 :::
 
 ::: {#tbl-e1-bmm-dist .cell layout-align="center" tbl-cap='Experiment 1. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band' tbl-subcap='["Constant Testing1 - Deviation","Varied Testing - Deviation"]'}
@@ -186,11 +240,49 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 
 
 ::: {.cell layout-align="center"}
-
+::: {.cell-output-display}
+![E1 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band.](manuscript_files/figure-pdf/fig-e1-test-vx-1.pdf){#fig-e1-test-vx fig-align='center' width=100%}
+:::
 :::
 
 ::: {#tbl-e1-test-nf-vx .cell layout-ncol="1" layout-align="center" tbl-cap='Testing vx - Empirical Summary'}
+::: {.cell-output-display}
 
+\begin{tabular}[t]{llrrr}
+\toprule
+Band & Band Type & Mean & Median & Sd\\
+\midrule
+100-300 & Extrapolation & 524 & 448 & 327\\
+350-550 & Extrapolation & 659 & 624 & 303\\
+600-800 & Extrapolation & 770 & 724 & 300\\
+800-1000 & Trained & 1001 & 940 & 357\\
+1000-1200 & Extrapolation & 1167 & 1104 & 430\\
+\addlinespace
+1200-1400 & Extrapolation & 1283 & 1225 & 483\\
+\bottomrule
+\end{tabular}
+
+
+:::
+
+::: {.cell-output-display}
+
+\begin{tabular}[t]{llrrr}
+\toprule
+Band & Band Type & Mean & Median & Sd\\
+\midrule
+100-300 & Extrapolation & 664 & 533 & 448\\
+350-550 & Extrapolation & 768 & 677 & 402\\
+600-800 & Extrapolation & 876 & 813 & 390\\
+800-1000 & Trained & 1064 & 1029 & 370\\
+1000-1200 & Trained & 1180 & 1179 & 372\\
+\addlinespace
+1200-1400 & Trained & 1265 & 1249 & 412\\
+\bottomrule
+\end{tabular}
+
+
+:::
 :::
 
 ::: {#tbl-e1-bmm-vx .cell layout-align="center" tbl-cap='Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band' tbl-subcap='["Model fit to all 6 bands","Model fit to 3 extrapolation bands"]'}
@@ -244,21 +336,54 @@ The second model, which focused solely on extrapolation bands, revealed similar 
 
 
 ::: {#fig-e1-bmm-vx .cell layout-ncol="2" layout-align="center"}
+::: {.cell-output-display}
+![Model fit to all 6 bands](manuscript_files/figure-pdf/fig-e1-bmm-vx-1.pdf){#fig-e1-bmm-vx-1 fig-align='center' width=100%}
+:::
 
+::: {.cell-output-display}
+![Model fit to only 3 extrapolation bands](manuscript_files/figure-pdf/fig-e1-bmm-vx-2.pdf){#fig-e1-bmm-vx-2 fig-align='center' width=100%}
+:::
 
 Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.
 :::
 
+::: {#tbl-e1-slope-quartile .cell layout-align="center" tbl-cap='Slope coefficients by quartile, per condition'}
+::: {.cell-output-display}
 
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+Condition & Q\_0\%\_mean & Q\_25\%\_mean & Q\_50\%\_mean & Q\_75\%\_mean & Q\_100\%\_mean\\
+\hline
+Constant & -0.104 & 0.480 & 0.695 & 0.932 & 1.39\\
+\hline
+Varied & -0.200 & 0.264 & 0.587 & 0.901 & 1.30\\
+\hline
+\end{tabular}
+
+
+:::
+:::
 
 ::: {#fig-e1-bmm-bx2 .cell layout-ncol="2" layout-align="center"}
+::: {.cell-output-display}
+![Slope estimates by participant - ordered from lowest to highest within each condition. ](manuscript_files/figure-pdf/fig-e1-bmm-bx2-1.pdf){#fig-e1-bmm-bx2-1 fig-align='center' width=100%}
+:::
 
+::: {.cell-output-display}
+![Destiny of slope coefficients by training group](manuscript_files/figure-pdf/fig-e1-bmm-bx2-2.pdf){#fig-e1-bmm-bx2-2 fig-align='center' width=100%}
+:::
 
 Slope distributions between condition
 :::
 
 ::: {#fig-e1-indv-slopes .cell layout-align="center"}
+::: {.cell-output-display}
+![subset with largest slopes](manuscript_files/figure-pdf/fig-e1-indv-slopes-1.pdf){#fig-e1-indv-slopes-1 fig-align='center' width=100%}
+:::
 
+::: {.cell-output-display}
+![subset with smallest slopes](manuscript_files/figure-pdf/fig-e1-indv-slopes-2.pdf){#fig-e1-indv-slopes-2 fig-align='center' width=100%}
+:::
 
 Subset of Varied and Constant Participants with the smallest and largest estimated slope values. Red lines represent the best fitting line for each participant, gray lines are 200 random samples from the posterior distribution. Colored points and intervals at each band represent the empirical median and 95% HDI.
 :::
@@ -274,6 +399,23 @@ Subset of Varied and Constant Participants with the smallest and largest estimat
 @fig-design-e2 illustrates the design of Experiment 2. The stages of the experiment (i.e. training, testing no-feedback, test with feedback), are identical to that of Experiment 1. The only change is that Experiment 2 participants train, and then test, on bands in the reverse order of Experiment 1 (i.e. training on the softer bands; and testing on the harder bands). 
 
 
+
+:::{.cell .column-screen-inset-right fig-width="6" fig-height="2.5" fig-responsive=false}
+
+:::{.cell-output-display}
+
+:::{#fig-design-e2}
+
+:::{}
+
+![](manuscript_files/figure-latex/dot-figure-2.png){width="6in" height="2.5in" fig-pos='H' fig-env='figure'}
+:::
+
+
+Experiment 2 Design. Constant and Varied participants complete different training conditions. The training and testing bands are the reverse of Experiment 1. 
+:::
+:::
+:::
 
 
 
@@ -300,11 +442,104 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 \end{equation}
 
 
+::: {#tbl-e2-test-nf-deviation .cell layout-align="center" tbl-cap='Testing Deviation - Empirical Summary' tbl-subcap='["Constant Testing - Deviation","Varied Testing - Deviation"]'}
+::: {.cell-output-display}
+
+\begin{tabular}[t]{l|l|r|r|r}
+\hline
+Band & Band Type & Mean & Median & Sd\\
+\hline
+100-300 & Extrapolation & 206 & 48 & 317\\
+\hline
+350-550 & Extrapolation & 194 & 86 & 268\\
+\hline
+600-800 & Trained & 182 & 112 & 240\\
+\hline
+800-1000 & Extrapolation & 200 & 129 & 233\\
+\hline
+1000-1200 & Extrapolation & 238 & 190 & 234\\
+\hline
+1200-1400 & Extrapolation & 311 & 254 & 288\\
+\hline
+\end{tabular}
 
 
+:::
+
+::: {.cell-output-display}
+
+\begin{tabular}[t]{l|l|r|r|r}
+\hline
+Band & Band Type & Mean & Median & Sd\\
+\hline
+100-300 & Trained & 153 & 25 & 266\\
+\hline
+350-550 & Trained & 138 & 53 & 233\\
+\hline
+600-800 & Trained & 160 & 120 & 183\\
+\hline
+800-1000 & Extrapolation & 261 & 207 & 257\\
+\hline
+1000-1200 & Extrapolation & 305 & 258 & 273\\
+\hline
+1200-1400 & Extrapolation & 363 & 314 & 297\\
+\hline
+\end{tabular}
 
 
+:::
+:::
 
+::: {.cell layout-align="center"}
+::: {.cell-output-display}
+![E2. Deviations from target band during testing without feedback stage.](manuscript_files/figure-pdf/fig-e2-test-dev-1.pdf){#fig-e2-test-dev fig-align='center' width=100%}
+:::
+:::
+
+::: {#tbl-e2-bmm-dist .cell layout-align="center" tbl-cap='Experiment 2. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band'}
+::: {.cell-output-display}
+
+\begin{tabular}{lrrrr}
+\toprule
+Term & Estimate & 95\% CrI Lower & 95\% CrI Upper & pd\\
+\midrule
+Intercept & 151.71 & 90.51 & 215.86 & 1.00\\
+conditVaried & -70.33 & -156.87 & 16.66 & 0.94\\
+Band & 0.10 & 0.02 & 0.18 & 1.00\\
+condit*Band & 0.12 & 0.02 & 0.23 & 0.99\\
+\bottomrule
+\end{tabular}
+
+
+:::
+
+::: {.cell-output-display}
+\begin{table}
+
+\caption{\label{tab:tbl-e2-bmm-dist}Contrasts}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+contrast & Band & value & lower & upper & pd\\
+\hline
+Constant - Varied & 100 & 57.6 & -20.5 & 135.32 & 0.93\\
+\hline
+Constant - Varied & 350 & 26.6 & -30.9 & 83.84 & 0.83\\
+\hline
+Constant - Varied & 600 & -4.3 & -46.7 & 38.52 & 0.58\\
+\hline
+Constant - Varied & 800 & -29.3 & -69.4 & 11.29 & 0.92\\
+\hline
+Constant - Varied & 1000 & -54.6 & -101.1 & -5.32 & 0.98\\
+\hline
+Constant - Varied & 1200 & -79.6 & -139.5 & -15.45 & 0.99\\
+\hline
+\end{tabular}
+\end{table}
+
+
+:::
+:::
 
 
 
@@ -335,11 +570,123 @@ To model differences in accuracy between groups, we fit Bayesian mixed effects r
 
 
 
+::: {#tbl-e3-test-nf-deviation .cell layout-align="center" tbl-cap='Testing Deviation - Empirical Summary' tbl-subcap='["Constant Testing - Deviation","Varied Testing - Deviation"]'}
+::: {.cell-output-display}
+
+\begin{tabular}[t]{l|l|r|r|r}
+\hline
+Band & Band Type & Mean & Median & Sd\\
+\hline
+100-300 & Extrapolation & 396 & 325 & 350\\
+\hline
+350-550 & Extrapolation & 278 & 176 & 299\\
+\hline
+600-800 & Extrapolation & 173 & 102 & 215\\
+\hline
+800-1000 & Trained & 225 & 126 & 284\\
+\hline
+1000-1200 & Extrapolation & 253 & 192 & 271\\
+\hline
+1200-1400 & Extrapolation & 277 & 210 & 262\\
+\hline
+\end{tabular}
 
 
+:::
+
+::: {.cell-output-display}
+
+\begin{tabular}[t]{l|l|r|r|r}
+\hline
+Band & Band Type & Mean & Median & Sd\\
+\hline
+100-300 & Extrapolation & 383 & 254 & 385\\
+\hline
+350-550 & Extrapolation & 287 & 154 & 318\\
+\hline
+600-800 & Extrapolation & 213 & 140 & 244\\
+\hline
+800-1000 & Trained & 199 & 142 & 209\\
+\hline
+1000-1200 & Trained & 222 & 163 & 221\\
+\hline
+1200-1400 & Trained & 281 & 227 & 246\\
+\hline
+\end{tabular}
 
 
+:::
 
+::: {.cell-output-display}
+
+\begin{tabular}[t]{l|l|r|r|r}
+\hline
+Band & Band Type & Mean & Median & Sd\\
+\hline
+100-300 & Extrapolation & 403 & 334 & 383\\
+\hline
+350-550 & Extrapolation & 246 & 149 & 287\\
+\hline
+600-800 & Trained & 155 & 82 & 209\\
+\hline
+800-1000 & Extrapolation & 207 & 151 & 241\\
+\hline
+1000-1200 & Extrapolation & 248 & 220 & 222\\
+\hline
+1200-1400 & Extrapolation & 322 & 281 & 264\\
+\hline
+\end{tabular}
+
+
+:::
+
+::: {.cell-output-display}
+
+\begin{tabular}[t]{l|l|r|r|r}
+\hline
+Band & Band Type & Mean & Median & Sd\\
+\hline
+100-300 & Trained & 153 & 0 & 307\\
+\hline
+350-550 & Trained & 147 & 55 & 258\\
+\hline
+600-800 & Trained & 159 & 107 & 192\\
+\hline
+800-1000 & Extrapolation & 221 & 160 & 235\\
+\hline
+1000-1200 & Extrapolation & 244 & 185 & 235\\
+\hline
+1200-1400 & Extrapolation & 324 & 264 & 291\\
+\hline
+\end{tabular}
+
+
+:::
+:::
+
+::: {.cell layout-align="center"}
+::: {.cell-output-display}
+![e3. Deviations from target band during testing without feedback stage.](manuscript_files/figure-pdf/fig-e3-test-dev-1.pdf){#fig-e3-test-dev fig-align='center' width=100%}
+:::
+:::
+
+::: {#tbl-e3-bmm-dist .cell layout-align="center" tbl-cap='Experiment 3. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band'}
+::: {.cell-output-display}
+
+\begin{tabular}{lrrrr}
+\toprule
+Term & Estimate & 95\% CrI Lower & 95\% CrI Upper & pd\\
+\midrule
+Intercept & 306.47 & 243.89 & 368.75 & 1.00\\
+conditVaried & -90.65 & -182.79 & 3.75 & 0.97\\
+Band & -0.07 & -0.13 & 0.00 & 0.97\\
+condit*Band & 0.09 & -0.01 & 0.19 & 0.96\\
+\bottomrule
+\end{tabular}
+
+
+:::
+:::
 
 
 
@@ -348,7 +695,11 @@ The effect of training condition in Experiment 3 showed a similar pattern to Exp
 
 
 
-
+::: {.cell layout-align="center"}
+::: {.cell-output-display}
+![e3. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals.](manuscript_files/figure-pdf/fig-e3-bmm-dist-1.pdf){#fig-e3-bmm-dist fig-align='center' width=100%}
+:::
+:::
 
 
 
@@ -364,11 +715,123 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 
 
 
+::: {.cell .column-screen-inset-right layout-align="center"}
+::: {.cell-output-display}
+![e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band.](manuscript_files/figure-pdf/fig-e3-test-vx-1.pdf){#fig-e3-test-vx fig-align='center' width=100%}
+:::
+:::
+
+::: {#tbl-e3-test-nf-vx .cell layout-align="center" tbl-cap='Testing vx - Empirical Summary' tbl-subcap='["Constant Testing - vx","Varied Testing - vx"]'}
+::: {.cell-output-display}
+
+\begin{tabular}[t]{l|l|r|r|r}
+\hline
+Band & Band Type & Mean & Median & Sd\\
+\hline
+100-300 & Extrapolation & 680 & 625 & 370\\
+\hline
+350-550 & Extrapolation & 771 & 716 & 357\\
+\hline
+600-800 & Extrapolation & 832 & 786 & 318\\
+\hline
+800-1000 & Trained & 1006 & 916 & 417\\
+\hline
+1000-1200 & Extrapolation & 1149 & 1105 & 441\\
+\hline
+1200-1400 & Extrapolation & 1180 & 1112 & 443\\
+\hline
+\end{tabular}
 
 
+:::
+
+::: {.cell-output-display}
+
+\begin{tabular}[t]{l|l|r|r|r}
+\hline
+Band & Band Type & Mean & Median & Sd\\
+\hline
+100-300 & Extrapolation & 667 & 554 & 403\\
+\hline
+350-550 & Extrapolation & 770 & 688 & 383\\
+\hline
+600-800 & Extrapolation & 869 & 814 & 358\\
+\hline
+800-1000 & Trained & 953 & 928 & 359\\
+\hline
+1000-1200 & Trained & 1072 & 1066 & 388\\
+\hline
+1200-1400 & Trained & 1144 & 1093 & 426\\
+\hline
+\end{tabular}
 
 
+:::
 
+::: {.cell-output-display}
+
+\begin{tabular}[t]{l|l|r|r|r}
+\hline
+Band & Band Type & Mean & Median & Sd\\
+\hline
+100-300 & Extrapolation & 684 & 634 & 406\\
+\hline
+350-550 & Extrapolation & 729 & 679 & 350\\
+\hline
+600-800 & Trained & 776 & 721 & 318\\
+\hline
+800-1000 & Extrapolation & 941 & 883 & 387\\
+\hline
+1000-1200 & Extrapolation & 1014 & 956 & 403\\
+\hline
+1200-1400 & Extrapolation & 1072 & 1014 & 442\\
+\hline
+\end{tabular}
+
+
+:::
+
+::: {.cell-output-display}
+
+\begin{tabular}[t]{l|l|r|r|r}
+\hline
+Band & Band Type & Mean & Median & Sd\\
+\hline
+100-300 & Trained & 392 & 270 & 343\\
+\hline
+350-550 & Trained & 540 & 442 & 343\\
+\hline
+600-800 & Trained & 642 & 588 & 315\\
+\hline
+800-1000 & Extrapolation & 943 & 899 & 394\\
+\hline
+1000-1200 & Extrapolation & 1081 & 1048 & 415\\
+\hline
+1200-1400 & Extrapolation & 1185 & 1129 & 500\\
+\hline
+\end{tabular}
+
+
+:::
+:::
+
+::: {#tbl-e3-bmm-vx .cell layout-align="center" tbl-cap='Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band'}
+::: {.cell-output-display}
+
+\begin{tabular}{lrrrr}
+\toprule
+Term & Estimate & 95\% CrI Lower & 95\% CrI Upper & pd\\
+\midrule
+Intercept & 607.67 & 536.02 & 679.87 & 1\\
+conditVaried & -167.76 & -277.14 & -64.08 & 1\\
+Band & 0.44 & 0.35 & 0.52 & 1\\
+condit*Band & 0.18 & 0.06 & 0.31 & 1\\
+\bottomrule
+\end{tabular}
+
+
+:::
+:::
 
 
 
@@ -390,38 +853,40 @@ ALM is a localist neural network model, with each input node corresponding to a 
 
 See  for a full specification of the equations that define ALM and EXAM.
 
-$$
-a_i(X) = \frac{e^{-c \cdot (X-X_i)^2}}{ \sum_{k=1}^Me^{-c \cdot (X-X_i)^2}}
-$$
-$O_j(X) = \sum_{k=1}^Mw_{ji} \cdot a_i(X)$
-$P[Y_j | X] = \frac{O_i(X)}{\sum_{k=1}^Mo_k(X)}$
 
 
 
-## Table 1: ALM & EXAM Equations
+{{< pagebreak >}}
 
+
+
+
+
+## Model Table
 ### ALM Activation & Response
 | Step | Equation | Description |
 |------|----------|-------------|
-| Input Activation | $( a_i(X) = \frac{e^{-c \cdot (X-X_i)^2}}{\sum_{k=1}^M e^{-c \cdot (X-X_i)^2}}$ | Activation of each input node $( X_i )$, is a function of the Gaussian similarity between the node value and stimulus X. | Output Activation |
-$O_j(X) = \sum_{k=1}^M w_{ji} \cdot a_i(X)$ |  Activation of each Output unit  $O_j$ is the weighted sum of the input activations and association weights. |
-| Output Probability | $( P[Y_j \| X] = \frac{O_i(X)}{\sum_{k=1}^M o_k(X)} )$ | Each output node has associated response,  $Y_j$. The probability of response  $Y_j$ is determined by the ratio of output activations. | Mean Output | $( m(x) = \sum_{j=1}^L Y_j \cdot \left[\frac{O_j(X)}{\sum_{k=1}^L o_k(X)}\right] )$ | The response to stimulus x is the weighted average of the response probabilities. |
+| **ALM Activation & Response**  |           |
+| Input Activation | $a_i(X) = \frac{e^{-c(X-X_i)^2}}{\sum_{k=1}^M e^{-c(X-X_k)^2}}$ | Activation of each input node $X_i$, is a function of the Gaussian similarity between the node value and stimulus X.  |
+| Output Activation                 | $O_j(X) = \sum_{k=1}^M w_{ji} \cdot a_i(X)$ | Activation of each Output unit $O_j$ is the weighted sum of the input activations and association weights.   |
+| Output Probability                | $P[Y_j|X] = \frac{O_j(X)}{\sum_{k=1}^M O_k(X)}$ | Each output node has associated response, $Y_j$. The probability of response $Y_j$ is determined by the ratio of output activations.  |
+| Mean Output                       | $m(x) = \sum_{j=1}^L Y_j \cdot \frac{O_j(x)}{\sum_{k=1}^M O_k(X)}$   | The response to stimulus x is the weighted average of the response probabilities. |
+| **ALM Learning**                  |                                                                                                                                                          |
+| Feedback Activation               | $f_j(Z) = e^{-c(Z-Y_j)^2}$                  | After responding, feedback signal Z is presented, activating each output node via the Gaussian similarity to the ideal response. |
+| Update Weights                    | $w_{ji}(t + 1) = w_{ji}(t) + \alpha \cdot (f_j(Z(t)) - O_j(X(t)) \cdot a_i(X(t))$    | Delta rule to update weights. Magnitude of weight changes controlled by learning rate parameter alpha.  |  
+| **EXAM**                          |                                                                                                                                                          |
+| Extrapolation                     | $P[X_i|X] = \frac{a_i(X)}{\sum_{k=1}^M a_k(X)}$ | Novel test stimulus X activates input nodes associated with trained stimuli.     |
+|                                   | $E[Y|X_i] = m(X_i) + \frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1}-X_{i-1}} \cdot [X - X_i]$ | Slope value computed from nearest training instances and then added to the response associated with the nearest training instance,m(x)    |               
+
+
+
+
+{{< pagebreak >}}
 
 
 
 
 
-
-
-
-
-## Model Equations
-
-
-
-::: {.cell layout-align="center"}
-
-:::
 
 
 ## Model Fitting and Comparison
