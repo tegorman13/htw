@@ -1,0 +1,96 @@
+
+
+
+
+```{r}
+
+library(ggplot2)
+library(patchwork)
+library(dplyr)
+
+bp <- c("#2C3E50", "#E74C3C", "#3498DB", "#F39C12", "#8E44AD", "#1ABC9C")  # Color palette
+
+# Define points for nodes
+nodes <- tibble(
+  x = c(0.5, 1.5, 0, 1, 2, 0.5, 1.5),
+  y = c(3, 3, 2, 2, 2, 1, 1),
+  type = c("circle", "circle", "triangle", "triangle", "triangle", "circle", "circle")
+)
+
+# Define lines for associations
+associations <- tibble(
+  x = c(0.5, 1.5, 0.5, 1.5, 0, 1, 2, 0.5, 1.5),
+  y = c(3, 3, 3, 3, 2, 2, 2, 2, 2),
+  xend = c(0, 1, 1, 2, 0.5, 0.5, 1.5, 1.5, 1.5),
+  yend = c(2, 2, 2, 2, 1, 1, 1, 1, 1)
+)
+
+# Plot nodes and lines
+plot <- ggplot() +
+  geom_segment(data = associations, aes(x = x, y = y, xend = xend, yend = yend), 
+               arrow = arrow(type = "open", length = unit(0.2, "inches")), 
+               color = bp[1]) +
+  geom_point(data = filter(nodes, type == "circle"), aes(x = x, y = y), shape = 16, size = 5, fill = "white", color = bp[1]) +
+  geom_polygon(data = filter(nodes, type == "triangle"), aes(x = x, y = y), fill = "white", color = bp[1], size = 1) +
+  annotate("text", x = 0.5, y = 3.2, label = "Category nodes") +
+  annotate("text", x = 1, y = 2.2, label = "Learned association weights", angle = 90, hjust = 1) +
+  annotate("text", x = 1, y = 1.2, label = "Learned attention strengths", angle = 90, hjust = 1) +
+  annotate("text", x = 1, y = 2.2, label = "Exemplar nodes") +
+  annotate("text", x = 1, y = 0.8, label = "Stimulus dimension nodes") +
+  theme_void()
+
+print(plot)
+
+
+
+```
+
+
+```{r}
+
+
+library(ggplot2)
+library(tidyverse)
+
+# Data for category, exemplar, and stimulus dimension nodes
+df_nodes <- tibble(
+  x = c(0, 1, 0.5, 0.5, 0.5),
+  y = c(1, 1, 2, 0, 1.5),
+  label = c("Category nodes", "Category nodes", "Exemplar nodes", 
+            "Stimulus dimension nodes", "Learned association strengths"),
+  type = c("category", "category", "exemplar", "stimulus", "association"),
+  fill = c(NA, NA, "blue", NA, NA)  # Gradient fill for exemplar node
+)
+
+# Data for arrows
+df_arrows <- tibble(
+  x_start = c(0, 1, 0.5, 0.5, 0.5, 0.5),
+  y_start = c(1, 1, 2, 0, 2, 0),
+  x_end = c(0.5, 0.5, 0.5, 0.5, 0, 1),
+  y_end = c(1.5, 1.5, 1.5, 1.5, 1, 1)
+)
+
+# Create the base plot
+p <- ggplot() +
+  geom_segment(data = df_arrows, 
+               aes(x = x_start, y = y_start, xend = x_end, yend = y_end),
+               arrow = arrow(type = "closed", length = unit(0.15, "inches"))) +
+  geom_text(data = df_nodes, 
+            aes(x = x, y = y, label = label), 
+            vjust = "inward", size = 4) +
+  theme_void() +
+  theme(legend.position = "none")
+
+# Modify the exemplar node in df_nodes with a numeric value for activation level
+df_nodes$activation <- ifelse(df_nodes$type == "exemplar", 0.8, NA)  # Example value 0.8
+
+# Updated code segment
+p + geom_point(data = df_nodes %>% filter(type == "exemplar"), 
+               aes(x = x, y = y, fill = activation), 
+               shape = 21, size = 5, color = "black") +
+    scale_fill_gradient(low = "white", high = "blue", na.value = NA)
+
+
+
+```
+

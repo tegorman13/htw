@@ -37,15 +37,15 @@ test_summary_table <- function(data, DV,dlab, mfun = list(mean = mean, sd = sd))
   # Splitting the table into constant and varied groups
   constant_table <- summarization %>%
     filter(condit == "Constant") %>%
-    select(-condit) %>%
-    kable(caption = paste("Summary of", dlab, "- Constant")) #|>
-    #kable_minimal(full_width = FALSE) |>
-    add_header_above(c("Constant Testing " = ncol(summarization) - 1))
+    select(-condit) 
+    # kable(caption = paste("Summary of", dlab, "- Constant")) #|>
+    # #kable_minimal(full_width = FALSE) |>
+    # add_header_above(c("Constant Testing " = ncol(summarization) - 1))
   
   varied_table <- summarization %>%
     filter(condit == "Varied") %>%
-    select(-condit) %>%
-    kable(caption = paste("Summary of", dlab, "- Varied")) 
+    select(-condit) 
+    #kable(caption = paste("Summary of", dlab, "- Varied")) 
     #kable_minimal(full_width = FALSE) |>
     #add_header_above(c("Varied Testing " = ncol(summarization) - 1))
   

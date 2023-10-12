@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.411">
+<meta name="generator" content="quarto-1.4.415">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
-<meta name="dcterms.date" content="2023-10-10">
+<meta name="dcterms.date" content="2023-10-12">
 <title>HTW Project - HTW E2 Testing</title>
 <style>
 code{white-space: pre-wrap;}
@@ -141,6 +141,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">HTW Project</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../paper.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Manuscript</span></a>
   </div>
 </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
@@ -358,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 10, 2023</p>
+      <p class="date">October 12, 2023</p>
     </div>
   </div>
   
@@ -429,8 +436,8 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="in">#| tbl-subcap: ["Constant Testing - Deviation", "Varied Testing - Deviation"]</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="in">result &lt;- test_summary_table(testE2, "dist","Deviation", mfun = list(mean = mean, median = median, sd = sd))</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="in">result$constant </span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="in">result$varied </span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="in">result$constant |&gt; kbl()</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="in">result$varied |&gt; kbl()</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="in"># make kable table with smaller font size</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="in"># result$constant |&gt; kbl(caption="Constant Testing - Deviation",booktabs=T,escape=F) |&gt; kable_styling(font_size = 7)</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -440,7 +447,6 @@ Table&nbsp;1: Testing Deviation - Empirical Summary
 </figcaption><div aria-describedby="tbl-e2-test-nf-deviation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="cell table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Summary of Deviation - Constant</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band Type</th>
@@ -494,7 +500,6 @@ Table&nbsp;1: Testing Deviation - Empirical Summary
 </tbody>
 </table>
 <table class="cell table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Summary of Deviation - Varied</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band Type</th>
@@ -747,8 +752,8 @@ Figure&nbsp;4: E2 testing x velocities. Translucent bands with dash lines indica
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="in">#| layout-ncol: 2</span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="in">result &lt;- test_summary_table(testE2, "vx","X Velocity" ,mfun = list(mean = mean, median = median, sd = sd))</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="in">result$constant </span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="in">result$varied </span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="in">result$constant |&gt; kbl()</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="in">result$varied |&gt; kbl()</span></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div id="tbl-e2-test-nf-vx" class="quarto-layout-panel anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="table quarto-float-caption quarto-float-tbl" id="tbl-e2-test-nf-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -757,7 +762,6 @@ Table&nbsp;3: Testing vx - Empirical Summary
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <table class="cell table" data-quarto-postprocess="true">
-<caption>Summary of X Velocity - Constant</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band Type</th>
@@ -813,7 +817,6 @@ Table&nbsp;3: Testing vx - Empirical Summary
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <table class="cell table" data-quarto-postprocess="true">
-<caption>Summary of X Velocity - Varied</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Band Type</th>
@@ -938,7 +941,7 @@ Table&nbsp;4: Experiment 2. Bayesian Mixed Model Predicting Vx as a function of 
 </div>
 </div>
 <p>See <a href="#tbl-e2-bmm-vx" class="quarto-xref">Table&nbsp;4</a> for the full model results.</p>
-<p>When examining discrimination ability using the model predicting raw x-velocity, the results were less clear than those of the absolute deviation analysis. The slope on Velocity Band (β = 0.71, 95% CrI [0.58, 0.84]) indicates that participants showed good discrimination between bands overall. However, the interaction term suggested this effect was not modulated by training condition (β = -0.06, 95% CrI [-0.24, 0.13]) Thus, while varied training may provide some advantage for accuracy, it does not appear to impair the ability to discriminate between velocity bands relative to constant training.</p>
+<p>When examining discrimination ability using the model predicting raw x-velocity, the results were less clear than those of the absolute deviation analysis. The slope on Velocity Band (β = 0.71, 95% CrI [0.58, 0.84]) indicates that participants showed good discrimination between bands overall. However, the interaction term suggested this effect was not modulated by training condition (β = -0.06, 95% CrI [-0.24, 0.13]) Thus, while varied training may provide some advantage for accuracy, both training conditions seem to have similar abilities to discriminate between velocity bands.</p>
 <div class="cell">
 <details><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">e2_vxBMM</span> <span class="op">|&gt;</span> <span class="fu">emmeans</span><span class="op">(</span> <span class="op">~</span><span class="va">condit</span> <span class="op">+</span> <span class="va">bandInt</span>, </span>
 <span>                       at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>bandInt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">350</span>, <span class="fl">600</span>, <span class="fl">800</span>, <span class="fl">1000</span>, <span class="fl">1200</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1065,19 +1068,19 @@ Table&nbsp;5: Slope coefficients by quartile, per condition
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Constant</td>
-<td style="text-align: right;">-0.2874640</td>
-<td style="text-align: right;">0.3911363</td>
-<td style="text-align: right;">0.6988131</td>
-<td style="text-align: right;">1.075805</td>
-<td style="text-align: right;">1.617691</td>
+<td style="text-align: right;">-0.2832150</td>
+<td style="text-align: right;">0.3937922</td>
+<td style="text-align: right;">0.6976669</td>
+<td style="text-align: right;">1.0786327</td>
+<td style="text-align: right;">1.616930</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Varied</td>
-<td style="text-align: right;">-0.2427695</td>
-<td style="text-align: right;">0.3050573</td>
-<td style="text-align: right;">0.6919588</td>
-<td style="text-align: right;">0.949496</td>
-<td style="text-align: right;">1.811897</td>
+<td style="text-align: right;">-0.2485442</td>
+<td style="text-align: right;">0.3122124</td>
+<td style="text-align: right;">0.6808190</td>
+<td style="text-align: right;">0.9518413</td>
+<td style="text-align: right;">1.809811</td>
 </tr>
 </tbody>
 </table>
@@ -1086,7 +1089,7 @@ Table&nbsp;5: Slope coefficients by quartile, per condition
 </figure>
 </div>
 </div>
-<p><a href="#fig-e2-bmm-bx2" class="quarto-xref">Figure&nbsp;6</a> shows the distributions of estimated slopes relating velocity band to x velocity for each participant, ordered from lowest to highest within condition. Slope values are lower overall for varied training compared to constant training. Figure Xb plots the density of these slopes for each condition. The distribution for varied training has more mass at lower values than the constant training distribution. Both figures illustrate the model’s estimate that varied training resulted in less discrimination between velocity bands, evidenced by lower slopes on average.</p>
+<p><a href="#fig-e2-bmm-bx2" class="quarto-xref">Figure&nbsp;6</a> visually represents the distributions of estimated slopes relating velocity band to x velocity for each participant, ordered from lowest to highest within condition. Slope values are lower overall for varied training compared to constant training. Figure Xb plots the density of these slopes for each condition. The distribution for varied training has more mass at lower values than the constant training distribution. Both figures illustrate the model’s estimate that varied training resulted in less discrimination between velocity bands, evidenced by lower slopes on average.</p>
 <div class="cell">
 <details><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="va">indvSlopes</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y<span class="op">=</span><span class="va">rankSlope</span>, x<span class="op">=</span><span class="va">SlopeInt</span>,fill<span class="op">=</span><span class="va">condit</span>,color<span class="op">=</span><span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_pointrange</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin<span class="op">=</span><span class="va">SlopeInt.lower</span> , xmax<span class="op">=</span><span class="va">SlopeInt.upper</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -1675,8 +1678,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-80"><a href="#cb17-80" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-81"><a href="#cb17-81" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">test_summary_table</span>(testE2, <span class="st">"dist"</span>,<span class="st">"Deviation"</span>, <span class="at">mfun =</span> <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">median =</span> median, <span class="at">sd =</span> sd))</span>
-<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>constant </span>
-<span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>varied </span>
+<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>constant <span class="sc">|&gt;</span> <span class="fu">kbl</span>()</span>
+<span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>varied <span class="sc">|&gt;</span> <span class="fu">kbl</span>()</span>
 <span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a><span class="co"># make kable table with smaller font size</span></span>
 <span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a><span class="co"># result$constant |&gt; kbl(caption="Constant Testing - Deviation",booktabs=T,escape=F) |&gt; kable_styling(font_size = 7)</span></span>
 <span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
@@ -1772,8 +1775,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb17-186"><a href="#cb17-186" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: fenced</span></span>
 <span id="cb17-187"><a href="#cb17-187" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-188"><a href="#cb17-188" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">test_summary_table</span>(testE2, <span class="st">"vx"</span>,<span class="st">"X Velocity"</span> ,<span class="at">mfun =</span> <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">median =</span> median, <span class="at">sd =</span> sd))</span>
-<span id="cb17-189"><a href="#cb17-189" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>constant </span>
-<span id="cb17-190"><a href="#cb17-190" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>varied </span>
+<span id="cb17-189"><a href="#cb17-189" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>constant <span class="sc">|&gt;</span> <span class="fu">kbl</span>()</span>
+<span id="cb17-190"><a href="#cb17-190" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>varied <span class="sc">|&gt;</span> <span class="fu">kbl</span>()</span>
 <span id="cb17-191"><a href="#cb17-191" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-192"><a href="#cb17-192" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb17-193"><a href="#cb17-193" aria-hidden="true" tabindex="-1"></a></span>
@@ -1799,7 +1802,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb17-215"><a href="#cb17-215" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-216"><a href="#cb17-216" aria-hidden="true" tabindex="-1"></a>See @tbl-e2-bmm-vx for the full model results. </span>
 <span id="cb17-217"><a href="#cb17-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-218"><a href="#cb17-218" aria-hidden="true" tabindex="-1"></a>When examining discrimination ability using the model predicting raw x-velocity, the results were less clear than those of the absolute deviation analysis. The slope on Velocity Band (β = <span class="in">`r sc1$estimate`</span>, 95% CrI <span class="sc">\[</span><span class="in">`r sc1$conf.low`</span>, <span class="in">`r sc1$conf.high`</span><span class="sc">\]</span>) indicates that participants showed good discrimination between bands overall. However, the interaction term suggested this effect was not modulated by training condition (β = <span class="in">`r intCoef1$estimate`</span>, 95% CrI <span class="sc">\[</span><span class="in">`r intCoef1$conf.low`</span>, <span class="in">`r intCoef1$conf.high`</span><span class="sc">\]</span>) Thus, while varied training may provide some advantage for accuracy, it does not appear to impair the ability to discriminate between velocity bands relative to constant training.</span>
+<span id="cb17-218"><a href="#cb17-218" aria-hidden="true" tabindex="-1"></a>When examining discrimination ability using the model predicting raw x-velocity, the results were less clear than those of the absolute deviation analysis. The slope on Velocity Band (β = <span class="in">`r sc1$estimate`</span>, 95% CrI <span class="sc">\[</span><span class="in">`r sc1$conf.low`</span>, <span class="in">`r sc1$conf.high`</span><span class="sc">\]</span>) indicates that participants showed good discrimination between bands overall. However, the interaction term suggested this effect was not modulated by training condition (β = <span class="in">`r intCoef1$estimate`</span>, 95% CrI <span class="sc">\[</span><span class="in">`r intCoef1$conf.low`</span>, <span class="in">`r intCoef1$conf.high`</span><span class="sc">\]</span>) Thus, while varied training may provide some advantage for accuracy, both training conditions seem to have similar abilities to discriminate between velocity bands.</span>
 <span id="cb17-219"><a href="#cb17-219" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-222"><a href="#cb17-222" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb17-223"><a href="#cb17-223" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-bmm-vx</span></span>
@@ -1923,7 +1926,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb17-345"><a href="#cb17-345" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-346"><a href="#cb17-346" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb17-347"><a href="#cb17-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-348"><a href="#cb17-348" aria-hidden="true" tabindex="-1"></a>@fig-e2-bmm-bx2 shows the distributions of estimated slopes relating velocity band to x velocity for each participant, ordered from lowest to highest within condition. Slope values are lower overall for varied training compared to constant training. Figure Xb plots the density of these slopes for each condition. The distribution for varied training has more mass at lower values than the constant training distribution. Both figures illustrate the model's estimate that varied training resulted in less discrimination between velocity bands, evidenced by lower slopes on average.</span>
+<span id="cb17-348"><a href="#cb17-348" aria-hidden="true" tabindex="-1"></a>@fig-e2-bmm-bx2 visually represents the distributions of estimated slopes relating velocity band to x velocity for each participant, ordered from lowest to highest within condition. Slope values are lower overall for varied training compared to constant training. Figure Xb plots the density of these slopes for each condition. The distribution for varied training has more mass at lower values than the constant training distribution. Both figures illustrate the model's estimate that varied training resulted in less discrimination between velocity bands, evidenced by lower slopes on average.</span>
 <span id="cb17-349"><a href="#cb17-349" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-352"><a href="#cb17-352" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb17-353"><a href="#cb17-353" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2-bmm-bx2</span></span>

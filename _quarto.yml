@@ -12,7 +12,11 @@ project:
     - "!scratch/*"
     #- !htw_exam.qmd"
     - "!Misc/External.qmd"
-    
+    - "!Manuscript/"
+  
+  resources: 
+    # But *do* place the outputs from the manuscript in the rendered site folder
+    - "Manuscript/output/"
     
 exclude: ["*.rds","*.tex","*.csl","*.bib","docs*","404.html","_old*","out.bib",
 "*.pdf","*.R",".obsidian","Rproj","R","Bib","exp","HTW_Analysis/**","*HTW_Modelling/**","Motivated*","Manuscript*"]
@@ -47,6 +51,8 @@ website:
    # background: "#EE6A24"
     contents:
       - index.qmd
+      - text: "---"
+      - paper.qmd
       - text: "---"
       - section: Methods
         contents: 

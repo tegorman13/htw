@@ -75,8 +75,8 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 
 
 result <- test_summary_table(testE2, "dist","Deviation", mfun = list(mean = mean, median = median, sd = sd))
-result$constant 
-result$varied 
+result$constant |> kbl()
+result$varied |> kbl()
 # make kable table with smaller font size
 # result$constant |> kbl(caption="Constant Testing - Deviation",booktabs=T,escape=F) |> kable_styling(font_size = 7)
 ```
@@ -172,8 +172,8 @@ testE2 %>% group_by(id,vb,condit) |> plot_distByCondit()
 #| echo: fenced
 
 result <- test_summary_table(testE2, "vx","X Velocity" ,mfun = list(mean = mean, median = median, sd = sd))
-result$constant 
-result$varied 
+result$constant |> kbl()
+result$varied |> kbl()
 
 ```
 
@@ -199,7 +199,7 @@ intCoef1 <- get_coef_details(e2_vxBMM, "conditVaried:bandInt")
 
 See @tbl-e2-bmm-vx for the full model results. 
 
-When examining discrimination ability using the model predicting raw x-velocity, the results were less clear than those of the absolute deviation analysis. The slope on Velocity Band (β = `r sc1$estimate`, 95% CrI \[`r sc1$conf.low`, `r sc1$conf.high`\]) indicates that participants showed good discrimination between bands overall. However, the interaction term suggested this effect was not modulated by training condition (β = `r intCoef1$estimate`, 95% CrI \[`r intCoef1$conf.low`, `r intCoef1$conf.high`\]) Thus, while varied training may provide some advantage for accuracy, it does not appear to impair the ability to discriminate between velocity bands relative to constant training.
+When examining discrimination ability using the model predicting raw x-velocity, the results were less clear than those of the absolute deviation analysis. The slope on Velocity Band (β = `r sc1$estimate`, 95% CrI \[`r sc1$conf.low`, `r sc1$conf.high`\]) indicates that participants showed good discrimination between bands overall. However, the interaction term suggested this effect was not modulated by training condition (β = `r intCoef1$estimate`, 95% CrI \[`r intCoef1$conf.low`, `r intCoef1$conf.high`\]) Thus, while varied training may provide some advantage for accuracy, both training conditions seem to have similar abilities to discriminate between velocity bands.
 
 ```{r}
 #| label: fig-e2-bmm-vx
@@ -323,7 +323,7 @@ random_effects <- e2_vxBMM |>
 
 ```
 
-@fig-e2-bmm-bx2 shows the distributions of estimated slopes relating velocity band to x velocity for each participant, ordered from lowest to highest within condition. Slope values are lower overall for varied training compared to constant training. Figure Xb plots the density of these slopes for each condition. The distribution for varied training has more mass at lower values than the constant training distribution. Both figures illustrate the model's estimate that varied training resulted in less discrimination between velocity bands, evidenced by lower slopes on average.
+@fig-e2-bmm-bx2 visually represents the distributions of estimated slopes relating velocity band to x velocity for each participant, ordered from lowest to highest within condition. Slope values are lower overall for varied training compared to constant training. Figure Xb plots the density of these slopes for each condition. The distribution for varied training has more mass at lower values than the constant training distribution. Both figures illustrate the model's estimate that varied training resulted in less discrimination between velocity bands, evidenced by lower slopes on average.
 
 ```{r}
 #| label: fig-e2-bmm-bx2

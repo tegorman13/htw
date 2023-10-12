@@ -21,6 +21,19 @@ dAll <- readRDS(here("data/dAll_08-21-23.rds"))
 
 ```
 
+```{r}
+dAll <- readRDS(here("data/dAll_08-21-23.rds"))
+
+f <- (`Band` = vb)* expMode2 ~ dist * Exp* condit * ((`Avg.` = Mean)*Arguments(fmt='%.0f') )
+
+datasummary(f,
+            data = dAll,
+            output = 'gt',
+            sparse_header = TRUE) 
+
+
+
+```
 
 
 ### Are there differences in difficulty between bands?
