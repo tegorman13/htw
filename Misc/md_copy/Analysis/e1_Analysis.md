@@ -9,7 +9,7 @@ toc: false
 ---
 
 ```{r setup, echo=FALSE, include=FALSE}
-pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist)
+pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist, modelsummary)
 e1 <- readRDS(here("data/e1_08-21-23.rds"))
 quietly( source(here::here("Functions", "packages.R")))
 
@@ -21,6 +21,134 @@ testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
 ```
+
+
+
+```{r fig.width=12, fig.height=11}
+
+
+#https://modelsummary.com/articles/datasummary.html
+
+datasummary(vx*vb ~ Mean + SD + Histogram, data = testAvg)
+datasummary(vx*vb*condit ~ Mean + SD + Histogram, data = testAvg)
+
+datasummary(vx*vb*condit ~ Mean + SD + Histogram, data = test)
+
+datasummary_crosstab(vb ~ condit * tOrder, data = test)
+
+datasummary_crosstab(result ~ condit,
+                     statistic = 1 ~ Percent("col"),
+                     data = test)
+
+datasummary_crosstab(result ~ condit*vb,
+                     statistic = 1 ~ Percent("col"),
+                     data = test)
+
+
+datasummary(vx+dist+vy ~ mean *condit*vb,
+            data = e1)
+
+datasummary(Heading("X Velocity")*vx+Heading("Abs. Deviation")*dist+vy ~ mean *condit*vb,
+            data = e1)
+
+
+datasummary(vx + dist ~ Factor(condit) * (mean + sd),
+            data = test)
+
+datasummary(vx + dist ~ Factor(condit)*vb * (mean + sd),
+            data = test)
+
+datasummary(vb*Factor(condit) * (mean + sd) ~ vx + dist,
+            data = test)
+
+
+tmp <- mtcars[, c("mpg", "hp")]
+
+# create a list with individual variables
+# remove missing and rescale
+tmp_list <- lapply(tmp, na.omit)
+tmp_list <- lapply(tmp_list, scale)
+
+# create a table with `datasummary`
+# add a histogram with column_spec and spec_hist
+# add a boxplot with colun_spec and spec_box
+emptycol = function(x) " "
+datasummary(mpg + hp ~ Mean + SD + Heading("Boxplot") * emptycol + Heading("Histogram") * emptycol,
+    output = "kableExtra",
+    data = tmp) %>%
+    kableExtra::column_spec(column = 4, image = spec_boxplot(tmp_list)) %>%
+    kableExtra::column_spec(column = 5, image = spec_hist(tmp_list))
+
+tmp_list <- lapply(test |> ungroup() |> select(vx,vb,condit), na.omit)
+# scale only numeric columns - not all are numeric so can't just lapply
+tmp_list <- map(tmp_list, ~if(is.numeric(.x)) scale(.x) else .x)
+
+ts=test |> ungroup() |> select(vx,vb,condit) |> mutate(vxScale=scale(vx)[,1])
+
+ datasummary(vxScale*vb ~  Mean + Histogram,
+            data=ts, output = "kableExtra")  %>%
+    kableExtra::column_spec(column = 4, image = spec_boxplot(ts))
+
+
+datasummary(vx*vb ~  Mean + Median+ SD + Histogram,
+            data=test, output = "markdown")  
+
+datasummary(dist*vb ~  Mean + Median+ SD + Histogram,
+            data=test, output = "markdown")  
+
+datasummary(vx*vb*condit ~  Mean + Histogram,
+            data=test, output = "kableExtra")  %>%
+    kableExtra::column_spec(column = 5, image = spec_boxplot(tmp_list)) 
+
+cap <- "Testing - No Feedback"
+f <- (`Condit` = condit) ~ (` ` = vx) * (`Distribution` = Histogram) + vx * vb * ((`Avg.` = Mean)*Arguments(fmt='%.0f') + (`SD` = SD)*Arguments(fmt='%.0f'))
+
+datasummary(f,
+            data = test,
+            output = 'gt',
+            title = cap,
+            notes = 'Artwork by @Thomas',
+            sparse_header = TRUE) 
+
+
+
+
+f <- (`Band` = vb) ~ (` ` = vx) * (`Distribution` = Histogram) + vx * condit * ((`Avg.` = Mean)*Arguments(fmt='%.0f') + (`SD` = SD)*Arguments(fmt='%.0f'))
+
+datasummary(f,
+            data = test,
+            output = 'gt',
+            title = cap,
+            notes = 'Artwork by @Thomas',
+            sparse_header = TRUE) 
+
+
+
+f <- (`Band` = vb) ~ (` ` = vx) * (`Distribution` = Histogram) + vx * condit * expMode2 * ((`Avg.` = Mean)*Arguments(fmt='%.0f') + (`SD` = SD)*Arguments(fmt='%.0f'))
+
+datasummary(f,
+            data = e1,
+            output = 'gt',
+            sparse_header = TRUE) 
+
+
+f <- (`Band` = vb)* expMode2 ~ vx * condit  * ((`Avg.` = Mean)*Arguments(fmt='%.0f') + (`SD` = SD)*Arguments(fmt='%.0f'))
+
+datasummary(f,
+            data = e1,
+            output = 'gt',
+            sparse_header = TRUE) 
+
+
+f <- (`Band` = vb)* expMode2 ~ dist * condit  * ((`Avg.` = Mean)*Arguments(fmt='%.0f') )
+
+datasummary(f,
+            data = e1,
+            output = 'gt',
+            sparse_header = TRUE) 
+```
+
+
 
 
 ```{r}

@@ -8,6 +8,25 @@
 #         knitr.kable.NA = "")
 
 
+
+get_coef_details <- function(model, term_name) {
+  broom.mixed::tidy(model) |>
+    filter(term == term_name) |> 
+    select(estimate, conf.low, conf.high) |> 
+    mutate(across(where(is.numeric), \(x) round(x, 2)))
+}
+
+
+
+condEffects <- function(m){
+  m |> ggplot(aes(x = bandInt, y = .value, color = condit, fill = condit)) + 
+    stat_dist_pointinterval() + stat_halfeye(alpha=.2) +
+    stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
+    ylab("Predicted X Velocity") + xlab("Band")
+}
+
+
 gen_trials <- function(blocks=3,numinputs=3,shuffle=FALSE) {
   if (shuffle) {
     examples <- as.vector(apply(replicate(blocks,seq(1, numinputs)), 2,
@@ -55,21 +74,6 @@ ks2 <- ks2 |>
 
 
 
-normal_predictive_distribution <- function(mu_samples,
-                                           sigma_samples,
-                                           N_obs) {
-  map2_dfr(mu_samples, sigma_samples, function(mu, sigma) {
-    tibble(
-      trialn = seq_len(N_obs),
-      t_pred = rnorm(N_obs, mu, sigma)
-    )
-  }, .id = "iter") %>%
-    # .id is always a string and
-    # needs to be converted to a number
-    mutate(iter = as.numeric(iter))
-}
-
-
 
 # p1 <- GetModelStats(e1_testDistRF2_0)
 # 
@@ -80,7 +84,7 @@ GetModelStats <- function(model, type="brms") {
   
     # Get current model stats for brms model
     if (type == "brms") {
-      m1 <- as.data.frame(describe_posterior(model, centrality = "Median"))
+      m1 <- as.data.frame(describe_posterior(model, centrality = "Mean"))
       m2 <- fixef(model)
       df <- cbind(m1[, c(1,2)], m1[, c(4,5, 6)])
       #df <- cbind(m1[, c(1,2)], m2[, 2], m1[, c(4,5, 6, 11, 12)])
@@ -93,7 +97,7 @@ GetModelStats <- function(model, type="brms") {
       # Add model name and re-order columns
       #df$Model <- mnames[n]
       #df <- df[, c(9, 1:8)]
-      
+     
       # Get current model stats for lmer model
     } else {
       df <- data.frame(summary(model$coefficients))
@@ -114,6 +118,10 @@ GetModelStats <- function(model, type="brms") {
   
   return(df)
 }
+
+
+
+
 
 
 GetBrmsModelStats <- function(model1, model2 = NA, BF = NA) {
@@ -269,6 +277,20 @@ brmsfit_to_df <- function(brmsfit, predictor_to_label, odds_ratios=FALSE){
   return(fixed_effects)
 }
 
+
+normal_predictive_distribution <- function(mu_samples,
+                                           sigma_samples,
+                                           N_obs) {
+  map2_dfr(mu_samples, sigma_samples, function(mu, sigma) {
+    tibble(
+      trialn = seq_len(N_obs),
+      t_pred = rnorm(N_obs, mu, sigma)
+    )
+  }, .id = "iter") %>%
+    # .id is always a string and
+    # needs to be converted to a number
+    mutate(iter = as.numeric(iter))
+}
 
 
 # pathFN <- paste0(path,'/', modelName, ".rds")

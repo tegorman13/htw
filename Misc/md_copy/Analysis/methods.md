@@ -10,10 +10,11 @@ execute:
 ---
 
 
-```{r setup}
-pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt,gghalves,patchwork,ggforce,ggdist)
-e1 <- readRDS(here("data/e1_07-27-23.rds"))
-source(here("Functions/Display_Functions.R"))
+```{r}
+source(here::here("Functions", "packages.R"))
+e1 <- readRDS(here("data/e1_08-04-23.rds")) 
+e2 <- readRDS(here("data/e2_08-04-23.rds")) 
+e3 <- readRDS(here("data/e3_08-04-23.rds")) 
 
 ```
 
@@ -46,11 +47,12 @@ After completing the experiment, participants were debriefed and provided with a
 
 
 ```{dot}
-//| label: fig-simple
-//| fig-cap: "Experimental Design. Constant and Varied participants complete different training conditions."
+//| label: fig-design-e1
+//| fig-cap: "Experiment 1 Design. Constant and Varied participants complete different training conditions."
 //| fig-width: 8.0
 //| fig-height: 2.5
 //| fig-responsive: false
+//| column: screen-inset-right
 digraph {
   graph [layout = dot, rankdir = LR]
 
@@ -77,3 +79,31 @@ digraph {
 #https://renenyffenegger.ch/notes/tools/Graphviz/examples/index
 #https://edotor.net/
 ```
+
+
+
+
+
+
+
+## HTW Task
+* need to create a demo version without consent form. And maybe separate windows for the different versions. 
+
+Experimental Task for the HTW Project. Programmed in Javascript, and making use of phaser.js.
+
+
+```{r out.width = "70%", echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+knitr::include_graphics(here::here("images/2023-04-19-16-20-55.png"))
+```
+
+<!-- ![](images/2023-04-19-16-20-55.png) -->
+<!-- `r knitr::include_graphics(here::here("images/2023-04-19-16-20-55.png"))` -->
+
+
+## Live Task Demo
+
+Check the box at the bottom of the consent form, and then click Start Experiment. 
+
+![HTW_Task](https://pcl.sitehost.iu.edu/tg/HTW/HTW_Index_Of.html){width="900" height="800"}
+
+
