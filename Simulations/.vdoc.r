@@ -1,20 +1,20 @@
----
-title: Simulating DeLosh 1997
-date: last-modified
-categories: [Simulation, ALM, EXAM, R]
-code-fold: true
-code-tools: true
-execute: 
-  warning: false
----
-
-```{r}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #lapply(c('tidyverse','data.table','igraph','ggraph','kableExtra'),library,character.only=TRUE))
-pacman::p_load(tidyverse,data.table,igraph,ggraph,kableExtra, patchwork) 
+pacman::p_load(tidyverse,data.table,igraph,ggraph,kableExtra) 
 
-```
-
-```{r}
+#
+#
+#
 #https://nrennie.rbind.io/blog/2022-06-06-creating-flowcharts-with-ggplot2/
 inNodes <- seq(1,6,1) %>% as.integer()
 outNodes <- seq(300,1000,50)%>% as.integer()
@@ -53,39 +53,39 @@ ggplot() + geom_rect(data = odf,
   # geom_rect(aes(xmin=-0.05,xmax=.05,ymin=-10,ymax=5),color="blue",alpha=.1) +
   theme_void()
 
-```
-
-## ALM Definition
-
-::: column-margin
-###### Input Activation
-
-$$
-a_i(X)=\exp \left|-\gamma \cdot\left[X-X_i\right]^2\right|
-$$
-
-###### Output activation
-
-$$
-o_j(X)=\Sigma_{i=1, M} w_{j i} \cdot a_i(X) 
-$$
-
-###### Output Probability
-
-$$
-P\left[Y_j \mid X\right]=o_j(X) / \Sigma_{k=1, L} o_k(X) 
-$$
-
-###### Mean Response
-
-$$
-m(X)=\Sigma_{j=1, L} Y_j \cdot P\left[Y_j \mid X\right] 
-$$
-:::
-
-### Generate Response
-
-```{r}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #| code-fold: show
 #| code-summary: "Toggle Code"
 alm.response <- function(input=1,c) {
@@ -97,13 +97,13 @@ output.probability <<- output.activation/sum(output.activation)
 mean.response <<- sum(output.layer * output.probability)
 mean.response
 }
-```
-
-     
-
-### Update Weights Based on Feedback
-
-```{r}
+#
+#
+#
+#
+#
+#
+#
 #| code-fold: show
 #| code-summary: "Toggle Code"
 #| code-overflow: wrap
@@ -124,25 +124,25 @@ alm.trial <- function(input, corResp,c,lr){
  # print(paste0("input=",input,"; corResp=",corResp,"; mean.response=",mean.response))
   mean.response
 }
-```
-
-::: column-margin
-###### Feedback Signal
-
-$$
-f_j(Z)=e^{-c\cdot(Z-Y_j)^2}
-$$
-
-###### Weight Updates
-
-$$
-w_{ji}(t+1)=w_{ji}(t)+\alpha \cdot {f_i(Z(t))-O_j(X(t))} \cdot a_i(X(t))
-$$
-:::
-
-### Exam Generalization
-
-```{r}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #| code-fold: show
 #| code-summary: "Toggle Code"
 exam.response <- function(input,c){
@@ -161,25 +161,25 @@ exam.response <- function(input,c){
   # Determine the input nodes and associated weights for computing the slope
   exam.output
 }
-```
-
-::: column-margin
-###### Input node actvation
-
-$$
-P[X_i|X] = \frac{a_i(X)}{\\sum_{k=1}^Ma_k(X)}
-$$
-
-###### Slope Computation
-
-$$
-E[Y|X_i]=m(X_i) + \bigg[\frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1} - X_{i-1}} \bigg]\cdot[X-X_i]
-$$
-:::
-
-### Prepare Simulation Data
-
-```{r}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #| code-fold: show
 #| code-summary: "Toggle Code"
 # function to generate data, from either linear, exponential, quadratic or sinusoidal functions
@@ -237,170 +237,19 @@ highTrain <- map_dfr(envTypes, ~ generate.data(rep(highDensityTrainBlock,4), typ
 # xt <- runif(nTrainExamples, trainLowBound, trainHIghBound)
 # trainVec <- rep(xt, nBlock)
 
-```
-
-
-
-```{r}
-#| include: false
-
-
-deLosh_data <- list(
-human_data_linear = data.frame(
-          x = c(0.7,2.6,4.5,6.6,8.5,11.3,12.7,14.3,
-                 17.6,18.3,20.9,22.1,24.7,27.7,28,32.9,34.6,37.6,40,
-                 43.3,44.9,47.5,52.2,55,59.8,65.6,67.3,
-                 72,72.9,76.2,76.9,81.2,81.6,84,85.9,87.5,89.9,92.7,
-                 93.7,94.8,99.1,99.5),
-          y = c(11.7,17.7,25.5,27.3,29.8,38.3,41.1,
-                 47.1,56.7,61,67.3,69.5,77.6,83.6,92.5,100.6,106.3,
-                 112.7,118.7,125.1,128.6,135,144.2,150.9,160.5,
-                 170.3,176.4,180.6,185.9,189.4,194.8,196.9,199.7,
-                 203.6,207.5,212.8,219.2,219.1,220.5,228.7,230.1,234.4)),
-
-human_data_exp = data.frame(
-          x = c(0.7,2.3,5.5,6.9,8.5,10.6,15.9,16.2,
-                 13.6,18.7,21.7,22.4,24.9,27,29.1,33.3,34.6,38.1,40.2,
-                 43.4,44.8,47.8,49.9,52.2,55,58,60.5,63,66.7,71.4,
-                 72.7,76.7,79.7,81.1,85.7,87.1,90.1,93.1,94.5,96.3,98.2,
-                 99.3),
-          y = c(62.1,73.9,82.5,87,90.8,93.8,103.1,
-                 105.9,108.7,114.9,114.1,119,124.8,127.6,137.6,145.5,
-                 149.3,155.1,159.3,163.4,165.8,168.5,170.9,173.3,175.4,
-                 177.1,182.6,184.3,186.3,187,188.4,192.8,194.2,197.3,200,
-                 200.4,206.9,206.9,207.6,209.3,212.7,211.7)),
-
-human_data_quad = data.frame(
-         x = c(1.1,2.5,5.1,7.2,10.7,13.2,15.1,18.6,
-                 17,21.1,22.7,25.3,27.4,28.8,32.8,35.3,38.6,43,
-                 45,48,50.8,53.3,55.4,57.7,60,65.3,68.5,71.5,
-                 73.5,75.4,77.2,81.1,79.7,83.1,85.4,88,89.3,90.9,93.2,
-                 95.5,97.8,99.6),
-          y = c(70.5,82.3,99.9,101,108.3,116.6,122.8,
-                 136.3,137.7,140.1,143.9,154.7,162.3,166.1,181.6,191.7,
-                 196.2,203.1,205.2,206.6,208.7,206.6,206.6,203.2,
-                 198,193.2,184.2,177.6,176.3,171.1,166.9,160.4,
-                 155.5,148.3,147.3,142.8,133.8,132.7,122.4,119.3,118.6,
-                 105.5))
-
-)
-
-```
-
-
-
-```{r}
-
-
-source(here::here("Functions","deLosh_data.R"))
-
-linear_function <- function(x) 2.2 * x + 30
-exponential_function <- function(x) 200 * (1 - exp(-x/25))
-quadratic_function <- function(x) 210 - (x - 50)^2 / 12
-
-linear_plot <- ggplot(deLosh_data$human_data_linear, aes(x, y)) +
-    geom_point(shape=1) + stat_function(fun = linear_function, color = "black") +
-  labs(y="Response Magnitude", title="Linear Function")
-
-exponential_plot <- ggplot(deLosh_data$human_data_exp, aes(x, y)) +
-    geom_point(shape=1) + stat_function(fun = exponential_function, color = "black")+
-  labs(x="Stimulus Magnitude", title="Exponential Function") 
-
-quadratic_plot <- ggplot(deLosh_data$human_data_quad, aes(x = x, y = y)) +
-  geom_point(aes(shape = "Observed", color = "Observed"), shape = 1) +
-  stat_function(aes(color = "True Function"), fun = quadratic_function, geom = "line") +
-  labs(title="Quadratic Function") +
-  scale_shape_manual(values = c(1)) +
-  scale_color_manual(values = c("Observed" = "black", "True Function" = "black")) +
-  theme(legend.title = element_blank()) +
-  guides(color = guide_legend(override.aes = list(shape = c(1, NA), 
-                                                  linetype = c(0, 1))))
-
-linear_plot + exponential_plot + quadratic_plot
-
-
-```
-
-
-
-
-
-
-
-```{r}
-# Load required libraries
-
-# Define the true functions
-linear_function <- function(x) 2.2 * x + 30
-exponential_function <- function(x) 200 * (1 - exp(-x/25))
-quadratic_function <- function(x) 210 - (x - 50)^2 / 12
-
-sigmoid <- function(x, scale=1) {
-  1 / (1 + exp(-scale * x))
-}
-
-inflection_function <- function(x, mid_point, steepness) {
-  # Sigmoid-based function for a controlled inflection
-  return(1 / (1 + exp(-steepness * (x - mid_point))))
-}
-
-create_human_data <- function(func_name, range){
-  x_values <- seq(range[1], range[2], by = 1)
-  
-  if (func_name == "linear"){
-    y_values <- linear_function(x_values)
-  } else if (func_name == "exponential") {
-    y_values <- exponential_function(x_values)
-  } else if (func_name == "quadratic") {
-    y_values <- quadratic_function(x_values)
-  }
-  
-  # Adjust y_values based on patterns
-  if (func_name == "linear"){
-    y_values[x_values < 30] <- y_values[x_values < 30] * 0.9
-    y_values[x_values > 70] <- y_values[x_values > 70] * 0.9
-  } else {
-    y_values[x_values < 30] <- y_values[x_values < 30] * 1.1
-    y_values[x_values > 70] <- y_values[x_values > 70] * 1.1
-  }
-  
-  return(data.frame(x = x_values, y = y_values))
-}
-
-# Create data frames for each function using the modified function
-linear_data <- create_human_data("linear", c(0, 100))
-exponential_data <- create_human_data("exponential", c(0, 100))
-quadratic_data <- create_human_data("quadratic", c(0, 100))
-
-# Plot using ggplot2
-plot_function <- function(data, true_function, title){
-  ggplot(data, aes(x, y)) +
-    geom_point() +
-    geom_line(aes(x, y = true_function(x))) +
-    labs(title = title, x = "Stimulus Magnitude", y = "Response Magnitude") +
-    theme_minimal() +
-    ylim(0, 250)
-}
-
-linear_plot <- plot_function(linear_data, linear_function, "Linear")
-exponential_plot <- plot_function(exponential_data, exponential_function, "Exponential")
-quadratic_plot <- plot_function(quadratic_data, quadratic_function, "Quadratic")
-
-# Arrange the plots side by side
-gridExtra::grid.arrange(linear_plot, exponential_plot, quadratic_plot, ncol = 3)
-
-
-
-
-
-```
-
-
-
-
-### Simulation Functions
-
-```{r}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #| code-fold: show
 #| 
 # simulation function
@@ -444,11 +293,11 @@ simOrganize <- function(simOut){
 
 }
 
-```
-
-### Simulate Training:
-
-```{r fig.width=10, fig.height=8}
+#
+#
+#
+#
+#
 #| column: page-inset-right
 # split by type, then send each training dataset to simulation function
 # orig, c=1.4; l.r=.8
@@ -477,11 +326,11 @@ simAll %>% ggplot(aes(x=block,y=dev,color=type)) + stat_summary(geom="line",fun=
   stat_summary(geom="errorbar",fun.data=mean_cl_normal,alpha=.4)+facet_wrap(~density, scales="free_x")
 
 
-```
-
-Predictions for Generalization
-
-```{r fig.width=11,fig.height=10}
+#
+#
+#
+#
+#
 #| column: page-inset-right
 #| 
 lowSimTest <- map_dfr(lowSim,simOrganize) %>% mutate(density = "low")
@@ -511,11 +360,11 @@ simTestAll %>% ggplot(aes(x=x,y=y)) +
 # simAll %>% ggplot(aes(x=block,y=dev)) + stat_summary(geom="line",fun=mean,alpha=.3)+stat_summary(geom="point",fun=mean)+
 #   stat_summary(geom="errorbar",fun.data=mean_cl_normal)+facet_wrap(density~type, scales="free_x")
 
-```
-
-Collpasing Across Density Levels gives us:
-
-```{r}
+#
+#
+#
+#
+#
 #| eval: false
 #| column: page-inset-right
 simTestAll %>% group_by(type,model,x,y) %>% summarise(resp=mean(resp))  %>% ggplot(aes(x=x,y=y)) + 
@@ -523,14 +372,14 @@ simTestAll %>% group_by(type,model,x,y) %>% summarise(resp=mean(resp))  %>% ggpl
   geom_line(aes(x=x,y=y),alpha=.4)+ 
   facet_grid(~type) + 
   theme_bw() + theme(legend.position="bottom")
-```
-
-
-
-
-### Master Function for full simulation
-
-```{r}
+#
+#
+#
+#
+#
+#
+#
+#
 #| eval: false
 # Function that goes through every step of generating data, simulating training, and simulating generalization
 full.sim <- function(c,lr,noise)
@@ -582,11 +431,11 @@ simTestAll <- rbind(lowSimTest,medSimTest,highSimTest) %>% group_by(type,density
 return(list(simAll=list(simAll),simTestAll=list(simTestAll)))
   
 }
-```
-
-### Simulations with noise
-
-```{r fig.height=10,fig.width=11}
+#
+#
+#
+#
+#
 #| eval: false
 k = full.sim(c=1.4,lr=.4,noise=2.0)
 k4 = full.sim(c=1.4,lr=.4,noise=4.0)
@@ -631,9 +480,9 @@ k10 %>% pluck("simTestAll") %>%ggplot(aes(x=x,y=y)) +
   theme_bw() + theme(legend.position="bottom")
 
 
-```
-
-```{r}
+#
+#
+#
 #| eval: false
 
 # label each each simulation with its density level (low, med, high), then combine all 3
@@ -674,11 +523,11 @@ simOut <- map2(c("lowTrain","medTrain","highTrain"),envTypes, ~ alm.sim(get(.x) 
 # for each training dataset in c(lowTrain,medTrain,highTrain), run simulation function, separately for each type, and then bind rows of the output data frame.
 
 
-```
-
-### Primary Functions
-
-```{r}
+#
+#
+#
+#
+#
 #| code-fold: show
 #| include: false
 #| eval: false
@@ -727,4 +576,6 @@ exam.response <- function(input,c){
   exam.output
 }
 
-```
+#
+#
+#
