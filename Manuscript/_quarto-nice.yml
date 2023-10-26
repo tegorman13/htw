@@ -4,7 +4,6 @@ project:
 
 
 format:
-  #Nice HTML output
   html:
     toc: true
     keep-md: true
@@ -32,18 +31,20 @@ format:
   # Nice PDF output
   hikmah-pdf:
     cite-method: citeproc
-    keep-md: true
-    output-file: "manuscript-nice.pdf"
-
-    # Custom fonts
+    output-file: "htw_manuscript.pdf"
     mainfont: "Linux Libertine O"
     mainfontoptions:
       - "Numbers=Proportional"
       - "Numbers=OldStyle"
     sansfont: "IBM Plex Sans"
     mathfont: "Libertinus Math"
+    geometry:
+      - top=1in     
+      - bottom=1in  
+      - left=1in    
+      - right=1in  
+      - heightrounded
     # linestretch: 1.05
-
     include-in-header:
       # The \everydisplay thing makes all math blocks use \small font
       text: |
@@ -56,3 +57,4 @@ format:
     knitr:
       opts_chunk:
         dev: "cairo_pdf"
+        
