@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.415">
+<meta name="generator" content="quarto-1.4.439">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2023-07-04">
+<meta name="dcterms.date" content="2023-11-04">
 <title>HTW Project - Approximate Bayesian Fitting</title>
 <style>
 code{white-space: pre-wrap;}
@@ -357,7 +357,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 4, 2023</p>
+      <p class="date">November 4, 2023</p>
     </div>
   </div>
   
@@ -372,19 +372,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">walk</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Functions/alm_functions.R"</span>,<span class="st">"Functions/Display_Functions.R"</span>,<span class="st">"Functions/Noisy_Functions.R"</span><span class="op">)</span><span class="op">)</span>,<span class="va">source</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">select</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="va"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>; <span class="va">mutate</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="va"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span> </span>
-<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/dPrune-01-19-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_08-21-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">condit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code>[1] "Constant" "Varied"  </code></pre>
 </div>
-<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Prepare the data for analysis</span></span>
-<span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">lowBound</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">lowBound</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>nBand<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span>,band<span class="op">=</span><span class="va">bandInt</span>,id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>nd<span class="op">=</span><span class="fu">n_distinct</span><span class="op">(</span><span class="va">lowBound</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">dtest</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">lowBound</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">nBand</span><span class="op">&gt;=</span><span class="fl">5</span> <span class="op">&amp;</span> <span class="va">nd</span><span class="op">==</span><span class="fl">6</span><span class="op">)</span></span>
 <span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">dtest</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">dtest</span><span class="op">$</span><span class="va">id</span><span class="op">[</span><span class="va">dtest</span><span class="op">$</span><span class="va">nBand</span><span class="op">&lt;</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">ds</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"train"</span>,<span class="st">"train-Nf"</span>,<span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">dtest</span><span class="op">$</span><span class="va">id</span><span class="op">[</span><span class="va">dtest</span><span class="op">$</span><span class="va">nBand</span><span class="op">&lt;</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span><span class="fu">select</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>,<span class="va">catOrder</span>,<span class="va">feedbackType</span>,<span class="va">expMode</span>,<span class="va">trial</span>,<span class="va">gt.train</span>,<span class="va">vb</span>,<span class="va">band</span>,<span class="va">bandInt</span>,<span class="va">lowBound</span>,<span class="va">highBound</span>,<span class="va">input</span>,<span class="va">vx</span>,<span class="va">dist</span>,<span class="va">vxb</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">ds</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"train"</span>,<span class="st">"train-Nf"</span>,<span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">dtest</span><span class="op">$</span><span class="va">id</span><span class="op">[</span><span class="va">dtest</span><span class="op">$</span><span class="va">nBand</span><span class="op">&lt;</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span>    </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>input<span class="op">=</span><span class="va">bandInt</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>,<span class="va">bandOrder</span>,<span class="va">expMode</span>,<span class="va">trial</span>,<span class="va">gt.train</span>,<span class="va">vb</span>,<span class="va">band</span>,<span class="va">bandInt</span>,<span class="va">lowBound</span>,<span class="va">highBound</span>,<span class="va">input</span>,<span class="va">vx</span>,<span class="va">dist</span>,<span class="va">vxb</span><span class="op">)</span> </span>
+<span>  </span>
 <span><span class="va">dst</span> <span class="op">&lt;-</span> <span class="va">ds</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span><span class="op">==</span><span class="st">"train"</span><span class="op">)</span></span>
 <span><span class="va">dst</span> <span class="op">&lt;-</span> <span class="va">dst</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>, <span class="va">vb</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -392,7 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dst</span> <span class="op">&lt;-</span> <span class="va">dst</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span><span class="op">==</span><span class="st">"train"</span>,<span class="va">catOrder</span><span class="op">==</span><span class="st">"orig"</span><span class="op">)</span></span>
+<details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dst</span> <span class="op">&lt;-</span> <span class="va">dst</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span><span class="op">==</span><span class="st">"train"</span>,<span class="va">bandOrder</span><span class="op">==</span><span class="st">"Original"</span><span class="op">)</span></span>
 <span><span class="va">vst</span> <span class="op">&lt;-</span> <span class="va">dst</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">condit</span><span class="op">==</span><span class="st">"Varied"</span>,<span class="va">gt.train</span><span class="op">&lt;=</span><span class="fl">84</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">gt.train</span>,<span class="va">vb</span>,<span class="va">input</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">summarise</span><span class="op">(</span>sdVx<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">vx</span><span class="op">)</span>,vx<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">vx</span><span class="op">)</span>,sdDist<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">dist</span><span class="op">)</span>,dist<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dist</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">vb</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>gt.trainBin<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">gt.train</span>,breaks<span class="op">=</span><span class="fl">5</span>,labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                          trial<span class="op">=</span><span class="va">gt.train</span><span class="op">)</span> </span>
@@ -446,7 +448,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="varied-abc" class="level3"><h3 class="anchored" data-anchor-id="varied-abc">Varied ABC</h3>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n_prior_samples</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n_prior_samples</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
 <span><span class="va">prior_samples</span> <span class="op">&lt;-</span> <span class="fu">generate_prior</span><span class="op">(</span><span class="va">n_prior_samples</span><span class="op">)</span></span>
 <span></span>
 <span></span>
@@ -1037,207 +1039,211 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">walk</span>(<span class="fu">here</span>(<span class="fu">c</span>(<span class="st">"Functions/alm_functions.R"</span>,<span class="st">"Functions/Display_Functions.R"</span>,<span class="st">"Functions/Noisy_Functions.R"</span>)),source)</span>
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>select <span class="ot">&lt;-</span> dplyr<span class="sc">::</span>select; mutate <span class="ot">&lt;-</span> dplyr<span class="sc">::</span>mutate </span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/dPrune-01-19-23.rds"</span>))</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/e1_08-21-23.rds"</span>))</span>
 <span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(d<span class="sc">$</span>condit)</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare the data for analysis</span></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>dtest <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> <span class="fu">filter</span>(expMode <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,lowBound) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nBand=</span><span class="fu">n</span>(),<span class="at">band=</span>bandInt,<span class="at">id=</span><span class="fu">factor</span>(id)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">nd=</span><span class="fu">n_distinct</span>(lowBound))</span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>dtest <span class="ot">&lt;-</span> dtest <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,lowBound) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(nBand<span class="sc">&gt;=</span><span class="dv">5</span> <span class="sc">&amp;</span> nd<span class="sc">==</span><span class="dv">6</span>)</span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>dtest <span class="ot">&lt;-</span> dtest <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span>id <span class="sc">%in%</span> <span class="fu">unique</span>(dtest<span class="sc">$</span>id[dtest<span class="sc">$</span>nBand<span class="sc">&lt;</span><span class="dv">5</span>]))</span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>ds <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> <span class="fu">filter</span>(expMode <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"train"</span>,<span class="st">"train-Nf"</span>,<span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(<span class="sc">!</span>id <span class="sc">%in%</span> <span class="fu">unique</span>(dtest<span class="sc">$</span>id[dtest<span class="sc">$</span>nBand<span class="sc">&lt;</span><span class="dv">5</span>])) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(id,condit,catOrder,feedbackType,expMode,trial,gt.train,vb,band,bandInt,lowBound,highBound,input,vx,dist,vxb) </span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>dst <span class="ot">&lt;-</span> ds <span class="sc">%&gt;%</span> <span class="fu">filter</span>(expMode<span class="sc">==</span><span class="st">"train"</span>)</span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>dst <span class="ot">&lt;-</span> dst <span class="sc">%&gt;%</span></span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, vb) <span class="sc">%&gt;%</span></span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trial_band =</span> <span class="fu">row_number</span>())</span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>dst <span class="ot">&lt;-</span> dst <span class="sc">%&gt;%</span> <span class="fu">filter</span>(expMode<span class="sc">==</span><span class="st">"train"</span>,catOrder<span class="sc">==</span><span class="st">"orig"</span>)</span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>vst <span class="ot">&lt;-</span> dst <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit<span class="sc">==</span><span class="st">"Varied"</span>,gt.train<span class="sc">&lt;=</span><span class="dv">84</span>) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(gt.train,vb,input) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">sdVx=</span><span class="fu">sd</span>(vx),<span class="at">vx=</span><span class="fu">mean</span>(vx),<span class="at">sdDist=</span><span class="fu">sd</span>(dist),<span class="at">dist=</span><span class="fu">mean</span>(dist)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(vb) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">gt.trainBin=</span><span class="fu">cut</span>(gt.train,<span class="at">breaks=</span><span class="dv">5</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)),</span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>                          <span class="at">trial=</span>gt.train) </span>
-<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>cst <span class="ot">&lt;-</span> dst <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit<span class="sc">==</span><span class="st">"Constant"</span>,gt.train<span class="sc">&lt;=</span><span class="dv">84</span>) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(gt.train,vb,input) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">sdVx=</span><span class="fu">sd</span>(vx),<span class="at">vx=</span><span class="fu">mean</span>(vx),<span class="at">sdDist=</span><span class="fu">sd</span>(dist),<span class="at">dist=</span><span class="fu">mean</span>(dist)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(vb) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">gt.trainBin=</span><span class="fu">cut</span>(gt.train,<span class="at">breaks=</span><span class="dv">5</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)),</span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>                          <span class="at">trial=</span>gt.train) </span>
-<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dst <span class="sc">%&gt;%</span> <span class="fu">filter</span>(gt.train<span class="sc">&lt;=</span><span class="dv">84</span>), <span class="fu">aes</span>(<span class="at">x =</span> gt.train, <span class="at">y =</span> vx,<span class="at">color=</span>vb)) <span class="sc">+</span></span>
-<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> vb), <span class="at">stat =</span> <span class="st">"summary"</span>, <span class="at">fun =</span> mean) <span class="sc">+</span> </span>
-<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="fu">aes</span>(<span class="at">color =</span> vb), <span class="at">geom =</span> <span class="st">"line"</span>, <span class="at">fun =</span> mean) <span class="sc">+</span></span>
-<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"errorbar"</span>,<span class="at">fun.data=</span>mean_se,<span class="at">width=</span>.<span class="dv">4</span>,<span class="at">alpha=</span>.<span class="dv">7</span>)<span class="sc">+</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>condit)</span>
-<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(vst, aes(x = gt.trainBin, y = vx,color=vb)) +</span></span>
-<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_point(aes(color = vb), stat = "summary", fun = mean) + </span></span>
-<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># stat_summary(aes(color = vb), geom = "line", fun = mean) +</span></span>
-<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>  <span class="co"># stat_summary(geom="errorbar",fun.data=mean_se,width=.4,alpha=.7)+facet_wrap(~condit)</span></span>
-<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## ABC Functions</span></span>
-<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a><span class="co"># c=1; lr=.5; noise_sd=.001; inNodes=7; outNodes=32</span></span>
-<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>fit_alm_sim <span class="ot">&lt;-</span> <span class="cf">function</span>(data, c, lr, noise_sd, inNodes, outNodes) {</span>
-<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>  train_data <span class="ot">&lt;-</span> data[, <span class="fu">c</span>(<span class="st">"gt.train"</span>, <span class="st">"vb"</span>, <span class="st">"vx"</span>,<span class="st">"input"</span>)] <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="st">"trial"</span> <span class="ot">=</span> gt.train)</span>
-<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>  sim_result <span class="ot">&lt;-</span> <span class="fu">sim_train</span>(</span>
-<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">dat =</span> train_data,</span>
-<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>    <span class="at">c =</span> c,</span>
-<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>    <span class="at">lr =</span> lr,</span>
-<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>    <span class="at">inNodes =</span> inNodes,</span>
-<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">outNodes =</span> outNodes,</span>
-<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">noise_sd =</span> noise_sd</span>
-<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>  train_data<span class="sc">$</span>almTrain <span class="ot">&lt;-</span> sim_result<span class="sc">$</span>almTrain</span>
-<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(train_data<span class="sc">$</span>almTrain)</span>
-<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>generate_prior <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
-<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>  prior_samples <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>    <span class="at">c =</span> <span class="fu">runif</span>(n, <span class="fl">0.001</span>, <span class="dv">5</span>),</span>
-<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">lr =</span> <span class="fu">runif</span>(n, <span class="fl">0.001</span>, <span class="dv">3</span>),</span>
-<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>    <span class="at">noise_sd =</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="fl">0.0001</span>),</span>
-<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>    <span class="at">inNodes =</span> <span class="fu">sample</span>(<span class="fu">c</span>( <span class="dv">3</span>,<span class="dv">7</span>, <span class="dv">14</span>,<span class="dv">21</span>,<span class="dv">28</span>,<span class="dv">35</span>), <span class="at">size =</span> n, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>    <span class="at">outNodes =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">8</span>,<span class="dv">16</span>, <span class="dv">32</span>,<span class="dv">48</span>,<span class="dv">64</span>,<span class="dv">80</span>,<span class="dv">96</span>), <span class="at">size =</span> n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(prior_samples)</span>
-<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>dtest <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> <span class="fu">filter</span>(expMode <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,lowBound) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nBand=</span><span class="fu">n</span>(),<span class="at">band=</span>bandInt,<span class="at">id=</span><span class="fu">factor</span>(id)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">nd=</span><span class="fu">n_distinct</span>(lowBound))</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>dtest <span class="ot">&lt;-</span> dtest <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id,lowBound) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(nBand<span class="sc">&gt;=</span><span class="dv">5</span> <span class="sc">&amp;</span> nd<span class="sc">==</span><span class="dv">6</span>)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>dtest <span class="ot">&lt;-</span> dtest <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span>id <span class="sc">%in%</span> <span class="fu">unique</span>(dtest<span class="sc">$</span>id[dtest<span class="sc">$</span>nBand<span class="sc">&lt;</span><span class="dv">5</span>]))</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>ds <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> <span class="fu">filter</span>(expMode <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"train"</span>,<span class="st">"train-Nf"</span>,<span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>id <span class="sc">%in%</span> <span class="fu">unique</span>(dtest<span class="sc">$</span>id[dtest<span class="sc">$</span>nBand<span class="sc">&lt;</span><span class="dv">5</span>])) <span class="sc">|&gt;</span>    </span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">input=</span>bandInt) <span class="sc">|&gt;</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id,condit,bandOrder,expMode,trial,gt.train,vb,band,bandInt,lowBound,highBound,input,vx,dist,vxb) </span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>dst <span class="ot">&lt;-</span> ds <span class="sc">%&gt;%</span> <span class="fu">filter</span>(expMode<span class="sc">==</span><span class="st">"train"</span>)</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>dst <span class="ot">&lt;-</span> dst <span class="sc">%&gt;%</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, vb) <span class="sc">%&gt;%</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trial_band =</span> <span class="fu">row_number</span>())</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>dst <span class="ot">&lt;-</span> dst <span class="sc">%&gt;%</span> <span class="fu">filter</span>(expMode<span class="sc">==</span><span class="st">"train"</span>,bandOrder<span class="sc">==</span><span class="st">"Original"</span>)</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>vst <span class="ot">&lt;-</span> dst <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit<span class="sc">==</span><span class="st">"Varied"</span>,gt.train<span class="sc">&lt;=</span><span class="dv">84</span>) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(gt.train,vb,input) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">sdVx=</span><span class="fu">sd</span>(vx),<span class="at">vx=</span><span class="fu">mean</span>(vx),<span class="at">sdDist=</span><span class="fu">sd</span>(dist),<span class="at">dist=</span><span class="fu">mean</span>(dist)) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(vb) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">gt.trainBin=</span><span class="fu">cut</span>(gt.train,<span class="at">breaks=</span><span class="dv">5</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)),</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>                          <span class="at">trial=</span>gt.train) </span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>cst <span class="ot">&lt;-</span> dst <span class="sc">%&gt;%</span> <span class="fu">filter</span>(condit<span class="sc">==</span><span class="st">"Constant"</span>,gt.train<span class="sc">&lt;=</span><span class="dv">84</span>) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(gt.train,vb,input) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">sdVx=</span><span class="fu">sd</span>(vx),<span class="at">vx=</span><span class="fu">mean</span>(vx),<span class="at">sdDist=</span><span class="fu">sd</span>(dist),<span class="at">dist=</span><span class="fu">mean</span>(dist)) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(vb) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">gt.trainBin=</span><span class="fu">cut</span>(gt.train,<span class="at">breaks=</span><span class="dv">5</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)),</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>                          <span class="at">trial=</span>gt.train) </span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dst <span class="sc">%&gt;%</span> <span class="fu">filter</span>(gt.train<span class="sc">&lt;=</span><span class="dv">84</span>), <span class="fu">aes</span>(<span class="at">x =</span> gt.train, <span class="at">y =</span> vx,<span class="at">color=</span>vb)) <span class="sc">+</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> vb), <span class="at">stat =</span> <span class="st">"summary"</span>, <span class="at">fun =</span> mean) <span class="sc">+</span> </span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="fu">aes</span>(<span class="at">color =</span> vb), <span class="at">geom =</span> <span class="st">"line"</span>, <span class="at">fun =</span> mean) <span class="sc">+</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">"errorbar"</span>,<span class="at">fun.data=</span>mean_se,<span class="at">width=</span>.<span class="dv">4</span>,<span class="at">alpha=</span>.<span class="dv">7</span>)<span class="sc">+</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>condit)</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(vst, aes(x = gt.trainBin, y = vx,color=vb)) +</span></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_point(aes(color = vb), stat = "summary", fun = mean) + </span></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>  <span class="co"># stat_summary(aes(color = vb), geom = "line", fun = mean) +</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>  <span class="co"># stat_summary(geom="errorbar",fun.data=mean_se,width=.4,alpha=.7)+facet_wrap(~condit)</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## ABC Functions</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="co"># c=1; lr=.5; noise_sd=.001; inNodes=7; outNodes=32</span></span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>fit_alm_sim <span class="ot">&lt;-</span> <span class="cf">function</span>(data, c, lr, noise_sd, inNodes, outNodes) {</span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>  train_data <span class="ot">&lt;-</span> data[, <span class="fu">c</span>(<span class="st">"gt.train"</span>, <span class="st">"vb"</span>, <span class="st">"vx"</span>,<span class="st">"input"</span>)] <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="st">"trial"</span> <span class="ot">=</span> gt.train)</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>  sim_result <span class="ot">&lt;-</span> <span class="fu">sim_train</span>(</span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">dat =</span> train_data,</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">c =</span> c,</span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">lr =</span> lr,</span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">inNodes =</span> inNodes,</span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">outNodes =</span> outNodes,</span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">noise_sd =</span> noise_sd</span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>  train_data<span class="sc">$</span>almTrain <span class="ot">&lt;-</span> sim_result<span class="sc">$</span>almTrain</span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(train_data<span class="sc">$</span>almTrain)</span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>generate_prior <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>  prior_samples <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>    <span class="at">c =</span> <span class="fu">runif</span>(n, <span class="fl">0.001</span>, <span class="dv">5</span>),</span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>    <span class="at">lr =</span> <span class="fu">runif</span>(n, <span class="fl">0.001</span>, <span class="dv">3</span>),</span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>    <span class="at">noise_sd =</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="fl">0.0001</span>),</span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>    <span class="at">inNodes =</span> <span class="fu">sample</span>(<span class="fu">c</span>( <span class="dv">3</span>,<span class="dv">7</span>, <span class="dv">14</span>,<span class="dv">21</span>,<span class="dv">28</span>,<span class="dv">35</span>), <span class="at">size =</span> n, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>    <span class="at">outNodes =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">8</span>,<span class="dv">16</span>, <span class="dv">32</span>,<span class="dv">48</span>,<span class="dv">64</span>,<span class="dv">80</span>,<span class="dv">96</span>), <span class="at">size =</span> n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(prior_samples)</span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a><span class="fu">### Varied ABC</span></span>
-<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.width=12, fig.height=10}</span></span>
-<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a><span class="in">#| eval: false</span></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a><span class="in">n_prior_samples &lt;- 1000</span></span>
-<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a><span class="in">prior_samples &lt;- generate_prior(n_prior_samples)</span></span>
-<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a><span class="fu">### Varied ABC</span></span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.width=12, fig.height=10}</span></span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a><span class="in">#| eval: false</span></span>
 <span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a><span class="in"># Replace gt with dst in the following line:</span></span>
-<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a><span class="in">simulated_data &lt;- future_map_dfc(seq_len(nrow(prior_samples)), function(idx) {</span></span>
-<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a><span class="in">  params &lt;- prior_samples[idx, ]</span></span>
-<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a><span class="in">  fit_alm_sim(vst, params$c, params$lr, params$noise_sd, params$inNodes, params$outNodes)</span></span>
-<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a><span class="in">},.options = furrr_options(seed = T))</span></span>
-<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a><span class="in"># Replace gt_obs with dst_obs and gt with dst in the following lines:</span></span>
-<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a><span class="in">dst_obs &lt;- vst$vx</span></span>
-<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a><span class="in">tolerance &lt;- 0.1 * sd(dst_obs)*500</span></span>
-<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a><span class="in">abc_result &lt;- abc(</span></span>
-<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a><span class="in">  target = dst_obs,</span></span>
-<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a><span class="in">  param = prior_samples,</span></span>
-<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a><span class="in">  sumstat = do.call(rbind, simulated_data),</span></span>
-<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a><span class="in">  tol = .1,</span></span>
-<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="in">  method = "rejection",</span></span>
-<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a><span class="in">  names=colnames(dst_obs)</span></span>
-<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a><span class="in">posterior_samples &lt;- abc_result$unadj.values</span></span>
-<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(posterior_samples) &lt;- c("c", "lr", "noise_sd", "inNodes", "outNodes")</span></span>
-<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a><span class="in">posterior_samples_long &lt;- tidyr::pivot_longer(as.data.frame(posterior_samples), everything())</span></span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a><span class="in">n_prior_samples &lt;- 100</span></span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a><span class="in">prior_samples &lt;- generate_prior(n_prior_samples)</span></span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a><span class="in"># Replace gt with dst in the following line:</span></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a><span class="in">simulated_data &lt;- future_map_dfc(seq_len(nrow(prior_samples)), function(idx) {</span></span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a><span class="in">  params &lt;- prior_samples[idx, ]</span></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a><span class="in">  fit_alm_sim(vst, params$c, params$lr, params$noise_sd, params$inNodes, params$outNodes)</span></span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a><span class="in">},.options = furrr_options(seed = T))</span></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a><span class="in"># Replace gt_obs with dst_obs and gt with dst in the following lines:</span></span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a><span class="in">dst_obs &lt;- vst$vx</span></span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a><span class="in">tolerance &lt;- 0.1 * sd(dst_obs)*500</span></span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a><span class="in">abc_result &lt;- abc(</span></span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="in">  target = dst_obs,</span></span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a><span class="in">  param = prior_samples,</span></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a><span class="in">  sumstat = do.call(rbind, simulated_data),</span></span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a><span class="in">  tol = .1,</span></span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a><span class="in">  method = "rejection",</span></span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a><span class="in">  names=colnames(dst_obs)</span></span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a><span class="in">postV &lt;- ggplot(posterior_samples_long, aes(x=value)) +</span></span>
-<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_density() +</span></span>
-<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a><span class="in">  facet_wrap(~name, scales="free") +</span></span>
-<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_minimal() +</span></span>
-<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(x="Value", y="Density", title="Posterior Density Plots")</span></span>
-<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a><span class="in">summary_statistics &lt;- data.frame(mean = apply(posterior_samples, 2, mean),</span></span>
-<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a><span class="in">  median = apply(posterior_samples, 2, median))</span></span>
-<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a><span class="in">( summary_statistics=rownames_to_column(summary_statistics,var="parameter") )</span></span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a><span class="in">posterior_samples &lt;- abc_result$unadj.values</span></span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(posterior_samples) &lt;- c("c", "lr", "noise_sd", "inNodes", "outNodes")</span></span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a><span class="in">posterior_samples_long &lt;- tidyr::pivot_longer(as.data.frame(posterior_samples), everything())</span></span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a><span class="in">postV &lt;- ggplot(posterior_samples_long, aes(x=value)) +</span></span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_density() +</span></span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a><span class="in">  facet_wrap(~name, scales="free") +</span></span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_minimal() +</span></span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(x="Value", y="Density", title="Posterior Density Plots")</span></span>
 <span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a><span class="in">s = sim_train(dat=mutate(vst,trial=gt.train),c=summary_statistics$mean[1],lr=summary_statistics$mean[2],inNodes=summary_statistics$mean[4],outNodes=summary_statistics$mean[5],noise_sd=summary_statistics$mean[3])</span></span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a><span class="in">summary_statistics &lt;- data.frame(mean = apply(posterior_samples, 2, mean),</span></span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a><span class="in">  median = apply(posterior_samples, 2, median))</span></span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a><span class="in">( summary_statistics=rownames_to_column(summary_statistics,var="parameter") )</span></span>
 <span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a><span class="in">ggp &lt;- vst %&gt;% ungroup() %&gt;% mutate(pred=s$almTrain,input=as.factor(input))</span></span>
-<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a><span class="in">gvp &lt;- ggp %&gt;% ggplot(aes(x = trial, y = pred, color = input)) +</span></span>
-<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line() + ylim(c(0,1600))+ggtitle("ALM Predictions (ABC estimation)")</span></span>
-<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a><span class="in">gvo &lt;- ggp  %&gt;% ggplot(aes(x = trial, y = vx, color = input)) +</span></span>
-<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line() + ylim(c(0,1600))+ggtitle("HTW Observed Training data")</span></span>
-<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a><span class="in">ggpv &lt;- postV/(gvp + gvo)</span></span>
-<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a><span class="in">#ggsave("images/abc_varied.png",ggpv,width=12,height=10)</span></span>
-<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a><span class="in">s = sim_train(dat=mutate(vst,trial=gt.train),c=summary_statistics$mean[1],lr=summary_statistics$mean[2],inNodes=summary_statistics$mean[4],outNodes=summary_statistics$mean[5],noise_sd=summary_statistics$mean[3])</span></span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a><span class="in">ggp &lt;- vst %&gt;% ungroup() %&gt;% mutate(pred=s$almTrain,input=as.factor(input))</span></span>
+<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a><span class="in">gvp &lt;- ggp %&gt;% ggplot(aes(x = trial, y = pred, color = input)) +</span></span>
+<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line() + ylim(c(0,1600))+ggtitle("ALM Predictions (ABC estimation)")</span></span>
+<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a><span class="in">gvo &lt;- ggp  %&gt;% ggplot(aes(x = trial, y = vx, color = input)) +</span></span>
+<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line() + ylim(c(0,1600))+ggtitle("HTW Observed Training data")</span></span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a><span class="in">ggpv &lt;- postV/(gvp + gvo)</span></span>
 <span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a><span class="in">#ggsave("images/abc_varied.png",ggpv,width=12,height=10)</span></span>
 <span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"images/abc_varied.png"</span>))</span>
-<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a><span class="co">#![](images/abc_varied.png)</span></span>
-<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a><span class="fu">### Constant ABC</span></span>
-<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.width=12, fig.height=10}</span></span>
-<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a><span class="in">#| eval: false</span></span>
-<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a><span class="in"># c=1; lr=.5; noise_sd=.001; inNodes=7; outNodes=32</span></span>
-<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a><span class="in">n_prior_samples &lt;- 1000</span></span>
-<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a><span class="in">prior_samples &lt;- generate_prior(n_prior_samples)</span></span>
-<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a><span class="in"># Replace gt with dst in the following line:</span></span>
-<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a><span class="in">simulated_dataC &lt;- future_map_dfc(seq_len(nrow(prior_samples)), function(idx) {</span></span>
-<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a><span class="in">  params &lt;- prior_samples[idx, ]</span></span>
-<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a><span class="in">  fit_alm_sim(cst, params$c, params$lr, params$noise_sd, params$inNodes, params$outNodes)</span></span>
-<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a><span class="in">},.options = furrr_options(seed = T))</span></span>
-<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a><span class="in"># Replace gt_obs with dst_obs and gt with dst in the following lines:</span></span>
-<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a><span class="in">cst_obs &lt;- cst$vx</span></span>
-<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a><span class="in">tolerance &lt;- 0.1 * sd(dst_obs)*500</span></span>
-<span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a><span class="in">abc_result &lt;- abc(</span></span>
-<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a><span class="in">  target = cst_obs,</span></span>
-<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a><span class="in">  param = prior_samples,</span></span>
-<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a><span class="in">  sumstat = do.call(rbind, simulated_dataC),</span></span>
-<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a><span class="in">  tol = .1,</span></span>
-<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a><span class="in">  method = "rejection",</span></span>
-<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a><span class="in">  names=colnames(cst_obs)</span></span>
-<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a><span class="in">posterior_samples &lt;- abc_result$unadj.values</span></span>
-<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(posterior_samples) &lt;- c("c", "lr", "noise_sd", "inNodes", "outNodes")</span></span>
-<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a><span class="in">posterior_samples_long &lt;- tidyr::pivot_longer(as.data.frame(posterior_samples), everything())</span></span>
+<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"images/abc_varied.png"</span>))</span>
+<span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a><span class="co">#![](images/abc_varied.png)</span></span>
+<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a><span class="fu">### Constant ABC</span></span>
+<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.width=12, fig.height=10}</span></span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a><span class="in">#| eval: false</span></span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a><span class="in"># c=1; lr=.5; noise_sd=.001; inNodes=7; outNodes=32</span></span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a><span class="in">n_prior_samples &lt;- 1000</span></span>
+<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a><span class="in">prior_samples &lt;- generate_prior(n_prior_samples)</span></span>
+<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a><span class="in"># Replace gt with dst in the following line:</span></span>
+<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a><span class="in">simulated_dataC &lt;- future_map_dfc(seq_len(nrow(prior_samples)), function(idx) {</span></span>
+<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a><span class="in">  params &lt;- prior_samples[idx, ]</span></span>
+<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a><span class="in">  fit_alm_sim(cst, params$c, params$lr, params$noise_sd, params$inNodes, params$outNodes)</span></span>
+<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a><span class="in">},.options = furrr_options(seed = T))</span></span>
+<span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a><span class="in"># Replace gt_obs with dst_obs and gt with dst in the following lines:</span></span>
+<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a><span class="in">cst_obs &lt;- cst$vx</span></span>
+<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a><span class="in">tolerance &lt;- 0.1 * sd(dst_obs)*500</span></span>
+<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a><span class="in">abc_result &lt;- abc(</span></span>
+<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a><span class="in">  target = cst_obs,</span></span>
+<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a><span class="in">  param = prior_samples,</span></span>
+<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a><span class="in">  sumstat = do.call(rbind, simulated_dataC),</span></span>
+<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a><span class="in">  tol = .1,</span></span>
+<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a><span class="in">  method = "rejection",</span></span>
+<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a><span class="in">  names=colnames(cst_obs)</span></span>
+<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a><span class="in">postC &lt;- ggplot(posterior_samples_long, aes(x=value)) +</span></span>
-<span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_density() +</span></span>
-<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a><span class="in">  facet_wrap(~name, scales="free") +</span></span>
-<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_minimal() +</span></span>
-<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(x="Value", y="Density", title="Posterior Density Plots")</span></span>
-<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a><span class="in">summary_statisticsC &lt;- data.frame(mean = apply(posterior_samples, 2, mean),</span></span>
-<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a><span class="in">  median = apply(posterior_samples, 2, median))</span></span>
-<span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a><span class="in"> summary_statisticsC=rownames_to_column(summary_statisticsC,var="parameter") </span></span>
-<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a><span class="in">summary_statisticsC</span></span>
-<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a><span class="in">sC = sim_train(dat=mutate(cst,trial=gt.train),c=summary_statisticsC$mean[1],lr=summary_statisticsC$mean[2],inNodes=summary_statisticsC$mean[4],outNodes=summary_statisticsC$mean[5],noise_sd=summary_statisticsC$mean[3])</span></span>
-<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a><span class="in">ggpC &lt;- cst %&gt;% ungroup() %&gt;% mutate(pred=sC$almTrain,input=as.factor(input))</span></span>
-<span id="cb11-213"><a href="#cb11-213" aria-hidden="true" tabindex="-1"></a><span class="in">gcp &lt;- ggpC %&gt;% ggplot(aes(x = trial, y = pred, color = input)) +</span></span>
-<span id="cb11-214"><a href="#cb11-214" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line() + ylim(c(0,1600))+ggtitle("ALM Predictions (ABC estimation)")</span></span>
-<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a><span class="in">gco &lt;- ggpC  %&gt;% ggplot(aes(x = trial, y = vx, color = input)) +</span></span>
-<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line() + ylim(c(0,1600))+ggtitle("HTW Observed Constant Training data")</span></span>
-<span id="cb11-217"><a href="#cb11-217" aria-hidden="true" tabindex="-1"></a><span class="in">postC/(gcp + gco)</span></span>
-<span id="cb11-218"><a href="#cb11-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-219"><a href="#cb11-219" aria-hidden="true" tabindex="-1"></a><span class="in">ggsave(here("images/abc_constant.png",postC/(gcp + gco),width=12,height=10))</span></span>
-<span id="cb11-220"><a href="#cb11-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-221"><a href="#cb11-221" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a><span class="in">posterior_samples &lt;- abc_result$unadj.values</span></span>
+<span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a><span class="in">colnames(posterior_samples) &lt;- c("c", "lr", "noise_sd", "inNodes", "outNodes")</span></span>
+<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a><span class="in">posterior_samples_long &lt;- tidyr::pivot_longer(as.data.frame(posterior_samples), everything())</span></span>
+<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a><span class="in">postC &lt;- ggplot(posterior_samples_long, aes(x=value)) +</span></span>
+<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_density() +</span></span>
+<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a><span class="in">  facet_wrap(~name, scales="free") +</span></span>
+<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_minimal() +</span></span>
+<span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(x="Value", y="Density", title="Posterior Density Plots")</span></span>
+<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a><span class="in">summary_statisticsC &lt;- data.frame(mean = apply(posterior_samples, 2, mean),</span></span>
+<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a><span class="in">  median = apply(posterior_samples, 2, median))</span></span>
+<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a><span class="in"> summary_statisticsC=rownames_to_column(summary_statisticsC,var="parameter") </span></span>
+<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a><span class="in">summary_statisticsC</span></span>
+<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-213"><a href="#cb11-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-214"><a href="#cb11-214" aria-hidden="true" tabindex="-1"></a><span class="in">sC = sim_train(dat=mutate(cst,trial=gt.train),c=summary_statisticsC$mean[1],lr=summary_statisticsC$mean[2],inNodes=summary_statisticsC$mean[4],outNodes=summary_statisticsC$mean[5],noise_sd=summary_statisticsC$mean[3])</span></span>
+<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a><span class="in">ggpC &lt;- cst %&gt;% ungroup() %&gt;% mutate(pred=sC$almTrain,input=as.factor(input))</span></span>
+<span id="cb11-217"><a href="#cb11-217" aria-hidden="true" tabindex="-1"></a><span class="in">gcp &lt;- ggpC %&gt;% ggplot(aes(x = trial, y = pred, color = input)) +</span></span>
+<span id="cb11-218"><a href="#cb11-218" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line() + ylim(c(0,1600))+ggtitle("ALM Predictions (ABC estimation)")</span></span>
+<span id="cb11-219"><a href="#cb11-219" aria-hidden="true" tabindex="-1"></a><span class="in">gco &lt;- ggpC  %&gt;% ggplot(aes(x = trial, y = vx, color = input)) +</span></span>
+<span id="cb11-220"><a href="#cb11-220" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line() + ylim(c(0,1600))+ggtitle("HTW Observed Constant Training data")</span></span>
+<span id="cb11-221"><a href="#cb11-221" aria-hidden="true" tabindex="-1"></a><span class="in">postC/(gcp + gco)</span></span>
 <span id="cb11-222"><a href="#cb11-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-223"><a href="#cb11-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-224"><a href="#cb11-224" aria-hidden="true" tabindex="-1"></a><span class="in">`r knitr::include_graphics(here("images/abc_constant.png"))`</span></span>
-<span id="cb11-225"><a href="#cb11-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-223"><a href="#cb11-223" aria-hidden="true" tabindex="-1"></a><span class="in">ggsave(here("images/abc_constant.png",postC/(gcp + gco),width=12,height=10))</span></span>
+<span id="cb11-224"><a href="#cb11-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-225"><a href="#cb11-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-226"><a href="#cb11-226" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-227"><a href="#cb11-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-228"><a href="#cb11-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-228"><a href="#cb11-228" aria-hidden="true" tabindex="-1"></a><span class="in">`r knitr::include_graphics(here("images/abc_constant.png"))`</span></span>
 <span id="cb11-229"><a href="#cb11-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-230"><a href="#cb11-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-231"><a href="#cb11-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-232"><a href="#cb11-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-233"><a href="#cb11-233" aria-hidden="true" tabindex="-1"></a></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

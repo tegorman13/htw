@@ -1,4 +1,26 @@
 
+
+
+
+
+generate.data <- function(x, type = "linear", noise = NA) {
+  y =switch(type,
+         linear = round(2.2*x + 30,0),
+         exponential = round(200*(1-exp(-x/25)),0),
+         sinusoidal = sin(2 * pi * x),
+         quadratic = round(210 - ((x-50)^2)/12,0),
+         stop("type must be linear, exponential, quadratic, or sinusoidal"))
+  
+  if(!is.na(noise)) {
+    y <- y + round(rnorm(length(y), 0, noise),2)
+  }
+  data.frame(x, y, type)
+}
+
+
+
+
+
 deLosh_data <- list(
   human_data_linear = data.frame(
     x = c(0.7,2.6,4.5,6.6,8.5,11.3,12.7,14.3,
@@ -38,3 +60,69 @@ deLosh_data <- list(
           105.5))
   
 )
+
+
+
+
+envTypes <- c("linear", "exponential", "quadratic")
+
+trainingBlocks <- list(
+   low = c(30.5, 36.0, 41.0, 46.5, 53.5, 59.0, 64.0, 69.5),
+  
+  med = c(
+    30.0, 31.5, 33.0, 34.5, 36.5, 38.5, 41.0, 43.5, 46.0,
+    48.5, 51.5, 54.0, 56.5, 59.0, 61.5, 63.5, 65.5, 67.0, 68.5, 70.0
+  ),
+  high = c(
+    30.0, 30.5, 31.0, 32.0, 33.0, 33.5, 34.5, 35.5,
+    36.5, 37.0, 38.0, 38.5, 39.5, 40.5, 41.5, 42.0, 43.0,
+    43.5, 44.5, 45.5, 46.5, 47.0, 48.0, 48.5, 49.0, 51.0, 51.5, 52.0,
+    53.0, 53.5, 54.5, 55.5, 56.5, 57.0, 58.0, 58.5, 59.5, 60.5, 61.5, 
+    62.0, 63.0,63.5, 64.5, 65.5, 66.5, 67.0, 68.0, 69.0, 69.5, 70.0
+  )
+)
+
+# trainingBlocks <- list(
+#   low = c(30.5, 36.0, 41.0, 46.5, 53.5, 59.0, 64.0, 69.5),
+#   med = seq(30.0, 70.0, length.out=20),
+#   high = seq(30.0, 70.0, length.out=50)
+# )
+
+
+# 
+# lowTrain <- map_dfr(envTypes, ~ generate.data(rep(lowDensityTrainBlock,25), type = .x)) %>% group_by(type) %>% mutate(block = rep(1:25, each = 8),trial=seq(1,200))
+# medTrain <- map_dfr(envTypes, ~ generate.data(rep(medDensityTrainBlock,10), type = .x)) %>% group_by(type) %>% mutate(block = rep(1:10, each = 20),trial=seq(1,200))
+# highTrain <- map_dfr(envTypes, ~ generate.data(rep(highDensityTrainBlock,4), type = .x)) %>% group_by(type) %>% mutate(block = rep(1:4, each = 50),trial=seq(1,200))
+
+
+# short definition version
+
+# lowDensityTrainBlock <- c(30.5, 36.0, 41.0, 46.5, 53.5, 59.0, 64.0, 69.5)
+# medDensityTrainBlock <- seq(30.0, 70.0, length.out=20)
+# highDensityTrainBlock <- seq(30.0, 70.0, length.out=50)
+
+
+
+# generate.data <- function(x, type = "linear", noise = NA) {
+#   if (type == "linear") {
+#     y <- round(2.2*x + 30,0)
+#   }
+#   else if (type == "exponential") {
+#     y <- round(200*(1-exp(-x/25)),0)
+#   }
+#   else if (type == "sinusoidal") {
+#     y <- sin(2 * pi * x) 
+#   }
+#   else if (type == "quadratic") {
+#     y <- round(210 - ((x-50)^2)/12,0)
+#   }
+#   else {
+#     stop("type must be linear, exponential, quadratic, or sinusoidal")
+#   }
+#   # if noise is specified, add noise to the y values
+#   if(!is.na(noise)) {
+#     y <- y + round(rnorm(length(y), 0, noise),2)
+#   }
+#   data.frame(x, y,type)
+#   
+# }

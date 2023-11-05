@@ -414,8 +414,8 @@ Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The
 
 |Condition | Q_0%_mean| Q_25%_mean| Q_50%_mean| Q_75%_mean| Q_100%_mean|
 |:---------|---------:|----------:|----------:|----------:|-----------:|
-|Constant  |    -0.109|       0.48|      0.691|      0.930|        1.39|
-|Varied    |    -0.202|       0.27|      0.589|      0.898|        1.30|
+|Constant  |    -0.109|      0.482|      0.695|      0.931|         1.4|
+|Varied    |    -0.205|      0.270|      0.586|      0.900|         1.3|
 
 
 :::

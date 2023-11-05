@@ -18,16 +18,20 @@ pacman::p_load(tidyverse,data.table,lme4,future,furrr,abc,mvtnorm,patchwork,here
 purrr::walk(here(c("Functions/alm_functions.R","Functions/Display_Functions.R","Functions/Noisy_Functions.R")),source)
 
 select <- dplyr::select; mutate <- dplyr::mutate 
-d <- readRDS(here("data/dPrune-01-19-23.rds"))
+d <- readRDS(here("data/e1_08-21-23.rds"))
 levels(d$condit)
-# Prepare the data for analysis
+
+
 dtest <- d %>% filter(expMode %in% c("test-Nf","test-train-nf")) %>% group_by(id,lowBound) %>% 
   mutate(nBand=n(),band=bandInt,id=factor(id)) %>% group_by(id) %>% mutate(nd=n_distinct(lowBound))
 dtest <- dtest %>% group_by(id,lowBound) %>% filter(nBand>=5 & nd==6)
 dtest <- dtest %>% group_by(id) %>% filter(!id %in% unique(dtest$id[dtest$nBand<5]))
-ds <- d %>% filter(expMode %in% c("train","train-Nf","test-Nf","test-train-nf")) %>% 
-filter(!id %in% unique(dtest$id[dtest$nBand<5])) %>% 
-select(id,condit,catOrder,feedbackType,expMode,trial,gt.train,vb,band,bandInt,lowBound,highBound,input,vx,dist,vxb) 
+
+ds <- d %>% filter(expMode %in% c("train","train-Nf","test-Nf","test-train-nf")) |> 
+  filter(!id %in% unique(dtest$id[dtest$nBand<5])) |>    
+  mutate(input=bandInt) |>
+  select(id,condit,bandOrder,expMode,trial,gt.train,vb,band,bandInt,lowBound,highBound,input,vx,dist,vxb) 
+  
 dst <- ds %>% filter(expMode=="train")
 dst <- dst %>%
   group_by(id, vb) %>%
@@ -35,7 +39,7 @@ dst <- dst %>%
 ```
 
 ```{r}
-dst <- dst %>% filter(expMode=="train",catOrder=="orig")
+dst <- dst %>% filter(expMode=="train",bandOrder=="Original")
 vst <- dst %>% filter(condit=="Varied",gt.train<=84) %>% group_by(gt.train,vb,input) %>% summarise(sdVx=sd(vx),vx=mean(vx),sdDist=sd(dist),dist=mean(dist)) %>% 
   group_by(vb) %>% mutate(gt.trainBin=cut(gt.train,breaks=5,labels=c(1:5)),
                           trial=gt.train) 
@@ -94,7 +98,7 @@ generate_prior <- function(n) {
 ```{r fig.width=12, fig.height=10}
 #| eval: false
 
-n_prior_samples <- 1000
+n_prior_samples <- 100
 prior_samples <- generate_prior(n_prior_samples)
 
 
