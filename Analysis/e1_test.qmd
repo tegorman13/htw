@@ -42,6 +42,7 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 ```
 
 ```{r}
+#| eval: false
 datasummary(vx*vb ~ Mean + SD + Histogram, data = testAvg)
 
 datasummary(vx*vb*condit ~ Mean + SD + Histogram, data = testAvg)
@@ -150,8 +151,8 @@ test %>% group_by(id,vb,condit) |> plot_distByCondit()
 #| echo: fenced
 
 result <- test_summary_table(test, "vx","X Velocity", mfun = list(mean = mean, median = median, sd = sd))
-result$constant 
-result$varied 
+result$constant |> kable()
+result$varied |> kable()
 
 ```
 
