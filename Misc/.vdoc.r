@@ -1,8 +1,8 @@
----
-title: Organization
----
-
-```{r}
+#
+#
+#
+#
+#
 
 pacman::p_load(tidyverse,here,knitr,kableExtra,reactable)
 select <- dplyr::select; mutate <- dplyr::mutate 
@@ -46,9 +46,9 @@ d <- d |> select(-goodThrow, -trainVec, -fullCond)
 
 
 
-```
-
-```{r}
+#
+#
+#
 #| eval: false
 e1 <- d |> filter(fb=="Continuous" & bandOrder=="Original") |> mutate(id=factor(id,levels=unique(id)))
 e2 <- d |> filter(fb=="Continuous" & bandOrder=="Reverse") |> mutate(id=factor(id,levels=unique(id)))
@@ -67,16 +67,16 @@ date.append="08-21-23"
 # e2 %>% write_csv(here(paste0("data/e2_",date.append,".csv")))
 # e3 %>% write_csv(here(paste0("data/e3_",date.append,".csv")))
 
-```
-
-
-head(d)
-colnames(d)
-d %>% select_if(is.factor) %>% colnames()
-
-
-## Prep simpler data frames for model fitting
-```{r}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 
 
@@ -95,39 +95,39 @@ ds <- d %>% filter(expMode2 %in% c("Train","Test")) |>
 
 #saveRDS(ds,here::here("data/e1_md_11-06-23.rds"))
 
-```
-
-
-
-
-
-
-```{r}
+#
+#
+#
+#
+#
+#
+#
+#
 
 d %>% select_if(is.factor) %>% select(-sbjCode,-id) %>% map(levels)
 d %>% select_if(is.factor) %>% select(-sbjCode,-id) %>% droplevels %>% map(levels)
 
-```
-
-
-```{r}
+#
+#
+#
+#
 d %>% select_if(is.numeric) |> colnames()
-```
-
-
-
-```{r}
+#
+#
+#
+#
+#
 d %>%
   distinct(id, condit, fb, bandOrder, tOrder) %>%
   group_by(condit, fb, bandOrder, tOrder) %>%
   summarise(n = n()) %>%
   kable()
-```
-
-
-
-
-```{r}
+#
+#
+#
+#
+#
+#
 
 # Average trials per subject by condition  
 d %>%
@@ -146,10 +146,10 @@ d %>%
   summarise(across(starts_with("n_"), ~mean(., na.rm = TRUE))) %>%
   kable()
 
-```
-
-
-```{r}
+#
+#
+#
+#
 #| column: page-right
 #| 
 # Define column defs function 
@@ -179,14 +179,17 @@ d %>%
   reactable(columns = col_defs(.), 
             highlight = TRUE,
             defaultPageSize = 25)
-```
-
-
-
-
-```{r}
+#
+#
+#
+#
+#
+#
 d %>% filter(nGoodTrial==1,nTotal>100) %>% ggplot(aes(nTotal)) + geom_histogram() + facet_wrap(~condit)
 d %>% filter(nGoodTrial==1,nTotal>100) %>% ggplot(aes(nTestNf)) + geom_histogram() + facet_wrap(~condit)
 d %>% filter(nGoodTrial==1,nTotal>100) %>% ggplot(aes(nTrain)) + geom_histogram() + facet_wrap(~condit)
 
-```
+#
+#
+#
+#

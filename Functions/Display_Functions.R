@@ -120,18 +120,35 @@ learn_curve_bins<- function(df, x_var, y_var,gw,groupVec, nbins, labels = FALSE,
 }
 
 
-learn_curve_plot <- function(df, x_var, y_var, color_var, facet_var = NULL, groupVec, nbins, labels = FALSE) {
+# learn_curve_plot <- function(df, x_var, y_var, color_var, facet_var = NULL, groupVec, nbins, labels = FALSE) {
+#   df |> 
+#     group_by(pick({{ groupVec }})) |> 
+#     mutate(Trial_Bin = cut( {{x_var}} , breaks = seq(1,nbins+1), include.lowest = TRUE, labels = labels)) |>
+#     ggplot(aes(x = Trial_Bin, y = {{ y_var }}, col = {{ color_var }})) +
+#     stat_summary(aes(color = {{ color_var }}), geom = "line", fun = mean) +
+#     stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
+#     facet_wrap(vars({{facet_var}})) + 
+#     scale_x_continuous(breaks=seq(1,nbins+1))
+# }
+
+
+learn_curve_plot <- function(df, x_var, y_var, color_var, facet_var = NULL, groupVec, nbins, labels = FALSE, y_label=NULL) {
+  
+  if (is.null(y_label)) {
+    y_label <- deparse(substitute(y_var))
+  }
   df |> 
-    group_by(pick({{ groupVec }})) |> 
-    mutate(Trial_Bin = cut( {{x_var}} , breaks = seq(1,nbins+1), include.lowest = TRUE, labels = labels)) |>
-    ggplot(aes(x = Trial_Bin, y = {{ y_var }}, col = {{ color_var }})) +
+    group_by({{ groupVec }}) |> 
+    mutate(Trial_Bin = cut( {{x_var}}, breaks = seq(1, nbins + 1), include.lowest = TRUE, labels = labels)) |> 
+    ggplot(aes(x = Trial_Bin, y = {{ y_var }}, color = {{ color_var }})) +
     stat_summary(aes(color = {{ color_var }}), geom = "line", fun = mean) +
     stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
-    facet_wrap(vars({{facet_var}})) + 
-    scale_x_continuous(breaks=seq(1,nbins+1))
+    facet_wrap(vars({{facet_var}}), scales = 'free_y') + 
+    labs(y = y_label) + # Set the y axis label dynamically
+    scale_x_continuous(breaks = seq(1, nbins + 1)) 
 }
 
-learn_curve_plot2 <- function(df, x_var, y_var, color_var, facet_var = NULL, groupVec, labels = FALSE) {
+learn_curve_plot2 <- function(df, x_var, y_var, color_var, facet_var = NULL, groupVec=NULL, labels = FALSE) {
   nbins= df |> ungroup() |> select({{x_var}}) %>% max()
   df |> 
     ggplot(aes(x = {{ x_var }}, y = {{ y_var }}, col = {{ color_var }})) +

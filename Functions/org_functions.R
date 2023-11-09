@@ -8,15 +8,12 @@
 #         knitr.kable.NA = "")
 
 
-
 get_coef_details <- function(model, term_name) {
   broom.mixed::tidy(model) |>
     filter(term == term_name) |> 
     select(estimate, conf.low, conf.high) |> 
     mutate(across(where(is.numeric), \(x) round(x, 2)))
 }
-
-
 
 condEffects <- function(m){
   m |> ggplot(aes(x = bandInt, y = .value, color = condit, fill = condit)) + 
@@ -44,8 +41,6 @@ custom_scale <- function(x) {
   }
 }
 
-
-
 # ks2 = model_parameters(e1_testDistRF2_0,effects="random",keep="^r_id*") 
 # ks2 <- ks2 %>%
 #   mutate(
@@ -65,13 +60,6 @@ ks2 <- ks2 |>
   left_join(select(model$data,id,condit) |> distinct(),by=join_by("id"),keep=FALSE) |>
   select(-Group) |> relocate(id,condit,vb)
 }
-
-
-
-
-
-
-
 
 
 
