@@ -36,7 +36,12 @@ wrap_grid <- function(dat, c_values, lr_values, input.layer, output.layer,
     })
   })# stop timer
   
-  if(sum(results$Value == min(results$Value)) > 1) warning("The minimum value in the grid occurs more than once.")
+  min_value <- min(results$Value, na.rm = TRUE)
+  
+  # Check if the minimum value occurs more than once
+  if(sum(results$Value == min_value, na.rm = TRUE) > 1 && !is.nan(min_value)) {
+    warning("The minimum value in the grid occurs more than once.")
+  }
   
   # Extract the best fit parameters
   bestFit <- results[which.min(results$Value), ] |>  mutate(across(where(is.numeric), \(x) round(x, 5)))

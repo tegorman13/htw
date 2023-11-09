@@ -18,9 +18,9 @@ h_testOnly=list(pred_dat="test_avg",pred_fun="predict_alm_exam_weighted_hybrid",
 h_trainOnly=list(pred_dat="test_avg",pred_fun="predict_alm_exam_weighted_hybrid",loss_fun="RMSE",loss_data="train_error")
 h_testTrain=list(pred_dat="test_avg",pred_fun="predict_alm_exam_weighted_hybrid",loss_fun="RMSE",loss_data="test_error+train_error")
 
-c_values <- seq(0.000001, 1.0, length.out=20)
-lr_values <- seq(0.00001, 4.0, length.out=20)
-weight_values <- seq(0,1,length.out=10)
+c_values <- seq(0.000001, 1.0, length.out=120)
+lr_values <- seq(0.000001, 4.0, length.out=120)
+weight_values <- seq(0,1,length.out=15)
 
 
 hybrid_te_v <- wrap_grid_hybrid(vAvg, c_values, lr_values,weight_values, input.layer, output.layer,predParams=h_testOnly)
@@ -67,12 +67,7 @@ wrap_grid_hybrid <- function(dat, c_values, lr_values,weight_values, input.layer
       train_error <- loss_fun(train_results$d$x, train_results$d$almResp)
 
       test_prediction <- map_dbl(pred_dat$x, ~ pred_fun(.x, c, w, input.layer, output.layer, weight.mat,  trainVec=trainVec))
-        if (any(is.nan(test_prediction))) {
-        error <- Inf  # Set error to Inf or a high number to indicate issue
-      } else {
-        test_error <- eval(parse(text=predParams$loss_data))
-      }
-      
+  
       
       test_error <- loss_fun(test_prediction, pred_dat$y)
       
@@ -82,10 +77,16 @@ wrap_grid_hybrid <- function(dat, c_values, lr_values,weight_values, input.layer
     })
   })# stop timer
   
-  if(sum(results$Value == min(results$Value)) > 1) warning("The minimum value in the grid occurs more than once.")
-  
+    min_value <- min(results$Value, na.rm = TRUE)
+
+    # Check if the minimum value occurs more than once
+    if(sum(results$Value == min_value, na.rm = TRUE) > 1 && !is.nan(min_value)) {
+      warning("The minimum value in the grid occurs more than once.")
+    }
+
+
   # Extract the best fit parameters
-  bestFit <- results[which.min(results$Value), ] |>  mutate(across(where(is.numeric), \(x) round(x, 5)))
+  bestFit <- results[which.min(results$Value), ] |>  mutate(across(where(is.numeric), \(x) round(x, 8)))
   
   bf_train_result <- alm.sim(train_data, bestFit$c, bestFit$lr, input.layer, output.layer)
   weight.mat <- bf_train_result$wm

@@ -536,23 +536,31 @@ big_text <- function() {
 # options(ggplot2.continuous.colour="viridis")
 # options(ggplot2.continuous.fill = "viridis")
 
+#ggokabeito::palette_okabe_ito()
+
+col_themes <- tibble::lst(darjeeling = c(wes_palette("Darjeeling1"),wes_palette("Darjeeling2")), 
+                          wes2 = wes_palette("AsteroidCity1"), 
+                          okabeito = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#000000"))
+
+# okabeito <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#000000")
+# wes2 <- wes_palette("AsteroidCity1")
 
 
 #### COLOR THEME ##### 
-darjeeling <- c(wes_palette("Darjeeling1"),wes_palette("Darjeeling2"))
+# darjeeling <- c(wes_palette("Darjeeling1"),wes_palette("Darjeeling2"))
 #cat(darjeeling)
 
 
 scale_colour_discrete <- function(...) {
-  scale_colour_manual(..., values = darjeeling)
+  scale_colour_manual(..., values = col_themes$darjeeling)
 }
 
 scale_fill_discrete <- function(...) {
-  scale_fill_manual(..., values = darjeeling)
+  scale_fill_manual(..., values = col_themes$darjeeling)
 }
 
-options(ggplot2.continuous.colour=darjeeling)
-options(ggplot2.continuous.fill = darjeeling)
+options(ggplot2.continuous.colour=col_themes$darjeeling)
+options(ggplot2.continuous.fill = col_themes$darjeeling)
 
 theme_clean <- function() {
   theme_minimal() +
