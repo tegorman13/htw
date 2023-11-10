@@ -19,6 +19,7 @@ source(here::here("Functions","deLosh_data.R"))
 #https://nrennie.rbind.io/blog/2022-06-06-creating-flowcharts-with-ggplot2/
 inNodes <- seq(1,6,1) %>% as.integer()
 outNodes <- seq(300,1000,50)%>% as.integer()
+
 stim <- "Stim"
 resp <- "Response"
 inFlow <- tibble(expand.grid(from=stim,to=inNodes)) %>% mutate_all(as.character)

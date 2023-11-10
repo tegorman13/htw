@@ -49,22 +49,3 @@ HuberLoss <- function(x, y, delta = 1) {
 }
 
 
-
-# 
-
-
-n_iter=500
-n_nodes <- c(c(1,3,6,9),seq(10,300,10))
-train <- tibble(input=as.matrix(seq(0,100,1)),output=as.matrix(round(2.2*input + 30,0)))
-
-fits <- map(n_nodes,~rbf(train$input,train$output,size=.x,maxit=n_iter))
-
-
-
-fitGrid <- crossing(n_nodes,train) %>%
-  cbind(.,fit=unlist(map(fits,fitted)))
-
-# %T>%
-#   {print(ggplot(train,aes(x=input,y=output))+geom_line()+
-#            geom_line(aes(x=input,y=fit),col="green") + facet_wrap(~n_nodes,scales="free")) } %>%
-#   {. ->> d}

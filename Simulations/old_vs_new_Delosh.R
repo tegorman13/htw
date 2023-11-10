@@ -259,3 +259,77 @@ list(test=simTestAll,train=list(low=lowSim,med=medSim,high=highSim))
 # expr      min       lq     mean   median       uq      max neval cld
 # new_version_simulation() 1.163419 1.168211 1.237266 1.197497 1.313758 1.401563    10  a 
 # old_version_simulation() 1.311915 1.328216 1.440362 1.478216 1.525288 1.566956    10   b
+
+
+
+
+
+pacman::p_load(tidyverse,ggplot2,igraph,ggraph) 
+# inNodes <- c("$\\exp(c\\cdot(100-Stim)^2)$", "$\\exp(c\\cdot(350-Stim)^2)$", 
+# "$\\exp(c\\cdot(600-Stim)^2)$", "$\\exp(c\\cdot(800-Stim)^2)$", 
+# "$\\exp(c\\cdot(1000-Stim)^2)$", "$\\exp(c\\cdot(1200-Stim)^2$)")
+inNodes <- c("exp(c * (100 - Stim)^2)", "exp(c * (350 - Stim)^2)", 
+             "exp(c * (600 - Stim)^2)", "exp(c * (800 - Stim)^2)", 
+             "exp(c * (1000 - Stim)^2)", "exp(c * (1200 - Stim)^2)")
+
+
+outNodes <- c(100,350,600,800,1000,1200) %>% as.integer()
+stim <- "Stim"
+resp <- "Response"
+inFlow <- tibble(expand.grid(from=stim,to=inNodes)) %>% mutate_all(as.character)
+outFlow <- tibble(expand.grid(from=outNodes,to=resp)) %>% mutate_all(as.character)
+
+gd <- tibble(expand.grid(from=inNodes,to=outNodes)) %>% mutate_all(as.character) %>%
+  rbind(inFlow,.) %>% rbind(.,outFlow)
+
+g = graph_from_data_frame(gd,directed=TRUE)
+coords2=layout_as_tree(g)
+colnames(coords2)=c("y","x")
+
+
+odf <- as_tibble(coords2) %>% 
+  mutate(label=vertex_attr(g,"name"),
+         type=c("stim",rep("Input",length(inNodes)),rep("Output",length(outNodes)),"Resp"),
+         x=x*-1) %>%
+  mutate(y=ifelse(type=="Resp",0,y),
+         # Adjust the width of input nodes
+         xmin=ifelse(type=="Input", x-0.3, x-0.08),
+         xmax=ifelse(type=="Input", x+0.3, x+0.08),
+         ymin=y-.30, ymax=y+.30)
+
+input_y <- odf %>% filter(type == "Input") %>% pull(y)
+output_y <- odf %>% filter(type == "Output") %>% pull(y)
+avg_input_y <- mean(input_y)
+avg_output_y <- mean(output_y)
+y_adjustment <- avg_input_y - avg_output_y
+odf <- odf %>%
+  mutate(y = ifelse(type == "Output", y + y_adjustment, y), 
+         ymax = ifelse(type == "Output", ymax + y_adjustment, ymax),
+         ymin = ifelse(type == "Output", ymin + y_adjustment, ymin))
+
+
+plot_edges = gd %>% mutate(id=row_number()) %>%
+  pivot_longer(cols=c("from","to"),names_to="s_e",values_to=("label")) %>%
+  mutate(label=as.character(label)) %>% 
+  group_by(id) %>%
+  mutate(weight=sqrt(rnorm(1,mean=0,sd=10)^2)/10) %>%
+  left_join(odf,by="label") %>%
+  mutate(xmin=xmin+.02,xmax=xmax-.02)
+
+
+lab <- inNodes
+names(lab) <- inNodes
+lab <- lapply(lab, function(x) paste0("bold(", x, ")")) # Bold the entire expression
+lab <- sapply(lab, as.character)
+
+ggplot() + 
+  geom_rect(data = odf, 
+            aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = type), alpha = 0.4) +
+  annotate("text", x = odf$x[odf$type == "Input"], y = odf$y[odf$type == "Input"], 
+           label = lab, parse = TRUE, size = 3) +
+  geom_text(data = odf %>% filter(type != "Input"), 
+            aes(x = x, y = y, label = label), size = 3, fontface="bold") +
+  geom_path(data = plot_edges, aes(x = x, y = y, group = id, alpha = weight)) +
+  theme_void() +
+  theme(legend.position = "none")
+

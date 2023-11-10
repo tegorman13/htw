@@ -23,7 +23,8 @@ c_values <- seq(0.000001, 1.0, length.out=150)
 lr_values <- seq(0.0000001, 4.0, length.out=200)
 
 
-
+# default.layer <- c(100,350,600,800,1000,1200)
+# output.layer <- adjust_layer(default.layer,k=3)
 
 
 a_testOnly=list(pred_dat="test_avg",pred_fun="alm.responseOnly",loss_fun="RMSE",loss_data="test_error")
