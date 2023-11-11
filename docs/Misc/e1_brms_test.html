@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.415">
+<meta name="generator" content="quarto-1.4.480">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="dcterms.date" content="2023-09-03">
 <title>HTW Project - E1 Testing - Bayesian Mixed Models</title>
@@ -100,13 +100,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
       HTW Project
       </li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">HTW Project</a> 
         <div class="sidebar-tools-main">
@@ -249,8 +249,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ALM &amp; EXAM Fitting</span></a>
+  <a href="../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW EXAM Fits and Transfer Predictions</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -329,7 +329,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
@@ -374,7 +374,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">tidybayes</span>,<span class="va">brms</span>,<span class="va">bayesplot</span>,<span class="va">bayestestR</span>,</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">tidybayes</span>,<span class="va">brms</span>,<span class="va">bayesplot</span>,<span class="va">bayestestR</span>,</span>
 <span>               <span class="va">broom.mixed</span>,<span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span>,<span class="va">gt</span><span class="op">)</span></span>
 <span><span class="fu">walk</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"Functions/Display_Functions.R"</span><span class="op">)</span>, <span class="fu">here</span><span class="op">(</span><span class="st">"Functions/org_functions.R"</span><span class="op">)</span><span class="op">)</span>, <span class="va">source</span><span class="op">)</span></span>
 <span></span>
@@ -387,7 +387,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="random-effects---interaction-condit-x-vb" class="level2"><h2 class="anchored" data-anchor-id="random-effects---interaction-condit-x-vb">Random Effects - Interaction condit x vb</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDistBT_RF"</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDistBT_RF"</span></span>
 <span><span class="va">e1_testDistBT_RF</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="op">(</span><span class="va">condit</span> <span class="op">*</span> <span class="va">vb</span><span class="op">)</span> <span class="op">+</span> <span class="va">bandType</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">vb</span> <span class="op">+</span><span class="va">bandType</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
 <span>                      data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>,<span class="va">modelName</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                      iter<span class="op">=</span><span class="fl">2000</span>,chains<span class="op">=</span><span class="fl">4</span>,silent<span class="op">=</span><span class="fl">0</span>,</span>
@@ -396,7 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="random-effects---interaction-condit-x-vb-1" class="level2"><h2 class="anchored" data-anchor-id="random-effects---interaction-condit-x-vb-1">Random Effects - Interaction condit x vb</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDistRF2"</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDistRF2"</span></span>
 <span><span class="va">e1_testDistRF2</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">vb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">vb</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
 <span>                      data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>,<span class="va">modelName</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                      iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span>
@@ -420,7 +420,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="intercept-random-effects---interaction-condit-x-vb" class="level2"><h2 class="anchored" data-anchor-id="intercept-random-effects---interaction-condit-x-vb">0 intercept; Random Effects - Interaction condit x vb</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDistRF2_0"</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDistRF2_0"</span></span>
 <span><span class="va">e1_testDistRF2_0</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="op">(</span><span class="va">condit</span> <span class="op">*</span> <span class="va">vb</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">0</span> <span class="op">+</span> <span class="va">vb</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
 <span>                        data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>,<span class="va">modelName</span><span class="op">)</span><span class="op">)</span>, </span>
 <span>                        iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span>
@@ -462,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 </section><section id="random-effects" class="level2"><h2 class="anchored" data-anchor-id="random-effects">Random Effects</h2>
-<details><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDistRF"</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDistRF"</span></span>
 <span><span class="va">e1_testDistRF</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">+</span> <span class="va">vb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">vb</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
 <span>                     data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>,<span class="va">modelName</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -502,7 +502,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">draws1</span> <span class="op">&lt;-</span> <span class="va">e1_testDistRF</span> <span class="op">|&gt;</span> <span class="fu">spread_draws</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details></section><section id="interaction---grouped-random-effects" class="level2"><h2 class="anchored" data-anchor-id="interaction---grouped-random-effects">Interaction - Grouped Random Effects</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testConditVb_Dist_Gr"</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testConditVb_Dist_Gr"</span></span>
 <span><span class="va">e1_testConditVb_Dist_Gr</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">vb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">vb</span><span class="op">|</span><span class="fu">gr</span><span class="op">(</span><span class="va">id</span>,by<span class="op">=</span><span class="va">condit</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                      data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>,<span class="va">modelName</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                      iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span>
@@ -565,7 +565,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="intercept-random-effects---interaction-condit-x-vb-1" class="level2"><h2 class="anchored" data-anchor-id="intercept-random-effects---interaction-condit-x-vb-1">0 intercept; Random Effects - Interaction condit x vb</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDistRF2_02"</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDistRF2_02"</span></span>
 <span><span class="va">e1_testDistRF2_02</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">condit</span><span class="op">:</span><span class="va">vb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">0</span> <span class="op">+</span> <span class="va">vb</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>,<span class="va">modelName</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">brms_eq_tidy</span> <span class="op">&lt;-</span><span class="fu">tidyMCMC</span><span class="op">(</span><span class="va">e1_testDistRF2_02</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>           estimate.method <span class="op">=</span> <span class="st">"median"</span>, conf.method <span class="op">=</span> <span class="st">"HPDinterval"</span><span class="op">)</span></span>
@@ -585,7 +585,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_test_Dist_Int"</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_test_Dist_Int"</span></span>
 <span><span class="va">e1_testDist_Int</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">Intercept</span> <span class="op">+</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="va">condit</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, </span>
 <span>                       data<span class="op">=</span><span class="va">test</span>,</span>
 <span>                       iter<span class="op">=</span><span class="fl">1000</span>, chains<span class="op">=</span><span class="fl">4</span>, silent<span class="op">=</span><span class="fl">0</span>,</span>
@@ -600,7 +600,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1Test_conditBand_RS1"</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1Test_conditBand_RS1"</span></span>
 <span><span class="va">e1Test_conditBand_RS1</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="va">condit</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span> <span class="va">bandInt</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, </span>
 <span>                       data<span class="op">=</span><span class="va">test</span>,</span>
 <span>                       iter<span class="op">=</span><span class="fl">1000</span>, chains<span class="op">=</span><span class="fl">4</span>, silent<span class="op">=</span><span class="fl">0</span>,</span>
@@ -625,7 +625,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1Test_conditVb_RS1"</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1Test_conditVb_RS1"</span></span>
 <span><span class="va">e1Test_conditVb_RS1</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">vb</span> <span class="op">+</span> <span class="va">condit</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span> <span class="va">vb</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, </span>
 <span>                       data<span class="op">=</span><span class="va">test</span>,</span>
 <span>                       iter<span class="op">=</span><span class="fl">1000</span>, chains<span class="op">=</span><span class="fl">4</span>, silent<span class="op">=</span><span class="fl">0</span>,</span>
@@ -641,7 +641,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="fixed-effects-only" class="level2"><h2 class="anchored" data-anchor-id="fixed-effects-only">Fixed Effects Only</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDist"</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testDist"</span></span>
 <span><span class="va">e1_testDist</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span>,data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>,<span class="va">modelName</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">brms_eq_tidy</span> <span class="op">&lt;-</span><span class="fu">tidyMCMC</span><span class="op">(</span><span class="va">e1_testDist</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>           estimate.method <span class="op">=</span> <span class="st">"median"</span>, conf.method <span class="op">=</span> <span class="st">"HPDinterval"</span><span class="op">)</span></span>
@@ -683,7 +683,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="vx" class="level2"><h2 class="anchored" data-anchor-id="vx">Vx</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testVxRF"</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"e1_testVxRF"</span></span>
 <span><span class="va">e1_testDistRF</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">+</span> <span class="va">bandInt</span><span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">vb</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
 <span>                     data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>,<span class="va">modelName</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -724,7 +724,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bform1</span> <span class="op">&lt;-</span> <span class="fu">bf</span><span class="op">(</span><span class="fu">mvbind</span><span class="op">(</span><span class="va">vx</span>, <span class="va">dist</span><span class="op">)</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">vb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">p</span><span class="op">|</span><span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">set_rescor</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bform1</span> <span class="op">&lt;-</span> <span class="fu">bf</span><span class="op">(</span><span class="fu">mvbind</span><span class="op">(</span><span class="va">vx</span>, <span class="va">dist</span><span class="op">)</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">vb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">p</span><span class="op">|</span><span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">set_rescor</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">mv1</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">bform1</span>, data <span class="op">=</span> <span class="va">test</span>, chains <span class="op">=</span> <span class="fl">2</span>, cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">conditional_effects</span><span class="op">(</span><span class="va">mv1</span><span class="op">)</span></span>
@@ -769,7 +769,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">conditRF</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">vb</span> <span class="op">+</span> <span class="va">condit</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">vb</span><span class="op">|</span><span class="va">condit</span><span class="op">)</span>,data<span class="op">=</span><span class="va">test</span>,iter<span class="op">=</span><span class="fl">1000</span>,chains<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">conditRF</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">vb</span> <span class="op">+</span> <span class="va">condit</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">vb</span><span class="op">|</span><span class="va">condit</span><span class="op">)</span>,data<span class="op">=</span><span class="va">test</span>,iter<span class="op">=</span><span class="fl">1000</span>,chains<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">conditRFX</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">vb</span> <span class="op">*</span> <span class="va">condit</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">vb</span><span class="op">|</span><span class="va">condit</span><span class="op">)</span>,data<span class="op">=</span><span class="va">test</span>,iter<span class="op">=</span><span class="fl">1000</span>,chains<span class="op">=</span><span class="fl">2</span>,silent<span class="op">=</span><span class="fl">0</span>,</span>
 <span>                 file<span class="op">=</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/model_cache/e1_conditRFX"</span><span class="op">)</span><span class="op">)</span></span>
@@ -783,7 +783,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vx_mm4</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">vb</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, data<span class="op">=</span><span class="va">test</span>,chains<span class="op">=</span><span class="fl">2</span>,silent<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vx_mm4</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">vb</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, data<span class="op">=</span><span class="va">test</span>,chains<span class="op">=</span><span class="fl">2</span>,silent<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">mcmc_areas</span><span class="op">(</span><span class="va">vx_mm4</span>,prob<span class="op">=</span><span class="fl">.5</span>,regex_pars<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"^r_id\\[1,.*\\]"</span><span class="op">)</span>,regex<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
 <span></span>

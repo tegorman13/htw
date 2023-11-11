@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.415">
+<meta name="generator" content="quarto-1.4.480">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="dcterms.date" content="2023-07-30">
 <title>HTW Project - Mermaid with R + consort</title>
@@ -103,13 +103,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
       HTW Project
       </li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">HTW Project</a> 
         <div class="sidebar-tools-main">
@@ -252,8 +252,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ALM &amp; EXAM Fitting</span></a>
+  <a href="../../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW EXAM Fits and Transfer Predictions</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -332,7 +332,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
@@ -369,7 +369,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#lapply(c('tidyverse','data.table','igraph','ggraph','kableExtra'),library,character.only=TRUE))</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#lapply(c('tidyverse','data.table','igraph','ggraph','kableExtra'),library,character.only=TRUE))</span></span>
 <span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">data.table</span>,<span class="va">igraph</span>,<span class="va">ggraph</span>,<span class="va">kableExtra</span>,<span class="va">DiagrammeR</span>,<span class="va">png</span>,<span class="va">consort</span>,<span class="va">data.table</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -972,7 +972,7 @@ Figure&nbsp;2: This is a simple graphviz graph.
 </div>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">grViz</span><span class="op">(</span><span class="st">'digraph threevar {</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">grViz</span><span class="op">(</span><span class="st">'digraph threevar {</span></span>
 <span><span class="st">      rankdir=LR;</span></span>
 <span><span class="st">      size="8,4";</span></span>
 <span><span class="st">      node [fontsize=14 shape=box];</span></span>
@@ -999,7 +999,7 @@ Figure&nbsp;2: This is a simple graphviz graph.
 </div>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">grViz</span><span class="op">(</span><span class="st">"digraph dot {</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">grViz</span><span class="op">(</span><span class="st">"digraph dot {</span></span>
 <span><span class="st">      graph [style = filled, fillcolor = white]</span></span>
 <span><span class="st">      </span></span>
 <span><span class="st">      node [shape = circle,</span></span>
@@ -1036,7 +1036,7 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-cae500dcf899c34fccf0" style="width:100%;height:464px;"></div>
 <script type="application/json" data-for="htmlwidget-cae500dcf899c34fccf0">{"x":{"diagram":"digraph dot {\n      graph [style = filled, fillcolor = white]\n      \n      node [shape = circle,\n            style = filled, fillcolor = white,\n            fixedsize = true, width = 0.5, height = 0.5,\n            fontname = \"Times-italic\"]\n        c\n        d\n      node [shape = doublecircle,\n            style = filled, fillcolor = white,\n            fixedsize = true, width = 0.5, height = 0.5,\n            fontname = \"Times-italic\"]\n        thetah [label = <&theta;<FONT POINT-SIZE=\"8\"><SUP>(h)<\/SUP><\/FONT>>]\n        thetaf [label = <&theta;<FONT POINT-SIZE=\"8\"><SUP>(f)<\/SUP><\/FONT>>]\n      node [shape = square,\n            style = filled, fillcolor = grey,\n            fixedsize = true, width=0.5, height=0.5,\n            fontname = \"Times-italic\"]\n        h\n        f\n        ns [label = <n<FONT POINT-SIZE=\"8\"><SUB>S<\/SUB><\/FONT>>]\n        nn [label = <n<FONT POINT-SIZE=\"8\"><SUB>N<\/SUB><\/FONT>>]\n      \n      edge [color = black]\n        c -> thetah -> h\n        d -> thetaf -> f\n        c -> thetaf\n        d -> thetah\n        ns -> h\n        nn -> f\n      {rank = max; ns; nn}\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
-<details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">grViz</span><span class="op">(</span><span class="st">"digraph dot {</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">grViz</span><span class="op">(</span><span class="st">"digraph dot {</span></span>
 <span><span class="st">      graph [style = filled, fillcolor = white,</span></span>
 <span><span class="st">             rankdir = LR,</span></span>
 <span><span class="st">             newrank = true]</span></span>
@@ -1073,7 +1073,7 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-aa39e8192686ddd0440d" style="width:100%;height:464px;"></div>
 <script type="application/json" data-for="htmlwidget-aa39e8192686ddd0440d">{"x":{"diagram":"digraph dot {\n      graph [style = filled, fillcolor = white,\n             rankdir = LR,\n             newrank = true]\n      \n      node [shape = circle,\n            style = filled, fillcolor = white,\n            fixedsize = true, width = 0.5, height = 0.5,\n            fontname = \"Times-italic\"]\n        p [fillcolor = gray]\n        gamma [label = \"&gamma;\"]\n        omega [label = \"&omega;\", shape = doublecircle]\n        beta [label = \"&beta;\"]\n      subgraph cluster_out{\n        fontsize = 8\n        label = <<I>j<\/I>:試行>\n        labelloc = b\n        labeljust = r\n        subgraph cluster_in{\n          fontsize = 8\n          label = <<I>k<\/I>:回数>\n          labelloc = b\n          labeljust = r\n          thetajk [label = <&theta;<FONT POINT-SIZE=\"8\"><SUB>jk<\/SUB><\/FONT>>, shape = doublecircle]\n          djk [label = <d<FONT POINT-SIZE=\"8\"><SUB>jk<\/SUB><\/FONT>>, shape = square, fillcolor = gray]\n        }}\n      edge [color=black]\n        p -> omega -> thetajk -> djk\n        gamma -> omega\n        beta -> thetajk \n      {rank = same; gamma; omega}\n      {rank = same; beta; thetajk}\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
-<details><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">grViz</span><span class="op">(</span><span class="st">'</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">grViz</span><span class="op">(</span><span class="st">'</span></span>
 <span><span class="st">digraph G {</span></span>
 <span><span class="st">    fontname="Helvetica,Arial,sans-serif"</span></span>
 <span><span class="st">    node [fontname="Helvetica,Arial,sans-serif"]</span></span>
@@ -1108,7 +1108,7 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9118e475c2ee83e9fb22" style="width:100%;height:464px;"></div>
 <script type="application/json" data-for="htmlwidget-9118e475c2ee83e9fb22">{"x":{"diagram":"\ndigraph G {\n\tfontname=\"Helvetica,Arial,sans-serif\"\n\tnode [fontname=\"Helvetica,Arial,sans-serif\"]\n\tedge [fontname=\"Helvetica,Arial,sans-serif\"]\n\n\tsubgraph cluster_0 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\ta0 -> a1 -> a2 -> a3;\n\t\tlabel = \"process #1\";\n\t}\n\n\tsubgraph cluster_1 {\n\t\tnode [style=filled];\n\t\tb0 -> b1 -> b2 -> b3;\n\t\tlabel = \"process #2\";\n\t\tcolor=blue\n\t}\n\tstart -> a0;\n\tstart -> b0;\n\ta1 -> b3;\n\tb2 -> a3;\n\ta3 -> a0;\n\ta3 -> end;\n\tb3 -> end;\n\n\tstart [shape=Mdiamond];\n\tend [shape=Msquare];\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
-<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#https://graphviz.org/Gallery/directed/neural-network.html</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#https://graphviz.org/Gallery/directed/neural-network.html</span></span>
 <span></span>
 <span><span class="fu">grViz</span><span class="op">(</span><span class="st">'digraph G {</span></span>
 <span><span class="st">  fontname="Helvetica,Arial,sans-serif"</span></span>
@@ -1143,7 +1143,7 @@ Figure&nbsp;2: This is a simple graphviz graph.
 </div>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://hbiostat.org/R/qreport/">qreport</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/adayim/consort/">consort</a></span><span class="op">)</span></span>
 <span></span>
@@ -1232,7 +1232,7 @@ Figure&nbsp;3: ALM diagram produced with <code>mermaid</code> with individual ex
 </div>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/adayim/consort/">consort</a></span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/adayim/consort/">consort</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1001</span><span class="op">)</span></span>
 <span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">300</span></span>
 <span></span>
@@ -1273,14 +1273,14 @@ Figure&nbsp;3: ALM diagram produced with <code>mermaid</code> with individual ex
 </div>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">out</span>, grViz <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">out</span>, grViz <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-dd9eba1c6723ce3390a3" style="width:100%;height:464px;"></div>
 <script type="application/json" data-for="htmlwidget-dd9eba1c6723ce3390a3">{"x":{"diagram":"digraph consort_diagram {\n  graph [layout = dot]\n\nnode [shape = rectangle, style = \"rounded,filled\", fillcolor = \"#A9C7FD\" color = \"#4F81BD\"]\nlabel14 [label = \"Screening\"]\nlabel15 [label = \"Randomization\"]\nlabel16 [label = \"Final\"]\n\n\nedge[style=invis];\nlabel14 -> label15 -> label16;\n\n\n# node definitions with substituted label text\n  node [shape = rectangle, fillcolor = Biege, style=\"\", fillcolor = \"\", color = \"\"]\n\nnode1 [label = \"Population (n=300)\"]\nnode2 [label = \"Excluded (n=15):\\l• MRI not collected (n=3)\\l• Other (n=4)\\l• Sample not collected (n=8)\\l\"]\nnode3 [label = \"Randomized patient (n=285)\"]\nnode4 [label = \"Conc (n=158)\"]\nnode5 [label = \"Seq (n=127)\"]\nnode6 [label = \"Lost of Follow-up (n=33):\\l• Death (n=12)\\l• Discontinued (n=4)\\l• Other (n=11)\\l• Withdraw (n=6)\\l\"]\nnode7 [label = \"Lost of Follow-up (n=26):\\l• Death (n=5)\\l• Discontinued (n=6)\\l• Other (n=11)\\l• Withdraw (n=4)\\l\"]\nnode8 [label = \"Finished Followup (n=125)\"]\nnode9 [label = \"Finished Followup (n=101)\"]\nnode10 [label = \"Not evaluable (n=6):\\l• Outcome missing (n=4)\\l• Protocol deviation (n=2)\\l\"]\nnode11 [label = \"Not evaluable (n=5):\\l• Outcome missing (n=4)\\l• Protocol deviation (n=1)\\l\"]\nnode12 [label = \"Final Analysis (n=119)\"]\nnode13 [label = \"Final Analysis (n=96)\"]\n\n\n## Invisible point node for joints\n\nnode [shape = point, width = 0]\n\nP1 P2 P3 P4 P5 P6 P7 P8\n\nsubgraph {\n  rank = same; rankdir = LR; P1; node2;\n  }\nsubgraph {\n  rank = same; rankdir = LR; P2; P3; P4;\n  }\nsubgraph {\n  rank = same; rankdir = LR; node4; node5;\n  }\nsubgraph {\n  rank = same; rankdir = LR; P5; node6;\n  }\nsubgraph {\n  rank = same; rankdir = LR; node8; node9;\n  }\nsubgraph {\n  rank = same; rankdir = LR; node6; node7;\n  }\nsubgraph {\n  rank = same; rankdir = LR; P6; node7;\n  }\nsubgraph {\n  rank = same; rankdir = LR; P7; node10;\n  }\nsubgraph {\n  rank = same; rankdir = LR; label16;  node12; node13;\n  }\nsubgraph {\n  rank = same; rankdir = LR; node10; node11;\n  }\nsubgraph {\n  rank = same; rankdir = LR; P8; node11;\n  }\nsubgraph {\n  rank = same; rankdir = LR; label14; node1;\n  }\nsubgraph {\n  rank = same; rankdir = LR; label15; node3;\n  }\n\nedge[style=\"\"];\n\nnode1 -> P1 [arrowhead = none];\nP1 -> node2;\nP1 -> node3;\nnode3 -> P3 [arrowhead = none];\nP2 -> node4;\nP4 -> node5;\nP2 -> P3 -> P4 [arrowhead = none, minlen = 10];\nnode4 -> P5 [arrowhead = none];\nP5 -> node6;\nP5 -> node8;\nnode5 -> P6 [arrowhead = none];\nP6 -> node7;\nP6 -> node9;\nnode8 -> P7 [arrowhead = none];\nP7 -> node10;\nP7 -> node12;\nnode9 -> P8 [arrowhead = none];\nP8 -> node11;\nP8 -> node13;\n\n\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://hbiostat.org/R/Hmisc/">Hmisc</a></span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://hbiostat.org/R/Hmisc/">Hmisc</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://hbiostat.org/R/qreport/">qreport</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/qreport/man/hookaddcap.html">hookaddcap</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -1490,7 +1490,7 @@ Figure&nbsp;3: ALM diagram produced with <code>mermaid</code> with individual ex
 </div>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">r</span><span class="op">[</span>, <span class="va">exc</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/pkg/Hmisc/man/seqFreq.html">seqFreq</a></span><span class="op">(</span><span class="st">'pain-free'</span>  <span class="op">=</span> <span class="va">pain</span>  <span class="op">==</span> <span class="fl">0</span>,</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">r</span><span class="op">[</span>, <span class="va">exc</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/pkg/Hmisc/man/seqFreq.html">seqFreq</a></span><span class="op">(</span><span class="st">'pain-free'</span>  <span class="op">=</span> <span class="va">pain</span>  <span class="op">==</span> <span class="fl">0</span>,</span>
 <span>                    <span class="st">'Hx med'</span>    <span class="op">=</span> <span class="va">hxmed</span> <span class="op">==</span> <span class="fl">1</span>,</span>
 <span>                                  <span class="va">age</span> <span class="op">&lt;</span> <span class="fl">40</span>,</span>
 <span>                    noneNA<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span></span>
@@ -1525,7 +1525,7 @@ Figure&nbsp;3: ALM diagram produced with <code>mermaid</code> with individual ex
 </div>
 <p>htab</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">h</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span>, <span class="va">label</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">label</span>, <span class="st">' (n='</span>, <span class="va">n</span>, <span class="st">')'</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">h</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span>, <span class="va">label</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">label</span>, <span class="st">' (n='</span>, <span class="va">n</span>, <span class="st">')'</span><span class="op">)</span></span>
 <span><span class="va">htab</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">label</span><span class="op">=</span><span class="cn">NULL</span>, <span class="va">split</span><span class="op">=</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">label</span><span class="op">)</span>, <span class="va">br</span><span class="op">=</span><span class="st">'\n'</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span>  <span class="va">w</span> <span class="op">&lt;-</span> <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">label</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">h</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span>, <span class="va">label</span><span class="op">)</span>, <span class="st">':'</span>, <span class="va">br</span><span class="op">)</span></span>
@@ -1559,7 +1559,7 @@ Figure&nbsp;3: ALM diagram produced with <code>mermaid</code> with individual ex
 </div>
 <p>mermaid maker</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/qreport/man/addCap.html">addCap</a></span><span class="op">(</span><span class="st">'fig-doverview-mermaid1'</span>, <span class="st">'Consort diagram produced by `mermaid`'</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/qreport/man/addCap.html">addCap</a></span><span class="op">(</span><span class="st">'fig-doverview-mermaid1'</span>, <span class="st">'Consort diagram produced by `mermaid`'</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">'flowchart TD</span></span>
 <span><span class="st">  S["Screened (n={{N0}})"] --&gt; E["{{excl}}"]</span></span>
 <span><span class="st">  S   --&gt; Q["Qualified for Randomization (n={{Nq}})"]</span></span>
@@ -1622,7 +1622,7 @@ Figure&nbsp;4: Consort diagram produced by <code>mermaid</code>
 </div>
 <p>node plot</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create some service functions so later it will be easy to change from</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create some service functions so later it will be easy to change from</span></span>
 <span><span class="co"># mermaid to graphviz</span></span>
 <span><span class="va">makenode</span>       <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">name</span>, <span class="va">label</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">'["'</span>, <span class="va">label</span>, <span class="st">'"]'</span><span class="op">)</span></span>
 <span><span class="va">makeconnection</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span><span class="op">)</span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">from</span>, <span class="st">' --&gt; '</span>, <span class="va">to</span><span class="op">)</span></span>
@@ -1815,7 +1815,7 @@ Figure&nbsp;5: Consort diagram produced with <code>mermaid</code> with individua
 </div>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Hmisc/man/getHdata.html">getHdata</a></span><span class="op">(</span><span class="va">support</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Hmisc/man/getHdata.html">getHdata</a></span><span class="op">(</span><span class="va">support</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setDT.html">setDT</a></span><span class="op">(</span><span class="va">support</span><span class="op">)</span></span>
 <span><span class="co"># addCap('fig-doverview-missflow', 'Flowchart of sequential exclusion of observations due to missing values')</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/pkg/Hmisc/man/Cs.html">.q</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">sex</span>, <span class="va">dzgroup</span>, <span class="va">edu</span>, <span class="va">income</span>, <span class="va">meanbp</span>, <span class="va">wblc</span>,</span>
@@ -1850,7 +1850,7 @@ Figure&nbsp;5: Consort diagram produced with <code>mermaid</code> with individua
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">grViz</span><span class="op">(</span><span class="st">'</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">grViz</span><span class="op">(</span><span class="st">'</span></span>
 <span><span class="st">graph G {</span></span>
 <span><span class="st">fontname="Helvetica,Arial,sans-serif"</span></span>
 <span><span class="st">node [fontname="Helvetica,Arial,sans-serif"]</span></span>

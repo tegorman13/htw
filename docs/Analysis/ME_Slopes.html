@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.415">
+<meta name="generator" content="quarto-1.4.480">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
 <meta name="dcterms.date" content="2023-08-18">
@@ -101,13 +101,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
       HTW Project
       </li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">HTW Project</a> 
         <div class="sidebar-tools-main">
@@ -250,8 +250,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ALM &amp; EXAM Fitting</span></a>
+  <a href="../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW EXAM Fits and Transfer Predictions</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -330,7 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     
 <!-- main -->
@@ -366,7 +366,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">tidybayes</span>, <span class="va">brms</span>, <span class="va">broom</span>, <span class="va">broom.mixed</span>, <span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span>,<span class="va">gt</span>,<span class="va">ggh4x</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">tidybayes</span>, <span class="va">brms</span>, <span class="va">broom</span>, <span class="va">broom.mixed</span>, <span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span>,<span class="va">gt</span>,<span class="va">ggh4x</span><span class="op">)</span></span>
 <span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_08-04-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"Functions/Display_Functions.R"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -388,12 +388,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_super_boring</span> <span class="op">&lt;-</span> <span class="va">e1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">vb</span><span class="op">)</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_super_boring</span> <span class="op">&lt;-</span> <span class="va">e1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">vb</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">tidy</span><span class="op">(</span><span class="va">model_super_boring</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_boring</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="fu">bf</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">vb</span><span class="op">)</span>,</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_boring</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="fu">bf</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">vb</span><span class="op">)</span>,</span>
 <span>                    data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">e1</span>,<span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                    chains<span class="op">=</span><span class="fl">2</span>,seed<span class="op">=</span><span class="va">bayes_seed</span><span class="op">)</span></span>
 <span></span>
@@ -401,7 +401,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_fixed</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_fixed</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span></span>
 <span>  <span class="fu">bf</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">vb</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">e1</span>,<span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>,</span>
@@ -427,7 +427,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_cont</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_cont</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span></span>
 <span>  <span class="fu">bf</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">e1</span>,<span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>,</span>
@@ -453,7 +453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pmcy</span> <span class="op">=</span> <span class="va">test</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">id</span>,<span class="va">bandInt</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">id</span>,levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pmcy</span> <span class="op">=</span> <span class="va">test</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">id</span>,<span class="va">bandInt</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">id</span>,levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">pmcy</span> <span class="op">=</span> <span class="fu">expand_grid</span><span class="op">(</span>id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">test</span><span class="op">$</span><span class="va">id</span><span class="op">)</span>,bandInt<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">test</span><span class="op">$</span><span class="va">bandInt</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">id</span>,levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">preds1</span> <span class="op">&lt;-</span> <span class="va">model_cont</span> <span class="op">%&gt;%</span> <span class="fu">epred_draws</span><span class="op">(</span><span class="va">pmcy</span>,re_formula <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> </span>
@@ -480,7 +480,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_slope</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_slope</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span></span>
 <span>  <span class="fu">bf</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">e1</span>,<span class="va">expMode</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test-Nf"</span>,<span class="st">"test-train-nf"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>,</span>
@@ -520,7 +520,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># center model on bandInt 800, and fit slopes again with brms, intercept and slope for each id</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># center model on bandInt 800, and fit slopes again with brms, intercept and slope for each id</span></span>
 <span></span>
 <span><span class="co"># center around bandInt 800</span></span>
 <span><span class="va">e1</span><span class="op">$</span><span class="va">bandInt2</span> <span class="op">&lt;-</span> <span class="va">e1</span><span class="op">$</span><span class="va">bandInt</span> <span class="op">-</span> <span class="fl">800</span></span>
@@ -557,7 +557,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">testAvg</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">testAvg</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">model_slope3</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span></span>
 <span>  <span class="fu">bf</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -572,7 +572,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># non linear learning models</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># non linear learning models</span></span>
 <span></span>
 <span></span>
 <span></span>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.415">
+<meta name="generator" content="quarto-1.4.480">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
 <meta name="dcterms.date" content="2023-09-03">
@@ -101,13 +101,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
       HTW Project
       </li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">HTW Project</a> 
         <div class="sidebar-tools-main">
@@ -250,8 +250,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ALM &amp; EXAM Fitting</span></a>
+  <a href="../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW EXAM Fits and Transfer Predictions</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -330,7 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
         
@@ -370,7 +370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">tidybayes</span>,<span class="va">brms</span>,<span class="va">bayesplot</span>,<span class="va">broom</span>,<span class="va">broom.mixed</span>,<span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span>,<span class="va">gt</span>,<span class="va">gghalves</span>,<span class="va">patchwork</span>,<span class="va">ggforce</span>,<span class="va">ggdist</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">tidybayes</span>,<span class="va">brms</span>,<span class="va">bayesplot</span>,<span class="va">broom</span>,<span class="va">broom.mixed</span>,<span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span>,<span class="va">gt</span>,<span class="va">gghalves</span>,<span class="va">patchwork</span>,<span class="va">ggforce</span>,<span class="va">ggdist</span><span class="op">)</span></span>
 <span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_08-21-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"Functions/Packages.R"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">train</span> <span class="op">&lt;-</span> <span class="va">e1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode2</span> <span class="op">==</span> <span class="st">"Train"</span><span class="op">)</span>  </span>
@@ -381,7 +381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mod_train_expo3_dist</span> <span class="op">&lt;-</span><span class="fu">bf</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">betaMu</span> <span class="op">+</span> <span class="op">(</span><span class="va">alphaMu</span> <span class="op">-</span> <span class="va">betaMu</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">gammaMu</span><span class="op">)</span> <span class="op">*</span> <span class="va">gt.train</span><span class="op">)</span>,</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mod_train_expo3_dist</span> <span class="op">&lt;-</span><span class="fu">bf</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">betaMu</span> <span class="op">+</span> <span class="op">(</span><span class="va">alphaMu</span> <span class="op">-</span> <span class="va">betaMu</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">gammaMu</span><span class="op">)</span> <span class="op">*</span> <span class="va">gt.train</span><span class="op">)</span>,</span>
 <span>                 <span class="va">betaMu</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, </span>
 <span>                 <span class="va">alphaMu</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span>   <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, </span>
 <span>                 <span class="va">gammaMu</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span>  <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, </span>
@@ -455,7 +455,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # ℹ 3 more variables: Estimate.betaMu_bandIntS &lt;dbl&gt;,
 #   Estimate.alphaMu_bandIntS &lt;dbl&gt;, Estimate.gammaMu_bandIntS &lt;dbl&gt;</code></pre>
 </div>
-<details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span> <span class="va">mod_train_expo3_bandCondit_distS</span> <span class="op">&lt;-</span> <span class="fu">bf</span><span class="op">(</span><span class="va">distS</span> <span class="op">~</span> <span class="va">betaMu</span> <span class="op">+</span> <span class="op">(</span><span class="va">alphaMu</span> <span class="op">-</span> <span class="va">betaMu</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">gammaMu</span><span class="op">)</span> <span class="op">*</span> <span class="va">gt.train</span><span class="op">)</span>,</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span> <span class="va">mod_train_expo3_bandCondit_distS</span> <span class="op">&lt;-</span> <span class="fu">bf</span><span class="op">(</span><span class="va">distS</span> <span class="op">~</span> <span class="va">betaMu</span> <span class="op">+</span> <span class="op">(</span><span class="va">alphaMu</span> <span class="op">-</span> <span class="va">betaMu</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">gammaMu</span><span class="op">)</span> <span class="op">*</span> <span class="va">gt.train</span><span class="op">)</span>,</span>
 <span>                 <span class="va">betaMu</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">bandIntS</span> <span class="op">+</span> <span class="va">condit</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, </span>
 <span>                 <span class="va">alphaMu</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">bandIntS</span> <span class="op">+</span> <span class="va">condit</span> <span class="op">+</span>  <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, </span>
 <span>                 <span class="va">gammaMu</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">bandIntS</span> <span class="op">+</span> <span class="va">condit</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, </span>

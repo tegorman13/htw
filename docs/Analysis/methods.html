@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.439">
+<meta name="generator" content="quarto-1.4.480">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
 <meta name="dcterms.date" content="2023-10-26">
@@ -121,11 +121,11 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/methods.html">Methods</a></li><li class="breadcrumb-item"><a href="../Analysis/methods.html">Methods</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -133,7 +133,7 @@ div.csl-indent {
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">HTW Project</a> 
         <div class="sidebar-tools-main">
@@ -268,8 +268,8 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ALM &amp; EXAM Fitting</span></a>
+  <a href="../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW EXAM Fits and Transfer Predictions</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -348,7 +348,7 @@ div.csl-indent {
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
@@ -394,7 +394,7 @@ div.csl-indent {
 
 
 </header><div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"Functions"</span>, <span class="st">"packages.R"</span><span class="op">)</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"Functions"</span>, <span class="st">"packages.R"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_08-04-23.rds"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">e2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e2_08-04-23.rds"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">e3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e3_08-04-23.rds"</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -409,7 +409,7 @@ div.csl-indent {
 <p>The authors evaluated both of the rule-based models introduced in earlier research (with some modifications enabling trial-by-trial learning). The polynomial hypothesis testing model <span class="citation" data-cites="carrollFunctionalLearningLearning1963 brehmerHypothesesRelationsScaled1974">(<a href="#ref-brehmerHypothesesRelationsScaled1974" role="doc-biblioref">Brehmer, 1974</a>; <a href="#ref-carrollFunctionalLearningLearning1963" role="doc-biblioref">Carroll, 1963</a>)</span> tended to mimic the true function closely in extrapolation, and thus offered a poor account of the human data. The log-polynomial adaptive regression model <span class="citation" data-cites="kohFunctionLearningInduction1991">(<a href="#ref-kohFunctionLearningInduction1991" role="doc-biblioref">Koh &amp; Meyer, 1991</a>)</span> was able to mimic some of the systematic deviations produced by human subjects, but also predicted overestimation in cases where underestimation occurred.</p>
 <p>The authors also introduced two new function-learning models. The Associative Learning Model (ALM) and the extrapolation-association model (EXAM). ALM is a two layer connectionist model adapted from the ALCOVE model in the category learning literature <span class="citation" data-cites="kruschkeALCOVEExemplarbasedConnectionist1992">(<a href="#ref-kruschkeALCOVEExemplarbasedConnectionist1992" role="doc-biblioref">Kruschke, 1992</a>)</span>. ALM belongs to the general class of radial-basis function neural networks, and can be considered a similarity-based model in the sense that the nodes in the input layer of the network are activated as a function of distance. The EXAM model retains the same similarity based activation and associative learning mechanisms as ALM, while being augmented with a linear rule response mechanism. When presented with novel stimuli, EXAM will retrieve the most similar input-output examples encountered during training, and from those examples compute a local slope. ALM was able to provide a good account of participant training and interpolation data in all three function conditions, however it was unable to extrapolate. EXAM, on the other hand, was able to reproduce both the extrapolation underestimation, as well as the quadratic and exponential overestimation patterns exhibited by the human participants. Subsequent research identified some limitations in EXAM’s ability to account for cases where human participants learn and extrapolate sinusoidal function <span class="citation" data-cites="bottNonmonotonicExtrapolationFunction2004">Bott &amp; Heit (<a href="#ref-bottNonmonotonicExtrapolationFunction2004" role="doc-biblioref">2004</a>)</span> or to scenarios where different functions apply to different regions of the input space <span class="citation" data-cites="kalishPopulationLinearExperts2004">Kalish et al. (<a href="#ref-kalishPopulationLinearExperts2004" role="doc-biblioref">2004</a>)</span>, though EXAM has been shown to provide a good account of human learning and extrapolation in tasks with bi-linear, V shaped input spaces <span class="citation" data-cites="mcdanielPredictingTransferPerformance2009">Mcdaniel et al. (<a href="#ref-mcdanielPredictingTransferPerformance2009" role="doc-biblioref">2009</a>)</span>.</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">dplyr</span>,<span class="va">ggplot2</span>,<span class="va">patchwork</span><span class="op">)</span> </span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">dplyr</span>,<span class="va">ggplot2</span>,<span class="va">patchwork</span><span class="op">)</span> </span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"Functions"</span>,<span class="st">"deLosh_data.R"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">linear_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fl">2.2</span> <span class="op">*</span> <span class="va">x</span> <span class="op">+</span> <span class="fl">30</span></span>
@@ -458,7 +458,7 @@ Figure&nbsp;1: Generalization patterns from DeLosh et al.&nbsp;(1997)
 <p>Throughout the experiment, participants’ performance was measured by calculating the distance between the produced x-velocity of the projectiles and the closest edge of the current velocity band. Lower distances indicated better performance.</p>
 <p>After completing the experiment, participants were debriefed and provided with an opportunity to ask questions about the study.</p>
 <div class="cell page-columns page-full" data-fig-width="8" data-fig-height="2.5" data-fig-responsive="false">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode dot code-with-copy"><code class="sourceCode dot"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">digraph</span> <span class="ot">{</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode dot code-with-copy"><code class="sourceCode dot"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">digraph</span> <span class="ot">{</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">graph</span><span class="co"> </span><span class="ot">[</span><span class="va">layout</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="va">dot</span><span class="co">, </span><span class="at">rankdir</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="va">LR</span><span class="ot">]</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">  // define the global styles of the nodes</span></span>
@@ -535,7 +535,7 @@ Figure&nbsp;2: Experiment 1 Design. Constant and Varied participants complete di
 
 </section></section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-bottNonmonotonicExtrapolationFunction2004" class="csl-entry" role="listitem">
-Bott, L., &amp; Heit, E. (2004). Nonmonotonic <span>Extrapolation</span> in <span>Function Learning</span>. <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, <em>30</em>, 38–50.
+Bott, L., &amp; Heit, E. (2004). Nonmonotonic <span>Extrapolation</span> in <span>Function Learning</span>. <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, <em>30</em>(1), 38–50. <a href="https://doi.org/10.1037/0278-7393.30.1.38">https://doi.org/10.1037/0278-7393.30.1.38</a>
 </div>
 <div id="ref-brehmerHypothesesRelationsScaled1974" class="csl-entry" role="listitem">
 Brehmer, B. (1974). Hypotheses about relations between scaled variables in the learning of probabilistic inference tasks. <em>Organizational Behavior and Human Performance</em>, <em>11</em>(1), 1–27. <a href="https://doi.org/10.1016/0030-5073(74)90002-6">https://doi.org/10.1016/0030-5073(74)90002-6</a>
@@ -550,22 +550,22 @@ Ciccione, L., &amp; Dehaene, S. (2021). Can humans perform mental regression on 
 Courrieu, P. (2012). Quick approximation of bivariate functions. <em>British Journal of Mathematical and Statistical Psychology</em>, <em>65</em>(1), 89–121. <a href="https://doi.org/10.1111/j.2044-8317.2011.02016.x">https://doi.org/10.1111/j.2044-8317.2011.02016.x</a>
 </div>
 <div id="ref-deloshExtrapolationSineQua1997" class="csl-entry" role="listitem">
-DeLosh, E. L., McDaniel, M. A., &amp; Busemeyer, J. R. (1997). Extrapolation: <span>The Sine Qua Non</span> for <span>Abstraction</span> in <span>Function Learning</span>. <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, 19.
+DeLosh, E. L., McDaniel, M. A., &amp; Busemeyer, J. R. (1997). Extrapolation: <span>The Sine Qua Non</span> for <span>Abstraction</span> in <span>Function Learning</span>. <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, <em>23</em>(4), 19. <a href="https://doi.org/10.1037/0278-7393.23.4.968">https://doi.org/10.1037/0278-7393.23.4.968</a>
 </div>
 <div id="ref-kalishPopulationLinearExperts2004" class="csl-entry" role="listitem">
 Kalish, M. L., Lewandowsky, S., &amp; Kruschke, J. K. (2004). Population of <span>Linear Experts</span>: <span>Knowledge Partitioning</span> and <span>Function Learning</span>. <em>Psychological Review</em>, <em>111</em>(4), 1072–1099. <a href="https://doi.org/10.1037/0033-295X.111.4.1072">https://doi.org/10.1037/0033-295X.111.4.1072</a>
 </div>
 <div id="ref-kohFunctionLearningInduction1991" class="csl-entry" role="listitem">
-Koh, &amp; Meyer, D. E. (1991). Function learning: <span>Induction</span> of continuous stimulus-response relations. <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, <em>17</em>(5).
+Koh, K., &amp; Meyer, D. E. (1991). Function learning: <span>Induction</span> of continuous stimulus-response relations. <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, <em>17</em>(5), 811. <a href="https://doi.org/10.1037/0278-7393.17.5.811">https://doi.org/10.1037/0278-7393.17.5.811</a>
 </div>
 <div id="ref-kruschkeALCOVEExemplarbasedConnectionist1992" class="csl-entry" role="listitem">
-Kruschke, J. K. (1992). <span>ALCOVE</span>: <span>An</span> exemplar-based connectionist model of <span>Category Learning</span>. <em>Psychological Review</em>, <em>99</em>(1).
+Kruschke, J. K. (1992). <span>ALCOVE</span>: <span>An</span> exemplar-based connectionist model of <span>Category Learning</span>. <em>Psychological Review</em>, <em>99</em>(1). <a href="https://doi.org/10.1037/0033-295X.99.1.22">https://doi.org/10.1037/0033-295X.99.1.22</a>
+</div>
+<div id="ref-mcdanielPredictingTransferPerformance2009" class="csl-entry" role="listitem">
+Mcdaniel, M. A., Dimperio, E., Griego, J. A., &amp; Busemeyer, J. R. (2009). Predicting transfer performance: <span>A</span> comparison of competing function learning models. <em>Journal of Experimental Psychology. Learning, Memory, and Cognition</em>, <em>35</em>, 173–195. <a href="https://doi.org/10.1037/a0013982">https://doi.org/10.1037/a0013982</a>
 </div>
 <div id="ref-mcdanielEffectsSpacedMassed2013" class="csl-entry" role="listitem">
 McDaniel, M. A., Fadler, C. L., &amp; Pashler, H. (2013). Effects of spaced versus massed training in function learning. <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, <em>39</em>(5), 1417–1432. <a href="https://doi.org/10.1037/a0032184">https://doi.org/10.1037/a0032184</a>
-</div>
-<div id="ref-mcdanielPredictingTransferPerformance2009" class="csl-entry" role="listitem">
-Mcdaniel, M., Dimperio, E., Griego, J., &amp; Busemeyer, J. (2009). Predicting transfer performance: <span>A</span> comparison of competing function learning models. <em>Journal of Experimental Psychology. Learning, Memory, and Cognition</em>, <em>35</em>, 173–195. <a href="https://doi.org/10.1037/a0013982">https://doi.org/10.1037/a0013982</a>
 </div>
 <div id="ref-saidExtrapolationAccuracyUnderestimates2021" class="csl-entry" role="listitem">
 Said, N., &amp; Fischer, H. (2021). Extrapolation accuracy underestimates rule learning: <span>Evidence</span> from the function-learning paradigm. <em>Acta Psychologica</em>, <em>218</em>, 103356. <a href="https://doi.org/10.1016/j.actpsy.2021.103356">https://doi.org/10.1016/j.actpsy.2021.103356</a>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.415">
+<meta name="generator" content="quarto-1.4.480">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
 <meta name="dcterms.date" content="2023-08-21">
@@ -102,13 +102,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
       HTW Project
       </li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -116,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">HTW Project</a> 
         <div class="sidebar-tools-main">
@@ -251,8 +251,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ALM &amp; EXAM Fitting</span></a>
+  <a href="../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW EXAM Fits and Transfer Predictions</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -331,7 +331,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     
 <!-- main -->
@@ -368,7 +368,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">tidybayes</span>,<span class="va">brms</span>,<span class="va">broom</span>,<span class="va">broom.mixed</span>,<span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span>,<span class="va">gt</span>,<span class="va">gghalves</span>,<span class="va">patchwork</span>,<span class="va">ggforce</span>,<span class="va">ggdist</span>,<span class="va">equatiomatic</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">tidybayes</span>,<span class="va">brms</span>,<span class="va">broom</span>,<span class="va">broom.mixed</span>,<span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span>,<span class="va">gt</span>,<span class="va">gghalves</span>,<span class="va">patchwork</span>,<span class="va">ggforce</span>,<span class="va">ggdist</span>,<span class="va">equatiomatic</span><span class="op">)</span></span>
 <span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_08-04-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"Functions/Display_Functions.R"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -395,7 +395,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lmerFit</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">mform</span>,<span class="va">df</span><span class="op">)</span> <span class="op">{</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lmerFit</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">mform</span>,<span class="va">df</span><span class="op">)</span> <span class="op">{</span></span>
 <span><span class="va">m</span><span class="op">=</span><span class="fu">lmer</span><span class="op">(</span><span class="va">mform</span>, <span class="va">df</span><span class="op">)</span></span>
 <span>  <span class="va">fe</span> <span class="op">&lt;-</span> <span class="fu">fixef</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
 <span>  <span class="va">dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">$</span><span class="va">id</span> <span class="op">%&gt;%</span> <span class="fu">as.tibble</span><span class="op">(</span>rownames<span class="op">=</span><span class="st">"id"</span><span class="op">)</span> <span class="op">%&gt;%</span><span class="fu">rename</span><span class="op">(</span><span class="st">"Intercept"</span><span class="op">=</span><span class="va">`(Intercept)`</span><span class="op">)</span></span>
@@ -479,7 +479,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">condit</span><span class="op">*</span><span class="va">bandInt</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span>,data<span class="op">=</span><span class="va">test</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">condit</span><span class="op">*</span><span class="va">bandInt</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span>,data<span class="op">=</span><span class="va">test</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stderr">
 <pre><code>Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
 Model failed to converge with max|grad| = 0.846446 (tol = 0.002, component 1)</code></pre>
@@ -489,7 +489,7 @@ Model failed to converge with max|grad| = 0.846446 (tol = 0.002, component 1)</c
  - Rescale variables?;Model is nearly unidentifiable: large eigenvalue ratio
  - Rescale variables?</code></pre>
 </div>
-<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">extract_eq</span><span class="op">(</span><span class="va">m1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">extract_eq</span><span class="op">(</span><span class="va">m1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <p><span class="math display">\[
 \begin{aligned}
@@ -1050,7 +1050,7 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 </tbody>
 </table></section><section id="graphical-representation" class="level4"><h4 class="anchored" data-anchor-id="graphical-representation">Graphical Representation</h4>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[{every node/.append style}=draw]</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\node</span> [rectangle] (population) at (0, 4) {Population};</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\node</span> [rectangle] (id) at (0, 2.5) {Individual (id)};</span>
@@ -1102,7 +1102,7 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 </table>
 <p>The detailed structure of the model can be visualized in the following diagram:</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{shapes.geometric}</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[{every node/.append style}=draw]</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\node</span> [rectangle] (id) at (0, 2.5) {ID};</span>
@@ -1409,7 +1409,7 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 </table>
 <p>e1_distBMM$prior %&gt;% tidy() %&gt;% mutate(Parameter = c(“b (flat)”, “b (bandInt)”, “b (conditVaried)”, “b (conditVaried:bandInt)”, “Intercept”, “L”, “sd”, “sigma”), Description = c(“Default flat prior”, “Vectorized flat prior for bandInt”, “Vectorized flat prior for conditVaried”, “Vectorized flat prior for interaction”, “Student’s t prior for Intercept”, “lkj_corr_cholesky for L”, “Student’s t prior for sd”, “Student’s t prior for sigma”)) %&gt;% select(Parameter, Prior = prior, Description) %&gt;% kbl(escape = FALSE) %&gt;% kable_styling(full_width = FALSE)</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{shapes.geometric}</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[{every node/.append style}=draw]</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\node</span> [rectangle] (id) at (0, 2.5) {ID};</span>
@@ -1482,7 +1482,7 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 </tbody>
 </table>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># e1_distBMM_prior &lt;- e1_distBMM$prior %&gt;%</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># e1_distBMM_prior &lt;- e1_distBMM$prior %&gt;%</span></span>
 <span><span class="co">#   mutate(Class = c("b", "b", "b", "b", "Intercept", "L", "L", "sd", "sd", "sd", "sd", "sigma"),</span></span>
 <span><span class="co">#          Description = c("(flat)", "(flat)", "(flat)", "(flat)", "student_t(3, 143.4, 212.7)", "lkj_corr_cholesky(1)", "lkj_corr_cholesky(1)", "student_t(3, 0, 212.7)", "student_t(3, 0, 212.7)", "student_t(3, 0, 212.7)", "student_t(3, 0, 212.7)", "student_t(3, 0, 212.7)")) %&gt;%</span></span>
 <span><span class="co">#   select(Parameter = coef, Class, Description) %&gt;%</span></span>
@@ -1491,7 +1491,7 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{shapes.geometric}</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[{every node/.append style}=draw]</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\node</span> [rectangle] (id) at (0, 2.5) {ID};</span>
@@ -1582,7 +1582,7 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 </table>
 <p>Visual representation of the model’s structure:</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{shapes.geometric}</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[{every node/.append style}=draw]</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\node</span> [rectangle] (id) at (0, 2.5) {ID};</span>
@@ -1766,7 +1766,7 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 <span>  <span class="fu">kable_styling</span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>A visual representation of the hierarchical structure and distributional assumptions is provided:</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{shapes.geometric}</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{backgrounds}</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\definecolor</span>{indiv}{HTML}{5F4690}</span>
@@ -1847,7 +1847,7 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 <p>The parameters can be summarized as follows:</p>
 <p>fit %&gt;% tidy() %&gt;% mutate(Parameter = c(“\(\beta_0\)”, “\(\beta_1\)”, “\(\beta_2\)”, “\(\sigma_0\)”, “\(\sigma_y\)”)) %&gt;% mutate(Description = c(“Global average dist across all subjects”, “Effect of condit on dist for all subjects”, “Effect of bandInt on dist for all subjects”, “Between-cluster variability of average dist”, “Within-cluster variability of dist”)) %&gt;% mutate(term = glue::glue(“<a href="https://poissonconsulting.github.io/term/">term</a>”), estimate = round(estimate, 3)) %&gt;% select(Parameter, Term = term, Description, Estimate = estimate) %&gt;% kbl(escape = FALSE) %&gt;% kable_styling(full_width = FALSE)</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{shapes.geometric}</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{backgrounds}</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\definecolor</span>{indiv}{HTML}{5F4690}</span>
@@ -1933,7 +1933,7 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 </section><section id="hierarchical-structure" class="level4"><h4 class="anchored" data-anchor-id="hierarchical-structure">Hierarchical Structure</h4>
 <p>The graphical representation below conveys the hierarchical structure and distributional assumptions of our model:</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{shapes.geometric}</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{backgrounds}</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\definecolor</span>{indiv}{HTML}{5F4690}</span>
@@ -2005,7 +2005,7 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 </table>
 <p>The model’s structure can be visualized through the following diagram:</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode tikz code-with-copy"><code class="sourceCode latex"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{positioning}</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{shapes.geometric}</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{backgrounds}</span>
@@ -2972,7 +2972,7 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \
 \end{aligned}
 \]</span></p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m1_bayes</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="va">condit</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span>, </span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m1_bayes</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="va">condit</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span>, </span>
 <span>data <span class="op">=</span> <span class="va">test</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>, file<span class="op">=</span><span class="st">"band_gauss_vx"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">m1_bayesb</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vxb</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="va">condit</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span>, </span>
@@ -2988,7 +2988,7 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Calculate the standard deviation of the estimates for each level of id</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Calculate the standard deviation of the estimates for each level of id</span></span>
 <span><span class="va">m_all</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">summarise</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"group_"</span><span class="op">)</span>, <span class="va">sd</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -3002,7 +3002,7 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>mc.cores <span class="op">=</span> <span class="fl">8</span>,  <span class="co"># Use 4 cores</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>mc.cores <span class="op">=</span> <span class="fl">8</span>,  <span class="co"># Use 4 cores</span></span>
 <span>        brms.backend <span class="op">=</span> <span class="st">"cmdstanr"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">model_fixed</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span></span>
@@ -3041,7 +3041,7 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">log_m1</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">log_m1</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span></span>
 <span>  <span class="fu">bf</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span><span class="va">bandInt</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">test</span>,</span>
 <span>  family<span class="op">=</span><span class="fu">shifted_lognormal</span><span class="op">(</span><span class="op">)</span>,</span>
@@ -3064,7 +3064,7 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms">brms</a></span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms">brms</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">bmerFit</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">mform</span>,<span class="va">df</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brm.html">brm</a></span><span class="op">(</span><span class="va">mform</span>, data <span class="op">=</span> <span class="va">df</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>, chains <span class="op">=</span> <span class="fl">1</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>

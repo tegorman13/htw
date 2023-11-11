@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.415">
+<meta name="generator" content="quarto-1.4.480">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="dcterms.date" content="2023-08-21">
 <title>HTW Project - HTW Data Dictionary</title>
@@ -101,13 +101,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
       HTW Project
       </li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">HTW Project</a> 
         <div class="sidebar-tools-main">
@@ -250,8 +250,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ALM &amp; EXAM Fitting</span></a>
+  <a href="../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW EXAM Fits and Transfer Predictions</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -330,7 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
@@ -373,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><section id="trial-level-data---variables" class="level3"><h3 class="anchored" data-anchor-id="trial-level-data---variables">Trial-level data - variables</h3>
 <p>id - unique subject identifier condit - primary training manipulation, Constant vs.&nbsp;Varied. tOrder - order of blocks in no-feedback testing stage (extrapolation first or re-do train first) bandType - whether band was trained on (trained) or novel in test phase (extrapolation) expMode2 - Phase of Experiment - Train, Train-Nf, Test, Test-Fb gt.train - training trial number - running total vb - velocity band on current trial - Levels: 100-300 350-550 600-800 800-1000 1000-1200 1200-1400 bandInt - numeric value of lower bound of vb: 100, 350, 600, 800, 1000, 1200 vx - X velocity generated by subject on current trial dist - absolute distance from edge of target velocity band (0 if vx falls within band) sdist - signed distance from edge of target velocity band vy - y velocity generated by subject (not relevant to task) result - categorical result of throw in relation to target band - Levels: Over, Under, Hit vxCat - which velocity band the current trial throw falls into prev - Target velocity band on previous throw bandSeq - Previous Target Band and current Target Band, e.g.&nbsp;800-&gt;1000 1000-&gt;1200 etc.</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>, <span class="va">lme4</span>, <span class="va">emmeans</span>, <span class="va">here</span>, <span class="va">knitr</span>, <span class="va">kableExtra</span>,<span class="va">gt</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>, <span class="va">lme4</span>, <span class="va">emmeans</span>, <span class="va">here</span>, <span class="va">knitr</span>, <span class="va">kableExtra</span>,<span class="va">gt</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>dplyr.summarise.inform <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/dPrune-07-27-23.rds"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">d</span><span class="op">$</span><span class="va">stage</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">stage</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>, <span class="st">"9"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span>, <span class="st">"13"</span>, <span class="st">"14"</span>, <span class="st">"15"</span>, <span class="st">"16"</span>, <span class="st">"17"</span>, <span class="st">"18"</span>, <span class="st">"19"</span>, <span class="st">"20"</span>, <span class="st">"21"</span>, <span class="st">"22"</span>, <span class="st">"23"</span><span class="op">)</span><span class="op">)</span></span>
@@ -386,7 +386,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># create table with number of unique ids per condition, use kable</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># create table with number of unique ids per condition, use kable</span></span>
 <span><span class="va">d</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">fullCond</span>,<span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">distinct</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">fullCond</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">summarise</span><span class="op">(</span>n<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">
@@ -454,7 +454,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </div>
-<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t1</span><span class="op">=</span><span class="va">d</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">condit</span>,<span class="va">fb</span>,<span class="va">bandOrder</span>,<span class="va">tOrder</span>,<span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">distinct</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t1</span><span class="op">=</span><span class="va">d</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">condit</span>,<span class="va">fb</span>,<span class="va">bandOrder</span>,<span class="va">tOrder</span>,<span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">distinct</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span>,<span class="va">fb</span>,<span class="va">bandOrder</span>,<span class="va">tOrder</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">summarise</span><span class="op">(</span>n<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">t1</span> <span class="op">%&gt;%</span> <span class="fu">kbl</span><span class="op">(</span>col.names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Condition"</span>,<span class="st">"Feedback"</span>,<span class="st">"Band_Order"</span>,<span class="st">"Test Order"</span>,<span class="st">"N"</span><span class="op">)</span>,escape<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
@@ -498,7 +498,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </div>
-<details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t1</span><span class="op">=</span><span class="va">d</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">condit</span>,<span class="va">fb</span>,<span class="va">bandOrder</span>,<span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">distinct</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t1</span><span class="op">=</span><span class="va">d</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">condit</span>,<span class="va">fb</span>,<span class="va">bandOrder</span>,<span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">distinct</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span>,<span class="va">fb</span>,<span class="va">bandOrder</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">summarise</span><span class="op">(</span>n<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">t1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
@@ -511,14 +511,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">summarize</span><span class="op">(</span>n<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>n<span class="op">=</span><span class="fu">fct_infreq</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">id</span>,y<span class="op">=</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_col</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <p><img src="data_dictionary_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
-<details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sorted_bars</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sorted_bars</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">df</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">mutate</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span> <span class="op">:=</span> <span class="fu">fct_rev</span><span class="op">(</span><span class="fu">fct_infreq</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>  <span class="op">|&gt;</span></span>
 <span>    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -548,7 +548,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="tibble1" class="level2"><h2 class="anchored" data-anchor-id="tibble1">Tibble1</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create the tribble</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create the tribble</span></span>
 <span><span class="va">data_tbl</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
 <span>  Variable_Name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"condit"</span>, <span class="st">"fb"</span>, <span class="st">"bandOrder"</span>, <span class="st">"tOrder"</span>, <span class="st">"expMode"</span>, <span class="st">"trainStage"</span>, <span class="st">"expStage"</span>, <span class="st">"band"</span>, <span class="st">"vb"</span>, <span class="st">"lowBound"</span>, <span class="st">"feedback"</span>, <span class="st">"stage"</span><span class="op">)</span>,</span>
 <span>  Variable_Levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Constant, Varied"</span>, <span class="st">"Continuous, Ordinal"</span>, <span class="st">"Original, Reverse"</span>, <span class="st">"Test First, Train First"</span>, <span class="st">"train, train-Nf, test-Nf, test-train-nf, test-feedback"</span>, <span class="st">"Beginning, Middle, End, Test"</span>, <span class="st">"TrainStart, intTest1, TrainMid1, intTest2, TrainMid2, intTest3, TrainEnd, Test1, Test2, Test3"</span>, <span class="st">"1, 2, 3, 4, 5, 6"</span>, <span class="st">"100-300, 350-550, 600-800, 800-1000, 1000-1200, 1200-1400"</span>, <span class="st">"100, 350, 600, 800, 1000, 1200"</span>, <span class="st">"0, 1"</span>, <span class="st">"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23"</span><span class="op">)</span>,</span>
@@ -1072,7 +1072,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="tibble" class="level2"><h2 class="anchored" data-anchor-id="tibble">Tibble</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
 <span>  `Variable Name` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"condit"</span>, <span class="st">"fb"</span>, <span class="st">"bandOrder"</span>, <span class="st">"tOrder"</span>, <span class="st">"expMode"</span>, <span class="st">"trainStage"</span>,</span>
 <span>                      <span class="st">"expStage"</span>, <span class="st">"band"</span>, <span class="st">"vb"</span>, <span class="st">"lowBound"</span>, <span class="st">"feedback"</span>, <span class="st">"stage"</span><span class="op">)</span>,</span>
 <span>  `Levels` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Constant, Varied"</span>, </span>
@@ -1616,7 +1616,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="tribble" class="level2"><h2 class="anchored" data-anchor-id="tribble">Tribble</h2>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">tribble</span><span class="op">(</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">tribble</span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">Variable</span>, <span class="op">~</span><span class="va">Levels</span>, <span class="op">~</span><span class="va">Description</span>,</span>
 <span>  <span class="st">"condit"</span>, <span class="st">"Constant, Varied"</span>, <span class="st">"Conditions under which training was performed. In 'Constant' only one velocity band was used, in 'Varied' three different bands were used."</span>,</span>
 <span>  <span class="st">"fb"</span>, <span class="st">"Continuous, Ordinal"</span>, <span class="st">"Two types of feedback given to the subjects. The 'Continuous' type involved ongoing feedback whereas 'Ordinal' feedback type was rank-based"</span>,</span>
@@ -2461,7 +2461,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<details><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create a data frame</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create a data frame</span></span>
 <span><span class="va">var_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>  condit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Constant"</span>, <span class="st">"Varied"</span><span class="op">)</span>,</span>
 <span>  fb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Continuous"</span>, <span class="st">"Ordinal"</span><span class="op">)</span>,</span>

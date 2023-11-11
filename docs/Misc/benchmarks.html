@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.415">
+<meta name="generator" content="quarto-1.4.480">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="dcterms.date" content="2023-09-03">
 <title>HTW Project - Benchmarking</title>
@@ -101,11 +101,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Misc/Visuals_Interactives/model_viz.html">Misc</a></li><li class="breadcrumb-item"><a href="../Misc/benchmarks.html">Benchmarking</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -113,7 +113,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">HTW Project</a> 
         <div class="sidebar-tools-main">
@@ -248,8 +248,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ALM &amp; EXAM Fitting</span></a>
+  <a href="../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW EXAM Fits and Transfer Predictions</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -328,7 +328,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
@@ -365,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"Functions"</span>, <span class="st">"packages.R"</span><span class="op">)</span><span class="op">)</span></span>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"Functions"</span>, <span class="st">"packages.R"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_08-21-23.rds"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode2</span> <span class="op">==</span> <span class="st">"Test"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>,<span class="va">bandInt</span>,<span class="va">vb</span>,<span class="va">vx</span>,<span class="va">dist</span>,<span class="va">sdist</span>,<span class="va">bandType</span><span class="op">)</span></span>
 <span></span>
@@ -396,7 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>https://cran.r-project.org/web/packages/brms/vignettes/brms_threading.html</p>
 <p>https://discourse.mc-stan.org/t/using-the-apple-m1-gpus-question-from-a-noob/23089/39?page=2</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">tidybayes</span>,<span class="va">brms</span>,<span class="va">broom</span>,<span class="va">broom.mixed</span>,<span class="va">lme4</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">gt</span>,<span class="va">gghalves</span>,<span class="va">patchwork</span>,<span class="va">ggdist</span>,<span class="va">microbenchmark</span><span class="op">)</span></span>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">tidybayes</span>,<span class="va">brms</span>,<span class="va">broom</span>,<span class="va">broom.mixed</span>,<span class="va">lme4</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">gt</span>,<span class="va">gghalves</span>,<span class="va">patchwork</span>,<span class="va">ggdist</span>,<span class="va">microbenchmark</span><span class="op">)</span></span>
 <span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_08-21-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">test</span> <span class="op">&lt;-</span> <span class="va">e1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode2</span> <span class="op">==</span> <span class="st">"Test"</span><span class="op">)</span>  </span>
 <span></span>
@@ -536,7 +536,7 @@ int only threading = 20.6 irt threading = 40.02 - when I commented out the threa
 </section><section id="k-iterations---condit-factor-and-bandint-rf-slope---2-threads---4-cores" class="level3"><h3 class="anchored" data-anchor-id="k-iterations---condit-factor-and-bandint-rf-slope---2-threads---4-cores">(20K iterations) - condit factor and bandInt RF slope - 2 threads - 4 cores</h3>
 <p>int only gaussian = 7.85 irt version = 80.71 int only threading = 8.69 irt threading = 88.3</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">foreach</span>,<span class="va">doParallel</span>,<span class="va">future</span>,<span class="va">furrr</span>,<span class="va">here</span><span class="op">)</span></span>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">foreach</span>,<span class="va">doParallel</span>,<span class="va">future</span>,<span class="va">furrr</span>,<span class="va">here</span><span class="op">)</span></span>
 <span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">walk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"Functions/alm_functions.R"</span>,<span class="st">"Functions/Display_Functions.R"</span><span class="op">)</span><span class="op">)</span>,<span class="va">source</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">n_cores</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html">detectCores</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -715,7 +715,7 @@ int only threading = 20.6 irt threading = 40.02 - when I commented out the threa
 <hr>
 <p>Furrr and standard version both work equally fast, tested with up to 120 simulation repetitions</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/furrr">furrr</a></span><span class="op">)</span></span>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/furrr">furrr</a></span><span class="op">)</span></span>
 <span><span class="fu">furrr</span><span class="fu">::</span><span class="fu"><a href="https://furrr.futureverse.org/reference/furrr_options.html">furrr_options</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html">detectCores</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -763,7 +763,7 @@ int only threading = 20.6 irt threading = 40.02 - when I commented out the threa
 <p>ts user system elapsed 1132.716 76.260 1493.154</p>
 </section><section id="benchmarking-alm-model-fit-functions" class="level1"><h1>Benchmarking ALM Model Fit Functions</h1>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">data.table</span>,<span class="fu">microbenchmark</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">data.table</span>,<span class="fu">microbenchmark</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">'dPrune-01-19-23.rds'</span><span class="op">)</span><span class="op">)</span></span>
@@ -887,7 +887,7 @@ int only threading = 20.6 irt threading = 40.02 - when I commented out the threa
 </div>
 <section id="dplyr-rmse-vs-data.table-rmse" class="level3"><h3 class="anchored" data-anchor-id="dplyr-rmse-vs-data.table-rmse">dplyr RMSE vs data.table RMSE</h3>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dpVsDt</span><span class="op">=</span><span class="fu">microbenchmark</span><span class="op">(</span></span>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dpVsDt</span><span class="op">=</span><span class="fu">microbenchmark</span><span class="op">(</span></span>
 <span>  dplyrMethod<span class="op">=</span><span class="op">{</span></span>
 <span>  <span class="va">fitVaried</span> <span class="op">&lt;-</span> <span class="va">tv</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">condit</span><span class="op">==</span><span class="st">"Varied"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">wrap_optim</span><span class="op">(</span><span class="va">.</span>,<span class="va">wm</span>,lossFun<span class="op">=</span><span class="va">RMSE.tb</span><span class="op">)</span>;</span>
 <span>  <span class="va">fitConstant</span> <span class="op">&lt;-</span> <span class="va">tv</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">condit</span><span class="op">==</span><span class="st">"Constant"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">wrap_optim</span><span class="op">(</span><span class="va">.</span>,<span class="va">wm</span>,lossFun<span class="op">=</span><span class="va">RMSE.tb</span><span class="op">)</span><span class="op">}</span>,</span>
@@ -950,7 +950,7 @@ int only threading = 20.6 irt threading = 40.02 - when I commented out the threa
 <p>The data.table version seems to be consistently more than 2x faster</p>
 </section><section id="separate-fits-vs.-nesting-method-vs.-split-method" class="level3"><h3 class="anchored" data-anchor-id="separate-fits-vs.-nesting-method-vs.-split-method">Separate fits, vs.&nbsp;nesting method vs.&nbsp;split method</h3>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nestSplit</span><span class="op">&lt;-</span><span class="fu">microbenchmark</span><span class="op">(</span></span>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nestSplit</span><span class="op">&lt;-</span><span class="fu">microbenchmark</span><span class="op">(</span></span>
 <span>separate<span class="op">=</span><span class="op">{</span><span class="va">fitVaried</span> <span class="op">&lt;-</span> <span class="va">tv</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">condit</span><span class="op">==</span><span class="st">"Varied"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">wrap_optim</span><span class="op">(</span><span class="va">.</span>,<span class="va">wm</span>,lossFun<span class="op">=</span><span class="va">RMSE.tb2</span><span class="op">)</span>;</span>
 <span><span class="va">fitConstant</span> <span class="op">&lt;-</span> <span class="va">tv</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">condit</span><span class="op">==</span><span class="st">"Constant"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">wrap_optim</span><span class="op">(</span><span class="va">.</span>,<span class="va">wm</span>,lossFun<span class="op">=</span><span class="va">RMSE.tb2</span><span class="op">)</span> <span class="op">}</span>,</span>
 <span>nestGroups <span class="op">=</span> <span class="va">tv</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">condit</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">nest</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>fit<span class="op">=</span><span class="fu">map</span><span class="op">(</span><span class="va">data</span>,<span class="op">~</span><span class="fu">wrap_optim</span><span class="op">(</span><span class="va">.</span>,<span class="va">wm</span>,<span class="va">RMSE.tb2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -1022,7 +1022,7 @@ int only threading = 20.6 irt threading = 40.02 - when I commented out the threa
 <p>Not much of an effect for nesting method.</p>
 </section><section id="computing-rmse-over-raw-trials-vs.-rmse-of-blocked-training-performance" class="level3"><h3 class="anchored" data-anchor-id="computing-rmse-over-raw-trials-vs.-rmse-of-blocked-training-performance">Computing RMSE over Raw trials vs.&nbsp;RMSE of blocked training performance</h3>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">trialBlock</span><span class="op">&lt;-</span><span class="fu">microbenchmark</span><span class="op">(</span></span>
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">trialBlock</span><span class="op">&lt;-</span><span class="fu">microbenchmark</span><span class="op">(</span></span>
 <span>  trialFit <span class="op">=</span> <span class="va">tv</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">.</span><span class="op">$</span><span class="va">condit</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">map</span><span class="op">(</span><span class="op">~</span><span class="fu">wrap_optim</span><span class="op">(</span><span class="va">.</span>,<span class="va">wm</span>,<span class="va">RMSE</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  blockFit <span class="op">=</span> <span class="va">tv</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">.</span><span class="op">$</span><span class="va">condit</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">map</span><span class="op">(</span><span class="op">~</span><span class="fu">wrap_optim</span><span class="op">(</span><span class="va">.</span>,<span class="va">wm</span>,<span class="va">RMSE.tb2</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  times<span class="op">=</span><span class="fl">5</span></span>
