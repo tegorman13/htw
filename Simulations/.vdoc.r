@@ -10,32 +10,37 @@
 #
 #
 #
-#
-#
 # load and view data
-pacman::p_load(tidyverse,lme4,future,furrr,patchwork,here, furrr, future, pander)
-purrr::walk(here(c("Functions/Display_Functions.R", "Functions/alm_core.R","Functions/misc_model_funs.R")),source)
+pacman::p_load(tidyverse,patchwork,here, pander, latex2exp)
+purrr::walk(here::here(c("Functions/Display_Functions.R", "Functions/alm_core.R","Functions/misc_model_funs.R")),source)
 select <- dplyr::select; mutate <- dplyr::mutate 
 
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))
-
 dsAvg <- ds |> group_by(condit,expMode2,tr, x) |> 
   summarise(y=mean(y),.groups="keep") 
 
 vAvg <- dsAvg |> filter(condit=="Varied")
 cAvg <- dsAvg |> filter(condit=="Constant")
 
-head(dsAvg) |> pander::pandoc.table(style = "simple")
-
-i1 <- ds |> filter(id=="1")
+i1 <- ds |> filter(id=="3")
 
 input.layer <- c(100,350,600,800,1000,1200)
 output.layer <- c(100,350,600,800,1000,1200)
 
 
-default.layer <- c(100,350,600,800,1000,1200)
+purrr::walk(c("con_group_exam_fits", "var_group_exam_fits", "hybrid_group_exam_fits"), 
+            ~ list2env(readRDS(here::here(paste0("data/model_cache/", .x, ".rds"))), 
+            envir = .GlobalEnv))
+#
+#
+#
+#
+#
+#
+#| label: fig-alm-diagram
+#| fig.cap: The basic structure of the ALM model. 
 
-output.layer <- adjust_layer(default.layer,k=3)
+alm_plot()
 
 #
 #
@@ -43,135 +48,243 @@ output.layer <- adjust_layer(default.layer,k=3)
 #
 #
 #
-
-
-a_testOnly=list(pred_dat="test_avg",pred_fun="alm.responseOnly",loss_fun="RMSE",loss_data="test_error")
-a_trainOnly=list(pred_dat="test_avg",pred_fun="alm.responseOnly",loss_fun="RMSE",loss_data="train_error")
-a_testTrain=list(pred_dat="test_avg",pred_fun="alm.responseOnly",loss_fun="RMSE",loss_data="test_error+train_error")
-
-
-e_testOnly=list(pred_dat="test_avg",pred_fun="exam.response",loss_fun="RMSE",loss_data="test_error")
-e_trainOnly=list(pred_dat="test_avg",pred_fun="exam.response",loss_fun="RMSE",loss_data="train_error")
-e_testTrain=list(pred_dat="test_avg",pred_fun="exam.response",loss_fun="RMSE",loss_data="test_error+train_error")
-
-h_testOnly=list(pred_dat="test_avg",pred_fun="predict_alm_exam_weighted_hybrid",loss_fun="RMSE",loss_data="test_error")
-h_trainOnly=list(pred_dat="test_avg",pred_fun="predict_alm_exam_weighted_hybrid",loss_fun="RMSE",loss_data="train_error")
-h_testTrain=list(pred_dat="test_avg",pred_fun="exam.response",loss_fun="RMSE",loss_data="test_error+train_error")
-
-hybrid_te_v <- wrap_grid(vAvg, c_values, lr_values, input.layer, output.layer,predParams=e_testOnly)
-hybrid_tetr_v <- wrap_grid(vAvg, c_values, lr_values, input.layer, output.layer,predParams=e_testTrain)
-hybrid_tr_v<- wrap_grid(vAvg, c_values, lr_values, input.layer, output.layer,predParams=e_trainOnly)
-
-
-#
-#
-#
-plan(multisession)
-
-c_values <- seq(0.000001, 1.0, length.out=120)
-lr_values <- seq(0.0000001, 4.0, length.out=200)
-
-list2env(readRDS(here::here("data/model_cache/con_group_exam_fits.rds")), envir = .GlobalEnv)
-list2env(readRDS(here::here("data/model_cache/var_group_exam_fits.rds")), envir = .GlobalEnv)
-
-
-
-
-#
-#
-#
-
-
-
-
 #
 #
 #
 #
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+
+almParamsV <- cbind(Model="ALM Test Only",pluck(a_te_v, "Fit"), pluck(a_te_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)) ) |>
+  rbind(cbind(Model="ALM Test & Train", pluck(a_tetr_v,"Fit"), pluck(a_tetr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+  rbind(cbind(Model="ALM Train Only", pluck(a_tr_v, "Fit"), pluck(a_tr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+  mutate(across(where(is.numeric), \(x) round(x, 3)))
+
+examParamsV <- cbind(Model="EXAM Test Only",pluck(ex_te_v, "Fit"), pluck(ex_te_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred))) |>
+  rbind(cbind(Model="EXAM Test & Train", pluck(ex_tetr_v,"Fit"), pluck(ex_tetr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+  rbind(cbind(Model="EXAM Train Only", pluck(ex_tr_v, "Fit"), pluck(ex_tr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+  mutate(across(where(is.numeric), \(x) round(x, 3)))
 
 
-vte <- pluck(a_te_v, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex_te_v, "test") |> pull(pred)) |>  
-  pivot_longer(Observed:EXAM, names_to="Model", values_to = "vx") |> 
-  ggplot(aes(x,vx,fill=Model,col=Model,shape=Model)) +geom_point() + 
+hybridParamsV <-cbind(Model="Hybrid Test Only",pluck(hybrid_te_v, "Fit"), pluck(hybrid_te_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred))) |>
+  rbind(cbind(Model="Hybrid Test & Train", pluck(hybrid_tetr_v,"Fit"), pluck(hybrid_tetr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+  rbind(cbind(Model="Hybrid Train Only", pluck(hybrid_tr_v, "Fit"), pluck(hybrid_tr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+  mutate(across(where(is.numeric), \(x) round(x, 3)))
+
+almParamsC <- cbind(Model="ALM Test Only",pluck(a_te_c, "Fit"), pluck(a_te_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)) ) |>
+  rbind(cbind(Model="ALM Test & Train", pluck(a_tetr_c,"Fit"), pluck(a_tetr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+  rbind(cbind(Model="ALM Train Only", pluck(a_tr_c, "Fit"), pluck(a_tr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+  mutate(across(where(is.numeric), \(x) round(x, 3)))
+
+examParamsC <- cbind(Model="EXAM Test Only",pluck(ex0_te_c, "Fit"), pluck(ex0_te_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred))) |>
+  rbind(cbind(Model="EXAM Test & Train", pluck(ex0_tetr_c,"Fit"), pluck(ex0_tetr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+  rbind(cbind(Model="EXAM Train Only", pluck(ex0_tr_c, "Fit"), pluck(ex0_tr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+  mutate(across(where(is.numeric), \(x) round(x, 3)))
+
+
+hybridParamsC <-cbind(Model="Hybrid Test Only",pluck(hybrid_te_c, "Fit"), pluck(hybrid_te_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred))) |>
+  rbind(cbind(Model="Hybrid Test & Train", pluck(hybrid_tetr_c,"Fit"), pluck(hybrid_tetr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+  rbind(cbind(Model="Hybrid Train Only", pluck(hybrid_tr_c, "Fit"), pluck(hybrid_tr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+  mutate(across(where(is.numeric), \(x) round(x, 3)))
+
+#
+#
+#
+#
+#
+#
+#| label: tbl-e1-model-fits2V
+#| tbl-cap: Varied Group - Fit Parameters and Model RMSE
+
+pander(almParamsV, caption="ALM"); pander(examParamsV, caption="EXAM"); pander(hybridParamsV,caption="Hybrid") 
+#
+#
+#
+#| label: tbl-e1-model-fitsC
+#| tbl-cap: Constant Group - Fit Parameters and Model RMSE
+
+pander(almParamsC, caption="ALM"); pander(examParamsC, caption="EXAM"); pander(hybridParamsC,caption="Hybrid")
+#
+#
+#
+#
+#
+#
+#
+#| label: fig-model-preds-varied
+#| fig-cap: Varied Group - Mean Model predictions vs. observations
+#| fig-height: 12
+#| fig-width: 14
+#| column: screen-inset-right
+
+####
+
+vte <-  pluck(a_te_v, "test") |> rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex_te_v, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_te_v, "test") |> pull(pred)) |>  
+  pivot_longer(Observed:Hybrid, names_to="Model", values_to = "vx") |> 
+  ggplot(aes(x,vx,fill=Model, group=Model)) +geom_bar(position="dodge",stat="identity") +
+  scale_fill_manual(values=col_themes$wes2)+
   scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
-  theme(legend.title = element_blank(), legend.position="top") +ggtitle("Optimize for Test Only")
+  theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Test Only")
 
-vtetr <- pluck(a_tetr_v, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex_tetr_v, "test") |> pull(pred)) |>  
-  pivot_longer(Observed:EXAM, names_to="Model", values_to = "vx") |> 
-  ggplot(aes(x,vx,fill=Model,col=Model,shape=Model)) +geom_point() + 
+vtetr <-  pluck(a_tetr_v, "test") |> rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex_tetr_v, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_tetr_v, "test") |> pull(pred)) |>  
+  pivot_longer(Observed:Hybrid, names_to="Model", values_to = "vx") |> 
+  ggplot(aes(x,vx,fill=Model, group=Model)) +geom_bar(position="dodge",stat="identity") + 
+  scale_fill_manual(values=col_themes$wes2)+
   scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
-  theme(legend.title = element_blank(), legend.position="top") +ggtitle("Optimize for Test and Train")
+  theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Test and Train")
 
-vtr <- pluck(a_tr_v, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex_tr_v, "test") |> pull(pred)) |>  
-  pivot_longer(Observed:EXAM, names_to="Model", values_to = "vx") |> 
-  ggplot(aes(x,vx,fill=Model,col=Model,shape=Model)) +geom_point(alpha=.5) + 
-  scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ ylim(0,1500) +
-  theme(legend.title = element_blank(), legend.position="top") +ggtitle("Optimize for Train Only")
+vtr <-  pluck(a_tr_v, "test") |> rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex_tr_v, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_tr_v, "test") |> pull(pred)) |>  
+  pivot_longer(Observed:Hybrid, names_to="Model", values_to = "vx") |> 
+  ggplot(aes(x,vx,fill=Model, group=Model)) +geom_bar(position="dodge",stat="identity") +
+  scale_fill_manual(values=col_themes$wes2)+
+  scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
+  theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Train Only")
+  
+
+  
 
 
 vte/vtetr/vtr
 
+#
+#
+#
+#
+#
+#
+#
+#| label: tbl-e1-predsV
+#| tbl-cap: Varied group - mean model predictions vs. observations
+#| 
+tvte<- pluck(a_te_v, "test") |> rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex_te_v, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_te_v, "test") |> pull(pred))
+
+tvtetr<-pluck(a_tetr_v, "test") |> rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex_tetr_v, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_tetr_v, "test") |> pull(pred))
 
 tvtr<- pluck(a_tr_v, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex_tr_v, "test") |> pull(pred)) 
+  cbind(.,EXAM=pluck(ex_tr_v, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_tr_v, "test") |> pull(pred))
 
-tvtetr<- pluck(a_tetr_v, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex_tetr_v, "test") |> pull(pred)) 
+pander(tvte, caption="Varied fit to test only")
+pander(tvtetr,caption="Varied fit to train and test")
+pander(tvtr,caption="Varied fit to train only")
 
-tvte<- pluck(a_te_v, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex_te_v, "test") |> pull(pred)) 
-
-pander("Varied-fit to test only") + pander(tvte) +
-  pander("Varied - fit to train and test")+ pander(tvtetr)+
-  pander("Varired-fit to train only")+ pander(tvtr)
 #
 #
 #
 #
 #
+#
+#| label: fig-model-preds-constant
+#| fig-cap: Constant Group - Mean Model predictions vs. observations
+#| fig-height: 12
+#| fig-width: 14
+#| column: screen-inset-right
 
+####
 
-cte <- pluck(a_te_c, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex0_te_c, "test") |> pull(pred)) |>  
-  pivot_longer(Observed:EXAM, names_to="Model", values_to = "vx") |> 
-  ggplot(aes(x,vx,fill=Model,col=Model,shape=Model)) +geom_point() + 
+cte <-  pluck(a_te_c, "test") |> rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex0_te_c, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_te_c, "test") |> pull(pred)) |>  
+  pivot_longer(Observed:Hybrid, names_to="Model", values_to = "vx") |> 
+  ggplot(aes(x,vx,fill=Model, group=Model)) +geom_bar(position="dodge",stat="identity") +
+  scale_fill_manual(values=col_themes$wes2)+
   scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
-  theme(legend.title = element_blank(), legend.position="top") +ggtitle("Optimize for Test Only")
+  theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Test Only")
 
-ctetr <- pluck(a_tetr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex0_tetr_c, "test") |> pull(pred)) |>  
-  pivot_longer(Observed:EXAM, names_to="Model", values_to = "vx") |> 
-  ggplot(aes(x,vx,fill=Model,col=Model,shape=Model)) +geom_point() + 
+ctetr <-  pluck(a_tetr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex0_tetr_c, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_tetr_c, "test") |> pull(pred)) |>  
+  pivot_longer(Observed:Hybrid, names_to="Model", values_to = "vx") |> 
+  ggplot(aes(x,vx,fill=Model, group=Model)) +geom_bar(position="dodge",stat="identity") + 
+  scale_fill_manual(values=col_themes$wes2)+
   scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
-  theme(legend.title = element_blank(), legend.position="top") +ggtitle("Optimize for Test and Train")
+  theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Test and Train")
 
-ctr <- pluck(a_tr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex0_tr_c, "test") |> pull(pred)) |>  
-  pivot_longer(Observed:EXAM, names_to="Model", values_to = "vx") |> 
-  ggplot(aes(x,vx,fill=Model,col=Model,shape=Model)) +geom_point() + 
-  scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ ylim(0,1500) +
-  theme(legend.title = element_blank(), legend.position="top") +ggtitle("Optimize for Train Only")
-
-
-
+ctr <-  pluck(a_tr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex0_tr_c, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_tr_c, "test") |> pull(pred)) |>  
+  pivot_longer(Observed:Hybrid, names_to="Model", values_to = "vx") |> 
+  ggplot(aes(x,vx,fill=Model, group=Model)) +geom_bar(position="dodge",stat="identity") +
+  scale_fill_manual(values=col_themes$wes2)+
+  scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
+  theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Train Only")
+  
 cte/ctetr/ctr
 
+#
+#
+#
+#
+#
+#| label: tbl-e1-predsC
+#| tbl-cap: Constant group - mean model predictions vs. observations
+#| 
+tcte<- pluck(a_te_c, "test") |> rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex0_te_c, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_te_c, "test") |> pull(pred))
+
+tctetr<-pluck(a_tetr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex0_tetr_c, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_tetr_c, "test") |> pull(pred))
 
 tctr<- pluck(a_tr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex0_tr_c, "test") |> pull(pred)) 
+  cbind(.,EXAM=pluck(ex0_tr_c, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_tr_c, "test") |> pull(pred))
 
-tctetr<- pluck(a_tetr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex0_tetr_c, "test") |> pull(pred)) 
-
-tcte<- pluck(a_te_c, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex0_te_c, "test") |> pull(pred)) 
-
-pander("Constant-fit to test only") + pander(tcte) +
-  pander("Constant - fit to train and test")+ pander(tctetr)+
-  pander("Constant-fit to train only")+ pander(tctr)
+pander(tcte, caption="Constant fit to test only")
+pander(tctetr,caption="Constant fit to train and test")
+pander(tctr,caption="Constant fit to train only")
 
 #
 #
@@ -185,7 +298,7 @@ pander("Constant-fit to test only") + pander(tcte) +
 #
 #
 #
-#
+#| eval: false
 pluck(a_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
   mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
   learn_curve_plot(tr, vx, Resp,facet_var=x, groupVec=Resp,nbins=8)
@@ -209,7 +322,7 @@ list(a_tr_v, a_te_v,a_tetr_v) |> map( ~{pluck(.x, "train") |> pivot_longer(y:alm
 #
 #
 #
-
+#| eval: false
 pluck(ex_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
   mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
   learn_curve_plot(tr, vx, Resp,facet_var=x, groupVec=Resp,nbins=8)
@@ -226,7 +339,7 @@ pluck(ex_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = 
 #
 #
 #
-
+#| eval: false
 
 
 optimize_params_weighted_individual <- function(ds, c_values, lr_values, weight_exam_values, input.layer, output.layer) {
