@@ -9,9 +9,6 @@ execute:
   eval: true
 ---
 
-<details class="code-fold">
-
-<summary>Code</summary>
 
 ```{r}
 # load and view data
@@ -30,6 +27,16 @@ i1 <- ds |> filter(id=="3")
 
 input.layer <- c(100,350,600,800,1000,1200)
 output.layer <- c(100,350,600,800,1000,1200)
+
+# dsAvg |> filter(condit=="Constant",expMode2=="Test") %>% nrow(.)
+
+# number of distinct bands in the Test mode
+
+dsAvg |> filter(condit=="Varied",expMode2=="Test") %>% nrow(.)
+dsAvg |> filter(condit=="Constant",expMode2=="Test") %>% nrow(.)
+dsAvg |> filter(condit=="Varied",expMode2=="Test") %>% pull(x) |> n_distinct()
+dsAvg |> filter(condit=="Constant",expMode2=="Test") %>% pull(x) |> n_distinct()
+
 
 
 purrr::walk(c("con_group_exam_fits", "var_group_exam_fits", "hybrid_group_exam_fits"), 
@@ -132,7 +139,7 @@ See for a full specification of the equations that define ALM and EXAM.
 ### ALM Activation & Response
 
 | Step                          | Equation                                                                            | Description                                                                                                                            |
-|------------------|------------------------|-------------------------------|
+|------------------|------------------------|------------------------------|
 | **ALM Activation & Response** |                                                                                     |                                                                                                                                        |
 | Input Activation              | $a_i(X) = \frac{e^{-c(X-X_i)^2}}{\sum_{k=1}^M e^{-c(X-X_k)^2}}$                     | Activation of each input node $X_i$, is a function of the Gaussian similarity between the node value and stimulus X.                   |
 | Output Activation             | $O_j(X) = \sum_{k=1}^M w_{ji} \cdot a_i(X)$                                         | Activation of each Output unit $O_j$ is the weighted sum of the input activations and association weights.                             |
@@ -145,15 +152,22 @@ See for a full specification of the equations that define ALM and EXAM.
 | Extrapolation                 | $P[X_i|X] = \frac{a_i(X)}{\sum_{k=1}^M a_k(X)}$                                     | Novel test stimulus X activates input nodes associated with trained stimuli.                                                           |
 |                               | $E[Y|X_i] = m(X_i) + \frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1}-X_{i-1}} \cdot [X - X_i]$ | Slope value computed from nearest training instances and then added to the response associated with the nearest training instance,m(x) |
 
-
 
 ## Model Fitting and Comparison
 
-Following the procedure used by Mcdaniel et al. (2009), we will assess the ability of both ALM and EXAM to account for the empirical data when fitting the models to 1) only the training data, and 2) both training and testing data. Models will be fit directly to the trial by trial data of each individual participants, both by minimizing the root-mean squared deviation (RMSE), and by maximizing log likelihood. Because ALM has been shown to do poorly at accounting for human patterns extrapolation (DeLosh et al., 1997), we will also fit the extended EXAM version of the model, which operates identically to ALM during training, but includes a linear extrapolation mechanism for generating novel responses during testing.
+Following the procedure used by Mcdaniel et al. (2009), we will assess the ability of both ALM and EXAM to account for the empirical data when fitting the models to 1) only the training data, and 2) both training and testing data. Models will be fit directly to the trial by trial data of each individual participants, both by minimizing the root-mean squared deviation (RMSE). Because ALM has been shown to do poorly at accounting for human patterns extrapolation (DeLosh et al., 1997), we will also fit the extended EXAM version of the model, which operates identically to ALM during training, but includes a linear extrapolation mechanism for generating novel responses during testing.
 
-<details class="code-fold">
+We also fit a 3rd, hybrid model, which generates responses as a weighted sum of ALM and EXAM predictions. For the hybrid model, predictions are computed by first generating separate predictions from ALM and EXAM, and then combining them using the following equation: $\hat{y} = (1 - w) \cdot alm_pred + w \cdot exam_pred$, where $w$ is a third fit parameters that sets the relative contribution between the two models. For the grid search, the weight parameter is varied from 0 to 1, and the resulting RMSE is recorded. 
 
-<summary>Code</summary>
+Each model was fit to the data in 3 different ways. 1) To just the testing data, 2) Both the training and testing data, 3) Only the training data. In all cases, the model only updates its weights during the training phase, and the weights are frozen during the testing phase. In all cases, only the ALM model generates predictions during the training phase. For the testing phase, all 3 models are used to generate predictions. 
+
+
+The Value column of the table reflects the minimum RMSE achieved when fitting the model. The Test_RMSE column is the main performance indicator of interest, and represents the RMSE for just the testing data - thus for the Test Only fits, the Value and Test_RMSE columns are identical - given that the models were trained and tested on the exact some data sets.  For the Test & Train, and Train Only fits - the Test_RMSE can diverge from the fitting values. 
+
+
+
+
+
 
 ```{r}
 almParamsV <- cbind(Model="ALM Test Only",pluck(a_te_v, "Fit"), pluck(a_te_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)) ) |>
@@ -165,7 +179,6 @@ examParamsV <- cbind(Model="EXAM Test Only",pluck(ex_te_v, "Fit"), pluck(ex_te_v
   rbind(cbind(Model="EXAM Test & Train", pluck(ex_tetr_v,"Fit"), pluck(ex_tetr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
   rbind(cbind(Model="EXAM Train Only", pluck(ex_tr_v, "Fit"), pluck(ex_tr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
   mutate(across(where(is.numeric), \(x) round(x, 3)))
-
 
 hybridParamsV <-cbind(Model="Hybrid Test Only",pluck(hybrid_te_v, "Fit"), pluck(hybrid_te_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred))) |>
   rbind(cbind(Model="Hybrid Test & Train", pluck(hybrid_tetr_v,"Fit"), pluck(hybrid_tetr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
@@ -182,24 +195,127 @@ examParamsC <- cbind(Model="EXAM Test Only",pluck(ex0_te_c, "Fit"), pluck(ex0_te
   rbind(cbind(Model="EXAM Train Only", pluck(ex0_tr_c, "Fit"), pluck(ex0_tr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
   mutate(across(where(is.numeric), \(x) round(x, 3)))
 
-
 hybridParamsC <-cbind(Model="Hybrid Test Only",pluck(hybrid_te_c, "Fit"), pluck(hybrid_te_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred))) |>
   rbind(cbind(Model="Hybrid Test & Train", pluck(hybrid_tetr_c,"Fit"), pluck(hybrid_tetr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
   rbind(cbind(Model="Hybrid Train Only", pluck(hybrid_tr_c, "Fit"), pluck(hybrid_tr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
   mutate(across(where(is.numeric), \(x) round(x, 3)))
+
+
+calculate_AIC <- function(rmse, n, k) {
+  return(n * log((rmse^2)) + 2 * k)
+}
+
+calculate_BIC <- function(rmse, n, k) {
+  return(n * log((rmse^2)) + log(n) * k)
+}
+
+n <- dsAvg |> filter(expMode2=="Test") %>% pull(x) |> n_distinct()
+
+# ALM AIC and BIC
+almParamsV$AIC <- mapply(calculate_AIC, rmse = almParamsV$Test_RMSE, MoreArgs = list(n = n, k = 2))
+almParamsV$BIC <- mapply(calculate_BIC, rmse = almParamsV$Test_RMSE, MoreArgs = list(n = n, k = 2))
+
+# EXAM AIC and BIC
+examParamsV$AIC <- mapply(calculate_AIC, rmse = examParamsV$Test_RMSE, MoreArgs = list(n = n, k = 2))
+examParamsV$BIC <- mapply(calculate_BIC, rmse = examParamsV$Test_RMSE, MoreArgs = list(n = n, k = 2))
+
+# Hybrid AIC and BIC
+hybridParamsV$AIC <- mapply(calculate_AIC, rmse = hybridParamsV$Test_RMSE, MoreArgs = list(n = n, k = 3))
+hybridParamsV$BIC <- mapply(calculate_BIC, rmse = hybridParamsV$Test_RMSE, MoreArgs = list(n = n, k = 3))
+
+
+hybridParamsV
+
+
 ```
 
-</details>
 
-<details class="code-fold">
+```{r}
 
-<summary>Code</summary>
+calculate_metrics <- function(df, n, k) {
+  df %>% 
+    mutate(
+      AIC = calculate_AIC(Test_RMSE, n, k),
+      BIC = calculate_BIC(Test_RMSE, n, k)
+    ) %>% 
+    mutate(across(where(is.numeric), round, 3))
+}
+
+# Number of distinct testing positions
+n <- dsAvg |> filter(expMode2=="Test") %>% pull(x) |> n_distinct()
+
+# Create a list of all model data frames
+model_list <- list(
+  almParamsV = list(data = almParamsV, k = 2),
+  examParamsV = list(data = examParamsV, k = 2),
+  hybridParamsV = list(data = hybridParamsV, k = 3),
+  almParamsC = list(data = almParamsC, k = 2),
+  examParamsC = list(data = examParamsC, k = 2),
+  hybridParamsC = list(data = hybridParamsC, k = 3)
+)
+
+# Apply the calculate_metrics function to each model data frame
+model_results <- map(model_list, ~calculate_metrics(.x$data, n, .x$k))
+
+# Extract the results back into separate data frames
+list2env(model_results, envir = .GlobalEnv)
+
+# The final tables are now in the global environment with the same names as before
+# For example, you can view the updated ALM params for the Varied group with:
+almParamsV
+examParamsV
+```
+
+
 
 ```{r}
 pander(almParamsV, caption="ALM"); pander(examParamsV, caption="EXAM"); pander(hybridParamsV,caption="Hybrid") 
 ```
 
-</details>
+
+
+```{r}
+
+calculate_metrics <- function(df, n, k) {
+  df %>%
+    summarise(
+      Test_RMSE = RMSE(y, pred),
+      AIC = calculate_AIC(Test_RMSE, n, k),
+      BIC = calculate_BIC(Test_RMSE, n, k)
+    ) %>%
+    mutate(across(where(is.numeric), round, 3))
+}
+
+n <- dsAvg |> filter(expMode2 == "Test") %>% pull(x) |> n_distinct()
+
+# Bind the rows for each model and condition, then calculate AIC and BIC
+almParams <- bind_rows(
+  cbind(Model = "ALM Test Only", calculate_metrics(pluck(a_te_v, "test"), n, 2)),
+  cbind(Model = "ALM Test & Train", calculate_metrics(pluck(a_tetr_v, "test"), n, 2)),
+  cbind(Model = "ALM Train Only", calculate_metrics(pluck(a_tr_v, "test"), n, 2))
+)
+
+examParams <- bind_rows(
+  cbind(Model = "EXAM Test Only", calculate_metrics(pluck(ex_te_v, "test"), n, 2)),
+  cbind(Model = "EXAM Test & Train", calculate_metrics(pluck(ex_tetr_v, "test"), n, 2)),
+  cbind(Model = "EXAM Train Only", calculate_metrics(pluck(ex_tr_v, "test"), n, 2))
+)
+
+hybridParams <- bind_rows(
+  cbind(Model = "Hybrid Test Only", calculate_metrics(pluck(hybrid_te_v, "test"), n, 3)),
+  cbind(Model = "Hybrid Test & Train", calculate_metrics(pluck(hybrid_tetr_v, "test"), n, 3)),
+  cbind(Model = "Hybrid Train Only", calculate_metrics(pluck(hybrid_tr_v, "test"), n, 3))
+)
+
+# Example to show the result
+head(hybridParams)
+```
+
+
+
+
+
+### Varied Parameter fits and RMSE
 
 |      Model       |   c   |  lr  | Value | Test_RMSE |
 |:----------------:|:-----:|:----:|:-----:|:---------:|
@@ -225,15 +341,14 @@ EXAM
 
 Hybrid
 
-<details class="code-fold">
 
-<summary>Code</summary>
+
 
 ```{r}
 pander(almParamsC, caption="ALM"); pander(examParamsC, caption="EXAM"); pander(hybridParamsC,caption="Hybrid")
 ```
 
-</details>
+### Constant Parameter fits and RMSE
 
 |      Model       |   c   |  lr  | Value | Test_RMSE |
 |:----------------:|:-----:|:----:|:-----:|:---------:|
@@ -258,6 +373,9 @@ EXAM
 |  Hybrid Train Only  | 0.042 | 0.067 |  0  | 31.5  |   330.3   |
 
 Hybrid
+
+
+
 
 ## Varied Testing Predictions
 
@@ -302,15 +420,11 @@ vtr <-  pluck(a_tr_v, "test") |> rename(ALM=pred,Observed=y) %>%
 vte/vtetr/vtr
 ```
 
-</details>
 
 ![](htw_exam.markdown_strict_files/figure-markdown_strict/fig-model-preds-varied-1.jpeg)
 
 ## Varied Testing
 
-<details class="code-fold">
-
-<summary>Code</summary>
 
 ```{r}
 tvte<- pluck(a_te_v, "test") |> rename(ALM=pred,Observed=y) %>% 
@@ -329,8 +443,6 @@ pander(tvte, caption="Varied fit to test only")
 pander(tvtetr,caption="Varied fit to train and test")
 pander(tvtr,caption="Varied fit to train only")
 ```
-
-</details>
 
 |  x   | Observed | ALM  | EXAM  | Hybrid |
 |:----:|:--------:|:----:|:-----:|:------:|
@@ -365,11 +477,9 @@ Varied fit to train and test
 
 Varied fit to train only
 
+
+
 ## Constant Testing Predictions
-
-<details class="code-fold">
-
-<summary>Code</summary>
 
 ```{r}
 ####
@@ -404,13 +514,8 @@ ctr <-  pluck(a_tr_c, "test") |> rename(ALM=pred,Observed=y) %>%
 cte/ctetr/ctr
 ```
 
-</details>
 
 ![](htw_exam.markdown_strict_files/figure-markdown_strict/fig-model-preds-constant-1.jpeg)
-
-<details class="code-fold">
-
-<summary>Code</summary>
 
 ```{r}
 tcte<- pluck(a_te_c, "test") |> rename(ALM=pred,Observed=y) %>% 
@@ -430,7 +535,6 @@ pander(tctetr,caption="Constant fit to train and test")
 pander(tctr,caption="Constant fit to train only")
 ```
 
-</details>
 
 |  x   | Observed | ALM | EXAM  | Hybrid |
 |:----:|:--------:|:---:|:-----:|:------:|
@@ -465,95 +569,9 @@ Constant fit to train and test
 
 Constant fit to train only
 
-<details class="code-fold">
-
-<summary>Code</summary>
-
-```{r}
-pluck(a_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
-  mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
-  learn_curve_plot(tr, vx, Resp,facet_var=x, groupVec=Resp,nbins=8)
-
-pluck(a_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
-  mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
-  ungroup() %>%
-  gather(key = "variable", value = "y_value", dev, abs_dev, vx) %>%
-  group_by(variable) %>%
-  group_map(~ learn_curve_plot(.x, x_var = tr, y_var = y_value, color_var = Resp, facet_var = x, groupVec = Resp, nbins = 8, y_label = .y$variable), .keep = TRUE)
-
-list(a_tr_v, a_te_v,a_tetr_v) |> map( ~{pluck(.x, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
-  ungroup() %>%
-  gather(key = "variable", value = "y_value", dev, abs_dev, vx) %>%
-  group_by(variable) %>%
-  group_map(~ learn_curve_plot(.x, x_var = tr, y_var = y_value, color_var = Resp, facet_var = x, groupVec = Resp, nbins = 8, y_label = .y$variable), .keep = TRUE) })
-```
-
-</details>
-
-# EXAM fit learning curves
-
-<details class="code-fold">
-
-<summary>Code</summary>
-
-```{r}
-pluck(ex_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
-  mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
-  learn_curve_plot(tr, vx, Resp,facet_var=x, groupVec=Resp,nbins=8)
-
-pluck(ex_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
-  mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
-  ungroup() %>%
-  gather(key = "variable", value = "y_value", dev, abs_dev, vx) %>%
-  group_by(variable) %>%
-  group_map(~ learn_curve_plot(.x, x_var = tr, y_var = y_value, color_var = Resp, facet_var = x, groupVec = Resp, nbins = 8, y_label = .y$variable), .keep = TRUE)
-```
-
-</details>
-
-<details class="code-fold">
-
-<summary>Code</summary>
-
-```{r}
-optimize_params_weighted_individual <- function(ds, c_values, lr_values, weight_exam_values, input.layer, output.layer) {
-    all_results <- list()
-    
-    # Loop through each unique id
-    for (individual in unique(ds$id)) {
-        indiv_data <- ds[ds$id == individual, ]
-        
-        # Run the optimization function for the individual's data
-        result <- optimize_params_weighted(indiv_data, c_values, lr_values, weight_exam_values, input.layer, output.layer)
-        
-        all_results[[as.character(individual)]] <- result
-    }
-    
-    all_results
-}
-
-dss <- ds |> filter(id %in% c(1,2))
-
-all_results_weighted_hybrid <- readRDS(here::here('data/model_cache/indv_hybrid_fits.rds'))
-ma <- map(all_results_weighted_hybrid, "best_params") |> map("c")
 
 
-data.frame(id=names(ma),c=as.numeric(ma))
 
-ma = cbind(id=names(all_results_weighted_hybrid),map(all_results_weighted_hybrid, "best_params") |> map_dfr(magrittr::extract,c("c","lr","weight_exam")))
-
-ds |> group_by(id,condit) |> distinct(id,condit) |> left_join(ma,by=join_by(id))
-
-
-map(all_results_weighted_hybrid,"best_params") |> pluck("c")
-all_results_weighted_hybrid[["1"]]$b
-
- map(~ map(.x$best_params, pluck, "c"))
-
- map_df(~ map_df(.x$train, pluck, "d"), .id = "density")
-```
-
-</details>
 
 DeLosh, E. L., McDaniel, M. A., & Busemeyer, J. R. (1997). Extrapolation: The Sine Qua Non for Abstraction in Function Learning. *Journal of Experimental Psychology: Learning, Memory, and Cognition*, *23*(4), 19. <https://doi.org/10.1037/0278-7393.23.4.968>
 

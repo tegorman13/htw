@@ -33,14 +33,13 @@ purrr::walk(c("con_group_exam_fits", "var_group_exam_fits", "hybrid_group_exam_f
             envir = .GlobalEnv))
 ```
 
+</details>
 
+<details class="code-fold">
 
+<summary>Code</summary>
 
 ```{r}
-#| label: fig-alm-diagram
-#| fig.cap: The basic structure of the ALM model. 
-
-
 pacman::p_load(tidyverse,ggplot2,igraph,ggraph) 
 
 inNodes <- c("exp(c * (100 - Stim)^2)", "exp(c * (350 - Stim)^2)", 
@@ -104,10 +103,11 @@ ggplot() +
   geom_path(data = plot_edges, aes(x = x, y = y, group = id, alpha = weight), alpha=.2) +
   theme_void() +
   theme(legend.position = "none")
-
 ```
 
+</details>
 
+![](htw_exam.markdown_strict_files/figure-markdown_strict/fig-alm-diagram-1.jpeg)
 
 # Modeling
 
@@ -115,45 +115,41 @@ In project 1, we applied model-based techniques to quantify and control for the 
 
 ## ALM & Exam Description
 
-@deloshExtrapolationSineQua1997 introduced the associative learning model (ALM), a connectionist model within the popular class of radial-basis networks. ALM was inspired by, and closely resembles Kruschke's influential ALCOVE model of categorization [@kruschkeALCOVEExemplarbasedConnectionist1992]. 
+DeLosh et al. (1997) introduced the associative learning model (ALM), a connectionist model within the popular class of radial-basis networks. ALM was inspired by, and closely resembles Kruschke's influential ALCOVE model of categorization (Kruschke, 1992).
 
-ALM is a localist neural network model, with each input node corresponding to a particular stimulus, and each output node corresponding to a particular response value. The units in the input layer activate as a function of their Gaussian similarity to the input stimulus. So, for example, an input stimulus of value 55 would induce maximal activation of the input unit tuned to 55. Depending on thevalue of the generalization parameter, the nearby units (e.g. 54 and 56; 53 and 57) may also activate to some degree. ALM is structured with input and output nodes that correspond to regions of the stimulus space, and response space, respectively. The units in the input layer activate as a function of their similarity to a presented stimulus. As was the case with the exemplar-based models, similarity in ALM is exponentially decaying function of distance. The input layer is fully connected to the output layer, and the activation for any particular output node is simply the weighted sum of the connection weights between that node and the input activations. The network then produces a response by taking the weighted average of the output units (recall that each output unit has a value corresponding to a particular response). During training, the network receives feedback which activates each output unit as a function of its distance from the ideal level of activation necessary to produce the correct response. The connection weights between input and output units are then updated via the standard delta learning rule, where the magnitude of weight changes are controlled by a learning rate parameter.
+ALM is a localist neural network model, with each input node corresponding to a particular stimulus, and each output node corresponding to a particular response value. The units in the input layer activate as a function of their Gaussian similarity to the input stimulus. So, for example, an input stimulus of value 55 would induce maximal activation of the input unit tuned to 55. Depending on thevalue of the generalization parameter, the nearby units (e.g. 54 and 56; 53 and 57) may also activate to some degree. ALM is structured with input and output nodes that correspond to regions of the stimulus space, and response space, respectively. The units in the input layer activate as a function of their similarity to a presented stimulus. As was the case with the exemplar-based models, similarity in ALM is exponentially decaying function of distance. The input layer is fully connected to the output layer, and the activation for any particular output node is simply the weighted sum of the connection weights between that node and the input activations. The network then produces a response by taking the weighted average of the output units (recall that each output unit has a value corresponding to a particular response). During training, the network receives feedback which activates each output unit as a function of its distance from the ideal level of activation necessary to produce the correct response. The connection weights between input and output units are then updated via the standard delta learning rule, where the magnitude of weight changes are controlled by a learning rate parameter.
 
-See  for a full specification of the equations that define ALM and EXAM.
+See for a full specification of the equations that define ALM and EXAM.
 
-
-{{< pagebreak >}}
+
 
 ## Model Table
+
 ### ALM Activation & Response
-| Step | Equation | Description |
-|------|----------|-------------|
-| **ALM Activation & Response**  |           |
-| Input Activation | $a_i(X) = \frac{e^{-c(X-X_i)^2}}{\sum_{k=1}^M e^{-c(X-X_k)^2}}$ | Activation of each input node $X_i$, is a function of the Gaussian similarity between the node value and stimulus X.  |
-| Output Activation                 | $O_j(X) = \sum_{k=1}^M w_{ji} \cdot a_i(X)$ | Activation of each Output unit $O_j$ is the weighted sum of the input activations and association weights.   |
-| Output Probability                | $P[Y_j|X] = \frac{O_j(X)}{\sum_{k=1}^M O_k(X)}$ | Each output node has associated response, $Y_j$. The probability of response $Y_j$ is determined by the ratio of output activations.  |
-| Mean Output                       | $m(x) = \sum_{j=1}^L Y_j \cdot \frac{O_j(x)}{\sum_{k=1}^M O_k(X)}$   | The response to stimulus x is the weighted average of the response probabilities. |
-| **ALM Learning**                  |                                                                                                                                                          |
-| Feedback Activation               | $f_j(Z) = e^{-c(Z-Y_j)^2}$                  | After responding, feedback signal Z is presented, activating each output node via the Gaussian similarity to the ideal response. |
-| Update Weights                    | $w_{ji}(t + 1) = w_{ji}(t) + \alpha \cdot (f_j(Z(t)) - O_j(X(t)) \cdot a_i(X(t))$    | Delta rule to update weights. Magnitude of weight changes controlled by learning rate parameter alpha.  |  
-| **EXAM**                          |                                                                                                                                                          |
-| Extrapolation                     | $P[X_i|X] = \frac{a_i(X)}{\sum_{k=1}^M a_k(X)}$ | Novel test stimulus X activates input nodes associated with trained stimuli.     |
-|                                   | $E[Y|X_i] = m(X_i) + \frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1}-X_{i-1}} \cdot [X - X_i]$ | Slope value computed from nearest training instances and then added to the response associated with the nearest training instance,m(x)    |               
 
-
-{{< pagebreak >}}
-
-
+| Step                          | Equation                                                                            | Description                                                                                                                            |
+|------------------|------------------------|------------------------------|
+| **ALM Activation & Response** |                                                                                     |                                                                                                                                        |
+| Input Activation              | $a_i(X) = \frac{e^{-c(X-X_i)^2}}{\sum_{k=1}^M e^{-c(X-X_k)^2}}$                     | Activation of each input node $X_i$, is a function of the Gaussian similarity between the node value and stimulus X.                   |
+| Output Activation             | $O_j(X) = \sum_{k=1}^M w_{ji} \cdot a_i(X)$                                         | Activation of each Output unit $O_j$ is the weighted sum of the input activations and association weights.                             |
+| Output Probability            | $P[Y_j|X] = \frac{O_j(X)}{\sum_{k=1}^M O_k(X)}$                                     | Each output node has associated response, $Y_j$. The probability of response $Y_j$ is determined by the ratio of output activations.   |
+| Mean Output                   | $m(x) = \sum_{j=1}^L Y_j \cdot \frac{O_j(x)}{\sum_{k=1}^M O_k(X)}$                  | The response to stimulus x is the weighted average of the response probabilities.                                                      |
+| **ALM Learning**              |                                                                                     |                                                                                                                                        |
+| Feedback Activation           | $f_j(Z) = e^{-c(Z-Y_j)^2}$                                                          | After responding, feedback signal Z is presented, activating each output node via the Gaussian similarity to the ideal response.       |
+| Update Weights                | $w_{ji}(t + 1) = w_{ji}(t) + \alpha \cdot (f_j(Z(t)) - O_j(X(t)) \cdot a_i(X(t))$   | Delta rule to update weights. Magnitude of weight changes controlled by learning rate parameter alpha.                                 |
+| **EXAM**                      |                                                                                     |                                                                                                                                        |
+| Extrapolation                 | $P[X_i|X] = \frac{a_i(X)}{\sum_{k=1}^M a_k(X)}$                                     | Novel test stimulus X activates input nodes associated with trained stimuli.                                                           |
+|                               | $E[Y|X_i] = m(X_i) + \frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1}-X_{i-1}} \cdot [X - X_i]$ | Slope value computed from nearest training instances and then added to the response associated with the nearest training instance,m(x) |
 
 ## Model Fitting and Comparison
 
-Following the procedure used by @mcdanielPredictingTransferPerformance2009, we will assess the ability of both ALM and EXAM to account for the empirical data when fitting the models to 1) only the training data, and 2) both training and testing data. Models will be fit directly to the trial by trial data of each individual participants, both by minimizing the root-mean squared deviation (RMSE), and by maximizing log likelihood. Because ALM has been shown to do poorly at accounting for human patterns extrapolation [@deloshExtrapolationSineQua1997], we will also fit the extended EXAM version of the model, which operates identically to ALM during training, but includes a linear extrapolation mechanism for generating novel responses during testing.
+Following the procedure used by Mcdaniel et al. (2009), we will assess the ability of both ALM and EXAM to account for the empirical data when fitting the models to 1) only the training data, and 2) both training and testing data. Models will be fit directly to the trial by trial data of each individual participants, both by minimizing the root-mean squared deviation (RMSE). Because ALM has been shown to do poorly at accounting for human patterns extrapolation (DeLosh et al., 1997), we will also fit the extended EXAM version of the model, which operates identically to ALM during training, but includes a linear extrapolation mechanism for generating novel responses during testing.
 
+We also fit a 3rd, hybrid model, which generates responses as a weighted sum of ALM and EXAM predictions. For the hybrid model, predictions are computed by first generating separate predictions from ALM and EXAM, and then combining them using the following equation: $\hat{y} = (1 - w) \cdot alm_pred + w \cdot exam_pred$, where $w$ is a third fit parameters that sets the relative contribution between the two models. For the grid search, the weight parameter is varied from 0 to 1, and the resulting RMSE is recorded.
 
-
+Each model was fit to the data in 3 different ways. 1) To just the testing data, 2) Both the training and testing data, 3) Only the training data. In all cases, the model only updates its weights during the training phase, and the weights are frozen during the testing phase. In all cases, only the ALM model generates predictions during the training phase. For the testing phase, all 3 models are used to generate predictions.
 
 ```{r}
-
 almParamsV <- cbind(Model="ALM Test Only",pluck(a_te_v, "Fit"), pluck(a_te_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)) ) |>
   rbind(cbind(Model="ALM Test & Train", pluck(a_tetr_v,"Fit"), pluck(a_tetr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
   rbind(cbind(Model="ALM Train Only", pluck(a_tr_v, "Fit"), pluck(a_tr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
@@ -185,40 +181,75 @@ hybridParamsC <-cbind(Model="Hybrid Test Only",pluck(hybrid_te_c, "Fit"), pluck(
   rbind(cbind(Model="Hybrid Test & Train", pluck(hybrid_tetr_c,"Fit"), pluck(hybrid_tetr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
   rbind(cbind(Model="Hybrid Train Only", pluck(hybrid_tr_c, "Fit"), pluck(hybrid_tr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
   mutate(across(where(is.numeric), \(x) round(x, 3)))
-
 ```
 
-For the hybrid model, predictions are computed by first generating separate predictions from ALM and EXAM, and then combining them using the following equation: $\hat{y} = (1 - w) \cdot alm_pred + w \cdot exam_pred$. For the grid search, the weight parameter is varied from 0 to 1, and the resulting RMSE is recorded. 
-
-Each model was fit to the data in 3 different ways. 1) To just the testing data, 2) Both the training and testing data, 3) Only the training data. In all cases, the model only updates its weights during the training phase, and the weights are frozen during the testing phase. In all cases, only the ALM model generates predictions during the training phase. For the testing phase, all 3 models are used to generate predictions. 
-
-
-
 ```{r}
-#| label: tbl-e1-model-fits2V
-#| tbl-cap: Varied Group - Fit Parameters and Model RMSE
-
 pander(almParamsV, caption="ALM"); pander(examParamsV, caption="EXAM"); pander(hybridParamsV,caption="Hybrid") 
 ```
 
-```{r}
-#| label: tbl-e1-model-fitsC
-#| tbl-cap: Constant Group - Fit Parameters and Model RMSE
+### Varied Parameter fits and RMSE
 
+|      Model       |   c   |  lr  | Value | Test_RMSE |
+|:----------------:|:-----:|:----:|:-----:|:---------:|
+|  ALM Test Only   | 0.134 | 2.03 | 95.46 |   95.46   |
+| ALM Test & Train | 0.067 | 0.1  | 247.3 |   106.5   |
+|  ALM Train Only  | 0.047 | 0.08 | 139.2 |    109    |
+
+ALM
+
+|       Model       |   c   |  lr  | Value | Test_RMSE |
+|:-----------------:|:-----:|:----:|:-----:|:---------:|
+|  EXAM Test Only   | 0.409 | 1.91 | 45.84 |   45.84   |
+| EXAM Test & Train | 0.074 | 0.1  | 201.4 |   60.18   |
+|  EXAM Train Only  | 0.047 | 0.08 | 139.2 |   65.31   |
+
+EXAM
+
+|        Model        |   c   |  lr   |   w   | Value | Test_RMSE |
+|:-------------------:|:-----:|:-----:|:-----:|:-----:|:---------:|
+|  Hybrid Test Only   | 0.395 | 2.017 | 0.643 | 33.88 |   33.88   |
+| Hybrid Test & Train | 0.134 | 2.017 | 0.786 | 197.2 |   46.51   |
+|  Hybrid Train Only  | 0.042 | 0.067 |   0   | 139.2 |   110.3   |
+
+Hybrid
+
+```{r}
 pander(almParamsC, caption="ALM"); pander(examParamsC, caption="EXAM"); pander(hybridParamsC,caption="Hybrid")
 ```
 
+### Constant Parameter fits and RMSE
 
+|      Model       |   c   |  lr  | Value | Test_RMSE |
+|:----------------:|:-----:|:----:|:-----:|:---------:|
+|  ALM Test Only   |   0   | 0.1  | 309.5 |   347.8   |
+| ALM Test & Train | 0.047 | 0.08 |  361  |   328.5   |
+|  ALM Train Only  | 0.06  | 0.1  | 32.44 |    329    |
 
+ALM
+
+|       Model       |   c   |  lr   | Value | Test_RMSE |
+|:-----------------:|:-----:|:-----:|:-----:|:---------:|
+|  EXAM Test Only   | 0.007 | 1.327 | 127.3 |   127.3   |
+| EXAM Test & Train | 0.081 | 0.161 | 194.6 |    132    |
+|  EXAM Train Only  | 0.06  |  0.1  | 32.44 |   199.8   |
+
+EXAM
+
+|        Model        |   c   |  lr   |  w  | Value | Test_RMSE |
+|:-------------------:|:-----:|:-----:|:---:|:-----:|:---------:|
+|  Hybrid Test Only   | 0.008 | 1.58  |  1  | 127.3 |   127.3   |
+| Hybrid Test & Train | 0.067 | 0.134 |  1  | 194.5 |   136.4   |
+|  Hybrid Train Only  | 0.042 | 0.067 |  0  | 31.5  |   330.3   |
+
+Hybrid
 
 ## Varied Testing Predictions
-```{r}
-#| label: fig-model-preds-varied
-#| fig-cap: Varied Group - Mean Model predictions vs. observations
-#| fig-height: 12
-#| fig-width: 14
-#| column: screen-inset-right
 
+<details class="code-fold">
+
+<summary>Code</summary>
+
+```{r}
 ####
 
 vte <-  pluck(a_te_v, "test") |> rename(ALM=pred,Observed=y) %>% 
@@ -253,17 +284,13 @@ vtr <-  pluck(a_tr_v, "test") |> rename(ALM=pred,Observed=y) %>%
 
 
 vte/vtetr/vtr
-
 ```
 
-
-
+![](htw_exam.markdown_strict_files/figure-markdown_strict/fig-model-preds-varied-1.jpeg)
 
 ## Varied Testing
-```{r fig.height=11, fig.width=11}
-#| label: tbl-e1-predsV
-#| tbl-cap: Varied group - mean model predictions vs. observations
-#| 
+
+```{r}
 tvte<- pluck(a_te_v, "test") |> rename(ALM=pred,Observed=y) %>% 
   cbind(.,EXAM=pluck(ex_te_v, "test") |> pull(pred)) %>%
   cbind(., Hybrid=pluck(hybrid_te_v, "test") |> pull(pred))
@@ -279,19 +306,44 @@ tvtr<- pluck(a_tr_v, "test") |> rename(ALM=pred,Observed=y) %>%
 pander(tvte, caption="Varied fit to test only")
 pander(tvtetr,caption="Varied fit to train and test")
 pander(tvtr,caption="Varied fit to train only")
-
 ```
 
+|  x   | Observed | ALM  | EXAM  | Hybrid |
+|:----:|:--------:|:----:|:-----:|:------:|
+| 100  |   663    | 675  | 715.6 | 708.5  |
+| 350  |  764.2   | 675  | 817.2 | 792.1  |
+| 600  |  883.9   | 675  | 895.1 | 874.7  |
+| 800  |   1083   | 1078 | 1000  |  1091  |
+| 1000 |   1196   | 1202 | 1199  |  1204  |
+| 1200 |   1283   | 1230 | 1282  |  1221  |
 
+Varied fit to test only
+
+|  x   | Observed | ALM  | EXAM  | Hybrid |
+|:----:|:--------:|:----:|:-----:|:------:|
+| 100  |   663    | 675  | 715.6 | 707.3  |
+| 350  |  764.2   | 675  | 817.2 |  788   |
+| 600  |  883.9   | 675  |  902  | 851.5  |
+| 800  |   1083   | 1000 | 1000  |  1004  |
+| 1000 |   1196   | 1163 | 1165  |  1196  |
+| 1200 |   1283   | 1191 | 1194  |  1227  |
+
+Varied fit to train and test
+
+|  x   | Observed |  ALM  | EXAM  | Hybrid |
+|:----:|:--------:|:-----:|:-----:|:------:|
+| 100  |   663    |  675  | 715.6 |  675   |
+| 350  |  764.2   |  675  | 817.1 |  675   |
+| 600  |  883.9   |  675  | 904.8 |  675   |
+| 800  |   1083   | 999.8 | 999.8 | 999.3  |
+| 1000 |   1196   | 1150  | 1150  |  1143  |
+| 1200 |   1283   | 1180  | 1180  |  1176  |
+
+Varied fit to train only
 
 ## Constant Testing Predictions
-```{r}
-#| label: fig-model-preds-constant
-#| fig-cap: Constant Group - Mean Model predictions vs. observations
-#| fig-height: 12
-#| fig-width: 14
-#| column: screen-inset-right
 
+```{r}
 ####
 
 cte <-  pluck(a_te_c, "test") |> rename(ALM=pred,Observed=y) %>% 
@@ -322,15 +374,11 @@ ctr <-  pluck(a_tr_c, "test") |> rename(ALM=pred,Observed=y) %>%
   theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Train Only")
   
 cte/ctetr/ctr
-
 ```
 
-
+![](htw_exam.markdown_strict_files/figure-markdown_strict/fig-model-preds-constant-1.jpeg)
 
 ```{r}
-#| label: tbl-e1-predsC
-#| tbl-cap: Constant group - mean model predictions vs. observations
-#| 
 tcte<- pluck(a_te_c, "test") |> rename(ALM=pred,Observed=y) %>% 
   cbind(.,EXAM=pluck(ex0_te_c, "test") |> pull(pred)) %>%
   cbind(., Hybrid=pluck(hybrid_te_c, "test") |> pull(pred))
@@ -346,97 +394,43 @@ tctr<- pluck(a_tr_c, "test") |> rename(ALM=pred,Observed=y) %>%
 pander(tcte, caption="Constant fit to test only")
 pander(tctetr,caption="Constant fit to train and test")
 pander(tctr,caption="Constant fit to train only")
-
 ```
 
+|  x   | Observed | ALM | EXAM  | Hybrid |
+|:----:|:--------:|:---:|:-----:|:------:|
+| 100  |  526.7   | 675 | 716.9 | 716.8  |
+| 350  |  666.3   | 675 | 821.7 | 821.3  |
+| 600  |  779.6   | 675 | 926.6 | 925.7  |
+| 800  |   980    | 675 | 1010  |  1009  |
+| 1000 |   1163   | 675 | 1094  |  1093  |
+| 1200 |   1277   | 675 | 1178  |  1176  |
 
+Constant fit to test only
 
+|  x   | Observed |  ALM  | EXAM  | Hybrid |
+|:----:|:--------:|:-----:|:-----:|:------:|
+| 100  |  526.7   |  675  | 712.4 | 710.6  |
+| 350  |  666.3   |  675  | 806.1 | 799.6  |
+| 600  |  779.6   |  675  | 899.7 | 888.6  |
+| 800  |   980    | 858.9 | 974.6 | 959.8  |
+| 1000 |   1163   |  675  | 1049  |  1031  |
+| 1200 |   1277   |  675  | 1124  |  1102  |
 
+Constant fit to train and test
 
+|  x   | Observed | ALM | EXAM | Hybrid |
+|:----:|:--------:|:---:|:----:|:------:|
+| 100  |  526.7   | 675 | 697  |  675   |
+| 350  |  666.3   | 675 | 752  |  675   |
+| 600  |  779.6   | 675 | 807  |  675   |
+| 800  |   980    | 851 | 851  | 832.7  |
+| 1000 |   1163   | 675 | 895  |  675   |
+| 1200 |   1277   | 675 | 939  |  675   |
 
+Constant fit to train only
 
+DeLosh, E. L., McDaniel, M. A., & Busemeyer, J. R. (1997). Extrapolation: The Sine Qua Non for Abstraction in Function Learning. *Journal of Experimental Psychology: Learning, Memory, and Cognition*, *23*(4), 19. <https://doi.org/10.1037/0278-7393.23.4.968>
 
+Kruschke, J. K. (1992). ALCOVE: An exemplar-based connectionist model of Category Learning. *Psychological Review*, *99*(1). <https://doi.org/10.1037/0033-295X.99.1.22>
 
-
-```{r}
-#| eval: false
-pluck(a_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
-  mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
-  learn_curve_plot(tr, vx, Resp,facet_var=x, groupVec=Resp,nbins=8)
-
-pluck(a_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
-  mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
-  ungroup() %>%
-  gather(key = "variable", value = "y_value", dev, abs_dev, vx) %>%
-  group_by(variable) %>%
-  group_map(~ learn_curve_plot(.x, x_var = tr, y_var = y_value, color_var = Resp, facet_var = x, groupVec = Resp, nbins = 8, y_label = .y$variable), .keep = TRUE)
-
-list(a_tr_v, a_te_v,a_tetr_v) |> map( ~{pluck(.x, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
-  ungroup() %>%
-  gather(key = "variable", value = "y_value", dev, abs_dev, vx) %>%
-  group_by(variable) %>%
-  group_map(~ learn_curve_plot(.x, x_var = tr, y_var = y_value, color_var = Resp, facet_var = x, groupVec = Resp, nbins = 8, y_label = .y$variable), .keep = TRUE) })
-
-```
-
-
-
-# EXAM fit learning curves
-```{r}
-#| eval: false
-pluck(ex_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
-  mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
-  learn_curve_plot(tr, vx, Resp,facet_var=x, groupVec=Resp,nbins=8)
-
-pluck(ex_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
-  mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
-  ungroup() %>%
-  gather(key = "variable", value = "y_value", dev, abs_dev, vx) %>%
-  group_by(variable) %>%
-  group_map(~ learn_curve_plot(.x, x_var = tr, y_var = y_value, color_var = Resp, facet_var = x, groupVec = Resp, nbins = 8, y_label = .y$variable), .keep = TRUE)
-
-```
-
-
-
-```{r}
-#| eval: false
-
-
-optimize_params_weighted_individual <- function(ds, c_values, lr_values, weight_exam_values, input.layer, output.layer) {
-    all_results <- list()
-    
-    # Loop through each unique id
-    for (individual in unique(ds$id)) {
-        indiv_data <- ds[ds$id == individual, ]
-        
-        # Run the optimization function for the individual's data
-        result <- optimize_params_weighted(indiv_data, c_values, lr_values, weight_exam_values, input.layer, output.layer)
-        
-        all_results[[as.character(individual)]] <- result
-    }
-    
-    all_results
-}
-
-dss <- ds |> filter(id %in% c(1,2))
-
-all_results_weighted_hybrid <- readRDS(here::here('data/model_cache/indv_hybrid_fits.rds'))
-ma <- map(all_results_weighted_hybrid, "best_params") |> map("c")
-
-
-data.frame(id=names(ma),c=as.numeric(ma))
-
-ma = cbind(id=names(all_results_weighted_hybrid),map(all_results_weighted_hybrid, "best_params") |> map_dfr(magrittr::extract,c("c","lr","weight_exam")))
-
-ds |> group_by(id,condit) |> distinct(id,condit) |> left_join(ma,by=join_by(id))
-
-
-map(all_results_weighted_hybrid,"best_params") |> pluck("c")
-all_results_weighted_hybrid[["1"]]$b
-
- map(~ map(.x$best_params, pluck, "c"))
-
- map_df(~ map_df(.x$train, pluck, "d"), .id = "density")
-```
-
+Mcdaniel, M. A., Dimperio, E., Griego, J. A., & Busemeyer, J. R. (2009). Predicting transfer performance: A comparison of competing function learning models. *Journal of Experimental Psychology. Learning, Memory, and Cognition*, *35*, 173--195. <https://doi.org/10.1037/a0013982>

@@ -13,8 +13,6 @@ wrap_grid <- function(dat, c_values, lr_values, input.layer, output.layer,
   pred_fun <- match.fun(predParams$pred_fun)
   loss_fun <- match.fun(predParams$loss_fun)
   
-  
-  
   # Create a grid dataframe with preallocated space
   grid <- expand.grid(c = c_values, lr = lr_values, Value = NA_real_)
   
@@ -127,6 +125,28 @@ exam.response <- function(input, c, input.layer = INPUT_LAYER_DEFAULT,output.lay
 
 
 
+
+
+fit_alm_sim <- function(data, c, lr, noise_sd, input.layer, output.layer) {
+  # Prepare the data for the ALM/EXAM simulation
+  train_data <- dat[dat$expMode2 == "Train", ]
+  test_data <- dat[dat$expMode2 == "Test", ] 
+  
+  # Call the ALM/EXAM simulation function
+  sim_result <- alm.sim(train_data, c, lr, input.layer = input.layer, output.layer = output.layer)
+  
+  # Process the simulation results to fit the ABC algorithm requirements
+  processed_results <- process_sim_results(sim_result) # Create this function as needed
+  
+  return(processed_results)
+}
+
+
+
+
+
+
+
 predict_alm_exam_weighted_hybrid <- function(input, c, weight_exam, input.layer, output.layer, weight.mat,trainVec) {
   
   alm_pred <- alm.responseOnly(input, c, input.layer, output.layer,weight.mat, trainVec=NULL)
@@ -218,3 +238,5 @@ wrap_grid_serial <- function(dat,c_values,lr_values, input.layer, output.layer,
   return(list(train=bf_train,test=bf_test,errorGrid=grid,Fit = bestFit, c = bestFit$c, lr = bestFit$lr, Value = bestFit$Value, time=loop_time[3]))
   
 }
+
+

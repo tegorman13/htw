@@ -1,31 +1,27 @@
-pacman::p_load(dplyr,purrr,ggplot2,patchwork,here)
+pacman::p_load(dplyr,purrr,ggplot2,patchwork,here, future, furrr)
 purrr::walk(here(c("Functions/Display_Functions.R", "Functions/alm_core.R","Functions/misc_model_funs.R")),source)
 select <- dplyr::select; mutate <- dplyr::mutate 
 
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))
+testVec <- c(unique(test_data$x))
 
+
+i1 <- ds |> filter(id=="1")
 dsAvg <- ds |> group_by(condit,expMode2,tr, x) |> 
   summarise(y=mean(y),.groups="keep") 
 
-#head(dsAvg) |> pander::pandoc.table(style = "simple")
+# default.layer <- c(100,350,600,800,1000,1200)
+# output.layer <- adjust_layer(default.layer,k=3)
 
-i1 <- ds |> filter(id=="1")
 
 input.layer <- c(100,350,600,800,1000,1200)
 output.layer <- c(100,350,600,800,1000,1200)
 
 trainVec0 <- c(0,sort(unique(train_data$x)))
 trainVec <- sort(unique(train_data$x))
-testVec <- c(unique(test_data$x))
-
 
 c_values <- seq(0.000001, 1.0, length.out=150)
 lr_values <- seq(0.0000001, 4.0, length.out=200)
-
-
-# default.layer <- c(100,350,600,800,1000,1200)
-# output.layer <- adjust_layer(default.layer,k=3)
-
 
 a_testOnly=list(pred_dat="test_avg",pred_fun="alm.responseOnly",loss_fun="RMSE",loss_data="test_error")
 a_trainOnly=list(pred_dat="test_avg",pred_fun="alm.responseOnly",loss_fun="RMSE",loss_data="train_error")

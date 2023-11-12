@@ -34,7 +34,7 @@ rm -r _working/index.html
 gsed -i 's/^``` r/```{r}/g' "_working/${base}.md"
 
 # convert _working/$base.md to _working/$base.qmd, just by changing the extension
-mv "_working/${base}.md" "_working/${base}.qmd"
+mv "_working/${base}.md" "_working/_${base}.qmd"
 
 
 # Here is the above command in a single line without inline comments
