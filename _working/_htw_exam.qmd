@@ -159,10 +159,9 @@ Following the procedure used by Mcdaniel et al. (2009), we will assess the abili
 
 We also fit a 3rd, hybrid model, which generates responses as a weighted sum of ALM and EXAM predictions. For the hybrid model, predictions are computed by first generating separate predictions from ALM and EXAM, and then combining them using the following equation: $\hat{y} = (1 - w) \cdot alm_pred + w \cdot exam_pred$, where $w$ is a third fit parameters that sets the relative contribution between the two models. For the grid search, the weight parameter is varied from 0 to 1, and the resulting RMSE is recorded. 
 
-Each model was fit to the data in 3 different ways. 1) To just the testing data, 2) Both the training and testing data, 3) Only the training data. In all cases, the model only updates its weights during the training phase, and the weights are frozen during the testing phase. In all cases, only the ALM model generates predictions during the training phase. For the testing phase, all 3 models are used to generate predictions. 
+Each model was fit to the data in 3 different ways. 1) To just the testing data, 2) Both the training and testing data, 3) Only the training data. In all cases, the model only updates its weights during the training phase, and the weights are frozen during the testing phase. In all cases, only the ALM model generates predictions during the training phase. For the testing phase, all 3 models are used to generate predictions. The models' performance under each fitting scenario is detailed in Table 1, showcasing parameters such as the generalization parameter (c), learning rate (lr), and the RMSE for both constant and varied training conditions.
 
 
-The Value column of the table reflects the minimum RMSE achieved when fitting the model. The Test_RMSE column is the main performance indicator of interest, and represents the RMSE for just the testing data - thus for the Test Only fits, the Value and Test_RMSE columns are identical - given that the models were trained and tested on the exact some data sets.  For the Test & Train, and Train Only fits - the Test_RMSE can diverge from the fitting values. 
 
 
 

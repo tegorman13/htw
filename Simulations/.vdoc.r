@@ -35,98 +35,216 @@ purrr::walk(c("con_group_exam_fits", "var_group_exam_fits", "hybrid_group_exam_f
 #
 #
 #
-#
-#
 #| label: fig-alm-diagram
 #| fig.cap: The basic structure of the ALM model. 
+ alm_plot()
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#| label: tbl-e1-cogmodel
+#| tbl-cap: Fit Parameters and Model RMSE
+#| column: screen-inset-right
+#| 
 
-alm_plot()
+create_combined_df <- function(model_names, model_data, group) {
+  do.call(rbind, Map(function(name, data) {
+    model<- ifelse(grepl("Hybrid", name), "Hybrid", ifelse(grepl("EXAM", name), "EXAM", "ALM"))
+    fit_method <- gsub(".*(Test Only|Test & Train|Train Only).*", "\\1", name)
+    extract_params(model, data, group, fit_method)
+  }, model_names, model_data))
+}
 
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
+# Adjust the extract_params function to accept and include the fit_method parameter
+extract_params <- function(model_name, model_data, group, fit_method) {
+  params_df <- cbind(Model = model_name, Group = group, Fit_Method = fit_method,
+                     pluck(model_data, "Fit"), pluck(model_data, "test") %>% summarise(Test_RMSE = round(RMSE(y, pred)),1)) %>% 
+                     mutate(across(where(is.numeric), round, 4))
+  if (!"w" %in% names(params_df)) {
+    params_df$w <- NA
+  }
+  return(params_df)
+}
+
+
+model_classes <- c("ALM", "EXAM", "Hybrid")
+groups <- c("V", "C")
+
+model_names_v <- c("ALM Test Only", "ALM Test & Train", "ALM Train Only", "EXAM Test Only", "EXAM Test & Train", "EXAM Train Only", "Hybrid Test Only", "Hybrid Test & Train", "Hybrid Train Only")
+
+#model_names_v <- c("Test Only", "Test & Train", "Train Only")
+model_names_c <- model_names_v
+
+model_data_v <- list(a_te_v, a_tetr_v, a_tr_v, ex_te_v, ex_tetr_v, ex_tr_v, hybrid_te_v, hybrid_tetr_v, hybrid_tr_v)
+model_data_c <- list(a_te_c, a_tetr_c, a_tr_c, ex0_te_c, ex0_tetr_c, ex0_tr_c, hybrid_te_c, hybrid_tetr_c, hybrid_tr_c)
+
+combined_params_v <- create_combined_df(model_names_v, model_data_v, "Varied")
+combined_params_c <- create_combined_df(model_names_c, model_data_c, "Constant")
+
+all_combined_params <- rbind(combined_params_v, combined_params_c)
+
+
+library(flextable)
+
+identity <- function (x){x}
+fmt_iden <- function(x, digits = 2) {
+  paste0(x)
+}
+
+# all_combined_params %>% 
+#   group_by(Group, Model) |> summarise(across(c(c,lr,Test_RMSE), ~max(.x,na.rm=TRUE)))
+
+
+grouped_params <- all_combined_params %>% 
+  group_by(Group, Model) %>%
+  summarise(across(c(c, lr, w, Value, Test_RMSE), ~identity(.x))) %>%
+  ungroup()
+
+ft <- flextable(all_combined_params) %>% 
+  theme_vanilla() %>% 
+  align(align = "left", part = "all") %>% 
+  colformat_double(digits = 2) %>% 
+  autofit()
+
+
+# Pre-calculate the averages and standard deviations
+all_combined_params2 <- all_combined_params %>%
+  group_by(Fit_Method, Group, Model) %>%
+  summarise(
+    c_stats = fmt_iden(c),
+    lr_stats = fmt_iden(lr),
+     rmse_stats = fmt_iden(Test_RMSE),
+    .groups = "drop"
+  )
+
+# Use the pre-calculated stats in tabulator
+tab <- tabulator(
+  x = all_combined_params2, rows = c("Fit_Method", "Model"),
+  columns = "Group",
+  `c` = as_paragraph(c_stats),
+  `lr` = as_paragraph(lr_stats),
+  `Test_RMSE` = as_paragraph(rmse_stats)
+) %>%
+  as_flextable() |> align(align="left",part="all")
+
+
+tab
+
+# a=aggregate(c ~ Group+Model+Fit_Method, data=all_combined_params,identity)
+# 
+# all_combined_params |> group_by(Model, Group,Fit_Method) %>% 
+#   summarise(
+#     across(
+#       all_of(c("c", "lr")),
+#       list(
+#         c = ~ identity(.x),
+#         lr = ~ identity(.x)
+#       )
+#     )
+#   ) %>% flextable() %>% separate_header()
+# 
+# 
+# ft_1 <-  tabulator(
+#   x = all_combined_params,
+#   rows = "Group",
+#   columns = c("Fit_Method","Model"),
+#   `c1` = c,
+#   `$lr$` = as_paragraph(lr) ) %>% as_flextable()
+# 
+# ft_1
 #
 #
 #
 #
 #
 
-almParamsV <- cbind(Model="ALM Test Only",pluck(a_te_v, "Fit"), pluck(a_te_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)) ) |>
-  rbind(cbind(Model="ALM Test & Train", pluck(a_tetr_v,"Fit"), pluck(a_tetr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
-  rbind(cbind(Model="ALM Train Only", pluck(a_tr_v, "Fit"), pluck(a_tr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
+extract_params <- function(model_name, model_data) {
+  cbind(Model = model_name,
+        pluck(model_data, "Fit"),
+        pluck(model_data, "test") %>% summarise(Test_RMSE = RMSE(y, pred))
+       ) %>%
   mutate(across(where(is.numeric), \(x) round(x, 3)))
+}
 
-examParamsV <- cbind(Model="EXAM Test Only",pluck(ex_te_v, "Fit"), pluck(ex_te_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred))) |>
-  rbind(cbind(Model="EXAM Test & Train", pluck(ex_tetr_v,"Fit"), pluck(ex_tetr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
-  rbind(cbind(Model="EXAM Train Only", pluck(ex_tr_v, "Fit"), pluck(ex_tr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
-  mutate(across(where(is.numeric), \(x) round(x, 3)))
-
-
-hybridParamsV <-cbind(Model="Hybrid Test Only",pluck(hybrid_te_v, "Fit"), pluck(hybrid_te_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred))) |>
-  rbind(cbind(Model="Hybrid Test & Train", pluck(hybrid_tetr_v,"Fit"), pluck(hybrid_tetr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
-  rbind(cbind(Model="Hybrid Train Only", pluck(hybrid_tr_v, "Fit"), pluck(hybrid_tr_v, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
-  mutate(across(where(is.numeric), \(x) round(x, 3)))
-
-almParamsC <- cbind(Model="ALM Test Only",pluck(a_te_c, "Fit"), pluck(a_te_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)) ) |>
-  rbind(cbind(Model="ALM Test & Train", pluck(a_tetr_c,"Fit"), pluck(a_tetr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
-  rbind(cbind(Model="ALM Train Only", pluck(a_tr_c, "Fit"), pluck(a_tr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
-  mutate(across(where(is.numeric), \(x) round(x, 3)))
-
-examParamsC <- cbind(Model="EXAM Test Only",pluck(ex0_te_c, "Fit"), pluck(ex0_te_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred))) |>
-  rbind(cbind(Model="EXAM Test & Train", pluck(ex0_tetr_c,"Fit"), pluck(ex0_tetr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
-  rbind(cbind(Model="EXAM Train Only", pluck(ex0_tr_c, "Fit"), pluck(ex0_tr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
-  mutate(across(where(is.numeric), \(x) round(x, 3)))
+# Define model names and data
+model_names <- c("ALM Test Only", "ALM Test & Train", "ALM Train Only", "EXAM Test Only", "EXAM Test & Train", "EXAM Train Only", "Hybrid Test Only", "Hybrid Test & Train", "Hybrid Train Only")
+model_data_v <- list(a_te_v, a_tetr_v, a_tr_v, ex_te_v, ex_tetr_v, ex_tr_v, hybrid_te_v, hybrid_tetr_v, hybrid_tr_v)
+model_data_c <- list(a_te_c, a_tetr_c, a_tr_c, ex0_te_c, ex0_tetr_c, ex0_tr_c, hybrid_te_c, hybrid_tetr_c, hybrid_tr_c)
 
 
-hybridParamsC <-cbind(Model="Hybrid Test Only",pluck(hybrid_te_c, "Fit"), pluck(hybrid_te_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred))) |>
-  rbind(cbind(Model="Hybrid Test & Train", pluck(hybrid_tetr_c,"Fit"), pluck(hybrid_tetr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
-  rbind(cbind(Model="Hybrid Train Only", pluck(hybrid_tr_c, "Fit"), pluck(hybrid_tr_c, "test") %>% summarise(Test_RMSE=RMSE(y,pred)))) |>
-  mutate(across(where(is.numeric), \(x) round(x, 3)))
+params_list_v <- Map(extract_params, model_names, model_data_v)
+params_list_c <- Map(extract_params, model_names, model_data_c)
+
+almParamsV <- do.call(rbind, params_list_v[1:3])
+examParamsV <- do.call(rbind, params_list_v[4:6])
+hybridParamsV <- do.call(rbind, params_list_v[7:9])
+
+almParamsC <- do.call(rbind, params_list_c[1:3])
+examParamsC <- do.call(rbind, params_list_c[4:6])
+hybridParamsC <- do.call(rbind, params_list_c[7:9])
+
+hybridParamsV
+
+
+all_combined_params |> filter(Model =="Hybrid") |> 
+  group_by(Group, Fit_Method) |> summarise(w=first(w)) |>
+  group_by(Group) |> flextable() |> colformat_double() |> separate_header()
+
+all_combined_params |> filter(Model =="Hybrid") |> 
+  group_by(Group, Fit_Method) |>
+  summarise(w=first(w), Test_RMSE=(Test_RMSE)) |>
+  group_by(Group,Fit_Method) |>
+  summarise(
+    across(
+      all_of(c("w", "Test_RMSE")), 
+      list(
+        ~ mean(.x, na.rm = TRUE)
+      )
+    ),
+    .groups = "drop") |> flextable() |> separate_header() |> theme_vanilla()
+
+
+all_combined_params |> filter(Model =="Hybrid") |> 
+  group_by(Group, Fit_Method) |>
+  summarise(w=fmt_iden(first(w)), Test_RMSE=(fmt_iden(Test_RMSE))) |>
+  group_by(Group,Fit_Method) |> 
+  tabulator(
+   rows = c("Fit_Method"),
+  columns = "Group",
+  `w` = as_paragraph(w),
+  `Test_RMSE` = as_paragraph(Test_RMSE)
+)  |> as_flextable() |> separate_header() |> theme_vanilla()
+
+
 
 #
 #
@@ -134,18 +252,31 @@ hybridParamsC <-cbind(Model="Hybrid Test Only",pluck(hybrid_te_c, "Fit"), pluck(
 #
 #
 #
-#| label: tbl-e1-model-fits2V
-#| tbl-cap: Varied Group - Fit Parameters and Model RMSE
 
-pander(almParamsV, caption="ALM"); pander(examParamsV, caption="EXAM"); pander(hybridParamsV,caption="Hybrid") 
-#
-#
-#
-#| label: tbl-e1-model-fitsC
-#| tbl-cap: Constant Group - Fit Parameters and Model RMSE
 
-pander(almParamsC, caption="ALM"); pander(examParamsC, caption="EXAM"); pander(hybridParamsC,caption="Hybrid")
-#
+ft <- group_by(dat, cyl) %>% 
+  summarise(
+    across(
+      all_of(c("disp", "mpg")),
+      list(
+        mean = ~ mean(.x, na.rm = TRUE),
+        sd = ~ sd(.x, na.rm = TRUE)
+      )
+    )
+  ) %>% 
+  flextable() %>% 
+  separate_header() %>% 
+  theme_vanilla() %>% 
+  align(align = "center", part = "all") %>% 
+  colformat_double(digits = 2) %>% 
+  labelizor(labels = c(cyl = "Number of cylinders",
+                       disp = "Displacement",
+                       mpg = "Miles/(US) gallon",
+                       mean = "µ", sd = "σ"
+                       ), part = "all") %>% 
+  autofit() %>% width(j = 1, width = .8) %>% 
+  add_header_lines("used dataset: mtcars")
+ft
 #
 #
 #
@@ -188,10 +319,8 @@ vtr <-  pluck(a_tr_v, "test") |> rename(ALM=pred,Observed=y) %>%
   theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Train Only")
   
 
-  
 
-
-vte/vtetr/vtr
+ vte/vtetr/vtr
 
 #
 #
@@ -377,6 +506,30 @@ all_results_weighted_hybrid[["1"]]$b
  map(~ map(.x$best_params, pluck, "c"))
 
  map_df(~ map_df(.x$train, pluck, "d"), .id = "density")
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #
 #
 #

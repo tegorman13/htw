@@ -1,0 +1,504 @@
+---
+title: EXAM Fits and Predictions
+date: last-modified
+categories: [Simulation, ALM, EXAM, R]
+code-fold: true
+code-tools: true
+execute: 
+  warning: false
+  eval: true
+  echo: false
+---
+
+```{r}
+# load and view data
+pacman::p_load(tidyverse,patchwork,here, pander, latex2exp)
+purrr::walk(here::here(c("Functions/Display_Functions.R", "Functions/alm_core.R","Functions/misc_model_funs.R")),source)
+select <- dplyr::select; mutate <- dplyr::mutate 
+
+ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))
+dsAvg <- ds |> group_by(condit,expMode2,tr, x) |> 
+  summarise(y=mean(y),.groups="keep") 
+
+vAvg <- dsAvg |> filter(condit=="Varied")
+cAvg <- dsAvg |> filter(condit=="Constant")
+
+i1 <- ds |> filter(id=="3")
+
+input.layer <- c(100,350,600,800,1000,1200)
+output.layer <- c(100,350,600,800,1000,1200)
+
+
+purrr::walk(c("con_group_exam_fits", "var_group_exam_fits", "hybrid_group_exam_fits"), 
+            ~ list2env(readRDS(here::here(paste0("data/model_cache/", .x, ".rds"))), 
+            envir = .GlobalEnv))
+```
+
+
+
+
+```{r}
+#| label: fig-alm-diagram
+#| fig.cap: The basic structure of the ALM model. 
+
+#alm_plot()
+
+```
+
+
+
+# Modeling
+
+In project 1, we applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for the difference between varied and constant training via an extended version of a similarity based generalization model. In project 2, we will go a step further, implementing a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning (DeLosh 1997). ALM is a simple connectionist learning model which closely resembles Kruschke's ALCOVE model (Kruscke 1992), with modifications to allow for the generation of continuous responses.
+
+## ALM & Exam Description
+
+@deloshExtrapolationSineQua1997 introduced the associative learning model (ALM), a connectionist model within the popular class of radial-basis networks. ALM was inspired by, and closely resembles Kruschke's influential ALCOVE model of categorization [@kruschkeALCOVEExemplarbasedConnectionist1992]. 
+
+ALM is a localist neural network model, with each input node corresponding to a particular stimulus, and each output node corresponding to a particular response value. The units in the input layer activate as a function of their Gaussian similarity to the input stimulus. So, for example, an input stimulus of value 55 would induce maximal activation of the input unit tuned to 55. Depending on thevalue of the generalization parameter, the nearby units (e.g. 54 and 56; 53 and 57) may also activate to some degree. ALM is structured with input and output nodes that correspond to regions of the stimulus space, and response space, respectively. The units in the input layer activate as a function of their similarity to a presented stimulus. As was the case with the exemplar-based models, similarity in ALM is exponentially decaying function of distance. The input layer is fully connected to the output layer, and the activation for any particular output node is simply the weighted sum of the connection weights between that node and the input activations. The network then produces a response by taking the weighted average of the output units (recall that each output unit has a value corresponding to a particular response). During training, the network receives feedback which activates each output unit as a function of its distance from the ideal level of activation necessary to produce the correct response. The connection weights between input and output units are then updated via the standard delta learning rule, where the magnitude of weight changes are controlled by a learning rate parameter.
+
+See @tbl-alm-exam for a full specification of the equations that define ALM and EXAM.
+
+
+{{< pagebreak >}}
+
+::: {.column-page-inset-right}
+## Model Table
+### ALM Activation & Response
+| Step | Equation | Description |
+|------|----------|-------------|
+| **ALM Activation & Response**  |           |
+| Input Activation | $a_i(X) = \frac{e^{-c(X-X_i)^2}}{\sum_{k=1}^M e^{-c(X-X_k)^2}}$ | Activation of each input node $X_i$, is a function of the Gaussian similarity between the node value and stimulus X.  |
+| Output Activation                 | $O_j(X) = \sum_{k=1}^M w_{ji} \cdot a_i(X)$ | Activation of each Output unit $O_j$ is the weighted sum of the input activations and association weights.   |
+| Output Probability                | $P[Y_j|X] = \frac{O_j(X)}{\sum_{k=1}^M O_k(X)}$ | Each output node has associated response, $Y_j$. The probability of response $Y_j$ is determined by the ratio of output activations.  |
+| Mean Output                       | $m(x) = \sum_{j=1}^L Y_j \cdot \frac{O_j(x)}{\sum_{k=1}^M O_k(X)}$   | The response to stimulus x is the weighted average of the response probabilities. |
+| **ALM Learning**                  |                                                                                                                                                          |
+| Feedback Activation               | $f_j(Z) = e^{-c(Z-Y_j)^2}$                  | After responding, feedback signal Z is presented, activating each output node via the Gaussian similarity to the ideal response. |
+| Update Weights                    | $w_{ji}(t + 1) = w_{ji}(t) + \alpha \cdot (f_j(Z(t)) - O_j(X(t)) \cdot a_i(X(t))$    | Delta rule to update weights. Magnitude of weight changes controlled by learning rate parameter alpha.  |  
+| **EXAM**                          |                                                                                                                                                          |
+| Extrapolation                     | $P[X_i|X] = \frac{a_i(X)}{\sum_{k=1}^M a_k(X)}$ | Novel test stimulus X activates input nodes associated with trained stimuli.     |
+|                                   | $E[Y|X_i] = m(X_i) + \frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1}-X_{i-1}} \cdot [X - X_i]$ | Slope value computed from nearest training instances and then added to the response associated with the nearest training instance,m(x)    |               
+: ALM & EXAM Equations {#tbl-alm-exam}
+:::
+
+{{< pagebreak >}}
+
+
+
+## Model Fitting and Comparison
+
+Following the procedure used by @mcdanielPredictingTransferPerformance2009, we will assess the ability of both ALM and EXAM to account for the empirical data when fitting the models to 1) only the training data, and 2) both training and testing data. Models will be fit directly to the trial by trial data of each individual participants, both by minimizing the root-mean squared deviation (RMSE), and by maximizing log likelihood. Because ALM has been shown to do poorly at accounting for human patterns extrapolation [@deloshExtrapolationSineQua1997], we will also fit the extended EXAM version of the model, which operates identically to ALM during training, but includes a linear extrapolation mechanism for generating novel responses during testing.
+
+For the hybrid model, predictions are computed by first generating separate predictions from ALM and EXAM, and then combining them using the following equation: $\hat{y} = (1 - w) \cdot alm_pred + w \cdot exam-pred$. For the grid search, the weight parameter is varied from 0 to 1, and the resulting RMSE is recorded. 
+
+Each model was fit to the data in 3 different ways. 1) To just the testing data, 2) Both the training and testing data, 3) Only the training data. In all cases, the model only updates its weights during the training phase, and the weights are frozen during the testing phase. In all cases, only the ALM model generates predictions during the training phase. For the testing phase, all 3 models are used to generate predictions. 
+
+
+
+```{r}
+#| eval: false
+#| 
+extract_params <- function(model_name, model_data) {
+  cbind(Model = model_name,
+        pluck(model_data, "Fit"),
+        pluck(model_data, "test") %>% summarise(Test_RMSE = RMSE(y, pred))
+       ) %>%
+  mutate(across(where(is.numeric), \(x) round(x, 3)))
+}
+
+# Define model names and data
+model_names <- c("ALM Test Only", "ALM Test & Train", "ALM Train Only", "EXAM Test Only", "EXAM Test & Train", "EXAM Train Only", "Hybrid Test Only", "Hybrid Test & Train", "Hybrid Train Only")
+model_data_v <- list(a_te_v, a_tetr_v, a_tr_v, ex_te_v, ex_tetr_v, ex_tr_v, hybrid_te_v, hybrid_tetr_v, hybrid_tr_v)
+model_data_c <- list(a_te_c, a_tetr_c, a_tr_c, ex0_te_c, ex0_tetr_c, ex0_tr_c, hybrid_te_c, hybrid_tetr_c, hybrid_tr_c)
+
+
+params_list_v <- Map(extract_params, model_names, model_data_v)
+params_list_c <- Map(extract_params, model_names, model_data_c)
+
+almParamsV <- do.call(rbind, params_list_v[1:3])
+examParamsV <- do.call(rbind, params_list_v[4:6])
+hybridParamsV <- do.call(rbind, params_list_v[7:9])
+
+almParamsC <- do.call(rbind, params_list_c[1:3])
+examParamsC <- do.call(rbind, params_list_c[4:6])
+hybridParamsC <- do.call(rbind, params_list_c[7:9])
+
+
+
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-e1-cogmodel
+#| tbl-cap: Fit Parameters and Model RMSE
+#| column: screen-inset-right
+#| 
+
+create_combined_df <- function(model_names, model_data, group) {
+  do.call(rbind, Map(function(name, data) {
+    model<- ifelse(grepl("Hybrid", name), "Hybrid", ifelse(grepl("EXAM", name), "EXAM", "ALM"))
+    fit_method <- gsub(".*(Test Only|Test & Train|Train Only).*", "\\1", name)
+    extract_params(model, data, group, fit_method)
+  }, model_names, model_data))
+}
+
+# Adjust the extract_params function to accept and include the fit_method parameter
+extract_params <- function(model_name, model_data, group, fit_method) {
+  params_df <- cbind(Model = model_name, Group = group, Fit_Method = fit_method,
+                     pluck(model_data, "Fit"), pluck(model_data, "test") %>% summarise(Test_RMSE = round(RMSE(y, pred)),1)) %>% 
+                     mutate(across(where(is.numeric), round, 4))
+  if (!"w" %in% names(params_df)) {
+    params_df$w <- NA
+  }
+  return(params_df)
+}
+
+
+model_classes <- c("ALM", "EXAM", "Hybrid")
+groups <- c("V", "C")
+
+model_names_v <- c("ALM Test Only", "ALM Test & Train", "ALM Train Only", "EXAM Test Only", "EXAM Test & Train", "EXAM Train Only", "Hybrid Test Only", "Hybrid Test & Train", "Hybrid Train Only")
+
+#model_names_v <- c("Test Only", "Test & Train", "Train Only")
+model_names_c <- model_names_v
+
+model_data_v <- list(a_te_v, a_tetr_v, a_tr_v, ex_te_v, ex_tetr_v, ex_tr_v, hybrid_te_v, hybrid_tetr_v, hybrid_tr_v)
+model_data_c <- list(a_te_c, a_tetr_c, a_tr_c, ex0_te_c, ex0_tetr_c, ex0_tr_c, hybrid_te_c, hybrid_tetr_c, hybrid_tr_c)
+
+combined_params_v <- create_combined_df(model_names_v, model_data_v, "Varied")
+combined_params_c <- create_combined_df(model_names_c, model_data_c, "Constant")
+
+all_combined_params <- rbind(combined_params_v, combined_params_c)
+
+
+library(flextable)
+
+identity <- function (x){x}
+fmt_iden <- function(x, digits = 2) {
+  paste0(x)
+}
+
+# all_combined_params %>% 
+#   group_by(Group, Model) |> summarise(across(c(c,lr,Test_RMSE), ~max(.x,na.rm=TRUE)))
+
+
+grouped_params <- all_combined_params %>% 
+  group_by(Group, Model) %>%
+  summarise(across(c(c, lr, w, Value, Test_RMSE), ~identity(.x))) %>%
+  ungroup()
+
+ft <- flextable(all_combined_params) %>% 
+  theme_vanilla() %>% 
+  align(align = "left", part = "all") %>% 
+  colformat_double(digits = 2) %>% 
+  autofit()
+
+
+# Pre-calculate the averages and standard deviations
+all_combined_params2 <- all_combined_params %>%
+  group_by(Fit_Method, Group, Model) %>%
+  summarise(
+    c_stats = fmt_iden(c),
+    lr_stats = fmt_iden(lr),
+     rmse_stats = fmt_iden(Test_RMSE),
+    .groups = "drop"
+  )
+
+# Use the pre-calculated stats in tabulator
+tab <- tabulator(
+  x = all_combined_params2, rows = c("Fit_Method", "Model"),
+  columns = "Group",
+  `c` = as_paragraph(c_stats),
+  `lr` = as_paragraph(lr_stats),
+  `Test_RMSE` = as_paragraph(rmse_stats)
+) %>%
+  as_flextable() |> align(align="left",part="all")
+
+tab
+
+# a=aggregate(c ~ Group+Model+Fit_Method, data=all_combined_params,identity)
+# 
+# all_combined_params |> group_by(Model, Group,Fit_Method) %>% 
+#   summarise(
+#     across(
+#       all_of(c("c", "lr")),
+#       list(
+#         c = ~ identity(.x),
+#         lr = ~ identity(.x)
+#       )
+#     )
+#   ) %>% flextable() %>% separate_header()
+# 
+# 
+# ft_1 <-  tabulator(
+#   x = all_combined_params,
+#   rows = "Group",
+#   columns = c("Fit_Method","Model"),
+#   `c1` = c,
+#   `$lr$` = as_paragraph(lr) ) %>% as_flextable()
+# 
+# ft_1
+```
+
+
+
+
+```{r}
+
+tab
+
+```
+
+
+
+
+
+```{r}
+#| label: tbl-e1-model-fits2V
+#| tbl-cap: Varied Group - Fit Parameters and Model RMSE
+#| eval: false
+
+pander(almParamsV, caption="ALM"); pander(examParamsV, caption="EXAM"); pander(hybridParamsV,caption="Hybrid") 
+```
+
+```{r}
+#| label: tbl-e1-model-fitsC
+#| tbl-cap: Constant Group - Fit Parameters and Model RMSE
+#| eval: false
+#| 
+pander(almParamsC, caption="ALM"); pander(examParamsC, caption="EXAM"); pander(hybridParamsC,caption="Hybrid")
+```
+
+
+
+
+## Varied Testing Predictions
+```{r}
+#| label: fig-model-preds-varied
+#| fig-cap: Varied Group - Mean Model predictions vs. observations
+#| fig-height: 12
+#| fig-width: 14
+#| column: screen-inset-right
+
+####
+
+# vte <-  pluck(a_te_v, "test") |> rename(ALM=pred,Observed=y) %>% 
+#   cbind(.,EXAM=pluck(ex_te_v, "test") |> pull(pred)) %>%
+#   cbind(., Hybrid=pluck(hybrid_te_v, "test") |> pull(pred)) |>  
+#   pivot_longer(Observed:Hybrid, names_to="Model", values_to = "vx") |> 
+#   ggplot(aes(x,vx,fill=Model, group=Model)) +geom_bar(position="dodge",stat="identity") +
+#   scale_fill_manual(values=col_themes$wes2)+
+#   scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
+#   theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Test Only")
+
+# vtetr <-  pluck(a_tetr_v, "test") |> rename(ALM=pred,Observed=y) %>% 
+#   cbind(.,EXAM=pluck(ex_tetr_v, "test") |> pull(pred)) %>%
+#   cbind(., Hybrid=pluck(hybrid_tetr_v, "test") |> pull(pred)) |>  
+#   pivot_longer(Observed:Hybrid, names_to="Model", values_to = "vx") |> 
+#   ggplot(aes(x,vx,fill=Model, group=Model)) +geom_bar(position="dodge",stat="identity") + 
+#   scale_fill_manual(values=col_themes$wes2)+
+#   scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
+#   theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Test and Train")
+
+# vtr <-  pluck(a_tr_v, "test") |> rename(ALM=pred,Observed=y) %>% 
+#   cbind(.,EXAM=pluck(ex_tr_v, "test") |> pull(pred)) %>%
+#   cbind(., Hybrid=pluck(hybrid_tr_v, "test") |> pull(pred)) |>  
+#   pivot_longer(Observed:Hybrid, names_to="Model", values_to = "vx") |> 
+#   ggplot(aes(x,vx,fill=Model, group=Model)) +geom_bar(position="dodge",stat="identity") +
+#   scale_fill_manual(values=col_themes$wes2)+
+#   scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
+#   theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Train Only")
+  
+
+  
+
+
+# vte/vtetr/vtr
+
+```
+
+
+
+
+## Varied Testing
+```{r fig.height=11, fig.width=11}
+#| label: tbl-e1-predsV
+#| tbl-cap: Varied group - mean model predictions vs. observations
+#| 
+# tvte<- pluck(a_te_v, "test") |> rename(ALM=pred,Observed=y) %>% 
+#   cbind(.,EXAM=pluck(ex_te_v, "test") |> pull(pred)) %>%
+#   cbind(., Hybrid=pluck(hybrid_te_v, "test") |> pull(pred))
+
+# tvtetr<-pluck(a_tetr_v, "test") |> rename(ALM=pred,Observed=y) %>% 
+#   cbind(.,EXAM=pluck(ex_tetr_v, "test") |> pull(pred)) %>%
+#   cbind(., Hybrid=pluck(hybrid_tetr_v, "test") |> pull(pred))
+
+# tvtr<- pluck(a_tr_v, "test") |> rename(ALM=pred,Observed=y) %>% 
+#   cbind(.,EXAM=pluck(ex_tr_v, "test") |> pull(pred)) %>%
+#   cbind(., Hybrid=pluck(hybrid_tr_v, "test") |> pull(pred))
+
+# pander(tvte, caption="Varied fit to test only")
+# pander(tvtetr,caption="Varied fit to train and test")
+# pander(tvtr,caption="Varied fit to train only")
+
+```
+
+
+
+## Constant Testing Predictions
+```{r}
+#| label: fig-model-preds-constant
+#| fig-cap: Constant Group - Mean Model predictions vs. observations
+#| fig-height: 12
+#| fig-width: 14
+#| column: screen-inset-right
+
+####
+
+# cte <-  pluck(a_te_c, "test") |> rename(ALM=pred,Observed=y) %>% 
+#   cbind(.,EXAM=pluck(ex0_te_c, "test") |> pull(pred)) %>%
+#   cbind(., Hybrid=pluck(hybrid_te_c, "test") |> pull(pred)) |>  
+#   pivot_longer(Observed:Hybrid, names_to="Model", values_to = "vx") |> 
+#   ggplot(aes(x,vx,fill=Model, group=Model)) +geom_bar(position="dodge",stat="identity") +
+#   scale_fill_manual(values=col_themes$wes2)+
+#   scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
+#   theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Test Only")
+
+# ctetr <-  pluck(a_tetr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
+#   cbind(.,EXAM=pluck(ex0_tetr_c, "test") |> pull(pred)) %>%
+#   cbind(., Hybrid=pluck(hybrid_tetr_c, "test") |> pull(pred)) |>  
+#   pivot_longer(Observed:Hybrid, names_to="Model", values_to = "vx") |> 
+#   ggplot(aes(x,vx,fill=Model, group=Model)) +geom_bar(position="dodge",stat="identity") + 
+#   scale_fill_manual(values=col_themes$wes2)+
+#   scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
+#   theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Test and Train")
+
+# ctr <-  pluck(a_tr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
+#   cbind(.,EXAM=pluck(ex0_tr_c, "test") |> pull(pred)) %>%
+#   cbind(., Hybrid=pluck(hybrid_tr_c, "test") |> pull(pred)) |>  
+#   pivot_longer(Observed:Hybrid, names_to="Model", values_to = "vx") |> 
+#   ggplot(aes(x,vx,fill=Model, group=Model)) +geom_bar(position="dodge",stat="identity") +
+#   scale_fill_manual(values=col_themes$wes2)+
+#   scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
+#   theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Train Only")
+  
+# cte/ctetr/ctr
+
+```
+
+
+
+```{r}
+#| label: tbl-e1-predsC
+#| tbl-cap: Constant group - mean model predictions vs. observations
+#| 
+# tcte<- pluck(a_te_c, "test") |> rename(ALM=pred,Observed=y) %>% 
+#   cbind(.,EXAM=pluck(ex0_te_c, "test") |> pull(pred)) %>%
+#   cbind(., Hybrid=pluck(hybrid_te_c, "test") |> pull(pred))
+
+# tctetr<-pluck(a_tetr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
+#   cbind(.,EXAM=pluck(ex0_tetr_c, "test") |> pull(pred)) %>%
+#   cbind(., Hybrid=pluck(hybrid_tetr_c, "test") |> pull(pred))
+
+# tctr<- pluck(a_tr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
+#   cbind(.,EXAM=pluck(ex0_tr_c, "test") |> pull(pred)) %>%
+#   cbind(., Hybrid=pluck(hybrid_tr_c, "test") |> pull(pred))
+
+# pander(tcte, caption="Constant fit to test only")
+# pander(tctetr,caption="Constant fit to train and test")
+# pander(tctr,caption="Constant fit to train only")
+
+```
+
+
+
+
+
+
+
+
+
+
+```{r}
+#| eval: false
+pluck(a_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
+  mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
+  learn_curve_plot(tr, vx, Resp,facet_var=x, groupVec=Resp,nbins=8)
+
+pluck(a_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
+  mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
+  ungroup() %>%
+  gather(key = "variable", value = "y_value", dev, abs_dev, vx) %>%
+  group_by(variable) %>%
+  group_map(~ learn_curve_plot(.x, x_var = tr, y_var = y_value, color_var = Resp, facet_var = x, groupVec = Resp, nbins = 8, y_label = .y$variable), .keep = TRUE)
+
+list(a_tr_v, a_te_v,a_tetr_v) |> map( ~{pluck(.x, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
+  ungroup() %>%
+  gather(key = "variable", value = "y_value", dev, abs_dev, vx) %>%
+  group_by(variable) %>%
+  group_map(~ learn_curve_plot(.x, x_var = tr, y_var = y_value, color_var = Resp, facet_var = x, groupVec = Resp, nbins = 8, y_label = .y$variable), .keep = TRUE) })
+
+```
+
+
+
+# EXAM fit learning curves
+```{r}
+#| eval: false
+pluck(ex_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
+  mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
+  learn_curve_plot(tr, vx, Resp,facet_var=x, groupVec=Resp,nbins=8)
+
+pluck(ex_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
+  mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
+  ungroup() %>%
+  gather(key = "variable", value = "y_value", dev, abs_dev, vx) %>%
+  group_by(variable) %>%
+  group_map(~ learn_curve_plot(.x, x_var = tr, y_var = y_value, color_var = Resp, facet_var = x, groupVec = Resp, nbins = 8, y_label = .y$variable), .keep = TRUE)
+
+```
+
+
+
+```{r}
+#| eval: false
+
+
+optimize_params_weighted_individual <- function(ds, c_values, lr_values, weight_exam_values, input.layer, output.layer) {
+    all_results <- list()
+    
+    # Loop through each unique id
+    for (individual in unique(ds$id)) {
+        indiv_data <- ds[ds$id == individual, ]
+        
+        # Run the optimization function for the individual's data
+        result <- optimize_params_weighted(indiv_data, c_values, lr_values, weight_exam_values, input.layer, output.layer)
+        
+        all_results[[as.character(individual)]] <- result
+    }
+    
+    all_results
+}
+
+dss <- ds |> filter(id %in% c(1,2))
+
+all_results_weighted_hybrid <- readRDS(here::here('data/model_cache/indv_hybrid_fits.rds'))
+ma <- map(all_results_weighted_hybrid, "best_params") |> map("c")
+
+
+data.frame(id=names(ma),c=as.numeric(ma))
+
+ma = cbind(id=names(all_results_weighted_hybrid),map(all_results_weighted_hybrid, "best_params") |> map_dfr(magrittr::extract,c("c","lr","weight_exam")))
+
+ds |> group_by(id,condit) |> distinct(id,condit) |> left_join(ma,by=join_by(id))
+
+
+map(all_results_weighted_hybrid,"best_params") |> pluck("c")
+all_results_weighted_hybrid[["1"]]$b
+
+ map(~ map(.x$best_params, pluck, "c"))
+
+ map_df(~ map_df(.x$train, pluck, "d"), .id = "density")
+```
+
