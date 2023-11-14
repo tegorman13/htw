@@ -1,5 +1,20 @@
 
 # 
+
+flextable_to_markdown <- function(ft) {
+  header <- ft$header$dataset %>% `rownames<-`( NULL )  %>% `colnames<-`( NULL )
+  body <- ft$body$dataset %>% `rownames<-`( NULL )  %>% `colnames<-`( NULL )
+  col_names <- paste0("V", 1:ncol(header))
+  colnames(header) <- col_names
+  colnames(body) <- col_names
+  combined_df <- rbind(header, body) %>% `rownames<-`( NULL )  %>% `colnames<-`( NULL )
+  markdown_table_k <- knitr::kable(combined_df, format="markdown")
+  markdown_table_p <- pander::pandoc.table(combined_df,style="rmarkdown", split.table = Inf)
+  return(tibble::lst(markdown_table_k,markdown_table_p))
+}
+
+
+
 # create_summary_table <- function(data, DV, mfun = list(mean = mean, sd = sd)) {
 #   # Grouping by required variables and computing statistics specified in mfun
 #   summarization <- data %>%
