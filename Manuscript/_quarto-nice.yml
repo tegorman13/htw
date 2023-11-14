@@ -1,15 +1,21 @@
 project:
   output-dir: output
   render: 
-    - "!manuscript.qmd"
-    - "htw_exam.qmd"
+    - "manuscript.qmd"
+    - "!htw_exam.qmd"
 
 
 
 format:
+  hugo:
+    html-math-method: mathjax
+    output-file: htw-hugo.md
+    fig-format: jpeg
+    echo: true
+    cite-method: citeproc
   html:
     toc: true
-    keep-md: true
+    #keep-md: true
     language: 
       title-block-published: "Latest version"
     shift-heading-level-by: 1

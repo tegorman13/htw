@@ -1,5 +1,5 @@
 ---
-title: EXAM Fits and Predictions
+# title: EXAM Fits and Predictions
 date: last-modified
 categories: [Simulation, ALM, EXAM, R]
 code-fold: true
@@ -53,7 +53,7 @@ purrr::walk(c("con_group_exam_fits", "var_group_exam_fits", "hybrid_group_exam_f
 ::: column-page-inset-right
 
 
-|                    | ALM Response Generation                                            |                                                                                               |
+|                    | **ALM Response Generation**                                            |                                                                                               |
 |------------------|------------------------------|-------------------------|
 | Input Activation   | $a_i(X) = \frac{e^{-c(X-X_i)^2}}{\sum_{k=1}^M e^{-c(X-X_k)^2}}$    | Input nodes activate as a function of Gaussian similarity to stimulus                         |
 | Output Activation  | $O_j(X) = \sum_{k=1}^M w_{ji} \cdot a_i(X)$                        | Output unit $O_j$ activation is the weighted sum of input activations and association weights |
@@ -78,7 +78,7 @@ purrr::walk(c("con_group_exam_fits", "var_group_exam_fits", "hybrid_group_exam_f
 
 # Modeling
 
-In project 1, we applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for the difference between varied and constant training via an extended version of a similarity based generalization model. In project 2, we will go a step further, implementing a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning (DeLosh 1997). ALM is a simple connectionist learning model which closely resembles Kruschke's ALCOVE model (Kruscke 1992), with modifications to allow for the generation of continuous responses.
+In project 1, I applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for the difference between varied and constant training via an extended version of a similarity based generalization model. In project 2, I will go a step further, implementing a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning (DeLosh 1997). ALM is a simple connectionist learning model which closely resembles Kruschke's ALCOVE model (Kruscke 1992), with modifications to allow for the generation of continuous responses.
 
 ## ALM & Exam Description
 
@@ -143,22 +143,21 @@ all_combined_params <- rbind(combined_params_c,combined_params_v)
 
 ```{r}
 #| label: tbl-e1-cogmodel
-#| column: body-outset-right
-#| tbl-cap: Fit Parameters and Model RMSE. The Test_RMSE column is the main performance indicator of interest, and represents the RMSE for just the testing data. The Fit_Method column indicates the data used to fit the model. Hybrid Model - w parameter. The $w$ parameter determines the balance between the ALM and EXAM response generation processes, and is only included for the hybrid model. A weight of .5 would indicate equal contribution from both models. $w$ values approaching 1 indicate stronger weight for EXAM. 
+#| tbl-cap: Fit Parameters and Model RMSE. The Test_RMSE column is the main performance indicator of interest, and represents the RMSE for just the testing data. The Fit_Method column indicates the data used to fit the model. The $w$ parameter determines the balance between the ALM and EXAM response generation processes, and is only included for the hybrid model. A weight of .5 would indicate equal contribution from both models. $w$ values approaching 1 indicate stronger weight for EXAM. 
+##| column: body-outset-right
 
 
 reshaped_df <- all_combined_params %>%
-  select(-Value) |>
-  rename("Fit Method" = Fit_Method, "Test RMSE" = Test_RMSE) |>
-  pivot_longer(cols=c(c,lr,w,"Test RMSE"),names_to="Parameter") |>
+  select(-Value,-Test_RMSE) |>
+  rename("Fit Method" = Fit_Method) |>
+  pivot_longer(cols=c(c,lr,w),names_to="Parameter") %>%
   unite(Group, Group, Parameter) %>%
   pivot_wider(names_from = Group, values_from = value)
 
 header_df <- data.frame(
-  col_keys = c("Model", "Fit Method","Constant_c", "Constant_lr", "Constant_w", "Constant_Test RMSE", "Varied_c", "Varied_lr", "Varied_w", "Varied_Test RMSE" 
-               ),
-  line1 = c("", "", "Constant", "", "", "", "Varied", "", "", ""),
-  line2 = c("Model", "Fit Method", "c", "lr", "w", "Test RMSE", "c", "lr", "w", "Test RMSE")
+  col_keys = c("Model", "Fit Method","Constant_c", "Constant_lr", "Constant_w", "Varied_c", "Varied_lr", "Varied_w"),
+  line1 = c("", "", "Constant", "", "", "Varied", "",""),
+  line2 = c("Model", "Fit Method", "c", "lr", "w", "c", "lr", "w")
 )
 
 ft <- flextable(reshaped_df) %>% 
@@ -171,11 +170,11 @@ ft <- flextable(reshaped_df) %>%
   merge_h(part = "header") %>%
   merge_h(part = "header") %>%
   align(align = "center", part = "all") %>% 
-  autofit() %>% 
+  #autofit() %>% 
   empty_blanks() %>% 
   fix_border_issues() %>% 
-  hline(part = "header", i = 2, j=3:6) %>% 
-  hline(part = "header", i = 2, j=7:10)
+  hline(part = "header", i = 2, j=3:5) %>% 
+  hline(part = "header", i = 2, j=6:8)
 
 ft
 
@@ -240,12 +239,13 @@ allPreds <- rbind(vPreds |> mutate(Group="Varied"), cPreds |> mutate(Group="Cons
 
 ```{r}
 #| label: tbl-e1-meanPreds
-#| tbl-cap: Model Perforamnce - averaged over all X values/Bands. MAE=Mean Averaged Error, RMSE = Root mean squared error. 
+#| tbl-cap: Model Perforamnce - averaged over all X values/Bands. ME=Mean Average Error, RMSE = Root mean squared error. 
+#| warning: false
 
 allPreds |> summarise(Error=mean(Error), Abs_Error=sqrt(mean(Abs_Error))) |> 
   mutate(Fit_Method=factor(Fit_Method, levels=c("Test Only", "Test & Train", "Train Only"))) |>
   tabulator(rows=c("Fit_Method", "Model"), columns=c("Group"), 
-             `MAE` = as_paragraph(Error), 
+             `ME` = as_paragraph(Error), 
             `RMSE` = as_paragraph(Abs_Error)) |> as_flextable()
 ```
 
@@ -256,7 +256,7 @@ allPreds |> summarise(Error=mean(Error), Abs_Error=sqrt(mean(Abs_Error))) |>
 #| fig-cap: Varied Group - Mean Model predictions vs. observations
 #| fig-height: 12
 #| fig-width: 14
-#| column: screen-inset-right
+##| column: screen-inset-right
 
 ####
 
@@ -302,8 +302,8 @@ vtr <-  pluck(a_tr_v, "test") |> rename(ALM=pred,Observed=y) %>%
 
 ```{r fig.height=11, fig.width=11}
 #| label: tbl-e1-predsV
-#| tbl-cap: Varied group - mean model predictions vs. observations
-#| column: screen-inset-right
+#| tbl-cap: Varied group - mean model predictions vs. observations. Extrapolation Bands are bolded. For each Modelling fitting and band combination, the model with the smallest residual is highlighted. Only the lower bound of each velocity band is shown (bands are all 200 units). 
+##| column: screen-inset-right
 
 
 # Create a custom header dataframe
@@ -352,7 +352,7 @@ ft <- flextable(long_vPreds) %>%
   merge_v(part = "header") %>% 
   merge_h(part = "header") %>%
   align(align = "center", part = "all") %>% 
-  autofit() %>% 
+  #autofit() %>% 
   empty_blanks() %>% 
   fix_border_issues() %>%
   hline(part = "header", i = 1, j=4:9) %>%
@@ -386,7 +386,7 @@ pander(tvtr,caption="Varied fit to train only")
 #| fig-cap: Constant Group - Mean Model predictions vs. observations
 #| fig-height: 12
 #| fig-width: 14
-#| column: screen-inset-right
+##| column: screen-inset-right
 
 ####
 
@@ -425,8 +425,8 @@ cte/ctetr/ctr
 
 ```{r}
 #| label: tbl-e1-predsC
-#| tbl-cap: Constant group - mean model predictions vs. observations
-#| column: screen-inset-right
+#| tbl-cap: Constant group - mean model predictions vs. observations. The X values of Extrapolation Bands are bolded. For each Modelling fitting and band combination, the model with the smallest residual is highlighted. Only the lower bound of each velocity band is shown (bands are all 200 units). 
+##| column: screen-inset-right
 
 
 
@@ -458,7 +458,7 @@ ft <- flextable(long_cPreds) %>%
   merge_v(part = "header") %>% 
   merge_h(part = "header") %>%
   align(align = "center", part = "all") %>% 
-  autofit() %>% 
+  #autofit() %>% 
   empty_blanks() %>% 
   fix_border_issues() %>%
   hline(part = "header", i = 1, j=4:9) %>%
@@ -483,32 +483,6 @@ ft
 ```
 
 
-```{r}
-#| label: tbl-e1-predsC2
-#| tbl-cap: Constant group - mean model predictions vs. observations
-#| eval: false 
-tcte<- pluck(a_te_c, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex0_te_c, "test") |> pull(pred)) %>%
-  cbind(., Hybrid=pluck(hybrid_te_c, "test") |> pull(pred))
-
-tctetr<-pluck(a_tetr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex0_tetr_c, "test") |> pull(pred)) %>%
-  cbind(., Hybrid=pluck(hybrid_tetr_c, "test") |> pull(pred))
-
-tctr<- pluck(a_tr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex0_tr_c, "test") |> pull(pred)) %>%
-  cbind(., Hybrid=pluck(hybrid_tr_c, "test") |> pull(pred))
-
-pander(tcte, caption="Constant fit to test only")
-pander(tctetr,caption="Constant fit to train and test")
-pander(tctr,caption="Constant fit to train only")
-
-```
-
-
-
-
-
 
 
 
@@ -516,6 +490,7 @@ pander(tctr,caption="Constant fit to train only")
 
 ```{r}
 #| eval: false
+#| include: false
 pluck(a_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
   mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
   learn_curve_plot(tr, vx, Resp,facet_var=x, groupVec=Resp,nbins=8)
@@ -540,6 +515,7 @@ list(a_tr_v, a_te_v,a_tetr_v) |> map( ~{pluck(.x, "train") |> pivot_longer(y:alm
 # EXAM fit learning curves
 ```{r}
 #| eval: false
+#| include: false
 pluck(ex_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
   mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
   learn_curve_plot(tr, vx, Resp,facet_var=x, groupVec=Resp,nbins=8)
@@ -557,7 +533,7 @@ pluck(ex_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = 
 
 ```{r}
 #| eval: false
-
+#| include: false
 
 optimize_params_weighted_individual <- function(ds, c_values, lr_values, weight_exam_values, input.layer, output.layer) {
     all_results <- list()
@@ -595,8 +571,3 @@ all_results_weighted_hybrid[["1"]]$b
 
  map_df(~ map_df(.x$train, pluck, "d"), .id = "density")
 ```
-
-
-
-
-

@@ -131,7 +131,7 @@ model_data_c <- list(a_te_c, a_tetr_c, a_tr_c, ex0_te_c, ex0_tetr_c, ex0_tr_c, h
 
 combined_params_v <- create_combined_df(model_names, model_data_v, "Varied")
 combined_params_c <- create_combined_df(model_names, model_data_c, "Constant")
-all_combined_params <- rbind(combined_params_v, combined_params_c)
+all_combined_params <- rbind(combined_params_c,combined_params_v)
 
 #
 #
@@ -139,9 +139,12 @@ all_combined_params <- rbind(combined_params_v, combined_params_c)
 #
 #
 #
+#
+#
+#
 #| label: tbl-e1-cogmodel
-#| column: body-outset-right
-#| tbl-cap: Fit Parameters and Model RMSE. The Test_RMSE column is the main performance indicator of interest, and represents the RMSE for just the testing data. The Fit_Method column indicates the data used to fit the model.
+#| tbl-cap: Fit Parameters and Model RMSE. The Test_RMSE column is the main performance indicator of interest, and represents the RMSE for just the testing data. The Fit_Method column indicates the data used to fit the model. The $w$ parameter determines the balance between the ALM and EXAM response generation processes, and is only included for the hybrid model. A weight of .5 would indicate equal contribution from both models. $w$ values approaching 1 indicate stronger weight for EXAM. 
+##| column: body-outset-right
 
 
 reshaped_df <- all_combined_params %>%
@@ -152,9 +155,9 @@ reshaped_df <- all_combined_params %>%
   pivot_wider(names_from = Group, values_from = value)
 
 header_df <- data.frame(
-  col_keys = c("Model", "Fit Method", "Varied_c", "Varied_lr", "Varied_w", "Varied_Test RMSE", 
-               "Constant_c", "Constant_lr", "Constant_w", "Constant_Test RMSE"),
-  line1 = c("", "", "Varied", "", "", "", "Constant", "", "", ""),
+  col_keys = c("Model", "Fit Method","Constant_c", "Constant_lr", "Constant_w", "Constant_Test RMSE", "Varied_c", "Varied_lr", "Varied_w", "Varied_Test RMSE" 
+               ),
+  line1 = c("", "", "Constant", "", "", "", "Varied", "", "", ""),
   line2 = c("Model", "Fit Method", "c", "lr", "w", "Test RMSE", "c", "lr", "w", "Test RMSE")
 )
 
@@ -182,37 +185,69 @@ ft
 #
 #
 #
-#| column: screen-inset-right
-#| output: false
-flextable_to_markdown <- function(ft) {
-  header <- ft$header$dataset %>% `rownames<-`( NULL )  %>% `colnames<-`( NULL )
-  body <- ft$body$dataset %>% `rownames<-`( NULL )  %>% `colnames<-`( NULL )
-  col_names <- paste0("V", 1:ncol(header))
-  colnames(header) <- col_names
-  colnames(body) <- col_names
-  combined_df <- rbind(header, body) %>% `rownames<-`( NULL )  %>% `colnames<-`( NULL )
-  markdown_table_k <- knitr::kable(combined_df, format="markdown")
-  markdown_table_p <- pander::pandoc.table(combined_df,style="rmarkdown", split.table = Inf)
-  return(tibble::lst(markdown_table_k,markdown_table_p))
-}
-flextable_to_markdown(ft)
+#
+#
+tvte<- pluck(a_te_v, "test") |> 
+  mutate(Fit_Method="Test Only") |>
+  rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex_te_v, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_te_v, "test") |> pull(pred))
+
+tvtetr<-pluck(a_tetr_v, "test") |> 
+  mutate(Fit_Method="Test & Train") |> 
+  rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex_tetr_v, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_tetr_v, "test") |> pull(pred))
+
+tvtr<- pluck(a_tr_v, "test")|> 
+  mutate(Fit_Method="Train Only") |> 
+  rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex_tr_v, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_tr_v, "test") |> pull(pred))
+
+tcte<- pluck(a_te_c, "test") |> 
+  mutate(Fit_Method="Test Only") |> 
+  rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex0_te_c, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_te_c, "test") |> pull(pred))
+
+tctetr<-pluck(a_tetr_c, "test") |> 
+  mutate(Fit_Method="Test & Train") |>  
+  rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex0_tetr_c, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_tetr_c, "test") |> pull(pred))
+
+tctr<- pluck(a_tr_c, "test")|> 
+  mutate(Fit_Method="Train Only") |>  
+  rename(ALM=pred,Observed=y) %>% 
+  cbind(.,EXAM=pluck(ex0_tr_c, "test") |> pull(pred)) %>%
+  cbind(., Hybrid=pluck(hybrid_tr_c, "test") |> pull(pred))
+
+vPreds <- rbind(tvte,tvtetr, tvtr) |> relocate(Fit_Method,.before=x) |> 
+   mutate(across(where(is.numeric), \(x) round(x, 0)))
+
+cPreds <- rbind(tcte,tctetr, tctr) |> relocate(Fit_Method,.before=x) |> 
+   mutate(across(where(is.numeric), \(x) round(x, 0)))
+
+allPreds <- rbind(vPreds |> mutate(Group="Varied"), cPreds |> mutate(Group="Constant")) |>
+  pivot_longer(cols=c("ALM","EXAM","Hybrid"), names_to="Model",values_to = "Prediction") |> 
+  mutate(Error=Observed-Prediction, Abs_Error=((Error)^2)) |> 
+  group_by(Group,Fit_Method, Model) #|> summarise(Mean_Error=mean(Error), Abs_Error=mean(Abs_Error))
+
 
 #
 #
 #
 #
-#
-#
-#| label: tbl-e1-hybridParam
-#| tbl-cap: Hybrid Model - w parameter. The $w$ parameter determines the balance between the ALM and EXAM response generation processes, and is only included for the hybrid model. A weight of .5 would indicate equal contribution from both models. $w$ values approaching 1 indicate stronger weight for EXAM. 
-#| eval: false
-all_combined_params |> filter(Model =="Hybrid") |> 
-  group_by(Group, Fit_Method) |>
-  summarise(w=fmt_iden(first(w)), Test_RMSE=(fmt_iden(Test_RMSE))) |>
-  group_by(Group,Fit_Method) |> flextable()
+#| label: tbl-e1-meanPreds
+#| tbl-cap: Model Perforamnce - averaged over all X values/Bands. ME=Mean Average Error, RMSE = Root mean squared error. 
+#| warning: false
 
-#
-#
+allPreds |> summarise(Error=mean(Error), Abs_Error=sqrt(mean(Abs_Error))) |> 
+  mutate(Fit_Method=factor(Fit_Method, levels=c("Test Only", "Test & Train", "Train Only"))) |>
+  tabulator(rows=c("Fit_Method", "Model"), columns=c("Group"), 
+             `ME` = as_paragraph(Error), 
+            `RMSE` = as_paragraph(Abs_Error)) |> as_flextable()
 #
 #
 #
@@ -222,7 +257,7 @@ all_combined_params |> filter(Model =="Hybrid") |>
 #| fig-cap: Varied Group - Mean Model predictions vs. observations
 #| fig-height: 12
 #| fig-width: 14
-#| column: screen-inset-right
+##| column: screen-inset-right
 
 ####
 
@@ -253,14 +288,6 @@ vtr <-  pluck(a_tr_v, "test") |> rename(ALM=pred,Observed=y) %>%
   scale_x_continuous(breaks=sort(unique(ds$x)), labels=sort(unique(ds$x)))+ylim(0,1500) +
   theme(legend.title = element_blank(), legend.position="top") +ggtitle("Fit to Train Only")
 
-
-
-
-
-
-
-
-
  vte/vtetr/vtr
 
 #
@@ -270,36 +297,28 @@ vtr <-  pluck(a_tr_v, "test") |> rename(ALM=pred,Observed=y) %>%
 #
 #
 #
+#
+#
+#
+#
+#
 #| label: tbl-e1-predsV
-#| tbl-cap: Varied group - mean model predictions vs. observations
-#| 
-tvte<- pluck(a_te_v, "test") |> 
-  mutate(Fit_Method="Test Only") |>
-  rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex_te_v, "test") |> pull(pred)) %>%
-  cbind(., Hybrid=pluck(hybrid_te_v, "test") |> pull(pred))
-
-tvtetr<-pluck(a_tetr_v, "test") |> 
-  mutate(Fit_Method="Test & Train") |> 
-  rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex_tetr_v, "test") |> pull(pred)) %>%
-  cbind(., Hybrid=pluck(hybrid_tetr_v, "test") |> pull(pred))
-
-tvtr<- pluck(a_tr_v, "test")|> 
-  mutate(Fit_Method="Train Only") |> 
-  rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex_tr_v, "test") |> pull(pred)) %>%
-  cbind(., Hybrid=pluck(hybrid_tr_v, "test") |> pull(pred))
+#| tbl-cap: Varied group - mean model predictions vs. observations. Extrapolation Bands are bolded. For each Modelling fitting and band combination, the model with the smallest residual is highlighted. Only the lower bound of each velocity band is shown (bands are all 200 units). 
+##| column: screen-inset-right
 
 
+# Create a custom header dataframe
+header_df <- data.frame(
+  col_keys = c("Fit_Method", "x","Observed" ,"ALM_Predicted", "ALM_Residual", "EXAM_Predicted","EXAM_Residual", "Hybrid_Predicted","Hybrid_Residual"),
+  line1 = c("","","", "ALM", "", "EXAM", "", "Hybrid",""),
+  line2 = c("Fit Method", "X", "Observed", "Predicted","Residual", "Predicted","Residual", "Predicted","Residual")
+)
 
-vPreds <- rbind(tvte,tvtetr, tvtr) |> relocate(Fit_Method,.before=x) |> 
-   mutate(across(where(is.numeric), \(x) round(x, 0)))
 
 best_vPreds <- vPreds %>%
   pivot_longer(cols = c(ALM, EXAM, Hybrid), names_to = "Model", values_to = "Predicted") |>
-  mutate(Residual=abs(Observed-Predicted)) |> group_by(Fit_Method,x) |>
-  mutate(best=if_else(Residual==min(Residual),1,0)) 
+  mutate(Residual=(Observed-Predicted), abs_res =abs(Residual)) |> group_by(Fit_Method,x) |>
+  mutate(best=if_else(abs_res==min(abs_res),1,0)) |> select(-abs_res)
 
 long_vPreds <- best_vPreds |> select(-best) |>
   pivot_longer(cols=c(Predicted,Residual), names_to="Model_Perf") |>
@@ -310,31 +329,20 @@ long_vPreds <- best_vPreds |> select(-best) |>
 best_wide <- best_vPreds |> select(-Residual,-Predicted,-Observed) |> ungroup() |>
   pivot_wider(names_from=Model,values_from=best) |> select(ALM,EXAM,Hybrid)
 
-# Create a custom header dataframe
-header_df <- data.frame(
-  col_keys = c("Fit_Method", "x","Observed" ,"ALM_Predicted", "ALM_Residual", "EXAM_Predicted","EXAM_Residual", "Hybrid_Predicted","Hybrid_Residual"),
-  line1 = c("","","", "ALM", "", "EXAM", "", "Hybrid",""),
-  line2 = c("Fit Method", "X", "Observed", "Predicted","Residual", "Predicted","Residual", "Predicted","Residual")
-)
+best_indexV <- row_indices <- apply(best_wide, 1, function(row) {
+ which(row == 1)
+})
 
 
-#  head(best_wide)
-# # A tibble: 6 × 3
-#     ALM  EXAM Hybrid
-#   <dbl> <dbl>  <dbl>
-# 1     1     0      0
-# 2     0     0      1
-# 3     0     0      1
-# 4     1     0      0
-# 5     0     1      0
-# 6     0     1      0
-
-# for each row of best_wide, which column is equal to 1
-best_index <- best_wide %>% 
-  mutate(best=if_else(ALM==1,1,if_else(EXAM==1,2,3))) |> 
-  select(best) |> pull()
-
-
+apply_best_formatting <- function(ft, best_index) {
+  for (i in 1:length(best_index)) {
+      #ft <- ft %>% surround(i=i,j=best_index[i],border=fp_border_default(color="red",width=1))
+      ind = best_index[[i]]
+      ind <- ind  %>% map_dbl(~ .x*2+3)
+      ft <- ft %>% highlight(i=i,j=ind,color="wheat")
+      }
+  return(ft)
+}
 
 ft <- flextable(long_vPreds) %>% 
   set_header_df(
@@ -351,22 +359,19 @@ ft <- flextable(long_vPreds) %>%
   hline(part = "header", i = 1, j=4:9) %>%
   vline(j=c("Observed","ALM_Residual","EXAM_Residual")) %>%
   hline(part = "body", i=c(6,12)) |> 
-  bold(i=long_vPreds$x %in% c(100,350,600), j=2) |>
+  bold(i=long_vPreds$x %in% c(100,350,600), j=2) 
+
   # bold the cell with the lowest residual, based on best_wide df
   # for each row, the cell that should be bolded matches which column in best_wide==1 at that row
-  bold(i=1,j=which(best_wide==1) )%>%
-
+ft <- apply_best_formatting(ft, best_indexV)
 ft
-long_vPreds
-
-
 
 
 #
 #
 #
 #
-
+#| eval: false
 pander(tvte, caption="Varied fit to test only")
 pander(tvtetr,caption="Varied fit to train and test")
 pander(tvtr,caption="Varied fit to train only")
@@ -382,7 +387,7 @@ pander(tvtr,caption="Varied fit to train only")
 #| fig-cap: Constant Group - Mean Model predictions vs. observations
 #| fig-height: 12
 #| fig-width: 14
-#| column: screen-inset-right
+##| column: screen-inset-right
 
 ####
 
@@ -421,27 +426,61 @@ cte/ctetr/ctr
 #
 #
 #| label: tbl-e1-predsC
-#| tbl-cap: Constant group - mean model predictions vs. observations
-#| 
-tcte<- pluck(a_te_c, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex0_te_c, "test") |> pull(pred)) %>%
-  cbind(., Hybrid=pluck(hybrid_te_c, "test") |> pull(pred))
+#| tbl-cap: Constant group - mean model predictions vs. observations. The X values of Extrapolation Bands are bolded. For each Modelling fitting and band combination, the model with the smallest residual is highlighted. Only the lower bound of each velocity band is shown (bands are all 200 units). 
+##| column: screen-inset-right
 
-tctetr<-pluck(a_tetr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex0_tetr_c, "test") |> pull(pred)) %>%
-  cbind(., Hybrid=pluck(hybrid_tetr_c, "test") |> pull(pred))
 
-tctr<- pluck(a_tr_c, "test") |> rename(ALM=pred,Observed=y) %>% 
-  cbind(.,EXAM=pluck(ex0_tr_c, "test") |> pull(pred)) %>%
-  cbind(., Hybrid=pluck(hybrid_tr_c, "test") |> pull(pred))
 
-pander(tcte, caption="Constant fit to test only")
-pander(tctetr,caption="Constant fit to train and test")
-pander(tctr,caption="Constant fit to train only")
+best_cPreds <- cPreds %>%
+  pivot_longer(cols = c(ALM, EXAM, Hybrid), names_to = "Model", values_to = "Predicted") |>
+  mutate(Residual=(Observed-Predicted), abs_res =abs(Residual)) |> group_by(Fit_Method,x) |>
+  mutate(best=if_else(abs_res==min(abs_res),1,0)) |> select(-abs_res)
+
+long_cPreds <- best_cPreds |> select(-best) |>
+  pivot_longer(cols=c(Predicted,Residual), names_to="Model_Perf") |>
+  relocate(Model, .after=Fit_Method) |> 
+  unite(Model,Model,Model_Perf) |>
+  pivot_wider(names_from=Model,values_from=value)
+
+best_wideC <- best_cPreds |> select(-Residual,-Predicted,-Observed) |> ungroup() |>
+  pivot_wider(names_from=Model,values_from=best) |> select(ALM,EXAM,Hybrid)
+
+best_indexC <- row_indices <- apply(best_wideC, 1, function(row) {
+ which(row == 1)
+})
+
+
+ft <- flextable(long_cPreds) %>% 
+  set_header_df(
+    mapping = header_df,
+    key = "col_keys"
+  ) %>% 
+  theme_booktabs() %>% 
+  merge_v(part = "header") %>% 
+  merge_h(part = "header") %>%
+  align(align = "center", part = "all") %>% 
+  autofit() %>% 
+  empty_blanks() %>% 
+  fix_border_issues() %>%
+  hline(part = "header", i = 1, j=4:9) %>%
+  vline(j=c("Observed","ALM_Residual","EXAM_Residual")) %>%
+  hline(part = "body", i=c(6,12)) |> 
+  bold(i=long_cPreds$x %in% c(100,350,600, 1000,1200), j=2) 
+
+  # bold the cell with the lowest residual, based on best_wide df
+  # for each row, the cell that should be bolded matches which column in best_wide==1 at that row
+
+ft <- apply_best_formatting(ft, best_indexC)
+ft
 
 #
 #
 #
+#
+#
+#
+
+
 #
 #
 #
@@ -452,6 +491,7 @@ pander(tctr,caption="Constant fit to train only")
 #
 #
 #| eval: false
+#| include: false
 pluck(a_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
   mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
   learn_curve_plot(tr, vx, Resp,facet_var=x, groupVec=Resp,nbins=8)
@@ -476,6 +516,7 @@ list(a_tr_v, a_te_v,a_tetr_v) |> map( ~{pluck(.x, "train") |> pivot_longer(y:alm
 #
 #
 #| eval: false
+#| include: false
 pluck(ex_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = "vx") |> 
   mutate(dev=x-vx,abs_dev=abs(x-vx)) |>
   learn_curve_plot(tr, vx, Resp,facet_var=x, groupVec=Resp,nbins=8)
@@ -493,7 +534,7 @@ pluck(ex_te_v, "train") |> pivot_longer(y:almResp, names_to="Resp", values_to = 
 #
 #
 #| eval: false
-
+#| include: false
 
 optimize_params_weighted_individual <- function(ds, c_values, lr_values, weight_exam_values, input.layer, output.layer) {
     all_results <- list()
@@ -530,12 +571,6 @@ all_results_weighted_hybrid[["1"]]$b
  map(~ map(.x$best_params, pluck, "c"))
 
  map_df(~ map_df(.x$train, pluck, "d"), .id = "density")
-#
-#
-#
-#
-#
-#
 #
 #
 #
