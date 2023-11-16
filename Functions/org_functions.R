@@ -7,6 +7,18 @@
 #         dplyr.summarise.inform = FALSE,
 #         knitr.kable.NA = "")
 
+round_tibble <- function(tbl, rn) {
+  tbl %>% 
+    mutate(across(where(is.numeric), ~round(., rn)))
+}
+
+strip_list_notation <- function(str) {
+  # Remove 'list(' at the beginning
+  str <- gsub("^list\\(", "", str)
+  # Remove ')' at the end
+  str <- gsub("\\)$", "", str)
+  return(str)
+}
 
 get_coef_details <- function(model, term_name) {
   broom.mixed::tidy(model) |>

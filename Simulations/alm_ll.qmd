@@ -1,8 +1,8 @@
-#
-#
-#
-#
-#
+
+
+
+
+```{r}
 pacman::p_load(dplyr,tidyr,purrr, furrr,future,here)
 
 purrr::walk(here::here(c("Functions/Display_Functions.R","Functions/misc_model_funs.R",
@@ -129,13 +129,13 @@ alm_result_ql <- function(result){
 }
 #map(results,alm_result_ql)
 
-#
-#
-#
-#
-#
-#
-#
+```
+
+[1] "c = 0.073, lr = 1.011, sigma = 1249.683, Value = 48.354,  time:0.4"
+
+
+
+```{r}
 
 library(DEoptimR)
 
@@ -240,16 +240,15 @@ de_optim_fit_id <- function(id_data, func, fit_params, model_params, initial_par
 
 
 
-#
-#
-#
-#
-#
-#
-#
+```
+
+id 1 - test_error
+           c        lr    sigma  value
+1 0.05944775 0.9984982 999.6437 47.047
+
+```{r}
 
 
-a
 fit_params=list(pred_dat="test_avg", pred_fun="exam.response", loss_fun="nll", loss_data="test_error")
 model_params = tibble::lst(input.layer = c(100,350,600,800,1000,1200), 
                            output.layer = c(100,350,600,800,1000,1200), 
@@ -312,36 +311,36 @@ func="fit_lr_c"
 
 train_data <- train_data |> mutate(y=ifelse(y>1600,1600,y))
 test_data <- test_data |> mutate(y=ifelse(y>1600,1600,y))
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
+```
+
+[1] "c = 0.02, lr = 0.75, sigma = 866.564, value = 46.221,  time:1.4"
+[1] "c = 0.069, lr = 1.447, sigma = 999.98, value = 47.363,  time:1.3"
+
+> de_results[[1]]$test
+  sbj    x condit         y     pred
+1   1  100 Varied  564.8623  717.994
+2   1  350 Varied  791.2064  825.478
+3   1  600 Varied  984.5210  934.672
+4   1  800 Varied 1060.7720 1018.950
+5   1 1000 Varied 1187.2458 1096.392
+6   1 1200 Varied 1378.7755  999.988
+
+
+[1] "c = 0.006, lr = 4.653, sigma = 901.095, value = 46.596,  time:1.4"
+[1] "c = 10.548, lr = 0.485, sigma = 1000, value = 7988933.002,  time:1.4"
+> de_results[[1]]$test
+  sbj    x condit         y     pred
+1   1  100 Varied  564.8623  733.242
+2   1  350 Varied  791.2064  878.848
+3   1  600 Varied  984.5210 1156.855
+4   1  800 Varied 1060.7720 1140.938
+5   1 1000 Varied 1187.2458  595.414
+6   1 1200 Varied 1378.7755 1348.224
+
+
+
+
+```{r}
 
 
 
@@ -421,15 +420,15 @@ de_alm_tr_RMSE <- future_map(split_data, ~ de_optim_fit_id(.x, func="fit_lr_c1",
 saveRDS(de_alm_tr_RMSE,here::here(paste0("data/model_cache/indv_RMSE_de_alm_tr",format(Sys.time(), "%H_%M_%OS"),".rds")))
 
 
-#
-#
-#
-#
-#
-#
-#
-#
-#
+```
+
+
+
+
+
+
+
+```{r}
 
 
 c_values <- seq(0.000001, 1.0, length.out=15)
@@ -452,8 +451,5 @@ opt_results <- optim_fit(fit_w_c, fit_params,model_params,dat_params,opt.m="BFGS
 
 
 
-#
-#
-#
-#
-#
+```
+

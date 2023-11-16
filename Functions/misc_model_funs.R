@@ -1,4 +1,15 @@
+round_tibble <- function(tbl, rn) {
+  tbl %>% 
+    mutate(across(where(is.numeric), ~round(., rn)))
+}
 
+strip_list_notation <- function(str) {
+  # Remove 'list(' at the beginning
+  str <- gsub("^list\\(", "", str)
+  # Remove ')' at the end
+  str <- gsub("\\)$", "", str)
+  return(str)
+}
 
 
 adjust_layer <- function(input.layer, k){
@@ -15,6 +26,24 @@ adjust_layer <- function(input.layer, k){
 ### Loss Functions
 
 #  mse <- mean((predictions - test_data$y)^2)
+
+nll <- function(obsv,pred,sigma)
+{
+ -sum(dnorm(obsv,mean=pred,sd=sigma,log=TRUE))
+}
+
+
+nll2 <- function(obsv,pred,sigma)
+{
+  nll= -sum(dnorm(obsv,mean=pred,sd=sigma,log=TRUE)) +.001
+  #print(nll)
+  if (is.nan(nll)) {
+    nll <- 1e4 # Large penalty
+  }
+  return(nll)
+}
+
+
 
 RMSE <- function(x,y){
  # print("rmseTrial")
