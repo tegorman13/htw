@@ -7,9 +7,8 @@ pacman::p_load(dplyr,tidyr,purrr, furrr,future,here)
 
 purrr::walk(here::here(c("Functions/Display_Functions.R","Functions/misc_model_funs.R",
                          "Functions/alm_core.R","Functions/fit_funs.R")),source)
-ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))
+ds <- readRDS(here::here("data/e1_md_11-06-23.rds")) |> mutate(sbj=id)
 
-ds <- ds |> mutate(sbj=id)
 dsAvg <- ds |> group_by(condit,expMode2,tr, x) |> 
   summarise(y=mean(y),.groups="drop") 
 
@@ -30,104 +29,8 @@ test_avgC <- test_dataC |> group_by(x) |> summarise(y=mean(y))
 
 
 
-library(DEoptim)
-
-de_optim_fit <- function(func, fit_params, model_params, dat_params, initial_params) {
- 
- purrr::walk(here::here(c("Functions/misc_model_funs.R","Functions/alm_core.R","Functions/fit_funs.R")),source)
-  model_fun = get(func)
-  train_data <- dat_params$train_data
-  test_data <- dat_params$test_data
-  test_avg <- dat_params$test_avg
-  pred_dat <- get(fit_params$pred_dat)
-  loss_dat <- fit_params$loss_data
-  pred_fun <- match.fun(fit_params$pred_fun)
-  loss_fun <- match.fun(fit_params$loss_fun)
-  initial_params <- initial_params
-  list2env(model_params,envir = environment())
-  # Define the objective function for DEoptim
-  objective_function <- function(params) {
-    model_fun(params, pred_dat, pred_fun, loss_fun, loss_dat, model_params, test_data, train_data)
-  }
-
-  # Define bounds for parameters
-  lower_bounds <- c(.01,.1,10)
-  upper_bounds <- c(5,5,2000)
-  initialpop=initial_params
-
-  # Define number of particles (NP) and iterations (maxiter)
-  NP <- 10 * length(initial_params) + 1
-  maxiter <- 200
-  strategy=6
-
-  optim_time <- system.time({
-    # Using DEoptim instead of JDEoptim
-    de_optim_res <- DEoptim(fn = objective_function, lower = lower_bounds, 
-                            upper = upper_bounds, control = list(NP = NP, itermax = maxiter,strategy=strategy))
-  })
-
-  bestFit <- as.data.frame(as.list(de_optim_res$optim$bestmem)) |> mutate(Value=round(de_optim_res$optim$bestval,3))
-  names(bestFit) <- c("c","lr","sigma","value")
-  
-  
-  bf_train_result <- alm.sim(train_data, bestFit$c, bestFit$lr, input.layer, output.layer)
-  weight.mat <- bf_train_result$wm
-  bf_train <- bf_train_result$d
-  best_preds <- map_dbl(pred_dat$x, ~ pred_fun(.x, bestFit$c,input.layer, output.layer, weight.mat,trainVec))
-  (bf_test <- cbind(pred_dat, pred = best_preds ))
-  
-  if (any(is.nan(best_preds))) {
-  warning("Warning: test_prediction contains NaN values.")
-}
-
-  if(length(is.null(bestFit$sigma))){
-  train_error <- loss_fun(bf_train$y, bf_train$almResp,bestFit$sigma) |> as.numeric()
-  test_error <- loss_fun(pred_dat$y, best_preds,bestFit$sigma |> as.numeric())
-  } else{
-    train_error <- loss_fun(bf_train$y, bf_train$almResp)
-    test_error <- loss_fun(pred_dat$y, best_preds)
-  }
-  
- 
-  print_b <-paste0(strip_list_notation(tibble::lst(round_tibble(bestFit,3))))
-  print(paste0(print_b, ",  time:",  round(optim_time[3],1)))
-  
-  optim_info <- list(id=as.numeric(train_data$sbj[1]),condit=as.character(train_data$condit[1]),
-                     Value = bestFit$Value, c = bestFit$c, lr = bestFit$lr, 
-                     print_b,
-                     NAN_Test=any(is.nan(best_preds)),
-                     model_fun=func, 
-                     pred_fun=fit_params$pred_fun,
-                     loss_dat=loss_dat,loss_fun=fit_params$loss_fun, 
-                     train=bf_train,test=bf_test, Fit = bestFit, 
-                     train_error=train_error,test_error=test_error,
-                     run_args=tibble::lst(func,fit_params,model_params,dat_params,trainVec,input.layer,output.layer),
-                     opt_info=tibble::lst(de_optim_res,initial_params, NP, maxiter, lower_bounds,upper_bounds),
-                     info=tibble::lst(time=Sys.time(),Sys.info(), path=getwd()),
-                     runtime=optim_time[3])
-  
-  return(optim_info) 
-}
 
 
-
-de_optim_fit_id <- function(id_data, func, fit_params, model_params, initial_params) {
-  train_data <- id_data %>% filter(expMode2=="Train") # Adjust condition as needed
-  test_data <- id_data %>% filter(expMode2=="Test") # Adjust condition as needed
-  test_avg <- test_data |> ungroup() |>  group_by(sbj,x,condit) |> summarise(y=mean(y), .groups="drop")
-  
-  dat_params <- tibble::lst(test_data = test_data, train_data = train_data, test_avg=test_avg)
-  
-  
-  # Wrap the optimization call in tryCatch
-  result <- tryCatch({
-    de_optim_fit(func, fit_params, model_params, dat_params, initial_params)
-  }, error = function(e) {
-    message("Error during optimization for ID ", unique(id_data$id), ": ", e$message)
-    return(NULL) # Return NULL or another error indicator
-  })
-
-}
 
 
 
@@ -147,8 +50,9 @@ de_results[[1]]$test
 6   1 1200 Varied 1378.7755 1040.500
 
 
-```{r}
 
+```{r}
+# 11/16/23 - fairly successful fits
 
 fit_params=list(pred_dat="test_avg", pred_fun="exam.response", loss_fun="nll", loss_data="test_error")
 model_params = tibble::lst(input.layer = c(100,350,600,800,1000,1200), 

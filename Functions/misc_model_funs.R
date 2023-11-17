@@ -35,7 +35,7 @@ nll <- function(obsv,pred,sigma)
 
 nll2 <- function(obsv,pred,sigma)
 {
-  nll= -sum(dnorm(obsv,mean=pred,sd=sigma,log=TRUE)) +.001
+  nll= -sum(dnorm(obsv,mean=pred,sd=sigma,log=TRUE)) 
   #print(nll)
   if (is.nan(nll)) {
     nll <- 1e4 # Large penalty
