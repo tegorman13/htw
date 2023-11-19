@@ -1,3 +1,25 @@
+
+
+weight_plot <- function(weight.mat){
+  tibbleFromMat <-
+    weight.mat %>%
+    tibble::as_tibble() %>%
+    tibble::rownames_to_column("Var1") %>%
+    tidyr::pivot_longer(-Var1, names_to = "Var2", values_to = "value") %>%
+    dplyr::mutate(
+      Output_Layer = factor(Var1, levels = 1:dim(weight.mat)[1]),
+      Input_Layer = factor(gsub("V", "", Var2), levels = 1:dim(weight.mat)[2])
+    )
+  ggplot(tibbleFromMat, aes(Output_Layer, Input_Layer)) +
+    geom_tile(aes(fill = value)) +
+    geom_text(aes(label = round(value, 3))) +
+    scale_fill_gradient(low = "white", high = "red")
+}
+
+
+
+
+
 round_tibble <- function(tbl, rn) {
   tbl %>% 
     mutate(across(where(is.numeric), ~round(., rn)))
