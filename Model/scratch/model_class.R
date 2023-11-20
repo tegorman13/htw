@@ -23,6 +23,8 @@ exam.response <- function(input, c, input.layer = input_layer, output.layer = ou
 }
 
 
+
+
 # Function to calculate activation and response for a given input
 alm.response <- function(input, c, input.layer, output.layer, weight.mat, trainVec = NULL) {
     input.activation <- exp(-c * (input.layer - input)^2) / (sum(exp(-c * (input.layer - input)^2)) + .0001)
@@ -50,6 +52,7 @@ alm.sim <- function(train, c, lr, input.layer = input_layer, output.layer = outp
     }
     return(list(d = cbind(train, almResp = st, dev = train$y - st), wm = weight.mat, c = c, lr = lr))
 }
+
 
 # Function to calculate negative log likelihood for ALM learning
 alm_nll <- function(par, data, add_exam_nll = FALSE, test = NULL, delta = NULL) {
