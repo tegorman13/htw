@@ -11,7 +11,6 @@ execute:
 --- 
 
 
-
 ```{r}
 #| code-fold: show
 pacman::p_load(tidyverse,data.table)
