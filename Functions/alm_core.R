@@ -69,7 +69,7 @@ exam.response <- function(input, c, input.layer = INPUT_LAYER_DEFAULT,output.lay
 }
 
 
-
+# 
 
 
 fit_alm_sim <- function(data, c, lr, noise_sd, input.layer, output.layer) {
@@ -87,7 +87,7 @@ fit_alm_sim <- function(data, c, lr, noise_sd, input.layer, output.layer) {
 }
 
 
-
+# 
 
 
 

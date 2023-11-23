@@ -1,9 +1,20 @@
 
 
+```r
 
+runif(10)
+
+```
 
 
 ```{r}
+
+runif(10)
+
+```
+
+
+```r
 
 
 pacman::p_load(tidyverse,patchwork,here, pander, latex2exp, flextable)
