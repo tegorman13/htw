@@ -30,7 +30,6 @@ initial_params <- c(c = 0.01, lr = .5, sigma = 200)
 
 
 
-
 ###########################
 
 library(DEoptim)

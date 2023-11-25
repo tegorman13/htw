@@ -58,6 +58,7 @@ alm_result_ql <- function(result){
 [1] "c = 0.073, lr = 1.011, sigma = 1249.683, Value = 48.354,  time:0.4"
 
 
+
 ```{r}
 
 library(DEoptimR)
@@ -99,7 +100,6 @@ de_optim_fit <- function(func, fit_params, model_params, dat_params, initial_par
   bestFit <- as.data.frame(as.list(de_optim_res$par)) |> mutate(Value=round(de_optim_res$value,3))
   names(bestFit) <- c("c","lr","sigma","value")
   
-
   
   bf_train_result <- alm.sim(train_data, bestFit$c, bestFit$lr, input.layer, output.layer)
   weight.mat <- bf_train_result$wm
