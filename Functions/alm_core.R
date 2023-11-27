@@ -52,8 +52,6 @@ alm.sim <- function(dat, c, lr, input.layer = INPUT_LAYER_DEFAULT, output.layer 
   return(list(d = dat, wm = weight.mat, c = c, lr = lr))
 }
 
-
-
 exam.response <- function(input, c, input.layer = INPUT_LAYER_DEFAULT,output.layer = OUTPUT_LAYER_DEFAULT, weight.mat, trainVec) {
   nearestTrain <- trainVec[which.min(abs(input - trainVec))]
   aresp <- alm.response(nearestTrain, c, input.layer = input.layer,output.layer,weight.mat)$mean.response

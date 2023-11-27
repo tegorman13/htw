@@ -1,6 +1,5 @@
 pacman::p_load(dplyr,tidyr,purrr,ggplot2)
 
-
 ### Response Functions
 
 exam.response <- function(input, pred_args) {
@@ -24,7 +23,6 @@ exam.response <- function(input, pred_args) {
   exam.output <- round(aresp + ((mOver - mUnder) / (xOver - xUnder)) * (input - nearestTrain), 3)
   exam.output
 }
-
 
 
 alt_exam <- function(input, pred_args) {
@@ -84,7 +82,6 @@ alm.responseOnly <- function(input = 1, pred_args) {
 }
 
 
-
 alm.response <- function(input = 1, c = 1, input.layer, output.layer, weight.mat, trainVec=NULL) {
   input.activation <- normalize_vector(activation_function(input, input.layer, c))
   output.activation <- (weight.mat %*% input.activation)
@@ -92,8 +89,6 @@ alm.response <- function(input = 1, c = 1, input.layer, output.layer, weight.mat
   mean.response <- sum(output.layer * output.probability)
   list(mean.response = mean.response, input.activation = input.activation, output.activation = output.activation)
 }
-
-
 
 
 c_values <- c(.0005, 1, 5)
@@ -191,11 +186,7 @@ fit_model <- function(simulated_data,modelType,loss_fun) {
     lower_bounds = lower_bounds, 
     upper_bounds = upper_bounds
   )
-
-
-
 }
-
 
 
 fit_lr_c1 <- function(params_list, pred_dat, pred_fun, pred_args,loss_fun, loss_dat, model_params, test_data, train_data) {
@@ -298,7 +289,6 @@ predict_model <- function(modelType, params, agent_data, weight.mat, trainVec, t
     trainVec = trainVec,
     trainVecY = trainVecY
   )
-  
   if (modelType == 'ALM') {
     return(sapply(test_inputs, function(x) alm.responseOnly(x, pred_args)))
   } else if (modelType == 'EXAM') {
@@ -311,30 +301,3 @@ predict_model <- function(modelType, params, agent_data, weight.mat, trainVec, t
     return(sapply(test_inputs, function(x) exam.response(x, pred_args)))
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-simulate_and_fit_alm <- function(params) {
-  # Code to simulate ALM data
-  # Code to fit ALM model
-}
-
-simulate_and_fit_exam <- function(params) {
-  # Code to simulate EXAM data
-  # Code to fit EXAM model 
-}
-
-
-
-
-
-
