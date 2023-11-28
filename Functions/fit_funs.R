@@ -6,7 +6,7 @@
 
 de_optim_fit <- function(func, fit_params, model_params, dat_params, initial_params) {
   
-  purrr::walk(here::here(c("Functions/misc_model_funs.R","Functions/alm_core.R","Functions/fit_funs.R")),source)
+  purrr::walk(here::here(c("Functions/fun_model.R","Functions/alm_core.R","Functions/fit_funs.R")),source)
   model_fun = get(func)
   train_data <- dat_params$train_data
   test_data <- dat_params$test_data
@@ -110,7 +110,7 @@ de_optim_fit_id <- function(id_data, func, fit_params, model_params, initial_par
 
 
 optim_fit <- function(func, fit_params, model_params,dat_params,opt.m="BFGS",initial_params) {
-  purrr::walk(here::here(c("Functions/misc_model_funs.R","Functions/alm_core.R","Functions/fit_funs.R")),source)
+  purrr::walk(here::here(c("Functions/fun_model.R","Functions/alm_core.R","Functions/fit_funs.R")),source)
   model_fun = get(func)
   train_data <- dat_params$train_data
   test_data <- dat_params$test_data
@@ -288,7 +288,7 @@ fit_lr_c1 <- function(params_list,pred_dat,pred_fun,loss_fun,loss_dat,model_para
 
 
 optim_fit_l_BFGS_b <- function(func, fit_params, model_params, dat_params, initial_params, lower_bounds, upper_bounds, opt.m="L-BFGS-B") {
-  purrr::walk(here::here(c("Functions/misc_model_funs.R","Functions/alm_core.R","Functions/fit_funs.R")),source)
+  purrr::walk(here::here(c("Functions/fun_model.R","Functions/alm_core.R","Functions/fit_funs.R")),source)
   model_fun = get(func)
   train_data <- dat_params$train_data
   test_data <- dat_params$test_data
