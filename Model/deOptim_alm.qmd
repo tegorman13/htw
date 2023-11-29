@@ -5,7 +5,7 @@
 ```{r}
 pacman::p_load(dplyr,tidyr,purrr, furrr,future,here)
 
-purrr::walk(here::here(c("Functions/Display_Functions.R","Functions/misc_model_funs.R",
+purrr::walk(here::here(c("Functions/Display_Functions.R","Functions/fun_model.R",
                          "Functions/alm_core.R","Functions/fit_funs.R")),source)
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds")) |> mutate(sbj=id)
 

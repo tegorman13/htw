@@ -38,6 +38,7 @@ dst <- dst %>%
   mutate(trial_band = row_number())
 ```
 
+
 ```{r}
 dst <- dst %>% filter(expMode=="train",bandOrder=="Original")
 vst <- dst %>% filter(condit=="Varied",gt.train<=84) %>% group_by(gt.train,vb,input) %>% summarise(sdVx=sd(vx),vx=mean(vx),sdDist=sd(dist),dist=mean(dist)) %>% 

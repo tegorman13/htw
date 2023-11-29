@@ -1,6 +1,17 @@
 
 
 
+nll2 <- function(obsv,pred,sigma)
+{
+  nll= -sum(dnorm(obsv,mean=pred,sd=sigma,log=TRUE)) 
+  #print(nll)
+  if (is.nan(nll)) {
+    nll <- 1e4 # Large penalty
+  }
+  return(nll)
+}
+
+
 Mode <- function(x) {
   ux <- unique(x)
   ux[which.max(tabulate(match(x, ux)))]
@@ -62,15 +73,7 @@ nll <- function(obsv,pred,sigma)
 }
 
 
-nll2 <- function(obsv,pred,sigma)
-{
-  nll= -sum(dnorm(obsv,mean=pred,sd=sigma,log=TRUE)) 
-  #print(nll)
-  if (is.nan(nll)) {
-    nll <- 1e4 # Large penalty
-  }
-  return(nll)
-}
+
 
 
 
