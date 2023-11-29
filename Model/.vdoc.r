@@ -35,8 +35,6 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
 input_layer =  c(100,350,600,800,1000,1200)
 output_layer = input_layer
 
-
-
 #
 #
 #
@@ -51,9 +49,6 @@ generate_prior_c_lr <- function(n) {
   )
   return(prior_samples)
 }
-
-
-
 
 full_sim_exam <- function(data, c, lr,pred_fun=exam.response, input_layer, output_layer,return_dat="test_data",mode="sim") {
   train_data <- data[expMode2=="Train", c("condit","tr","expMode2", "x","y")] 
@@ -116,11 +111,8 @@ full_sim_alt_exam <- function(data, c, lr, pred_fun=alt_exam, input_layer, outpu
   
 }
 
-
-
 abc_loss_plot <- function(abc_result,prior_samples)
 {
-  
   pgrid <- cbind(prior_samples,dist=abc_result$dist) |> mutate(dist=sqrt(dist))
   upper_limit <- quantile(pgrid$dist, 0.98)  # 95th percentile
   ggplot(pgrid, aes(x = c, y = lr, color = dist)) +
@@ -132,7 +124,6 @@ abc_loss_plot <- function(abc_result,prior_samples)
   labs(title = "Point Plot of pgrid", x = "c", y = "lr") +
   theme_minimal()+ ggtitle("Prior Loss")
   
-  
   post_grid <- cbind(prior_samples[abc_result$region,],dist=abc_result$dist[abc_result$region],k=abc_result$unadj.values)
   ggplot(post_grid, aes(x = c, y = lr, color = dist)) +
   geom_point() + 
@@ -140,6 +131,8 @@ abc_loss_plot <- function(abc_result,prior_samples)
   geom_contour(aes(x = c, y = lr, z = dist), color = 'white') +
   labs(title = "Point Plot of pgrid", x = "c", y = "lr") +
   theme_minimal() + ggtitle("Posterior Loss")
+
+  pgrid+post_grid
   
 }
 
@@ -161,7 +154,6 @@ abc_plot <- function(abc_result, data) {
     facet_wrap(~name, scales="free") +
     theme_minimal() +
     labs(x="Value", y="Density", title="Posterior Density Plots")
-  print(postV)
 
   # Compute summary statistics
   sum_stats <- data.frame(
@@ -170,7 +162,6 @@ abc_plot <- function(abc_result, data) {
     mode = apply(posterior_samples, 2, Mode) # Ensure the 'Mode' function is defined
   )
   sum_stats <- tibble::rownames_to_column(sum_stats, var="parameter")
-  print(sum_stats)
 
   # Calculate mode for parameters c and lr
   density_c <- density(posterior_samples[, "c"])
@@ -190,11 +181,9 @@ abc_plot <- function(abc_result, data) {
     scale_x_continuous(breaks=sort(unique(data$x)), labels=sort(unique(fsv$x))) +
     theme(legend.title = element_blank(), legend.position="top") +
     ggtitle("Fit to Test Only")
-  print(plot_fsv)
+
+  postV + plot_fsv
 }
-
-
-
 
 n_prior_samples <- 5000
 prior_samples <- generate_prior_c_lr(n_prior_samples)
@@ -224,7 +213,6 @@ prior_samples <- generate_prior_c_lr(n_prior_samples)
 
 
 plan(multisession)
-
 sd_v_tetr <- future_map_dfc(seq_len(nrow(prior_samples)), function(idx) {
   params <- prior_samples[idx, ]
   full_sim_exam(as.data.table(avg_dsv), params$c, params$lr,exam.response, input_layer, output_layer,return_dat = "train_data,test_data")
@@ -339,9 +327,6 @@ abc_c_tetr<- abc(
   method = "rejection",
   names=colnames(dst_c_tetr)
 )
-
-abc_plot(abc_c_tetr, avg_dsc)
-
 
 
 dst_c_te <- avg_dsc[expMode2=="Test",]$y
