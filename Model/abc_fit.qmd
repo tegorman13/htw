@@ -269,11 +269,11 @@ run_abc_fits <- function(data, input_layer, output_layer, simulation_function, n
   )
 
   # Return results
-  list(abc_train_test = abc_train_test, abc_test = abc_test)
+  tibble::lst(abc_train_test = abc_train_test, abc_test = abc_test, data=data,n_prior_samples,prior_samples,tol, simulation_function, targets=tibble::lst(target_data_train_test, target_data_test))
 }
 
 # Example usage for different models
-n_priors=20000
+n_priors=200000
 abc_results_varied_exam <- run_abc_fits(avg_dsv, input_layer, output_layer, full_sim_exam, n_prior_samples = n_priors)
 abc_results_varied_alt_exam <- run_abc_fits(avg_dsv, input_layer, output_layer, full_sim_alt_exam, n_prior_samples = n_priors)
 abc_results_varied_alm <- run_abc_fits(avg_dsv, input_layer, output_layer, full_sim_alm, n_prior_samples = n_priors)
@@ -294,7 +294,7 @@ model_cache <- list(
   abc_results_constant_alt_exam = abc_results_constant_alt_exam
 )
 
-saveRDS(model_cache,here::here(paste0("data/model_cache/abc_group_",format(Sys.time(), "%H_%M_%OS"),".rds")))
+saveRDS(model_cache,here::here(paste0("data/model_cache/abc_group_200k_",format(Sys.time(), "%H_%M_%OS"),".rds")))
 
 
 

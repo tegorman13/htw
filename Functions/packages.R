@@ -30,3 +30,11 @@ conflict_prefer_all("dplyr", quiet = TRUE)
 
 # load function scripts with succinct purrr
 walk(c("Display_Functions", "org_functions", "Table_Functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+
+
+
+# libraries <- c("dplyr", "purrr", "tidyr", "ggplot2", "data.table", 
+#                "conflicted", "here", "patchwork")
+# invisible(lapply(libraries, function(lib) {
+#     suppressPackageStartupMessages(require(lib, character.only = TRUE, quietly = TRUE))
+# }))
