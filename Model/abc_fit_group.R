@@ -1,6 +1,6 @@
 pacman::p_load(tidyverse,data.table,abc,future,furrr,here,patchwork, conflicted)
 conflict_prefer_all("dplyr", quiet = TRUE)
-walk(c("fun_alm","fun_model", "Display_Functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+walk(c("fun_alm","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 dsv <- ds |> filter(condit=="Varied")  
 dsc <- ds |> filter(condit=="Constant") 
@@ -158,7 +158,7 @@ run_abc_fits <- function(data, input_layer, output_layer, simulation_function, n
 
 
 
-n_priors=200
+n_priors=500000
 args_list <- tibble::lst(
   abc_v_exam=list(data = avg_dsv, input_layer = input_layer, output_layer = output_layer, simulation_function = full_sim_exam, n_prior_samples = n_priors),
   abc_v_alt_exam=list(data = avg_dsv, input_layer = input_layer, output_layer = output_layer, simulation_function = full_sim_alt_exam, n_prior_samples = n_priors),
@@ -172,4 +172,6 @@ plan(multisession)
 abc_list <- future_map(args_list, ~do.call(run_abc_fits, .x))
 
 
-saveRDS(abc_list,here::here(paste0("data/model_cache/abc_group200k_",format(Sys.time(), "%H_%M_%OS"),".rds")))
+saveRDS(abc_list,here::here(paste0("data/model_cache/abc_group500k_",format(Sys.time(), "%H_%M_%OS"),".rds")))
+
+

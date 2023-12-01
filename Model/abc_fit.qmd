@@ -148,7 +148,7 @@ abc_loss_plot <- function(abc_result,prior_samples)
 # Define the function
 abc_plot <- function(abc_result, data) {
   
-  pgrid <- cbind(prior_samples,dist=abc_v_tetr$dist) |> mutate(dist=sqrt(dist))
+  pgrid <- cbind(prior_samples,dist=abc_result$dist) |> mutate(dist=sqrt(dist))
 
   # Extracting posterior samples
   posterior_samples <- abc_result$unadj.values

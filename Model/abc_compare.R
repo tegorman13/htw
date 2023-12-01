@@ -140,11 +140,11 @@ ggplot(all_models_df, aes(x=c, fill=Fit_Method)) +
 #######
 
 
-abc_200k <- readRDS('data/model_cache/abc_group_200k_23_54_29.rds')
+abc_100k <- readRDS('data/model_cache/abc_group100k_03_32_46.rds')
 
-all_models_df_200k <- purrr::imap_dfr(abc_200k, ~ {
-  model_name <- gsub("abc_results_", "", .y)  # Prune the model name here
-  relevant_lists <- .x[names(.x) %in% c("abc_train_test", "abc_test")]  # Filter relevant lists
+all_models_df_100k <- purrr::imap_dfr(abc_100k, ~ {
+  model_name <- gsub("abc_", "", .y)  # Prune the model name here
+  relevant_lists <- .x[names(.x) %in% c("abc_train_test", "abc_test", "abc_train")]  # Filter relevant lists
   
   purrr::map2_dfr(
     names(relevant_lists), 
@@ -169,34 +169,34 @@ all_models_df_200k <- purrr::imap_dfr(abc_200k, ~ {
   )
 })
 
-head(all_models_df_200k)
+head(all_models_df_100k)
 
 
-all_models_df_200k |> filter(Group=="varied",Fit_Method=="test") |> 
+all_models_df_100k |> filter(Group=="v",Fit_Method=="test") |> 
   pivot_longer(c:lr, names_to="param", values_to="value") |> 
   ggplot(aes(x=value)) + geom_density() + 
   facet_wrap(Model~param, scales="free") + theme_minimal() + 
   labs(x="Value", y="Density", title="Posterior Density Plots")
 
-all_models_df_200k |> filter(Group=="varied",Fit_Method=="train_test") |> 
+all_models_df_100k |> filter(Group=="varied",Fit_Method=="train_test") |> 
   pivot_longer(c:lr, names_to="param", values_to="value") |> 
   ggplot(aes(x=value)) + geom_density() + 
   facet_wrap(Model~param, scales="free") + theme_minimal() + 
   labs(x="Value", y="Density", title="Posterior Density Plots")
 
-all_models_df_200k |> filter(Group=="constant",Fit_Method=="test") |> 
+all_models_df_100k |> filter(Group=="constant",Fit_Method=="test") |> 
   pivot_longer(c:lr, names_to="param", values_to="value") |> 
   ggplot(aes(x=value)) + geom_density() + 
   facet_wrap(Model~param, scales="free") + theme_minimal() + 
   labs(x="Value", y="Density", title="Posterior Density Plots")
 
-all_models_df_200k |> filter(Group=="constant",Fit_Method=="train_test") |> 
+all_models_df_100k |> filter(Group=="c",Fit_Method=="train_test") |> 
   pivot_longer(c:lr, names_to="param", values_to="value") |> 
   ggplot(aes(x=value)) + geom_density() + 
   facet_wrap(Model~param, scales="free") + theme_minimal() + 
   labs(x="Value", y="Density", title="Posterior Density Plots")
 
-c_sum200k <- all_models_df_200k |> 
+c_sum100k <- all_models_df_100k |> 
   group_by(Group, Model, Fit_Method) |> 
   reframe(
     #HDI_c = HDInterval::hdi(c, .95),
@@ -208,4 +208,80 @@ c_sum200k <- all_models_df_200k |>
     Best_fit = min(dist),
     c_min= c[which.min(dist)], 
   )
-c_sum200k
+c_sum100k
+
+
+
+##############################
+
+abc_500k <- readRDS('data/model_cache/abc_group500k_06_17_54.rds')
+
+all_models_df_500k <- purrr::imap_dfr(abc_500k, ~ {
+  model_name <- gsub("abc_", "", .y)  # Prune the model name here
+  relevant_lists <- .x[names(.x) %in% c("abc_train_test", "abc_test", "abc_train")]  # Filter relevant lists
+  
+  purrr::map2_dfr(
+    names(relevant_lists), 
+    relevant_lists, 
+    ~ {
+      data_frame <- cbind(.y$unadj.values, dist = .y$dist[.y$region]) |> as.data.frame() 
+      mutate(data_frame,
+             Group = sub("_.*", "", model_name),  # Extracts everything before the underscore
+             Model = sub("^[^_]*_", "", model_name),  # Extracts everything after the underscore
+             Fit_Method = gsub("abc_", "", .x)) |> 
+        mutate(
+          n_param = .y$numparam,
+          numstat = .y$numstat, 
+          nsamples = length(.y$dist),
+          method = .y$method
+        ) |> group_by(Group, Model, Fit_Method) |>
+        # find min dist, and the c and lr values at that min dist
+        mutate(min_dist = min(dist, na.rm = TRUE), 
+               c_at_min_dist = c[which.min(dist)],
+               lr_at_min_dist = lr[which.min(dist)], .before = "method")
+    }
+  )
+})
+
+head(all_models_df_500k)
+
+
+all_models_df_500k |> filter(Group=="v",Fit_Method=="test") |> 
+  pivot_longer(c:lr, names_to="param", values_to="value") |> 
+  ggplot(aes(x=value)) + geom_density() + 
+  facet_wrap(Model~param, scales="free") + theme_minimal() + 
+  labs(x="Value", y="Density", title="Posterior Density Plots")
+
+all_models_df_500k |> filter(Group=="v",Fit_Method=="train_test") |> 
+  pivot_longer(c:lr, names_to="param", values_to="value") |> 
+  ggplot(aes(x=value)) + geom_density() + 
+  facet_wrap(Model~param, scales="free") + theme_minimal() + 
+  labs(x="Value", y="Density", title="Posterior Density Plots")
+
+all_models_df_500k |> filter(Group=="c",Fit_Method=="test") |> 
+  pivot_longer(c:lr, names_to="param", values_to="value") |> 
+  ggplot(aes(x=value)) + geom_density() + 
+  facet_wrap(Model~param, scales="free") + theme_minimal() + 
+  labs(x="Value", y="Density", title="Posterior Density Plots")
+
+all_models_df_500k |> filter(Group=="c",Fit_Method=="train_test") |> 
+  pivot_longer(c:lr, names_to="param", values_to="value") |> 
+  ggplot(aes(x=value)) + geom_density() + 
+  facet_wrap(Model~param, scales="free") + theme_minimal() + 
+  labs(x="Value", y="Density", title="Posterior Density Plots")
+
+c_sum500k <- all_models_df_500k |> 
+  group_by(Group, Model, Fit_Method) |> 
+  reframe(
+    #HDI_c = HDInterval::hdi(c, .95),
+    Median = median(c),
+    mean=mean(c),
+    mode=find_mode(c),
+    IQR = IQR(c),
+    sd=sd(c),
+    Best_fit = min(dist),
+    c_min= c[which.min(dist)], 
+  )
+c_sum500k
+
+
