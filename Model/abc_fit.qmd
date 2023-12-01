@@ -46,8 +46,8 @@ output_layer = input_layer
 
 generate_prior_c_lr <- function(n) {
   prior_samples <- tibble(
-    c = runif(n, 0.000001, 5),
-    lr = runif(n, 0.000001, 5),
+    c = runif(n, 0.000001, 7),
+    lr = runif(n, 0.000001, 7),
   )
   return(prior_samples)
 }
@@ -249,6 +249,7 @@ run_abc_fits <- function(data, input_layer, output_layer, simulation_function, n
   # Extract target data
   target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ]$y
   target_data_test <- data[expMode2 == "Test", ]$y
+  target_data_train <- data[expMode2 == "Train", ]$y
 
   # ABC for train and test data
   abc_train_test <- abc(
@@ -267,13 +268,22 @@ run_abc_fits <- function(data, input_layer, output_layer, simulation_function, n
     tol = tol,
     method = "rejection"
   )
+  
+    # ABC for test data only
+  abc_train <- abc(
+    target = target_data_train,
+    param = prior_samples,
+    sumstat = do.call(rbind, simulation_results[1:84, ]),
+    tol = tol,
+    method = "rejection"
+  )
 
   # Return results
-  tibble::lst(abc_train_test = abc_train_test, abc_test = abc_test, data=data,n_prior_samples,prior_samples,tol, simulation_function, targets=tibble::lst(target_data_train_test, target_data_test))
+  tibble::lst(abc_train_test = abc_train_test, abc_test = abc_test, abc_train,data=data,n_prior_samples,prior_samples,tol, simulation_function, targets=tibble::lst(target_data_train_test, target_data_test))
 }
 
 # Example usage for different models
-n_priors=200000
+n_priors=200
 abc_results_varied_exam <- run_abc_fits(avg_dsv, input_layer, output_layer, full_sim_exam, n_prior_samples = n_priors)
 abc_results_varied_alt_exam <- run_abc_fits(avg_dsv, input_layer, output_layer, full_sim_alt_exam, n_prior_samples = n_priors)
 abc_results_varied_alm <- run_abc_fits(avg_dsv, input_layer, output_layer, full_sim_alm, n_prior_samples = n_priors)
