@@ -32,8 +32,6 @@ generate_prior_c_lr <- function(n) {
 }
 
 
-
-
 full_sim_exam <- function(data, c, lr,pred_fun=exam.response, input_layer, output_layer,return_dat="test_data",mode="sim") {
   train_data <- data[expMode2=="Train", c("condit","tr","expMode2", "x","y")] 
   test_data <- data[expMode2=="Test", c("condit","tr","expMode2", "x","y")] 
