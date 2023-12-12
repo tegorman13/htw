@@ -9,8 +9,7 @@ generate_prior_c_lr <- function(n) {
 
 # Function to calculate distance between simulated and observed data
 calculate_distance <- function(simulated, observed) {
-  # Example using mean squared error
-  return(mean((simulated - observed)^2))
+  return(mean((simulated - observed)^2)) #MSE
 }
 
 
@@ -28,6 +27,7 @@ run_abc_fits <- function(data, input_layer, output_layer, simulation_function, n
   } else {
     simulation_function <- match.fun(simulation_function)
   }
+  
   
   plan(multisession)
   simulation_results <- future_map_dfc(seq_len(nrow(prior_samples)), function(idx) {
