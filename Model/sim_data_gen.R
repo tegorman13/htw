@@ -100,6 +100,16 @@ prior_samples <- generate_prior_c_lr(n_prior_samples)
 return_dat="test_data,train_data"
 
 exam_v_500k <- sim_data_gen(avg_dsv, input_layer, output_layer,simulation_function= full_sim_exam, prior_samples, return_dat = return_dat)
+exam_c_500k <- sim_data_gen(avg_dsc, input_layer, output_layer,simulation_function= full_sim_exam, prior_samples, return_dat = return_dat)
+alm_v_500k <- sim_data_gen(avg_dsv, input_layer, output_layer,simulation_function= full_sim_alm, prior_samples, return_dat = return_dat)
+alm_c_500k <- sim_data_gen(avg_dsc, input_layer, output_layer,simulation_function= full_sim_alm, prior_samples, return_dat = return_dat)
+alt_v_500k <- sim_data_gen(avg_dsv, input_layer, output_layer,simulation_function= full_sim_alt_exam, prior_samples, return_dat = return_dat)
+alt_c_500k <- sim_data_gen(avg_dsc, input_layer, output_layer,simulation_function= full_sim_alt_exam, prior_samples, return_dat = return_dat)
+
+
+saveRDS(tibble::lst(exam_v_500k, exam_c_500k, alm_v_500k, alm_c_500k, alt_v_500k, alt_c_500k), 
+        file = paste0(here::here("data/sim_data/"),"sim_data_", n_prior_samples, ".rds"))
+
 
 
 abc <- run_abc_fits(avg_dsv, exam_v_500k, input_layer, output_layer)
