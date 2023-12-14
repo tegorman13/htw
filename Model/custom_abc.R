@@ -1,11 +1,76 @@
 
-generate_prior_c_lr <- function(n) {
-  prior_samples <- tibble(
-    c = runif(n, 0.000001, 7),
-    lr = runif(n, 0.000001, 7),
-  )
-  return(prior_samples)
+pacman::p_load(tidyverse,data.table,abc,future,furrr,here,patchwork, conflicted)
+conflict_prefer_all("dplyr", quiet = TRUE)
+walk(c("fun_alm","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
+dsv <- ds |> filter(condit=="Varied")  
+dsc <- ds |> filter(condit=="Constant") 
+tMax=84
+avg_dsv <- ds |> filter(condit=="Varied",expMode2=="Train") |> group_by(tr) %>%
+  mutate(bandInt2 = sample(rep(c(800, 1000, 1200), each = tMax / 3), tMax, replace = FALSE)[tr]) %>%
+  filter(bandInt2 == x) |> select(-bandInt2) |> group_by(tr,condit,x,expMode2) |> summarise(y=mean(y),.groups="keep") |>
+  rbind(dsv |> filter(expMode2=="Test") |> group_by(condit,x,expMode2) |> summarise(y=mean(y),tr=1,.groups="keep") ) |> setDT()
+
+avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_by(tr, condit,x,expMode2) |> 
+  summarise(y=mean(y),.groups="keep") |> rbind(dsc |> filter(expMode2=="Test") |> group_by(condit,x,expMode2) |> summarise(y=mean(y),tr=1,.groups="keep") ) |> setDT()
+
+
+
+sim_data <- readRDS(here::here("data/sim_data/sim_data_ml3_100k.rds"))
+
+
+calculate_distance <- function(simulated, observed) {
+  return(mean((simulated - observed)^2)) #MSE
 }
+
+
+run_abc_fits <- function(data,sim_data, input_layer, output_layer, tol = 100000) {
+  
+  target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ]$y
+  target_data_test <- data[expMode2 == "Test", ]$y
+  target_data_train <- data[expMode2 == "Train", ]$y
+  
+  teter_distances <- sapply(sim_data, calculate_distance, observed = target_data_train_test)
+  te_distances <- sapply(sim_data[85:90, ], calculate_distance, observed = target_data_test)
+  tr_distances <- sapply(sim_data[1:84, ], calculate_distance, observed = target_data_train)
+  
+  teter_results <- tibble(distance = teter_distances, c = prior_samples$c, lr = prior_samples$lr) %>% filter(distance <= tol) %>% arrange(distance)
+  te_results <- tibble(distance = te_distances, c = prior_samples$c, lr = prior_samples$lr) %>% filter(distance <= tol) %>% arrange(distance)
+  tr_results <- tibble(distance = tr_distances, c = prior_samples$c, lr = prior_samples$lr) %>% filter(distance <= tol) %>% arrange(distance)
+  
+  list(teter_results = teter_results, te_results = te_results, tr_results = tr_results)
+}
+
+
+abc <- run_abc_fits(avg_dsv, sim_data$exam_v_500k, input_layer, output_layer)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Function to calculate distance between simulated and observed data
 calculate_distance <- function(simulated, observed) {
