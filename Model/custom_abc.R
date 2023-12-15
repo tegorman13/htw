@@ -47,9 +47,16 @@ run_abc_fits <- function(data,sim_data, prior_samples, input_layer, output_layer
 }
 
 
-abc <- run_abc_fits(avg_dsv, sim_data=sd$exam_v_500k,sd$prior_samples, input_layer, output_layer)
+abc_ev <- run_abc_fits(avg_dsv, sim_data=sd$exam_v_500k,sd$prior_samples, input_layer, output_layer)
+abc_almv <- run_abc_fits(avg_dsv, sim_data=sd$alm_v_500k,sd$prior_samples, input_layer, output_layer)
+abc_altv <- run_abc_fits(avg_dsv, sim_data=sd$alt_v_500k,sd$prior_samples, input_layer, output_layer)
+
+abc_ec <- run_abc_fits(avg_dsc, sim_data=sd$exam_c_500k,sd$prior_samples, input_layer, output_layer)
+abc_almc <- run_abc_fits(avg_dsc, sim_data=sd$alm_c_500k,sd$prior_samples, input_layer, output_layer)
+abc_altc <- run_abc_fits(avg_dsc, sim_data=sd$alt_c_500k,sd$prior_samples, input_layer, output_layer)
 
 
+saveRDS(tibble::lst(abc_ev,abc_almv,abc_altv,abc_ec,abc_almc,abc_altc),here::here("data/abc_results_500k.rds"))
 
 
 
