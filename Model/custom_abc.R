@@ -16,15 +16,15 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
 
 
 
-sim_data <- readRDS(here::here("data/sim_data/sim_data_ml3_100k.rds"))
-
+sd <- readRDS(here::here("data/sim_data/sim_data_10k.rds"))
+sd <- readRDS(here::here("data/sim_data/sim_data_300k.rds"))
 
 calculate_distance <- function(simulated, observed) {
   return(mean((simulated - observed)^2)) #MSE
 }
 
 
-run_abc_fits <- function(data,sim_data, input_layer, output_layer, tol = 100000) {
+run_abc_fits <- function(data,sim_data, prior_samples, input_layer, output_layer, tol = 100000) {
   
   target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ]$y
   target_data_test <- data[expMode2 == "Test", ]$y
@@ -42,29 +42,7 @@ run_abc_fits <- function(data,sim_data, input_layer, output_layer, tol = 100000)
 }
 
 
-abc <- run_abc_fits(avg_dsv, sim_data$exam_v_500k, input_layer, output_layer)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+abc <- run_abc_fits(avg_dsv, sim_data=sd$exam_v_500k,sd$prior_samples, input_layer, output_layer)
 
 
 
