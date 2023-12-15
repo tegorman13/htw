@@ -34,9 +34,14 @@ run_abc_fits <- function(data,sim_data, prior_samples, input_layer, output_layer
   te_distances <- sapply(sim_data[85:90, ], calculate_distance, observed = target_data_test)
   tr_distances <- sapply(sim_data[1:84, ], calculate_distance, observed = target_data_train)
   
-  teter_results <- tibble(distance = teter_distances, c = prior_samples$c, lr = prior_samples$lr) %>% filter(distance <= tol) %>% arrange(distance)
-  te_results <- tibble(distance = te_distances, c = prior_samples$c, lr = prior_samples$lr) %>% filter(distance <= tol) %>% arrange(distance)
-  tr_results <- tibble(distance = tr_distances, c = prior_samples$c, lr = prior_samples$lr) %>% filter(distance <= tol) %>% arrange(distance)
+  teter_results <- tibble(distance = teter_distances, c = prior_samples$c, lr = prior_samples$lr) |> 
+    filter(distance <= tol) %>% arrange(distance)
+  
+  te_results <- tibble(distance = te_distances, c = prior_samples$c, lr = prior_samples$lr) |> 
+    filter(distance <= tol) %>% arrange(distance)
+  
+  tr_results <- tibble(distance = tr_distances, c = prior_samples$c, lr = prior_samples$lr) |>
+    filter(distance <= tol) %>% arrange(distance)
   
   list(teter_results = teter_results, te_results = te_results, tr_results = tr_results)
 }
