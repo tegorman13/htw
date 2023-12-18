@@ -95,7 +95,7 @@ sim_data_gen <- function(data, input_layer, output_layer, simulation_function, p
 
 input_layer =  c(100,350,600,800,1000,1200)
 output_layer = input_layer
-n_prior_samples=900000
+n_prior_samples=90000
 prior_samples <- generate_prior_c_lr(n_prior_samples)
 return_dat="test_data,train_data"
 
@@ -127,7 +127,7 @@ t1
 
 
 saveRDS(tibble::lst(sim_dataAll,prior_samples,args_list,time=t1[3]),
-        file = here::here(paste0("data/sim_data/","sim_data_", n_prior_samples,format(Sys.time(),"%H_%M_%OS"), ".rds")))
+        file = here::here(paste0("data/sim_data/","sim_data_", n_prior_samples,"_",format(Sys.time(),"%H_%M_%OS"), ".rds")))
 
 
 #r=readRDS(here::here(paste0("data/sim_data/","sim_data_3010_40_32.rds")))
@@ -164,7 +164,7 @@ saveRDS(tibble::lst(sim_dataAll,prior_samples,args_list,time=t1[3]),
 
 
 
-
+# 500 secs for 90k on tg_m1 - with future_map
 # 300k took about 6 hours on tg_m1
 
 abc <- run_abc_fits(avg_dsv, exam_v_500k, input_layer, output_layer)
