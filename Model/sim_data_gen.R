@@ -95,20 +95,74 @@ sim_data_gen <- function(data, input_layer, output_layer, simulation_function, p
 
 input_layer =  c(100,350,600,800,1000,1200)
 output_layer = input_layer
-n_prior_samples=300000
+n_prior_samples=900000
 prior_samples <- generate_prior_c_lr(n_prior_samples)
 return_dat="test_data,train_data"
 
-exam_v_500k <- sim_data_gen(avg_dsv, input_layer, output_layer,simulation_function= full_sim_exam, prior_samples, return_dat = return_dat)
-exam_c_500k <- sim_data_gen(avg_dsc, input_layer, output_layer,simulation_function= full_sim_exam, prior_samples, return_dat = return_dat)
-alm_v_500k <- sim_data_gen(avg_dsv, input_layer, output_layer,simulation_function= full_sim_alm, prior_samples, return_dat = return_dat)
-alm_c_500k <- sim_data_gen(avg_dsc, input_layer, output_layer,simulation_function= full_sim_alm, prior_samples, return_dat = return_dat)
-alt_v_500k <- sim_data_gen(avg_dsv, input_layer, output_layer,simulation_function= full_sim_alt_exam, prior_samples, return_dat = return_dat)
-alt_c_500k <- sim_data_gen(avg_dsc, input_layer, output_layer,simulation_function= full_sim_alt_exam, prior_samples, return_dat = return_dat)
 
 
-saveRDS(tibble::lst(exam_v_500k, exam_c_500k, alm_v_500k, alm_c_500k, alt_v_500k, alt_c_500k, prior_samples), 
-        file = paste0(here::here("data/sim_data/"),"sim_data_", n_prior_samples, ".rds"))
+# Create a list of arguments for each sim_data_gen call
+args_list <- list(
+  Exam_Varied=list(avg_dsv, input_layer, output_layer, full_sim_exam, prior_samples, return_dat),
+  Exam_Constant=list(avg_dsc, input_layer, output_layer, full_sim_exam, prior_samples, return_dat),
+  ALM_Varied=list(avg_dsv, input_layer, output_layer, full_sim_alm, prior_samples, return_dat),
+  ALM_Constant=list(avg_dsc, input_layer, output_layer, full_sim_alm, prior_samples, return_dat),
+  Alt_Varied=list(avg_dsv, input_layer, output_layer, full_sim_alt_exam, prior_samples, return_dat),
+  Alt_Constant=list(avg_dsc, input_layer, output_layer, full_sim_alt_exam, prior_samples, return_dat)
+)
+
+sim_data_wrapper <- function(args) {
+  sim_data_gen(args[[1]], args[[2]], args[[3]], simulation_function = args[[4]], args[[5]], return_dat = args[[6]])
+}
+
+
+
+
+
+t1=system.time({
+plan(multisession)
+sim_dataAll <- future_map(args_list, sim_data_wrapper, .progress = TRUE,.options = furrr_options(seed = TRUE))
+})
+t1
+
+
+saveRDS(tibble::lst(sim_dataAll,prior_samples,args_list,time=t1[3]),
+        file = here::here(paste0("data/sim_data/","sim_data_", n_prior_samples,format(Sys.time(),"%H_%M_%OS"), ".rds")))
+
+
+r=readRDS(here::here(paste0("data/sim_data/","sim_data_3010_40_32.rds")))
+
+
+#exam_v_500k <- results[[1]]
+
+
+
+
+
+
+# exam_v_500k <- sim_data_gen(avg_dsv, input_layer, output_layer,simulation_function= full_sim_exam, prior_samples, return_dat = return_dat)
+# exam_c_500k <- sim_data_gen(avg_dsc, input_layer, output_layer,simulation_function= full_sim_exam, prior_samples, return_dat = return_dat)
+# alm_v_500k <- sim_data_gen(avg_dsv, input_layer, output_layer,simulation_function= full_sim_alm, prior_samples, return_dat = return_dat)
+# alm_c_500k <- sim_data_gen(avg_dsc, input_layer, output_layer,simulation_function= full_sim_alm, prior_samples, return_dat = return_dat)
+# alt_v_500k <- sim_data_gen(avg_dsv, input_layer, output_layer,simulation_function= full_sim_alt_exam, prior_samples, return_dat = return_dat)
+# alt_c_500k <- sim_data_gen(avg_dsc, input_layer, output_layer,simulation_function= full_sim_alt_exam, prior_samples, return_dat = return_dat)
+# 
+# 
+# saveRDS(tibble::lst(exam_v_500k, exam_c_500k, alm_v_500k, alm_c_500k, alt_v_500k, alt_c_500k, prior_samples), 
+#         file = paste0(here::here("data/sim_data/"),"sim_data_", n_prior_samples, ".rds"))
+# 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # 300k took about 6 hours on tg_m1
