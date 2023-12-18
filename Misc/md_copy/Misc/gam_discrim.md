@@ -1,0 +1,543 @@
+---
+title: GAM
+date: last-modified
+categories: [Analysis, R]
+page-layout: full
+# fig-width: 15
+# fig-height: 8
+code-fold: true
+code-tools: true
+toc: false
+execute: 
+  warning: false
+  eval: false
+---
+
+
+
+
+```{r}
+pacman::p_load(tidyverse,lme4,emmeans,here,knitr,kableExtra,gt,mgcv,data.table)
+source(here::here("Functions", "packages.R"))
+
+
+test <- readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Test")  |>
+  select(id,condit,expMode, trial, bandInt,vb,vx,dist,vy) |>   mutate(condit_dummy = ifelse(condit == "Varied", 1, 0))  |> data.table()
+
+train <-readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Train" | expMode=="train-Nf")  |>
+  select(id,condit,expMode,trial,bandInt,vb,vx,dist,vy) |> mutate(condit_dummy = ifelse(condit == "Varied", 1, 0))  |> data.table()
+
+
+testAvg <- test %>% group_by(id, condit, vb, bandInt) %>%
+  summarise(vx=mean(vx)) %>% data.table()
+
+trainAvg <- train %>% group_by(id, condit, vb, bandInt) %>%
+  summarise(vx=mean(vx)) %>% data.table()
+
+
+
+
+
+est_gam <- function(k, train_data, test_data) 
+{
+
+  # define train and test data
+  train_data <- copy(train_data)
+  test_data <- copy(test_data)
+
+  #--- train a model ---#  
+  #trained_model <- gam(vx ~ condit + s(bandInt, k = k)+ s(id, bandInt,bs='re'), data = train_data)
+  trained_model <- gam(dist~  s(bandInt,k=2) + s(vy,k=k) + s(id,bs="re"), data = train_data)
+
+  #--- predict y for the train and test datasets ---#
+  train_data[, y_hat := predict(trained_model, newdata = train_data)] 
+  train_data[, type := "Train"]
+  test_data[, y_hat := predict(trained_model, newdata = test_data)] 
+  test_data[, type := "Test"]
+
+  #--- combine before returning ---#
+  return_data <- 
+    rbind(train_data, test_data) %>%
+    .[, num_knots := k]
+
+  return(return_data)
+}
+
+
+
+
+sim_results <- 
+  lapply(1:6, function(x) est_gam(x, train, test)) %>%
+  rbindlist()
+
+sim_results <- 
+  lapply(c(1,2,3,5,10,20,50), function(x) est_gam(x, train, test)) %>%
+  rbindlist()
+
+# sim_results <- 
+#   lapply(1:6, function(x) est_gam(x, trainAvg, testAvg)) %>%
+#   rbindlist()
+
+ggplot(sim_results) +
+  geom_point(data = train, aes(y = dist, x = bandInt), color = "grey") +
+  geom_line(aes(y = y_hat, x = vy, color = factor(num_knots))) +
+  theme_bw()
+
+ggplot(sim_results[num_knots  %in% 1:6, ],aes(fill=vb)) + 
+   stat_summary(data=train,geom = "bar", position=position_dodge(), fun = mean) +
+   geom_line(aes(y = y_hat, x = bandInt, color = factor(num_knots))) 
+
+
+summary <- 
+  sim_results[, .(mse = mean((y_hat - dist)^2)), by = .(num_knots, type)]
+
+ggplot(summary) +
+  geom_line(aes(y = mse, x = num_knots, color = type)) +
+  geom_point(aes(y = mse, x = num_knots, color = type)) +
+  xlab("Number of knots") +
+  ylab("MSE") +
+  scale_color_discrete(name = "") +
+  theme_bw()
+
+```
+
+
+
+
+```{r}
+
+#https://fromthebottomoftheheap.net/2021/02/02/random-effects-in-gams/
+mod_gam1 = gam(vx ~ 1 + (bandInt, bs = "cr",k=4) + s(id, bandInt,bs='re'), data = test)
+
+
+gy = gam(vx ~ s(vy,k=2), data = test)
+summary(gy)
+coef(gy)
+gam.check(gy)
+
+gy = gam(vx ~ s(vy,k=6), data = test)
+summary(gy)
+coef(gy)
+gam.check(gy)
+
+gy = gam(vx ~ s(bandInt,k=5) + s(vy), data = test)
+summary(gy)
+coef(gy)
+gam.check(gy)
+
+
+gy = gam(vx ~ s(bandInt,k=2) + s(vy) + s(id,bs="re"), data = test)
+summary(gy)
+coef(gy)
+gam.check(gy)
+
+
+
+
+g1=gam(vx ~ s(bandInt,k=1),data=train)
+summary(g1)
+g1$coefficients
+
+
+g2=gam(vx ~ s(bandInt,k=2),data=trainAvg)
+summary(g2)
+g2$coefficients
+
+g3=gam(vx ~ s(bandInt,k=4),data=train)
+summary(g3)
+g3$coefficients
+
+
+k1=bam(condit_dummy ~ s(vx,k=12),data=train,family=binomial())
+summary(k1)
+
+k2=bam(bandInt ~ s(vx,k=5),data=train)
+summary(k2)
+
+g2=gam(vx ~ s(bandInt,k=6),data=trainAvg)
+
+
+
+id1 <- test |> filter(id==1)
+
+g2=gam(vx ~ 0 + s(bandInt,k=6),data=id1)
+summary(g2)
+g2$coefficients
+kmeans(id1$vx,6)
+
+kn=knnreg(vx ~ bandInt,data=test)
+summary(kn)
+
+g4 <- gam(vx ~ bandInt + s(id,bs="re"),data=test)
+summary(g4)
+g4$coefficients
+
+g5 <- gam(vx ~ condit+bandInt + s(id,bs="re",k=4),data=test)
+summary(g5)
+g5$coefficients
+coef(g5)
+
+g6 <- gam(vx ~ condit+bandInt + s(id,bs="re")+ s(id,bandInt,bs="re",k=6),data=test,method = 'REML')
+summary(g6)
+g6$coefficients
+
+
+
+
+hits = test |> filter(dist==0)
+
+hits |> ggplot(aes(x=bandInt,y=vx)) + geom_point()
+
+hg1 <- gam(vx ~ 0 + s(bandInt,k=2),data=hits)
+summary(hg1)
+hg1$coefficients
+plot(hg1)
+
+
+
+
+```
+
+
+
+
+
+
+```{r}
+
+testAvg %>% ggplot(aes(x=bandInt,y=vx))+geom_point(color="grey")+geom_line()+theme_bw()
+
+tm <- gam(vx ~s(bandInt,k=3),sp=0,data=testAvg)
+summary(tm)
+
+
+results <- tibble(k = integer(), r_sq = numeric(), edf = numeric(), p_value = numeric(), scale = numeric(), deviance = numeric(), null_deviance = numeric())
+
+# Iterate through different k values
+for (k in 1:6) {
+  temp_result <- tryCatch({
+    # Fit the GAM model
+    tm <- gam(vx ~ s(bandInt, k = k), sp = 0, data = testAvg)
+    model_sum <- summary(tm)
+    
+    # Extract additional metrics from the model summary and the model itself
+    edf <- model_sum$s.table[1]
+    p_value <- model_sum$s.pv[1]
+    scale <- tm$scale
+    deviance <- tm$deviance
+    null_deviance <- tm$null.deviance
+    
+    # Return data frame with results
+    tibble(k = k, r_sq = model_sum$r.sq, edf = edf, p_value = p_value, scale = scale, deviance = deviance, null_deviance = null_deviance)
+  }, error = function(e) {
+    # Print error message
+    cat(paste("Skipping k =", k, "due to error:", conditionMessage(e)), "\n")
+    
+    # Return data frame with NA values
+    tibble(k = k, r_sq = NA_real_, edf = NA_real_, p_value = NA_real_, scale = NA_real_, deviance = NA_real_, null_deviance = NA_real_)
+  })
+  
+  # Add results to data frame
+  results <- bind_rows(results, temp_result)
+}
+
+print(results)
+
+# Plot R-squared
+results %>%
+  ggplot(aes(x = k, y = r_sq)) +
+  geom_line(color = "blue") +
+  labs(x = "k", y = "R-squared") +
+  theme_minimal()
+
+# Plot deviance
+results %>%
+  ggplot(aes(x = k, y = deviance)) +
+  geom_line(color = "red") +
+  labs(x = "k", y = "Deviance") +
+  theme_minimal()
+
+
+```
+
+
+```{r}
+
+# Iterate through different k values
+for (k in 1:6) {
+  for (group in unique(testAvg$condit)) {
+    
+    temp_result <- tryCatch({
+      # Filter data by group
+      group_data <- testAvg %>% filter(condit == group)
+      
+      # Fit the GAM model with interaction and more flexible splines
+      tm <- gam(vx ~ s(bandInt, k = k, bs = "cr"), data = group_data)
+      model_sum <- summary(tm)
+      
+      # Extract additional metrics from the model summary and the model itself
+      edf <- model_sum$s.table[1]
+      p_value <- model_sum$s.pv[1]
+      scale <- tm$scale
+      deviance <- tm$deviance
+      null_deviance <- tm$null.deviance
+      threshold <- NA_real_
+      
+      # Attempt to calculate discrimination threshold
+      tryCatch({
+        # Value of bandInt where the derivative of the fitted spline is highest
+        bandInt_values <- seq(min(group_data$bandInt), max(group_data$bandInt), length.out = 1000)
+        fitted_spline <- predict(tm, newdata = data.frame(bandInt = bandInt_values, condit_num = ifelse(group == "Varied", 1, 0)), type = "terms")
+        fitted_derivative <- diff(fitted_spline[,1]) / diff(bandInt_values)
+        threshold <- bandInt_values[which.max(fitted_derivative)]
+      }, error = function(e) {
+        cat(paste("Failed to calculate threshold for k =", k, "in group", group, "due to error:", conditionMessage(e)), "\n")
+      })
+      
+      # Return data frame with results
+      tibble(group = group, k = k, r_sq = model_sum$r.sq, edf = edf, p_value = p_value, scale = scale, deviance = deviance, null_deviance = null_deviance, threshold = threshold)
+    }, error = function(e) {
+      # Print error message
+      cat(paste("Skipping k =", k, "for group", group, "due to error:", conditionMessage(e)), "\n")
+      
+      # Return data frame with NA values
+      tibble(group = group, k = k, r_sq = NA_real_, edf = NA_real_, p_value = NA_real_, scale = NA_real_, deviance = NA_real_, null_deviance = NA_real_, threshold = NA_real_)
+    })
+    
+    # Add results to data frame
+    results <- bind_rows(results, temp_result)
+  }
+}
+print(results)
+
+
+
+
+```
+
+
+
+```{r}
+
+est_gam <- function(k, train_data, test_data, group) 
+{
+  # Filter by group
+  train_data_group <- train_data %>% filter(condit == group)
+  test_data_group <- test_data %>% filter(condit == group)
+ 
+  # Train a model  
+  trained_model <- gam(vx ~ s(bandInt, k = k, bs = "tp"), data = train_data_group)
+ 
+  # Print out the number of rows in train_data_group
+  print(paste("Number of rows in train_data_group: ", nrow(train_data_group)))
+  
+  # Predict y for the train datasets
+  predicted_values_train <- predict(trained_model, newdata = train_data_group)
+  print(paste("Number of predicted values for train data: ", length(predicted_values_train)))
+
+  # Add the predicted values as a new column
+  train_data_group <- train_data_group %>% mutate(vx_hat = predicted_values_train, type = "Train")
+ 
+  # Repeat the same for the test datasets
+  predicted_values_test <- predict(trained_model, newdata = test_data_group)
+  print(paste("Number of predicted values for test data: ", length(predicted_values_test)))
+
+  test_data_group <- test_data_group %>% mutate(vx_hat = predicted_values_test, type = "Test")
+ 
+  # Combine before returning
+  return_data <- bind_rows(train_data_group, test_data_group) %>% 
+                 mutate(num_knots = k, group = group)
+ 
+  return(return_data)
+}
+
+# define k-values
+k_values <- 1:5
+
+# Split the data into training and testing datasets
+set.seed(123)
+data_split <- testAvg %>% 
+  resample_partition(c(Train = 0.75, Test = 0.25))
+
+# Extract the data frames from the resample objects
+train_data <- as.data.frame(data_split$Train)
+test_data <- as.data.frame(data_split$Test)
+
+# Use a nested loop to apply the est_gam function over all combinations of groups and k_values
+results <- map_df(unique(testAvg$condit), ~{
+  group <- .
+  map_df(k_values, ~{
+    est_gam(.x, train_data %>% filter(condit == group), 
+            test_data %>% filter(condit == group), group)
+  })
+})
+
+
+
+
+```
+
+
+
+
+
+```{r}
+
+# Create an empty data frame to store results
+results <- tibble(group = character(), k = integer(), r_sq = numeric(), edf = numeric(), p_value = numeric(), scale = numeric(), deviance = numeric(), null_deviance = numeric())
+
+# Iterate through different k values
+for (k in 1:6) {
+  # Iterate through different conditions
+  for (condit in unique(testAvg$condit)) {
+    temp_result <- tryCatch({
+      # Subset the data for the current condition
+      data_subset <- testAvg[testAvg$condit == condit, ]
+      
+      # Fit the GAM model
+      tm <- gam(vx ~ s(bandInt, k = k), sp = 0, data = data_subset)
+      model_sum <- summary(tm)
+      
+      # Extract additional metrics from the model summary and the model itself
+      edf <- model_sum$s.table[1]
+      p_value <- model_sum$s.pv[1]
+      scale <- tm$scale
+      deviance <- tm$deviance
+      null_deviance <- tm$null.deviance
+      
+      # Return data frame with results
+      tibble(group = condit, k = k, r_sq = model_sum$r.sq, edf = edf, p_value = p_value, scale = scale, deviance = deviance, null_deviance = null_deviance)
+    }, error = function(e) {
+      # Print error message
+      cat(paste("Skipping k =", k, "in group", condit, "due to error:", conditionMessage(e)), "\n")
+      
+      # Return data frame with NA values
+      tibble(group = condit, k = k, r_sq = NA_real_, edf = NA_real_, p_value = NA_real_, scale = NA_real_, deviance = NA_real_, null_deviance = NA_real_)
+    })
+    
+    # Add results to data frame
+    results <- bind_rows(results, temp_result)
+  }
+}
+
+print(results)
+
+# Plot R-squared
+results %>%
+  ggplot(aes(x = k, y = r_sq, color = group)) +
+  geom_line() +
+  labs(x = "k", y = "R-squared") +
+  theme_minimal()
+
+# Plot deviance
+results %>%
+  ggplot(aes(x = k, y = deviance, color = group)) +
+  geom_line() +
+  labs(x = "k", y = "Deviance") +
+  theme_minimal()
+
+# Add additional plots as necessary
+
+
+
+```
+
+
+
+
+
+
+
+
+
+```{r}
+
+# Create an empty data frame to store results
+results <- data.frame(k = numeric(), r_sq = numeric(), deviance_explained = numeric())
+
+# Iterate through different k values
+for (k in 1:6) {
+  temp_result <- tryCatch({
+    # Fit the GAM model
+    tm <- gam(vx ~ s(bandInt, k = k), sp = 0, data = testAvg)
+    model_sum <- summary(tm)
+    
+    # Return data frame with results
+    data.frame(k = k, r_sq = model_sum$r.sq.adj, deviance_explained = model_sum$dev.expl)
+  }, error = function(e) {
+    # Print error message
+    cat(paste("Skipping k =", k, "due to error:", conditionMessage(e)), "\n")
+
+    # Return data frame with NA values
+    data.frame(k = k, r_sq = NA, deviance_explained = NA)
+  })
+
+  # Add results to data frame
+  results <- rbind(results, temp_result)
+}
+
+# Check if we have successfully fitted models and results have more than zero rows 
+if(nrow(results) > 0){
+  # No need to set column names here, you've already set them when creating the data frames inside the loop
+
+  # Plotting
+  plot(results$k, results$r_sq, type = "l", xlab = "k", ylab = "R-squared", col = "blue")
+  lines(results$k, results$deviance_explained, type = "l", col = "red") 
+  legend("topright", legend = c("R-squared", "Deviance Explained"), col = c("blue", "red"), lty = 1)
+}
+
+
+```
+
+
+```{r}
+
+
+gam_fit <- gam(vx ~ s(bandInt, k = 6, bs = "cr"), data = testAvg)
+gam_fit$coefficient
+
+basis_data <- gam_fit %>%  predict(., type = "lpmatrix") %>%
+  data.table() %>% 
+  .[, bandInt := testAvg[, bandInt]] %>% 
+  melt(id.var = "bandInt")
+
+
+
+
+data.table(
+  variable = unique(basis_data$variable)[-1],
+  coef = gam_fit$coefficient[-1]
+) %>% 
+.[basis_data, on = "variable"] %>% 
+.[, .(y_no_int = sum(coef * value)), by = bandInt] %>% 
+.[, y_hat := gam_fit$coefficient[1] + vx] %>% 
+ggplot(data = .) +
+  geom_line(aes(y = vx, x = bandInt, color = "gam-fitted")) +
+  geom_line(data = data, aes(y = vx, x = bandInt, color = "True")) +
+  scale_color_manual(
+    name = "",
+    values = c("gam-fitted" = "red", "True" = "blue")
+  ) +
+  ylab("y") +
+  xlab("x") +
+  theme_bw()
+```
+
+
+
+
+```{r}
+
+
+
+
+```
+
+
+
+```{r}
+
+
+
+
+```

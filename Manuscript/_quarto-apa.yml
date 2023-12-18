@@ -1,0 +1,44 @@
+project:
+  output-dir: output-apa
+
+format:
+  pdf:
+    output-file: "manuscript-apa.pdf"
+    keep-md: true 
+    include-in-header:
+      - text: |
+         \usepackage{booktabs}
+         \usepackage{hyperref}
+         \usepackage{multirow}
+         \usepackage{lscape}
+         \usepackage{changepage}
+         \usepackage{float}
+         \floatplacement{figure}{H}
+         \floatplacement{table}{H}
+    toc: true
+    colorlinks: true
+    number-sections: true
+    keep-tex: true
+    embed-resources: true
+    prefer-html: true
+
+
+
+  # apaquarto-pdf:
+  #   output-file: "manuscript-apa.pdf"
+  #   # Custom fonts
+  #   mainfont: "Linux Libertine O"
+  #   mainfontoptions:
+  #     - "Numbers=Proportional"
+  #     - "Numbers=OldStyle"
+  #   mathfont: "Libertinus Math"
+
+  #   include-in-header:
+  #     # The \everydisplay thing makes all math blocks use \small font
+  #     text: |
+  #       \usepackage{mathtools}
+  #       \everydisplay\expandafter{\the\everydisplay\small }
+
+  #   knitr:
+  #     opts_chunk:
+  #       dev: "cairo_pdf"

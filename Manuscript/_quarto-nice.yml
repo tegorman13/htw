@@ -1,0 +1,69 @@
+project:
+  output-dir: output
+  render: 
+    - "manuscript.qmd"
+    - "!htw_exam.qmd"
+
+
+
+format:
+  hugo:
+    html-math-method: mathjax
+    output-file: htw-hugo.md
+    fig-format: jpeg
+    echo: true
+    cite-method: citeproc
+  html:
+    toc: true
+    #keep-md: true
+    language: 
+      title-block-published: "Latest version"
+    shift-heading-level-by: 1
+    theme: 
+       #- ../Assets/Style/lux-modified.scss 
+       - zephyr
+       - custom.scss
+    citeproc: false
+    filters: 
+      - "_extensions/wordcount/citeproc.lua"
+      - "_extensions/wordcount/wordcount.lua"
+    lightbox: auto
+    knitr:
+      opts_chunk:
+        dev: "ragg_png"
+        dpi: 300
+
+  # pdf:
+  #    cite-method: citeproc
+
+
+  # Nice PDF output
+  hikmah-pdf:
+    cite-method: citeproc
+    output-file: "htw_manuscript.pdf"
+    mainfont: "Linux Libertine O"
+    mainfontoptions:
+      - "Numbers=Proportional"
+      - "Numbers=OldStyle"
+    sansfont: "IBM Plex Sans"
+    mathfont: "Libertinus Math"
+    geometry:
+      - top=1in     
+      - bottom=1in  
+      - left=1in    
+      - right=1in  
+      - heightrounded
+    # linestretch: 1.05
+    include-in-header:
+      # The \everydisplay thing makes all math blocks use \small font
+      text: |
+        \usepackage{mathtools}
+        \everydisplay\expandafter{\the\everydisplay\small}
+        \usepackage{float}
+        \floatplacement{figure}{H}
+        \floatplacement{table}{H}
+
+    knitr:
+      opts_chunk:
+        dev: "cairo_pdf"
+        
