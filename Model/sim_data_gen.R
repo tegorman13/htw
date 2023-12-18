@@ -130,7 +130,7 @@ saveRDS(tibble::lst(sim_dataAll,prior_samples,args_list,time=t1[3]),
         file = here::here(paste0("data/sim_data/","sim_data_", n_prior_samples,format(Sys.time(),"%H_%M_%OS"), ".rds")))
 
 
-r=readRDS(here::here(paste0("data/sim_data/","sim_data_3010_40_32.rds")))
+#r=readRDS(here::here(paste0("data/sim_data/","sim_data_3010_40_32.rds")))
 
 
 #exam_v_500k <- results[[1]]
