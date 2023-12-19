@@ -24,7 +24,10 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
 
 
 
-abc_500k <- readRDS(here::here("data/abc_results_500k.rds"))
+#abc_500k <- readRDS(here::here("data/abc_results_500k.rds"))
+abc_1M <- readRDS(here::here("data/abc_results_1M.rds"))
+
+
 names(abc_500k)
 names(abc_500k[[1]])
 str(abc_500k[1:2])
@@ -51,22 +54,40 @@ update_columns <- function(df) {
 }
 
 
-teter_combined <- map_dfr(abc_500k, "teter_results", .id = "Model") %>% update_columns()
-te_combined <- map_dfr(abc_500k, "te_results", .id = "Model") %>% update_columns()
-tr_combined <- map_dfr(abc_500k, "tr_results", .id = "Model") %>% update_columns()
+teter_combined <- map_dfr(abc_1M, "teter_results", .id = "Model") %>% update_columns()
+te_combined <- map_dfr(abc_1M, "te_results", .id = "Model") %>% update_columns()
+tr_combined <- map_dfr(abc_1M, "tr_results", .id = "Model") %>% update_columns()
+
+# 
+# teter_combined <- map_dfr(abc_500k, "teter_results", .id = "Model") %>% update_columns()
+# te_combined <- map_dfr(abc_500k, "te_results", .id = "Model") %>% update_columns()
+# tr_combined <- map_dfr(abc_500k, "tr_results", .id = "Model") %>% update_columns()
 
 
 
 
+teter_combined |> ggplot(aes(x=c,y=distance)) + geom_line(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free_y") 
 
 
 
+teter_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free")
+
+teter_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free")
 
 
 
+te_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free")
+
+te_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free")
 
 
-
+tr_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free")
 
 
 

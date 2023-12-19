@@ -95,7 +95,7 @@ sim_data_gen <- function(data, input_layer, output_layer, simulation_function, p
 
 input_layer =  c(100,350,600,800,1000,1200)
 output_layer = input_layer
-n_prior_samples=90000
+n_prior_samples=1000000
 prior_samples <- generate_prior_c_lr(n_prior_samples)
 return_dat="test_data,train_data"
 
@@ -157,36 +157,38 @@ saveRDS(tibble::lst(sim_dataAll,prior_samples,args_list,time=t1[3]),
 
 
 
-
-
-
-
-
-
-
 # 500 secs for 90k on tg_m1 - with future_map
 # 300k took about 6 hours on tg_m1
+# 8741s for 1M on tg_m1
 
-abc <- run_abc_fits(avg_dsv, exam_v_500k, input_layer, output_layer)
 
 
-calculate_distance <- function(simulated, observed) {
-  return(mean((simulated - observed)^2)) #MSE
-}
 
-run_abc_fits <- function(data,sim_data, input_layer, output_layer, tol = 100000) {
-  
-  target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ]$y
-  target_data_test <- data[expMode2 == "Test", ]$y
-  target_data_train <- data[expMode2 == "Train", ]$y
-  
-  teter_distances <- sapply(sim_data, calculate_distance, observed = target_data_train_test)
-  te_distances <- sapply(sim_data[85:90, ], calculate_distance, observed = target_data_test)
-  tr_distances <- sapply(sim_data[1:84, ], calculate_distance, observed = target_data_train)
-  
-  teter_results <- tibble(distance = teter_distances, c = prior_samples$c, lr = prior_samples$lr) %>% filter(distance <= tol) %>% arrange(distance)
-  te_results <- tibble(distance = te_distances, c = prior_samples$c, lr = prior_samples$lr) %>% filter(distance <= tol) %>% arrange(distance)
-  tr_results <- tibble(distance = tr_distances, c = prior_samples$c, lr = prior_samples$lr) %>% filter(distance <= tol) %>% arrange(distance)
-  
-  list(teter_results = teter_results, te_results = te_results, tr_results = tr_results)
-}
+
+
+
+
+# 
+# abc <- run_abc_fits(avg_dsv, exam_v_500k, input_layer, output_layer)
+# 
+# 
+# calculate_distance <- function(simulated, observed) {
+#   return(mean((simulated - observed)^2)) #MSE
+# }
+# 
+# run_abc_fits <- function(data,sim_data, input_layer, output_layer, tol = 100000) {
+#   
+#   target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ]$y
+#   target_data_test <- data[expMode2 == "Test", ]$y
+#   target_data_train <- data[expMode2 == "Train", ]$y
+#   
+#   teter_distances <- sapply(sim_data, calculate_distance, observed = target_data_train_test)
+#   te_distances <- sapply(sim_data[85:90, ], calculate_distance, observed = target_data_test)
+#   tr_distances <- sapply(sim_data[1:84, ], calculate_distance, observed = target_data_train)
+#   
+#   teter_results <- tibble(distance = teter_distances, c = prior_samples$c, lr = prior_samples$lr) %>% filter(distance <= tol) %>% arrange(distance)
+#   te_results <- tibble(distance = te_distances, c = prior_samples$c, lr = prior_samples$lr) %>% filter(distance <= tol) %>% arrange(distance)
+#   tr_results <- tibble(distance = tr_distances, c = prior_samples$c, lr = prior_samples$lr) %>% filter(distance <= tol) %>% arrange(distance)
+#   
+#   list(teter_results = teter_results, te_results = te_results, tr_results = tr_results)
+# }
