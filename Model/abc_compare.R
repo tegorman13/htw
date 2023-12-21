@@ -27,6 +27,8 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
 #abc_500k <- readRDS(here::here("data/abc_results_500k.rds"))
 abc_1M <- readRDS(here::here("data/abc_results_1M.rds"))
 
+abc_1M <- readRDS(here::here("data/abc_1M_rmse_p001.rds"))
+
 
 names(abc_500k)
 names(abc_500k[[1]])
@@ -88,6 +90,27 @@ te_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
 
 tr_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
   facet_wrap(~Group,scales = "free")
+
+
+
+teter_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) 
+
+te_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) 
+  
+tr_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) 
+
+
+
+
+
+
+
 
 
 

@@ -1,6 +1,7 @@
 
 pacman::p_load(tidyverse,data.table,abc,future,furrr,here,patchwork, conflicted)
 conflict_prefer_all("dplyr", quiet = TRUE)
+options(scipen = 999)
 walk(c("fun_alm","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 dsv <- ds |> filter(condit=="Varied")  
@@ -16,50 +17,205 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
 
 
 
-# sd <- readRDS(here::here("data/sim_data/sim_data_10k.rds"))
-# sd <- readRDS(here::here("data/sim_data/sim_data_300k.rds"))
+ #sd <- readRDS(here::here("data/sim_data/sim_data_10k.rds"))
+#sd <- readRDS(here::here("data/sim_data/sim_data_300k.rds"))
 sd <- readRDS(here::here("data/sim_data/sim_data_1M_13_38_28.rds"))
+names(sd)
 
-calculate_distance <- function(simulated, observed) {
+#map(sd$sim_dataAll, class)
+sd$sim_dataAll <- map(sd$sim_dataAll, setDT)
+
+dist_mse <- function(simulated, observed) {
   return(mean((simulated - observed)^2)) #MSE
 }
+dist_rmse <- function(simulated, observed) {
+  return(sqrt(mean((simulated - observed)^2))) #RMSE
+}
+rho=function(x,y) abs(sum(x)-sum(y))/length(x)			# rho function
 
 
-run_abc_fits <- function(data,sim_data, prior_samples, input_layer, output_layer, tol = 100000) {
-  
+
+run_abc_fits <- function(data,sim_data, prior_samples, dist_fun="dist_rmse",Model,Group,pct_keep) {
+  tol = 500
+  rev=TRUE
   target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ]$y
   target_data_test <- data[expMode2 == "Test", ]$y
   target_data_train <- data[expMode2 == "Train", ]$y
   
-  teter_distances <- sapply(sim_data, calculate_distance, observed = target_data_train_test)
-  te_distances <- sapply(sim_data[85:90, ], calculate_distance, observed = target_data_test)
-  tr_distances <- sapply(sim_data[1:84, ], calculate_distance, observed = target_data_train)
+  # correct order of train & test
+  if (rev) { sim_data <- sim_data[7:90, ] |> bind_rows(sim_data[1:6, ]) }
+
+  fn_name=dist_fun
+  dist_fun=get(dist_fun)
   
-  teter_results <- tibble(distance = teter_distances, c = prior_samples$c, lr = prior_samples$lr) |> 
-    filter(distance <= tol) %>% arrange(distance)
+  te_distances <- purrr::map_dbl(sim_data[85:90, ], dist_fun, observed = target_data_test)
+  tr_distances <- purrr::map_dbl(sim_data[1:84, ], dist_fun, observed = target_data_train)
+
+  teter_distances <- 0.5 * te_distances + 0.5 * tr_distances
   
-  te_results <- tibble(distance = te_distances, c = prior_samples$c, lr = prior_samples$lr) |> 
-    filter(distance <= tol) %>% arrange(distance)
+  teter_results <- tibble(distance = teter_distances, c = prior_samples$c, 
+    lr = prior_samples$lr, sim_index= seq_along(teter_distances)) |> 
+    arrange(distance) |> 
+    filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
+    mutate(rank=row_number(),Model,Group,Fit_Method="Test & Train") |>
+    rowwise() |>
+    mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,setNames(sim_data[, .SD, .SDcols = sim_index], "pred")) |> 
+    mutate(resid=y-pred)))
+    
+ # teter_pp <- sim_data[,.SD,.SDcols=teter_results$sim_index] |> bind_rows()
+#  k = teter_results[1,]$sim_dat
+
+  te_results <- tibble(distance = te_distances, c = prior_samples$c, 
+  lr = prior_samples$lr,  sim_index= seq_along(te_distances)) |> 
+    arrange(distance) |> 
+    filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
+    mutate(rank=row_number(),Model,Group,Fit_Method="Test Only") |>
+    rowwise() |>
+    mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,setNames(sim_data[, .SD, .SDcols = sim_index], "pred")) |> 
+    mutate(resid=y-pred)))
   
-  tr_results <- tibble(distance = tr_distances, c = prior_samples$c, lr = prior_samples$lr) |>
-    filter(distance <= tol) %>% arrange(distance)
+  tr_results <- tibble(distance = tr_distances, c = prior_samples$c, 
+    lr = prior_samples$lr,  sim_index= seq_along(tr_distances)) |>
+    arrange(distance) |> 
+    filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
+    mutate(rank=row_number(),Model,Group,Fit_Method="Train Only") |>
+    rowwise() |>
+    mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,setNames(sim_data[, .SD, .SDcols = sim_index], "pred")) |> 
+    mutate(resid=y-pred)))
   
-  list(teter_results = teter_results, te_results = te_results, tr_results = tr_results)
+  tibble::lst(teter_results = teter_results, te_results = te_results, tr_results = tr_results, Model, Group, pct_keep, fn_name)
 }
 
 
+pct_keep=.001
+abc_ev <- run_abc_fits(avg_dsv, sim_data= sd$sim_dataAll$Exam_Varied ,sd$prior_samples, dist_fun="dist_rmse",Model="EXAM", Group="Varied",pct_keep)
+abc_almv <- run_abc_fits(avg_dsv, sim_data=sd$sim_dataAll$ALM_Varied,sd$prior_samples, dist_fun="dist_rmse", Model="ALM", Group="Varied", pct_keep)
+abc_altv <- run_abc_fits(avg_dsv, sim_data=sd$sim_dataAll$Alt_Varied,sd$prior_samples, dist_fun="dist_rmse",Model="Alt_EXAM", Group="Varied",pct_keep)
 
-abc_ev <- run_abc_fits(avg_dsv, sim_data=sd$sim_dataAll$Exam_Varied,sd$prior_samples, input_layer, output_layer)
-abc_almv <- run_abc_fits(avg_dsv, sim_data=sd$sim_dataAll$ALM_Varied,sd$prior_samples, input_layer, output_layer)
-abc_altv <- run_abc_fits(avg_dsv, sim_data=sd$sim_dataAll$Alt_Varied,sd$prior_samples, input_layer, output_layer)
+abc_ec <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$Exam_Constant,sd$prior_samples, dist_fun="dist_rmse",Model="ALM", Group="Constant",pct_keep)
+abc_almc <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$ALM_Constant,sd$prior_samples, dist_fun="dist_rmse",Model="EXAM", Group="Constant",pct_keep)
+abc_altc <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$Alt_Constant,sd$prior_samples, dist_fun="dist_rmse",Model="Alt_EXAM", Group="Constant",pct_keep)
 
-abc_ec <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$Exam_Constant,sd$prior_samples, input_layer, output_layer)
-abc_almc <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$ALM_Constant,sd$prior_samples, input_layer, output_layer)
-abc_altc <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$Alt_Constant,sd$prior_samples, input_layer, output_layer)
+saveRDS(tibble::lst(abc_ev,abc_almv,abc_altv,abc_ec,abc_almc,abc_altc),
+  here::here(paste0("data/abc_1M_rmse_",sub("^0", "", gsub("\\.", "p", pct_keep)),".rds")))
 
-saveRDS(tibble::lst(abc_ev,abc_almv,abc_altv,abc_ec,abc_almc,abc_altc),here::here("data/abc_results_1M.rds"))
 
- 
+
+
+
+
+
+
+tO <- system.time(abc_ev <- run_abc_fits(avg_dsv, sim_data= sd$sim_dataAll$Exam_Varied ,sd$prior_samples, dist_fun="dist_rmse")
+)
+  #  user  system elapsed 
+  # 7.706   0.073   7.778 
+
+tdt <- system.time(abc_ev <- run_abc_fits(avg_dsv, sim_data= setDT(sd$sim_dataAll$Exam_Varied) ,sd$prior_samples, dist_fun="dist_rmse")
+)
+#    user  system elapsed 
+#  11.588   9.773  51.324 
+
+# 1st vectorized
+#    user  system elapsed 
+# 133.136   1.472 134.624 
+
+
+
+abc_1M <- tibble::lst(abc_ev,abc_almv,abc_altv,abc_ec,abc_almc,abc_altc)
+teter_combined <- map_dfr(abc_1M, "teter_results", .id = "Model") %>% update_columns()
+te_combined <- map_dfr(abc_1M, "te_results", .id = "Model") %>% update_columns()
+tr_combined <- map_dfr(abc_1M, "tr_results", .id = "Model") %>% update_columns()
+
+
+
+
+
+# return_dat="test_data"
+# return_dat="test_data,train_data"
+# te_combined <- te_combined |> arrange(distance)
+# prior_samples=te_combined[1,]
+# args_list <- list(
+#   Exam_Varied=list(avg_dsv, input_layer, output_layer, full_sim_exam, prior_samples, return_dat),
+#   ALM_Varied=list(avg_dsv, input_layer, output_layer, full_sim_alm, prior_samples, return_dat),
+#   Alt_Varied=list(avg_dsv, input_layer, output_layer, full_sim_alt_exam, prior_samples, return_dat)
+# )
+
+# sim_dataAll <- map(args_list, sim_data_wrapper)
+
+# run_abc_fits(avg_dsv, sim_data=sim_dataAll$Exam_Varied,prior_samples, dist_fun="dist_rmse",pct_keep = NULL)
+# run_abc_fits(avg_dsv, sim_data=sim_dataAll$ALM_Varied,prior_samples, dist_fun="dist_rmse",pct_keep = NULL)
+
+sim_dataAll$ALM_Varied == sim_dataAll$Exam_Varied
+
+
+sapply(sim_dataAll$Exam_Varied, dist_fun, observed = target_data_test)
+sapply(sim_dataAll$ALM_Varied, dist_fun, observed = target_data_test)
+sapply(sim_dataAll$Alt_Varied, dist_fun, observed = target_data_test)
+
+
+
+
+# A tibble: 6 × 6
+# # Groups:   Model, Group [6]
+#   Model    distance         c    lr dist_fun  Group   
+#   <chr>       <dbl>     <dbl> <dbl> <chr>     <chr>   
+# 1 EXAM         188. 0.0000217 0.912 dist_rmse Varied  
+# 2 ALM          187. 0.0000217 0.912 dist_rmse Varied  
+# 3 Alt_Exam     188. 0.0000217 0.912 dist_rmse Varied  
+# 4 EXAM         101. 0.0000217 0.912 dist_rmse Constant
+# 5 ALM          100. 0.0000217 0.912 dist_rmse Constant
+# 6 Alt_Exam     100. 0.0000217 0.912 dist_rmse Constant
+
+
+
+
+
+
+
+
+te_combined |> group_by(Model, Group) |> filter(row_number() <= 1)
+tr_combined |> group_by(Model, Group) |> filter(row_number() <= 1)
+
+
+
+
+
+
+
+
+
+
+
+teter_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) 
+
+te_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) 
+
+tr_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) 
+
+
+
+# summary stats foro te_combined - table
+te_combined |> group_by(Model) |> summarise(mean_distance=mean(distance),sd_distance=sd(distance),
+  mean_c=mean(c),sd_c=sd(c),mean_lr=mean(lr),sd_lr=sd(lr)) 
+
+tr_combined |> group_by(Model) |> summarise(mean_distance=mean(distance),sd_distance=sd(distance),
+  mean_c=mean(c),sd_c=sd(c),mean_lr=mean(lr),sd_lr=sd(lr)) 
+
+
+
+abc_ev$teter_results |> ggplot(aes(x=c)) + geom_density()
+abc_ev$te_results |> ggplot(aes(x=c)) + geom_density()
+
+
+
+
 # abc_ev <- run_abc_fits(avg_dsv, sim_data=sd$exam_v_500k,sd$prior_samples, input_layer, output_layer)
 # abc_almv <- run_abc_fits(avg_dsv, sim_data=sd$alm_v_500k,sd$prior_samples, input_layer, output_layer)
 # abc_altv <- run_abc_fits(avg_dsv, sim_data=sd$alt_v_500k,sd$prior_samples, input_layer, output_layer)
@@ -72,71 +228,7 @@ saveRDS(tibble::lst(abc_ev,abc_almv,abc_altv,abc_ec,abc_almc,abc_altc),here::her
 # saveRDS(tibble::lst(abc_ev,abc_almv,abc_altv,abc_ec,abc_almc,abc_altc),here::here("data/abc_results_500k.rds"))
 
 
-abc_1M <- readRDS(here::here("data/abc_results_1M.rds"))
+#abc_1M <- readRDS(here::here("data/abc_results_1M.rds"))
 #abc_500k <- readRDS(here::here("data/abc_results_500k.rds"))
 
 
-
-
-
-
-
-
-
-# Function to calculate distance between simulated and observed data
-calculate_distance <- function(simulated, observed) {
-  return(mean((simulated - observed)^2)) #MSE
-}
-
-
-# General function for ABC fits with model flexibility
-run_abc_fits <- function(data, input_layer, output_layer, simulation_function, n_prior_samples = 1000, tol = 0.01, return_dat = "train_data,test_data") {
-  
-  input_layer =  c(100,350,600,800,1000,1200)
-  output_layer = input_layer
-  
-  prior_samples <- generate_prior_c_lr(n_prior_samples)
-  
-  # Convert the string to a function
-  if (is.character(simulation_function)) {
-    simulation_function <- get(simulation_function, mode = "function")
-  } else {
-    simulation_function <- match.fun(simulation_function)
-  }
-  
-  
-  plan(multisession)
-  simulation_results <- future_map_dfc(seq_len(nrow(prior_samples)), function(idx) {
-    params <- prior_samples[idx, ]
-    simulation_function(data=as.data.table(data), c=params$c, lr=params$lr, input_layer=input_layer, output_layer=output_layer, return_dat = return_dat)
-  }, .options = furrr_options(seed = TRUE))
-  
-  
-  
-  # Extract target data
-  target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ]$y
-  target_data_test <- data[expMode2 == "Test", ]$y
-  target_data_train <- data[expMode2 == "Train", ]$y
-  
-  teter_distances <- sapply(simulation_results, calculate_distance, observed = target_data_train_test)
-  te_distances <- sapply(simulation_results[85:90, ], calculate_distance, observed = target_data_test)
-  tr_distances <- sapply(simulation_results[1:84, ], calculate_distance, observed = target_data_train)
-  
-  teter_samples <- prior_samples[which(teter_distances <= tol), ]
-  te_samples <- prior_samples[which(te_distances <= tol), ]
-  tr_samples <- prior_samples[which(tr_distances <= tol), ]
-
-
-  
-
-  
-  tibble::lst(abc_train_test = abc_train_test, abc_test = abc_test, abc_train,data=data,n_prior_samples,prior_samples,tol, simulation_function, targets=tibble::lst(target_data_train_test, target_data_test))
-}
-
-
-
-# Usage with existing data and functions
-n_prior_samples <- 10000
-prior_samples <- generate_prior_c_lr(n_prior_samples)
-tolerance <- 180000
-posterior_samples <- custom_abc_fit(data = avg_dsv, simulation_function = full_sim_exam, prior_samples, tol = tolerance)

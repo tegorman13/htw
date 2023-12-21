@@ -16,8 +16,8 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
 
 generate_prior_c_lr <- function(n) {
   prior_samples <- tibble(
-    c = runif(n, 0.000001, 5),
-    lr = runif(n, 0.000001, 5),
+    c = runif(n, 0.00000001, 5.5),
+    lr = runif(n, 0.000001, 6),
   )
   return(prior_samples)
 }
@@ -95,7 +95,7 @@ sim_data_gen <- function(data, input_layer, output_layer, simulation_function, p
 
 input_layer =  c(100,350,600,800,1000,1200)
 output_layer = input_layer
-n_prior_samples=1000000
+n_prior_samples=1500000
 prior_samples <- generate_prior_c_lr(n_prior_samples)
 return_dat="test_data,train_data"
 
