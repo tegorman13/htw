@@ -14,13 +14,7 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
   summarise(y=mean(y),.groups="keep") |> rbind(dsc |> filter(expMode2=="Test") |> group_by(condit,x,expMode2) |> summarise(y=mean(y),tr=1,.groups="keep") ) |> setDT()
 
 
-generate_prior_c_lr <- function(n) {
-  prior_samples <- tibble(
-    c = runif(n, 0.00000001, 5.5),
-    lr = runif(n, 0.000001, 6),
-  )
-  return(prior_samples)
-}
+
 
 full_sim_exam <- function(data, c, lr,pred_fun=exam.response, input_layer, output_layer,return_dat="test_data",mode="sim") {
   train_data <- data[expMode2=="Train", c("condit","tr","expMode2", "x","y")] 
@@ -91,13 +85,19 @@ sim_data_gen <- function(data, input_layer, output_layer, simulation_function, p
 }
 
 
-
+generate_prior_c_lr <- function(n) {
+  prior_samples <- tibble(
+    c = runif(n, 0.00000001, 5.5),
+    lr = runif(n, 0.000001, 6),
+  )
+  return(prior_samples)
+}
 
 input_layer =  c(100,350,600,800,1000,1200)
 output_layer = input_layer
-n_prior_samples=1500000
+n_prior_samples=2000000
 prior_samples <- generate_prior_c_lr(n_prior_samples)
-return_dat="test_data,train_data"
+return_dat="train_data, test_data"
 
 
 
@@ -118,13 +118,11 @@ sim_data_wrapper <- function(args) {
 
 
 
-
 t1=system.time({
 plan(multisession)
 sim_dataAll <- future_map(args_list, sim_data_wrapper, .progress = TRUE,.options = furrr_options(seed = TRUE))
 })
 t1
-
 
 saveRDS(tibble::lst(sim_dataAll,prior_samples,args_list,time=t1[3]),
         file = here::here(paste0("data/sim_data/","sim_data_", n_prior_samples,"_",format(Sys.time(),"%H_%M_%OS"), ".rds")))
@@ -137,8 +135,10 @@ saveRDS(tibble::lst(sim_dataAll,prior_samples,args_list,time=t1[3]),
 
 
 
-
-
+prior_samples |> filter(c<1) |> ggplot(aes(x=c,y=lr))+geom_density2d()
+prior_samples |> filter(c<1,lr<3) |> ggplot(aes(x=c,y=lr))+geom_density2d()
+prior_samples |> filter(c<.1,lr<3) |> ggplot(aes(x=c,y=lr))+geom_point()
+prior_samples |> filter(c<.001,lr<3) %>% nrow()
 
 # exam_v_500k <- sim_data_gen(avg_dsv, input_layer, output_layer,simulation_function= full_sim_exam, prior_samples, return_dat = return_dat)
 # exam_c_500k <- sim_data_gen(avg_dsc, input_layer, output_layer,simulation_function= full_sim_exam, prior_samples, return_dat = return_dat)
@@ -160,7 +160,7 @@ saveRDS(tibble::lst(sim_dataAll,prior_samples,args_list,time=t1[3]),
 # 500 secs for 90k on tg_m1 - with future_map
 # 300k took about 6 hours on tg_m1
 # 8741s for 1M on tg_m1
-
+# 24635s for 2M on tg_m1
 
 
 
