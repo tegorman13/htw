@@ -25,40 +25,24 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
 
 
 #abc_500k <- readRDS(here::here("data/abc_results_500k.rds"))
-abc_1M <- readRDS(here::here("data/abc_results_1M.rds"))
+#abc_1M <- readRDS(here::here("data/abc_results_1M.rds"))
 
-abc_1M <- readRDS(here::here("data/abc_1M_rmse_p001.rds"))
-
+#abc_1M <- readRDS(here::here("data/abc_1M_rmse_p001.rds"))
+abc_1M <- readRDS(here::here("data/abc_1M_rmse_p0001.rds"))
 
 names(abc_500k)
 names(abc_500k[[1]])
 str(abc_500k[1:2])
 
-update_columns <- function(df) {
-  df <- df %>%
-    mutate(
-      Group = case_when(
-        Model %in% c("abc_ev", "abc_almv", "abc_altv") ~ "Varied",
-        Model %in% c("abc_ec", "abc_almc", "abc_altc") ~ "Constant",
-        TRUE                                           ~ "Unknown"  
-      ),
-      Model = case_when(
-        Model == "abc_ev"   ~ "EXAM",
-        Model == "abc_almv" ~ "ALM",
-        Model == "abc_altv" ~ "Alt_Exam",
-        Model == "abc_ec"   ~ "EXAM",
-        Model == "abc_almc" ~ "ALM",
-        Model == "abc_altc" ~ "Alt_Exam",
-        TRUE                ~ Model  
-      )
-    )
-  return(df)
-}
 
 
-teter_combined <- map_dfr(abc_1M, "teter_results", .id = "Model") %>% update_columns()
-te_combined <- map_dfr(abc_1M, "te_results", .id = "Model") %>% update_columns()
-tr_combined <- map_dfr(abc_1M, "tr_results", .id = "Model") %>% update_columns()
+teter_combined <- map_dfr(abc_1M, "teter_results", .id = "run_name") 
+te_combined <- map_dfr(abc_1M, "te_results", .id = "run_name")
+tr_combined <- map_dfr(abc_1M, "tr_results", .id = "run_name") 
+
+
+
+k = teter_combined [1,]$sim_dat
 
 # 
 # teter_combined <- map_dfr(abc_500k, "teter_results", .id = "Model") %>% update_columns()
@@ -68,47 +52,72 @@ tr_combined <- map_dfr(abc_1M, "tr_results", .id = "Model") %>% update_columns()
 
 
 
+
+
+
+
+
 teter_combined |> ggplot(aes(x=c,y=distance)) + geom_line(aes(color=Model)) +
   facet_wrap(~Group,scales = "free_y") 
 
 
 
-teter_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
-  facet_wrap(~Group,scales = "free")
 
-teter_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
-  facet_wrap(~Group,scales = "free")
+# Create density plot objects
+plot1 <- teter_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free") + ggtitle("c posterior - Test & Train")
+
+plot2 <- teter_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free") + ggtitle("lr posterior - Test & Train")
+
+plot3 <- te_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free") + ggtitle("c posterior - Test Only")
+
+plot4 <- te_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free") + ggtitle("lr posterior - Test Only")
+
+plot5 <- tr_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free") + ggtitle("c posterior - Train Only")
+
+plot6 <- tr_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free") + ggtitle("lr posterior - Train Only")
+
+# Combine density plots
+density_combined <- plot1 + plot2 + plot3 + plot4 + plot5 + plot6 + plot_layout(ncol = 2)
 
 
 
-te_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
-  facet_wrap(~Group,scales = "free")
-
-te_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
-  facet_wrap(~Group,scales = "free")
-
-
-tr_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
-  facet_wrap(~Group,scales = "free")
-
-
-
-teter_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
+# Create distance plot objects
+dist_plot1 <- teter_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
   stat_summary(fun=mean, geom="bar", position=position_dodge()) +
-  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) 
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  ggtitle("Test & Train")
 
-te_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
+dist_plot2 <- te_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
   stat_summary(fun=mean, geom="bar", position=position_dodge()) +
-  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) 
-  
-tr_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  ggtitle("Test Only")
+
+dist_plot3 <- tr_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
   stat_summary(fun=mean, geom="bar", position=position_dodge()) +
-  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) 
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  ggtitle("Train Only")
+
+# Combine distance plots
+distance_combined <- dist_plot1 / dist_plot2 / dist_plot3
+
+
+# Display the combined plots
+density_combined
+distance_combined
 
 
 
 
-
+ggsave(filename = here::here("assets/tmp_plots/density_plots_combined_abc_1M_rmse_p0001.png"), 
+  plot = density_combined, width = 10, height = 6)
+ggsave(filename = here::here("assets/tmp_plots/distance_plots_combined_abc_1M_rmse_p0001.png"), 
+  plot = distance_combined, width = 10, height = 6)
 
 
 
@@ -379,3 +388,29 @@ c_sum500k <- all_models_df_500k |>
 c_sum500k
 
 
+
+
+
+
+
+
+update_columns <- function(df) {
+  df <- df %>%
+    mutate(
+      Group = case_when(
+        Model %in% c("abc_ev", "abc_almv", "abc_altv") ~ "Varied",
+        Model %in% c("abc_ec", "abc_almc", "abc_altc") ~ "Constant",
+        TRUE                                           ~ "Unknown"  
+      ),
+      Model = case_when(
+        Model == "abc_ev"   ~ "EXAM",
+        Model == "abc_almv" ~ "ALM",
+        Model == "abc_altv" ~ "Alt_Exam",
+        Model == "abc_ec"   ~ "EXAM",
+        Model == "abc_almc" ~ "ALM",
+        Model == "abc_altc" ~ "Alt_Exam",
+        TRUE                ~ Model  
+      )
+    )
+  return(df)
+}

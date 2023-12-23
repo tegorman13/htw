@@ -19,7 +19,8 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
 
  #sd <- readRDS(here::here("data/sim_data/sim_data_10k.rds"))
 #sd <- readRDS(here::here("data/sim_data/sim_data_300k.rds"))
-sd <- readRDS(here::here("data/sim_data/sim_data_1M_13_38_28.rds"))
+#sd <- readRDS(here::here("data/sim_data/sim_data_1M_13_38_28.rds"))
+sd <- readRDS(here::here("/Users/thomasgorman/Documents/Backup/htw_local/data/sim_data/sim_data_2M_12_21.rds"))
 names(sd)
 
 #map(sd$sim_dataAll, class)
@@ -45,12 +46,13 @@ run_abc_fits <- function(data,sim_data, prior_samples, dist_fun="dist_rmse",Mode
   # correct order of train & test
   if (rev) { sim_data <- sim_data[7:90, ] |> bind_rows(sim_data[1:6, ]) }
 
+
+
   fn_name=dist_fun
   dist_fun=get(dist_fun)
   
   te_distances <- purrr::map_dbl(sim_data[85:90, ], dist_fun, observed = target_data_test)
   tr_distances <- purrr::map_dbl(sim_data[1:84, ], dist_fun, observed = target_data_train)
-
   teter_distances <- 0.5 * te_distances + 0.5 * tr_distances
   
   teter_results <- tibble(distance = teter_distances, c = prior_samples$c, 
@@ -97,7 +99,7 @@ abc_almc <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$ALM_Constant,sd$prior_
 abc_altc <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$Alt_Constant,sd$prior_samples, dist_fun="dist_rmse",Model="Alt_EXAM", Group="Constant",pct_keep)
 
 saveRDS(tibble::lst(abc_ev,abc_almv,abc_altv,abc_ec,abc_almc,abc_altc),
-  here::here(paste0("data/abc_1M_rmse_",sub("^0", "", gsub("\\.", "p", pct_keep)),".rds")))
+  here::here(paste0("data/abc_2M_rmse_",sub("^0", "", gsub("\\.", "p", pct_keep)),".rds")))
 
 
 
