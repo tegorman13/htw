@@ -41,6 +41,55 @@ output_layer = input_layer
 
 
 
+```{r}
+library(cowplot)
+file_names <- list.files(path = "Assets/tmp_plots", pattern = "density_plots.*\\.png$", full.names = TRUE)
+# display the plots, with file_names as titles, use ggdraw
+pacman::p_load(tidyverse, data.table, abc, future, furrr, here, patchwork, conflicted, cowplot)
+
+# Load the file names
+file_names <- list.files(path = "Assets/tmp_plots", pattern = "density_plots.*\\.png$", full.names = TRUE)
+
+# Function to create a ggplot object from a PNG file
+create_plot_from_png <- function(file_name) {
+  png_image <- png::readPNG(file_name)
+  ggplot() + 
+    annotation_custom(rasterGrob(png_image), xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
+    labs(title = basename(file_name)) +
+    theme_void() + 
+    theme(plot.title = element_text(hjust = 0.5, size = 10, face = "bold"))
+}
+
+# Create a list of ggplot objects
+plot_list <- lapply(file_names, create_plot_from_png)
+
+# Combine the plots using cowplot::plot_grid
+combined_plot <- cowplot::plot_grid(plotlist = plot_list, ncol = length(plot_list))
+
+# Display the combined plot
+print(combined_plot)
+
+
+
+
+```
+
+```{r}
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
 
 ```{r}
 

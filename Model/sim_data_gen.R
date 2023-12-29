@@ -87,15 +87,15 @@ sim_data_gen <- function(data, input_layer, output_layer, simulation_function, p
 
 generate_prior_c_lr <- function(n) {
   prior_samples <- tibble(
-    c = runif(n, 0.00000001, 5.5),
-    lr = runif(n, 0.000001, 6),
+    c = runif(n, 0.000000001, 3.5),
+    lr = runif(n, 0.000001, 7.5),
   )
   return(prior_samples)
 }
 
 input_layer =  c(100,350,600,800,1000,1200)
 output_layer = input_layer
-n_prior_samples=2000000
+n_prior_samples=1500000
 prior_samples <- generate_prior_c_lr(n_prior_samples)
 return_dat="train_data, test_data"
 

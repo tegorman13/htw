@@ -21,19 +21,118 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
   summarise(y=mean(y),.groups="keep") |> rbind(dsc |> filter(expMode2=="Test") |> group_by(condit,x,expMode2) |> summarise(y=mean(y),tr=1,.groups="keep") ) |> setDT()
  
 
-
-
+# names(abc_500k)
+# names(abc_500k[[1]])
+# str(abc_500k[1:2])
+#k = teter_combined [1,]$sim_dat
 
 #abc_500k <- readRDS(here::here("data/abc_results_500k.rds"))
 #abc_1M <- readRDS(here::here("data/abc_results_1M.rds"))
 
-#abc_1M <- readRDS(here::here("data/abc_1M_rmse_p001.rds"))
+
+
+
+datasets <- list(
+  abc_1M_p001 = readRDS(here::here("data/abc_1M_rmse_p001.rds")),
+  abc_1M_p0001 = readRDS(here::here("data/abc_1M_rmse_p0001.rds")),
+  abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p001.rds")),
+  abc_2M_p0001 = readRDS(here::here("data/abc_2M_rmse_p0001.rds")),
+   abc_1p5M_p001 = readRDS(here::here("data/abc_1p5M_rmse_p001.rds")),
+  abc_1p5M_p0001 = readRDS(here::here("data/abc_1p5M_rmse_p0001.rds"))
+)
+
+process_dataset <- function(name, dataset) {
+  sample_size <- str_extract(name, "\\d+p?\\d*?M")
+  posterior_cutoff <- str_extract(name, "p\\d+$")
+  
+  teter_combined <- map_dfr(dataset, "teter_results", .id = "run_name") 
+  te_combined <- map_dfr(dataset, "te_results", .id = "run_name")
+  tr_combined <- map_dfr(dataset, "tr_results", .id = "run_name") 
+  
+  plot_title_suffix <- sprintf("%s - %s", sample_size, posterior_cutoff)
+  
+  # Create density plot objects with dynamic titles
+  plot1 <- teter_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
+    facet_wrap(~Group,scales = "free") + ggtitle(sprintf("c posterior - Test & Train - %s", plot_title_suffix))
+  
+  plot2 <- teter_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
+    facet_wrap(~Group,scales = "free") + ggtitle(sprintf("lr posterior - Test & Train - %s", plot_title_suffix))
+  
+  plot3 <- te_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
+    facet_wrap(~Group,scales = "free") + ggtitle(sprintf("c posterior - Test Only - %s", plot_title_suffix))
+  
+  plot4 <- te_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
+    facet_wrap(~Group,scales = "free") + ggtitle(sprintf("lr posterior - Test Only - %s", plot_title_suffix))
+  
+  plot5 <- tr_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
+    facet_wrap(~Group,scales = "free") + ggtitle(sprintf("c posterior - Train Only - %s", plot_title_suffix))
+  
+  plot6 <- tr_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
+    facet_wrap(~Group,scales = "free") + ggtitle(sprintf("lr posterior - Train Only - %s", plot_title_suffix))
+  
+  # Combine density plots
+  density_combined <- plot1 + plot2 + plot3 + plot4 + plot5 + plot6 + plot_layout(ncol = 2)
+  
+  # Create distance plot objects with dynamic titles
+  dist_plot1 <- teter_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
+    stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+    stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+    ggtitle(sprintf("Test & Train - %s", plot_title_suffix))
+  
+  dist_plot2 <- te_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
+    stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+    stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+    ggtitle(sprintf("Test Only - %s", plot_title_suffix))
+  
+  dist_plot3 <- tr_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
+    stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+    stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+    ggtitle(sprintf("Train Only - %s", plot_title_suffix))
+  
+  density_filename <- paste0("assets/tmp_plots/density_plots_combo_abc_", sample_size, "_rmse_", posterior_cutoff, ".png")
+  distance_filename <- paste0("assets/tmp_plots/distance_plots_combo_abc_", sample_size, "_rmse_", posterior_cutoff, ".png")
+  
+  
+  
+  ggsave(filename = here::here(density_filename), plot = density_combined, width = 10, height = 6)
+  ggsave(filename = here::here(distance_filename), plot = distance_combined, width = 10, height = 6)
+}
+
+
+invisible(lapply(names(datasets), function(name) process_dataset(name, datasets[[name]])))
+
+
+
+
+file_names <- list.files(path = "Assets/tmp_plots", pattern = "density_plots.*\\.png$", full.names = TRUE)
+# display the plots, with file_names as titles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#######################
+
+
+
+
+
+
+abc_1M <- readRDS(here::here("data/abc_1M_rmse_p001.rds"))
 abc_1M <- readRDS(here::here("data/abc_1M_rmse_p0001.rds"))
-
-names(abc_500k)
-names(abc_500k[[1]])
-str(abc_500k[1:2])
-
+abc_1M <- readRDS(here::here("data/abc_2M_rmse_p001.rds"))
+abc_1M <- readRDS(here::here("data/abc_2M_rmse_p0001.rds"))
+abc_1M <- readRDS(here::here("data/abc_1p5M_rmse_p001.rds"))
+abc_1M <- readRDS(here::here("data/abc_1p5M_rmse_p0001.rds"))
 
 
 teter_combined <- map_dfr(abc_1M, "teter_results", .id = "run_name") 
@@ -41,51 +140,27 @@ te_combined <- map_dfr(abc_1M, "te_results", .id = "run_name")
 tr_combined <- map_dfr(abc_1M, "tr_results", .id = "run_name") 
 
 
-
-k = teter_combined [1,]$sim_dat
-
-# 
-# teter_combined <- map_dfr(abc_500k, "teter_results", .id = "Model") %>% update_columns()
-# te_combined <- map_dfr(abc_500k, "te_results", .id = "Model") %>% update_columns()
-# tr_combined <- map_dfr(abc_500k, "tr_results", .id = "Model") %>% update_columns()
-
-
-
-
-
-
-
-
-
-teter_combined |> ggplot(aes(x=c,y=distance)) + geom_line(aes(color=Model)) +
-  facet_wrap(~Group,scales = "free_y") 
-
-
-
-
 # Create density plot objects
 plot1 <- teter_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
-  facet_wrap(~Group,scales = "free") + ggtitle("c posterior - Test & Train")
+  facet_wrap(~Group,scales = "free") + ggtitle("c posterior - Test & Train - 1.5M")
 
 plot2 <- teter_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
-  facet_wrap(~Group,scales = "free") + ggtitle("lr posterior - Test & Train")
+  facet_wrap(~Group,scales = "free") + ggtitle("lr posterior - Test & Train- 1.5M")
 
 plot3 <- te_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
-  facet_wrap(~Group,scales = "free") + ggtitle("c posterior - Test Only")
+  facet_wrap(~Group,scales = "free") + ggtitle("c posterior - Test Only- 1.5M")
 
 plot4 <- te_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
-  facet_wrap(~Group,scales = "free") + ggtitle("lr posterior - Test Only")
+  facet_wrap(~Group,scales = "free") + ggtitle("lr posterior - Test Only- 1.5M")
 
 plot5 <- tr_combined |> ggplot(aes(x=c))+geom_density(aes(color=Model)) +
-  facet_wrap(~Group,scales = "free") + ggtitle("c posterior - Train Only")
+  facet_wrap(~Group,scales = "free") + ggtitle("c posterior - Train Only - 1.5M")
 
 plot6 <- tr_combined |> ggplot(aes(x=lr))+geom_density(aes(color=Model)) +
-  facet_wrap(~Group,scales = "free") + ggtitle("lr posterior - Train Only")
+  facet_wrap(~Group,scales = "free") + ggtitle("lr posterior - Train Only- 1.5M")
 
 # Combine density plots
 density_combined <- plot1 + plot2 + plot3 + plot4 + plot5 + plot6 + plot_layout(ncol = 2)
-
-
 
 # Create distance plot objects
 dist_plot1 <- teter_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) + 
@@ -106,20 +181,22 @@ dist_plot3 <- tr_combined |> ggplot(aes(x=Group,y=distance,fill=Model)) +
 # Combine distance plots
 distance_combined <- dist_plot1 / dist_plot2 / dist_plot3
 
-
 # Display the combined plots
 density_combined
 distance_combined
 
-
-
-
-ggsave(filename = here::here("assets/tmp_plots/density_plots_combined_abc_1M_rmse_p0001.png"), 
+ggsave(filename = here::here("assets/tmp_plots/density_plots_combined_abc_1p5M_rmse_p001.png"), 
   plot = density_combined, width = 10, height = 6)
-ggsave(filename = here::here("assets/tmp_plots/distance_plots_combined_abc_1M_rmse_p0001.png"), 
+ggsave(filename = here::here("assets/tmp_plots/distance_plots_combined_abc_1p5M_rmse_p001.png"), 
   plot = distance_combined, width = 10, height = 6)
 
 
+
+
+
+
+teter_combined |> ggplot(aes(x=c,y=distance)) + geom_line(aes(color=Model)) +
+  facet_wrap(~Group,scales = "free_y") 
 
 
 

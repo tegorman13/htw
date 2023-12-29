@@ -20,11 +20,18 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
  #sd <- readRDS(here::here("data/sim_data/sim_data_10k.rds"))
 #sd <- readRDS(here::here("data/sim_data/sim_data_300k.rds"))
 #sd <- readRDS(here::here("data/sim_data/sim_data_1M_13_38_28.rds"))
-sd <- readRDS(here::here("/Users/thomasgorman/Documents/Backup/htw_local/data/sim_data/sim_data_2M_12_21.rds"))
+#sd <- readRDS(here::here("/Users/thomasgorman/Documents/Backup/htw_local/data/sim_data/sim_data_2M_12_21.rds"))
+sd <- readRDS(here::here("/Users/thomasgorman/Documents/Backup/htw_local/data/sim_data/sim_data_1p5M_10_59_41.rds"))
+
+
+
+
+
+sd$sim_dataAll <- map(sd$sim_dataAll, setDT)
 names(sd)
 
 #map(sd$sim_dataAll, class)
-sd$sim_dataAll <- map(sd$sim_dataAll, setDT)
+
 
 dist_mse <- function(simulated, observed) {
   return(mean((simulated - observed)^2)) #MSE
@@ -38,15 +45,13 @@ rho=function(x,y) abs(sum(x)-sum(y))/length(x)			# rho function
 
 run_abc_fits <- function(data,sim_data, prior_samples, dist_fun="dist_rmse",Model,Group,pct_keep) {
   tol = 500
-  rev=TRUE
+  rev=FALSE
   target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ]$y
   target_data_test <- data[expMode2 == "Test", ]$y
   target_data_train <- data[expMode2 == "Train", ]$y
   
   # correct order of train & test
   if (rev) { sim_data <- sim_data[7:90, ] |> bind_rows(sim_data[1:6, ]) }
-
-
 
   fn_name=dist_fun
   dist_fun=get(dist_fun)
@@ -99,7 +104,7 @@ abc_almc <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$ALM_Constant,sd$prior_
 abc_altc <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$Alt_Constant,sd$prior_samples, dist_fun="dist_rmse",Model="Alt_EXAM", Group="Constant",pct_keep)
 
 saveRDS(tibble::lst(abc_ev,abc_almv,abc_altv,abc_ec,abc_almc,abc_altc),
-  here::here(paste0("data/abc_2M_rmse_",sub("^0", "", gsub("\\.", "p", pct_keep)),".rds")))
+  here::here(paste0("data/abc_1p5M_rmse_",sub("^0", "", gsub("\\.", "p", pct_keep)),".rds")))
 
 
 
