@@ -89,6 +89,8 @@ process_dataset <- function(name, dataset) {
     stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
     ggtitle(sprintf("Train Only - %s", plot_title_suffix))
   
+  distance_combined <- dist_plot1 + dist_plot2 + dist_plot3 + plot_layout(ncol = 2)
+
   density_filename <- paste0("assets/tmp_plots/density_plots_combo_abc_", sample_size, "_rmse_", posterior_cutoff, ".png")
   distance_filename <- paste0("assets/tmp_plots/distance_plots_combo_abc_", sample_size, "_rmse_", posterior_cutoff, ".png")
   
