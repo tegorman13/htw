@@ -88,8 +88,8 @@ save_plots <- function(density_plot, distance_plot, name) {
   sample_size <- str_extract(name, "\\d+p?\\d*?M")
   posterior_cutoff <- str_extract(name, "p\\d+$")
 
-  density_filename <- paste0("assets/tmp_plots/density_plots_combo_abc_", sample_size, "rmse", posterior_cutoff, ".png")
-  distance_filename <- paste0("assets/tmp_plots/distance_plots_combo_abc_", sample_size, "rmse", posterior_cutoff, ".png")
+  density_filename <- paste0("assets/tmp_plots/density_plots_combo_abc_", sample_size, "_rmse_", posterior_cutoff, ".png")
+  distance_filename <- paste0("assets/tmp_plots/distance_plots_combo_abc_", sample_size, "_rmse_", posterior_cutoff, ".png")
 
   ggsave(filename = here::here(density_filename), plot = density_plot, width = 10, height = 6)
   ggsave(filename = here::here(distance_filename), plot = distance_plot, width = 10, height = 6)

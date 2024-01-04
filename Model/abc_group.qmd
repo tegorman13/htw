@@ -1,0 +1,152 @@
+---
+title: ABC Group Level Fits
+date: last-modified
+categories: [Simulation, ALM, EXAM, R]
+code-fold: true
+code-tools: true
+execute: 
+  warning: false
+  eval: true
+---
+
+
+
+1. Load the group level ABC results - i.e. the posterior distribution for the c and lr parameters. 
+2. Preview the posterior distribution.
+
+
+```{r}
+pacman::p_load(tidyverse, data.table,dtplyr, here, patchwork, conflicted)
+conflict_prefer_all("dplyr", quiet = TRUE)
+
+group_prior=abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p001.rds"))
+names(group_prior)
+str(group_prior$abc_ev[[1]])
+
+#tetr_v <- group_prior$abc_ev$teter_results
+
+teter <- abc_2M_p001 |> map_dfr(~tibble(pluck(.x$teter_results))) 
+te <- abc_2M_p001 |> map_dfr(~tibble(pluck(.x$te_results)))
+tr <- abc_2M_p001 |> map_dfr(~tibble(pluck(.x$tr_results)))
+```
+
+
+
+```{r fig.width=12, fig.height=10}
+
+
+
+teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test") |>
+  mutate(facet_label = paste0("rank: ", rank, "\n", "c: ", round(c, 4), "\n", "lr: ", round(lr, 4), "\n", "distance: ", round(distance, 1))) |>
+  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  facet_wrap(~Model)
+
+teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test",rank<=10) |>
+  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  facet_wrap(~Model)
+
+
+
+teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test",rank<=10) |>
+  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  facet_wrap(rank~Model)
+
+
+teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(condit=="Constant",expMode2=="Test",rank<=20) |>
+  mutate(facet_label = paste0("rank: ", rank, "\n", "c: ", round(c, 4), "\n", "lr: ", round(lr, 4), "\n", "distance: ", round(distance, 1))) |>
+  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  facet_wrap(~facet_label)
+
+
+tr |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(condit=="Constant",expMode2=="Test",rank<=20) |>
+  mutate(facet_label = paste0("rank: ", rank, "\n", "c: ", round(c, 4), "\n", "lr: ", round(lr, 4), "\n", "distance: ", round(distance, 1))) |>
+  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  facet_wrap(~facet_label)
+
+
+
+teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(condit=="Varied",expMode2=="Test",rank<=20) |>
+  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  facet_wrap(rank~Model)
+
+
+
+
+
+post_data_v %>%  filter(expMode2=="Test") |>
+  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) 
+
+
+post_data %>% filter(rank>1970, expMode2=="Test") |> 
+  mutate(facet_label = paste0("rank: ", rank, "\n", "c: ", round(c, 4), "\n", "lr: ", round(lr, 4), "\n", "distance: ", round(distance, 1))) |>
+  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  facet_wrap(~facet_label) 
+  
+
+
+
+
+
+
+
+```
+
+
+
+
+```{r}
+
+# ggplot(tetr, aes(x = c, y = lr, color = distance)) +
+#   geom_point()
+
+```
+
+# A tibble: 2 × 9
+# Rowwise: 
+#   distance        c    lr sim_index  rank Model Group  Fit_Method   sim_dat           
+#      <dbl>    <dbl> <dbl>     <int> <int> <chr> <chr>  <chr>        <list>            
+# 1     94.5 0.000161 0.626    774776     1 EXAM  Varied Test & Train <tibble [90 × 13]>
+# 2     97.4 0.000142 0.678   1353940     2 EXAM  Varied Test & Train <tibble [90 × 13]>
+
+# the sim_dat column contains the simulated data for each parameter set in the ABC run.
+# examine posterior predictive distribution for the c and lr parameters.
+
+post_data <- tetr_v %>% select(sim_dat) |> 
+  unnest(sim_dat) 
+
+str(post_data_v)
+# tibble [180,000 × 13] (S3: tbl_df/tbl/data.frame)
+#  $ Model     : chr [1:180000] "EXAM" "EXAM" "EXAM" "EXAM" ...
+#  $ Fit_Method: chr [1:180000] "Test & Train" "Test & Train" "Test & Train" "Test & Train" ...
+#  $ c         : num [1:180000] 0.000161 0.000161 0.000161 0.000161 0.000161 ...
+#  $ lr        : num [1:180000] 0.626 0.626 0.626 0.626 0.626 ...
+#  $ distance  : Named num [1:180000] 94.5 94.5 94.5 94.5 94.5 ...
+#   ..- attr(*, "names")= chr [1:180000] "...774776" "...774776" "...774776" "...774776" ...
+#  $ rank      : int [1:180000] 1 1 1 1 1 1 1 1 1 1 ...
+#  $ tr        : num [1:180000] 1 2 3 4 5 6 7 8 9 10 ...
+#  $ condit    : Factor w/ 2 levels "Constant","Varied": 2 2 2 2 2 2 2 2 2 2 ...
+#  $ x         : num [1:180000] 1000 800 800 1000 800 1000 800 1000 1000 1000 ...
+#  $ expMode2  : Factor w/ 4 levels "Train","Train-Nf",..: 1 1 1 1 1 1 1 1 1 1 ...
+#  $ y         : num [1:180000] 1136 1006 819 1037 923 ...
+#  $ pred      : num [1:180000] 38.2 1081.6 1000.2 1179 857.5 ...
+#  $ resid     : num [1:180000] 1097.4 -75.3 -181.6 -141.6 65.1 ...
+
+```{r}
+
+```
