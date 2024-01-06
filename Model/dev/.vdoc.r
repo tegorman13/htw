@@ -193,7 +193,7 @@ invisible(lapply(names(datasets), function(name) {
 #
 #
 #
-pacman::p_load(dplyr,purrr,tidyr,data.table,future,furrr,here,patchwork, conflicted)
+pacman::p_load(dplyr,purrr,tidyr,ggplot2,data.table,future,furrr,here,patchwork, conflicted)
 conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("fun_alm","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 
@@ -424,6 +424,7 @@ saveRDS(tibble::lst(abc_ev,abc_almv,abc_altv,abc_ec,abc_almc,abc_altc),
 
 # load group posteriors
 group_prior=abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p001.rds"))
+group_prior=abc_2M_p0001 = readRDS(here::here("data/abc_2M_rmse_p0001.rds"))
 names(group_prior)
 # "abc_ev"   "abc_almv" "abc_altv" "abc_ec"   "abc_almc" "abc_altc"
 
@@ -444,9 +445,9 @@ str(group_prior$abc_ev[[1]] |> select(-sim_dat))
 #   .. ..$ : int 1
 
 # create separate data frames for each fit method
-teter <- abc_2M_p001 |> map_dfr(~tibble(pluck(.x$teter_results))) 
-te <- abc_2M_p001 |> map_dfr(~tibble(pluck(.x$te_results)))
-tr <- abc_2M_p001 |> map_dfr(~tibble(pluck(.x$tr_results)))
+teter <- group_prior |> map_dfr(~tibble(pluck(.x$teter_results))) 
+te <- group_prior |> map_dfr(~tibble(pluck(.x$te_results)))
+tr <- group_prior |> map_dfr(~tibble(pluck(.x$tr_results)))
 
 head(teter,2)
 # A tibble: 2 × 9
@@ -462,7 +463,19 @@ teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test") |>
   ggplot(aes(x = x, y = pred, fill=condit)) + 
   stat_summary(fun=mean, geom="bar", position=position_dodge()) +
   stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
-  facet_wrap(~Model)
+   facet_wrap(~Model)
+
+
+tab_teter <- teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test", rank<=3) |>
+  group_by(Model, condit, x) |> 
+  summarize(mean_pred = mean(pred),mean_y = mean(y), mean_distance = mean(distance), mean_c = mean(c), mean_lr = mean(lr)) |> arrange(condit, Model,x)
+tab_teter 
+
+
+
+te |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test") |>
+  group_by(Model, condit, x) |> 
+  summarize(mean_pred = mean(pred),mean_y = mean(y), mean_distance = mean(distance), mean_c = mean(c), mean_lr = mean(lr)) 
 
 
 #

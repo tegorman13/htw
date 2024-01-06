@@ -12,19 +12,61 @@ execute:
 
 
 1. Load the group level ABC results - i.e. the posterior distribution for the c and lr parameters. 
-2. Preview the posterior distribution.
+2. Examine the posterior distribution of the c and lr parameters. 
+3. Examine the posterior predictive distributions of the test data, and compare to the observed test data.
 
 
 ```{r}
-pacman::p_load(tidyverse, data.table,dtplyr, here, patchwork, conflicted)
+pacman::p_load(tidyverse, data.table, here, patchwork, conflicted)
 conflict_prefer_all("dplyr", quiet = TRUE)
 
-group_prior=abc_1M_p001 = readRDS(here::here("data/abc_1M_rmse_p001.rds"))
-group_prior=abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p0001.rds"))
-names(group_prior)
-str(group_prior$abc_ev[[1]])
 
-tetr_v <- group_prior$abc_ev$teter_results
+walk(c("fun_alm","fun_model", "Display_Functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
+dsv <- ds |> filter(condit=="Varied")  
+dsc <- ds |> filter(condit=="Constant") 
+ind_ds <- ds |> 
+  filter(expMode2 == "Test") |> 
+  group_by(id, condit, x, expMode2) |> 
+  summarise(y = mean(y), .groups = "keep") 
+
+
+
+tMax=84
+avg_dsv <- ds |> filter(condit=="Varied",expMode2=="Train") |> group_by(tr) %>%
+  mutate(bandInt2 = sample(rep(c(800, 1000, 1200), each = tMax / 3), tMax, replace = FALSE)[tr]) %>%
+  filter(bandInt2 == x) |> select(-bandInt2) |> group_by(tr,condit,x,expMode2) |> summarise(y=mean(y),.groups="keep") |>
+  rbind(dsv |> filter(expMode2=="Test") |> group_by(condit,x,expMode2) |> summarise(y=mean(y),tr=1,.groups="keep") ) |> setDT()
+
+avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_by(tr, condit,x,expMode2) |> 
+  summarise(y=mean(y),.groups="keep") |> 
+  rbind(dsc |> filter(expMode2=="Test") |> 
+          group_by(condit,x,expMode2) |> 
+          summarise(y=mean(y),tr=1,.groups="keep") ) |> 
+  setDT()
+
+
+input_layer =  c(100,350,600,800,1000,1200)
+output_layer = input_layer
+
+
+datasets <- list(
+  abc_1M_p001 = readRDS(here::here("data/abc_1M_rmse_p001.rds")),
+  abc_1M_p0001 = readRDS(here::here("data/abc_1M_rmse_p0001.rds")),
+  abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p001.rds")),
+  abc_2M_p0001 = readRDS(here::here("data/abc_2M_rmse_p0001.rds")),
+   abc_1p5M_p001 = readRDS(here::here("data/abc_1p5M_rmse_p001.rds")),
+  abc_1p5M_p0001 = readRDS(here::here("data/abc_1p5M_rmse_p0001.rds"))
+)
+
+
+# group_prior=abc_1M_p001 = readRDS(here::here("data/abc_1M_rmse_p001.rds"))
+group_prior=abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p0001.rds"))
+
+names(group_prior)
+#str(group_prior$abc_ev[[1]])
+
+#tetr_v <- group_prior$abc_ev$teter_results
 
 teter <- group_prior |> map_dfr(~tibble(pluck(.x$teter_results))) 
 te <- group_prior |> map_dfr(~tibble(pluck(.x$te_results)))
@@ -32,36 +74,382 @@ tr <- group_prior |> map_dfr(~tibble(pluck(.x$tr_results)))
 
 
 
-teter_v_test <- teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test",condit=="Varied")
+#teter_v_test <- teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test",condit=="Varied")
+
+
+
+```
+
+```{r fig.width=11, fig.height=8}
+
+
+get_order_pattern <- function(df, pred_col = "pred",band_tol=50) {
+
+  df <- df[order(df$x), ]
+  # Calculate the standard deviation and determine the pattern
+  pred_sd <- sd(df[[pred_col]]) / 2.8
+  pattern <- ""
+  # Iterate through the rows to build the pattern
+  for (i in 1:(nrow(df) - 1)) {
+    if (abs(df[[pred_col]][i] - df[[pred_col]][i + 1]) <= band_tol) {
+      pattern <- paste0(pattern, "=")
+    } else if (df[[pred_col]][i] < df[[pred_col]][i + 1]) {
+      pattern <- paste0(pattern, "<")
+    } else {
+      pattern <- paste0(pattern, ">")
+    }
+  }
+
+  return(pattern)
+}
+
+# Apply the function to the dataset
+ind_pattern <- ind_ds |> 
+  group_by(id, condit, expMode2) |>
+  do(order_pattern = get_order_pattern(., pred_col = "y",band_tol=100)) 
+  
+ind_ds <- ind_ds |>
+  left_join(ind_pattern, by=join_by(id,condit,expMode2)) |> 
+  mutate(order_pattern = unlist(order_pattern))
+
+
+ord_pattern <- rbind(teter, te, tr)  |> select(sim_dat) |> unnest(sim_dat)  |> 
+  filter(expMode2=="Test") |> 
+  group_by(condit,rank,Model,Fit_Method) %>% 
+  do(order_pattern = unlist(get_order_pattern(.))) 
+
+combo_pred <- rbind(teter, te, tr)  |> 
+  select(sim_dat) |> 
+  unnest(sim_dat)  |> 
+  filter(expMode2=="Test") |>  
+  left_join(ord_pattern, by=join_by(condit,rank,Model,Fit_Method)) |>
+  mutate(order_pattern = unlist(order_pattern))
+
+head(combo_pred)
+
+length(unique(combo_pred$order_pattern))
+
+
+pattern_freq <- combo_pred %>%
+  count(order_pattern) %>%
+  arrange(desc(n))
+
+# Print the frequency table
+print(pattern_freq)
+
+# Plot the frequency distribution
+ggplot(pattern_freq, aes(x = order_pattern, y = n)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Frequency Distribution of Order Patterns",
+       x = "Order Pattern",
+       y = "Frequency")
+
+combo_pred %>% group_by(condit,Model,Fit_Method) |> count(order_pattern) |> arrange(desc(n)) |> ggplot(aes(x = order_pattern, y = n)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Frequency Distribution of Order Patterns",
+       x = "Order Pattern",
+       y = "Frequency") +
+  ggh4x::facet_nested_wrap(condit~Model)
+
+
+  combo_pred %>%
+  group_by(Model, Fit_Method) %>%
+  mutate(n_pattern = n_distinct(order_pattern)) %>%
+  group_by(Model, Fit_Method, order_pattern) %>%
+  mutate(pat_count = n()) %>%
+  ungroup() %>%
+  group_by(Model, Fit_Method) %>%
+  arrange(Model, Fit_Method, desc(pat_count), order_pattern) %>%
+  mutate(pat_rank = dense_rank(desc(pat_count))) |> 
+  group_by(Model, Fit_Method, order_pattern) %>%
+  # distinct(Model, Fit_Method, order_pattern, .keep_all = TRUE) %>%
+  # arrange(Model, Fit_Method, pat_rank)
+  filter(pat_rank<=5) |>
+  filter(condit=="Varied")  |> 
+ ggplot(aes(x=c,y=lr,color=as.factor(order_pattern))) + geom_point() + facet_wrap(Fit_Method~Model,scales="free") 
+  # use viridis color palette
+ # scale_color_viridis_d(option = "magma", direction = -1) 
+  
+ordered_labels <- ind_ds |>
+  group_by(order_pattern, x,condit) |>
+  summarize(y = mean(y), n_id = n_distinct(id)) |>
+  arrange(-n_id, order_pattern) |>
+  mutate(factor_label = paste0(order_pattern, " (n=", n_id, ")")) %>%
+  pull(factor_label) %>%
+  unique()
+
+k= ind_ds |>
+  group_by(order_pattern, x,condit) |>
+  summarize(y = mean(y), n_id = n_distinct(id)) |>
+  mutate(n_id = factor(n_id, levels = lorder)) |>
+  mutate(factor_label = paste0(order_pattern, " (n=", n_id, ")"),
+         factor_label = factor(factor_label, levels = ordered_labels)) 
+
+k |> filter(condit=="Varied") |>
+  ggplot(aes(x = x, y = y,fill=condit),fill=wes_palette("Darjeeling1")[1]) +
+  stat_summary(fun = mean, geom = "bar", position = position_dodge(width = 0.8)) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", position = position_dodge(width = 0.8), width = 0.25) +
+  facet_wrap(~factor_label, scales = "free_x")
+
+k |> filter(condit=="Constant") |>
+  ggplot(aes(x = x, y = y),fill=wes_palette("Darjeeling1")[2]) +
+  stat_summary(fun = mean, geom = "bar", position = position_dodge(width = 0.8)) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", position = position_dodge(width = 0.8), width = 0.25) +
+  facet_wrap(~factor_label, scales = "free_x")
+
+```
+
+
+
+# Posterior Distribution of Model Parameters
+
+
+```{r fig.width=12, fig.height=10}
+#| eval: true
+
+
+# Define function to process dataset
+process_dataset <- function(name, dataset) {
+  sample_size <- str_extract(name, "\\d+p?\\d*?M")
+  posterior_cutoff <- str_extract(name, "p\\d+$")
+
+  teter_combined <- map_dfr(dataset, "teter_results", .id = "run_name")
+  te_combined <- map_dfr(dataset, "te_results", .id = "run_name")
+  tr_combined <- map_dfr(dataset, "tr_results", .id = "run_name")
+
+  plot_title_suffix <- sprintf("%s - %s", sample_size, posterior_cutoff)
+
+  return(list(teter_combined = teter_combined,
+              te_combined = te_combined,
+              tr_combined = tr_combined,
+              plot_title_suffix = plot_title_suffix))
+}
+
+
+
+create_density_plots <- function(processed_data) {
+  teter_combined <- processed_data$teter_combined
+  te_combined <- processed_data$te_combined
+  tr_combined <- processed_data$tr_combined
+  plot_title_suffix <- processed_data$plot_title_suffix
+
+  # Base plot for density
+  base_plot <- function(data, x_var, title, show_legend = FALSE) {
+    ggplot(data, aes_string(x=x_var, color="Model")) +
+      geom_density() +
+      facet_wrap(~Group, scales = "free") +
+      ggtitle(title) +
+      theme(legend.position=ifelse(show_legend, "top", "none"))  # Toggle legend display
+  }
+
+  # Create plots, but only show legend on the first plot
+  plot1 <- base_plot(teter_combined, "c", sprintf("c posterior - Test & Train - %s", plot_title_suffix),TRUE )
+  plot2 <- base_plot(teter_combined, "lr", sprintf("lr posterior - Test & Train - %s", plot_title_suffix))
+  plot3 <- base_plot(te_combined, "c", sprintf("c posterior - Test Only - %s", plot_title_suffix))
+  plot4 <- base_plot(te_combined, "lr", sprintf("lr posterior - Test Only - %s", plot_title_suffix))
+  plot5 <- base_plot(tr_combined, "c", sprintf("c posterior - Train Only - %s", plot_title_suffix))
+  plot6 <- base_plot(tr_combined, "lr", sprintf("lr posterior - Train Only - %s", plot_title_suffix))
+
+  # Combine plots and place the one with the legend (plot1) at the end so that the legend is not cut off
+  density_combined <- plot1 + plot2 + plot3 + plot4 + plot5 + plot6 + 
+    plot_layout(ncol = 2) 
+  return(density_combined)
+}
+
+
+create_distance_plots <- function(processed_data) {
+  teter_combined <- processed_data$teter_combined
+  te_combined <- processed_data$te_combined
+  tr_combined <- processed_data$tr_combined
+  plot_title_suffix <- processed_data$plot_title_suffix
+
+  # Base plot for distance
+  base_dist_plot <- function(data, title, show_legend = FALSE) {
+    ggplot(data, aes(x=Group, y=distance, fill=Model)) +
+      stat_summary(fun=mean, geom="bar", position=position_dodge(width = 0.8)) +
+      stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge(width = 0.8), width=0.25) +
+      ggtitle(title) +
+      theme(legend.position=ifelse(show_legend, "top", "none")) # Control the display of the legend
+  }
+
+  # Create distance plots
+  dist_plot1 <- base_dist_plot(teter_combined, sprintf("Test & Train - %s", plot_title_suffix),TRUE)
+  dist_plot2 <- base_dist_plot(te_combined, sprintf("Test Only - %s", plot_title_suffix),)
+  dist_plot3 <- base_dist_plot(tr_combined, sprintf("Train Only - %s", plot_title_suffix))
+
+  # Combine plots and place the one with the legend (dist_plot1) at the end
+  distance_combined <- dist_plot1 + dist_plot2 + dist_plot3 + 
+    plot_layout(ncol = 2) 
+  return(distance_combined)
+}
+
+# Define function to save plots
+save_plots <- function(density_plot, distance_plot, name) {
+  sample_size <- str_extract(name, "\\d+p?\\d*?M")
+  posterior_cutoff <- str_extract(name, "p\\d+$")
+
+  density_filename <- paste0("assets/tmp_plots/density_plots_combo_abc_", sample_size, "_rmse_", posterior_cutoff, ".png")
+  distance_filename <- paste0("assets/tmp_plots/distance_plots_combo_abc_", sample_size, "_rmse_", posterior_cutoff, ".png")
+
+  ggsave(filename = here::here(density_filename), plot = density_plot, width = 10, height = 6)
+  ggsave(filename = here::here(distance_filename), plot = distance_plot, width = 10, height = 6)
+}
+
+# Process datasets
+processed_datasets <- lapply(names(datasets), function(name) process_dataset(name, datasets[[name]]))
+
+density_plots <- invisible(lapply(processed_datasets, create_density_plots))
+distance_plots <- lapply(processed_datasets, create_distance_plots)
+
+
+# Save plots
+#invisible(lapply(seq_along(names(datasets)), function(i) save_plots(density_plots[[i]], distance_plots[[i]], names(datasets)[i])))
+
+
 ```
 
 
 
 ```{r fig.width=12, fig.height=10}
+density_plots
+```
+
+```{r fig.width=12, fig.height=10}
+distance_plots
+```
 
 
 
-teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test") |>
+
+```{r fig.height=14,fig.width=11}
+
+pat_combo1 <- combo_pred |> group_by(condit,Model,Fit_Method,order_pattern) |> slice_min(rank,n=1)
+
+
+pat_combo1 |> filter(Model=="EXAM",condit=="Varied") |> ggplot(aes(x = x, y = pred, fill=as.factor(x))) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  #ggh4x::facet_grid2(vars(Fit_Method),vars(order_pattern),axes="all")
+  #ggh4x::facet_wrap2(vars(Fit_Method,order_pattern), trim_blank=FALSE)
+  #ggh4x::facet_nested(~Fit_Method+order_pattern)
+  #ggh4x::facet_nested(order_pattern~Fit_Method, scales="free")
+  #facet_nested_wrap(vars(Fit_Method,order_pattern), scales="free",trim_blank=FALSE)
+  ggh4x::facet_grid2(vars(order_pattern),vars(Fit_Method),render_empty=FALSE)
+
+
+{pat_combo1 |> filter(condit=="Varied",Fit_Method=="Test & Train",Model=="ALM") |> ggplot(aes(x = x, y = pred, fill=as.factor(x))) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  facet_nested_wrap(Model~order_pattern, scales="free",trim_blank=FALSE,ncol=5) } /
+pat_combo1 |> filter(condit=="Varied",Fit_Method=="Test & Train",Model=="EXAM") |> ggplot(aes(x = x, y = pred, fill=as.factor(x))) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  facet_nested_wrap(Model~order_pattern, scales="free",trim_blank=FALSE,ncol=5) + 
+  theme(legend.position="none") 
+
+
+
+combo_pred |> group_by(condit,order_pattern,Model) |> filter(Fit_Method=="Test & Train",condit=="Varied",Model!="Alt_EXAM")  |> 
+  arrange(distance,Model) |>
+  slice_max(distance,n=1) |> 
+  group_by(Model,x) |> 
+  slice_head(n=10) |> 
+  mutate(facet_label = paste0(Model,"\n",order_pattern,"\n" ,"c: ", round(c, 4), "; ", "lr: ", round(lr, 2), "; ", "dist: ", round(distance, 0))) |>
+  ggplot(aes(x = x, y = pred, fill=as.factor(x))) +
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  stat_halfeye(aes(x=x,y=y),position=position_dodge(), alpha=.6) +
+  facet_wrap(~facet_label,ncol=5)
+
+# 
+# pat_combo1 |> filter(Model=="EXAM",condit=="Varied", order_pattern=="<<<<=") |> select(Model,Fit_Method,condit,x,pred,y) |> head(20) |> DT::datatable()
+# pat_combo1 |> filter(Model=="EXAM",condit=="Varied", order_pattern=="<<<<>") |> select(Model,Fit_Method,condit,x,pred,y) |> head(20) |> DT::datatable()
+
+```
+
+
+# Posterior Predictive
+
+
+## Average of posterior predictive distributions
+
+```{r fig.width=12, fig.height=10}
+combo_pred |> select(sim_dat) |> unnest(sim_dat)  |>  filter(expMode2=="Test") |>
   mutate(facet_label = paste0("rank: ", rank, "\n", "c: ", round(c, 4), "\n", "lr: ", round(lr, 4), "\n", "distance: ", round(distance, 1))) |>
   ggplot(aes(x = x, y = pred, fill=condit)) + 
-  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75) +
   stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
-  facet_wrap(~Model)
+  #stat_summary(fun=mean, geom="point", aes(x=x,y=y,color=condit), position=position_dodge()) +
+  stat_halfeye(aes(x=x,y=y,color=condit),position=position_dodge()) +
+  ggh4x::facet_nested_wrap(Fit_Method~Model) + labs(title = "Average of posterior predictive distributions")
 
-teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test",rank<=10) |>
+combo_pred |> select(sim_dat) |> unnest(sim_dat)  |> filter(expMode2=="Test",rank<=5) |>
   ggplot(aes(x = x, y = pred, fill=condit)) + 
-  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75) +
   stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
-  facet_wrap(~Model)
+   stat_halfeye(aes(x=x,y=y,color=condit),position=position_dodge()) +
+  facet_wrap(Fit_Method~Model) + labs(caption = "Average of 5 best posterior predictive distributions")
 
-
-
-teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test",rank<=10) |>
+combo_pred |> select(sim_dat) |> unnest(sim_dat)  |> 
+  mutate(n_rank=max(rank)) |>
+  filter(expMode2=="Test",rank>=n_rank-5) |>
   ggplot(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+   stat_halfeye(aes(x=x,y=y,color=condit),position=position_dodge()) +
+  facet_wrap(Fit_Method~Model) + labs(caption = "Average of 5 worst posterior predictive distributions")
+```
+
+
+
+
+
+
+## Testing Patterns - best fits
+```{r fig.width=12, fig.height=15}
+
+combo_pred |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test",rank<=4) |>
+  ggplot(aes(x = x, y = pred, fill=as.factor(x))) + 
   stat_summary(fun=mean, geom="bar", position=position_dodge()) +
   stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
-  facet_wrap(rank~Model)
+  ggh4x::facet_nested_wrap(condit~Model~Fit_Method~rank, nrow=6)
 
+```
+
+
+
+## Testing Patterns - worst fits
+```{r fig.width=12, fig.height=15}
+
+combo_pred |> select(sim_dat) |> unnest(sim_dat) |> mutate(n_rank=max(rank)) |>
+  filter(expMode2=="Test",rank>n_rank-4) |>
+  ggplot(aes(x = x, y = pred, fill=as.factor(x))) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  ggh4x::facet_nested_wrap(condit~Model~Fit_Method~rank, nrow=6)
+
+```
+
+## Testing Patterns - Average of models
+```{r fig.width=12, fig.height=18}
+
+combo_pred |> select(sim_dat) |> unnest(sim_dat) |> mutate(n_rank=max(rank)) |>
+  filter(expMode2=="Test",
+        # condit=="Varied",
+         Model != "Alt_EXAM",
+         Fit_Method=="Test & Train", 
+        rank>n_rank-30) |>
+  ggplot(aes(x = x, y = pred, fill=as.factor(x))) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  ggh4x::facet_nested_wrap(condit~Model~rank, nrow=12)
+
+```
+
+
+```{r}
 
 teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(condit=="Constant",expMode2=="Test",rank<=20) |>
   mutate(facet_label = paste0("rank: ", rank, "\n", "c: ", round(c, 4), "\n", "lr: ", round(lr, 4), "\n", "distance: ", round(distance, 1))) |>
@@ -117,15 +505,7 @@ post_data %>% filter(rank>1970, expMode2=="Test") |>
   facet_wrap(~facet_label) 
   
 
-
-
-
-
-
-
 ```
-
-
 
 
 ```{r}
