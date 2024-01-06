@@ -1,5 +1,15 @@
 
 
+dist_mse <- function(simulated, observed) {
+  return(mean((simulated - observed)^2)) #MSE
+}
+dist_rmse <- function(simulated, observed) {
+  return(sqrt(mean((simulated - observed)^2))) #RMSE
+}
+rho=function(x,y) abs(sum(x)-sum(y))/length(x)			# rho function
+
+
+
 
 nll2 <- function(obsv,pred,sigma)
 {

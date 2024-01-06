@@ -19,15 +19,20 @@ execute:
 pacman::p_load(tidyverse, data.table,dtplyr, here, patchwork, conflicted)
 conflict_prefer_all("dplyr", quiet = TRUE)
 
-group_prior=abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p001.rds"))
+group_prior=abc_1M_p001 = readRDS(here::here("data/abc_1M_rmse_p001.rds"))
+group_prior=abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p0001.rds"))
 names(group_prior)
 str(group_prior$abc_ev[[1]])
 
-#tetr_v <- group_prior$abc_ev$teter_results
+tetr_v <- group_prior$abc_ev$teter_results
 
-teter <- abc_2M_p001 |> map_dfr(~tibble(pluck(.x$teter_results))) 
-te <- abc_2M_p001 |> map_dfr(~tibble(pluck(.x$te_results)))
-tr <- abc_2M_p001 |> map_dfr(~tibble(pluck(.x$tr_results)))
+teter <- group_prior |> map_dfr(~tibble(pluck(.x$teter_results))) 
+te <- group_prior |> map_dfr(~tibble(pluck(.x$te_results)))
+tr <- group_prior |> map_dfr(~tibble(pluck(.x$tr_results)))
+
+
+
+teter_v_test <- teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test",condit=="Varied")
 ```
 
 
@@ -60,15 +65,23 @@ teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test",rank<=
 
 teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(condit=="Constant",expMode2=="Test",rank<=20) |>
   mutate(facet_label = paste0("rank: ", rank, "\n", "c: ", round(c, 4), "\n", "lr: ", round(lr, 4), "\n", "distance: ", round(distance, 1))) |>
-  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  ggplot(aes(x = x, y = pred, fill=Model)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  facet_wrap(~facet_label)
+
+teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(condit=="Constant",expMode2=="Test",rank>=170) |>
+  mutate(facet_label = paste0("rank: ", rank, "\n", "c: ", round(c, 4), "\n", "lr: ", round(lr, 4), "\n", "distance: ", round(distance, 1))) |>
+  ggplot(aes(x = x, y = pred, fill=Model)) + 
   stat_summary(fun=mean, geom="bar", position=position_dodge()) +
   stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
   facet_wrap(~facet_label)
 
 
+
 tr |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(condit=="Constant",expMode2=="Test",rank<=20) |>
   mutate(facet_label = paste0("rank: ", rank, "\n", "c: ", round(c, 4), "\n", "lr: ", round(lr, 4), "\n", "distance: ", round(distance, 1))) |>
-  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  ggplot(aes(x = x, y = pred, fill=Model)) + 
   stat_summary(fun=mean, geom="bar", position=position_dodge()) +
   stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
   facet_wrap(~facet_label)
@@ -81,7 +94,12 @@ teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(condit=="Varied",expMod
   stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
   facet_wrap(rank~Model)
 
-
+teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(condit=="Varied",expMode2=="Test",rank>=180) |>
+  mutate(facet_label = paste0("rank: ", rank, "\n", "c: ", round(c, 4), "\n", "lr: ", round(lr, 4), "\n", "distance: ", round(distance, 1))) |>
+  ggplot(aes(x = x, y = pred, fill=Model)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  facet_wrap(~facet_label)
 
 
 

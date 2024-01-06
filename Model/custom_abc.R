@@ -20,12 +20,8 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
  #sd <- readRDS(here::here("data/sim_data/sim_data_10k.rds"))
 #sd <- readRDS(here::here("data/sim_data/sim_data_300k.rds"))
 #sd <- readRDS(here::here("data/sim_data/sim_data_1M_13_38_28.rds"))
-#sd <- readRDS(here::here("/Users/thomasgorman/Documents/Backup/htw_local/data/sim_data/sim_data_2M_12_21.rds"))
-sd <- readRDS(here::here("/Users/thomasgorman/Documents/Backup/htw_local/data/sim_data/sim_data_1p5M_10_59_41.rds"))
-
-
-
-
+sd <- readRDS(here::here("/Users/thomasgorman/Documents/Backup/htw_local/data/sim_data/sim_data_2M_12_21.rds"))
+# sd <- readRDS(here::here("/Users/thomasgorman/Documents/Backup/htw_local/data/sim_data/sim_data_1p5M_10_59_41.rds"))
 
 sd$sim_dataAll <- map(sd$sim_dataAll, setDT)
 names(sd)
@@ -33,14 +29,9 @@ names(sd)
 #map(sd$sim_dataAll, class)
 
 
-dist_mse <- function(simulated, observed) {
-  return(mean((simulated - observed)^2)) #MSE
-}
 dist_rmse <- function(simulated, observed) {
   return(sqrt(mean((simulated - observed)^2))) #RMSE
 }
-rho=function(x,y) abs(sum(x)-sum(y))/length(x)			# rho function
-
 
 
 run_abc_fits <- function(data,sim_data, prior_samples, dist_fun="dist_rmse",Model,Group,pct_keep) {
@@ -99,12 +90,12 @@ abc_ev <- run_abc_fits(avg_dsv, sim_data= sd$sim_dataAll$Exam_Varied ,sd$prior_s
 abc_almv <- run_abc_fits(avg_dsv, sim_data=sd$sim_dataAll$ALM_Varied,sd$prior_samples, dist_fun="dist_rmse", Model="ALM", Group="Varied", pct_keep)
 abc_altv <- run_abc_fits(avg_dsv, sim_data=sd$sim_dataAll$Alt_Varied,sd$prior_samples, dist_fun="dist_rmse",Model="Alt_EXAM", Group="Varied",pct_keep)
 
-abc_ec <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$Exam_Constant,sd$prior_samples, dist_fun="dist_rmse",Model="ALM", Group="Constant",pct_keep)
-abc_almc <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$ALM_Constant,sd$prior_samples, dist_fun="dist_rmse",Model="EXAM", Group="Constant",pct_keep)
+abc_ec <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$Exam_Constant,sd$prior_samples, dist_fun="dist_rmse",Model="EXAM", Group="Constant",pct_keep)
+abc_almc <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$ALM_Constant,sd$prior_samples, dist_fun="dist_rmse",Model="ALM", Group="Constant",pct_keep)
 abc_altc <- run_abc_fits(avg_dsc, sim_data=sd$sim_dataAll$Alt_Constant,sd$prior_samples, dist_fun="dist_rmse",Model="Alt_EXAM", Group="Constant",pct_keep)
 
 saveRDS(tibble::lst(abc_ev,abc_almv,abc_altv,abc_ec,abc_almc,abc_altc),
-  here::here(paste0("data/abc_1p5M_rmse_",sub("^0", "", gsub("\\.", "p", pct_keep)),".rds")))
+  here::here(paste0("data/abc_2M_rmse_",sub("^0", "", gsub("\\.", "p", pct_keep)),".rds")))
 
 
 
@@ -128,6 +119,11 @@ tdt <- system.time(abc_ev <- run_abc_fits(avg_dsv, sim_data= setDT(sd$sim_dataAl
 # 133.136   1.472 134.624 
 
 
+
+
+teter_results <- data.frame(distance = teter_distances, c = prior_samples$c, 
+                        lr = prior_samples$lr, 
+                        sim_index= seq_along(teter_distances)) 
 
 abc_1M <- tibble::lst(abc_ev,abc_almv,abc_altv,abc_ec,abc_almc,abc_altc)
 teter_combined <- map_dfr(abc_1M, "teter_results", .id = "Model") %>% update_columns()

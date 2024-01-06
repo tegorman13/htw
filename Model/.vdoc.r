@@ -25,10 +25,15 @@ str(group_prior$abc_ev[[1]])
 
 #tetr_v <- group_prior$abc_ev$teter_results
 
-
 teter <- abc_2M_p001 |> map_dfr(~tibble(pluck(.x$teter_results))) 
 te <- abc_2M_p001 |> map_dfr(~tibble(pluck(.x$te_results)))
 tr <- abc_2M_p001 |> map_dfr(~tibble(pluck(.x$tr_results)))
+#
+#
+#
+#
+#
+
 
 
 teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test") |>
