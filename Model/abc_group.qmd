@@ -212,10 +212,8 @@ k |> filter(condit=="Constant") |>
 
 # Posterior Distribution of Model Parameters
 
-
 ```{r fig.width=12, fig.height=10}
 #| eval: true
-
 
 # Define function to process dataset
 process_dataset <- function(name, dataset) {
@@ -299,9 +297,9 @@ save_plots <- function(density_plot, distance_plot, name) {
 
   density_filename <- paste0("assets/tmp_plots/density_plots_combo_abc_", sample_size, "_rmse_", posterior_cutoff, ".png")
   distance_filename <- paste0("assets/tmp_plots/distance_plots_combo_abc_", sample_size, "_rmse_", posterior_cutoff, ".png")
-
-  ggsave(filename = here::here(density_filename), plot = density_plot, width = 10, height = 6)
-  ggsave(filename = here::here(distance_filename), plot = distance_plot, width = 10, height = 6)
+  
+  ggsave(filename = here::here(density_filename), plot = density_plot, bg = "white", width = 10, height = 6)
+  ggsave(filename = here::here(distance_filename), plot = distance_plot, bg = "white", width = 10, height = 6)
 }
 
 # Process datasets
@@ -312,7 +310,7 @@ distance_plots <- lapply(processed_datasets, create_distance_plots)
 
 
 # Save plots
-#invisible(lapply(seq_along(names(datasets)), function(i) save_plots(density_plots[[i]], distance_plots[[i]], names(datasets)[i])))
+invisible(lapply(seq_along(names(datasets)), function(i) save_plots(density_plots[[i]], distance_plots[[i]], names(datasets)[i])))
 
 
 ```

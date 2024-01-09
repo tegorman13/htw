@@ -37,7 +37,7 @@ input_layer =  c(100,350,600,800,1000,1200)
 output_layer = input_layer
 
 # group_prior=abc_1M_p001 = readRDS(here::here("data/abc_1M_rmse_p001.rds"))
-group_prior=abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p0001.rds"))
+group_prior=abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p001.rds"))
 # names(group_prior)
 # str(group_prior$abc_ev[[1]] |> select())
 
@@ -56,7 +56,7 @@ tr <- group_prior |> map_dfr(~tibble(pluck(.x$tr_results)))
 ```{r}
 
 # posterior distribution from fit to entire varied group
-gp_teter_v <- teter |>  filter(Group=="Varied",Model=="ALM") |> select(c,lr)
+gp_teter_v <- teter |>  filter(Group=="Constant",Model=="Alt_EXAM") |> select(c,lr)
 head(gp_teter_v)
 
 # individual data
@@ -64,26 +64,26 @@ dsv |> filter(condit=="Varied") |> head()
 dsv %>% pull(id) %>% unique() %>% length()
 
 
-fhat <- get_fhat(gp_teter_v$c, .1516)
-curve(fhat, from=min(gp_teter_v$c), to=max(gp_teter_v$c))
-
-
-fhat <- get_fhat(gp_teter_v$lr, .1516)
-curve(fhat, from=min(gp_teter_v$lr), to=max(gp_teter_v$lr))
-
-
-kde_result <- MASS::kde2d(gp_teter_v$c, gp_teter_v$lr, n = 10)
+kde_result <- MASS::kde2d(gp_teter_v$c, gp_teter_v$lr, n = 50)
 contour(kde_result)
 image(kde_result)
 persp(kde_result)
 
-plot(density(kde_result$x))
+
+density_c <- apply(kde_result$z, 1, sum)
+density_c <- density_c / sum(density_c)
+
+density_lr <- apply(kde_result$z, 2, sum)
+density_lr <- density_lr / sum(density_lr)
+
+plot(kde_result$x, density_c, type = 'l', xlab = 'c', ylab = 'Density')
+plot(kde_result$y, density_lr, type = 'l', xlab = 'lr', ylab = 'Density')
 
 
-ggplot(data.frame(x=kde_result$x), aes(x=x)) +
+ggplot(data.frame(x=kde_result$y), aes(x=x)) +
       geom_density()
 
-ggplot(data.frame(x=gp_teter_v$c), aes(x=x)) +
+ggplot(data.frame(x=gp_teter_v$lr), aes(x=x)) +
       geom_density()
 
 
