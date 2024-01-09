@@ -458,6 +458,19 @@ head(teter,2)
 
 
 
+# just the posterior distribution from fit to entire varied group
+gp_teter_v <- teter |>  filter(Group=="Varied") |> select(c,lr)
+head(gp_teter_v)
+# A tibble: 6 × 2
+#           c    lr
+#       <dbl> <dbl>
+# 1 0.000161  0.626
+# 2 0.000135  0.129
+# 3 0.000142  0.678
+# 4 0.0000533 1.53 
+# 5 0.000211  0.600
+# 6 0.0000227 0.579
+
 teter |> select(sim_dat) |> unnest(sim_dat)  %>%  filter(expMode2=="Test") |>
   mutate(facet_label = paste0("rank: ", rank, "\n", "c: ", round(c, 4), "\n", "lr: ", round(lr, 4), "\n", "distance: ", round(distance, 1))) |>
   ggplot(aes(x = x, y = pred, fill=condit)) + 

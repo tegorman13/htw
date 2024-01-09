@@ -63,10 +63,6 @@ datasets <- list(
 # group_prior=abc_1M_p001 = readRDS(here::here("data/abc_1M_rmse_p001.rds"))
 group_prior=abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p0001.rds"))
 
-names(group_prior)
-#str(group_prior$abc_ev[[1]])
-
-#tetr_v <- group_prior$abc_ev$teter_results
 
 teter <- group_prior |> map_dfr(~tibble(pluck(.x$teter_results))) 
 te <- group_prior |> map_dfr(~tibble(pluck(.x$te_results)))
@@ -106,12 +102,18 @@ get_order_pattern <- function(df, pred_col = "pred",band_tol=50) {
 # Apply the function to the dataset
 ind_pattern <- ind_ds |> 
   group_by(id, condit, expMode2) |>
-  do(order_pattern = get_order_pattern(., pred_col = "y",band_tol=100)) 
+  do(order_pattern = get_order_pattern(., pred_col = "y",band_tol=50)) 
   
 ind_ds <- ind_ds |>
   left_join(ind_pattern, by=join_by(id,condit,expMode2)) |> 
   mutate(order_pattern = unlist(order_pattern))
 
+lorder <- ind_ds |>
+  group_by(order_pattern, x) |>
+  summarize(y = mean(y), n_id = n_distinct(id)) %>% 
+  pull(n_id) %>% 
+  unique() %>% 
+  sort(decreasing = TRUE)
 
 ord_pattern <- rbind(teter, te, tr)  |> select(sim_dat) |> unnest(sim_dat)  |> 
   filter(expMode2=="Test") |> 
@@ -126,7 +128,6 @@ combo_pred <- rbind(teter, te, tr)  |>
   mutate(order_pattern = unlist(order_pattern))
 
 head(combo_pred)
-
 length(unique(combo_pred$order_pattern))
 
 
@@ -154,7 +155,7 @@ combo_pred %>% group_by(condit,Model,Fit_Method) |> count(order_pattern) |> arra
   ggh4x::facet_nested_wrap(condit~Model)
 
 
-  combo_pred %>%
+combo_pred %>%
   group_by(Model, Fit_Method) %>%
   mutate(n_pattern = n_distinct(order_pattern)) %>%
   group_by(Model, Fit_Method, order_pattern) %>%
@@ -186,6 +187,12 @@ k= ind_ds |>
   mutate(n_id = factor(n_id, levels = lorder)) |>
   mutate(factor_label = paste0(order_pattern, " (n=", n_id, ")"),
          factor_label = factor(factor_label, levels = ordered_labels)) 
+
+k |>
+  ggplot(aes(x = x, y = y),fill=wes_palette("Darjeeling1")[1]) +
+  stat_summary(fun = mean, geom = "bar") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.25) +
+  facet_wrap(~factor_label, scales = "free_x")
 
 k |> filter(condit=="Varied") |>
   ggplot(aes(x = x, y = y,fill=condit),fill=wes_palette("Darjeeling1")[1]) +

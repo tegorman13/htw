@@ -1,0 +1,116 @@
+
+
+
+
+
+```{r}
+
+pacman::p_load(tidyverse, data.table, here, patchwork, conflicted)
+conflict_prefer_all("dplyr", quiet = TRUE)
+
+
+walk(c("fun_alm","fun_model", "Display_Functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
+dsv <- ds |> filter(condit=="Varied")  
+dsc <- ds |> filter(condit=="Constant") 
+ind_ds <- ds |> 
+  filter(expMode2 == "Test") |> 
+  group_by(id, condit, x, expMode2) |> 
+  summarise(y = mean(y), .groups = "keep") 
+
+
+
+tMax=84
+avg_dsv <- ds |> filter(condit=="Varied",expMode2=="Train") |> group_by(tr) %>%
+  mutate(bandInt2 = sample(rep(c(800, 1000, 1200), each = tMax / 3), tMax, replace = FALSE)[tr]) %>%
+  filter(bandInt2 == x) |> select(-bandInt2) |> group_by(tr,condit,x,expMode2) |> summarise(y=mean(y),.groups="keep") |>
+  rbind(dsv |> filter(expMode2=="Test") |> group_by(condit,x,expMode2) |> summarise(y=mean(y),tr=1,.groups="keep") ) |> setDT()
+
+avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_by(tr, condit,x,expMode2) |> 
+  summarise(y=mean(y),.groups="keep") |> 
+  rbind(dsc |> filter(expMode2=="Test") |> 
+          group_by(condit,x,expMode2) |> 
+          summarise(y=mean(y),tr=1,.groups="keep") ) |> 
+  setDT()
+
+input_layer =  c(100,350,600,800,1000,1200)
+output_layer = input_layer
+
+# group_prior=abc_1M_p001 = readRDS(here::here("data/abc_1M_rmse_p001.rds"))
+group_prior=abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p0001.rds"))
+# names(group_prior)
+# str(group_prior$abc_ev[[1]] |> select())
+
+
+teter <- group_prior |> map_dfr(~tibble(pluck(.x$teter_results)))
+te <- group_prior |> map_dfr(~tibble(pluck(.x$te_results)))
+tr <- group_prior |> map_dfr(~tibble(pluck(.x$tr_results)))
+
+
+
+
+```
+
+
+
+```{r}
+
+# posterior distribution from fit to entire varied group
+gp_teter_v <- teter |>  filter(Group=="Varied",Model=="ALM") |> select(c,lr)
+head(gp_teter_v)
+
+# individual data
+dsv |> filter(condit=="Varied") |> head()
+dsv %>% pull(id) %>% unique() %>% length()
+
+
+fhat <- get_fhat(gp_teter_v$c, .1516)
+curve(fhat, from=min(gp_teter_v$c), to=max(gp_teter_v$c))
+
+
+fhat <- get_fhat(gp_teter_v$lr, .1516)
+curve(fhat, from=min(gp_teter_v$lr), to=max(gp_teter_v$lr))
+
+
+kde_result <- MASS::kde2d(gp_teter_v$c, gp_teter_v$lr, n = 10)
+contour(kde_result)
+image(kde_result)
+persp(kde_result)
+
+plot(density(kde_result$x))
+
+
+ggplot(data.frame(x=kde_result$x), aes(x=x)) +
+      geom_density()
+
+ggplot(data.frame(x=gp_teter_v$c), aes(x=x)) +
+      geom_density()
+
+
+hist(kde_result$x, prob=TRUE)
+rug(kde_result$x)
+
+
+
+hist(gp_teter_v$c, prob=TRUE)
+rug(gp_teter_v$c)
+
+
+
+kern_dens <- function(x, h, m = 512) {
+  rg <- range(x)
+  # xx is equivalent to grid points in 'density()'
+  xx <- seq(rg[1] - 3 * h, rg[2] + 3 * h, length.out = m)
+  y <- numeric(m) # The evaluations, initialized as a vector of zeros
+  # The actual computation is done using nested for-loops. The outer loop
+  # is over the grid points, and the inner loop is over the data points.
+  for (i in seq_along(xx))
+    for (j in seq_along(x))
+      y[i] <- y[i] + exp(- (xx[i] - x[j])^2 / (2 * h^2))  
+  y <- y / (sqrt(2 * pi) * h * length(x))
+  list(x = xx, y = y)
+}
+f_hat <- kern_dens(kde_result$x, 0.00005, m=1024)
+plot(f_hat, type = "l", lwd = 4, xlab = "x", ylab = "Density")
+```
+
