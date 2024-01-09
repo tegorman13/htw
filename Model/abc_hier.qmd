@@ -33,84 +33,195 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
           summarise(y=mean(y),tr=1,.groups="keep") ) |> 
   setDT()
 
-input_layer =  c(100,350,600,800,1000,1200)
-output_layer = input_layer
+# load group level abc posterior - posterior parameters and predicted data for each combo of condit, Fit_Method, and Model
+group_posterior_all <- readRDS(here::here("data/abc_2M_rmse_p001.rds"))  
 
-# group_prior=abc_1M_p001 = readRDS(here::here("data/abc_1M_rmse_p001.rds"))
-group_prior=abc_2M_p001 = readRDS(here::here("data/abc_2M_rmse_p001.rds"))
-# names(group_prior)
-# str(group_prior$abc_ev[[1]] |> select())
+Model_Names <- list("EXAM", "Alt_EXAM", "ALM")
+Fit_Methods <- list("Test & Train", "Test Only","Train Only")
+condits <- list("Constant", "Varied")
 
 
-teter <- group_prior |> map_dfr(~tibble(pluck(.x$teter_results)))
-te <- group_prior |> map_dfr(~tibble(pluck(.x$te_results)))
-tr <- group_prior |> map_dfr(~tibble(pluck(.x$tr_results)))
-
+# posteriors for each Fit_Method 
+teter <- group_posterior_all |> map_dfr(~tibble(pluck(.x$teter_results))) 
+te <- group_posterior_all |> map_dfr(~tibble(pluck(.x$te_results))) 
+tr <- group_posterior_all |> map_dfr(~tibble(pluck(.x$tr_results))) 
 
 
 
 ```
+
 
 
 
 ```{r}
 
-# posterior distribution from fit to entire varied group
-gp_teter_v <- teter |>  filter(Group=="Constant",Model=="Alt_EXAM") |> select(c,lr)
-head(gp_teter_v)
-
-# individual data
-dsv |> filter(condit=="Varied") |> head()
-dsv %>% pull(id) %>% unique() %>% length()
-
-
-kde_result <- MASS::kde2d(gp_teter_v$c, gp_teter_v$lr, n = 50)
-contour(kde_result)
-image(kde_result)
-persp(kde_result)
-
-
-density_c <- apply(kde_result$z, 1, sum)
-density_c <- density_c / sum(density_c)
-
-density_lr <- apply(kde_result$z, 2, sum)
-density_lr <- density_lr / sum(density_lr)
-
-plot(kde_result$x, density_c, type = 'l', xlab = 'c', ylab = 'Density')
-plot(kde_result$y, density_lr, type = 'l', xlab = 'lr', ylab = 'Density')
-
-
-ggplot(data.frame(x=kde_result$y), aes(x=x)) +
-      geom_density()
-
-ggplot(data.frame(x=gp_teter_v$lr), aes(x=x)) +
-      geom_density()
-
-
-hist(kde_result$x, prob=TRUE)
-rug(kde_result$x)
-
-
-
-hist(gp_teter_v$c, prob=TRUE)
-rug(gp_teter_v$c)
-
-
-
-kern_dens <- function(x, h, m = 512) {
-  rg <- range(x)
-  # xx is equivalent to grid points in 'density()'
-  xx <- seq(rg[1] - 3 * h, rg[2] + 3 * h, length.out = m)
-  y <- numeric(m) # The evaluations, initialized as a vector of zeros
-  # The actual computation is done using nested for-loops. The outer loop
-  # is over the grid points, and the inner loop is over the data points.
-  for (i in seq_along(xx))
-    for (j in seq_along(x))
-      y[i] <- y[i] + exp(- (xx[i] - x[j])^2 / (2 * h^2))  
-  y <- y / (sqrt(2 * pi) * h * length(x))
-  list(x = xx, y = y)
+sample_from_kde <- function(kde_result, n_samples) {
+  # Flatten the z matrix and sample indices based on these probabilities
+  sampled_indices <- sample(length(kde_result$z), size = n_samples, replace = TRUE, prob = c(kde_result$z))
+  
+  # Convert indices to matrix row and column numbers
+  rows <- ((sampled_indices - 1) %% nrow(kde_result$z)) + 1
+  cols <- ((sampled_indices - 1) %/% nrow(kde_result$z)) + 1
+  
+  # Map back to x and y values and create a tibble
+  samples <- tibble(c = kde_result$x[rows], lr = kde_result$y[cols])
+  return(samples)
 }
-f_hat <- kern_dens(kde_result$x, 0.00005, m=1024)
-plot(f_hat, type = "l", lwd = 4, xlab = "x", ylab = "Density")
+
+compute_kde <- function(c, lr, ngrid = 100, nsamples = 500) {
+  kde=MASS::kde2d(c, lr, n = ngrid)
+  kde_samples=sample_from_kde(kde, nsamples)
+  return(list(kde=kde, kde_samples=kde_samples))
+}
+
+kde_results <- purrr::map(group_posterior_all, ~purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = 100, nsamples=1000)))
+
+
+
+
+
 ```
 
+
+# Steps to fit individual level models
+1) subset empirical data to individual level
+
+```{r}
+id1 <- ds |> filter(id==1) 
+
+input_layer =  c(100,350,600,800,1000,1200)
+output_layer = input_layer
+n_prior_samples=500
+prior_samples <- kde_results$abc_ev$teter_results$kde_samples
+return_dat="train_data, test_data"
+Model="EXAM"; Group="Varied"
+data=id1
+
+train_idx <- which(id1$expMode2=="Train")
+test_idx <- which(id1$expMode2=="Test")
+
+
+
+sim_data_wrapper <- function(args) {
+  sim_data_gen_s(args[[1]], args[[2]], args[[3]], simulation_function = args[[4]], args[[5]], return_dat = args[[6]])
+}
+
+sim_data_gen_s <- function(data, input_layer, output_layer, simulation_function, prior_samples, return_dat) {
+  simulation_function <- match.fun(simulation_function)
+  suppressMessages(simulation_results <- map_dfc(seq_len(nrow(prior_samples)), function(idx) {
+    params <- prior_samples[idx, ]
+    simulation_function(data=as.data.table(data), c=params$c, lr=params$lr, input_layer=input_layer, output_layer=output_layer, return_dat = return_dat)
+  }))
+}
+
+full_sim_exam <- function(data, c, lr,pred_fun=exam.response, input_layer, output_layer,return_dat="test_data",mode="sim") {
+  train_data <- data[expMode2=="Train", c("condit","tr","expMode2", "x","y")] 
+  test_data <- data[expMode2=="Test", c("condit","tr","expMode2", "x","y")] 
+  trainVec=sort(unique(train_data$x))
+  if (train_data$condit[1] != "Varied") {
+    trainVec <- c(0, trainVec)
+  }
+  train_results <- alm.sim(train_data, c, lr, input_layer, output_layer)
+  test_prediction <- map_dbl(test_data$x, ~ pred_fun(.x, c, input_layer, 
+                                                     output_layer, train_results$wm,  trainVec=trainVec))
+  
+  train_data$pred <- train_results$d$almResp
+  test_data$pred <- test_prediction
+  fd = eval(parse(text=paste0("rbind(",return_dat,")")))
+  if(mode=="sim"){return(fd$pred)
+  }else {return(fd)}
+}
+
+args_list <- list(
+  Exam_Varied=list(id1, input_layer, output_layer, full_sim_exam, prior_samples, return_dat)
+)
+
+sim1 <- full_sim_exam(data=as.data.table(id1), c=.02, lr=2.9, input_layer=input_layer, output_layer=output_layer, return_dat = return_dat)
+id1p<- id1 |> mutate(pred=sim1, resid=y-pred)
+
+
+
+t1=system.time({
+sim_dataAll <- map(args_list, sim_data_wrapper) |> as.data.table()
+})
+t1
+
+
+target_data_train_test <- id1[expMode2 %in% c("Test", "Train"), ]$y
+target_data_test <- id1[expMode2 == "Test", ]$y
+target_data_train <- id1[expMode2 == "Train", ]$y
+
+te_distances <- purrr::map_dbl(sim_dataAll[test_idx, ], dist_rmse, observed = target_data_test)
+
+
+pct_keep=.1
+te_results <- tibble(distance = te_distances, c = prior_samples$c, 
+  lr = prior_samples$lr,  sim_index= seq_along(te_distances)) |> 
+    arrange(distance) |> 
+    filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
+    mutate(rank=row_number(),Model,Group,Fit_Method="Test Only") |>
+    rowwise() |>
+    mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=(sim_dataAll[, .SD, .SDcols = sim_index])) |> 
+    mutate(resid=y-pred)))
+
+head(te_results)
+
+id1_test <- sim_dataAll[test_idx, ]
+id1_test[,1]
+
+
+```
+
+
+kde_results <- purrr::map(group_posterior_all, ~purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = 100, nsamples=1000)))
+id1 <- ds |> filter(id==1) 
+prior_samples <- kde_results$abc_ev$teter_results$kde_samples
+
+head(te_results)
+# Rowwise: 
+  distance          c    lr sim_index  rank Model Group  Fit_Method sim_dat            
+     <dbl>      <dbl> <dbl>     <int> <int> <chr> <chr>  <chr>      <list>             
+1     287. 0.00000696 5.76        393     1 EXAM  Varied Test Only  <tibble [149 × 14]>
+2     295. 0.00000696 5.69        215     2 EXAM  Varied Test Only  <tibble [149 × 14]>
+3     308. 0.0114     0.488       834     3 EXAM  Varied Test Only  <tibble [149 × 14]>
+4     308. 0.00953    0.428       850     4 EXAM  Varied Test Only  <tibble [149 × 14]>
+5     310. 0.0105     0.488       735     5 EXAM  Varied Test Only  <tibble [149 × 14]>
+6     312. 0.00191    1.82        631     6 EXAM  Varied Test Only  <tibble [149 × 14]>
+
+
+
+
+```{r}
+
+```
+
+Write a function to  Obtain kde for each combo of Model, Fit_Method, and condit. Use MASS::kde2d
+
+group_posterior_all has 6 lists in its first level ("abc_ev"   "abc_almv" "abc_altv" "abc_ec"   "abc_almc" "abc_altc"), 1 for each combo of condit (c=Constant, v=Varied) and Model (e=EXAM, alm=ALM, alt=Alt_Exam). Each of those 6 lists contains 3 further lists for each Fit_Method (teter_results, te_results, tr_results), the fit method lists contain the posterior parameters for c and lr. 
+
+Use purrr functions to map through each of the first and 2nd level list items. 
+
+pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted)
+conflict_prefer_all("dplyr", quiet = TRUE)
+
+
+# load group level abc posterior - posterior parameters and predicted data for each combo of condit, Fit_Method, and Model
+group_posterior_all <- readRDS(here::here("data/abc_2M_rmse_p001.rds"))  
+
+# In Model names, e is short hand for EXAM,alm for ALM, and alt for Alt_EXAM, c is for constant, v is for varied, teter is for test & train, te is for test only, tr is for train only
+Model_Names <- list("EXAM", "Alt_EXAM", "ALM")
+Fit_Methods <- list("Test & Train", "Test Only","Train Only")
+condits <- list("Constant", "Varied")
+
+## Example of getting to group level posterior data for one of the combos: 
+names(group_posterior_all)
+[1] "abc_ev"   "abc_almv" "abc_altv" "abc_ec"   "abc_almc" "abc_altc"
+> names(group_posterior_all$abc_ev)
+[1] "teter_results" "te_results"    "tr_results"    "Model"         "Group"         "pct_keep"      "fn_name"      
+> group_posterior_all$abc_ev$te_results |> select(c,lr)
+# A tibble: 2,000 × 2
+# Rowwise: 
+        c    lr
+    <dbl> <dbl>
+ 1 0.268   2.43
+ 2 0.268   2.42

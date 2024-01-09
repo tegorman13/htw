@@ -85,6 +85,14 @@ sim_data_gen <- function(data, input_layer, output_layer, simulation_function, p
   }, .options = furrr_options(seed = TRUE)))
 }
 
+sim_data_gen_s <- function(data, input_layer, output_layer, simulation_function, prior_samples, return_dat) {
+  simulation_function <- match.fun(simulation_function)
+  suppressMessages(simulation_results <- map_dfc(seq_len(nrow(prior_samples)), function(idx) {
+    params <- prior_samples[idx, ]
+    simulation_function(data=as.data.table(data), c=params$c, lr=params$lr, input_layer=input_layer, output_layer=output_layer, return_dat = return_dat)
+  }))
+}
+
 
 generate_prior_c_lr <- function(n) {
   prior_samples <- tibble(
