@@ -18,7 +18,7 @@ tr <- group_posterior_all |> map_dfr(~tibble(pluck(.x$tr_results)))
 
 
 
-kde_results <- purrr::map(group_posterior_all, ~purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = 100, nsamples=100)))
+kde_results <- purrr::map(group_posterior_all, ~purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = 1000, nsamples=10)))
 
 
 n_prior_samples=500
@@ -36,32 +36,30 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
   train_idx <- which(data$expMode2=="Train")
   test_idx <- which(data$expMode2=="Test")
   
+  target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ]$y
+  target_data_test <- data[expMode2 == "Test", ]$y
+  target_data_train <- data[expMode2 == "Train", ]$y
+  
   sim_data_gen_s <- function(data, input_layer, output_layer, simulation_function, prior_samples, return_dat) {
     simulation_function <- match.fun(simulation_function)
     suppressMessages(simulation_results <- map_dfc(seq_len(nrow(prior_samples)), function(idx) {
       params <- prior_samples[idx, ]
       simulation_function(data=as.data.table(data), c=params$c, lr=params$lr, input_layer=input_layer, output_layer=output_layer, return_dat = return_dat)    
       }))
-  }
+    }
   
-  t1=system.time({
-    sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function, prior_samples,return_dat) |> as.data.table()
-  })
+    
+    pct_keep=.1
+    prior_samples_teter <- prior_samples$teter_results$kde_samples
+    sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function, prior_samples_teter,return_dat) |> as.data.table()
 
-    
-    target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ]$y
-    target_data_test <- data[expMode2 == "Test", ]$y
-    target_data_train <- data[expMode2 == "Train", ]$y
-    
     te_distances <- purrr::map_dbl(sim_data[test_idx, ], dist_rmse, observed = target_data_test)
     tr_distances <- purrr::map_dbl(sim_data[train_idx, ], dist_rmse, observed = target_data_train)
     teter_distances <- 0.5 * te_distances + 0.5 * tr_distances
     
     
-    pct_keep=.1
-    
-    teter_results <- tibble(distance = teter_distances, c = prior_samples$c, 
-                            lr = prior_samples$lr, sim_index= seq_along(teter_distances)) |> 
+    teter_results <- tibble(distance = teter_distances, c = prior_samples_teter$c, 
+                            lr = prior_samples_teter$lr, sim_index= seq_along(teter_distances)) |> 
       arrange(distance) |> 
       filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
       mutate(rank=row_number(),Model,Group,Fit_Method="Test & Train") |>
@@ -69,8 +67,15 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
       mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=(sim_data[, .SD, .SDcols = sim_index])) |> 
                               mutate(resid=y-pred)))
     
-    te_results <- tibble(distance = te_distances, c = prior_samples$c, 
-                         lr = prior_samples$lr,  sim_index= seq_along(te_distances)) |> 
+    
+    prior_samples_te <- prior_samples$te_results$kde_samples
+    sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function, prior_samples_te,return_dat) |> as.data.table()
+    
+    
+    te_distances <- purrr::map_dbl(sim_data[test_idx, ], dist_rmse, observed = target_data_test)
+
+    te_results <- tibble(distance = te_distances, c = prior_samples_te$c, 
+                         lr = prior_samples_te$lr,  sim_index= seq_along(te_distances)) |> 
       arrange(distance) |> 
       filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
       mutate(rank=row_number(),Model,Group,Fit_Method="Test Only") |>
@@ -79,8 +84,13 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
                               mutate(resid=y-pred
                                      )))
     
-    tr_results <- tibble(distance = tr_distances, c = prior_samples$c, 
-                         lr = prior_samples$lr,  sim_index= seq_along(tr_distances)) |>
+    
+    prior_samples_tr <- prior_samples$tr_results$kde_samples
+    sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function,prior_samples_tr,return_dat) |> as.data.table()
+    tr_distances <- purrr::map_dbl(sim_data[train_idx, ], dist_rmse, observed = target_data_train)
+    
+    tr_results <- tibble(distance = tr_distances, c = prior_samples_tr$c, 
+                         lr = prior_samples_tr$lr,  sim_index= seq_along(tr_distances)) |>
       arrange(distance) |> 
       filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
       mutate(rank=row_number(),Model,Group,Fit_Method="Train Only") |>
@@ -88,7 +98,8 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
       mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=(sim_data[, .SD, .SDcols = sim_index])) |> 
                               mutate(resid=y-pred)))
     
-    tibble::lst(teter_results = teter_results, te_results = te_results, tr_results = tr_results,sbj_id, Model, Group, pct_keep, fn_name=dist_rmse)
+    tibble::lst(teter_results = teter_results, te_results = te_results, tr_results = tr_results,id = as.numeric(sbj_id),
+                         Model, Group, pct_keep, fn_name=dist_rmse) 
 }
 
 
@@ -97,15 +108,15 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
 
 id_fits_exam_varied <- map(unique(dsv$id), ~ fit_indv(sbj_id=.x,
                                           simulation_function=full_sim_exam, 
-                                          prior_samples=kde_results$abc_ev$teter_results$kde_samples, 
+                                          prior_samples=kde_results$abc_ev, 
                                           Model="EXAM", 
                                           Group="Varied"))
-  
+names(id_fits_exam_varied) <- unique(dsv$id)
   
   
 id_fits_alm_varied <- map(unique(dsv$id), ~ fit_indv(sbj_id=.x,
                                                 simulation_function=full_sim_alm, 
-                                                prior_samples=kde_results$abc_ev$teter_results$kde_samples, 
+                                                prior_samples=kde_results$abc_almv, 
                                                 Model="ALM", 
                                                 Group="Varied"))  
 
@@ -113,7 +124,7 @@ id_fits_alm_varied <- map(unique(dsv$id), ~ fit_indv(sbj_id=.x,
 
 id_fits_exam_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
                                                       simulation_function=full_sim_exam, 
-                                                      prior_samples=kde_results$abc_ev$teter_results$kde_samples, 
+                                                      prior_samples=kde_results$abc_ec, 
                                                       Model="EXAM", 
                                                       Group="Constant"))
 
@@ -121,7 +132,7 @@ id_fits_exam_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
 
 id_fits_alm_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
                                                      simulation_function=full_sim_alm, 
-                                                     prior_samples=kde_results$abc_ev$teter_results$kde_samples, 
+                                                     prior_samples=kde_results$abc_almc, 
                                                      Model="ALM", 
                                                      Group="Constant"))  
   
