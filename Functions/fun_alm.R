@@ -96,3 +96,46 @@ alm.sim <- function(dat, c, lr, input.layer = INPUT_LAYER_DEFAULT, output.layer 
    dat <- cbind(dat,almResp=st)
   return(list(d = dat, wm = weight.mat, c = c, lr = lr))
 }
+
+
+
+
+full_sim_exam <- function(data, c, lr,pred_fun=exam.response, input_layer, output_layer,return_dat="test_data",mode="sim") {
+  train_data <- data[expMode2=="Train", c("condit","tr","expMode2", "x","y")] 
+  test_data <- data[expMode2=="Test", c("condit","tr","expMode2", "x","y")] 
+  trainVec=sort(unique(train_data$x))
+  if (train_data$condit[1] != "Varied") {
+    trainVec <- c(0, trainVec)
+  }
+  
+  train_results <- alm.sim(train_data, c, lr, input_layer, output_layer)
+  
+  test_prediction <- map_dbl(test_data$x, ~ pred_fun(.x, c, input_layer, 
+                                                     output_layer, train_results$wm,  trainVec=trainVec))
+  
+  train_data$pred <- train_results$d$almResp
+  test_data$pred <- test_prediction
+  
+  fd = eval(parse(text=paste0("rbind(",return_dat,")")))
+  if(mode=="sim"){return(fd$pred)
+  }else {return(fd)}
+  
+}
+
+full_sim_alm <- function(data, c, lr,pred_fun=alm.responseOnly, input_layer, output_layer,return_dat="test_data",mode="sim") {
+  train_data <- data[expMode2=="Train", c("condit","tr","expMode2", "x","y")] 
+  test_data <- data[expMode2=="Test", c("condit","tr","expMode2", "x","y")] 
+  trainVec=sort(unique(train_data$x))
+  
+  train_results <- alm.sim(train_data, c, lr, input_layer, output_layer)
+  test_prediction <- map_dbl(test_data$x, ~ alm.responseOnly(.x, c, input_layer, output_layer, train_results$wm,  trainVec=trainVec))
+  
+  train_data$pred <- train_results$d$almResp
+  test_data$pred <- test_prediction
+  
+  #fd <- rbind(train_data,test_data)
+  fd = eval(parse(text=paste0("rbind(",return_dat,")")))
+  if(mode=="sim"){return(fd$pred)
+  }else {return(fd)}
+  
+}

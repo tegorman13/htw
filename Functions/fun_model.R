@@ -1,11 +1,32 @@
 
+sample_from_kde <- function(kde_result, n_samples) {
+  # Flatten the z matrix and sample indices based on these probabilities
+  sampled_indices <- sample(length(kde_result$z), size = n_samples, replace = TRUE, prob = c(kde_result$z))
+  
+  # Convert indices to matrix row and column numbers
+  rows <- ((sampled_indices - 1) %% nrow(kde_result$z)) + 1
+  cols <- ((sampled_indices - 1) %/% nrow(kde_result$z)) + 1
+  
+  # Map back to x and y values and create a tibble
+  samples <- tibble(c = kde_result$x[rows], lr = kde_result$y[cols])
+  return(samples)
+}
+
+compute_kde <- function(c, lr, ngrid = 100, nsamples = 500) {
+  kde=MASS::kde2d(c, lr, n = ngrid)
+  kde_samples=sample_from_kde(kde, nsamples)
+  return(list(kde=kde, kde_samples=kde_samples))
+}
+
+
+dist_rmse <- function(simulated, observed) {
+  return(sqrt(mean((simulated - observed)^2))) #RMSE
+}
 
 dist_mse <- function(simulated, observed) {
   return(mean((simulated - observed)^2)) #MSE
 }
-dist_rmse <- function(simulated, observed) {
-  return(sqrt(mean((simulated - observed)^2))) #RMSE
-}
+
 rho=function(x,y) abs(sum(x)-sum(y))/length(x)			# rho function
 
 
