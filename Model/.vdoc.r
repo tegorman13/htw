@@ -87,6 +87,75 @@ kde_results <- purrr::map(group_posterior_all, ~purrr::map_if(.x, is.list, ~comp
 #
 #
 #
+#
+#
+#
+#
+
+
+  sim_data_gen_s <- function(data, input_layer, output_layer, simulation_function, prior_samples, return_dat) {
+    simulation_function <- match.fun(simulation_function)
+    suppressMessages(simulation_results <- map_dfc(seq_len(nrow(prior_samples)), function(idx) {
+      params <- prior_samples[idx, ]
+      simulation_function(data=as.data.table(data), c=params$c, lr=params$lr, input_layer=input_layer, output_layer=output_layer, return_dat = return_dat)    
+      }))
+  }
+
+
+
+
+input_layer =  c(100,350,600,800,1000,1200)
+output_layer = input_layer
+return_dat="train_data, test_data"
+data <- ds |> filter(id==1) 
+train_idx <- which(data$expMode2=="Train")
+test_idx <- which(data$expMode2=="Test")
+
+kde_results <- purrr::map(group_posterior_all, ~purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = 100, nsamples=100)))
+
+sim_data <- sim_data_gen_s(data,input_layer,output_layer,full_sim_exam, kde_results$abc_ev$te_results$kde_samples, return_dat)
+
+simulated = as_vector(sim_data[,1])
+observed=data 
+
+
+dist_mean_sd <- function(simulated, observed) {
+  # Calculate the means and standard deviations for simulated and observed data
+  
+  d <- tibble(observed,pred=simulated) 
+  nbins <- 4
+  dtrain <- d |> filter(expMode2=="Train") |> 
+  mutate(Block=cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE))
+ 
+
+  sum_stat_train <- dtrain |> group_by(Block,x) |> summarise(mean_sim=mean(pred),sd_sim=sd(pred),mean_obs=mean(y),sd_obs=sd(y), mean_dif = mean_obs-mean_sim, sd_dif = sd_obs-sd_sim) 
+
+  sum_stat_test <- d |> filter(expMode2=="Test") |> group_by(x) |> summarise(mean_sim=mean(pred),sd_sim=sd(pred),mean_obs=mean(y),sd_obs=sd(y), mean_dif = mean_obs-mean_sim, sd_dif = sd_obs-sd_sim)
+
+
+  train_mean_rmse <- sqrt(mean((sum_stat$mean_dif^2)))
+  train_sd_rmse <- sqrt(mean((sum_stat$sd_dif^2)))
+
+  test_mean_rmse <- sqrt(mean((sum_stat_test$mean_dif^2)))
+  test_sd_rmse <- sqrt(mean((sum_stat_test$sd_dif^2)))
+  
+
+  # Calculate the discrepancies for mean and SD, then average them
+  mean_discrepancy <- abs(mean_sim - mean_obs)
+  sd_discrepancy <- abs(sd_sim - sd_obs)
+  
+  # Return the average discrepancy
+  (mean_discrepancy + sd_discrepancy) / 2
+}
+
+#
+#
+#
+#
+#
+#
+#
+#
 id1 <- ds |> filter(id==1) 
 
 input_layer =  c(100,350,600,800,1000,1200)
@@ -147,6 +216,9 @@ sim_dataAll <- map(args_list, sim_data_wrapper) |> as.data.table()
 t1
 
 
+
+
+
 target_data_train_test <- id1[expMode2 %in% c("Test", "Train"), ]$y
 target_data_test <- id1[expMode2 == "Test", ]$y
 target_data_train <- id1[expMode2 == "Train", ]$y
@@ -170,6 +242,7 @@ id1_test <- sim_dataAll[test_idx, ]
 id1_test[,1]
 
 
+#
 #
 #
 #
