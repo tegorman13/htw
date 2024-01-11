@@ -45,7 +45,7 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
     }
   
     
-    pct_keep=1
+    pct_keep=.1
     prior_samples_teter <- prior_samples$teter_results$kde_samples
     sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function, prior_samples_teter,return_dat) |> as.data.table()
 
