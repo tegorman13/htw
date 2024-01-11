@@ -45,7 +45,7 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
     }
   
     
-    pct_keep=.1
+    pct_keep=1
     prior_samples_teter <- prior_samples$teter_results$kde_samples
     sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function, prior_samples_teter,return_dat) |> as.data.table()
 
@@ -60,7 +60,7 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
       filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
       mutate(rank=row_number(),Model,Group,Fit_Method="Test & Train") |>
       rowwise() |>
-      mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=(sim_data[, .SD, .SDcols = sim_index])) |> 
+      mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=as_vector((sim_data[, .SD, .SDcols = sim_index]))) |> 
                               mutate(resid=y-pred)))
     
     
@@ -76,7 +76,7 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
       filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
       mutate(rank=row_number(),Model,Group,Fit_Method="Test Only") |>
       rowwise() |>
-      mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=(sim_data[, .SD, .SDcols = sim_index])) |> 
+      mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=as_vector((sim_data[, .SD, .SDcols = sim_index]))) |> 
                               mutate(resid=y-pred
                                      )))
     
@@ -91,7 +91,7 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
       filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
       mutate(rank=row_number(),Model,Group,Fit_Method="Train Only") |>
       rowwise() |>
-      mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=(sim_data[, .SD, .SDcols = sim_index])) |> 
+      mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=as_vector((sim_data[, .SD, .SDcols = sim_index]))) |> 
                               mutate(resid=y-pred)))
     
     tibble::lst(teter_results = teter_results, te_results = te_results, tr_results = tr_results,id = as.numeric(sbj_id),

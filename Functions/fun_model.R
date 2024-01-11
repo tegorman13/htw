@@ -17,7 +17,7 @@ compute_kde <- function(c, lr, ngrid = 100, nsamples = 100, lim_buffer = 0.15) {
   iqr_lr = IQR(lr)
   
   # Calculate limits ensuring they are not below the specified minimum
-  min_value = .000001
+  min_value = .00000001
   c_lims = c(max(min(c) - iqr_c * lim_buffer, min_value), max(c) + iqr_c * lim_buffer)
   lr_lims = c(max(min(lr) - iqr_lr * lim_buffer, min_value), max(lr) + iqr_lr * lim_buffer)
   

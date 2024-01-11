@@ -55,32 +55,47 @@ tr <- group_posterior_all |> map_dfr(~tibble(pluck(.x$tr_results)))
 
 ```{r}
 
-sample_from_kde <- function(kde_result, n_samples) {
-  # Flatten the z matrix and sample indices based on these probabilities
-  sampled_indices <- sample(length(kde_result$z), size = n_samples, replace = TRUE, prob = c(kde_result$z))
-  
-  # Convert indices to matrix row and column numbers
-  rows <- ((sampled_indices - 1) %% nrow(kde_result$z)) + 1
-  cols <- ((sampled_indices - 1) %/% nrow(kde_result$z)) + 1
-  
-  # Map back to x and y values and create a tibble
-  samples <- tibble(c = kde_result$x[rows], lr = kde_result$y[cols])
-  return(samples)
-}
-
-compute_kde <- function(c, lr, ngrid = 100, nsamples = 500) {
-  kde=MASS::kde2d(c, lr, n = ngrid)
-  kde_samples=sample_from_kde(kde, nsamples)
-  return(list(kde=kde, kde_samples=kde_samples))
-}
-
-kde_results <- purrr::map(group_posterior_all, ~purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = 100, nsamples=1000)))
+ind_abc_s500_ng300_buf5 <- readRDS("~/Library/CloudStorage/GoogleDrive-tegorman13@gmail.com/My Drive/HTW/gl/data/indv_sim/ind_abc_s500_ng300_buf5.rds")
 
 
 
+abc_ev <- ind_abc_s500_ng300_buf5$id_fits_exam_varied |>
+  map_dfr(~tibble(pluck(.x$teter_results)),.id = "id") |> filter(id %in% c(1,2)) |>
+  map(sim_dat)
+
+
+abc_ev <- ind_abc_s500_ng300_buf5$id_fits_exam_varied |>
+  map_dfr(~tibble(pluck(.x$teter_results)),.id = "id") |> filter(id %in% c(1,2)) |> select(sim_dat) |>
+  pluck("sim_dat")
+
+
+abc_ev <- ind_abc_s500_ng300_buf5$id_fits_exam_varied |>
+  map_dfr(~tibble(pluck(.x$teter_results)),.id = "id") |> filter(id %in% c(1,2)) |> select(sim_dat) |> unnest(sim_dat) |> filter(rank==1) |>
+  mutate(pred=pred[[1]])
+  #mutate(pred=unnest(pred)$...195,resid=unnest(resid)$...195 )
+
+abc_ev |> filter(expMode2=="Test") |> 
+  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  #stat_summary(fun=mean, geom="point", aes(x=x,y=y,color=condit), position=position_dodge()) +
+  stat_halfeye(aes(x=x,y=y,color=condit),position=position_dodge()) +
+  ggh4x::facet_nested_wrap(~id) + labs(title = "Average of posterior predictive distributions")  
+
+colnames(abc_ev)
+k=abc_ev["pred"]
+names(k)
+
+
+abc_ev <- id_fits_exam_varied |>
+  map_dfr(~tibble(pluck(.x$teter_results)),.id = "id") |> filter(id %in% c(1,2)) |> select(sim_dat) |> unnest(sim_dat)
 
 
 ```
+
+
+
+
 
 # learning curve code
 nbins <- 10
