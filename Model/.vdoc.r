@@ -127,25 +127,18 @@ dist_mean_sd <- function(simulated, observed) {
   dtrain <- d |> filter(expMode2=="Train") |> 
   mutate(Block=cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE))
  
-
   sum_stat_train <- dtrain |> group_by(Block,x) |> summarise(mean_sim=mean(pred),sd_sim=sd(pred),mean_obs=mean(y),sd_obs=sd(y), mean_dif = mean_obs-mean_sim, sd_dif = sd_obs-sd_sim) 
 
   sum_stat_test <- d |> filter(expMode2=="Test") |> group_by(x) |> summarise(mean_sim=mean(pred),sd_sim=sd(pred),mean_obs=mean(y),sd_obs=sd(y), mean_dif = mean_obs-mean_sim, sd_dif = sd_obs-sd_sim)
 
-
   train_mean_rmse <- sqrt(mean((sum_stat$mean_dif^2)))
-  train_sd_rmse <- sqrt(mean((sum_stat$sd_dif^2)))
+  train_sd <- mean(sum_stat_train$sd_obs)
 
   test_mean_rmse <- sqrt(mean((sum_stat_test$mean_dif^2)))
-  test_sd_rmse <- sqrt(mean((sum_stat_test$sd_dif^2)))
+  test_sd <- mean(sum_stat_test$sd_obs)
   
-
-  # Calculate the discrepancies for mean and SD, then average them
-  mean_discrepancy <- abs(mean_sim - mean_obs)
-  sd_discrepancy <- abs(sd_sim - sd_obs)
+  return(tibble::lst(train_mean_rmse,test_mean_rmse, train_sd, test_sd))
   
-  # Return the average discrepancy
-  (mean_discrepancy + sd_discrepancy) / 2
 }
 
 #

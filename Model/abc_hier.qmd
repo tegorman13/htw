@@ -131,14 +131,13 @@ dist_mean_sd <- function(simulated, observed) {
 
   sum_stat_test <- d |> filter(expMode2=="Test") |> group_by(x) |> summarise(mean_sim=mean(pred),sd_sim=sd(pred),mean_obs=mean(y),sd_obs=sd(y), mean_dif = mean_obs-mean_sim, sd_dif = sd_obs-sd_sim)
 
-
   train_mean_rmse <- sqrt(mean((sum_stat$mean_dif^2)))
-  train_sd_rmse <- sqrt(mean((sum_stat$sd_dif^2)))
+  train_sd <- mean(sum_stat_train$sd_obs)
 
   test_mean_rmse <- sqrt(mean((sum_stat_test$mean_dif^2)))
-  test_sd_rmse <- sqrt(mean((sum_stat_test$sd_dif^2)))
+  test_sd <- mean(sum_stat_test$sd_obs)
   
-  return(tibble::lst(train_mean_rmse,test_mean_rmse))
+  return(tibble::lst(train_mean_rmse,test_mean_rmse, train_sd, test_sd))
   
 }
 

@@ -23,6 +23,36 @@ kde_results <- purrr::map(group_posterior_all, ~
 
 
 
+
+
+
+dist_mean_sd <- function(simulated, observed) {
+
+  d <- tibble(observed,pred=simulated) 
+  nbins <- 4
+  dtrain <- d |> filter(expMode2=="Train") |> 
+  mutate(Block=cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE))
+ 
+  sum_stat_train <- dtrain |> group_by(Block,x) |> 
+    summarise(mean_sim=mean(pred),sd_sim=sd(pred),
+    mean_obs=mean(y),sd_obs=sd(y), 
+    mean_dif = mean_obs-mean_sim, sd_dif = sd_obs-sd_sim, .groups="keep") 
+
+  sum_stat_test <- d |> filter(expMode2=="Test") |> group_by(x) |> 
+    summarise(mean_sim=mean(pred),sd_sim=sd(pred),
+    mean_obs=mean(y),sd_obs=sd(y),
+     mean_dif = mean_obs-mean_sim, sd_dif = sd_obs-sd_sim, .groups="keep")
+
+  train_mean_rmse <- sqrt(mean((sum_stat_train$mean_dif^2)))
+  train_sd <- mean(sum_stat_train$sd_obs)
+
+  test_mean_rmse <- sqrt(mean((sum_stat_test$mean_dif^2)))
+  test_sd <- mean(sum_stat_test$sd_obs)
+  
+  return(tibble::lst(train_mean_rmse,test_mean_rmse, train_sd, test_sd))
+  
+}
+
 fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
 
   data <- filter(ds,id==sbj_id) |> as.data.table()
@@ -45,57 +75,50 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
     }
   
     
-    pct_keep=.8
+    pct_keep=.1
     prior_samples_teter <- prior_samples$teter_results$kde_samples
     sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function, prior_samples_teter,return_dat) |> as.data.table()
-
-    te_distances <- purrr::map_dbl(sim_data[test_idx, ], dist_rmse, observed = target_data_test)
-    tr_distances <- purrr::map_dbl(sim_data[train_idx, ], dist_rmse, observed = target_data_train)
-    teter_distances <- 0.5 * te_distances + 0.5 * tr_distances
-    
-    
-    teter_results <- tibble(distance = teter_distances, c = prior_samples_teter$c, 
-                            lr = prior_samples_teter$lr, sim_index= seq_along(teter_distances)) |> 
-      arrange(distance) |> 
+    teter_results <- tibble(prior_samples_teter,purrr::map_dfr(sim_data, ~dist_mean_sd(.x, data))) |> 
+      mutate(teter_rmse=((train_mean_rmse)+(test_mean_rmse))/2, sim_index=1:n()) |> 
+      arrange(teter_rmse) |> 
       filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
       mutate(rank=row_number(),Model,Group,Fit_Method="Test & Train") |>
       rowwise() |>
-      mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=(sim_data[, .SD, .SDcols = sim_index])) |> 
+      mutate(sim_dat = list(tibble(Model,Fit_Method="Test & Train",c,lr,data,pred=as_vector((sim_data[, .SD, .SDcols = sim_index]))) |> 
                               mutate(resid=y-pred)))
-    
+
     
     prior_samples_te <- prior_samples$te_results$kde_samples
-    sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function, prior_samples_te,return_dat) |> as.data.table()
-    
-    
-    te_distances <- purrr::map_dbl(sim_data[test_idx, ], dist_rmse, observed = target_data_test)
-
-    te_results <- tibble(distance = te_distances, c = prior_samples_te$c, 
-                         lr = prior_samples_te$lr,  sim_index= seq_along(te_distances)) |> 
-      arrange(distance) |> 
+    sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function, prior_samples_te,return_dat) |> 
+      as.data.table()
+    te_results <- tibble(prior_samples_te,purrr::map_dfr(sim_data, ~dist_mean_sd(.x, data))) |>   
+      mutate(sim_index=1:n()) |>
+      arrange(test_mean_rmse) |>
       filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
-      mutate(rank=row_number(),Model,Group,Fit_Method="Test Only") |>
+      mutate(rank=row_number(),Model,Group,Fit_Method="Test") |>
       rowwise() |>
-      mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=(sim_data[, .SD, .SDcols = sim_index])) |> 
-                              mutate(resid=y-pred
-                                     )))
-    
-    
-    prior_samples_tr <- prior_samples$tr_results$kde_samples
-    sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function,prior_samples_tr,return_dat) |> as.data.table()
-    tr_distances <- purrr::map_dbl(sim_data[train_idx, ], dist_rmse, observed = target_data_train)
-    
-    tr_results <- tibble(distance = tr_distances, c = prior_samples_tr$c, 
-                         lr = prior_samples_tr$lr,  sim_index= seq_along(tr_distances)) |>
-      arrange(distance) |> 
-      filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
-      mutate(rank=row_number(),Model,Group,Fit_Method="Train Only") |>
-      rowwise() |>
-      mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=(sim_data[, .SD, .SDcols = sim_index])) |> 
+      mutate(sim_dat = list(tibble(Model,Fit_Method="Test",c,lr,data,pred=as_vector((sim_data[, .SD, .SDcols = sim_index]))) |> 
                               mutate(resid=y-pred)))
     
+
+    prior_samples_tr <- prior_samples$tr_results$kde_samples
+    sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function,prior_samples_tr,return_dat) |> 
+      as.data.table()
+    tr_results <- tibble(prior_samples_tr,purrr::map_dfr(sim_data, ~dist_mean_sd(.x, data))) |>  
+      mutate(sim_index=1:n()) |>
+      arrange(train_mean_rmse) |>
+      filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
+      mutate(rank=row_number(),Model,Group,Fit_Method="Train") |>
+      rowwise() |>
+      mutate(sim_dat = list(tibble(Model,Fit_Method="Train",c,lr,data,pred=as_vector((sim_data[, .SD, .SDcols = sim_index]))) |> 
+                              mutate(resid=y-pred)))
+    
+
+
+
+    
     tibble::lst(teter_results = teter_results, te_results = te_results, tr_results = tr_results,id = as.numeric(sbj_id),
-                         Model, Group, pct_keep, fn_name=dist_rmse) 
+                         Model, Group, pct_keep, fn_name=dist_mean_sd) 
 }
 
 
