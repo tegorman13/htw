@@ -137,5 +137,4 @@ full_sim_alm <- function(data, c, lr,pred_fun=alm.responseOnly, input_layer, out
   fd = eval(parse(text=paste0("rbind(",return_dat,")")))
   if(mode=="sim"){return(fd$pred)
   }else {return(fd)}
-  
 }

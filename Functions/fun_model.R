@@ -12,10 +12,19 @@ sample_from_kde <- function(kde_result, n_samples) {
   return(samples)
 }
 
-compute_kde <- function(c, lr, ngrid = 100, nsamples = 500) {
-  kde=MASS::kde2d(c, lr, n = ngrid)
-  kde_samples=sample_from_kde(kde, nsamples)
-  return(list(kde=kde, kde_samples=kde_samples))
+compute_kde <- function(c, lr, ngrid = 100, nsamples = 100, lim_buffer = 0.15) {
+  iqr_c = IQR(c)
+  iqr_lr = IQR(lr)
+  
+  # Calculate limits ensuring they are not below the specified minimum
+  min_value = .000001
+  c_lims = c(max(min(c) - iqr_c * lim_buffer, min_value), max(c) + iqr_c * lim_buffer)
+  lr_lims = c(max(min(lr) - iqr_lr * lim_buffer, min_value), max(lr) + iqr_lr * lim_buffer)
+  
+  kde = MASS::kde2d(c, lr, n = ngrid, lims = c(c_lims, lr_lims))
+  kde_samples = sample_from_kde(kde, nsamples)
+  
+  return(list(kde = kde, kde_samples = kde_samples))
 }
 
 

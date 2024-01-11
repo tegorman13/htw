@@ -181,5 +181,3 @@ wrap_grid_serial <- function(dat,c_values,lr_values, input.layer, output.layer,
   return(list(train=bf_train,test=bf_test,errorGrid=grid,Fit = bestFit, c = bestFit$c, lr = bestFit$lr, Value = bestFit$Value, time=loop_time[3]))
   
 }
-
-

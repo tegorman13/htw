@@ -1,7 +1,7 @@
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted)
 conflict_prefer_all("dplyr", quiet = TRUE)
-
 walk(c("fun_alm","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+set.seed(123)
 
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 dsv <- ds |> filter(condit=="Varied")  
@@ -16,14 +16,10 @@ te <- group_posterior_all |> map_dfr(~tibble(pluck(.x$te_results)))
 tr <- group_posterior_all |> map_dfr(~tibble(pluck(.x$tr_results))) 
 
 
-
-
-kde_results <- purrr::map(group_posterior_all, ~purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = 1000, nsamples=10)))
-
-
-n_prior_samples=500
-
-# function that fits model to data
+# kernel density estimate of group posteriors
+n_prior_samples=100; ngrid=100; buf = .25
+kde_results <- purrr::map(group_posterior_all, ~
+                            purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = ngrid, nsamples=n_prior_samples, lim_buffer=buf)))
 
 
 
@@ -49,7 +45,7 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
     }
   
     
-    pct_keep=.1
+    pct_keep=.8
     prior_samples_teter <- prior_samples$teter_results$kde_samples
     sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function, prior_samples_teter,return_dat) |> as.data.table()
 
@@ -111,7 +107,7 @@ id_fits_exam_varied <- map(unique(dsv$id), ~ fit_indv(sbj_id=.x,
                                           prior_samples=kde_results$abc_ev, 
                                           Model="EXAM", 
                                           Group="Varied"))
-names(id_fits_exam_varied) <- unique(dsv$id)
+#names(id_fits_exam_varied) <- unique(dsv$id)
   
   
 id_fits_alm_varied <- map(unique(dsv$id), ~ fit_indv(sbj_id=.x,
@@ -137,6 +133,26 @@ id_fits_alm_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
                                                      Group="Constant"))  
   
 
+
+
+# save prior samples in sim instead of full kde results?
+
+runInfo=tibble::lst(kde_results,
+                        # data=ds,
+                         functions=tibble::lst(fit_indv,dist_rmse),
+                 runScripts=list(indv_fit_script=readLines(here::here("Model/indv_fit.R")),
+                                 model_script=readLines(here::here("Functions/fun_model.R")),
+                                 alm_script=readLines(here::here("Functions/fun_alm.R"))),
+                 path=getwd(),
+                 Computer=Sys.info()["nodename"],
+                 systemInfo=Sys.info(),
+                 sessionInfo=sessionInfo(),timeInit=Sys.time())
+
+
+indv_fit_results <- tibble::lst(id_fits_alm_varied,id_fits_exam_varied,id_fits_alm_constant,id_fits_exam_constant, runInfo) 
+
+saveRDS(indv_fit_results,
+        file=here::here(paste0("data/indv_sim/","ind_abc_", n_prior_samples,"_",format(Sys.time(),"%H_%M_%OS"), ".rds")))
 
 
 

@@ -96,24 +96,147 @@ sample_from_kde <- function(kde_result, n_samples) {
   return(samples)
 }
 
-compute_kde <- function(c, lr, ngrid = 100, nsamples = 500) {
+compute_kde <- function(c, lr, ngrid = 100, nsamples = 100, lim_buffer = 0.15) {
+  iqr_c = IQR(c)
+  iqr_lr = IQR(lr)
+  
+  # Calculate limits ensuring they are not below the specified minimum
+  min_value = .000001
+  c_lims = c(max(min(c) - iqr_c * lim_buffer, min_value), max(c) + iqr_c * lim_buffer)
+  lr_lims = c(max(min(lr) - iqr_lr * lim_buffer, min_value), max(lr) + iqr_lr * lim_buffer)
+  
+  # Apply limits to kde2d
+  kde = MASS::kde2d(c, lr, n = ngrid, lims = c(c_lims, lr_lims))
+  
+  # Assuming sample_from_kde is a function you have defined elsewhere
+  kde_samples = sample_from_kde(kde, nsamples)
+  
+  return(list(kde = kde, kde_samples = kde_samples))
+}
+
+
+compute_kde_old <- function(c, lr, ngrid = 100, nsamples = 100) {
   kde=MASS::kde2d(c, lr, n = ngrid)
   kde_samples=sample_from_kde(kde, nsamples)
   return(list(kde=kde, kde_samples=kde_samples))
 }
 
-kde_results <- purrr::map(group_posterior_all, ~purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = 100, nsamples=500)))
+set.seed(123)
+# Testing Range
+kde_results <- purrr::map(group_posterior_all, ~purrr::map_if(.x, is.list, ~compute_kde_old(.x$c, .x$lr, ngrid = 100, nsamples=500)))
+
+c_sample <- kde_results[[1]]$teter_results$kde_samples$c
+plot(density(c_sample))
+plot(density( kde_results[[1]]$teter_results$kde_samples$lr))
+range(kde_results[[1]]$teter_results$kde_samples$c)
+range(kde_results[[1]]$teter_results$kde_samples$lr)
+
+set.seed(123)
+kde_results <- purrr::map(group_posterior_all, 
+                          ~purrr::map_if(.x, is.list, 
+                                         ~compute_kde(.x$c, .x$lr, ngrid = 100, nsamples=500,
+                                                      lim_buffer=.5)))
+
+c_sample <- kde_results[[1]]$teter_results$kde_samples$c
+plot(density(c_sample))
+plot(density( kde_results[[1]]$teter_results$kde_samples$lr))
+range(kde_results[[1]]$teter_results$kde_samples$c)
+range(kde_results[[1]]$teter_results$kde_samples$lr)
 
 
 
+# sampling variability
+#==================================================
 
+# Define the range of values for n_prior_samples and ngrid
+n_prior_samples_range <- c(100, 200, 500,1000)  # Modify as needed
+ngrid_range <- c(50, 100, 200)  # Modify as needed
+num_simulations <- 20  # Number of simulations for each combination
 
+# Create an empty data frame to store results
+results_df <- data.frame(
+  n_prior_samples = integer(),
+  ngrid = integer(),
+  simulation = integer(),
+  mean_c = double(),
+  sd_c = double()
+)
 
-
-
-compute_kde <- function(c, lr, ngrid = 100) {
-  MASS::kde2d(c, lr, n = ngrid)
+# Loop over n_prior_samples and ngrid
+for (n_prior_samples in n_prior_samples_range) {
+  for (ngrid in ngrid_range) {
+    for (simulation in 1:num_simulations) {
+      kde_results <- purrr::map(group_posterior_all[4],
+                                ~purrr::map_if(.x, is.list, 
+                                               ~compute_kde(.x$c, .x$lr,
+                                                            ngrid = ngrid, 
+                                                            nsamples = n_prior_samples,
+                                                            lim_buffer=.15)))
+      
+      # Calculate mean and standard deviation of 'c' for each simulation
+      mean_c <- mean(kde_results[[1]]$te_results$kde_samples$c)
+      sd_c <- sd(kde_results[[1]]$te_results$kde_samples$c)
+      
+      # use median and MAD
+       median_c <- median(kde_results[[1]]$te_results$kde_samples$c)
+       mad_c <- mad(kde_results[[1]]$te_results$kde_samples$c)
+      
+      # Append results to the data frame
+      results_df <- bind_rows(results_df, data.frame(
+        n_prior_samples = n_prior_samples,
+        ngrid = ngrid,
+        simulation = simulation,
+        mean_c = mean_c,
+        sd_c = sd_c, 
+        median_c = median_c,
+        mad_c = mad_c
+      ))
+    }
+  }
 }
+
+summary_stats <- results_df %>%
+  group_by(n_prior_samples, ngrid) %>%
+  summarise(
+    mean_mean_c = mean(mean_c),
+    sd_mean_c = sd(mean_c),
+    mean_sd_c = mean(sd_c),
+    sd_sd_c = sd(sd_c), 
+    mean_median_c = mean(median_c),
+    sd_median_c = sd(median_c),
+    mean_mad_c = mean(mad_c),
+    sd_mad_c = sd(mad_c)
+  )
+
+# View the summary statistics
+summary_stats
+
+
+
+generate_heatmap_plot <- function(data, x_var, y_var, fill_var, title) {
+  ggplot(data, aes(x = factor({{x_var}}), y = factor({{y_var}}))) +
+    geom_tile(aes(fill = {{fill_var}}), color = "white") +
+    scale_fill_gradient(low = "lightblue", high = "darkblue") +
+    labs(
+      title = title
+      # x = as_label(x_var),
+      # y = as_label(y_var),
+      # fill = as_label(fill_var)
+    ) +
+    theme_minimal()
+}
+
+
+{generate_heatmap_plot(summary_stats, ngrid, n_prior_samples, sd_mean_c, "sd of mean c ) across simulations") +
+generate_heatmap_plot(summary_stats, ngrid, n_prior_samples, sd_sd_c, "sd of sd_c across simulations")} /
+{generate_heatmap_plot(summary_stats, ngrid, n_prior_samples, sd_median_c, "sd of median_c across simulations") +
+generate_heatmap_plot(summary_stats, ngrid, n_prior_samples, sd_mad_c, "sd of mad c across simulations") }
+
+
+
+
+
+
 
 kde_results <- purrr::map(group_posterior_all, ~purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = 100)))
 
