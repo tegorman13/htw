@@ -124,13 +124,13 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
 
 #id1 <- fit_indv(sbj_id=1,simulation_function=full_sim_exam, prior_samples=kde_results$abc_ev$teter_results$kde_samples)
 #unique(dsv$id)
-
+t1=system.time({
 id_fits_exam_varied <- map(unique(dsv$id), ~ fit_indv(sbj_id=.x,
                                           simulation_function=full_sim_exam, 
                                           prior_samples=kde_results$abc_ev, 
                                           Model="EXAM", 
                                           Group="Varied"))
-#names(id_fits_exam_varied) <- unique(dsv$id)
+names(id_fits_exam_varied) <- unique(dsv$id)
   
   
 id_fits_alm_varied <- map(unique(dsv$id), ~ fit_indv(sbj_id=.x,
@@ -138,7 +138,7 @@ id_fits_alm_varied <- map(unique(dsv$id), ~ fit_indv(sbj_id=.x,
                                                 prior_samples=kde_results$abc_almv, 
                                                 Model="ALM", 
                                                 Group="Varied"))  
-
+names(id_fits_alm_varied) <- unique(dsv$id)
 
 
 id_fits_exam_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
@@ -146,7 +146,7 @@ id_fits_exam_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
                                                       prior_samples=kde_results$abc_ec, 
                                                       Model="EXAM", 
                                                       Group="Constant"))
-
+names(id_fits_exam_constant) <- unique(dsc$id)
 
 
 id_fits_alm_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
@@ -154,16 +154,17 @@ id_fits_alm_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
                                                      prior_samples=kde_results$abc_almc, 
                                                      Model="ALM", 
                                                      Group="Constant"))  
+names(id_fits_alm_constant) <- unique(dsc$id)  
   
-
+})
 
 
 # save prior samples in sim instead of full kde results?
 
 runInfo=tibble::lst(kde_results,
                         # data=ds,
-                         functions=tibble::lst(fit_indv,dist_rmse),
-                 runScripts=list(indv_fit_script=readLines(here::here("Model/indv_fit.R")),
+                         functions=tibble::lst(fit_indv,dist_mean_sd),
+                 runScripts=list(indv_fit_script=readLines(here::here("Model/indv_fit_abc_sum.R")),
                                  model_script=readLines(here::here("Functions/fun_model.R")),
                                  alm_script=readLines(here::here("Functions/fun_alm.R"))),
                  path=getwd(),
@@ -175,7 +176,7 @@ runInfo=tibble::lst(kde_results,
 indv_fit_results <- tibble::lst(id_fits_alm_varied,id_fits_exam_varied,id_fits_alm_constant,id_fits_exam_constant, runInfo) 
 
 saveRDS(indv_fit_results,
-        file=here::here(paste0("data/indv_sim/","ind_abc_", n_prior_samples,"_",format(Sys.time(),"%H_%M_%OS"), ".rds")))
+        file=here::here(paste0("data/indv_sim/","ind_abc_ss_", n_prior_samples,"_",format(Sys.time(),"%H_%M_%OS"), ".rds")))
 
 
 
@@ -187,10 +188,10 @@ saveRDS(indv_fit_results,
 # 
 # sim <- full_sim_exam(data=as.data.table(id1), c=.02, lr=2.9, input_layer=input_layer, output_layer=output_layer, return_dat = return_dat)
 # id1p<- id1 |> mutate(pred=sim1, resid=y-pred)
-test1 <- id1 |> filter(expMode2=="Test") 
-sd(test1$y)
-id1 |> filter(expMode2=="Test") |> group_by(x) |> summarise(m=mean(y),sd=sd(y),n=n())
-id1 |> filter(expMode2=="Train") |> group_by(x) |> summarise(m=mean(y),sd=sd(y),n=n()) |> ungroup() |> summarise(m=mean(m), sd=mean(sd))
+# test1 <- id1 |> filter(expMode2=="Test") 
+# sd(test1$y)
+# id1 |> filter(expMode2=="Test") |> group_by(x) |> summarise(m=mean(y),sd=sd(y),n=n())
+# id1 |> filter(expMode2=="Train") |> group_by(x) |> summarise(m=mean(y),sd=sd(y),n=n()) |> ungroup() |> summarise(m=mean(m), sd=mean(sd))
  
 
 
