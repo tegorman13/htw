@@ -17,7 +17,7 @@ tr <- group_posterior_all |> map_dfr(~tibble(pluck(.x$tr_results)))
 
 
 # kernel density estimate of group posteriors
-n_prior_samples=1000; ngrid=100; buf = .25
+n_prior_samples=1000; ngrid=100; buf = 5.0
 kde_results <- purrr::map(group_posterior_all, ~
                             purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = ngrid, nsamples=n_prior_samples, lim_buffer=buf)))
 
@@ -170,7 +170,7 @@ runInfo=tibble::lst(kde_results,
                  path=getwd(),
                  Computer=Sys.info()["nodename"],
                  systemInfo=Sys.info(),
-                 sessionInfo=sessionInfo(),timeInit=Sys.time())
+                 sessionInfo=sessionInfo(),timeInit=Sys.time(), runtime=t1[3])
 
 
 indv_fit_results <- tibble::lst(id_fits_alm_varied,id_fits_exam_varied,id_fits_alm_constant,id_fits_exam_constant, runInfo) 
@@ -180,7 +180,7 @@ saveRDS(indv_fit_results,
 
 
 
-
+ 
 
 # id1 <- ds |> filter(id==1) 
 # Model="EXAM"; Group="Varied"

@@ -1,8 +1,5 @@
 
 
-
-
-
 ```{r}
 
 pacman::p_load(tidyverse, data.table, here, patchwork, conflicted)
@@ -19,7 +16,6 @@ ind_ds <- ds |>
   summarise(y = mean(y), .groups = "keep") 
 
 
-
 tMax=84
 avg_dsv <- ds |> filter(condit=="Varied",expMode2=="Train") |> group_by(tr) %>%
   mutate(bandInt2 = sample(rep(c(800, 1000, 1200), each = tMax / 3), tMax, replace = FALSE)[tr]) %>%
@@ -33,20 +29,6 @@ avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_
           summarise(y=mean(y),tr=1,.groups="keep") ) |> 
   setDT()
 
-# load group level abc posterior - posterior parameters and predicted data for each combo of condit, Fit_Method, and Model
-group_posterior_all <- readRDS(here::here("data/abc_2M_rmse_p001.rds"))  
-
-Model_Names <- list("EXAM", "Alt_EXAM", "ALM")
-Fit_Methods <- list("Test & Train", "Test Only","Train Only")
-condits <- list("Constant", "Varied")
-
-
-# posteriors for each Fit_Method 
-teter <- group_posterior_all |> map_dfr(~tibble(pluck(.x$teter_results))) 
-te <- group_posterior_all |> map_dfr(~tibble(pluck(.x$te_results))) 
-tr <- group_posterior_all |> map_dfr(~tibble(pluck(.x$tr_results))) 
-
-
 
 ```
 
@@ -55,7 +37,13 @@ tr <- group_posterior_all |> map_dfr(~tibble(pluck(.x$tr_results)))
 
 ```{r}
 
-ind_abc_s500_ng300_buf5 <- readRDS("~/Library/CloudStorage/GoogleDrive-tegorman13@gmail.com/My Drive/HTW/gl/data/indv_sim/ind_abc_s500_ng300_buf5.rds")
+# ind_abc_s500_ng300_buf5 <- readRDS("~/Library/CloudStorage/GoogleDrive-tegorman13@gmail.com/My Drive/HTW/gl/data/indv_sim/ind_abc_s500_ng300_buf5.rds")
+
+ind_abc_ss_1000_13_56_52 <- readRDS("~/Library/CloudStorage/GoogleDrive-tegorman13@gmail.com/My Drive/HTW/gl/data/indv_sim/ind_abc_ss_1000_13_56_52.rds")
+
+
+abc_ev <- ind_abc_ss_1000_13_56_52$id_fits_exam_varied |>
+  map_dfr(~tibble(pluck(.x$teter_results)),.id = "id") |> filter(id %in% c(1,2)) |> select(sim_dat) |> unnest(sim_dat) |> filter(rank==1)
 
 
 
