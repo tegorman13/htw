@@ -1,50 +1,144 @@
 #
 #
 #
-#
-#
-#
 
 pacman::p_load(tidyverse, data.table, here, patchwork, conflicted)
 conflict_prefer_all("dplyr", quiet = TRUE)
 
-
 walk(c("fun_alm","fun_model", "Display_Functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
-dsv <- ds |> filter(condit=="Varied")  
-dsc <- ds |> filter(condit=="Constant") 
-ind_ds <- ds |> 
-  filter(expMode2 == "Test") |> 
-  group_by(id, condit, x, expMode2) |> 
-  summarise(y = mean(y), .groups = "keep") 
+ids <- c(1,2,4,5,6,7,8, 10,11,12,13)
+ids2 <- c(1,66,141,142,36,57,81)
+ids3 <- c(20,71,101,4,76,192)
+
+
+#
+#
+#
+#
+#
+ind_fits <- readRDS("~/Library/CloudStorage/GoogleDrive-tegorman13@gmail.com/My Drive/HTW/gl/data/indv_sim/ind_abc_ss_1000_ng100_bufp55.rds")
+ind_fits <- ind_fits |> list_assign(runInfo = zap())
+
+# names(ind_fits)
+# names(ind_fits$id_fits_alm_varied)
+# names(ind_fits$id_fits_alm_varied[[1]])
+
+teter_results_df <- imap_dfr(ind_fits, ~imap_dfr(.x, ~.x[["teter_results"]] ,.id="id"))
+
+
+combined_results_df <- imap_dfr(ind_fits, ~imap_dfr(.x, ~{
+  teter_data <- .x[["teter_results"]] %>% mutate(result_type = "teter_results")
+  te_data <- .x[["te_results"]] %>% mutate(result_type = "te_results")
+  tr_data <- .x[["tr_results"]] %>% mutate(result_type = "tr_results")
+  combined_data <- bind_rows(teter_data, te_data, tr_data)
+}, .id = "id"))
+
+
+id1 <- combined_results_df |> filter(id %in% ids2) 
+names(id1)
+typeof(id1$sim_dat)
+str(id1$sim_dat[[1]])
+# sim_dat is a list dataframe. Add the value of rank into sim_dat
+id1 <- id1 |> rowwise() |> mutate(sim_dat = map2(sim_dat, rank, ~mutate(.x, rank = .y)))
 
 
 
-tMax=84
-avg_dsv <- ds |> filter(condit=="Varied",expMode2=="Train") |> group_by(tr) %>%
-  mutate(bandInt2 = sample(rep(c(800, 1000, 1200), each = tMax / 3), tMax, replace = FALSE)[tr]) %>%
-  filter(bandInt2 == x) |> select(-bandInt2) |> group_by(tr,condit,x,expMode2) |> summarise(y=mean(y),.groups="keep") |>
-  rbind(dsv |> filter(expMode2=="Test") |> group_by(condit,x,expMode2) |> summarise(y=mean(y),tr=1,.groups="keep") ) |> setDT()
+id1 <- id1 %>%
+  rowwise() %>%
+  mutate(
+    sim_dat = list(map2(
+      sim_dat, rank, 
+      ~ if (is.data.frame(.x)) {
+        mutate(.x, rank = .y)
+      } else {
+        .x
+      }
+    ))
+  ) %>%
+  ungroup()
 
-avg_dsc <- ds |> filter(condit=="Constant",expMode2=="Train",tr<=tMax) |> group_by(tr, condit,x,expMode2) |> 
-  summarise(y=mean(y),.groups="keep") |> 
-  rbind(dsc |> filter(expMode2=="Test") |> 
-          group_by(condit,x,expMode2) |> 
-          summarise(y=mean(y),tr=1,.groups="keep") ) |> 
-  setDT()
+#
+#
+#
+#
+#
 
-# load group level abc posterior - posterior parameters and predicted data for each combo of condit, Fit_Method, and Model
-group_posterior_all <- readRDS(here::here("data/abc_2M_rmse_p001.rds"))  
+plt_c_gi <- combined_results_df |> 
+  ggplot(aes(x=c)) + geom_density(aes(fill=Group), alpha=.5) + 
+  facet_wrap(Fit_Method~Model,scales="free",ncol=2) + 
+  theme_bw() + theme(legend.position = "bottom") + labs(title = "Posterior distribution of c") 
 
-Model_Names <- list("EXAM", "Alt_EXAM", "ALM")
-Fit_Methods <- list("Test & Train", "Test Only","Train Only")
-condits <- list("Constant", "Varied")
+plt_lr_gi <- combined_results_df |> 
+  ggplot(aes(x=lr)) + geom_density(aes(fill=Group), alpha=.5) + 
+  facet_wrap(Fit_Method~Model,scales="free",ncol=2) + 
+  theme_bw() + theme(legend.position = "bottom") + labs(title = "Posterior distribution of lr") 
+
+plt_c_gi + plt_lr_gi
+
+#
+#
+#
+#
+#
+
+post_dat <- combined_results_df |> filter(id %in% (c(ids2,ids3)), rank<=1) |> 
+  select(sim_dat) |> unnest(sim_dat) |> filter(expMode2=="Test") |>
+  mutate(facet_label = paste0("Model: ", Model, "\n", "Fit: ", Fit_Method, "\n", "c: ", round(c, 4), "\n", "lr: ", round(lr, 4)))
+
+post_dat |> filter(id %in% ids2) |> ggplot(aes(x = x, y = y, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  stat_halfeye(aes(x=x,y=pred,color=condit),position=position_dodge()) +
+  ggh4x::facet_nested_wrap(id~facet_label, ncol=6, scales="free") + labs(title = "Average of posterior predictive distributions")
 
 
-# posteriors for each Fit_Method 
-teter <- group_posterior_all |> map_dfr(~tibble(pluck(.x$teter_results))) 
-te <- group_posterior_all |> map_dfr(~tibble(pluck(.x$te_results))) 
-tr <- group_posterior_all |> map_dfr(~tibble(pluck(.x$tr_results))) 
+post_dat |> filter(id %in% ids3) |> ggplot(aes(x = x, y = y, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  stat_halfeye(aes(x=x,y=pred,color=condit),position=position_dodge()) +
+  ggh4x::facet_nested_wrap(id~facet_label, ncol=6, scales="free") + labs(title = "Average of posterior predictive distributions")
+
+
+#
+#
+#
+#
+#
+
+
+
+
+post_ev <- ind_fits$id_fits_exam_varied |> 
+  map_dfr(~tibble(pluck(.x$teter_results)),.id = "id") |> 
+  filter(id %in% c(13)) |> 
+  filter(rank==1) |> 
+  select(sim_dat) |> unnest(sim_dat) 
+
+
+post_ev |> filter(expMode2=="Test") |> 
+  ggploat(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  #stat_summary(fun=mean, geom="point", aes(x=x,y=y,color=condit), position=position_dodge()) +
+  stat_halfeye(aes(x=x,y=y,color=condit),position=position_dodge()) +
+  ggh4x::facet_nested_wrap(~id) + labs(title = "Average of posterior predictive distributions")  
+
+
+
+post_alm <- ind_fits$id_fits_alm_varied |> 
+  map_dfr(~tibble(pluck(.x$teter_results)),.id = "id") |> 
+  filter(id %in% c(1,2,4,5,6,7,8, 10,11,12,13)) |> 
+  filter(rank<10) |> 
+  select(sim_dat) |> unnest(sim_dat) 
+
+post_alm |> filter(expMode2=="Test") |> 
+  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  #stat_summary(fun=mean, geom="point", aes(x=x,y=y,color=condit), position=position_dodge()) +
+  stat_halfeye(aes(x=x,y=y,color=condit),position=position_dodge()) +
+  ggh4x::facet_nested_wrap(~id) + labs(title = "Average of posterior predictive distributions")  
 
 
 
@@ -54,32 +148,54 @@ tr <- group_posterior_all |> map_dfr(~tibble(pluck(.x$tr_results)))
 #
 #
 #
+#
+#| eval: false
+# ind_abc_s500_ng300_buf5 <- readRDS("~/Library/CloudStorage/GoogleDrive-tegorman13@gmail.com/My Drive/HTW/gl/data/indv_sim/ind_abc_s500_ng300_buf5.rds")
 
-sample_from_kde <- function(kde_result, n_samples) {
-  # Flatten the z matrix and sample indices based on these probabilities
-  sampled_indices <- sample(length(kde_result$z), size = n_samples, replace = TRUE, prob = c(kde_result$z))
-  
-  # Convert indices to matrix row and column numbers
-  rows <- ((sampled_indices - 1) %% nrow(kde_result$z)) + 1
-  cols <- ((sampled_indices - 1) %/% nrow(kde_result$z)) + 1
-  
-  # Map back to x and y values and create a tibble
-  samples <- tibble(c = kde_result$x[rows], lr = kde_result$y[cols])
-  return(samples)
-}
+ind_abc_ss_1000_13_56_52 <- readRDS("~/Library/CloudStorage/GoogleDrive-tegorman13@gmail.com/My Drive/HTW/gl/data/indv_sim/ind_abc_ss_1000_13_56_52.rds")
 
-compute_kde <- function(c, lr, ngrid = 100, nsamples = 500) {
-  kde=MASS::kde2d(c, lr, n = ngrid)
-  kde_samples=sample_from_kde(kde, nsamples)
-  return(list(kde=kde, kde_samples=kde_samples))
-}
 
-kde_results <- purrr::map(group_posterior_all, ~purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = 100, nsamples=1000)))
+abc_ev <- ind_abc_ss_1000_13_56_52$id_fits_exam_varied |>
+  map_dfr(~tibble(pluck(.x$teter_results)),.id = "id") |> filter(id %in% c(1,2)) |> select(sim_dat) |> unnest(sim_dat) |> filter(rank==1)
 
 
 
+abc_ev <- ind_abc_s500_ng300_buf5$id_fits_exam_varied |>
+  map_dfr(~tibble(pluck(.x$teter_results)),.id = "id") |> filter(id %in% c(1,2)) |>
+  map(sim_dat)
 
 
+abc_ev <- ind_abc_s500_ng300_buf5$id_fits_exam_varied |>
+  map_dfr(~tibble(pluck(.x$teter_results)),.id = "id") |> filter(id %in% c(1,2)) |> select(sim_dat) |>
+  pluck("sim_dat")
+
+
+abc_ev <- ind_abc_s500_ng300_buf5$id_fits_exam_varied |>
+  map_dfr(~tibble(pluck(.x$teter_results)),.id = "id") |> filter(id %in% c(1,2)) |> select(sim_dat) |> unnest(sim_dat) |> filter(rank==1) |>
+  mutate(pred=pred[[1]])
+  #mutate(pred=unnest(pred)$...195,resid=unnest(resid)$...195 )
+
+abc_ev |> filter(expMode2=="Test") |> 
+  ggplot(aes(x = x, y = pred, fill=condit)) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75) +
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()) +
+  #stat_summary(fun=mean, geom="point", aes(x=x,y=y,color=condit), position=position_dodge()) +
+  stat_halfeye(aes(x=x,y=y,color=condit),position=position_dodge()) +
+  ggh4x::facet_nested_wrap(~id) + labs(title = "Average of posterior predictive distributions")  
+
+colnames(abc_ev)
+k=abc_ev["pred"]
+names(k)
+
+
+abc_ev <- id_fits_exam_varied |>
+  map_dfr(~tibble(pluck(.x$teter_results)),.id = "id") |> filter(id %in% c(1,2)) |> select(sim_dat) |> unnest(sim_dat)
+
+
+#
+#
+#
+#
 #
 #
 #
