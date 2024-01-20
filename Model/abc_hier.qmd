@@ -1,23 +1,29 @@
 
 
+
+
 ```{r}
 
-pacman::p_load(tidyverse, data.table, here, patchwork, conflicted)
+pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted)
 conflict_prefer_all("dplyr", quiet = TRUE)
 
-walk(c("fun_alm","fun_model", "Display_Functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+walk(c("Display_Functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 ids <- c(1,2,4,5,6,7,8, 10,11,12,13)
 ids2 <- c(1,66,141,142,36,57,81)
 ids3 <- c(20,71,101,4,76,192)
 
 
+source(here::here("Functions/fun_indv_fit.R"))
+
 ```
 
 
 
 ```{r fig.width=11, fig.height=10}
-ind_fits <- readRDS("~/Library/CloudStorage/GoogleDrive-tegorman13@gmail.com/My Drive/HTW/gl/data/indv_sim/ind_abc_ss_1000_ng100_bufp55.rds")
+
+
+ind_fits <- here::here(readRDS("data/ind_abc_ss_1000_ng100_bufp55"))
 ind_fits <- ind_fits |> list_assign(runInfo = zap())
 
 # names(ind_fits)

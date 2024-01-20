@@ -81,6 +81,7 @@ datasummary(mpg + hp ~ Mean + SD + Heading("Boxplot") * emptycol + Heading("Hist
 
 tmp_list <- lapply(test |> ungroup() |> select(vx,vb,condit), na.omit)
 # scale only numeric columns - not all are numeric so can't just lapply
+
 tmp_list <- map(tmp_list, ~if(is.numeric(.x)) scale(.x) else .x)
 
 ts=test |> ungroup() |> select(vx,vb,condit) |> mutate(vxScale=scale(vx)[,1])
