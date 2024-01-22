@@ -9,6 +9,11 @@ mutate <- dplyr::mutate
 filter <- dplyr::filter
 map <- purrr::map
 
+stat_bar <- list(stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75),
+  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()))
+
+
+
 #### Bayesian/Brms functions
 
 

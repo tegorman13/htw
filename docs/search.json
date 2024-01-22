@@ -1518,5 +1518,250 @@
     "crumbs": [
       "HTW Project"
     ]
+  },
+  {
+    "objectID": "ind_abc_ss_1500_ng100_buf10.html",
+    "href": "ind_abc_ss_1500_ng100_buf10.html",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "",
+    "text": "Codepacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr)\nconflict_prefer_all(\"dplyr\", quiet = TRUE)\n\nwalk(c(\"Display_Functions\"), ~ source(here::here(paste0(\"Functions/\", .x, \".R\"))))\nds &lt;- readRDS(here::here(\"data/e1_md_11-06-23.rds\"))  |&gt; as.data.table()\nids &lt;- c(1,2,4,5,6,7,8, 10,11,12,13)\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\nsource(here::here(\"Functions/fun_indv_fit.R\"))\n\n#raw_name &lt;- tools::file_path_sans_ext(basename(params$file_name))\nCodeind_fits &lt;- readRDS(here::here(params$file_name))\n\n\nind_fits_df &lt;- imap_dfr(ind_fits |&gt; list_assign(runInfo = zap()), ~imap_dfr(.x, ~{\n  teter_data &lt;- .x[[\"teter_results\"]] %&gt;% mutate(result_type = \"teter_results\")\n  te_data &lt;- .x[[\"te_results\"]] %&gt;% mutate(result_type = \"te_results\")\n  tr_data &lt;- .x[[\"tr_results\"]] %&gt;% mutate(result_type = \"tr_results\")\n  combined_data &lt;- bind_rows(teter_data, te_data, tr_data)\n}, .id = \"id\"))\n\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\n#head(ind_fits$runInfo$systemInfo)\n\npost_dat &lt;- ind_fits_df |&gt; select(sim_dat,rank) |&gt; unnest(sim_dat) |&gt; as.data.table()\npost_dat_l &lt;- setorder(melt(setcolorder(post_dat[expMode2 == \"Test\"][, `:=`(avg_y = mean(y)), \n        by = .(id, condit, x)], c(\"id\", \"condit\", \"Model\", \"Fit_Method\", \n    \"expMode2\", \"tr\", \"rank\", \"c\", \"lr\", \"x\", \"y\", \"avg_y\", \"pred\", \n    \"resid\")), measure.vars = c(\"pred\", \"y\"), variable.name = \"Resp\", \n        value.name = \"val\", variable.factor = FALSE)[, `:=`(Resp = fcase(Resp == \n        \"y\", \"Observed\", Model == \"ALM\", \"ALM\", Model == \"EXAM\", \n        \"EXAM\")), by = .(id, condit, x)], tr, id, Resp, na.last = TRUE)\n\n#summary(params$data)"
+  },
+  {
+    "objectID": "ind_abc_ss_1500_ng100_buf10.html#posterior-average",
+    "href": "ind_abc_ss_1500_ng100_buf10.html#posterior-average",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "Posterior Average",
+    "text": "Posterior Average\n\nCodepost_tabs &lt;- abc_tables(post_dat_l)\n\npost_tabs$et_sum |&gt; gt::gt()\n\n\n\n\n\nFit_Method\nAvg_ALM_error\nAvg_EXAM_error\nN_Best_ALM\nN_Best_EXAM\nBest_Model\n\n\n\nConstant\n\n\nTest\n134.5977\n162.8104\n58\n22\nALM\n\n\nTest & Train\n150.2437\n183.7978\n56\n24\nALM\n\n\nTrain\n570.1425\n203.4103\n0\n80\nEXAM\n\n\nVaried\n\n\nTest\n210.4411\n155.5774\n27\n49\nEXAM\n\n\nTest & Train\n402.8701\n140.0627\n4\n72\nEXAM\n\n\nTrain\n483.6980\n327.5014\n17\n59\nEXAM\n\n\n\n\n\nCodepost_tabs$et_sum_x |&gt; gt::gt()\n\n\n\n\n\nALM_error\nEXAM_error\nBest_Model\n\n\n\nConstant - Test - 100\n\n\n219.06052\n303.098786\nALM\n\n\nConstant - Test - 350\n\n\n84.04611\n198.066399\nALM\n\n\nConstant - Test - 600\n\n\n27.59654\n68.863557\nALM\n\n\nConstant - Test - 800\n\n\n257.39201\n108.510660\nEXAM\n\n\nConstant - Test - 1000\n\n\n423.85773\n83.794649\nEXAM\n\n\nConstant - Test - 1200\n\n\n539.53860\n20.472618\nEXAM\n\n\nConstant - Test & Train - 100\n\n\n60.76094\n350.942891\nALM\n\n\nConstant - Test & Train - 350\n\n\n30.28210\n229.314526\nALM\n\n\nConstant - Test & Train - 600\n\n\n26.88423\n83.909305\nALM\n\n\nConstant - Test & Train - 800\n\n\n216.40651\n107.435615\nEXAM\n\n\nConstant - Test & Train - 1000\n\n\n423.67175\n69.164149\nEXAM\n\n\nConstant - Test & Train - 1200\n\n\n553.78404\n10.285588\nEXAM\n\n\nConstant - Train - 100\n\n\n421.14736\n358.927098\nEXAM\n\n\nConstant - Train - 350\n\n\n516.58215\n236.732653\nEXAM\n\n\nConstant - Train - 600\n\n\n582.59805\n90.724596\nEXAM\n\n\nConstant - Train - 800\n\n\n114.03286\n112.262718\nEXAM\n\n\nConstant - Train - 1000\n\n\n978.42060\n76.066172\nEXAM\n\n\nConstant - Train - 1200\n\n\n1137.01484\n14.194072\nEXAM\n\n\nVaried - Test - 100\n\n\n11.17567\n117.871009\nALM\n\n\nVaried - Test - 350\n\n\n89.35700\n23.392924\nEXAM\n\n\nVaried - Test - 600\n\n\n192.32712\n73.159957\nEXAM\n\n\nVaried - Test - 800\n\n\n284.79786\n252.067267\nEXAM\n\n\nVaried - Test - 1000\n\n\n395.25418\n355.140024\nEXAM\n\n\nVaried - Test - 1200\n\n\n459.53117\n417.113471\nEXAM\n\n\nVaried - Test & Train - 100\n\n\n389.90825\n72.418818\nEXAM\n\n\nVaried - Test & Train - 350\n\n\n492.10612\n2.471423\nEXAM\n\n\nVaried - Test & Train - 600\n\n\n487.62426\n67.896491\nEXAM\n\n\nVaried - Test & Train - 800\n\n\n173.47826\n227.332872\nALM\n\n\nVaried - Test & Train - 1000\n\n\n260.60610\n309.092456\nALM\n\n\nVaried - Test & Train - 1200\n\n\n329.12251\n363.771313\nALM\n\n\nVaried - Train - 100\n\n\n492.89185\n43.083107\nEXAM\n\n\nVaried - Train - 350\n\n\n594.06460\n9.334268\nEXAM\n\n\nVaried - Train - 600\n\n\n644.74434\n33.833973\nEXAM\n\n\nVaried - Train - 800\n\n\n164.97477\n170.007219\nALM\n\n\nVaried - Train - 1000\n\n\n229.72715\n230.344177\nALM\n\n\nVaried - Train - 1200\n\n\n302.92230\n304.611488\nALM"
+  },
+  {
+    "objectID": "ind_abc_ss_1500_ng100_buf10.html#distributions",
+    "href": "ind_abc_ss_1500_ng100_buf10.html#distributions",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "Distributions",
+    "text": "Distributions\n\nCodeplot_sampled_posterior(ind_fits)\n\n\n\n\n\n\nCodeplot_indv_posterior(ind_fits_df)"
+  },
+  {
+    "objectID": "ind_abc_ss_1500_ng100_buf10.html#posterior-predictive",
+    "href": "ind_abc_ss_1500_ng100_buf10.html#posterior-predictive",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "Posterior Predictive",
+    "text": "Posterior Predictive\n\nCodegroup_predictive_plots(post_dat_l)\n\n\n\n\n\n\nCodegroup_best_plots(post_dat_l)"
+  },
+  {
+    "objectID": "ind_abc_ss_1500_ng100_buf10.html#individual-plots",
+    "href": "ind_abc_ss_1500_ng100_buf10.html#individual-plots",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "Individual Plots",
+    "text": "Individual Plots\n\nCodeindv_best_plots(post_dat_l)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, ids2)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, idsBad)"
+  },
+  {
+    "objectID": "ind_abc_ss_1500_ng75_buf20.html",
+    "href": "ind_abc_ss_1500_ng75_buf20.html",
+    "title": "ind_abc_ss_1500_ng75_buf20.rdsPlots",
+    "section": "",
+    "text": "Codepacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr)\nconflict_prefer_all(\"dplyr\", quiet = TRUE)\n\nwalk(c(\"Display_Functions\"), ~ source(here::here(paste0(\"Functions/\", .x, \".R\"))))\nds &lt;- readRDS(here::here(\"data/e1_md_11-06-23.rds\"))  |&gt; as.data.table()\nids &lt;- c(1,2,4,5,6,7,8, 10,11,12,13)\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\nsource(here::here(\"Functions/fun_indv_fit.R\"))\n\n#raw_name &lt;- tools::file_path_sans_ext(basename(params$file_name))\nCodeind_fits &lt;- readRDS(here::here(params$file_name))\n\n\nind_fits_df &lt;- imap_dfr(ind_fits |&gt; list_assign(runInfo = zap()), ~imap_dfr(.x, ~{\n  teter_data &lt;- .x[[\"teter_results\"]] %&gt;% mutate(result_type = \"teter_results\")\n  te_data &lt;- .x[[\"te_results\"]] %&gt;% mutate(result_type = \"te_results\")\n  tr_data &lt;- .x[[\"tr_results\"]] %&gt;% mutate(result_type = \"tr_results\")\n  combined_data &lt;- bind_rows(teter_data, te_data, tr_data)\n}, .id = \"id\"))\n\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\n#head(ind_fits$runInfo$systemInfo)\n\npost_dat &lt;- ind_fits_df |&gt; select(sim_dat,rank) |&gt; unnest(sim_dat) |&gt; as.data.table()\npost_dat_l &lt;- setorder(melt(setcolorder(post_dat[expMode2 == \"Test\"][, `:=`(avg_y = mean(y)), \n        by = .(id, condit, x)], c(\"id\", \"condit\", \"Model\", \"Fit_Method\", \n    \"expMode2\", \"tr\", \"rank\", \"c\", \"lr\", \"x\", \"y\", \"avg_y\", \"pred\", \n    \"resid\")), measure.vars = c(\"pred\", \"y\"), variable.name = \"Resp\", \n        value.name = \"val\", variable.factor = FALSE)[, `:=`(Resp = fcase(Resp == \n        \"y\", \"Observed\", Model == \"ALM\", \"ALM\", Model == \"EXAM\", \n        \"EXAM\")), by = .(id, condit, x)], tr, id, Resp, na.last = TRUE)\n\n#summary(params$data)"
+  },
+  {
+    "objectID": "ind_abc_ss_1500_ng75_buf20.html#posterior-average",
+    "href": "ind_abc_ss_1500_ng75_buf20.html#posterior-average",
+    "title": "ind_abc_ss_1500_ng75_buf20.rdsPlots",
+    "section": "Posterior Average",
+    "text": "Posterior Average\n\nCodepost_tabs &lt;- abc_tables(post_dat_l)\n\npost_tabs$et_sum |&gt; gt::gt()\n\n\n\n\n\nFit_Method\nAvg_ALM_error\nAvg_EXAM_error\nN_Best_ALM\nN_Best_EXAM\nBest_Model\n\n\n\nConstant\n\n\nTest\n168.1980\n171.4806\n49\n31\nALM\n\n\nTest & Train\n174.8237\n190.2782\n48\n32\nALM\n\n\nTrain\n558.7709\n216.1327\n1\n79\nEXAM\n\n\nVaried\n\n\nTest\n263.7622\n186.7572\n27\n49\nEXAM\n\n\nTest & Train\n374.4079\n181.8921\n6\n70\nEXAM\n\n\nTrain\n536.4614\n351.5398\n23\n53\nEXAM\n\n\n\n\n\nCodepost_tabs$et_sum_x |&gt; gt::gt()\n\n\n\n\n\nALM_error\nEXAM_error\nBest_Model\n\n\n\nConstant - Test - 100\n\n\n151.582095\n272.18320\nALM\n\n\nConstant - Test - 350\n\n\n17.093597\n187.43780\nALM\n\n\nConstant - Test - 600\n\n\n94.535375\n78.89697\nEXAM\n\n\nConstant - Test - 800\n\n\n324.681964\n134.64585\nEXAM\n\n\nConstant - Test - 1000\n\n\n490.797712\n123.51852\nEXAM\n\n\nConstant - Test - 1200\n\n\n606.695577\n76.62934\nEXAM\n\n\nConstant - Test & Train - 100\n\n\n130.846356\n316.35007\nALM\n\n\nConstant - Test & Train - 350\n\n\n4.607429\n213.19503\nALM\n\n\nConstant - Test & Train - 600\n\n\n84.816684\n86.28620\nALM\n\n\nConstant - Test & Train - 800\n\n\n313.781705\n124.46347\nEXAM\n\n\nConstant - Test & Train - 1000\n\n\n481.951799\n102.06597\nEXAM\n\n\nConstant - Test & Train - 1200\n\n\n629.756447\n39.75157\nEXAM\n\n\nConstant - Train - 100\n\n\n402.029068\n334.97836\nEXAM\n\n\nConstant - Train - 350\n\n\n533.876995\n230.66796\nEXAM\n\n\nConstant - Train - 600\n\n\n555.849845\n102.35474\nEXAM\n\n\nConstant - Train - 800\n\n\n129.556354\n137.97834\nALM\n\n\nConstant - Train - 1000\n\n\n949.739480\n114.98459\nEXAM\n\n\nConstant - Train - 1200\n\n\n1095.653629\n46.73143\nEXAM\n\n\nVaried - Test - 100\n\n\n30.374132\n65.28192\nALM\n\n\nVaried - Test - 350\n\n\n137.009878\n42.31958\nEXAM\n\n\nVaried - Test - 600\n\n\n245.337320\n153.24671\nEXAM\n\n\nVaried - Test - 800\n\n\n375.696138\n345.57895\nEXAM\n\n\nVaried - Test - 1000\n\n\n497.674563\n463.61153\nEXAM\n\n\nVaried - Test - 1200\n\n\n576.623965\n522.41290\nEXAM\n\n\nVaried - Test & Train - 100\n\n\n266.851250\n43.93964\nEXAM\n\n\nVaried - Test & Train - 350\n\n\n374.159473\n25.94535\nEXAM\n\n\nVaried - Test & Train - 600\n\n\n481.544844\n93.41177\nEXAM\n\n\nVaried - Test & Train - 800\n\n\n262.917479\n251.71768\nEXAM\n\n\nVaried - Test & Train - 1000\n\n\n356.027945\n332.40472\nEXAM\n\n\nVaried - Test & Train - 1200\n\n\n423.751502\n407.35414\nEXAM\n\n\nVaried - Train - 100\n\n\n537.872800\n92.83884\nEXAM\n\n\nVaried - Train - 350\n\n\n641.006292\n38.96171\nEXAM\n\n\nVaried - Train - 600\n\n\n749.574061\n26.95012\nEXAM\n\n\nVaried - Train - 800\n\n\n177.929675\n180.35443\nALM\n\n\nVaried - Train - 1000\n\n\n256.550769\n259.85540\nALM\n\n\nVaried - Train - 1200\n\n\n323.380548\n324.54905\nALM"
+  },
+  {
+    "objectID": "ind_abc_ss_1500_ng75_buf20.html#distributions",
+    "href": "ind_abc_ss_1500_ng75_buf20.html#distributions",
+    "title": "ind_abc_ss_1500_ng75_buf20.rdsPlots",
+    "section": "Distributions",
+    "text": "Distributions\n\nCodeplot_sampled_posterior(ind_fits)\n\n\n\n\n\n\nCodeplot_indv_posterior(ind_fits_df)"
+  },
+  {
+    "objectID": "ind_abc_ss_1500_ng75_buf20.html#posterior-predictive",
+    "href": "ind_abc_ss_1500_ng75_buf20.html#posterior-predictive",
+    "title": "ind_abc_ss_1500_ng75_buf20.rdsPlots",
+    "section": "Posterior Predictive",
+    "text": "Posterior Predictive\n\nCodegroup_predictive_plots(post_dat_l)\n\n\n\n\n\n\nCodegroup_best_plots(post_dat_l)"
+  },
+  {
+    "objectID": "ind_abc_ss_1500_ng75_buf20.html#individual-plots",
+    "href": "ind_abc_ss_1500_ng75_buf20.html#individual-plots",
+    "title": "ind_abc_ss_1500_ng75_buf20.rdsPlots",
+    "section": "Individual Plots",
+    "text": "Individual Plots\n\nCodeindv_best_plots(post_dat_l)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, ids2)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, idsBad)"
+  },
+  {
+    "objectID": "ind_abc_ss_1600_g150_bufp25.html",
+    "href": "ind_abc_ss_1600_g150_bufp25.html",
+    "title": "ind_abc_ss_1600_g150_bufp25.rdsPlots",
+    "section": "",
+    "text": "Codepacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr)\nconflict_prefer_all(\"dplyr\", quiet = TRUE)\n\nwalk(c(\"Display_Functions\"), ~ source(here::here(paste0(\"Functions/\", .x, \".R\"))))\nds &lt;- readRDS(here::here(\"data/e1_md_11-06-23.rds\"))  |&gt; as.data.table()\nids &lt;- c(1,2,4,5,6,7,8, 10,11,12,13)\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\nsource(here::here(\"Functions/fun_indv_fit.R\"))\n\n#raw_name &lt;- tools::file_path_sans_ext(basename(params$file_name))\nCodeind_fits &lt;- readRDS(here::here(params$file_name))\n\n\nind_fits_df &lt;- imap_dfr(ind_fits |&gt; list_assign(runInfo = zap()), ~imap_dfr(.x, ~{\n  teter_data &lt;- .x[[\"teter_results\"]] %&gt;% mutate(result_type = \"teter_results\")\n  te_data &lt;- .x[[\"te_results\"]] %&gt;% mutate(result_type = \"te_results\")\n  tr_data &lt;- .x[[\"tr_results\"]] %&gt;% mutate(result_type = \"tr_results\")\n  combined_data &lt;- bind_rows(teter_data, te_data, tr_data)\n}, .id = \"id\"))\n\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\n#head(ind_fits$runInfo$systemInfo)\n\npost_dat &lt;- ind_fits_df |&gt; select(sim_dat,rank) |&gt; unnest(sim_dat) |&gt; as.data.table()\npost_dat_l &lt;- setorder(melt(setcolorder(post_dat[expMode2 == \"Test\"][, `:=`(avg_y = mean(y)), \n        by = .(id, condit, x)], c(\"id\", \"condit\", \"Model\", \"Fit_Method\", \n    \"expMode2\", \"tr\", \"rank\", \"c\", \"lr\", \"x\", \"y\", \"avg_y\", \"pred\", \n    \"resid\")), measure.vars = c(\"pred\", \"y\"), variable.name = \"Resp\", \n        value.name = \"val\", variable.factor = FALSE)[, `:=`(Resp = fcase(Resp == \n        \"y\", \"Observed\", Model == \"ALM\", \"ALM\", Model == \"EXAM\", \n        \"EXAM\")), by = .(id, condit, x)], tr, id, Resp, na.last = TRUE)\n\n#summary(params$data)"
+  },
+  {
+    "objectID": "ind_abc_ss_1600_g150_bufp25.html#posterior-average",
+    "href": "ind_abc_ss_1600_g150_bufp25.html#posterior-average",
+    "title": "ind_abc_ss_1600_g150_bufp25.rdsPlots",
+    "section": "Posterior Average",
+    "text": "Posterior Average\n\nCodepost_tabs &lt;- abc_tables(post_dat_l)\n\npost_tabs$et_sum |&gt; gt::gt()\n\n\n\n\n\nFit_Method\nAvg_ALM_error\nAvg_EXAM_error\nN_Best_ALM\nN_Best_EXAM\nBest_Model\n\n\n\nConstant\n\n\nTest\n532.2910\n176.9375\n0\n80\nEXAM\n\n\nTest & Train\n320.7372\n183.4471\n19\n61\nEXAM\n\n\nTrain\n596.7293\n202.2844\n0\n80\nEXAM\n\n\nVaried\n\n\nTest\n504.9179\n175.9479\n2\n74\nEXAM\n\n\nTest & Train\n499.4877\n140.7354\n1\n75\nEXAM\n\n\nTrain\n535.0234\n301.4750\n16\n60\nEXAM\n\n\n\n\n\nCodepost_tabs$et_sum_x |&gt; gt::gt()\n\n\n\n\n\nALM_error\nEXAM_error\nBest_Model\n\n\n\nConstant - Test - 100\n\n\n358.8953\n389.057847\nALM\n\n\nConstant - Test - 350\n\n\n493.4725\n241.895197\nEXAM\n\n\nConstant - Test - 600\n\n\n525.6647\n71.582777\nEXAM\n\n\nConstant - Test - 800\n\n\n151.4346\n78.600513\nEXAM\n\n\nConstant - Test - 1000\n\n\n922.4112\n20.117657\nEXAM\n\n\nConstant - Test - 1200\n\n\n1116.6594\n79.389583\nEXAM\n\n\nConstant - Test & Train - 100\n\n\n332.3283\n380.202570\nALM\n\n\nConstant - Test & Train - 350\n\n\n236.9586\n241.430280\nALM\n\n\nConstant - Test & Train - 600\n\n\n134.0667\n79.271533\nEXAM\n\n\nConstant - Test & Train - 800\n\n\n116.3539\n89.481940\nEXAM\n\n\nConstant - Test & Train - 1000\n\n\n533.9078\n37.828038\nEXAM\n\n\nConstant - Test & Train - 1200\n\n\n747.9045\n58.753343\nEXAM\n\n\nConstant - Train - 100\n\n\n446.3894\n383.352314\nEXAM\n\n\nConstant - Train - 350\n\n\n555.3690\n245.975682\nEXAM\n\n\nConstant - Train - 600\n\n\n607.6242\n85.497450\nEXAM\n\n\nConstant - Train - 800\n\n\n114.2003\n96.372956\nEXAM\n\n\nConstant - Train - 1000\n\n\n1003.9636\n46.473429\nEXAM\n\n\nConstant - Train - 1200\n\n\n1172.0875\n55.483152\nEXAM\n\n\nVaried - Test - 100\n\n\n475.7396\n55.951696\nEXAM\n\n\nVaried - Test - 350\n\n\n578.9310\n14.974370\nEXAM\n\n\nVaried - Test - 600\n\n\n686.2771\n85.000903\nEXAM\n\n\nVaried - Test - 800\n\n\n227.3504\n245.360391\nALM\n\n\nVaried - Test - 1000\n\n\n316.4601\n329.040922\nALM\n\n\nVaried - Test - 1200\n\n\n357.7888\n417.393792\nALM\n\n\nVaried - Test & Train - 100\n\n\n569.4866\n62.272935\nEXAM\n\n\nVaried - Test & Train - 350\n\n\n639.6293\n17.850720\nEXAM\n\n\nVaried - Test & Train - 600\n\n\n617.1865\n30.588892\nEXAM\n\n\nVaried - Test & Train - 800\n\n\n128.7728\n170.091269\nALM\n\n\nVaried - Test & Train - 1000\n\n\n210.0361\n235.591927\nALM\n\n\nVaried - Test & Train - 1200\n\n\n288.5990\n305.517011\nALM\n\n\nVaried - Train - 100\n\n\n598.6577\n85.237022\nEXAM\n\n\nVaried - Train - 350\n\n\n668.8177\n46.522199\nEXAM\n\n\nVaried - Train - 600\n\n\n700.4886\n0.597297\nEXAM\n\n\nVaried - Train - 800\n\n\n130.9393\n138.713596\nALM\n\n\nVaried - Train - 1000\n\n\n220.4951\n203.008359\nEXAM\n\n\nVaried - Train - 1200\n\n\n286.6349\n301.473234\nALM"
+  },
+  {
+    "objectID": "ind_abc_ss_1600_g150_bufp25.html#distributions",
+    "href": "ind_abc_ss_1600_g150_bufp25.html#distributions",
+    "title": "ind_abc_ss_1600_g150_bufp25.rdsPlots",
+    "section": "Distributions",
+    "text": "Distributions\n\nCodeplot_sampled_posterior(ind_fits)\n\n\n\n\n\n\nCodeplot_indv_posterior(ind_fits_df)"
+  },
+  {
+    "objectID": "ind_abc_ss_1600_g150_bufp25.html#posterior-predictive",
+    "href": "ind_abc_ss_1600_g150_bufp25.html#posterior-predictive",
+    "title": "ind_abc_ss_1600_g150_bufp25.rdsPlots",
+    "section": "Posterior Predictive",
+    "text": "Posterior Predictive\n\nCodegroup_predictive_plots(post_dat_l)\n\n\n\n\n\n\nCodegroup_best_plots(post_dat_l)"
+  },
+  {
+    "objectID": "ind_abc_ss_1600_g150_bufp25.html#individual-plots",
+    "href": "ind_abc_ss_1600_g150_bufp25.html#individual-plots",
+    "title": "ind_abc_ss_1600_g150_bufp25.rdsPlots",
+    "section": "Individual Plots",
+    "text": "Individual Plots\n\nCodeindv_best_plots(post_dat_l)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, ids2)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, idsBad)"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng100_buf10.html",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng100_buf10.html",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "",
+    "text": "Codepacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr)\nconflict_prefer_all(\"dplyr\", quiet = TRUE)\n\nwalk(c(\"Display_Functions\"), ~ source(here::here(paste0(\"Functions/\", .x, \".R\"))))\nds &lt;- readRDS(here::here(\"data/e1_md_11-06-23.rds\"))  |&gt; as.data.table()\nids &lt;- c(1,2,4,5,6,7,8, 10,11,12,13)\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\nsource(here::here(\"Functions/fun_indv_fit.R\"))\n\n#raw_name &lt;- tools::file_path_sans_ext(basename(params$file_name))\nCodeind_fits &lt;- readRDS(here::here(params$file_name))\n\n\nind_fits_df &lt;- imap_dfr(ind_fits |&gt; list_assign(runInfo = zap()), ~imap_dfr(.x, ~{\n  teter_data &lt;- .x[[\"teter_results\"]] %&gt;% mutate(result_type = \"teter_results\")\n  te_data &lt;- .x[[\"te_results\"]] %&gt;% mutate(result_type = \"te_results\")\n  tr_data &lt;- .x[[\"tr_results\"]] %&gt;% mutate(result_type = \"tr_results\")\n  combined_data &lt;- bind_rows(teter_data, te_data, tr_data)\n}, .id = \"id\"))\n\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\n#head(ind_fits$runInfo$systemInfo)\n\npost_dat &lt;- ind_fits_df |&gt; select(sim_dat,rank) |&gt; unnest(sim_dat) |&gt; as.data.table()\npost_dat_l &lt;- setorder(melt(setcolorder(post_dat[expMode2 == \"Test\"][, `:=`(avg_y = mean(y)), \n        by = .(id, condit, x)], c(\"id\", \"condit\", \"Model\", \"Fit_Method\", \n    \"expMode2\", \"tr\", \"rank\", \"c\", \"lr\", \"x\", \"y\", \"avg_y\", \"pred\", \n    \"resid\")), measure.vars = c(\"pred\", \"y\"), variable.name = \"Resp\", \n        value.name = \"val\", variable.factor = FALSE)[, `:=`(Resp = fcase(Resp == \n        \"y\", \"Observed\", Model == \"ALM\", \"ALM\", Model == \"EXAM\", \n        \"EXAM\")), by = .(id, condit, x)], tr, id, Resp, na.last = TRUE)\n\n#summary(params$data)"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng100_buf10.html#posterior-average",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng100_buf10.html#posterior-average",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "Posterior Average",
+    "text": "Posterior Average\n\nCodepost_tabs &lt;- abc_tables(post_dat_l)\n\npost_tabs$et_sum |&gt; gt::gt()\n\n\n\n\n\nFit_Method\nAvg_ALM_error\nAvg_EXAM_error\nN_Best_ALM\nN_Best_EXAM\nBest_Model\n\n\n\nConstant\n\n\nTest\n134.5977\n162.8104\n58\n22\nALM\n\n\nTest & Train\n150.2437\n183.7978\n56\n24\nALM\n\n\nTrain\n570.1425\n203.4103\n0\n80\nEXAM\n\n\nVaried\n\n\nTest\n210.4411\n155.5774\n27\n49\nEXAM\n\n\nTest & Train\n402.8701\n140.0627\n4\n72\nEXAM\n\n\nTrain\n483.6980\n327.5014\n17\n59\nEXAM\n\n\n\n\n\nCodepost_tabs$et_sum_x |&gt; gt::gt()\n\n\n\n\n\nALM_error\nEXAM_error\nBest_Model\n\n\n\nConstant - Test - 100\n\n\n219.06052\n303.098786\nALM\n\n\nConstant - Test - 350\n\n\n84.04611\n198.066399\nALM\n\n\nConstant - Test - 600\n\n\n27.59654\n68.863557\nALM\n\n\nConstant - Test - 800\n\n\n257.39201\n108.510660\nEXAM\n\n\nConstant - Test - 1000\n\n\n423.85773\n83.794649\nEXAM\n\n\nConstant - Test - 1200\n\n\n539.53860\n20.472618\nEXAM\n\n\nConstant - Test & Train - 100\n\n\n60.76094\n350.942891\nALM\n\n\nConstant - Test & Train - 350\n\n\n30.28210\n229.314526\nALM\n\n\nConstant - Test & Train - 600\n\n\n26.88423\n83.909305\nALM\n\n\nConstant - Test & Train - 800\n\n\n216.40651\n107.435615\nEXAM\n\n\nConstant - Test & Train - 1000\n\n\n423.67175\n69.164149\nEXAM\n\n\nConstant - Test & Train - 1200\n\n\n553.78404\n10.285588\nEXAM\n\n\nConstant - Train - 100\n\n\n421.14736\n358.927098\nEXAM\n\n\nConstant - Train - 350\n\n\n516.58215\n236.732653\nEXAM\n\n\nConstant - Train - 600\n\n\n582.59805\n90.724596\nEXAM\n\n\nConstant - Train - 800\n\n\n114.03286\n112.262718\nEXAM\n\n\nConstant - Train - 1000\n\n\n978.42060\n76.066172\nEXAM\n\n\nConstant - Train - 1200\n\n\n1137.01484\n14.194072\nEXAM\n\n\nVaried - Test - 100\n\n\n11.17567\n117.871009\nALM\n\n\nVaried - Test - 350\n\n\n89.35700\n23.392924\nEXAM\n\n\nVaried - Test - 600\n\n\n192.32712\n73.159957\nEXAM\n\n\nVaried - Test - 800\n\n\n284.79786\n252.067267\nEXAM\n\n\nVaried - Test - 1000\n\n\n395.25418\n355.140024\nEXAM\n\n\nVaried - Test - 1200\n\n\n459.53117\n417.113471\nEXAM\n\n\nVaried - Test & Train - 100\n\n\n389.90825\n72.418818\nEXAM\n\n\nVaried - Test & Train - 350\n\n\n492.10612\n2.471423\nEXAM\n\n\nVaried - Test & Train - 600\n\n\n487.62426\n67.896491\nEXAM\n\n\nVaried - Test & Train - 800\n\n\n173.47826\n227.332872\nALM\n\n\nVaried - Test & Train - 1000\n\n\n260.60610\n309.092456\nALM\n\n\nVaried - Test & Train - 1200\n\n\n329.12251\n363.771313\nALM\n\n\nVaried - Train - 100\n\n\n492.89185\n43.083107\nEXAM\n\n\nVaried - Train - 350\n\n\n594.06460\n9.334268\nEXAM\n\n\nVaried - Train - 600\n\n\n644.74434\n33.833973\nEXAM\n\n\nVaried - Train - 800\n\n\n164.97477\n170.007219\nALM\n\n\nVaried - Train - 1000\n\n\n229.72715\n230.344177\nALM\n\n\nVaried - Train - 1200\n\n\n302.92230\n304.611488\nALM"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng100_buf10.html#distributions",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng100_buf10.html#distributions",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "Distributions",
+    "text": "Distributions\n\nCodeplot_sampled_posterior(ind_fits)\n\n\n\n\n\n\nCodeplot_indv_posterior(ind_fits_df)"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng100_buf10.html#posterior-predictive",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng100_buf10.html#posterior-predictive",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "Posterior Predictive",
+    "text": "Posterior Predictive\n\nCodegroup_predictive_plots(post_dat_l)\n\n\n\n\n\n\nCodegroup_best_plots(post_dat_l)"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng100_buf10.html#individual-plots",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng100_buf10.html#individual-plots",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "Individual Plots",
+    "text": "Individual Plots\n\nCodeindv_best_plots(post_dat_l)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, ids2)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, idsBad)"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng75_buf20.html",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng75_buf20.html",
+    "title": "ind_abc_ss_1500_ng75_buf20.rdsPlots",
+    "section": "",
+    "text": "Codepacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr)\nconflict_prefer_all(\"dplyr\", quiet = TRUE)\n\nwalk(c(\"Display_Functions\"), ~ source(here::here(paste0(\"Functions/\", .x, \".R\"))))\nds &lt;- readRDS(here::here(\"data/e1_md_11-06-23.rds\"))  |&gt; as.data.table()\nids &lt;- c(1,2,4,5,6,7,8, 10,11,12,13)\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\nsource(here::here(\"Functions/fun_indv_fit.R\"))\n\n#raw_name &lt;- tools::file_path_sans_ext(basename(params$file_name))\nCodeind_fits &lt;- readRDS(here::here(params$file_name))\n\n\nind_fits_df &lt;- imap_dfr(ind_fits |&gt; list_assign(runInfo = zap()), ~imap_dfr(.x, ~{\n  teter_data &lt;- .x[[\"teter_results\"]] %&gt;% mutate(result_type = \"teter_results\")\n  te_data &lt;- .x[[\"te_results\"]] %&gt;% mutate(result_type = \"te_results\")\n  tr_data &lt;- .x[[\"tr_results\"]] %&gt;% mutate(result_type = \"tr_results\")\n  combined_data &lt;- bind_rows(teter_data, te_data, tr_data)\n}, .id = \"id\"))\n\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\n#head(ind_fits$runInfo$systemInfo)\n\npost_dat &lt;- ind_fits_df |&gt; select(sim_dat,rank) |&gt; unnest(sim_dat) |&gt; as.data.table()\npost_dat_l &lt;- setorder(melt(setcolorder(post_dat[expMode2 == \"Test\"][, `:=`(avg_y = mean(y)), \n        by = .(id, condit, x)], c(\"id\", \"condit\", \"Model\", \"Fit_Method\", \n    \"expMode2\", \"tr\", \"rank\", \"c\", \"lr\", \"x\", \"y\", \"avg_y\", \"pred\", \n    \"resid\")), measure.vars = c(\"pred\", \"y\"), variable.name = \"Resp\", \n        value.name = \"val\", variable.factor = FALSE)[, `:=`(Resp = fcase(Resp == \n        \"y\", \"Observed\", Model == \"ALM\", \"ALM\", Model == \"EXAM\", \n        \"EXAM\")), by = .(id, condit, x)], tr, id, Resp, na.last = TRUE)\n\n#summary(params$data)"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng75_buf20.html#posterior-average",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng75_buf20.html#posterior-average",
+    "title": "ind_abc_ss_1500_ng75_buf20.rdsPlots",
+    "section": "Posterior Average",
+    "text": "Posterior Average\n\nCodepost_tabs &lt;- abc_tables(post_dat_l)\n\npost_tabs$et_sum |&gt; gt::gt()\n\n\n\n\n\nFit_Method\nAvg_ALM_error\nAvg_EXAM_error\nN_Best_ALM\nN_Best_EXAM\nBest_Model\n\n\n\nConstant\n\n\nTest\n168.1980\n171.4806\n49\n31\nALM\n\n\nTest & Train\n174.8237\n190.2782\n48\n32\nALM\n\n\nTrain\n558.7709\n216.1327\n1\n79\nEXAM\n\n\nVaried\n\n\nTest\n263.7622\n186.7572\n27\n49\nEXAM\n\n\nTest & Train\n374.4079\n181.8921\n6\n70\nEXAM\n\n\nTrain\n536.4614\n351.5398\n23\n53\nEXAM\n\n\n\n\n\nCodepost_tabs$et_sum_x |&gt; gt::gt()\n\n\n\n\n\nALM_error\nEXAM_error\nBest_Model\n\n\n\nConstant - Test - 100\n\n\n151.582095\n272.18320\nALM\n\n\nConstant - Test - 350\n\n\n17.093597\n187.43780\nALM\n\n\nConstant - Test - 600\n\n\n94.535375\n78.89697\nEXAM\n\n\nConstant - Test - 800\n\n\n324.681964\n134.64585\nEXAM\n\n\nConstant - Test - 1000\n\n\n490.797712\n123.51852\nEXAM\n\n\nConstant - Test - 1200\n\n\n606.695577\n76.62934\nEXAM\n\n\nConstant - Test & Train - 100\n\n\n130.846356\n316.35007\nALM\n\n\nConstant - Test & Train - 350\n\n\n4.607429\n213.19503\nALM\n\n\nConstant - Test & Train - 600\n\n\n84.816684\n86.28620\nALM\n\n\nConstant - Test & Train - 800\n\n\n313.781705\n124.46347\nEXAM\n\n\nConstant - Test & Train - 1000\n\n\n481.951799\n102.06597\nEXAM\n\n\nConstant - Test & Train - 1200\n\n\n629.756447\n39.75157\nEXAM\n\n\nConstant - Train - 100\n\n\n402.029068\n334.97836\nEXAM\n\n\nConstant - Train - 350\n\n\n533.876995\n230.66796\nEXAM\n\n\nConstant - Train - 600\n\n\n555.849845\n102.35474\nEXAM\n\n\nConstant - Train - 800\n\n\n129.556354\n137.97834\nALM\n\n\nConstant - Train - 1000\n\n\n949.739480\n114.98459\nEXAM\n\n\nConstant - Train - 1200\n\n\n1095.653629\n46.73143\nEXAM\n\n\nVaried - Test - 100\n\n\n30.374132\n65.28192\nALM\n\n\nVaried - Test - 350\n\n\n137.009878\n42.31958\nEXAM\n\n\nVaried - Test - 600\n\n\n245.337320\n153.24671\nEXAM\n\n\nVaried - Test - 800\n\n\n375.696138\n345.57895\nEXAM\n\n\nVaried - Test - 1000\n\n\n497.674563\n463.61153\nEXAM\n\n\nVaried - Test - 1200\n\n\n576.623965\n522.41290\nEXAM\n\n\nVaried - Test & Train - 100\n\n\n266.851250\n43.93964\nEXAM\n\n\nVaried - Test & Train - 350\n\n\n374.159473\n25.94535\nEXAM\n\n\nVaried - Test & Train - 600\n\n\n481.544844\n93.41177\nEXAM\n\n\nVaried - Test & Train - 800\n\n\n262.917479\n251.71768\nEXAM\n\n\nVaried - Test & Train - 1000\n\n\n356.027945\n332.40472\nEXAM\n\n\nVaried - Test & Train - 1200\n\n\n423.751502\n407.35414\nEXAM\n\n\nVaried - Train - 100\n\n\n537.872800\n92.83884\nEXAM\n\n\nVaried - Train - 350\n\n\n641.006292\n38.96171\nEXAM\n\n\nVaried - Train - 600\n\n\n749.574061\n26.95012\nEXAM\n\n\nVaried - Train - 800\n\n\n177.929675\n180.35443\nALM\n\n\nVaried - Train - 1000\n\n\n256.550769\n259.85540\nALM\n\n\nVaried - Train - 1200\n\n\n323.380548\n324.54905\nALM"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng75_buf20.html#distributions",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng75_buf20.html#distributions",
+    "title": "ind_abc_ss_1500_ng75_buf20.rdsPlots",
+    "section": "Distributions",
+    "text": "Distributions\n\nCodeplot_sampled_posterior(ind_fits)\n\n\n\n\n\n\nCodeplot_indv_posterior(ind_fits_df)"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng75_buf20.html#posterior-predictive",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng75_buf20.html#posterior-predictive",
+    "title": "ind_abc_ss_1500_ng75_buf20.rdsPlots",
+    "section": "Posterior Predictive",
+    "text": "Posterior Predictive\n\nCodegroup_predictive_plots(post_dat_l)\n\n\n\n\n\n\nCodegroup_best_plots(post_dat_l)"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng75_buf20.html#individual-plots",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1500_ng75_buf20.html#individual-plots",
+    "title": "ind_abc_ss_1500_ng75_buf20.rdsPlots",
+    "section": "Individual Plots",
+    "text": "Individual Plots\n\nCodeindv_best_plots(post_dat_l)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, ids2)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, idsBad)"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1600_g150_bufp25.html",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1600_g150_bufp25.html",
+    "title": "ind_abc_ss_1600_g150_bufp25.rdsPlots",
+    "section": "",
+    "text": "Codepacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr)\nconflict_prefer_all(\"dplyr\", quiet = TRUE)\n\nwalk(c(\"Display_Functions\"), ~ source(here::here(paste0(\"Functions/\", .x, \".R\"))))\nds &lt;- readRDS(here::here(\"data/e1_md_11-06-23.rds\"))  |&gt; as.data.table()\nids &lt;- c(1,2,4,5,6,7,8, 10,11,12,13)\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\nsource(here::here(\"Functions/fun_indv_fit.R\"))\n\n#raw_name &lt;- tools::file_path_sans_ext(basename(params$file_name))\nCodeind_fits &lt;- readRDS(here::here(params$file_name))\n\n\nind_fits_df &lt;- imap_dfr(ind_fits |&gt; list_assign(runInfo = zap()), ~imap_dfr(.x, ~{\n  teter_data &lt;- .x[[\"teter_results\"]] %&gt;% mutate(result_type = \"teter_results\")\n  te_data &lt;- .x[[\"te_results\"]] %&gt;% mutate(result_type = \"te_results\")\n  tr_data &lt;- .x[[\"tr_results\"]] %&gt;% mutate(result_type = \"tr_results\")\n  combined_data &lt;- bind_rows(teter_data, te_data, tr_data)\n}, .id = \"id\"))\n\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\n#head(ind_fits$runInfo$systemInfo)\n\npost_dat &lt;- ind_fits_df |&gt; select(sim_dat,rank) |&gt; unnest(sim_dat) |&gt; as.data.table()\npost_dat_l &lt;- setorder(melt(setcolorder(post_dat[expMode2 == \"Test\"][, `:=`(avg_y = mean(y)), \n        by = .(id, condit, x)], c(\"id\", \"condit\", \"Model\", \"Fit_Method\", \n    \"expMode2\", \"tr\", \"rank\", \"c\", \"lr\", \"x\", \"y\", \"avg_y\", \"pred\", \n    \"resid\")), measure.vars = c(\"pred\", \"y\"), variable.name = \"Resp\", \n        value.name = \"val\", variable.factor = FALSE)[, `:=`(Resp = fcase(Resp == \n        \"y\", \"Observed\", Model == \"ALM\", \"ALM\", Model == \"EXAM\", \n        \"EXAM\")), by = .(id, condit, x)], tr, id, Resp, na.last = TRUE)\n\n#summary(params$data)"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1600_g150_bufp25.html#posterior-average",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1600_g150_bufp25.html#posterior-average",
+    "title": "ind_abc_ss_1600_g150_bufp25.rdsPlots",
+    "section": "Posterior Average",
+    "text": "Posterior Average\n\nCodepost_tabs &lt;- abc_tables(post_dat_l)\n\npost_tabs$et_sum |&gt; gt::gt()\n\n\n\n\n\nFit_Method\nAvg_ALM_error\nAvg_EXAM_error\nN_Best_ALM\nN_Best_EXAM\nBest_Model\n\n\n\nConstant\n\n\nTest\n532.2910\n176.9375\n0\n80\nEXAM\n\n\nTest & Train\n320.7372\n183.4471\n19\n61\nEXAM\n\n\nTrain\n596.7293\n202.2844\n0\n80\nEXAM\n\n\nVaried\n\n\nTest\n504.9179\n175.9479\n2\n74\nEXAM\n\n\nTest & Train\n499.4877\n140.7354\n1\n75\nEXAM\n\n\nTrain\n535.0234\n301.4750\n16\n60\nEXAM\n\n\n\n\n\nCodepost_tabs$et_sum_x |&gt; gt::gt()\n\n\n\n\n\nALM_error\nEXAM_error\nBest_Model\n\n\n\nConstant - Test - 100\n\n\n358.8953\n389.057847\nALM\n\n\nConstant - Test - 350\n\n\n493.4725\n241.895197\nEXAM\n\n\nConstant - Test - 600\n\n\n525.6647\n71.582777\nEXAM\n\n\nConstant - Test - 800\n\n\n151.4346\n78.600513\nEXAM\n\n\nConstant - Test - 1000\n\n\n922.4112\n20.117657\nEXAM\n\n\nConstant - Test - 1200\n\n\n1116.6594\n79.389583\nEXAM\n\n\nConstant - Test & Train - 100\n\n\n332.3283\n380.202570\nALM\n\n\nConstant - Test & Train - 350\n\n\n236.9586\n241.430280\nALM\n\n\nConstant - Test & Train - 600\n\n\n134.0667\n79.271533\nEXAM\n\n\nConstant - Test & Train - 800\n\n\n116.3539\n89.481940\nEXAM\n\n\nConstant - Test & Train - 1000\n\n\n533.9078\n37.828038\nEXAM\n\n\nConstant - Test & Train - 1200\n\n\n747.9045\n58.753343\nEXAM\n\n\nConstant - Train - 100\n\n\n446.3894\n383.352314\nEXAM\n\n\nConstant - Train - 350\n\n\n555.3690\n245.975682\nEXAM\n\n\nConstant - Train - 600\n\n\n607.6242\n85.497450\nEXAM\n\n\nConstant - Train - 800\n\n\n114.2003\n96.372956\nEXAM\n\n\nConstant - Train - 1000\n\n\n1003.9636\n46.473429\nEXAM\n\n\nConstant - Train - 1200\n\n\n1172.0875\n55.483152\nEXAM\n\n\nVaried - Test - 100\n\n\n475.7396\n55.951696\nEXAM\n\n\nVaried - Test - 350\n\n\n578.9310\n14.974370\nEXAM\n\n\nVaried - Test - 600\n\n\n686.2771\n85.000903\nEXAM\n\n\nVaried - Test - 800\n\n\n227.3504\n245.360391\nALM\n\n\nVaried - Test - 1000\n\n\n316.4601\n329.040922\nALM\n\n\nVaried - Test - 1200\n\n\n357.7888\n417.393792\nALM\n\n\nVaried - Test & Train - 100\n\n\n569.4866\n62.272935\nEXAM\n\n\nVaried - Test & Train - 350\n\n\n639.6293\n17.850720\nEXAM\n\n\nVaried - Test & Train - 600\n\n\n617.1865\n30.588892\nEXAM\n\n\nVaried - Test & Train - 800\n\n\n128.7728\n170.091269\nALM\n\n\nVaried - Test & Train - 1000\n\n\n210.0361\n235.591927\nALM\n\n\nVaried - Test & Train - 1200\n\n\n288.5990\n305.517011\nALM\n\n\nVaried - Train - 100\n\n\n598.6577\n85.237022\nEXAM\n\n\nVaried - Train - 350\n\n\n668.8177\n46.522199\nEXAM\n\n\nVaried - Train - 600\n\n\n700.4886\n0.597297\nEXAM\n\n\nVaried - Train - 800\n\n\n130.9393\n138.713596\nALM\n\n\nVaried - Train - 1000\n\n\n220.4951\n203.008359\nEXAM\n\n\nVaried - Train - 1200\n\n\n286.6349\n301.473234\nALM"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1600_g150_bufp25.html#distributions",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1600_g150_bufp25.html#distributions",
+    "title": "ind_abc_ss_1600_g150_bufp25.rdsPlots",
+    "section": "Distributions",
+    "text": "Distributions\n\nCodeplot_sampled_posterior(ind_fits)\n\n\n\n\n\n\nCodeplot_indv_posterior(ind_fits_df)"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1600_g150_bufp25.html#posterior-predictive",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1600_g150_bufp25.html#posterior-predictive",
+    "title": "ind_abc_ss_1600_g150_bufp25.rdsPlots",
+    "section": "Posterior Predictive",
+    "text": "Posterior Predictive\n\nCodegroup_predictive_plots(post_dat_l)\n\n\n\n\n\n\nCodegroup_best_plots(post_dat_l)"
+  },
+  {
+    "objectID": "Assets/tmp_plots/hier_reports/ind_abc_ss_1600_g150_bufp25.html#individual-plots",
+    "href": "Assets/tmp_plots/hier_reports/ind_abc_ss_1600_g150_bufp25.html#individual-plots",
+    "title": "ind_abc_ss_1600_g150_bufp25.rdsPlots",
+    "section": "Individual Plots",
+    "text": "Individual Plots\n\nCodeindv_best_plots(post_dat_l)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, ids2)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, idsBad)"
+  },
+  {
+    "objectID": "Model/ind_abc_ss_1500_ng100_buf10.html",
+    "href": "Model/ind_abc_ss_1500_ng100_buf10.html",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "",
+    "text": "Codepacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr)\nconflict_prefer_all(\"dplyr\", quiet = TRUE)\n\nwalk(c(\"Display_Functions\"), ~ source(here::here(paste0(\"Functions/\", .x, \".R\"))))\nds &lt;- readRDS(here::here(\"data/e1_md_11-06-23.rds\"))  |&gt; as.data.table()\nids &lt;- c(1,2,4,5,6,7,8, 10,11,12,13)\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\nsource(here::here(\"Functions/fun_indv_fit.R\"))\n\n#raw_name &lt;- tools::file_path_sans_ext(basename(params$file_name))\nCodeind_fits &lt;- readRDS(here::here(params$file_name))\n\n\nind_fits_df &lt;- imap_dfr(ind_fits |&gt; list_assign(runInfo = zap()), ~imap_dfr(.x, ~{\n  teter_data &lt;- .x[[\"teter_results\"]] %&gt;% mutate(result_type = \"teter_results\")\n  te_data &lt;- .x[[\"te_results\"]] %&gt;% mutate(result_type = \"te_results\")\n  tr_data &lt;- .x[[\"tr_results\"]] %&gt;% mutate(result_type = \"tr_results\")\n  combined_data &lt;- bind_rows(teter_data, te_data, tr_data)\n}, .id = \"id\"))\n\nids2 &lt;- c(1,66,36)\nids3 &lt;- c(20,71,101,4,76,192)\nidsBad &lt;- c(76,192, 101)\n\n#head(ind_fits$runInfo$systemInfo)\n\npost_dat &lt;- ind_fits_df |&gt; select(sim_dat,rank) |&gt; unnest(sim_dat) |&gt; as.data.table()\npost_dat_l &lt;- setorder(melt(setcolorder(post_dat[expMode2 == \"Test\"][, `:=`(avg_y = mean(y)), \n        by = .(id, condit, x)], c(\"id\", \"condit\", \"Model\", \"Fit_Method\", \n    \"expMode2\", \"tr\", \"rank\", \"c\", \"lr\", \"x\", \"y\", \"avg_y\", \"pred\", \n    \"resid\")), measure.vars = c(\"pred\", \"y\"), variable.name = \"Resp\", \n        value.name = \"val\", variable.factor = FALSE)[, `:=`(Resp = fcase(Resp == \n        \"y\", \"Observed\", Model == \"ALM\", \"ALM\", Model == \"EXAM\", \n        \"EXAM\")), by = .(id, condit, x)], tr, id, Resp, na.last = TRUE)\n\n#summary(params$data)"
+  },
+  {
+    "objectID": "Model/ind_abc_ss_1500_ng100_buf10.html#posterior-average",
+    "href": "Model/ind_abc_ss_1500_ng100_buf10.html#posterior-average",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "Posterior Average",
+    "text": "Posterior Average\n\nCodepost_tabs &lt;- abc_tables(post_dat_l)\n\npost_tabs$et_sum |&gt; gt::gt()\n\n\n\n\n\nFit_Method\nAvg_ALM_error\nAvg_EXAM_error\nN_Best_ALM\nN_Best_EXAM\nBest_Model\n\n\n\nConstant\n\n\nTest\n134.5977\n162.8104\n58\n22\nALM\n\n\nTest & Train\n150.2437\n183.7978\n56\n24\nALM\n\n\nTrain\n570.1425\n203.4103\n0\n80\nEXAM\n\n\nVaried\n\n\nTest\n210.4411\n155.5774\n27\n49\nEXAM\n\n\nTest & Train\n402.8701\n140.0627\n4\n72\nEXAM\n\n\nTrain\n483.6980\n327.5014\n17\n59\nEXAM\n\n\n\n\n\nCodepost_tabs$et_sum_x |&gt; gt::gt()\n\n\n\n\n\nALM_error\nEXAM_error\nBest_Model\n\n\n\nConstant - Test - 100\n\n\n219.06052\n303.098786\nALM\n\n\nConstant - Test - 350\n\n\n84.04611\n198.066399\nALM\n\n\nConstant - Test - 600\n\n\n27.59654\n68.863557\nALM\n\n\nConstant - Test - 800\n\n\n257.39201\n108.510660\nEXAM\n\n\nConstant - Test - 1000\n\n\n423.85773\n83.794649\nEXAM\n\n\nConstant - Test - 1200\n\n\n539.53860\n20.472618\nEXAM\n\n\nConstant - Test & Train - 100\n\n\n60.76094\n350.942891\nALM\n\n\nConstant - Test & Train - 350\n\n\n30.28210\n229.314526\nALM\n\n\nConstant - Test & Train - 600\n\n\n26.88423\n83.909305\nALM\n\n\nConstant - Test & Train - 800\n\n\n216.40651\n107.435615\nEXAM\n\n\nConstant - Test & Train - 1000\n\n\n423.67175\n69.164149\nEXAM\n\n\nConstant - Test & Train - 1200\n\n\n553.78404\n10.285588\nEXAM\n\n\nConstant - Train - 100\n\n\n421.14736\n358.927098\nEXAM\n\n\nConstant - Train - 350\n\n\n516.58215\n236.732653\nEXAM\n\n\nConstant - Train - 600\n\n\n582.59805\n90.724596\nEXAM\n\n\nConstant - Train - 800\n\n\n114.03286\n112.262718\nEXAM\n\n\nConstant - Train - 1000\n\n\n978.42060\n76.066172\nEXAM\n\n\nConstant - Train - 1200\n\n\n1137.01484\n14.194072\nEXAM\n\n\nVaried - Test - 100\n\n\n11.17567\n117.871009\nALM\n\n\nVaried - Test - 350\n\n\n89.35700\n23.392924\nEXAM\n\n\nVaried - Test - 600\n\n\n192.32712\n73.159957\nEXAM\n\n\nVaried - Test - 800\n\n\n284.79786\n252.067267\nEXAM\n\n\nVaried - Test - 1000\n\n\n395.25418\n355.140024\nEXAM\n\n\nVaried - Test - 1200\n\n\n459.53117\n417.113471\nEXAM\n\n\nVaried - Test & Train - 100\n\n\n389.90825\n72.418818\nEXAM\n\n\nVaried - Test & Train - 350\n\n\n492.10612\n2.471423\nEXAM\n\n\nVaried - Test & Train - 600\n\n\n487.62426\n67.896491\nEXAM\n\n\nVaried - Test & Train - 800\n\n\n173.47826\n227.332872\nALM\n\n\nVaried - Test & Train - 1000\n\n\n260.60610\n309.092456\nALM\n\n\nVaried - Test & Train - 1200\n\n\n329.12251\n363.771313\nALM\n\n\nVaried - Train - 100\n\n\n492.89185\n43.083107\nEXAM\n\n\nVaried - Train - 350\n\n\n594.06460\n9.334268\nEXAM\n\n\nVaried - Train - 600\n\n\n644.74434\n33.833973\nEXAM\n\n\nVaried - Train - 800\n\n\n164.97477\n170.007219\nALM\n\n\nVaried - Train - 1000\n\n\n229.72715\n230.344177\nALM\n\n\nVaried - Train - 1200\n\n\n302.92230\n304.611488\nALM"
+  },
+  {
+    "objectID": "Model/ind_abc_ss_1500_ng100_buf10.html#distributions",
+    "href": "Model/ind_abc_ss_1500_ng100_buf10.html#distributions",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "Distributions",
+    "text": "Distributions\n\nCodeplot_sampled_posterior(ind_fits)\n\n\n\n\n\n\nCodeplot_indv_posterior(ind_fits_df)"
+  },
+  {
+    "objectID": "Model/ind_abc_ss_1500_ng100_buf10.html#posterior-predictive",
+    "href": "Model/ind_abc_ss_1500_ng100_buf10.html#posterior-predictive",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "Posterior Predictive",
+    "text": "Posterior Predictive\n\nCodegroup_predictive_plots(post_dat_l)\n\n\n\n\n\n\nCodegroup_best_plots(post_dat_l)"
+  },
+  {
+    "objectID": "Model/ind_abc_ss_1500_ng100_buf10.html#individual-plots",
+    "href": "Model/ind_abc_ss_1500_ng100_buf10.html#individual-plots",
+    "title": "ind_abc_ss_1500_ng100_buf10.rdsPlots",
+    "section": "Individual Plots",
+    "text": "Individual Plots\n\nCodeindv_best_plots(post_dat_l)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, ids2)\n\n\n\n\n\n\nCodeindv_predictive_plots(post_dat_l, idsBad)"
   }
 ]
