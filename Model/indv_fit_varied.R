@@ -22,6 +22,17 @@ kde_results <- purrr::map(group_posterior_all, ~
                             purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = ngrid, nsamples=n_prior_samples, lim_buffer=buf)))
 
 
+generate_prior_c_lr <- function(n) {
+  prior_samples <- tibble(
+    c = runif(n, 0.000001, 10),
+    lr = runif(n, 0.000001, 10),
+  )
+  return(prior_samples)
+}
+
+prior_samples <- tibble(c=rlnorm(10000, 0.0000001, 2), 
+                         lr=rlnorm(10000,.00000001,2))
+
 
 fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
   
@@ -45,14 +56,13 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
   }
   
   
-  prior_samples_te <- prior_samples$te_results$kde_samples
-  sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function, prior_samples_te,return_dat) |> as.data.table()
+  sim_data <- sim_data_gen_s(data, input_layer, output_layer,simulation_function, prior_samples,return_dat) |> as.data.table()
   
   pct_keep=.1
   te_distances <- purrr::map_dbl(sim_data[test_idx, ], dist_rmse, observed = target_data_test)
   
-  te_results <- tibble(distance = te_distances, c = prior_samples_te$c, 
-                       lr = prior_samples_te$lr,  sim_index= seq_along(te_distances)) |> 
+  te_results <- tibble(distance = te_distances, c = prior_samples$c, 
+                       lr = prior_samples$lr,  sim_index= seq_along(te_distances)) |> 
     arrange(distance) |> 
     filter(if (!is.null(pct_keep)) row_number() <= n() * pct_keep else distance <= tol) |>
     mutate(rank=row_number(),Model,Group,Fit_Method="Test Only") |>
@@ -60,8 +70,6 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
     mutate(sim_dat = list(tibble(Model,Fit_Method,c,lr,distance,rank,data,pred=as_vector((sim_data[, .SD, .SDcols = sim_index]))) |> 
                             mutate(resid=y-pred
                             )))
-  
-  
   
   tibble::lst(te_results = te_results,id = as.numeric(sbj_id),
               Model, Group, pct_keep, fn_name=dist_rmse) 
@@ -74,26 +82,46 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
 t1=system.time({
   id_fits_exam_varied <- map(unique(dsv$id), ~ fit_indv(sbj_id=.x,
                                                         simulation_function=full_sim_exam, 
-                                                        prior_samples=kde_results$abc_ev, 
+                                                        prior_samples=prior_samples, 
                                                         Model="EXAM", 
                                                         Group="Varied"))
   names(id_fits_exam_varied) <- unique(dsv$id)
   
   
+  
+  
+  
   id_fits_alm_varied <- map(unique(dsv$id), ~ fit_indv(sbj_id=.x,
                                                        simulation_function=full_sim_alm, 
-                                                       prior_samples=kde_results$abc_almv, 
+                                                       prior_samples=prior_samples, 
                                                        Model="ALM", 
                                                        Group="Varied"))  
   names(id_fits_alm_varied) <- unique(dsv$id)
   
+  id_fits_exam_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
+                                                          simulation_function=full_sim_exam, 
+                                                          prior_samples=prior_samples, 
+                                                          Model="EXAM", 
+                                                          Group="Constant"))
+  names(id_fits_exam_constant) <- unique(dsc$id)
+  
+  
+  id_fits_alm_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
+                                                         simulation_function=full_sim_alm, 
+                                                         prior_samples=prior_samples, 
+                                                         Model="ALM", 
+                                                         Group="Constant"))  
+  names(id_fits_alm_constant) <- unique(dsc$id)  
+  
 })
 
 
+id_fits_exam_varied[[1]]$te_results |> ggplot(aes(x=c))+geom_density()
+
 # save prior samples in sim instead of full kde results?
 
-runInfo=tibble::lst(kde_results,
-                    n_prior_samples,
+runInfo=tibble::lst(prior_samples,
+                    n_prior_samples=10000,
                     ngrid,
                     buf,
                     # data=ds,
@@ -110,7 +138,7 @@ runInfo=tibble::lst(kde_results,
 indv_fit_results <- tibble::lst(id_fits_alm_varied,id_fits_exam_varied, runInfo) 
 
 saveRDS(indv_fit_results,
-        file=here::here(paste0("data/indv_sim/","ind_abc_", n_prior_samples,"_",format(Sys.time(),"%H_%M_%OS"), ".rds")))
+        file=here::here(paste0("data/indv_sim/","ind_ln_", n_prior_samples,"_",format(Sys.time(),"%H_%M_%OS"), ".rds")))
 
 
 # id1 <- ds |> filter(id==1) 

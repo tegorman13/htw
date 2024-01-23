@@ -318,3 +318,13 @@ extract_info <- function(raw_names) {
   
   data.frame(full_name, n_samp, ng_value, buf_value, run_type)
 }
+
+repair_names <- function(names) {
+  dupes <- names[duplicated(names)]
+  if ("rank" %in% dupes) {
+    first_rank <- which(names == "rank")[1]
+    names <- make.unique(names, sep = "_")
+    names[first_rank] <- "rank"
+  }
+  names
+}

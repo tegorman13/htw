@@ -34,7 +34,10 @@ source(here::here("Functions/fun_indv_fit.R"))
 
 ```{r fig.width=11, fig.height=10}
 
-ind_fits <- readRDS(here::here("data/indv_sim/ind_abc_ss_1000_ng100_bufp55.rds"))
+#ind_fits <- readRDS(here::here("data/indv_sim/ind_abc_ss_1000_ng100_bufp55.rds"))
+
+ind_fits <- readRDS(here::here("data/indv_sim/ind_abc_2000_ng100_buf5.rds"))
+
 
 ind_fits_df <- imap_dfr(ind_fits |> list_assign(runInfo = zap()), ~imap_dfr(.x, ~{
   teter_data <- .x[["teter_results"]] %>% mutate(result_type = "teter_results")
@@ -78,16 +81,38 @@ post_dat_l <- post_dat %>%
 post_tabs <- abc_tables(post_dat_l)
 post_tabs$et_sum |> gt::gt()
 
-
-post_tabs$et_sum |> select(condit,Fit_Method,Avg_ALM_error, Avg_EXAM_error) |> filter(Fit_Method=="Test")
+post_tabs$et_sum |> select(condit,Fit_Method,Avg_ALM_error, Avg_EXAM_error) |> filter(Fit_Method=="Test Only")
 
 ```
 
 ## Distributions: 
-```{r, fig.width=12, fig.height=15}
+```{r, fig.width=12, fig.height=17}
 #| eval: true
 plot_sampled_posterior(ind_fits)
 plot_indv_posterior(ind_fits_df)
+
+
+ind_fits_df |> filter(id %in% ids2, Fit_Method=="Test & Train") |> 
+  ggplot(aes(x=c)) + geom_density(aes(fill=Group), alpha=.5) + 
+  facet_wrap(id~Model,scales="free",ncol=2) + 
+  theme_bw() + theme(legend.position = "bottom") + labs(title = "Posterior distribution of c") 
+
+ind_fits_df |> filter(id %in% ids2, Fit_Method=="Test & Train") |> 
+  ggplot(aes(x=lr)) + geom_density(aes(fill=Group), alpha=.5) + 
+  facet_wrap(id~Model,scales="free",ncol=2) + 
+  theme_bw() + theme(legend.position = "bottom") + labs(title = "Posterior distribution of c") 
+
+
+ind_fits_df |> filter(id %in% idsBad, Fit_Method=="Test & Train") |> 
+  ggplot(aes(x=c)) + geom_density(aes(fill=Group), alpha=.5) + 
+  facet_wrap(id~Model,scales="free",ncol=2) + 
+  theme_bw() + theme(legend.position = "bottom") + labs(title = "Posterior distribution of c") 
+
+ind_fits_df |> filter(id %in% idsBad, Fit_Method=="Test & Train") |> 
+  ggplot(aes(x=lr)) + geom_density(aes(fill=Group), alpha=.5) + 
+  facet_wrap(id~Model,scales="free",ncol=2) + 
+  theme_bw() + theme(legend.position = "bottom") + labs(title = "Posterior distribution of c") 
+
 
 ```
 
