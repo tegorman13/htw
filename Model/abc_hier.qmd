@@ -1,3 +1,13 @@
+---
+title: Individual ABC Fits
+author: Thomas Gorman
+date: "`r Sys.Date()`"
+code-fold: true
+code-tools: true
+execute: 
+  warning: false
+  eval: true
+---
 
 
 
@@ -21,16 +31,10 @@ source(here::here("Functions/fun_indv_fit.R"))
 
 
 
+
 ```{r fig.width=11, fig.height=10}
 
 ind_fits <- readRDS(here::here("data/indv_sim/ind_abc_ss_1000_ng100_bufp55.rds"))
-
-#ind_fits <- ind_fits |> list_assign(runInfo = zap())
-# names(ind_fits)
-# names(ind_fits$id_fits_alm_varied)
-# names(ind_fits$id_fits_alm_varied[[1]])
-
-#teter_results_df <- imap_dfr(ind_fits, ~imap_dfr(.x, ~.x[["teter_results"]] ,.id="id"))
 
 ind_fits_df <- imap_dfr(ind_fits |> list_assign(runInfo = zap()), ~imap_dfr(.x, ~{
   teter_data <- .x[["teter_results"]] %>% mutate(result_type = "teter_results")
@@ -41,7 +45,7 @@ ind_fits_df <- imap_dfr(ind_fits |> list_assign(runInfo = zap()), ~imap_dfr(.x, 
 
 
 post_dat <- ind_fits_df |> 
-  select(sim_dat,rank) |> unnest(sim_dat) |> filter(expMode2=="Test") |>
+  select(sim_dat,rank) |> unnest(sim_dat,names_repair = repair_names) |> filter(expMode2=="Test") |>
   group_by(id,condit,x) |>
   mutate(avg_y=mean(y)) |> 
   relocate(id,condit,Model,Fit_Method,expMode2,tr,rank,c,lr,x,y,avg_y) 
@@ -61,13 +65,69 @@ post_dat_l <- post_dat %>%
   ) |> arrange(tr,id,Resp) 
 
 
-id1 <- ind_fits_df |> filter(id %in% ids2) 
-names(id1)
-typeof(id1$sim_dat)
-str(id1$sim_dat[[1]])
-id1 <- id1 |> select(rank,sim_dat) |> unnest(sim_dat) |>filter(rank<=2)
+```
+
+
+```{r}
 
 ```
+
+##  Posterior Average Table: 
+```{r fig.width=12, fig.height=17}
+#| eval: true
+post_tabs <- abc_tables(post_dat_l)
+post_tabs$et_sum |> gt::gt()
+
+
+post_tabs$et_sum |> select(condit,Fit_Method,Avg_ALM_error, Avg_EXAM_error) |> filter(Fit_Method=="Test")
+
+```
+
+## Distributions: 
+```{r, fig.width=12, fig.height=15}
+#| eval: true
+plot_sampled_posterior(ind_fits)
+plot_indv_posterior(ind_fits_df)
+
+```
+
+
+## Distributions: 
+```{r, fig.width=12, fig.height=15}
+#| eval: true
+plot_sampled_posterior(ind_fits)
+plot_indv_posterior(ind_fits_df)
+
+```
+
+## Posterior Predictive: 
+```{r, fig.width=12, fig.height=14}
+#| eval: true
+group_predictive_plots(post_dat_l)
+group_best_plots(post_dat_l)
+```
+
+
+
+## Individual Plots:
+```{r, fig.width=12, fig.height=17}
+#| eval: true
+indv_best_plots(post_dat_l)
+indv_predictive_plots(post_dat_l, ids2)
+indv_predictive_plots(post_dat_l, idsBad)
+
+```
+
+
+## Bigger Tables:
+```{r}
+#| eval: true
+
+post_tabs$et_sum_x |> kable()
+
+post_tabs$et_sum_x_indv |> kable()
+```
+
 
 
 

@@ -1,8 +1,9 @@
 
 
-abc_tables <- function(post_dat){
+abc_tables <- function(post_dat_l,ids=NULL){
 
-
+  if(is.null(ids)) ids <- c(1,66,36)
+  
 et_sum <- post_dat_l |>
   group_by(id,condit, Fit_Method, Resp) |>
   summarise(val = mean(val), .groups = 'drop') |>
@@ -12,8 +13,8 @@ et_sum <- post_dat_l |>
     values_fill = list(val = NA)
   ) |>
   mutate(
-    ALM_error = abs(ALM - Observed),
-    EXAM_error = abs(EXAM - Observed),
+    ALM_error = round(abs(ALM - Observed),1),
+    EXAM_error = round(abs(EXAM - Observed),1),
     Best_Model = case_when(
       ALM_error < EXAM_error ~ "ALM",
       EXAM_error < ALM_error ~ "EXAM",
@@ -22,8 +23,8 @@ et_sum <- post_dat_l |>
   ) |>
   group_by(condit, Fit_Method) %>%
   summarise(
-    Avg_ALM_error = mean(ALM_error, na.rm = TRUE),
-    Avg_EXAM_error = mean(EXAM_error, na.rm = TRUE),
+    Avg_ALM_error = round(mean(ALM_error, na.rm = TRUE),1),
+    Avg_EXAM_error = round(mean(EXAM_error, na.rm = TRUE),1),
     N_Best_ALM = sum(Best_Model == "ALM", na.rm = TRUE),
     N_Best_EXAM = sum(Best_Model == "EXAM", na.rm = TRUE)
   ) %>%
@@ -45,8 +46,8 @@ et_sum_x <- post_dat_l |>
   ) |>
   group_by(condit, Fit_Method, x) |>
   transmute(
-    ALM_error = abs(ALM - Observed),
-    EXAM_error = abs(EXAM - Observed),
+    ALM_error = round(abs(ALM - Observed),1),
+    EXAM_error = round(abs(EXAM - Observed),1),
     Best_Model = case_when(
       ALM_error < EXAM_error ~ "ALM",
       EXAM_error < ALM_error ~ "EXAM",
@@ -54,7 +55,28 @@ et_sum_x <- post_dat_l |>
     )
   ) 
 
-  return(tibble::lst(et_sum,et_sum_x))
+
+et_sum_x_indv <- post_dat_l |> filter(id %in% ids) |>
+  group_by(id,condit, Fit_Method, Resp, x) |>
+  summarise(val = mean(val), .groups = 'drop') |>
+  pivot_wider(
+    names_from = Resp,
+    values_from = val,
+    values_fill = list(val = NA)
+  ) |>
+  group_by(id,condit, Fit_Method, x) |>
+  transmute(
+    ALM_error = round(abs(ALM - Observed),1),
+    EXAM_error = round(abs(EXAM - Observed),1),
+    Best_Model = case_when(
+      ALM_error < EXAM_error ~ "ALM",
+      EXAM_error < ALM_error ~ "EXAM",
+      TRUE ~ NA_character_  # In case of a tie or missing data
+    )
+  ) 
+
+  
+  return(tibble::lst(et_sum,et_sum_x, et_sum_x_indv))
 
 
 }
@@ -283,4 +305,16 @@ plt_lr_gi <- ind_df |>
   facet_wrap(Fit_Method~Model,scales="free",ncol=2) + 
   theme_bw() + theme(legend.position = "bottom") + labs(title = "Posterior distribution of lr") 
   plt_c_gi + plt_lr_gi
+}
+
+
+
+extract_info <- function(raw_names) {
+  full_name <- raw_names
+  n_samp <- str_extract(raw_names, "(?<=_)\\d+(?=_)")
+  ng_value <- str_extract(raw_names, "(?<=ng)\\d+")
+  buf_value <- str_replace(str_extract(raw_names, "(?<=buf)[0-9p]+"), "p", ".")
+  run_type <- ifelse(str_detect(raw_names, "ss"), "ss", "trial")
+  
+  data.frame(full_name, n_samp, ng_value, buf_value, run_type)
 }
