@@ -117,12 +117,3 @@ purrr::map(abc_files, render_report)
 
 
 
-#m1r1 10.147.17.45
-#m1l2 10.147.17.211
-library(parallel)
-
-cl <- parallel::makePSOCKcluster(
-  c("10.147.17.69", "10.147.17.211"),
-  master = "10.147.17.69",
-  user = "thomasgorman"
-)
