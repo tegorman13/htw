@@ -7,6 +7,10 @@ ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 dsv <- ds |> filter(condit=="Varied")  
 dsc <- ds |> filter(condit=="Constant") 
 
+ids <- c(1,2,4,5,6,7,8, 10,11,12,13)
+ids2 <- c(1,66,36)
+ids3 <- c(20,71,101,4,76,192)
+idsBad <- c(76,192, 101)
 
 group_posterior_all <- readRDS(here::here("data/abc_2M_rmse_p001.rds"))  
 
@@ -80,7 +84,7 @@ fit_indv <- function(sbj_id, simulation_function, prior_samples,Model, Group) {
 #unique(dsv$id)
 
 t1=system.time({
-  id_fits_exam_varied <- map(unique(dsv$id), ~ fit_indv(sbj_id=.x,
+  id_fits_exam_varied <- map(ids2, ~ fit_indv(sbj_id=.x,
                                                         simulation_function=full_sim_exam, 
                                                         prior_samples=prior_samples, 
                                                         Model="EXAM", 
@@ -98,20 +102,20 @@ t1=system.time({
                                                        Group="Varied"))  
   names(id_fits_alm_varied) <- unique(dsv$id)
   
-  id_fits_exam_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
-                                                          simulation_function=full_sim_exam, 
-                                                          prior_samples=prior_samples, 
-                                                          Model="EXAM", 
-                                                          Group="Constant"))
-  names(id_fits_exam_constant) <- unique(dsc$id)
-  
-  
-  id_fits_alm_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
-                                                         simulation_function=full_sim_alm, 
-                                                         prior_samples=prior_samples, 
-                                                         Model="ALM", 
-                                                         Group="Constant"))  
-  names(id_fits_alm_constant) <- unique(dsc$id)  
+  # id_fits_exam_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
+  #                                                         simulation_function=full_sim_exam, 
+  #                                                         prior_samples=prior_samples, 
+  #                                                         Model="EXAM", 
+  #                                                         Group="Constant"))
+  # names(id_fits_exam_constant) <- unique(dsc$id)
+  # 
+  # 
+  # id_fits_alm_constant <- map(unique(dsc$id), ~ fit_indv(sbj_id=.x,
+  #                                                        simulation_function=full_sim_alm, 
+  #                                                        prior_samples=prior_samples, 
+  #                                                        Model="ALM", 
+  #                                                        Group="Constant"))  
+  # names(id_fits_alm_constant) <- unique(dsc$id)  
   
 })
 

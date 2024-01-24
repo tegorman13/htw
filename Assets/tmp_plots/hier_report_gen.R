@@ -52,8 +52,8 @@ render_report <- function(input) {
 
 
 
-print("removing existing .qmd files in hier_reports")
-file.remove(list.files("hier_reports", pattern = ".qmd", full.names = TRUE))
+# print("removing existing .qmd files in hier_reports")
+# file.remove(list.files("hier_reports", pattern = ".qmd", full.names = TRUE))
 
 
 
