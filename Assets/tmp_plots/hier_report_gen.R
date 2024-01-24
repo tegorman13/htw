@@ -114,3 +114,15 @@ purrr::map(abc_files, render_report)
 #basename(fn)
 #"ind_abc_ss_1000_ng100_bufp55.rds"
 # get filename without extension
+
+
+
+#m1r1 10.147.17.45
+#m1l2 10.147.17.211
+library(parallel)
+
+cl <- parallel::makePSOCKcluster(
+  c("10.147.17.69", "10.147.17.211"),
+  master = "10.147.17.69",
+  user = "thomasgorman"
+)

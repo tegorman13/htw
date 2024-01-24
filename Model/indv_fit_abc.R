@@ -17,7 +17,7 @@ tr <- group_posterior_all |> map_dfr(~tibble(pluck(.x$tr_results)))
 
 
 # kernel density estimate of group posteriors
-n_prior_samples=4000; ngrid=100; buf = 5
+n_prior_samples=4000; ngrid=50; buf = .1
 kde_results <- purrr::map(group_posterior_all, ~
                             purrr::map_if(.x, is.list, ~compute_kde(.x$c, .x$lr, ngrid = ngrid, nsamples=n_prior_samples, lim_buffer=buf)))
 
