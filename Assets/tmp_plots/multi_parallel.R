@@ -1,7 +1,10 @@
 # https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server#step-2-copying-an-ssh-public-key-to-your-server
 # https://kb.iu.edu/d/aews
+
+
 #https://www.mm218.dev/posts/2023-03-03-parallel/
 #https://win-vector.com/2016/01/22/running-r-jobs-quickly-on-many-machines/
+# https://mvuorre.github.io/posts/remote-r/
 #m1r1 10.147.17.45
 # m1l2 10.147.17.69
 

@@ -259,6 +259,35 @@ d |> ggplot(aes(x = x, y = val, fill=Resp)) +
 }
 
 
+indv_predictive_dist <- function(post_dat_l, ind_fits_df, sbj=1)
+{
+  
+  p1 <- indv_predictive_plots(post_dat_l, sbj) 
+  
+  p2 <-  ind_fits_df |> filter(id %in% sbj) |> 
+    arrange(id,rank, Fit_Method, Model) |>
+    group_by(id, Fit_Method, Model) |>
+    mutate(cBest=round(first(c),5), 
+           flab = paste0(Fit_Method, "\n Best c: ", cBest)) |>
+    ggplot(aes(x=c, Fill=Model))+geom_density(alpha=.5) + 
+    ggh4x::facet_nested_wrap(~Model+flab, scales="free",ncol=3) +
+    labs(title = "Posterior distribution of c")  
+  
+  p3 <-  ind_fits_df |> filter(id %in% sbj) |> 
+    arrange(id,rank, Fit_Method, Model) |>
+    group_by(id, Fit_Method, Model) |>
+    mutate(lrBest=round(first(lr),4), 
+           flab = paste0(Fit_Method, "\n Best lr: ", lrBest)) |>
+    ggplot(aes(x=lr, Fill=Model))+geom_density(alpha=.5) + 
+    ggh4x::facet_nested_wrap(~Model+flab, scales="free",ncol=3) +
+    labs(title = "Posterior distribution of lr") 
+  
+  p1 / p2 / p3  
+  
+}
+
+
+
 plot_sampled_posterior <- function(ind_fits)
 {
   sampled_posterior <- ind_fits$runInfo$kde_results |>

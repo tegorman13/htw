@@ -17,7 +17,7 @@ execute:
 
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr)
 conflict_prefer_all("dplyr", quiet = TRUE)
-
+options(scipen = 999)
 walk(c("Display_Functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 ids <- c(1,2,4,5,6,7,8, 10,11,12,13)
@@ -142,6 +142,33 @@ indv_predictive_plots(post_dat_l, ids2)
 indv_predictive_plots(post_dat_l, idsBad)
 
 ```
+
+
+
+
+
+
+### Subject 1
+```{r fig.width=11, fig.height=12}
+ 
+indv_predictive_dist(post_dat_l,ind_fits_df, sbj=list(1))
+# plot_indv_posterior(ind_fits_df |> filter(id==1))
+# ind_fits_df |> filter(id==1, Fit_Method=="Test Only", Model=="EXAM") |> pull(c) |> unique()
+```
+
+
+### Subject 36
+```{r fig.width=11, fig.height=12}
+ 
+indv_predictive_dist(post_dat_l,ind_fits_df, sbj=list(36))
+# plot_indv_posterior(ind_fits_df |> filter(id==1))
+# ind_fits_df |> filter(id==1, Fit_Method=="Test Only", Model=="EXAM") |> pull(c) |> unique()
+```
+
+
+
+
+
 
 
 ## Bigger Tables:

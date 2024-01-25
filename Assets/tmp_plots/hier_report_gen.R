@@ -70,7 +70,7 @@ abc_files <- abc_files[!files_to_remove]
 
 purrr::map(abc_files, render_report)
 
-
+source("ind_fit_inspect.R")
 
 
 # delete all .qmd files in hier_reports - won't work in R project
