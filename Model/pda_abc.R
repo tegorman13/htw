@@ -110,7 +110,21 @@ pda_abc <- function(simulation_function, prior_samples, data, num_iterations = 5
 
 
 data <- dsv |> filter(id == 1)
-chain_list <- pda_abc(full_sim_exam, prior_samples, data, num_iterations = 5000, num_chains = 4)
+chain_list <- pda_abc(full_sim_exam, prior_samples, data, num_iterations = 50, num_chains = 2)
+
+
+t1=system.time({
+cl <- map(unique(ds$id), function(id) {
+  data <- ds |> filter(id == id)
+  chain_list <- pda_abc(full_sim_exam, prior_samples, data, num_iterations = 500, num_chains = 4)
+  chain_list
+})
+})
+
+
+cl
+
+
 
 # Processing the chains
 chain_dfs <- lapply(chain_list, function(chain) {
