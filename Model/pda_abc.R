@@ -81,8 +81,6 @@ metropolis_hastings <- function(current_theta, proposed_theta, current_T_star, p
 }
 
 
-
-
 pda_abc <- function(simulation_function, prior_samples, data, num_iterations = 5000, num_chains = 4) {
   
   input_layer =  c(100,350,600,800,1000,1200)
