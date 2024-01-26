@@ -102,6 +102,7 @@ pda_abc <- function(simulation_function, prior_samples, data, num_iterations = 5
 })
 
 chains_df <- imap_dfr(chain_dfs, ~mutate(.x, chain = .y)) |> mutate(id=data$id[1])
+}
 
 ####################################
 ####################################
