@@ -193,11 +193,11 @@ plan(sequential)
 # 1997s; 1420s; 2066s teter; 1512s; 2189; 1538 for 3000 iter, 6 chain on tg_m1 (cluster plan 8 cores)
 
 
-# 3559-2529-3675-2676 and 3506-2496-3630-2683 for m1l4 and m1l1  for 4000 iter, 4 chains (cluster plan - 6 cores)
+# 3559-2529-3675-2676-2539 and 3506-2496-3630-2683-2577 for m1l4 and m1l1  for 4000 iter, 4 chains (cluster plan - 6 cores)
 # 3476 on m1r1 4000 iter, 4 chains (multicore plan - 6 cores)
 
 
-# 4509; 3208; 4671 for m1l2 for 3000 iter, 6 chain (multicore plan - 6 cores)
+# 4509; 3208; 4671; 3430 for m1l2 for 3000 iter, 6 chain (multicore plan - 6 cores)
 
 
 tic()

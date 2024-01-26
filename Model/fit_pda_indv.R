@@ -1,5 +1,3 @@
-library(dplyr)
-library(purrr)
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, future, furrr, tictoc,extraDistr)
 conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("fun_alm","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
@@ -117,7 +115,7 @@ cMean <<- -5; cSig <<- 3; lrSig <<- 2
 prior_samples <- lg_generate_prior_c_lr(n=5000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=TRUE)
 
-num_iterations = 2000
+num_iterations = 4000
 num_chains = 4
 
 save_folder <- paste0("n_iter_",num_iterations,"_nc_",num_chains,"_",format(Sys.time(),"%H%M%OS"))
