@@ -109,9 +109,9 @@ chains_df <- imap_dfr(chain_dfs, ~mutate(.x, chain = .y)) |> mutate(id=data$id[1
 ####################################
 
 
-ids1 <- 1
-ids1 <- c(1,33,66)
-#ids1 <- as.numeric(levels(ds$id))
+# ids1 <- 1
+# ids1 <- c(1,33,66)
+ids1 <- as.numeric(levels(ds$id))
 
 cMean <<- -5; cSig <<- 2; lrSig <<- 1.5
 prior_samples <- lg_generate_prior_c_lr(n=5000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
