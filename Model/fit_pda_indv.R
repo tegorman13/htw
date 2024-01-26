@@ -89,7 +89,7 @@ pda_abc <- function(simulation_function, prior_samples, data, num_iterations = 5
       t <- target_data  # Your observed data
       current_theta <- metropolis_hastings(current_theta, proposed_theta, current_T_star, proposed_T_star, t)
       # if i is divisble by 100, print current_theta
-     # if (i %% 1000 == 0) print(current_theta)
+      #if (i %% 1000 == 0) print(current_theta)
       chain[[i]] <- current_theta
     }
     chains[[chain_idx]] <- chain
@@ -109,15 +109,16 @@ chains_df <- imap_dfr(chain_dfs, ~mutate(.x, chain = .y)) |> mutate(id=data$id[1
 
 
 # ids1 <- 1
-ids1 <- c(1,33,66)
-#ids1 <- as.numeric(levels(ds$id))
+#ids1 <- c(1,33,66)
+ids1 <- as.numeric(levels(ds$id))
+#ids1 <- c(49)
 
-cMean <<- -5; cSig <<- 4; lrSig <<- 3
+cMean <<- -5; cSig <<- 3; lrSig <<- 2
 prior_samples <- lg_generate_prior_c_lr(n=5000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=TRUE)
 
-num_iterations = 400
-num_chains = 2
+num_iterations = 2000
+num_chains = 4
 
 save_folder <- paste0("n_iter_",num_iterations,"_nc_",num_chains,"_",format(Sys.time(),"%H%M%OS"))
 dir.create(paste0("data/abc_pda/",save_folder))
