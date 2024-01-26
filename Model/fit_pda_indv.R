@@ -117,8 +117,8 @@ cMean <<- -5; cSig <<- 2; lrSig <<- 1.5
 prior_samples <- lg_generate_prior_c_lr(n=5000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=TRUE)
 
-num_iterations = 4000
-num_chains = 4
+num_iterations = 3000
+num_chains = 6
 
 save_folder <- paste0("n_iter_",num_iterations,"_nc_",num_chains,"_",format(Sys.time(),"%H%M%OS"))
 dir.create(paste0("data/abc_pda/",save_folder))
@@ -128,7 +128,7 @@ dir.create(paste0("data/abc_pda/",save_folder))
 
 ### EXAM Test 
 (nc <- future::availableCores())
-future::plan(future::cluster, workers = nc-2)
+future::plan(multicore, workers = nc-2)
 t1=system.time({
 exam_test <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_exam, 
                                                     prior_samples = prior_samples, 
@@ -153,7 +153,7 @@ saveRDS(run_save,file=here::here(file_name))
 #### ALM Test
 
 (nc <- future::availableCores())
-future::plan(future::cluster, workers = nc-2)
+future::plan(multicore, workers = nc-2)
 t1=system.time({
   alm_test <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_alm, 
                                                   prior_samples = prior_samples, 
@@ -178,7 +178,7 @@ saveRDS(run_save,file=here::here(file_name))
 #### EXAM Test & Train
 
 (nc <- future::availableCores())
-future::plan(future::cluster, workers = nc-2)
+future::plan(multicore, workers = nc-2)
 t1=system.time({
   exam_test_train <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_exam, 
                                                   prior_samples = prior_samples, 
@@ -204,7 +204,7 @@ saveRDS(run_save,file=here::here(file_name))
 #### ALM Test & Train
 
 (nc <- future::availableCores())
-future::plan(future::cluster, workers = nc-2)
+future::plan(multicore, workers = nc-2)
 t1=system.time({
   alm_test_train <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_alm, 
                                                   prior_samples = prior_samples, 
@@ -230,7 +230,7 @@ saveRDS(run_save,file=here::here(file_name))
 #### EXAM Train
 
 (nc <- future::availableCores())
-future::plan(future::cluster, workers = nc-2)
+future::plan(multicore, workers = nc-2)
 t1=system.time({
   exam_train <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_exam, 
                                                   prior_samples = prior_samples, 
@@ -257,7 +257,7 @@ saveRDS(run_save,file=here::here(file_name))
 #### ALM Train
 
 (nc <- future::availableCores())
-future::plan(future::cluster, workers = nc-2)
+future::plan(multicore, workers = nc-2)
 t1=system.time({
   alm_train <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_alm, 
                                                        prior_samples = prior_samples, 
