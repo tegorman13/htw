@@ -111,3 +111,48 @@ id_fit_exam_varied <- fit_indv_gibbs_abc(sbj_id = 1,
                                           Group = "Varied")
 
 # ... [rest of the code] ...
+
+
+
+
+J = 2
+T = 100
+theta = rexp(J,lambda) # generate parameters for each subject
+lambda = .3
+Y = matrix(NA,J,T)
+for(j in 1:J) { Y[j,] = rpois(T,theta[j])} #generate subject data
+
+eps=1e-10# tolerance threshold
+N=50 # number of particles
+p.lambda=c(.01,.01) #prior settings(Gamma distribution)
+rho=function(x,y)abs(sum(x)-sum(y))/T #rho function
+
+abc=NULL
+abc$theta=matrix(NA,N,J) # declare a matrix for storage
+abc$lambda=numeric(N) # declare a matrix for storage
+
+for(i in 1:N){ #loop over particles
+
+for(j in 1:J){ #loop over subjects
+
+d=eps+1 #initialized to be greater than eps
+
+#continue proposal generation until condition is satisfied
+while(d>eps){
+  print(paste0("Subject ",j, "Particle:", i))
+
+theta.1=rnorm(1,mean(Y[j,1]),1)#sample from proposal dist.
+
+x=rpois(T,theta.1) # simulate data
+d=ifelse(theta.1>0,rho(Y[j,1],x),eps+1) #compute distance
+print(d)
+}
+abc$theta[i,j]=theta.1 #store the accepted value
+}
+
+#sample from conditional distribution of lambda
+abc$lambda[i]=rgamma(1,J+p.lambda[1],sum(abc$theta[i,])+p.lambda[2])
+} 
+
+abc$lambda
+abc$theta
