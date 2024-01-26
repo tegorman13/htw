@@ -17,9 +17,9 @@ lg_generate_prior_c_lr <- function(n,cMean=-5,cSig=2,lrSig=1) {
 }
 
 prior_function <- function(theta) {
-  c_prior <- dlnorm(theta$c, -5,2) 
-  lr_prior <- extraDistr::rhnorm(theta$lr,sigma=lrSig) 
-  return(c_prior * lr_prior) 
+  log_c_prior <- log(dlnorm(theta$c, -5, 2))
+  log_lr_prior <- log(extraDistr::rhnorm(theta$lr, sigma=lrSig))
+  return(log_c_prior + log_lr_prior)
 }
 
 kernel_density_estimate <- function(T_star, t, h) {
