@@ -184,8 +184,14 @@ plan(sequential)
 
 # 3857s (1 hour 4 min) for 5000 iter; 4 chains on windows_3070. 
 #2238 for 3000 iter, 4 chain on 3070
-#887 secs for 2K iterations, 4 chains on tg_m1
+# 2132; 3082s teter; for 4000 iter, 4 chains on 3070 (cluster plan - 14 cores)
 
+#887 secs for 2K iterations, 4 chains on tg_m1
+# 1997s; 1420s; 2066s teter;   for 3000 iter, 6 chain on tg_m1 (cluster plan 8 cores)
+
+# 3559-2529 and 3506-2496 for m1l4 and m1l1  for 4000 iter, 4 chains (cluster plan - 6 cores)
+
+# 4509 for m1l2 for 3000 iter, 6 chain (multicore plan - 6 cores)
 
 
 tic()
