@@ -22,10 +22,11 @@ ids <- c(1,2,4,5,6,7,8, 10,11,12,13)
 #   return(prior_samples)
 # }
 
-lg_generate_prior_c_lr <- function(n) {
+lg_generate_prior_c_lr <- function(n,cSig=2,lrSig=1) {
   prior_samples <- tibble(
-    c = rlnorm(n, -5, 2),
-    lr = abs(rnorm(n, .5, 3)),
+   # c = extraDistr::rhnorm(n,sigma=cSig),
+    c = rlnorm(n,-5,sdlog=cSig),
+    lr = extraDistr::rhnorm(n,sigma=lrSig),
   )
   return(prior_samples)
 }
@@ -33,12 +34,14 @@ lg_generate_prior_c_lr <- function(n) {
 n=5000
 # prior_samples <- generate_prior_c_lr(n) 
 
-prior_samples <- lg_generate_prior_c_lr(n) 
+prior_samples <- lg_generate_prior_c_lr(n,cSig=2.0,lrSig=2) 
 
 mean(prior_samples$c)
 median(prior_samples$c)
 min(prior_samples$c)
 max(prior_samples$c)
+quantile(prior_samples$c)
+plot(density(prior_samples$c))
 
 mean(prior_samples$lr)
 median(prior_samples$lr)
@@ -46,6 +49,13 @@ min(prior_samples$lr)
 max(prior_samples$lr)
 plot(density(prior_samples$lr))
 
+
+# Update the prior_function to handle vector input
+prior_function <- function(theta) {
+  c_prior <- dlnorm(theta$c, -5,3) 
+  lr_prior <- dnorm(theta$lr, 2,1) 
+  return(c_prior * lr_prior) 
+}
 
 # KDE Function
 kernel_density_estimate <- function(T_star, t, h) {
@@ -59,12 +69,7 @@ compute_bandwidth <- function(T_star) {
   min(sd(T_star), IQR(T_star) / 1.34) * 0.9 * n^(-1/5)
 }
 
-# Update the prior_function to handle vector input
-prior_function <- function(theta) {
-  c_prior <- dlnorm(theta$c, -5,3) 
-  lr_prior <- dnorm(theta$lr, 2,1) 
-  return(c_prior * lr_prior) 
-}
+
 
 metropolis_hastings <- function(current_theta, proposed_theta, current_T_star, proposed_T_star, t) {
   h_current <- compute_bandwidth(current_T_star)
@@ -169,8 +174,8 @@ chains_by_sbj <- future_map(subjects_data, ~pda_abc(simulation_function = full_s
                                                     prior_samples = prior_samples, 
                                                     data = .x, 
                                                     num_iterations = 2000, 
-                                                    num_chains = 4), .options = furrr_options(seed = TRUE))
-                                                     %>% setNames(ids1)
+                                                    num_chains = 4), .options = furrr_options(seed = TRUE)) %>% setNames(ids1)
+                                                     
 
 toc()
 
@@ -240,9 +245,10 @@ map(chains_by_sbj, ~{
   head(posterior_predictive_data$sim_vx_agg)
 } )
 
-
-chains_by_sbj |> tidyselect:::select("66") %>% map(., ~{
-  trim = .x |> group_by(chain) |> filter(row_number() < (nrow(.x))/2) |> ungroup() 
+chains_by_sbj = exam_test
+chains_by_sbj = alm_test
+chains_by_sbj |> tidyselect:::select("1") %>% map(., ~{
+  trim = .x |> group_by(chain) |> filter(row_number() < (nrow(.x))/1.5) |> ungroup() 
   data <- ds |> filter(id == trim$id[1])
   posterior_predictive_data <- generate_posterior_predictive(full_sim_exam, trim, data, num_samples = 100)
    print({ trim |> ggplot(aes(x=c,fill=as.factor(chain))) +geom_density() } +

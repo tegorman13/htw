@@ -1,4 +1,29 @@
 
+
+ri_pda_indv <- function() {
+  # Get all object names in the environment
+  all_objects <- ls(envir = globalenv())
+  function_names <- all_objects[sapply(all_objects, function(x) is.function(get(x)))]
+  functions_list <- setNames(lapply(function_names, function(x) get(x)), function_names)
+
+  runInfo <- tibble::lst(
+    #functions = functions_list,
+    runScripts = list(
+      indv_fit_script = readLines(here::here("Model/fit_pda_indv.R")),
+     # model_script = readLines(here::here("Functions/fun_model.R")),
+      alm_script = readLines(here::here("Functions/fun_alm.R"))
+    ),
+    path = getwd(),
+    Computer = Sys.info()["nodename"],
+    systemInfo = Sys.info(),
+    sessionInfo = sessionInfo(),
+    timeInit = Sys.time()
+  )
+
+  return(runInfo)
+}
+
+
 sample_from_kde <- function(kde_result, n_samples) {
   # Flatten the z matrix and sample indices based on these probabilities
   sampled_indices <- sample(length(kde_result$z), size = n_samples, replace = TRUE, prob = c(kde_result$z))
@@ -40,26 +65,20 @@ rho=function(x,y) abs(sum(x)-sum(y))/length(x)			# rho function
 
 
 
-
-
-
-
-nll2 <- function(obsv,pred,sigma)
-{
-  nll= -sum(dnorm(obsv,mean=pred,sd=sigma,log=TRUE)) 
-  #print(nll)
-  if (is.nan(nll)) {
-    nll <- 1e4 # Large penalty
-  }
-  return(nll)
-}
+# nll2 <- function(obsv,pred,sigma)
+# {
+#   nll= -sum(dnorm(obsv,mean=pred,sd=sigma,log=TRUE)) 
+#   if (is.nan(nll)) {
+#     nll <- 1e4 # Large penalty
+#   }
+#   return(nll)
+# }
 
 
 Mode <- function(x) {
   ux <- unique(x)
   ux[which.max(tabulate(match(x, ux)))]
 }
-
 
 weight_plot <- function(weight.mat){
   tibbleFromMat <-
@@ -76,9 +95,6 @@ weight_plot <- function(weight.mat){
     geom_text(aes(label = round(value, 3))) +
     scale_fill_gradient(low = "white", high = "red")
 }
-
-
-
 
 
 round_tibble <- function(tbl, rn) {
@@ -116,40 +132,35 @@ nll <- function(obsv,pred,sigma)
 }
 
 
-
-
-
-
 RMSE <- function(x,y){
- # print("rmseTrial")
   sqrt(mean((x-y)^2, na.rm=TRUE))
 }
 
-RMSE.blocked <- function(x,y,blocks=6){
-  #print("rmseBlocked")
-  data.table(x=x,y=y,t=seq(1,length(x))) %>% 
-    .[, `:=`(fitBins = cut(t, breaks = ..blocks, labels = c(1:..blocks)))] %>%
-    .[, .(predMean = mean(x), obsMean = mean(y)), keyby = .(fitBins)] %>%
-    .[, RMSE(predMean,obsMean)] %>% as.numeric()
-}
+# RMSE.blocked <- function(x,y,blocks=6){
+#   #print("rmseBlocked")
+#   data.table(x=x,y=y,t=seq(1,length(x))) %>% 
+#     .[, `:=`(fitBins = cut(t, breaks = ..blocks, labels = c(1:..blocks)))] %>%
+#     .[, .(predMean = mean(x), obsMean = mean(y)), keyby = .(fitBins)] %>%
+#     .[, RMSE(predMean,obsMean)] %>% as.numeric()
+# }
 
 MAE <- function(x, y) {
   mean(abs(x - y))
 }
 
-MAPE <- function(x, y) {
-  mean(abs((x - y) / y)) * 100
-}
+# MAPE <- function(x, y) {
+#   mean(abs((x - y) / y)) * 100
+# }
 
-MedAE <- function(x, y) {
-  median(abs(x - y))
-}
+# MedAE <- function(x, y) {
+#   median(abs(x - y))
+# }
 
-HuberLoss <- function(x, y, delta = 1) {
-  error <- x - y
-  abs_error <- abs(error)
-  loss <- ifelse(abs_error <= delta, 0.5 * error^2, delta * (abs_error - 0.5 * delta))
-  mean(loss)
-}
+# HuberLoss <- function(x, y, delta = 1) {
+#   error <- x - y
+#   abs_error <- abs(error)
+#   loss <- ifelse(abs_error <= delta, 0.5 * error^2, delta * (abs_error - 0.5 * delta))
+#   mean(loss)
+# }
 
 

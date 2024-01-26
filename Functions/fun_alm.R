@@ -77,6 +77,7 @@ alt_exam <- function(input, c, input.layer = input_layer, output.layer = output_
     return(round(aresp + slope * (input - nearestTrain), 3))
 }
 
+
 alm.trial <- function(input, corResp, c = 1, lr, input.layer, output.layer, weight.mat) {
   alm_resp <- alm.response(input, c, input.layer, output.layer, weight.mat)
   updated_weight.mat <- alm.update(corResp, c, lr, output.layer, alm_resp$input.activation, alm_resp$output.activation, weight.mat)
@@ -96,9 +97,6 @@ alm.sim <- function(dat, c, lr, input.layer = INPUT_LAYER_DEFAULT, output.layer 
    dat <- cbind(dat,almResp=st)
   return(list(d = dat, wm = weight.mat, c = c, lr = lr))
 }
-
-
-
 
 full_sim_exam <- function(data, c, lr,pred_fun=exam.response, input_layer, output_layer,return_dat="test_data",mode="sim") {
   train_data <- data[expMode2=="Train", c("condit","tr","expMode2", "x","y")] 
