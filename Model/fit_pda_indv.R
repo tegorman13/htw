@@ -128,7 +128,7 @@ dir.create(paste0("data/abc_pda/",save_folder))
 
 ### EXAM Test 
 (nc <- future::availableCores())
-future::plan(multicore, workers = nc-1)
+future::plan(multicore, workers = nc)
 t1=system.time({
 exam_test <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_exam, 
                                                     prior_samples = prior_samples, 
@@ -153,7 +153,7 @@ saveRDS(run_save,file=here::here(file_name))
 #### ALM Test
 
 (nc <- future::availableCores())
-future::plan(multicore, workers = nc-1)
+future::plan(multicore, workers = nc)
 t1=system.time({
   alm_test <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_alm, 
                                                   prior_samples = prior_samples, 
@@ -178,7 +178,7 @@ saveRDS(run_save,file=here::here(file_name))
 #### EXAM Test & Train
 
 (nc <- future::availableCores())
-future::plan(multicore, workers = nc-1)
+future::plan(multicore, workers = nc)
 t1=system.time({
   exam_test_train <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_exam, 
                                                   prior_samples = prior_samples, 
@@ -204,7 +204,7 @@ saveRDS(run_save,file=here::here(file_name))
 #### ALM Test & Train
 
 (nc <- future::availableCores())
-future::plan(multicore, workers = nc-1)
+future::plan(multicore, workers = nc)
 t1=system.time({
   alm_test_train <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_alm, 
                                                   prior_samples = prior_samples, 
@@ -230,7 +230,7 @@ saveRDS(run_save,file=here::here(file_name))
 #### EXAM Train
 
 (nc <- future::availableCores())
-future::plan(multicore, workers = nc-1)
+future::plan(multicore, workers = nc)
 t1=system.time({
   exam_train <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_exam, 
                                                   prior_samples = prior_samples, 
@@ -257,7 +257,7 @@ saveRDS(run_save,file=here::here(file_name))
 #### ALM Train
 
 (nc <- future::availableCores())
-future::plan(multicore, workers = nc-1)
+future::plan(multicore, workers = nc)
 t1=system.time({
   alm_train <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_alm, 
                                                        prior_samples = prior_samples, 
