@@ -41,6 +41,9 @@ rho=function(x,y) abs(sum(x)-sum(y))/length(x)			# rho function
 
 
 
+
+
+
 nll2 <- function(obsv,pred,sigma)
 {
   nll= -sum(dnorm(obsv,mean=pred,sd=sigma,log=TRUE)) 

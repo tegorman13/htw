@@ -1,5 +1,3 @@
-
-
 library(dplyr)
 library(purrr)
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, future, furrr, tictoc)
@@ -11,27 +9,29 @@ ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 dsv <- ds |> filter(condit=="Varied")  
 dsc <- ds |> filter(condit=="Constant") 
 
+dsId <- ds |> select(id,condit) |> unique()
+
 ids <- c(1,2,4,5,6,7,8, 10,11,12,13)
 
 
+# generate_prior_c_lr <- function(n) {
+#   prior_samples <- tibble(
+#     c = runif(n, 0.000001, 2),
+#     lr = runif(n, 0.000001, 3),
+#   )
+#   return(prior_samples)
+# }
 
-generate_prior_c_lr <- function(n) {
-  prior_samples <- tibble(
-    c = runif(n, 0.000001, 2),
-    lr = runif(n, 0.000001, 3),
-  )
-  return(prior_samples)
-}
 lg_generate_prior_c_lr <- function(n) {
   prior_samples <- tibble(
     c = rlnorm(n, -5, 2),
-    lr = rnorm(n, 2, 1),
+    lr = abs(rnorm(n, .5, 3)),
   )
   return(prior_samples)
 }
 
 n=5000
-prior_samples <- generate_prior_c_lr(n) 
+# prior_samples <- generate_prior_c_lr(n) 
 
 prior_samples <- lg_generate_prior_c_lr(n) 
 
@@ -39,7 +39,12 @@ mean(prior_samples$c)
 median(prior_samples$c)
 min(prior_samples$c)
 max(prior_samples$c)
+
 mean(prior_samples$lr)
+median(prior_samples$lr)
+min(prior_samples$lr)
+max(prior_samples$lr)
+plot(density(prior_samples$lr))
 
 
 # KDE Function
@@ -60,7 +65,6 @@ prior_function <- function(theta) {
   lr_prior <- dnorm(theta$lr, 2,1) 
   return(c_prior * lr_prior) 
 }
-
 
 metropolis_hastings <- function(current_theta, proposed_theta, current_T_star, proposed_T_star, t) {
   h_current <- compute_bandwidth(current_T_star)
@@ -125,62 +129,64 @@ chains_df <- imap_dfr(chain_dfs, ~mutate(.x, chain = .y)) |> mutate(id=data$id[1
 }
 
 
-data <- dsv |> filter(id == 1)
-chain_list <- pda_abc(full_sim_exam, prior_samples, data, num_iterations = 4000, num_chains = 2)
+# data <- dsv |> filter(id == 1)
+# chain_list <- pda_abc(full_sim_exam, prior_samples, data, num_iterations = 4000, num_chains = 2)
 
 
-chains_df <- imap_dfr(chain_list, ~mutate(.x, chain = .y))
-chain_dfs2 <- split(chains_df |> select(-chain), f = chains_df$chain)
-mcmc_list <- lapply(chain_dfs2, as.mcmc)
-(gelman_result <- gelman.diag(mcmc_list))
-plot(mcmc.list(mcmc_list))
+# chains_df <- imap_dfr(chain_list, ~mutate(.x, chain = .y))
+# chain_dfs2 <- split(chains_df |> select(-chain), f = chains_df$chain)
+# mcmc_list <- lapply(chain_dfs2, as.mcmc)
+# (gelman_result <- gelman.diag(mcmc_list))
+# plot(mcmc.list(mcmc_list))
+
+# simulation_function <- full_sim_exam
+# prior_samples <- lg_generate_prior_c_lr(n=1000) 
+# num_iterations = 100
+# num_chains = 4
+
+# posterior_predictive_data <- generate_posterior_predictive(full_sim_exam, chains_by_sbj[[2]], data, num_samples = 100)
+
+# ids1 <- c(1,36,66, 76,101,192)
 
 
-simulation_function <- full_sim_exam
-
-prior_samples <- lg_generate_prior_c_lr(n=1000) 
-num_iterations = 100
-num_chains = 4
-
-
-
-posterior_predictive_data <- generate_posterior_predictive(full_sim_exam, chains_by_sbj[[2]], data, num_samples = 100)
-
-
-ids1 <- c(1,36,66, 76,101,192)
 ids1 <- as.numeric(levels(ds$id))
-
-
-
+prior_samples <- lg_generate_prior_c_lr(n=5000) 
 subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=FALSE)
 
-chains_by_sbj <- map(subjects_data, ~pda_abc(simulation_function = full_sim_exam, 
-                                                 prior_samples = prior_samples, 
-                                                 data = .x, 
-                                                 num_iterations = 10, 
-                                                 num_chains = 1)) %>% # 
-                                                 setNames(ids1)
+# chains_by_sbj <- map(subjects_data, ~pda_abc(simulation_function = full_sim_exam, 
+#                                                  prior_samples = prior_samples, 
+#                                                  data = .x, 
+#                                                  num_iterations = 10, 
+#                                                  num_chains = 1)) %>% # 
+#                                                  setNames(ids1)
                                                 
 
-
 (nc <- future::availableCores())
-future::plan(future::cluster, workers = nc-2)
-
-# opts <- furrr_options(
-#   globals = list(dat = dat, lm2 = lm2, glm2 = glm2),
-#   packages = c("dplyr", "broom")
-# )
+future::plan(future::cluster, workers = nc-1)
 
 tic()
 chains_by_sbj <- future_map(subjects_data, ~pda_abc(simulation_function = full_sim_exam, 
                                                     prior_samples = prior_samples, 
                                                     data = .x, 
-                                                    num_iterations = 50, 
-                                                    num_chains = 2), .options = furrr_options(seed = TRUE))
+                                                    num_iterations = 2000, 
+                                                    num_chains = 4), .options = furrr_options(seed = TRUE))
+                                                     %>% setNames(ids1)
 
 toc()
+
+
 plan(sequential)
 
+# 3857s (1 hour 4 min) for 5000 iter; 4 chains on windows_3070. 
+#2238 for 3000 iter, 4 chain on 3070
+#887 secs for 2K iterations, 4 chains on tg_m1
+
+
+
+tic()
+k=rnorm(1000)
+Sys.sleep(1)
+t1=toc(log=TRUE)
 
 
 
@@ -235,6 +241,26 @@ map(chains_by_sbj, ~{
 } )
 
 
+chains_by_sbj |> tidyselect:::select("66") %>% map(., ~{
+  trim = .x |> group_by(chain) |> filter(row_number() < (nrow(.x))/2) |> ungroup() 
+  data <- ds |> filter(id == trim$id[1])
+  posterior_predictive_data <- generate_posterior_predictive(full_sim_exam, trim, data, num_samples = 100)
+   print({ trim |> ggplot(aes(x=c,fill=as.factor(chain))) +geom_density() } +
+  trim |> ggplot(aes(x=lr,fill=as.factor(chain))) +geom_density(alpha=.5) )
+  print(head(posterior_predictive_data$sim_rank))
+  head(posterior_predictive_data$sim_vx_agg)
+} )
+
+
+
+
+k = rbindlist(chains_by_sbj)|> left_join(dsId, join_by(id))
+
+
+k |> filter(c<.1) |> ggplot(aes(x=c,fill=condit)) + geom_density()
+k  |> ggplot(aes(x=lr,fill=condit)) + geom_density()
+
+k  |> filter(rank<10) |>  ggplot(aes(x=condit,y=lr)) + geom_col()
 
 posterior_predictive_data <- generate_posterior_predictive(full_sim_exam, chains_by_sbj[[2]], data, num_samples = 100)
 
@@ -309,7 +335,7 @@ generate_posterior_predictive <- function(simulation_function, combined_chain_df
   output_layer = input_layer
   return_dat = "test_data"
   test_idx <- which(data$expMode2 == "Test")
-  target_data_test <- data[expMode2 == "Test", ]$y
+  target_data_test <- data[data$expMode2 == "Test", ]$y
   # Randomly select parameter sets from the posterior
   sampled_params <- combined_chain_df[sample(1:nrow(combined_chain_df), num_samples), ]
   
