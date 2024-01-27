@@ -202,7 +202,7 @@ plan(sequential)
 # 3318 (m1l1) 4000 iter, 4 chains (multicore plan - 8 cores)
 
 # 3476 on m1r1 4000 iter, 4 chains (multicore plan - 6 cores)
-# 4509; 3208; 4671; 3430; 4320 for m1l2 for 3000 iter, 6 chain (multicore plan - 6 cores)
+# 4509; 3208; 4671; 3430; 4320-3102 for m1l2 for 3000 iter, 6 chain (multicore plan - 6 cores)
 
 
 # (m1r2) 1812-1294-1884-1374-1740-1245 - 2000 iter, 4 chains (multicore 7 cores?)

@@ -111,8 +111,8 @@ chains_df <- imap_dfr(chain_dfs, ~mutate(.x, chain = .y)) |> mutate(id=data$id[1
 ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
 
-cMean <<- -5.5; cSig <<- 3.5; lrSig <<- 2.5
-prior_samples <- lg_generate_prior_c_lr(n=5000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
+cMean <<- -5.5; cSig <<- 3.0; lrSig <<- 2.5
+prior_samples <- lg_generate_prior_c_lr(n=6000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=TRUE)
 
 num_iterations = 8000
