@@ -115,7 +115,7 @@ cMean <<- -5.5; cSig <<- 3.0; lrSig <<- 2.5
 prior_samples <- lg_generate_prior_c_lr(n=6000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=TRUE)
 
-num_iterations = 8000
+num_iterations = 16000
 num_chains = 4
 
 save_folder <- paste0("n_iter_",num_iterations,"_nc_",num_chains,"_",format(Sys.time(),"%H%M%OS"))
