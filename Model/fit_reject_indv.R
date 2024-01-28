@@ -59,8 +59,8 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 
   abc <- rbindlist(abc$dist_sd) |> arrange(mean_error) |> relocate(id,condit)
   best <- abc |> head(1) |> round_tibble(5)
-  message((paste0( data$id[1], " completed in: ", t1[3])))
-  message((paste0("Best c: ", best$c, " Best lr: ", best$lr, " Best error: ", best$mean_error)))
+  message(print(paste0( data$id[1], " completed in: ", t1[3])))
+  message(print(paste0("Best c: ", best$c, " Best lr: ", best$lr, " Best error: ", best$mean_error)))
   return(abc)
 }
 
