@@ -45,7 +45,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
       #print(current_theta)
       abc$dist_sd[[j]] <- cbind(current_theta,dist_sd,tol,inc_count)
       found=1
-      try_count=0;
+     # try_count=0;
       }
       if (try_count>=n_try){
        # message(print(paste0("increase tol for subject", data$id[1])))
