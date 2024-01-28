@@ -59,8 +59,8 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 
   abc <- rbindlist(abc$dist_sd) |> arrange(mean_error) |> relocate(id,condit)
   best <- abc |> head(1) |> round_tibble(5)
-  message(print(paste0( data$id[1], " completed in: ", t1[3])))
-  message(print(paste0("Best c: ", best$c, " Best lr: ", best$lr, " Best error: ", best$mean_error)))
+  message((paste0( data$id[1], " completed in: ", t1[3])))
+  message((paste0("Best c: ", best$c, " Best lr: ", best$lr, " Best error: ", best$mean_error)))
   return(abc)
 }
 
@@ -82,8 +82,8 @@ args <- commandArgs(trailingOnly = TRUE)
 # print(args[1])
 
 # if args[1] is defined, set to num_iterations, otherwise 1000
-num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 500)
-n_try = ifelse(length(args) > 1, as.numeric(args[2]), 500)
+num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 100)
+n_try = ifelse(length(args) > 1, as.numeric(args[2]), 100)
 
 print(num_iterations)
 print(n_try)
