@@ -23,6 +23,9 @@ ind_rank <- it |> group_by(id,Fit_Method,condit,full_name) |> summarise(ALM=mean
 
 it |> filter(id==1, Fit_Method=="Test & Train",x==1200) |> arrange(EXAM_error) 
 
+it |> filter(id==1, Fit_Method=="Test") |> group_by(id,Fit_Method,condit, full_name) |> 
+  summarise(ALM=mean(ALM_error), EXAM=mean(EXAM_error)) |> arrange(EXAM)
+
 ind_rank |> filter(rank==1)
 
 

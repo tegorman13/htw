@@ -7,7 +7,9 @@ ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 
 lg_generate_prior_c_lr <- function(n,cMean=-5,cSig=2,lrSig=1) {
   prior_samples <- tibble(
-    # c = extraDistr::rhnorm(n,sigma=cSig),
+    #c = extraDistr::rhnorm(n,sigma=cSig),
+     #c = runif(n,.000001,1),
+     #lr=runif(n, .001, 6)
     c = rlnorm(n,cMean,sdlog=cSig),
     lr = extraDistr::rhnorm(n,sigma=lrSig),
   )
@@ -15,8 +17,11 @@ lg_generate_prior_c_lr <- function(n,cMean=-5,cSig=2,lrSig=1) {
 }
 
 prior_function <- function(theta) {
-  log_c_prior <- log(dlnorm(theta$c, -5, 2))
-  log_lr_prior <- log(extraDistr::rhnorm(theta$lr, sigma=lrSig))
+  log_c_prior <- (dlnorm(theta$c, cMean, cSig))
+ # log_c_prior = extraDistr::dhnorm(theta$c,sigma=cSig)
+ # log_c_prior <- (dunif(theta$c, .000001, 1))
+  #log_lr_prior <-(dunif(theta$lr, .001, 6))
+  log_lr_prior <- (extraDistr::dhnorm(theta$lr, sigma=lrSig))
   return(log_c_prior + log_lr_prior)
 }
 
@@ -35,14 +40,15 @@ compute_bandwidth <- function(T_star) {
 metropolis_hastings <- function(current_theta, proposed_theta, current_T_star, proposed_T_star, t) {
   h_current <- compute_bandwidth(current_T_star)
   h_proposed <- compute_bandwidth(proposed_T_star)
-  
+
   f_hat_current <- kernel_density_estimate(current_T_star, t, h_current)
   f_hat_proposed <- kernel_density_estimate(proposed_T_star, t, h_proposed)
 
   if (f_hat_current <= 0 || f_hat_proposed <= 0 || is.nan(f_hat_current) || is.nan(f_hat_proposed)) {
+    warning("Non-positive density estimate encountered.")
     return(current_theta)
   }
-  
+
   a <- min(1, (prior_function(proposed_theta) * f_hat_proposed) / (prior_function(current_theta) * f_hat_current))
 
   if (is.nan(a) || is.infinite(a)) {
@@ -51,6 +57,32 @@ metropolis_hastings <- function(current_theta, proposed_theta, current_T_star, p
 
   if (runif(1) < a) return(proposed_theta) else return(current_theta)
 }
+
+# metropolis_hastings <- function(current_theta, proposed_theta, current_T_star, proposed_T_star, t, acceptance_factor = 2.5, acceptance_threshold = 0.2) {
+#   h_current <- compute_bandwidth(current_T_star)
+#   h_proposed <- compute_bandwidth(proposed_T_star)
+#   
+#   f_hat_current <- kernel_density_estimate(current_T_star, t, h_current)
+#   f_hat_proposed <- kernel_density_estimate(proposed_T_star, t, h_proposed)
+#   
+#   if (f_hat_current <= 0 || f_hat_proposed <= 0 || is.nan(f_hat_current) || is.nan(f_hat_proposed)) {
+#     return(current_theta)
+#   }
+#   
+#   ratio <- (prior_function(proposed_theta) * f_hat_proposed) / (prior_function(current_theta) * f_hat_current)
+#   a <- min(acceptance_factor, ratio)
+#   
+#   if (is.nan(a) || is.infinite(a)) {
+#     return(current_theta)
+#   }
+#   
+#   if (runif(1) < a || ratio > acceptance_threshold) {
+#     return(proposed_theta)
+#   } else {
+#     return(current_theta)
+#   }
+# }
+
 
 
 pda_abc <- function(simulation_function, prior_samples, data, num_iterations = 5000, num_chains = 4, return_dat="test_data") {
@@ -105,23 +137,20 @@ chains_df <- imap_dfr(chain_dfs, ~mutate(.x, chain = .y)) |> mutate(id=data$id[1
 ####################################
 ####################################
 
-
 # ids1 <- 1
-#ids1 <- c(1,33,66)
-ids1 <- as.numeric(levels(ds$id))
+ids1 <- c(1,33,66)
+#ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
 
-cMean <<- -5.5; cSig <<- 3.0; lrSig <<- 2.5
+cMean <<- -5.5; cSig <<- 2.0; lrSig <<- 2.0
 prior_samples <- lg_generate_prior_c_lr(n=6000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=TRUE)
 
-num_iterations = 16000
-num_chains = 4
+num_iterations = 1000
+num_chains = 2
 
 save_folder <- paste0("n_iter_",num_iterations,"_nc_",num_chains,"_",format(Sys.time(),"%H%M%OS"))
 dir.create(paste0("data/abc_pda/",save_folder))
-
-
 
 
 ### EXAM Test 

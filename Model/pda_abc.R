@@ -22,7 +22,8 @@ lg_generate_prior_c_lr <- function(n,cSig=2,lrSig=1) {
 
 n=5000
 
-prior_samples <- lg_generate_prior_c_lr(n,cSig=2.0,lrSig=2) 
+cMean <<- -5.5; cSig <<- .5; lrSig <<- 2.0
+prior_samples <- lg_generate_prior_c_lr(n=6000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 
 mean(prior_samples$c)
 median(prior_samples$c)
@@ -56,20 +57,20 @@ exam_test <- readRDS(here("data/abc_pda/pda_EXAM_Test_12000_3_002125.rds")) |> p
 
 k = rbindlist(exam_test)|> left_join(dsId, join_by(id))
 k |> filter(condit=="Varied") |> ggplot(aes(x=lr, y=c, color=condit)) + geom_point() 
+#tidyselect:::select("1","5","10","33","66") 
+#tidyselect:::select("1","33","66") 
 
-
-
-map(exam_test |> tidyselect:::select("1","5","10","33","66") , possibly(~{
+map(exam_test |> tidyselect:::select("1","33","66")  , possibly(~{
   trim = .x |> group_by(chain) |> filter(row_number() < nrow(.x)/1.1) |> ungroup()  
   post <- split(trim |> select(c,lr), f = trim$chain)
   mcmc_list <- lapply(post, as.mcmc, start=nr/2,thin=4)
   (gelman_result <- gelman.diag(mcmc_list))
 } ))
 
-map(exam_test |> tidyselect:::select("1","5","10","33","66"), ~{
+map(exam_test |> tidyselect:::select("1","33","66") , ~{
   post <- split(.x |> select(c,lr), f = .x$chain)
   mcmc_list <- lapply(post, as.mcmc)
-  plot(mcmc.list(mcmc_list)) 
+  plot(mcmc.list(mcmc_list), sub=.x$id[1]) 
 } )
 
 map(exam_test |> tidyselect:::select("1","5","10"), ~{

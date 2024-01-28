@@ -23,9 +23,6 @@ kde_results <- purrr::map(group_posterior_all, ~
 
 
 
-
-
-
 dist_mean_sd <- function(simulated, observed) {
 
   d <- tibble(observed,pred=simulated) 

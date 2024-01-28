@@ -1,13 +1,32 @@
 
 
-ri_pda_indv <- function() {
+
+ri_reject_indv <- function() {
   # Get all object names in the environment
-  all_objects <- ls(envir = globalenv())
-  function_names <- all_objects[sapply(all_objects, function(x) is.function(get(x)))]
-  functions_list <- setNames(lapply(function_names, function(x) get(x)), function_names)
+  # all_objects <- ls(envir = globalenv())
+  # function_names <- all_objects[sapply(all_objects, function(x) is.function(get(x)))]
+  # functions_list <- setNames(lapply(function_names, function(x) get(x)), function_names)
 
   runInfo <- tibble::lst(
     #functions = functions_list,
+    runScripts = list(
+      indv_fit_script = readLines(here::here("Model/fit_reject_indv.R")),
+     # model_script = readLines(here::here("Functions/fun_model.R")),
+      alm_script = readLines(here::here("Functions/fun_alm.R"))
+    ),
+    path = getwd(),
+    Computer = Sys.info()["nodename"],
+    systemInfo = Sys.info(),
+    sessionInfo = sessionInfo(),
+    timeInit = Sys.time()
+  )
+  return(runInfo)
+}
+
+
+
+ri_pda_indv <- function() {
+  runInfo <- tibble::lst(
     runScripts = list(
       indv_fit_script = readLines(here::here("Model/fit_pda_indv.R")),
      # model_script = readLines(here::here("Functions/fun_model.R")),
