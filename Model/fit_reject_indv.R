@@ -1,11 +1,8 @@
-pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, future, furrr, tictoc,extraDistr)
+pacman::p_load(dplyr,purrr,tidyr, data.table, here, conflicted, future, furrr,extraDistr)
 conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("fun_alm","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 set.seed(123)
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
-
-
-
 
 
 samp_priors <- function(n,cMean=-5,cSig=2,lrSig=1) {
@@ -62,10 +59,8 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 
   abc <- rbindlist(abc$dist_sd) |> arrange(mean_error) |> relocate(id,condit)
   best <- abc |> head(1) |> round_tibble(5)
-  #message(print(paste0( data$id[1], " completed in: ", t1[3])))
-  #message(print(paste0("Best c: ", best$c, " Best lr: ", best$lr, " Best error: ", best$mean_error)))
-  
-  
+  message(print(paste0( data$id[1], " completed in: ", t1[3])))
+  message(print(paste0("Best c: ", best$c, " Best lr: ", best$lr, " Best error: ", best$mean_error)))
   return(abc)
 }
 
