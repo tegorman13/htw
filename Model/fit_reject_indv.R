@@ -23,7 +23,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
     return_dat == "train_data, test_data" ~ list( target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ])
     ) |> pluck(1)
 
-  tol = target_data |> group_by(x) |> summarise(m=mean(y),sd=sd(y)) |> summarise(tol=mean(sd),.groups="drop") *1
+  tol = target_data |> group_by(x) |> summarise(m=mean(y),sd=sd(y)) |> summarise(tol=mean(sd),.groups="drop") *tolM
   abc <- list()
   t1=system.time({
   for(j in 1:num_iterations) {
@@ -72,7 +72,7 @@ ids1 <- 1
 ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
 
-cMean <<- -6.0; cSig <<- 5.0; lrSig <<- 2.5
+cMean <<- -6.0; cSig <<- 2.5; lrSig <<- 2.0
 prior_samples <- samp_priors(n=150000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=TRUE)
 
@@ -83,11 +83,12 @@ args <- commandArgs(trailingOnly = TRUE)
 
 # if args[1] is defined, set to num_iterations, otherwise 1000
 num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 100)
-n_try = ifelse(length(args) > 1, as.numeric(args[2]), 100)
+n_try = ifelse(length(args) > 1, as.numeric(args[2]), 50)
+tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), 1)
 
 print(num_iterations)
 print(n_try)
-
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
 
 
 save_folder <- paste0("n_iter_",num_iterations,"_ntry_",n_try,"_",format(Sys.time(),"%M%OS"))
@@ -114,7 +115,7 @@ exam_test <- future_map(subjects_data, ~reject_abc(simulation_function = full_si
 
 
 ri=ri_reject_indv() %>% append(.,t1[3])
-run_save <- tibble::lst(exam_test,Model="EXAM",Fit_Method="Test",prior_samples,cMean,cSig,lrSig,ri)
+run_save <- tibble::lst(exam_test,Model="EXAM",Fit_Method="Test",prior_samples,cMean,cSig,lrSig,tolM,ri)
 file_name <- paste0("data/abc_reject/",save_folder,"/","reject_",run_save$Model,"_",run_save$Fit_Method,"_",
                     num_iterations,"_",n_try,"_",format(Sys.time(),"%M%OS"), ".rds")
 saveRDS(run_save,file=here::here(file_name))
@@ -124,6 +125,8 @@ saveRDS(run_save,file=here::here(file_name))
 
 #### ALM Test
 print("ALM Test")
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+
 t1=system.time({
   alm_test <- future_map(subjects_data, ~reject_abc(simulation_function = full_sim_alm, 
                                                   prior_samples = prior_samples, 
@@ -139,7 +142,7 @@ t1=system.time({
 print(t1[3])
 
 ri=ri_pda_indv() %>% append(.,t1[3])
-run_save <- tibble::lst(alm_test,Model="ALM",Fit_Method="Test",prior_samples,cMean,cSig,lrSig,ri)
+run_save <- tibble::lst(alm_test,Model="ALM",Fit_Method="Test",prior_samples,cMean,cSig,lrSig,tolM,ri)
 file_name <- paste0("data/abc_reject/",save_folder,"/","reject_",run_save$Model,"_",run_save$Fit_Method,"_",
                     num_iterations,"_",n_try,"_",format(Sys.time(),"%M%OS"), ".rds")
 saveRDS(run_save,file=here::here(file_name))
@@ -150,6 +153,8 @@ saveRDS(run_save,file=here::here(file_name))
 
 #### EXAM Test & Train
 print("EXAM Test Train")
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+
 t1=system.time({
   exam_test_train <- future_map(subjects_data, ~reject_abc(simulation_function = full_sim_exam, 
                                                   prior_samples = prior_samples, 
@@ -165,7 +170,7 @@ t1=system.time({
 print(t1[3])
 
 ri=ri_pda_indv() %>% append(.,t1[3])
-run_save <- tibble::lst(exam_test_train,Model="EXAM",Fit_Method="Test_Train",prior_samples,cMean,cSig,lrSig,ri)
+run_save <- tibble::lst(exam_test_train,Model="EXAM",Fit_Method="Test_Train",prior_samples,cMean,cSig,lrSig,tolM,ri)
 file_name <- paste0("data/abc_reject/",save_folder,"/","reject_",run_save$Model,"_",run_save$Fit_Method,"_",
                     num_iterations,"_",n_try,"_",format(Sys.time(),"%M%OS"), ".rds")
 saveRDS(run_save,file=here::here(file_name))
@@ -175,6 +180,8 @@ saveRDS(run_save,file=here::here(file_name))
 
 #### ALM Test & Train
 print("ALM Test Train")
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+
 t1=system.time({
   alm_test_train <- future_map(subjects_data, ~reject_abc(simulation_function = full_sim_alm, 
                                                   prior_samples = prior_samples, 
@@ -190,7 +197,7 @@ t1=system.time({
 print(t1[3])
 
 ri=ri_pda_indv() %>% append(.,t1[3])
-run_save <- tibble::lst(alm_test_train,Model="ALM",Fit_Method="Test_Train",prior_samples,cMean,cSig,lrSig,ri)
+run_save <- tibble::lst(alm_test_train,Model="ALM",Fit_Method="Test_Train",prior_samples,cMean,cSig,lrSig,tolM,ri)
 file_name <- paste0("data/abc_reject/",save_folder,"/","reject_",run_save$Model,"_",run_save$Fit_Method,"_",
                     num_iterations,"_",n_try,"_",format(Sys.time(),"%M%OS"), ".rds")
 saveRDS(run_save,file=here::here(file_name))
@@ -200,6 +207,8 @@ saveRDS(run_save,file=here::here(file_name))
 
 #### EXAM Train
 print("Exam Train")
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+
 t1=system.time({
   exam_train <- future_map(subjects_data, ~reject_abc(simulation_function = full_sim_exam, 
                                                   prior_samples = prior_samples, 
@@ -213,9 +222,11 @@ t1=system.time({
   
 })
 print(t1[3])
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+
 
 ri=ri_pda_indv() %>% append(.,t1[3])
-run_save <- tibble::lst(exam_train,Model="EXAM",Fit_Method="Train",prior_samples,cMean,cSig,lrSig,ri)
+run_save <- tibble::lst(exam_train,Model="EXAM",Fit_Method="Train",prior_samples,cMean,cSig,lrSig,tolM,ri)
 file_name <- paste0("data/abc_reject/",save_folder,"/","reject_",run_save$Model,"_",run_save$Fit_Method,"_",
                     num_iterations,"_",n_try,"_",format(Sys.time(),"%M%OS"), ".rds")
 saveRDS(run_save,file=here::here(file_name))
@@ -226,6 +237,8 @@ saveRDS(run_save,file=here::here(file_name))
 
 #### ALM Train
 print("ALM Train")
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+
 t1=system.time({
   alm_train <- future_map(subjects_data, ~reject_abc(simulation_function = full_sim_alm, 
                                                        prior_samples = prior_samples, 
@@ -241,7 +254,7 @@ t1=system.time({
 print(t1[3])
 
 ri=ri_pda_indv() %>% append(.,t1[3])
-run_save <- tibble::lst(alm_train,Model="ALM",Fit_Method="Train",prior_samples,cMean,cSig,lrSig,ri)
+run_save <- tibble::lst(alm_train,Model="ALM",Fit_Method="Train",prior_samples,cMean,cSig,lrSig,tolM,ri)
 file_name <- paste0("data/abc_reject/",save_folder,"/","reject_",run_save$Model,"_",run_save$Fit_Method,"_",
                     num_iterations,"_",n_try,"_",format(Sys.time(),"%M%OS"), ".rds")
 saveRDS(run_save,file=here::here(file_name))

@@ -12,7 +12,7 @@ dsId <- ds |> select(id,condit) |> unique()
 ids <- c(1,2,4,5,6,7,8, 10,11,12,13)
 
 
-lg_generate_prior_c_lr <- function(n,cSig=2,lrSig=1) {
+lg_generate_prior_c_lr <- function(n,cMean, cSig=2,lrSig=1) {
   prior_samples <- tibble(
     c = rlnorm(n,-5,sdlog=cSig),
     lr = extraDistr::rhnorm(n,sigma=lrSig),
@@ -22,7 +22,7 @@ lg_generate_prior_c_lr <- function(n,cSig=2,lrSig=1) {
 
 n=5000
 
-cMean <<- -5.5; cSig <<- .5; lrSig <<- 2.0
+cMean <<- -6.0; cSig <<- 2.5; lrSig <<- 2.0
 prior_samples <- lg_generate_prior_c_lr(n=6000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 
 mean(prior_samples$c)
