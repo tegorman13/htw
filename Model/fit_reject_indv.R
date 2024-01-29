@@ -73,7 +73,7 @@ ids1 <- 1
 ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
 
-cMean <<- -7.0; cSig <<- 1.5; lrSig <<- 2.0
+cMean <<- -6.0; cSig <<- 2.5; lrSig <<- 2.0
 prior_samples <- samp_priors(n=150000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=TRUE)
 
