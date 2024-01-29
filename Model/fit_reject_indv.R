@@ -8,7 +8,8 @@ ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 samp_priors <- function(n,cMean=-5,cSig=1.5,lrSig=1) {
   prior_samples <- tibble(
     c = rlnorm(n,cMean,sdlog=cSig),
-    lr = extraDistr::rhnorm(n,sigma=lrSig),
+    #lr = extraDistr::rhnorm(n,sigma=lrSig),
+    lr = fdrtool::rhalfnorm(n,lrSig)
   )
   return(prior_samples)
 }
@@ -70,7 +71,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 
 #ids1 <- 1
 ids1 <- c(1,33,66)
-ids1 <- as.numeric(levels(ds$id))
+#ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
 
 cMean <<- -6.0; cSig <<- 2.5; lrSig <<- 2.0

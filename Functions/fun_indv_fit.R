@@ -371,7 +371,8 @@ repair_names <- function(names) {
 samp_priors <- function(n,cMean=-5,cSig=1.5,lrSig=1) {
   prior_samples <- tibble(
     c = rlnorm(n,cMean,sdlog=cSig),
-    lr = extraDistr::rhnorm(n,sigma=lrSig),
+    #lr = extraDistr::rhnorm(n,sigma=lrSig),
+    lr = fdrtool::rhalfnorm(n,lrSig)
   )
   return(prior_samples)
 }
