@@ -23,7 +23,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
     return_dat == "train_data, test_data" ~ list( target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ])
     ) |> pluck(1)
 
-  tol = target_data |> group_by(x) |> summarise(m=mean(y),sd=sd(y)) |> summarise(tol=mean(sd),.groups="drop") *.8
+  tol = target_data |> group_by(x) |> summarise(m=mean(y),sd=sd(y)) |> summarise(tol=mean(sd),.groups="drop") *1
   abc <- list()
   t1=system.time({
   for(j in 1:num_iterations) {
@@ -72,7 +72,7 @@ ids1 <- 1
 ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
 
-cMean <<- -6.5; cSig <<- 6.5; lrSig <<- 3.0
+cMean <<- -6.0; cSig <<- 5.0; lrSig <<- 2.5
 prior_samples <- samp_priors(n=150000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=TRUE)
 

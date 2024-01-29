@@ -265,6 +265,8 @@ indv_predictive_dist <- function(post_dat_l, ind_fits_df, sbj=1)
   p1 <- indv_predictive_plots(post_dat_l, sbj) 
   
   p2 <-  ind_fits_df |> filter(id %in% sbj) |> 
+    group_by(id, Fit_Method, Model) |>
+    arrange(mean_error) |> mutate(rank=row_number()) |>
     arrange(id,rank, Fit_Method, Model) |>
     group_by(id, Fit_Method, Model) |>
     mutate(cBest=round(first(c),5), 
@@ -274,6 +276,8 @@ indv_predictive_dist <- function(post_dat_l, ind_fits_df, sbj=1)
     labs(title = "Posterior distribution of c")  
   
   p3 <-  ind_fits_df |> filter(id %in% sbj) |> 
+    group_by(id, Fit_Method, Model) |>
+    arrange(mean_error) |> mutate(rank=row_number()) |>
     arrange(id,rank, Fit_Method, Model) |>
     group_by(id, Fit_Method, Model) |>
     mutate(lrBest=round(first(lr),4), 

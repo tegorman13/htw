@@ -83,10 +83,19 @@ post_dat_l <- k |> rbindlist() |> filter(expMode2=="Test")
 k = ind_fits_df2 %>% nest(.by=c(id,Model,Fit_Method))
 
 future::plan(multisession)
-k2 <- k |> mutate(pp=future_pmap(list(id,Model,Fit_Method,data), ~{
-  generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 50, return_dat="test_data")
-  }))
+# k2 <- k |> mutate(pp=future_pmap(list(id,Model,Fit_Method,data), ~{
+#   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = as.numeric(nrow(..4)), return_dat="test_data")
+#   })) |> select(-data)
 
+future::plan(multisession)
+k2 <- k |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
+  generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 100), return_dat="test_data")
+  })) |> select(-data)
+
+
+# p <- k |>  mutate(n=future_pmap(list(id,Model,Fit_Method,data), ~{
+#    as.numeric(nrow(..4))
+#   }))
 
 k3 <- k2 |> select(Fit_Method, pp) |> unnest(pp)
 
@@ -112,6 +121,24 @@ post_dat_l <- k3 %>%
 
 
 
+##  Posterior Average Table: 
+```{r fig.width=12, fig.height=17}
+#| eval: true
+post_tabs <- abc_tables(post_dat_l)
+post_tabs$et_sum |> gt::gt()
+
+post_tabs$et_sum |> select(condit,Fit_Method,Avg_ALM_error, Avg_EXAM_error) |> filter(Fit_Method=="Test")
+
+
+
+ abc_tables(post_dat_l |> filter(rank<=100))$et_sum |> gt::gt()
+ 
+ post_dat_l |> group_by(condit,Model,Fit_Method,rank) |> summarise(mean_error=mean(mean_error), n=n()) |> 
+   ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(~Fit_Method)
+ 
+```
+
+
 ## Posterior Predictive: 
 ```{r, fig.width=12, fig.height=14}
 #| eval: true
@@ -132,6 +159,176 @@ indv_predictive_plots(post_dat_l, ids2)
 indv_predictive_plots(post_dat_l, idsBad)
 
 ```
+
+
+
+### Subject 1
+```{r fig.width=11, fig.height=12}
+ 
+indv_predictive_dist((post_dat_l |> filter(rank<=200)),ind_fits_df2, sbj=list(1))
+# plot_indv_posterior(ind_fits_df |> filter(id==1))
+# ind_fits_df |> filter(id==1, Fit_Method=="Test Only", Model=="EXAM") |> pull(c) |> unique()
+
+```
+
+
+
+
+### Subject 36
+```{r fig.width=11, fig.height=12}
+ 
+indv_predictive_dist(post_dat_l,ind_fits_df2, sbj=list(36))
+# plot_indv_posterior(ind_fits_df |> filter(id==1))
+# ind_fits_df |> filter(id==1, Fit_Method=="Test Only", Model=="EXAM") |> pull(c) |> unique()
+```
+
+
+
+
+
+
+
+```{r fig.width=11, fig.height=8}
+
+
+get_order_pattern <- function(df, pred_col = "pred",band_tol=50) {
+
+  df <- df[order(df$x), ]
+  # Calculate the standard deviation and determine the pattern
+  pred_sd <- sd(df[[pred_col]]) / 2.8
+  pattern <- ""
+  # Iterate through the rows to build the pattern
+  for (i in 1:(nrow(df) - 1)) {
+    if (abs(df[[pred_col]][i] - df[[pred_col]][i + 1]) <= band_tol) {
+      pattern <- paste0(pattern, "=")
+    } else if (df[[pred_col]][i] < df[[pred_col]][i + 1]) {
+      pattern <- paste0(pattern, "<")
+    } else {
+      pattern <- paste0(pattern, ">")
+    }
+  }
+
+  return(pattern)
+}
+
+
+ind_ds <- ds |> 
+  filter(expMode2 == "Test") |> 
+  group_by(id, condit, x, expMode2) |> 
+  summarise(y = mean(y), .groups = "keep") 
+
+# Apply the function to the dataset
+ind_pattern <- ind_ds |> 
+  group_by(id, condit, expMode2) |>
+  do(order_pattern = get_order_pattern(., pred_col = "y",band_tol=50)) 
+  
+ind_ds <- ind_ds |>
+  left_join(ind_pattern, by=join_by(id,condit,expMode2)) |> 
+  mutate(order_pattern = unlist(order_pattern))
+
+lorder <- ind_ds |>
+  group_by(order_pattern, x) |>
+  summarize(y = mean(y), n_id = n_distinct(id)) %>% 
+  pull(n_id) %>% 
+  unique() %>% 
+  sort(decreasing = TRUE)
+
+ord_pattern <- k3  |> filter(rank<=1) |>
+  filter(expMode2=="Test") |> 
+  group_by(condit,rank,Model,Fit_Method) %>% 
+  do(order_pattern = unlist(get_order_pattern(.))) 
+
+
+
+
+
+combo_pred <- k3 |>  filter(rank<=1) |>
+  left_join(ord_pattern, by=join_by(condit,rank,Model,Fit_Method)) |>
+  mutate(order_pattern = unlist(order_pattern))
+
+head(combo_pred)
+length(unique(combo_pred$order_pattern))
+
+
+pattern_freq <- combo_pred %>%
+  count(order_pattern) %>%
+  arrange(desc(n))
+
+# Print the frequency table
+print(pattern_freq)
+
+# Plot the frequency distribution
+ggplot(pattern_freq, aes(x = order_pattern, y = n)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Frequency Distribution of Order Patterns",
+       x = "Order Pattern",
+       y = "Frequency")
+
+combo_pred %>% group_by(condit,Model,Fit_Method) |> count(order_pattern) |> arrange(desc(n)) |> ggplot(aes(x = order_pattern, y = n)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Frequency Distribution of Order Patterns",
+       x = "Order Pattern",
+       y = "Frequency") +
+  ggh4x::facet_nested_wrap(condit~Model)
+
+
+combo_pred %>%
+  group_by(Model, Fit_Method) %>%
+  mutate(n_pattern = n_distinct(order_pattern)) %>%
+  group_by(Model, Fit_Method, order_pattern) %>%
+  mutate(pat_count = n()) %>%
+  ungroup() %>%
+  group_by(Model, Fit_Method) %>%
+  arrange(Model, Fit_Method, desc(pat_count), order_pattern) %>%
+  mutate(pat_rank = dense_rank(desc(pat_count))) |> 
+  group_by(Model, Fit_Method, order_pattern) %>%
+  # distinct(Model, Fit_Method, order_pattern, .keep_all = TRUE) %>%
+  # arrange(Model, Fit_Method, pat_rank)
+  filter(pat_rank<=5) |>
+  filter(condit=="Varied")  |> 
+ ggplot(aes(x=c,y=lr,color=as.factor(order_pattern))) + geom_point() + facet_wrap(Fit_Method~Model,scales="free") 
+  # use viridis color palette
+ # scale_color_viridis_d(option = "magma", direction = -1) 
+  
+ordered_labels <- ind_ds |>
+  group_by(order_pattern, x,condit) |>
+  summarize(y = mean(y), n_id = n_distinct(id)) |>
+  arrange(-n_id, order_pattern) |>
+  mutate(factor_label = paste0(order_pattern, " (n=", n_id, ")")) %>%
+  pull(factor_label) %>%
+  unique()
+
+k= ind_ds |>
+  group_by(order_pattern, x,condit) |>
+  summarize(y = mean(y), n_id = n_distinct(id)) |>
+  mutate(n_id = factor(n_id, levels = lorder)) |>
+  mutate(factor_label = paste0(order_pattern, " (n=", n_id, ")"),
+         factor_label = factor(factor_label, levels = ordered_labels)) 
+
+k |>
+  ggplot(aes(x = x, y = y),fill=wes_palette("Darjeeling1")[1]) +
+  stat_summary(fun = mean, geom = "bar") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.25) +
+  facet_wrap(~factor_label, scales = "free_x")
+
+k |> filter(condit=="Varied") |>
+  ggplot(aes(x = x, y = y,fill=condit),fill=wes_palette("Darjeeling1")[1]) +
+  stat_summary(fun = mean, geom = "bar", position = position_dodge(width = 0.8)) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", position = position_dodge(width = 0.8), width = 0.25) +
+  facet_wrap(~factor_label, scales = "free_x")
+
+k |> filter(condit=="Constant") |>
+  ggplot(aes(x = x, y = y),fill=wes_palette("Darjeeling1")[2]) +
+  stat_summary(fun = mean, geom = "bar", position = position_dodge(width = 0.8)) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", position = position_dodge(width = 0.8), width = 0.25) +
+  facet_wrap(~factor_label, scales = "free_x")
+
+```
+
+
+
 
 
 
