@@ -5,7 +5,7 @@ set.seed(123)
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 
 
-samp_priors <- function(n,cMean=-5,cSig=2,lrSig=1) {
+samp_priors <- function(n,cMean=-5,cSig=1.5,lrSig=1) {
   prior_samples <- tibble(
     c = rlnorm(n,cMean,sdlog=cSig),
     lr = extraDistr::rhnorm(n,sigma=lrSig),
@@ -25,13 +25,14 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 
   tol = target_data |> group_by(x) |> summarise(m=mean(y),sd=sd(y)) |> summarise(tol=mean(sd),.groups="drop") *tolM
   abc <- list()
+  try_count=0;
   t1=system.time({
   for(j in 1:num_iterations) {
     #print(i)
     #print(paste0("sbj: ",data$id[1] ,"Particle:", j))
 
     found=0;
-    try_count=0;
+    
     inc_count=0;
     while(found==0) {
     try_count=try_count+1;
@@ -47,7 +48,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
       found=1
      # try_count=0;
       }
-      if (try_count>=n_try){
+      if (try_count>=n_try && j>1){
         message(print(paste0("increase tol for subject", data$id[1])))
         tol=tol*1.1
         inc_count=inc_count+1;
@@ -69,10 +70,10 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 
 ids1 <- 1
 #ids1 <- c(1,33,66)
-ids1 <- as.numeric(levels(ds$id))
+#ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
 
-cMean <<- -6.0; cSig <<- 2.5; lrSig <<- 2.0
+cMean <<- -7.0; cSig <<- 1.5; lrSig <<- 2.0
 prior_samples <- samp_priors(n=150000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=TRUE)
 
@@ -125,7 +126,9 @@ saveRDS(run_save,file=here::here(file_name))
 
 #### ALM Test
 print("ALM Test")
-print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
+rm(run_save)
 
 t1=system.time({
   alm_test <- future_map(subjects_data, ~reject_abc(simulation_function = full_sim_alm, 
@@ -154,6 +157,8 @@ saveRDS(run_save,file=here::here(file_name))
 #### EXAM Test & Train
 print("EXAM Test Train")
 print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
+rm(run_save)
 
 t1=system.time({
   exam_test_train <- future_map(subjects_data, ~reject_abc(simulation_function = full_sim_exam, 
@@ -181,6 +186,8 @@ saveRDS(run_save,file=here::here(file_name))
 #### ALM Test & Train
 print("ALM Test Train")
 print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
+rm(run_save)
 
 t1=system.time({
   alm_test_train <- future_map(subjects_data, ~reject_abc(simulation_function = full_sim_alm, 
@@ -208,6 +215,8 @@ saveRDS(run_save,file=here::here(file_name))
 #### EXAM Train
 print("Exam Train")
 print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
+rm(run_save)
 
 t1=system.time({
   exam_train <- future_map(subjects_data, ~reject_abc(simulation_function = full_sim_exam, 
@@ -223,6 +232,7 @@ t1=system.time({
 })
 print(t1[3])
 print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
 
 
 ri=ri_pda_indv() %>% append(.,t1[3])
@@ -238,7 +248,8 @@ saveRDS(run_save,file=here::here(file_name))
 #### ALM Train
 print("ALM Train")
 print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
-
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
+rm(run_save)
 t1=system.time({
   alm_train <- future_map(subjects_data, ~reject_abc(simulation_function = full_sim_alm, 
                                                        prior_samples = prior_samples, 
@@ -258,3 +269,11 @@ run_save <- tibble::lst(alm_train,Model="ALM",Fit_Method="Train",prior_samples,c
 file_name <- paste0("data/abc_reject/",save_folder,"/","reject_",run_save$Model,"_",run_save$Fit_Method,"_",
                     num_iterations,"_",n_try,"_",format(Sys.time(),"%M%OS"), ".rds")
 saveRDS(run_save,file=here::here(file_name))
+
+print("end")
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
+
+print(knitr::kable(exam_test[[1]] |> head(3),format="markdown"))
+print("\n ALM Test")
+print(knitr::kable(alm_test[[1]] |> head(3),format="markdown"))

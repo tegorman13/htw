@@ -22,7 +22,7 @@ lg_generate_prior_c_lr <- function(n,cMean, cSig=2,lrSig=1) {
 
 n=5000
 
-cMean <<- -6.0; cSig <<- 2.5; lrSig <<- 2.0
+cMean <<- -7.0; cSig <<- 1.5; lrSig <<- 2.0
 prior_samples <- lg_generate_prior_c_lr(n=6000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 
 mean(prior_samples$c)
