@@ -48,7 +48,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
       found=1
      # try_count=0;
       }
-      if (try_count>=n_try && j<1){
+      if (try_count>=n_try && j<2){
         message(print(paste0("increase tol for subject", data$id[1])))
         tol=tol*1.1
         inc_count=inc_count+1;
