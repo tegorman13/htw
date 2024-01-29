@@ -361,3 +361,69 @@ repair_names <- function(names) {
   }
   names
 }
+
+
+
+####################
+
+
+
+samp_priors <- function(n,cMean=-5,cSig=1.5,lrSig=1) {
+  prior_samples <- tibble(
+    c = rlnorm(n,cMean,sdlog=cSig),
+    lr = extraDistr::rhnorm(n,sigma=lrSig),
+  )
+  return(prior_samples)
+}
+
+reject_abc <- function(simulation_function, prior_samples, data, num_iterations = 5000, n_try=500, return_dat="test_data") {
+  input_layer =  c(100,350,600,800,1000,1200)
+  output_layer = input_layer
+  data <- data |> as.data.table()
+  target_data <- case_when(
+    return_dat == "test_data" ~ list(target_data_test <- data[data$expMode2 == "Test", ]), 
+    return_dat == "train_data" ~ list( target_data_train <- data[data$expMode2 == "Train", ]),
+    return_dat == "train_data, test_data" ~ list( target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ])
+    ) |> pluck(1)
+
+  tol = target_data |> group_by(x) |> summarise(m=mean(y),sd=sd(y)) |> summarise(tol=mean(sd),.groups="drop") *tolM
+  abc <- list()
+  try_count=0;
+  t1=system.time({
+  for(j in 1:num_iterations) {
+    #print(i)
+    #print(paste0("sbj: ",data$id[1] ,"Particle:", j))
+
+    found=0;
+    
+    inc_count=0;
+    while(found==0) {
+    try_count=try_count+1;
+    current_theta <- prior_samples[sample(1:nrow(prior_samples), 1), ]
+    sim_data <- simulation_function(data, current_theta$c, current_theta$lr, input_layer = input_layer, output_layer = output_layer, return_dat = return_dat) 
+    dist_sd <- target_data |> mutate(pred=sim_data,error=abs(y-pred)) |> group_by(id,condit,x) |> 
+      summarise(mean_error=mean(error),sd_error=sd(error),.groups="keep") |> 
+      group_by(id,condit) |> 
+      summarise(mean_error=mean(mean_error),sd_error=mean(sd_error),.groups="keep") 
+    if(dist_sd$mean_error< tol) {
+      #print(current_theta)
+      abc$dist_sd[[j]] <- cbind(current_theta,dist_sd,tol,inc_count)
+      found=1
+     # try_count=0;
+      }
+      if (try_count>=n_try && j<2){
+        message(print(paste0("increase tol for subject", data$id[1])))
+        tol=tol*1.05
+        inc_count=inc_count+1;
+        try_count=0;
+      }
+    }
+  }  
+  })
+
+  abc <- rbindlist(abc$dist_sd) |> arrange(mean_error) |> relocate(id,condit)
+  best <- abc |> head(1) |> round_tibble(7)
+  message((paste0( data$id[1], " completed in: ", t1[3])))
+  message((paste0("Best c: ", best$c, " Best lr: ", best$lr, " Best error: ", best$mean_error)))
+  return(abc)
+}

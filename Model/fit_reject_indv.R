@@ -69,13 +69,17 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 ####################################
 
 #ids1 <- 1
-#ids1 <- c(1,33,66)
+ids1 <- c(1,33,66)
 ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
 
 cMean <<- -6.0; cSig <<- 2.5; lrSig <<- 2.0
 prior_samples <- samp_priors(n=150000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
-subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=TRUE)
+
+
+subjects_data <-  ds |> filter(id %in% ids1)  %>% with(split(.,f =c(id), drop=TRUE))
+
+
 
 
 args <- commandArgs(trailingOnly = TRUE)
