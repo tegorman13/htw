@@ -23,7 +23,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
     return_dat == "train_data, test_data" ~ list( target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ])
     ) |> pluck(1)
 
-  tol = target_data |> group_by(x) |> summarise(m=mean(y),sd=sd(y)) |> summarise(tol=mean(sd),.groups="drop") *.9
+  tol = target_data |> group_by(x) |> summarise(m=mean(y),sd=sd(y)) |> summarise(tol=mean(sd),.groups="drop") *.4
   abc <- list()
   t1=system.time({
   for(j in 1:num_iterations) {
@@ -48,8 +48,8 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
      # try_count=0;
       }
       if (try_count>=n_try){
-       # message(print(paste0("increase tol for subject", data$id[1])))
-        tol=tol*1.1
+        message(print(paste0("increase tol for subject", data$id[1])))
+        tol=tol*1.01
         inc_count=inc_count+1;
         try_count=0;
       }
@@ -67,13 +67,13 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 ####################################
 ####################################
 
-# ids1 <- 1
-ids1 <- c(1,33,66)
-ids1 <- as.numeric(levels(ds$id))
+ids1 <- 1
+#ids1 <- c(1,33,66)
+#ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
 
-cMean <<- -5.5; cSig <<- 2.0; lrSig <<- 2.0
-prior_samples <- samp_priors(n=100000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
+cMean <<- -5.7; cSig <<- 2.6; lrSig <<- 2.5
+prior_samples <- samp_priors(n=150000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 subjects_data <-  ds |> filter(id %in% ids1)  %>% split(f =c(.$id), drop=TRUE)
 
 
