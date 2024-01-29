@@ -300,7 +300,7 @@ print(summary_stats_lr)
 
 
 
-generate_posterior_predictive <- function(simulation_function, combined_chain_df, data, num_samples = 5) {
+generate_posterior_predictive <- function(simulation_function, combined_chain_df, data, num_samples = 5) {a
 
   input_layer =  c(100,350,600,800,1000,1200)
   output_layer = input_layer
