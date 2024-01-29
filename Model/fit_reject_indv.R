@@ -50,7 +50,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
       }
       if (try_count>=n_try && j<2){
         message(print(paste0("increase tol for subject", data$id[1])))
-        tol=tol*1.1
+        tol=tol*1.05
         inc_count=inc_count+1;
         try_count=0;
       }
@@ -68,7 +68,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 ####################################
 ####################################
 
-ids1 <- 1
+#ids1 <- 1
 #ids1 <- c(1,33,66)
 ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
