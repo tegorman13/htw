@@ -1,4 +1,4 @@
-pacman::p_load(dplyr,purrr,tidyr, data.table, here, conflicted, future, furrr,extraDistr)
+pacman::p_load(dplyr,purrr,tidyr, data.table, here, conflicted, future, furrr,fdrtool)
 conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("fun_alm","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 set.seed(123)
@@ -49,9 +49,9 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
       found=1
      # try_count=0;
       }
-      if (try_count>=n_try && j<2){
+      if (try_count>=n_try){
         message(print(paste0("increase tol for subject", data$id[1])))
-        tol=tol*1.05
+        tol=tol*1.1
         inc_count=inc_count+1;
         try_count=0;
       }
@@ -71,10 +71,11 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 
 #ids1 <- 1
 ids1 <- c(1,33,66)
+ids1 <- as.numeric(levels(ds$id))[1:40]
 #ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
 
-cMean <<- -6.0; cSig <<- 2.5; lrSig <<- 2.0
+cMean <<- -6.5; cSig <<- 3.5; lrSig <<- 2.5
 prior_samples <- samp_priors(n=150000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 
 
