@@ -1,9 +1,9 @@
-pacman::p_load(dplyr,purrr,tidyr, data.table, here, conflicted, future, furrr)
+pacman::p_load(dplyr,purrr,tidyr, data.table, here, conflicted, future, furrr,fdrtool)
 conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("fun_alm","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 set.seed(123)
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
-watch_ids <<- c(1,33,66,20,76)
+
 
 samp_priors <- function(n,cMean=-5,cSig=1.5,lrSig=1) {
   prior_samples <- tibble(
@@ -25,19 +25,16 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
     ) |> pluck(1)
 
   tol = target_data |> group_by(x) |> summarise(m=mean(y),sd=sd(y)) |> summarise(tol=mean(sd),.groups="drop") *tolM
-  start_tol = round(tol,3); 
   abc <- list()
   try_count=0;
-   inc_count=0;
-   cur_tol_success=0;
-   success_rate=0;
   t1=system.time({
   for(j in 1:num_iterations) {
     #print(i)
     #print(paste0("sbj: ",data$id[1] ,"Particle:", j))
 
     found=0;
-   
+    
+    inc_count=0;
     while(found==0) {
     try_count=try_count+1;
     current_theta <- prior_samples[sample(1:nrow(prior_samples), 1), ]
@@ -46,23 +43,17 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
       summarise(mean_error=mean(error),sd_error=sd(error),.groups="keep") |> 
       group_by(id,condit) |> 
       summarise(mean_error=mean(mean_error),sd_error=mean(sd_error),.groups="keep") 
-
     if(dist_sd$mean_error< tol) {
       #print(current_theta)
       abc$dist_sd[[j]] <- cbind(current_theta,dist_sd,tol,inc_count)
       found=1
-      try_count=try_count+1;
-      cur_tol_success = cur_tol_success+1;
-      success_rate = cur_tol_success/try_count;
+     # try_count=0;
       }
-      if (try_count > n_try && success_rate < min_accept_rate){
-        if (data$id[1] %in% watch_ids){
-        message((paste0("increase tol for subject", data$id[1]," current iteration: ",j," cur accept rate: ",round(success_rate,4))))
-        }
-        tol=tol*tolInc
+      if (try_count>=n_try){
+        message(print(paste0("increase tol for subject", data$id[1])))
+        tol=tol*1.1
         inc_count=inc_count+1;
         try_count=0;
-        cur_tol_success=0;
       }
     }
   }  
@@ -70,18 +61,17 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 
   abc <- rbindlist(abc$dist_sd) |> arrange(mean_error) |> relocate(id,condit)
   best <- abc |> head(1) |> round_tibble(7)
-  message((paste0("\n", data$id[1], " completed in: ", t1[3])))
-  message((paste0("inc count: ",inc_count," Start tol: ",start_tol ," end tol: ", round(tol,2)," success rate: ",round(success_rate,4))))
-  message((paste0("Best c: ", best$c, " Best lr: ", best$lr, " Best error: ", best$mean_error,"\n")))
+  message((paste0( data$id[1], " completed in: ", t1[3])))
+  message((paste0("Best c: ", best$c, " Best lr: ", best$lr, " Best error: ", best$mean_error)))
   return(abc)
 }
 
 ####################################
 ####################################
 
-# ids1 <- 1
-# ids1 <- c(1,2,33,66)
-#ids1 <- as.numeric(levels(ds$id))[1:8]
+#ids1 <- 1
+ids1 <- c(1,33,66)
+#ids1 <- as.numeric(levels(ds$id))[1:40]
 ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
 
@@ -101,26 +91,21 @@ args <- commandArgs(trailingOnly = TRUE)
 # if args[1] is defined, set to num_iterations, otherwise 1000
 num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 100)
 n_try = ifelse(length(args) > 1, as.numeric(args[2]), 50)
-tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .8)
-tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.1)
-min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .01)
-
+tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), 1)
 
 print(num_iterations)
 print(n_try)
-p_abc <- function(){message(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig,"\n", "tolM: ",tolM, " tolInc: ",tolInc," accept_rate: ",min_accept_rate))}
-p_abc()
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+
 
 save_folder <- paste0("n_iter_",num_iterations,"_ntry_",n_try,"_",format(Sys.time(),"%M%OS"))
 dir.create(paste0("data/abc_reject/",save_folder))
 
 
 (nc <- future::availableCores())
-future::plan(multisession, workers = nc)
 
 ### EXAM Test 
-
-cat("\nEXAM Test\n")
+future::plan(multisession, workers = nc)
 t1=system.time({
 exam_test <- future_map(subjects_data, ~reject_abc(simulation_function = full_sim_exam, 
                                                     prior_samples = prior_samples, 
@@ -146,8 +131,9 @@ saveRDS(run_save,file=here::here(file_name))
 
 
 #### ALM Test
-cat("\nALM Test\n")
-p_abc()
+print("ALM Test")
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
 rm(run_save)
 
 t1=system.time({
@@ -175,8 +161,9 @@ saveRDS(run_save,file=here::here(file_name))
 
 
 #### EXAM Test & Train
-cat("\nEXAM Test Train\n")
-p_abc()
+print("EXAM Test Train")
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
 rm(run_save)
 
 t1=system.time({
@@ -203,8 +190,9 @@ saveRDS(run_save,file=here::here(file_name))
 
 
 #### ALM Test & Train
-cat("\nALM Test Train\n")
-p_abc()
+print("ALM Test Train")
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
 rm(run_save)
 
 t1=system.time({
@@ -231,8 +219,9 @@ saveRDS(run_save,file=here::here(file_name))
 
 
 #### EXAM Train
-cat("\nExam Train\n")
-p_abc()
+print("Exam Train")
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
 rm(run_save)
 
 t1=system.time({
@@ -249,7 +238,7 @@ t1=system.time({
 })
 print(t1[3])
 print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
-print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM, "tolInc: ",tolInc))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
 
 
 ri=ri_pda_indv() %>% append(.,t1[3])
@@ -263,10 +252,10 @@ saveRDS(run_save,file=here::here(file_name))
 
 
 #### ALM Train
-cat("\nALM Train\n")
-p_abc()
+print("ALM Train")
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
 rm(run_save)
-
 t1=system.time({
   alm_train <- future_map(subjects_data, ~reject_abc(simulation_function = full_sim_alm, 
                                                        prior_samples = prior_samples, 
@@ -287,10 +276,10 @@ file_name <- paste0("data/abc_reject/",save_folder,"/","reject_",run_save$Model,
                     num_iterations,"_",n_try,"_",format(Sys.time(),"%M%OS"), ".rds")
 saveRDS(run_save,file=here::here(file_name))
 
-cat("\nend")
-p_abc()
+print("end")
+print(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig," tolM: ",tolM))
+print(paste0("n_iter: ",num_iterations," n_try: ",n_try," tolM: ",tolM))
 
-cat("\n EXAM Test:")
 print(knitr::kable(exam_test[[1]] |> head(3),format="markdown"))
-cat("\n ALM Test:")
+print("\n ALM Test")
 print(knitr::kable(alm_test[[1]] |> head(3),format="markdown"))
