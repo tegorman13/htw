@@ -80,7 +80,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 ####################################
 
 # ids1 <- 1
-# ids1 <- c(1,2,33,66)
+#ids1 <- c(1,33,66)
 #ids1 <- as.numeric(levels(ds$id))[1:8]
 ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
@@ -290,7 +290,8 @@ saveRDS(run_save,file=here::here(file_name))
 cat("\nend")
 p_abc()
 
-cat("\n EXAM Test:")
+cat("\n EXAM Test: \n")
 print(knitr::kable(exam_test[[1]] |> head(3),format="markdown"))
-cat("\n ALM Test:")
+
+cat("\n ALM Test: \n")
 print(knitr::kable(alm_test[[1]] |> head(3),format="markdown"))
