@@ -72,7 +72,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 #ids1 <- 1
 ids1 <- c(1,33,66)
 #ids1 <- as.numeric(levels(ds$id))[1:40]
-#ids1 <- as.numeric(levels(ds$id))
+ids1 <- as.numeric(levels(ds$id))
 #ids1 <- c(49)
 
 cMean <<- -5.5; cSig <<- 3.5; lrSig <<- 2.5
