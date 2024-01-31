@@ -153,27 +153,27 @@ future::plan(multisession, workers = nc)
 
 
 t1<- ( exam_test <- run_abc_tests(full_sim_exam, subjects_data, "test_data", ids1) )
-save_abc_test_results(exam_test, "EXAM", "Test", ri_reject_indv, subjects_data, ids1,save_folder)
+save_abc_test_results(exam_test, "EXAM", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 
 
 t1<- ( alm_test <- run_abc_tests(full_sim_alm, subjects_data, "test_data", ids1) )
-save_abc_test_results(exam_test, "ALM", "Test", ri_reject_indv, subjects_data, ids1,save_folder)
+save_abc_test_results(exam_test, "ALM", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 
 
 t1<- ( exam_test_train <- run_abc_tests(full_sim_exam, subjects_data, "train_data, test_data", ids1) )
-save_abc_test_results(exam_test, "EXAM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder)
+save_abc_test_results(exam_test, "EXAM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 
 
 t1<- ( alm_test_train <- run_abc_tests(full_sim_alm, subjects_data, "train_data, test_data", ids1) )
-save_abc_test_results(exam_test, "ALM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder)
+save_abc_test_results(exam_test, "ALM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 
 
 t1<- ( exam_train <- run_abc_tests(full_sim_exam, subjects_data, "train_data", ids1) )
-save_abc_test_results(exam_test, "EXAM", "Train", ri_reject_indv, subjects_data, ids1,save_folder)
+save_abc_test_results(exam_test, "EXAM", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 
 
 t1<- ( alm_train <- run_abc_tests(full_sim_alm, subjects_data, "train_data", ids1) )
-save_abc_test_results(exam_test, "ALM", "Train", ri_reject_indv, subjects_data, ids1,save_folder)
+save_abc_test_results(exam_test, "ALM", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 
 
 
