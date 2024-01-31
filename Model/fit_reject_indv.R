@@ -1,6 +1,6 @@
 pacman::p_load(dplyr,purrr,tidyr, data.table, here, conflicted, future, furrr)
 conflict_prefer_all("dplyr", quiet = TRUE)
-walk(c("fun_alm","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+walk(c("fun_alm","fun_model","fun_indv_fit"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 set.seed(123)
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 watch_ids <<- c(1,33,66,20,76)
@@ -120,10 +120,10 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 
 args <- commandArgs(trailingOnly = TRUE)
 num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 100)
-n_try = ifelse(length(args) > 1, as.numeric(args[2]), 500)
-tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), 1)
+n_try = ifelse(length(args) > 1, as.numeric(args[2]), 5000)
+tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .80)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.1)
-min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .01)
+min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .005)
 
 cMean <<- -5.5; cSig <<- 3.5; lrSig <<- 3.0
 prior_samples <- samp_priors(n=100000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
@@ -185,3 +185,7 @@ print(knitr::kable(exam_test[[1]] |> head(3),format="markdown"))
 
 cat("\n ALM Test: \n")
 print(knitr::kable(alm_test[[1]] |> head(3),format="markdown"))
+
+
+
+#t1<- ( exam_test <- run_abc_tests_serial(full_sim_exam, subjects_data, "test_data", ids1) )
