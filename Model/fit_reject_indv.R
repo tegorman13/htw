@@ -6,8 +6,6 @@ ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 watch_ids <<- c(1,33,66,20,76)
 
 
-
-
 ####################################
 
 samp_priors <- function(n,cMean=-5,cSig=1.5,lrSig=1) {
@@ -32,10 +30,10 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
   start_tol = round(tol,3); 
   abc <- list()
   try_count=0;
-   inc_count=0;
-   cur_tol_success=0;
-   success_rate=0;
-   closest_mean_errors <- numeric(0)
+  inc_count=0;
+  cur_tol_success=0;
+  success_rate=0;
+  closest_mean_errors <- numeric(0)
 
   t1=system.time({
   for(j in 1:num_iterations) {
@@ -66,8 +64,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
       } else if (try_count > n_try && success_rate < min_accept_rate){
        
         average_closest_error <- mean(closest_mean_errors)
-        tol <- tol + (average_closest_error-tol) #* tolInc  # Adjust tolerance
-       # (average_closest_error-tol)
+        tol <- (tol*tolInc) + (average_closest_error-tol) #* tolInc  # Adjust tolerance
         #tol=tol*tolInc
 
         inc_count=inc_count+1;
@@ -142,7 +139,7 @@ p_abc <- function(){
 ####################################
 
 # ids1 <- 1
- ids1 <- c(1,33,66)
+#ids1 <- c(1,33,66)
 #ids1 <- as.numeric(levels(ds$id))[1:8]
 ids1 <- as.numeric(levels(ds$id))
 subjects_data <-  ds |> filter(id %in% ids1)  %>% with(split(.,f =c(id), drop=TRUE))
@@ -155,27 +152,27 @@ dir.create(paste0("data/abc_reject/",save_folder))
 future::plan(multisession, workers = nc)
 
 
-exam_test <- run_abc_tests(full_sim_exam, subjects_data, "test_data", ids1)
+t1<- ( exam_test <- run_abc_tests(full_sim_exam, subjects_data, "test_data", ids1) )
 save_abc_test_results(exam_test, "EXAM", "Test", ri_reject_indv, subjects_data, ids1,save_folder)
 
 
-alm_test <- run_abc_tests(full_sim_alm, subjects_data, "test_data", ids1)
+t1<- ( alm_test <- run_abc_tests(full_sim_alm, subjects_data, "test_data", ids1) )
 save_abc_test_results(exam_test, "ALM", "Test", ri_reject_indv, subjects_data, ids1,save_folder)
 
 
-exam_test_train <- run_abc_tests(full_sim_exam, subjects_data, "train_data, test_data", ids1)
+t1<- ( exam_test_train <- run_abc_tests(full_sim_exam, subjects_data, "train_data, test_data", ids1) )
 save_abc_test_results(exam_test, "EXAM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder)
 
 
-alm_test_train <- run_abc_tests(full_sim_alm, subjects_data, "train_data, test_data", ids1)
+t1<- ( alm_test_train <- run_abc_tests(full_sim_alm, subjects_data, "train_data, test_data", ids1) )
 save_abc_test_results(exam_test, "ALM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder)
 
 
-exam_train <- run_abc_tests(full_sim_exam, subjects_data, "train_data", ids1)
+t1<- ( exam_train <- run_abc_tests(full_sim_exam, subjects_data, "train_data", ids1) )
 save_abc_test_results(exam_test, "EXAM", "Train", ri_reject_indv, subjects_data, ids1,save_folder)
 
 
-alm_train <- run_abc_tests(full_sim_alm, subjects_data, "train_data", ids1)
+t1<- ( alm_train <- run_abc_tests(full_sim_alm, subjects_data, "train_data", ids1) )
 save_abc_test_results(exam_test, "ALM", "Train", ri_reject_indv, subjects_data, ids1,save_folder)
 
 
