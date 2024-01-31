@@ -66,8 +66,8 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
       } else if (try_count > n_try && success_rate < min_accept_rate){
        
         average_closest_error <- mean(closest_mean_errors)
-        tol <- start_tol + (average_closest_error-tol)/2 #* tolInc  # Adjust tolerance
-        (average_closest_error-tol)
+        tol <- tol + (average_closest_error-tol) #* tolInc  # Adjust tolerance
+       # (average_closest_error-tol)
         #tol=tol*tolInc
 
         inc_count=inc_count+1;
@@ -75,8 +75,8 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
         cur_tol_success=0;
 
        if (data$id[1] %in% watch_ids){
-        message(paste0("increase tol(",round(tol,3),") for subject", data$id[1]," current iteration: ",j,"
-         cur accept rate: ",round(success_rate,4),"\n",
+        message(paste0("increase tol(",round(tol,3),") for subject", data$id[1]," current iteration: ",j,"\n",
+        "cur accept rate: ",round(success_rate,4),"\n",
          "avg closest error: ",round(average_closest_error,2), " new tol: ",round(tol,2),"\n"))
         }
 
@@ -89,7 +89,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
   best <- abc |> head(1) |> round_tibble(7)
   message((paste0("\n", data$id[1], " completed in: ", round(t1[3],2))))
   message((paste0("inc count: ",inc_count," Start tol: ",start_tol ," end tol: ", round(tol,2)," success rate: ",round(success_rate,4))))
-  message((paste0("Best c: ", best$c, " Best lr: ", round(best$lr,3), " Best error: ", round(best$mean_error,2),"\n")))
+  message((paste0("Best c: ", best$c, " Best lr: ", round(best$lr,3), " Best error: ", round(best$mean_error,2),"\n\n\n")))
   return(abc)
 }
 
@@ -122,13 +122,13 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 ####################################
 
 args <- commandArgs(trailingOnly = TRUE)
-num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 10)
-n_try = ifelse(length(args) > 1, as.numeric(args[2]), 50)
-tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .95)
+num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 100)
+n_try = ifelse(length(args) > 1, as.numeric(args[2]), 500)
+tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), 1)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.1)
 min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .01)
 
-cMean <<- -5.5; cSig <<- 4.0; lrSig <<- 3.0
+cMean <<- -5.5; cSig <<- 3.5; lrSig <<- 3.0
 prior_samples <- samp_priors(n=100000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 
 
@@ -142,7 +142,7 @@ p_abc <- function(){
 ####################################
 
 # ids1 <- 1
-# ids1 <- c(1,33,66)
+ ids1 <- c(1,33,66)
 #ids1 <- as.numeric(levels(ds$id))[1:8]
 ids1 <- as.numeric(levels(ds$id))
 subjects_data <-  ds |> filter(id %in% ids1)  %>% with(split(.,f =c(id), drop=TRUE))
