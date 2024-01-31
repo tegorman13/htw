@@ -1,6 +1,19 @@
 
 
 
+save_abc_test_results <- function(fit_results, model, fit_method, ri_func, subjects_data, ids,save_folder) {
+
+  ri <- ri_func() %>% append(., t1[3])
+  run_save <- tibble::lst(fit_results, Model = model, Fit_Method = fit_method, prior_samples, cMean, cSig, lrSig, tolM, min_accept_rate, ri)
+  
+  file_name <- paste0("data/abc_reject/", save_folder, "/", "reject_", run_save$Model, "_", run_save$Fit_Method, "_",
+                      num_iterations, "_", n_try, "_", format(Sys.time(), "%M%OS"), ".rds")
+  saveRDS(run_save, file = here::here(file_name))
+}
+
+
+
+
 ri_reject_indv <- function() {
   # Get all object names in the environment
   # all_objects <- ls(envir = globalenv())
