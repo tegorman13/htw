@@ -64,7 +64,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
       } else if (try_count > n_try && success_rate < min_accept_rate){
        
         average_closest_error <- mean(closest_mean_errors)
-        tol <- (tol*tolInc) + (average_closest_error-tol) #* tolInc  # Adjust tolerance
+        tol <- (tol*tolInc) + (abs(average_closest_error-tol)/2) #* tolInc  # Adjust tolerance
         #tol=tol*tolInc
 
         inc_count=inc_count+1;
@@ -120,10 +120,10 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 
 args <- commandArgs(trailingOnly = TRUE)
 num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 100)
-n_try = ifelse(length(args) > 1, as.numeric(args[2]), 5000)
-tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .80)
-tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.1)
-min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .005)
+n_try = ifelse(length(args) > 1, as.numeric(args[2]), 500)
+tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .76)
+tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
+min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .006)
 
 cMean <<- -5.5; cSig <<- 3.5; lrSig <<- 3.0
 prior_samples <- samp_priors(n=100000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
@@ -188,4 +188,4 @@ print(knitr::kable(alm_test[[1]] |> head(3),format="markdown"))
 
 
 
-#t1<- ( exam_test <- run_abc_tests_serial(full_sim_exam, subjects_data, "test_data", ids1) )
+# t1<- ( exam_test <- run_abc_tests_serial(full_sim_exam, subjects_data, "test_data", ids1) )
