@@ -77,9 +77,8 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
        if (data$id[1] %in% watch_ids){
         message(paste0("increase tol(",round(tol,3),") for subject", data$id[1]," current iteration: ",j,"
          cur accept rate: ",round(success_rate,4),"\n",
-         "avg closest error: ",round(average_closest_error,2), " new tol: ",round(tol,2)))
+         "avg closest error: ",round(average_closest_error,2), " new tol: ",round(tol,2),"\n"))
         }
-        print("hi")
 
       }
     }
@@ -90,7 +89,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
   best <- abc |> head(1) |> round_tibble(7)
   message((paste0("\n", data$id[1], " completed in: ", t1[3])))
   message((paste0("inc count: ",inc_count," Start tol: ",start_tol ," end tol: ", round(tol,2)," success rate: ",round(success_rate,4))))
-  message((paste0("Best c: ", best$c, " Best lr: ", best$lr, " Best error: ", best$mean_error,"\n")))
+  message((paste0("Best c: ", best$c, " Best lr: ", round(best$lr,3), " Best error: ", round(best$mean_error,2),"\n")))
   return(abc)
 }
 
@@ -140,8 +139,6 @@ p_abc <- function(){
   "median-c=",round(median(prior_samples$c),4)," median-lr=",round(median(prior_samples$lr),4),"\n"))
   }
  
-p_abc()
-
 ####################################
 
 # ids1 <- 1
