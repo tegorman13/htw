@@ -97,7 +97,7 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 
   cat("\nRunning ABC Test: ",as.character(substitute(simulation_function))," ",return_dat, "\n", "Parallel Execution\n")
   print(nc <- future::availableCores())
-  future::plan(multicluster, workers = nc-1)
+  future::plan(cluster, workers = nc-1)
 
   t1 <- system.time({
     results <- future_map(data_list, 
@@ -124,7 +124,7 @@ num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 100)
 n_try = ifelse(length(args) > 1, as.numeric(args[2]), 500)
 tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .76)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
-min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .006)
+min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .009)
 
 cMean <<- -5.5; cSig <<- 3.5; lrSig <<- 3.0
 prior_samples <- samp_priors(n=100000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
