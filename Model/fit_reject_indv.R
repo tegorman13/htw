@@ -87,7 +87,7 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 
   abc <- rbindlist(abc$dist_sd) |> arrange(mean_error) |> relocate(id,condit)
   best <- abc |> head(1) |> round_tibble(7)
-  message((paste0("\n", data$id[1], " completed in: ", t1[3])))
+  message((paste0("\n", data$id[1], " completed in: ", round(t1[3],2))))
   message((paste0("inc count: ",inc_count," Start tol: ",start_tol ," end tol: ", round(tol,2)," success rate: ",round(success_rate,4))))
   message((paste0("Best c: ", best$c, " Best lr: ", round(best$lr,3), " Best error: ", round(best$mean_error,2),"\n")))
   return(abc)
