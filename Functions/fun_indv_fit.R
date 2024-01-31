@@ -382,7 +382,7 @@ samp_priors <- function(n,cMean=-5,cSig=1.5,lrSig=1) {
 run_abc_tests_serial <- function(simulation_function, data_list, return_dat, ids) {
   p_abc()
 
-  cat("\nRunning ABC Test: ",as.character(substitute(simulation_function))," ",return_dat, "\n")
+  cat("\nRunning ABC Test: ",as.character(substitute(simulation_function))," ",return_dat, "\n", "Serial Execution\n")
   
   t1 <- system.time({
     results <- map(data_list, 
