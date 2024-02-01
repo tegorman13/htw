@@ -1,9 +1,13 @@
 pacman::p_load(dplyr,purrr,tidyr, data.table, here, conflicted, future, furrr)
 conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("fun_alm","fun_model","fun_indv_fit"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
-set.seed(123)
+
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
-watch_ids <<- c(1,33,66,20,76)
+watch_ids <<- c(1,2,33,66,20,76)
+
+seed <- round(runif(1,min=1,max=10),0)
+set.seed(seed)
+print(paste("seed:",seed))
 
 ####################################
 
@@ -126,8 +130,25 @@ tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .76)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
 min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .009)
 
-cMean <<- -5.5; cSig <<- 3.5; lrSig <<- 3.0
-prior_samples <- samp_priors(n=100000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
+# cMean <<- -5.5; 
+# cSig <<- 3.5; 
+# lrSig <<- 3.0
+
+# uniform dist between -4.5 and -6.0
+cMean <<- round(runif(1, min = -6.5, max = -4.0),1)
+cSig <<- round(runif(1, min = 2.0, max = 4.5),1)
+lrSig <<- round(runif(1, min = 2.0, max = 4.5),1)
+
+# uniform dist between -4.5 and -6.0
+# cMean <<- runif(1, min = -4.5, max = -6.0)
+# cSig <<- runif(1, min = 1.5, max = 3.5)
+# lrSig <<- runif(1, min = 1.0, max = 3.0)
+
+# uniform dist between -4
+
+
+
+prior_samples <- samp_priors(n=130000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
 
 
 p_abc <- function(){
@@ -150,7 +171,14 @@ save_folder <- paste0("n_iter_",num_iterations,"_ntry_",n_try,"_",format(Sys.tim
 dir.create(paste0("data/abc_reject/",save_folder))
 
 
-parallel <<- 1
+#parallel <<- 1
+parallel <<- runif(1) <.5
+
+if (parallel) {
+  message("Running in parallel\n")
+} else {
+  message("Running in serial\n")
+}
 run_function <- ifelse(parallel,run_abc_tests, run_abc_tests_serial)
 
 
