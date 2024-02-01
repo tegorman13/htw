@@ -197,23 +197,23 @@ save_abc_test_results(exam_test, "EXAM", "Test", ri_reject_indv, subjects_data, 
 rm(exam_test); gc()
 
 t1<- ( alm_test <- run_function(full_sim_alm, subjects_data, "test_data", ids1) )
-save_abc_test_results(exam_test, "ALM", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
+save_abc_test_results(alm_test, "ALM", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 rm(alm_test); gc()
 
 t1<- ( exam_test_train <- run_function(full_sim_exam, subjects_data, "train_data, test_data", ids1) )
-save_abc_test_results(exam_test, "EXAM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
+save_abc_test_results(exam_test_train, "EXAM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 rm(exam_test_train); gc()
 
 t1<- ( alm_test_train <- run_function(full_sim_alm, subjects_data, "train_data, test_data", ids1) )
-save_abc_test_results(exam_test, "ALM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
+save_abc_test_results(alm_test_train, "ALM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 rm(alm_test_train); gc()
 
 t1<- ( exam_train <- run_function(full_sim_exam, subjects_data, "train_data", ids1) )
-save_abc_test_results(exam_test, "EXAM", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
+save_abc_test_results(exam_train, "EXAM", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 rm(exam_train); gc()
 
 t1<- ( alm_train <- run_function(full_sim_alm, subjects_data, "train_data", ids1) )
-save_abc_test_results(exam_test, "ALM", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
+save_abc_test_results(alm_train, "ALM", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 
 
 
