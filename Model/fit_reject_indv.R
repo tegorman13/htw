@@ -11,7 +11,7 @@ print(paste("seed:",seed))
 
 ####################################
 
-samp_priors <- function(n,cMean=-5,cSig=1.5,lrSig=1) {
+samp_priors <- function(n=1) {
   prior_samples <- tibble(
     c = rlnorm(n,cMean,sdlog=cSig),
     lr = extraDistr::rhnorm(n,sigma=lrSig),
@@ -19,7 +19,7 @@ samp_priors <- function(n,cMean=-5,cSig=1.5,lrSig=1) {
   return(prior_samples)
 }
 
-reject_abc <- function(simulation_function, prior_samples, data, num_iterations = 5000, n_try=500, return_dat="test_data") {
+reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=500, return_dat="test_data") {
   input_layer =  c(100,350,600,800,1000,1200)
   output_layer = input_layer
   data <- data |> as.data.table()
@@ -29,9 +29,11 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
     return_dat == "train_data, test_data" ~ list( target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ])
     ) |> pluck(1)
 
-  tol <-target_data |> group_by(x) |> summarise(m=mean(y),sd=sd(y)) |> summarise(tol=mean(sd),.groups="drop") *tolM
+  tol <- target_data[, .(m = mean(y), sd = sd(y)), by = .(x)][, .(tol = mean(sd) * tolM)]
+
+
   start_tol = round(tol,3); 
-  abc <- list()
+  abc <- list(); abc$dist_sd <- vector("list", num_iterations)
   try_count=0;
   inc_count=0;
   cur_tol_success=0;
@@ -45,13 +47,19 @@ reject_abc <- function(simulation_function, prior_samples, data, num_iterations 
 
     while(found==0) {
     try_count=try_count+1;
-    current_theta <- prior_samples[sample(1:nrow(prior_samples), 1), ]
+    #current_theta <- prior_samples[sample(1:nrow(prior_samples), 1), ]
+    current_theta <- samp_priors()
     sim_data <- simulation_function(data, current_theta$c, current_theta$lr, input_layer = input_layer, output_layer = output_layer, return_dat = return_dat) 
-    dist_sd <- target_data |> mutate(pred=sim_data,error=abs(y-pred)) |> group_by(id,condit,x) |> 
-      summarise(mean_error=mean(error),.groups="keep") |> 
-      group_by(id,condit) |> 
-      summarise(mean_error=mean(mean_error),.groups="keep") 
 
+    # dist_sd <- target_data |> mutate(pred=sim_data,error=abs(y-pred)) |> group_by(id,condit,x) |> 
+    #   summarise(mean_error=mean(error),.groups="keep") |> 
+    #   group_by(id,condit) |> 
+    #   summarise(mean_error=mean(mean_error),.groups="keep") 
+
+    target_data[, pred := sim_data]
+    target_data[, error := abs(y - pred)]
+    intermediate_result <- target_data[, .(mean_error = mean(error)), by = .(id, condit, x)]
+    dist_sd <- intermediate_result[, .(mean_error = mean(mean_error)), by = .(id, condit)]
 
     closest_mean_errors <- sort(c(closest_mean_errors, dist_sd$mean_error))
     if (length(closest_mean_errors) > 10) {
@@ -100,13 +108,11 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
   p_abc()
 
   cat("\nRunning ABC Test: ",as.character(substitute(simulation_function))," ",return_dat, "\n", "Parallel Execution\n")
-  print(nc <- future::availableCores())
-  future::plan(cluster, workers = nc-1)
 
   t1 <- system.time({
     results <- future_map(data_list, 
                           ~reject_abc(simulation_function = simulation_function, 
-                                      prior_samples = prior_samples, 
+                                      #prior_samples = prior_samples, 
                                       data = .x, 
                                       num_iterations = num_iterations, 
                                       n_try = n_try,
@@ -148,7 +154,7 @@ lrSig <<- round(runif(1, min = 2.0, max = 4.5),1)
 
 
 
-prior_samples <- samp_priors(n=130000, cMean=cMean, cSig=cSig, lrSig=lrSig) 
+prior_samples <- samp_priors(n=13000) 
 
 
 p_abc <- function(){
@@ -164,6 +170,7 @@ p_abc <- function(){
 #ids1 <- c(1,33,66)
 #ids1 <- as.numeric(levels(ds$id))[1:8]
 ids1 <- as.numeric(levels(ds$id))
+
 subjects_data <-  ds |> filter(id %in% ids1)  %>% with(split(.,f =c(id), drop=TRUE))
 
 
@@ -171,10 +178,12 @@ save_folder <- paste0("n_iter_",num_iterations,"_ntry_",n_try,"_",format(Sys.tim
 dir.create(paste0("data/abc_reject/",save_folder))
 
 
-#parallel <<- 1
-parallel <<- runif(1) <.5
+parallel <<- 1
+#parallel <<- runif(1) <.5
 
 if (parallel) {
+  print(nc <- future::availableCores())
+  future::plan(cluster, workers = nc-1)
   message("Running in parallel\n")
 } else {
   message("Running in serial\n")
@@ -185,37 +194,37 @@ run_function <- ifelse(parallel,run_abc_tests, run_abc_tests_serial)
 
 t1<- ( exam_test <- run_function(full_sim_exam, subjects_data, "test_data", ids1) )
 save_abc_test_results(exam_test, "EXAM", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
-
+rm(exam_test); gc()
 
 t1<- ( alm_test <- run_function(full_sim_alm, subjects_data, "test_data", ids1) )
 save_abc_test_results(exam_test, "ALM", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
-
+rm(alm_test); gc()
 
 t1<- ( exam_test_train <- run_function(full_sim_exam, subjects_data, "train_data, test_data", ids1) )
 save_abc_test_results(exam_test, "EXAM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
-
+rm(exam_test_train); gc()
 
 t1<- ( alm_test_train <- run_function(full_sim_alm, subjects_data, "train_data, test_data", ids1) )
 save_abc_test_results(exam_test, "ALM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
-
+rm(alm_test_train); gc()
 
 t1<- ( exam_train <- run_function(full_sim_exam, subjects_data, "train_data", ids1) )
 save_abc_test_results(exam_test, "EXAM", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
-
+rm(exam_train); gc()
 
 t1<- ( alm_train <- run_function(full_sim_alm, subjects_data, "train_data", ids1) )
 save_abc_test_results(exam_test, "ALM", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 
 
 
-cat("\nend")
-p_abc()
+# cat("\nend")
+# p_abc()
 
-cat("\n EXAM Test: \n")
-print(knitr::kable(exam_test[[1]] |> head(3),format="markdown"))
+# cat("\n EXAM Test: \n")
+# print(knitr::kable(exam_test[[1]] |> head(3),format="markdown"))
 
-cat("\n ALM Test: \n")
-print(knitr::kable(alm_test[[1]] |> head(3),format="markdown"))
+# cat("\n ALM Test: \n")
+# print(knitr::kable(alm_test[[1]] |> head(3),format="markdown"))
 
 
 

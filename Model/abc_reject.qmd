@@ -15,7 +15,7 @@ execute:
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr)
 conflict_prefer_all("dplyr", quiet = TRUE)
 options(scipen = 999)
-walk(c("Display_Functions","fun_alm",), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+walk(c("Display_Functions","fun_alm"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 ids <- c(1,2,4,5,6,7,8, 10,11,12,13)
 ids2 <- c(1,66,36)
@@ -23,13 +23,16 @@ ids3 <- c(20,71,101,4,76,192)
 idsBad <- c(76,192, 101)
 
 source(here::here("Functions/fun_indv_fit.R"))
-list.files(here('data/abc_reject'))
+
+#list.files(here('data/abc_reject'))
 
 # (grep("Train",list.files(here('data/abc_reject/n_iter_2000_ntry_10_2918'), 
 #                                            pattern="EXAM_Test",full.names = TRUE), 
 #                                 invert=TRUE, value=TRUE))
                                 
-ind_fits <- map(list.files(here('data/abc_reject/n_iter_2000_ntry_10_2918'),full.names=TRUE), readRDS)
+ind_fits <- map(list.files(here('data/abc_reject/n_iter_100_ntry_500_3719'),full.names=TRUE), readRDS)
+# ind_fits <- map(list.files(here('data/abc_reject/n_iter_2000_ntry_10_2918'),full.names=TRUE), readRDS)
+
 
 ind_fits_df <- ind_fits |> map(~list(dat=.x[[1]], Model = .x[["Model"]], Fit_Method=.x[["Fit_Method"]]))
 ind_fits_df2 <- ind_fits_df |> map(~rbindlist(.x$dat) |> mutate(Model = .x$Model, Fit_Method = .x$Fit_Method)) |> rbindlist()
