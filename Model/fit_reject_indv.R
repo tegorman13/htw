@@ -158,7 +158,7 @@ prior_samples <- samp_priors(n=13000)
 
 
 p_abc <- function(){
-  message(paste0("cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig,"\n", "tolM: ",
+  message(paste0("\n","cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig,"\n", "tolM: ",
   tolM, " tolInc: ",tolInc," accept_rate: ",min_accept_rate, "\n",
   "num_iterations: ",num_iterations," n_try: ",n_try,"\n",
   "median-c=",round(median(prior_samples$c),4)," median-lr=",round(median(prior_samples$lr),4),"\n"))
