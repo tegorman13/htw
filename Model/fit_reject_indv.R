@@ -3,7 +3,7 @@ conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("fun_alm","fun_model","fun_indv_fit"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
-watch_ids <<- c(1,2,33,66,20,76)
+watch_ids <<- c(1)
 
 seed <- round(runif(1,min=1,max=10),0)
 set.seed(seed)
@@ -183,7 +183,7 @@ parallel <<- 1
 
 if (parallel) {
   print(nc <- future::availableCores())
-  future::plan(cluster, workers = nc-1)
+  future::plan(cluster, workers = nc)
   message("Running in parallel\n")
 } else {
   message("Running in serial\n")
