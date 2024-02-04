@@ -7,7 +7,9 @@ walk(c("Display_Functions","fun_alm","fun_indv_fit"), ~ source(here::here(paste0
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 
 
-
+# should consider binning velocoties in 50s or 100s. 
+# simpler version that just orders the extrapolation items
+# compute bin widths as a function of SD or SE of each position
 
 
 get_order_pattern <- function(df, pred_col = "pred",band_tol=50) {
