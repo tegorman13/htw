@@ -1,0 +1,143 @@
+---
+title: "`r params$title`"
+author: Thomas Gorman
+date: "`r Sys.Date()`"
+format: 
+  html:
+    page-layout: full
+code-fold: true
+code-tools: true
+execute: 
+  warning: false
+  eval: true
+params:
+    file_name: file_name
+    title: title
+   #ind_fits: ind_fits
+   
+---
+
+
+```{r}
+pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr,future,furrr, knitr, reactable)
+conflict_prefer_all("dplyr", quiet = TRUE)
+options(scipen = 999)
+walk(c("Display_Functions","fun_alm","fun_indv_fit"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
+input_layer <<- output_layer <<-  c(100,350,600,800,1000,1200)
+
+ids <- c(1,2,4,5,6,7,8, 10,11,12,13)
+ids2 <- c(1,66,36)
+ids3 <- c(20,71,101,4,76,192)
+idsBad <- c(76,192, 101)
+
+
+
+file_name <- params$file_name
+raw_name <- tools::file_path_sans_ext(basename(params$file_name))
+
+
+# list.files(here('data/abc_reject'))
+# (grep("Train",list.files(here(paste0('data/abc_reject/',file_name)),
+#                                            pattern="EXAM_Test",full.names = TRUE),
+#                                 invert=TRUE, value=TRUE))
+
+
+ind_fits <- map(list.files(here(paste0('data/abc_reject/'),file_name),full.names=TRUE), readRDS)
+# ind_fits <- map(list.files(here('data/abc_reject/n_iter_2000_ntry_10_2918'),full.names=TRUE), readRDS)
+ind_fits_df <- ind_fits |> map(~list(dat=.x[[1]], Model = .x[["Model"]], Fit_Method=.x[["Fit_Method"]]))
+ind_fits_df <- ind_fits_df |> map(~rbindlist(.x$dat) |> mutate(Model = .x$Model, Fit_Method = .x$Fit_Method)) |> rbindlist() 
+```
+
+## `{r} raw_name`
+
+
+
+```{r}
+
+generate_data <- function(Model, post_samples, data, num_samples = 1, return_dat = "train_data, test_data") {
+  # Filter data for the specific id without invalidating selfref
+  sbj_data <- copy(data[id == post_samples$id[1]])
+  simulation_function <- ifelse(Model == "EXAM", full_sim_exam, full_sim_alm)
+
+  target_data <- switch(return_dat,
+                        "test_data" = copy(sbj_data[expMode2 == "Test"]),
+                        "train_data" = copy(sbj_data[expMode2 == "Train"]),
+                        "train_data, test_data" = copy(sbj_data[expMode2 %in% c("Test", "Train")]))
+  
+  post_samples <- post_samples[order(mean_error)][1:num_samples, .(c, lr, mean_error, rank = .I)]
+
+  simulated_data_list <- lapply(1:nrow(post_samples), function(i) {
+    params <- post_samples[i]
+    sim_data <- simulation_function(sbj_data, params$c, params$lr, input_layer = input_layer, 
+                                    output_layer = output_layer, return_dat = return_dat)
+    sim_data_dt <- data.table(id = sbj_data$id[1], condit = sbj_data$condit[1], 
+                              expMode2 = target_data$expMode2[1], Model = Model,tr=target_data$tr,
+                              y = target_data$y, x = target_data$x, c = params$c, 
+                              lr = params$lr, mean_error = params$mean_error, rank = i,
+                              pred = sim_data)
+    return(sim_data_dt)
+  })
+  
+  result_dt <- rbindlist(simulated_data_list)
+  setcolorder(result_dt, c("id", "condit", "expMode2","tr", "c", "lr", "x", "y", "pred"))
+  return(result_dt)
+}
+
+future::plan(multisession)
+
+nestSbjModelFit <- ind_fits_df %>% nest(.by=c(id,Model,Fit_Method))
+
+post_dat <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
+   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="test_data")
+   })) |> 
+  select(Fit_Method,pp,-data) |>  
+  unnest(pp) |> filter(expMode2=="Test") |> as.data.table()
+
+post_dat_avg <- post_dat |> group_by(id, condit, Model, Fit_Method, x, c, lr, rank) |> 
+  summarise(y = mean(y), pred = mean(pred), error = y - pred) |> as.data.table()
+
+setorder(post_dat_avg, id, x, rank)
+post_dat_l <- melt(post_dat_avg, id.vars = c("id", "condit", "Model", "Fit_Method", "x", "c", "lr", "rank","error"),
+                   measure.vars = c("pred", "y"), variable.name = "Resp", value.name = "val")
+post_dat_l[, Resp := fifelse(Resp == "y", "Observed",
+                             fifelse(Model == "ALM", "ALM", "EXAM"))]
+setorder(post_dat_l, id, Resp)
+rm(post_dat_avg)
+
+# Single run extraction:
+# exam_test <- ind_fits_df |> filter(Model == "EXAM", Fit_Method == "Test")
+# post_dat_trial <- exam_test %>% split(f =c(.$id), drop=TRUE) |> 
+#   map(~generate_data(.x$Model, .x, ds, num_samples = 15, return_dat="train_data, test_data")) |> 
+#   rbindlist() |> 
+#   filter(expMode2=="Test")
+# 
+# post_dat_avg <- post_dat_trial |> group_by(id,condit,x,c,lr,rank) |> 
+#   summarise(y = mean(y),pred = mean(pred)) |> arrange(id,x,rank)
+
+
+
+post_dat_l |> filter(Model == "EXAM", Fit_Method == "Test",id==1) |> arrange(rank)
+
+# head(post_dat_l)
+
+```
+
+
+
+
+
+##  Posterior Average Table: 
+```{r fig.width=12, fig.height=17}
+#| eval: true
+post_tabs <- abc_tables(post_dat_l)
+post_tabs$et_sum |> gt::gt()
+
+
+post_tabs$et_sum |> select(condit,Fit_Method,Avg_ALM_error, Avg_EXAM_error) |> filter(Fit_Method=="Test")
+
+
+abc_tables(post_dat_l |> filter(rank<=10))$et_sum |> gt::gt()
+ 
+
+```

@@ -1,13 +1,22 @@
 ---
-title: Individual ABC Fits
+title: "`r params$title`"
 author: Thomas Gorman
 date: "`r Sys.Date()`"
+format: 
+  html:
+    page-layout: full
 code-fold: true
 code-tools: true
 execute: 
   warning: false
   eval: true
+params:
+    file_name: file_name
+    title: title
+   #ind_fits: ind_fits
+   
 ---
+
 
 ```{r}
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr,future,furrr, knitr, reactable)
@@ -23,7 +32,10 @@ ids3 <- c(20,71,101,4,76,192)
 idsBad <- c(76,192, 101)
 
 
-file_name <- "n_iter_2000_ntry_10_2918"
+
+file_name <- params$file_name
+raw_name <- tools::file_path_sans_ext(basename(params$file_name))
+
 
 # list.files(here('data/abc_reject'))
 # (grep("Train",list.files(here(paste0('data/abc_reject/',file_name)),
@@ -36,6 +48,8 @@ ind_fits <- map(list.files(here(paste0('data/abc_reject/'),file_name),full.names
 ind_fits_df <- ind_fits |> map(~list(dat=.x[[1]], Model = .x[["Model"]], Fit_Method=.x[["Fit_Method"]]))
 ind_fits_df <- ind_fits_df |> map(~rbindlist(.x$dat) |> mutate(Model = .x$Model, Fit_Method = .x$Fit_Method)) |> rbindlist() 
 ```
+
+## `{r} raw_name`
 
 
 
@@ -101,10 +115,7 @@ rm(post_dat_avg)
 # post_dat_avg <- post_dat_trial |> group_by(id,condit,x,c,lr,rank) |> 
 #   summarise(y = mean(y),pred = mean(pred)) |> arrange(id,x,rank)
 
-
-
 #post_dat_l |> filter(Model == "EXAM", Fit_Method == "Test",id==1) |> arrange(rank)
-
 # head(post_dat_l)
 
 ```
@@ -152,9 +163,6 @@ post_dat_l |> group_by(condit,Model,Fit_Method,rank,x) |>
   #filter(id==1) |>
    summarise(mean_error=mean(abs(error)), n=n()) |> 
    ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(~Fit_Method)
-
-
-
 ```
 
 ## Individual Predictive Plots
@@ -207,78 +215,3 @@ abc_tables(post_dat_l |> filter(rank<=10))$et_sum |> gt::gt()
 
 ```
 
-
-
-
-
-
-
-```{r}
-
-ind_fits_df2 |> ggplot(aes(x=Model,y=mean_error,fill=Model))+geom_col()+facet_wrap(~Fit_Method)
-ind_fits_df2 |> ggplot(aes(x=Model,y=mean_error,fill=Model))+geom_col()+facet_wrap(condit~Fit_Method)
-
-
-```
-
-
-
-dplyr versions
-generate_data <- function(Model, post_samples, data, num_samples = 1, return_dat="train_data, test_data")
-{
-  data <- data |> filter(id==post_samples$id[1]) |> as.data.table()
-  
-  simulation_function <- ifelse(Model=="EXAM",full_sim_exam, full_sim_alm)
-  
-  target_data <- case_when(
-    return_dat == "test_data" ~ list(target_data_test <- data[data$expMode2 == "Test", ]), 
-    return_dat == "train_data" ~ list( target_data_train <- data[data$expMode2 == "Train", ]),
-    return_dat == "train_data, test_data" ~ list( target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ])
-    ) |> pluck(1)
-  
-   post_samples <- post_samples |> mutate(rank = dense_rank(mean_error)) |> 
-     arrange(rank) |> filter(rank <= num_samples)
-    
-  simulated_data_list <- lapply(1:nrow(post_samples), function(i) {
-    params <- post_samples[i, ]
-    sim_data <- simulation_function(data, params$c, params$lr,
-                                    input_layer = input_layer, output_layer = output_layer, return_dat = return_dat) |> as_tibble() |>
-        mutate(id=data$id[1],condit=data$condit[1],expMode2=target_data$expMode2,Model=Model[1],y=target_data$y,x=target_data$x,c=params$c, 
-               lr=params$lr,mean_error=params$mean_error, rank=i ) |> 
-      rename(pred="value")
-  })
-  
-  rbindlist(simulated_data_list) |> relocate(id,condit,expMode2,c,lr,x,y,pred)
-}
-
-k <- ind_fits_df %>% nest(.by=c(id,Model,Fit_Method))
- future::plan(multisession)
- k2 <- k |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
-   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 10, return_dat="test_data")
-   })) |> select(-data)
-   
-
-post_dat <- k2 |> select(Fit_Method,pp) |>  unnest(pp) |> filter(expMode2=="Test") |> as.data.table()
-post_dat <- 
-post_dat_avg <- post_dat |> group_by(id,condit,Model,Fit_Method,x,c,lr,rank) |> 
-  summarise(y = mean(y),pred = mean(pred)) |>
-  arrange(id,x,rank)
-
-post_dat_l <- post_dat_avg |>
-  pivot_longer(
-    cols = c(pred, y),
-    names_to = "Resp",
-    values_to = "val"
-  ) |>
-  mutate(
-    Resp = case_when(
-      Resp == "y" ~ "Observed",
-      Model == "ALM" ~ "ALM",
-      Model == "EXAM" ~ "EXAM"
-    )
-  ) |> arrange(id,Resp) 
-
-
-```{r}
-
-```
