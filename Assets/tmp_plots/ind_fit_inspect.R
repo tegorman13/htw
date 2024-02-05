@@ -2,10 +2,12 @@
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr)
 conflict_prefer_all("dplyr", quiet = TRUE)
 
-ft <- list.files("hier_reports",pattern="*.rds",full.names = TRUE)
+# ft <- list.files("hier_reports",pattern="*.rds",full.names = TRUE)
+ ft <- list.files("reject_reports",pattern="*.rds",full.names = TRUE)
 
 pt <- map(ft,readRDS)
-pt2 <- imap_dfr(pt, ~.x[["et_sum"]]) |> arrange(Avg_EXAM_error) |> mutate(full_name = factor(full_name, levels = unique(full_name)))
+pt2 <- imap_dfr(pt, ~.x[["et_sum"]]) |> arrange(Avg_EXAM_error) |> mutate(full_name = factor(fname, levels = unique(fname))) |>
+  select(-parallel, type) |> rename("accept_rate"=min_accept_rate)
 
 # it <- imap_dfr(pt, ~.x[["et_sum_x_indv"]])
 # pt2 |> filter(Fit_Method=="Test & Train") |> arrange(Avg_EXAM_error)
@@ -87,7 +89,7 @@ dt1 <- pt2 |>
   ))) |>
   rename("ALM_Error" = Avg_ALM_error, "EXAM_Error" = Avg_EXAM_error,
          "Best_ALM" = N_Best_ALM, "Best_EXAM"=N_Best_EXAM,
-         "ng"=ng_value,"ns"=n_samp,"buf"=buf_value,"type"=run_type) |>
+         "ns"=n_samp) |>
 datatable(
   pt2,
   extensions = 'Buttons',
@@ -99,6 +101,6 @@ datatable(
     initComplete = JS(js)
   )
 )
-htmlwidgets::saveWidget(dt1, "hier_reports/abc_tab_compare.html",selfcontained=FALSE)
+htmlwidgets::saveWidget(dt1, "reject_reports/abc_tab_compare.html",selfcontained=FALSE)
 
 

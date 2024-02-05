@@ -1,10 +1,55 @@
 
 
-abc_tables <- function(post_dat_l,ids=NULL){
-
-  if(is.null(ids)) ids <- c(1,66,36)
+abc_tables <- function(post_dat,post_dat_l=NULL){
   
-et_sum <- post_dat_l |>
+  # check if post_dat_l exists
+  
+  
+ agg_full <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(mean_error)) |>
+    group_by(condit,Model,Fit_Method) |> 
+    summarise(mean_error=mean(mean_error)) |> 
+     round_tibble(1) # |>
+    # flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
+    #                      `ME` = as_paragraph(mean_error)) |> as_flextable() |>
+    # set_caption("Mean from full posterior") 
+  
+  
+agg_best <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
+    filter(rank==1) |>
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(mean_error)) |>
+    group_by(condit,Model,Fit_Method) |> 
+    summarise(mean_error=mean(mean_error)) |> 
+    round_tibble(1)
+
+agg_x_full <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
+  mutate(e2=abs(y-pred)) |> 
+  summarise(y=mean(y), pred=mean(pred), mean_error=mean(mean_error)) |>
+  group_by(condit,Model,Fit_Method,x) |> 
+  summarise(mean_error=mean(mean_error)) |> 
+  round_tibble(1) 
+
+agg_x_best <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |>
+  filter(rank==1) |>
+  mutate(e2=abs(y-pred)) |> 
+  summarise(y=mean(y), pred=mean(pred), mean_error=mean(mean_error)) |>
+  group_by(condit,Model,Fit_Method,x) |> 
+  summarise(mean_error=mean(mean_error)) |> 
+  round_tibble(1)
+
+id_agg <-  post_dat  |> group_by(id,condit,Model,Fit_Method,x) |>
+  mutate(e2=abs(y-pred)) |> 
+  summarise(y=mean(y), pred=mean(pred), mean_error=mean(mean_error)) |>
+  group_by(id,condit,Model,Fit_Method) |> 
+  summarise(mean_error=mean(mean_error)) |> 
+  round_tibble(1)
+
+if(is.null(post_dat_l)) {
+  et_sum <- NA
+
+}else {et_sum <- post_dat_l |>
   group_by(id,condit, Fit_Method, Resp) |>
   summarise(val = mean(val), .groups = 'drop') |>
   pivot_wider(
@@ -34,55 +79,127 @@ et_sum <- post_dat_l |>
       Avg_EXAM_error < Avg_ALM_error ~ "EXAM",
       TRUE ~ "Tie"  # In case of a tie or missing data
     )
-  )
-
-et_sum_x <- post_dat_l |>
-  group_by(condit, Fit_Method, Resp, x) |>
-  summarise(val = mean(val), .groups = 'drop') |>
-  pivot_wider(
-    names_from = Resp,
-    values_from = val,
-    values_fill = list(val = NA)
-  ) |>
-  group_by(condit, Fit_Method, x) |>
-  transmute(
-    ALM_error = round(abs(ALM - Observed),1),
-    EXAM_error = round(abs(EXAM - Observed),1),
-    Best_Model = case_when(
-      ALM_error < EXAM_error ~ "ALM",
-      EXAM_error < ALM_error ~ "EXAM",
-      TRUE ~ NA_character_  # In case of a tie or missing data
-    )
-  ) 
+  )}
 
 
-et_sum_x_indv <- post_dat_l |> filter(id %in% ids) |>
-  group_by(id,condit, Fit_Method, Resp, x) |>
-  summarise(val = mean(val), .groups = 'drop') |>
-  pivot_wider(
-    names_from = Resp,
-    values_from = val,
-    values_fill = list(val = NA)
-  ) |>
-  group_by(id,condit, Fit_Method, x) |>
-  transmute(
-    ALM_error = round(abs(ALM - Observed),1),
-    EXAM_error = round(abs(EXAM - Observed),1),
-    Best_Model = case_when(
-      ALM_error < EXAM_error ~ "ALM",
-      EXAM_error < ALM_error ~ "EXAM",
-      TRUE ~ NA_character_  # In case of a tie or missing data
-    )
-  ) 
 
+  return(tibble::lst(agg_full,agg_best, agg_x_full, agg_x_best,id_agg, et_sum ))
   
-  return(tibble::lst(et_sum,et_sum_x, et_sum_x_indv))
-
-
 }
 
 
 
+
+
+# abc_tables <- function(post_dat_l,ids=NULL){
+# 
+#   if(is.null(ids)) ids <- c(1,66,36)
+#   
+# #Need to compute error on the level of trials, then do summarization - in order to match how abc_rejection distances were computed  
+# 
+# et_sum <- post_dat_l |>
+#   group_by(id,condit, Fit_Method, Resp) |>
+#   summarise(val = mean(val), .groups = 'drop') |>
+#   pivot_wider(
+#     names_from = Resp,
+#     values_from = val,
+#     values_fill = list(val = NA)
+#   ) |>
+#   mutate(
+#     ALM_error = round(abs(ALM - Observed),1),
+#     EXAM_error = round(abs(EXAM - Observed),1),
+#     Best_Model = case_when(
+#       ALM_error < EXAM_error ~ "ALM",
+#       EXAM_error < ALM_error ~ "EXAM",
+#       TRUE ~ NA_character_  # In case of a tie or missing data
+#     )
+#   ) |>
+#   group_by(condit, Fit_Method) %>%
+#   summarise(
+#     Avg_ALM_error = round(mean(ALM_error, na.rm = TRUE),1),
+#     Avg_EXAM_error = round(mean(EXAM_error, na.rm = TRUE),1),
+#     N_Best_ALM = sum(Best_Model == "ALM", na.rm = TRUE),
+#     N_Best_EXAM = sum(Best_Model == "EXAM", na.rm = TRUE)
+#   ) %>%
+#   mutate(
+#     Best_Model = case_when(
+#       Avg_ALM_error < Avg_EXAM_error ~ "ALM",
+#       Avg_EXAM_error < Avg_ALM_error ~ "EXAM",
+#       TRUE ~ "Tie"  # In case of a tie or missing data
+#     )
+#   )
+# 
+# et_sum_x <- post_dat_l |>
+#   group_by(condit, Fit_Method, Resp, x) |>
+#   summarise(val = mean(val), .groups = 'drop') |>
+#   pivot_wider(
+#     names_from = Resp,
+#     values_from = val,
+#     values_fill = list(val = NA)
+#   ) |>
+#   group_by(condit, Fit_Method, x) |>
+#   transmute(
+#     ALM_error = round(abs(ALM - Observed),1),
+#     EXAM_error = round(abs(EXAM - Observed),1),
+#     Best_Model = case_when(
+#       ALM_error < EXAM_error ~ "ALM",
+#       EXAM_error < ALM_error ~ "EXAM",
+#       TRUE ~ NA_character_  # In case of a tie or missing data
+#     )
+#   ) 
+
+# 
+# et_sum_x_indv <- post_dat_l |> filter(id %in% ids) |>
+#   group_by(id,condit, Fit_Method, Resp, x) |>
+#   summarise(val = mean(val), .groups = 'drop') |>
+#   pivot_wider(
+#     names_from = Resp,
+#     values_from = val,
+#     values_fill = list(val = NA)
+#   ) |>
+#   group_by(id,condit, Fit_Method, x) |>
+#   transmute(
+#     ALM_error = round(abs(ALM - Observed),1),
+#     EXAM_error = round(abs(EXAM - Observed),1),
+#     Best_Model = case_when(
+#       ALM_error < EXAM_error ~ "ALM",
+#       EXAM_error < ALM_error ~ "EXAM",
+#       TRUE ~ NA_character_  # In case of a tie or missing data
+#     )
+#   ) 
+# 
+#   
+#   return(tibble::lst(et_sum,et_sum_x, et_sum_x_indv))
+# 
+# 
+# }
+
+
+
+
+group_predictive_plots2 <- function(post_dat_l)
+{
+  agg_posterior <- post_dat_l |> group_by(id,condit,Fit_Method, Resp,x) |>
+    mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
+    summarise(val=mean(val)) |>
+    ggplot(aes(x = Resp , y = val, fill=x)) + 
+    stat_bar + 
+    facet_wrap(condit~Fit_Method, scales="free") + 
+    labs(title = "Full Posterior Averages")
+  
+  best_posterior <- post_dat_l |> 
+    group_by(id,condit,Fit_Method, Resp,x) |>
+    filter(rank==1) |>
+    mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
+    summarise(val=mean(val)) |>
+    ggplot(aes(x = Resp , y = val, fill=x)) + 
+    stat_bar + 
+    facet_wrap(condit~Fit_Method, scales="free") + 
+    labs(title = "Best Posterior Averages")
+    
+    agg_posterior / best_posterior
+  
+}
 
 
 group_predictive_plots <- function(post_dat_l)

@@ -59,7 +59,7 @@ def generate_index_html(directory):
     # Adding links to all HTML files in the directory
     for file in sorted(os.listdir(directory)):
         if file.endswith(".html") and file != 'index.html':
-            display_name = file.replace('ind_abc_', '') if file.startswith('ind_abc_') else file
+            display_name = file.replace('n_iter_', '') if file.startswith('n_iter_') else file
             html_content += f'<a href="{file}" target="reportFrame">{display_name}</a>\n'
 
     # End of the HTML file
@@ -78,4 +78,5 @@ def generate_index_html(directory):
         file.write(html_content)
 
 # Replace 'hier_reports' with the path to your directory
-generate_index_html('hier_reports')
+# generate_index_html('hier_reports')
+generate_index_html('reject_reports')

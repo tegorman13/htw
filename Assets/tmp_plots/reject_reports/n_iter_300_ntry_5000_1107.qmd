@@ -19,10 +19,15 @@ params:
 
 
 ```{r}
-pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr,future,furrr, knitr, reactable)
+pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, stringr,future,furrr, knitr, reactable, flextable, ggstance)
 conflict_prefer_all("dplyr", quiet = TRUE)
 options(scipen = 999)
-walk(c("Display_Functions","fun_alm","fun_indv_fit"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+#walk(c("Display_Functions","fun_alm","fun_indv_fit"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+source("../../../Functions/fun_indv_fit.R")
+source("../../../Functions/Display_Functions.R")
+source("../../../Functions/fun_model.R")
+source("../../../Functions/fun_alm.R")
+
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 input_layer <<- output_layer <<-  c(100,350,600,800,1000,1200)
 
@@ -34,9 +39,6 @@ idsBad <- c(76,192, 101)
 
 
 file_name <- params$file_name
-raw_name <- tools::file_path_sans_ext(basename(params$file_name))
-
-
 # list.files(here('data/abc_reject'))
 # (grep("Train",list.files(here(paste0('data/abc_reject/',file_name)),
 #                                            pattern="EXAM_Test",full.names = TRUE),
@@ -47,9 +49,26 @@ ind_fits <- map(list.files(here(paste0('data/abc_reject/'),file_name),full.names
 # ind_fits <- map(list.files(here('data/abc_reject/n_iter_2000_ntry_10_2918'),full.names=TRUE), readRDS)
 ind_fits_df <- ind_fits |> map(~list(dat=.x[[1]], Model = .x[["Model"]], Fit_Method=.x[["Fit_Method"]]))
 ind_fits_df <- ind_fits_df |> map(~rbindlist(.x$dat) |> mutate(Model = .x$Model, Fit_Method = .x$Fit_Method)) |> rbindlist() 
+
+
+#run_params <- tibble::lst(file_name,cMean=ind_fits[[1]]$cMean, cSig=ind_fits[[1]]$cSig, 
+                          
+run_params <- keep(ind_fits[[1]], ~any(class(.x) %in% c("character", "numeric")))
+run_params <- tibble(!!!run_params) |> select(-Model,-Fit_Method)
+
+extract_info <- function(raw_names, run_params) {
+  fname <- tools::file_path_sans_ext(basename(raw_names))
+  n_samp <- str_extract(raw_names, "(?<=_)\\d+(?=_)")
+  ntry_ <- str_extract(raw_names, "(?<=ntry_)\\d+")
+  type <- 'ss'
+  data.frame(run_params, n_samp, ntry_, type, fname)
+}
+
+run_info <- extract_info(file_name,run_params)
+
+
 ```
 
-## `{r} raw_name`
 
 
 
@@ -72,7 +91,7 @@ generate_data <- function(Model, post_samples, data, num_samples = 1, return_dat
     sim_data <- simulation_function(sbj_data, params$c, params$lr, input_layer = input_layer, 
                                     output_layer = output_layer, return_dat = return_dat)
     sim_data_dt <- data.table(id = sbj_data$id[1], condit = sbj_data$condit[1], 
-                              expMode2 = target_data$expMode2[1], Model = Model,tr=target_data$tr,
+                              expMode2 = target_data$expMode2, Model = Model,tr=target_data$tr,
                               y = target_data$y, x = target_data$x, c = params$c, 
                               lr = params$lr, mean_error = params$mean_error, rank = i,
                               pred = sim_data)
@@ -89,7 +108,7 @@ future::plan(multisession)
 nestSbjModelFit <- ind_fits_df %>% nest(.by=c(id,Model,Fit_Method))
 
 post_dat <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
-   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="test_data")
+   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 50, return_dat="test_data")
    })) |> 
   select(Fit_Method,pp,-data) |>  
   unnest(pp) |> filter(expMode2=="Test") |> as.data.table()
@@ -104,6 +123,18 @@ post_dat_l[, Resp := fifelse(Resp == "y", "Observed",
                              fifelse(Model == "ALM", "ALM", "EXAM"))]
 setorder(post_dat_l, id, Resp)
 rm(post_dat_avg)
+plan(sequential)
+
+# AIC and BIC
+# mc2 <- post_dat |> filter(rank==1) |>
+#   group_by(id,condit,Model,Fit_Method) |>
+#   mutate(e2=abs(y-pred),n=n(),k=2) |>
+#   group_by(id,condit,Model,Fit_Method,x) |>
+#   summarise(y=mean(y), pred=mean(pred), e2=mean(e2), mean_error=first(mean_error),n=first(n),k=first(k)) |>
+#   group_by(id,condit,Model,Fit_Method) |>
+#   summarise(e2=mean(e2), mean_error=first(mean_error),n=first(n),k=first(k)) |>
+#   mutate(AIC=2*k+n*mean_error, BIC=log(n)*k+n*mean_error)
+
 
 # Single run extraction:
 # exam_test <- ind_fits_df |> filter(Model == "EXAM", Fit_Method == "Test")
@@ -117,7 +148,7 @@ rm(post_dat_avg)
 
 
 
-post_dat_l |> filter(Model == "EXAM", Fit_Method == "Test",id==1) |> arrange(rank)
+#post_dat_l |> filter(Model == "EXAM", Fit_Method == "Test",id==1) |> arrange(rank)
 
 # head(post_dat_l)
 
@@ -127,17 +158,238 @@ post_dat_l |> filter(Model == "EXAM", Fit_Method == "Test",id==1) |> arrange(ran
 
 
 
+#### `{r} head(run_info)`
+
+
 ##  Posterior Average Table: 
 ```{r fig.width=12, fig.height=17}
 #| eval: true
-post_tabs <- abc_tables(post_dat_l)
-post_tabs$et_sum |> gt::gt()
+#| tbl-cap: "Posterior Distribution"
+#| tbl-subcap: 
+#| - "Full Posterior"
+#| - "Best Posterior"
+
+# post_tabs <- abc_tables(post_dat_l)
+# post_tabs$et_sum |> gt::gt()
+
+post_tabs <- abc_tables(post_dat,post_dat_l)
+
+post_tabs$agg_full |> flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
+                       `ME` = as_paragraph(mean_error)) |> as_flextable() |>
+  set_caption("Mean from full_posterior") 
 
 
-post_tabs$et_sum |> select(condit,Fit_Method,Avg_ALM_error, Avg_EXAM_error) |> filter(Fit_Method=="Test")
+post_tabs$agg_best |> flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
+                       `ME` = as_paragraph(mean_error)) |> as_flextable() |>
+  set_caption("Mean from best parameters") 
 
-
-abc_tables(post_dat_l |> filter(rank<=10))$et_sum |> gt::gt()
- 
+post_tabs$agg_x_full |> 
+  left_join(post_tabs$agg_x_best |> rename("best_error"=mean_error), 
+            by=c("condit","Model","Fit_Method","x")) |> 
+  arrange(desc(condit),x,Fit_Method) |>
+  reactable::reactable() 
 
 ```
+
+
+## Posterior Predictive: 
+```{r, fig.width=12, fig.height=15}
+#| eval: true
+group_predictive_plots(post_dat_l) 
+```
+### Alt grouping of Posterior Predictive
+```{r, fig.width=12, fig.height=15}
+ group_predictive_plots2(post_dat_l) 
+```
+
+
+
+
+```{r fig.width=11, fig.height=12}
+plot_indv_posterior(ind_fits_df |> mutate(Group=condit))
+
+plot_indv_posterior(post_dat |> filter(rank==1) |> mutate(Group=condit))
+
+# plot join density of c and lr
+# post_dat |> filter(rank==1, c<.001) |> 
+#   ggplot(aes(x=c, y=lr, color=condit)) + geom_point() + facet_wrap(~Model+Fit_Method)
+
+post_dat |>  filter(c<.001) |> ggplot(aes(x=c,y=condit,fill=condit)) + geom_boxploth(width=.5) + facet_wrap(~Model+Fit_Method,scales="free")
+
+```
+
+## Model Comparison:
+```{r, fig.width=12, fig.height=13}
+#| eval: true
+indv_best_plots(post_dat_l)
+
+post_dat_l |> group_by(condit,Model,Fit_Method,rank) |> 
+   summarise(mean_error=mean(abs(error)), n=n()) |> 
+   ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(~Fit_Method)
+
+post_dat_l |> group_by(condit,Model,Fit_Method,rank,x) |> 
+   summarise(mean_error=mean(abs(error)), n=n()) |> 
+   ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(Fit_Method~x,ncol=6)
+ 
+
+post_dat_l |> group_by(condit,Model,Fit_Method,rank,x) |> 
+  #filter(id==1) |>
+   summarise(mean_error=mean(abs(error)), n=n()) |> 
+   ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(~Fit_Method)
+
+group_best_plots(post_dat_l)
+
+```
+
+## Individual Predictive Plots
+
+```{r fig.width=11, fig.height=12}
+indv_predictive_plots(post_dat_l, ids2)
+indv_predictive_plots(post_dat_l, idsBad)
+```
+
+
+### Subject 1
+```{r fig.width=11, fig.height=12}
+ 
+indv_predictive_dist((post_dat_l |> filter(rank<=200)),ind_fits_df, sbj=list(1))
+
+abc_tables(post_dat |> filter(id==1))$agg_full |> flextable() |> set_caption("Mean from full posterior")
+abc_tables(post_dat |> filter(id==1))$agg_best |> flextable() |> set_caption("Mean from best parameters")
+
+post_dat_l |> filter(id==1) |> group_by(condit,Model,Fit_Method,rank) |> 
+   summarise(mean_error=mean(abs(error)), n=n()) |> 
+   ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(~Fit_Method)
+
+# plot_indv_posterior(ind_fits_df |> filter(id==1))
+# ind_fits_df |> filter(id==1, Fit_Method=="Test Only", Model=="EXAM") |> pull(c) |> unique()
+
+```
+
+
+
+### Subject 36
+```{r fig.width=11, fig.height=12}
+#| eval: true
+#| 
+indv_predictive_dist(post_dat_l,ind_fits_df, sbj=list(36))
+#abc_tables(post_dat_l |> filter(id==36))$et_sum |> gt::gt()
+
+abc_tables(post_dat |> filter(id==36))$agg_full |> flextable() |> set_caption("Mean from full posterior")
+abc_tables(post_dat |> filter(id==36))$agg_best |> flextable() |> set_caption("Mean from best parameters")
+# plot_indv_posterior(ind_fits_df |> filter(id==1))
+# ind_fits_df |> filter(id==1, Fit_Method=="Test Only", Model=="EXAM") |> pull(c) |> unique()
+```
+
+
+
+
+
+## Learning Curves
+```{r fig.width=11, fig.height=16}
+#| eval: true
+pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
+   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 10, return_dat="train_data, test_data")
+   })) |> 
+  select(Fit_Method,pp,-data) |>  
+  unnest(pp) |> as.data.table() |> filter(expMode2=="Train") 
+
+
+nbins <- 6
+pd_train <- pd_train |> group_by(id,condit,Model,Fit_Method) |>
+  mutate(Block=cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE))
+setorder(pd_train, id, x,Block, rank)
+
+pd_train_l <- melt(pd_train, id.vars = c("id", "condit", "Model","Block", "Fit_Method", "x", "c", "lr", "rank"),
+                   measure.vars = c("pred", "y"), variable.name = "Resp", value.name = "val") |> as.data.table()
+pd_train_l[, Resp := fifelse(Resp == "y", "Observed",
+                             fifelse(Model == "ALM", "ALM", "EXAM"))]
+setorder(pd_train_l, id,Block, Resp)
+
+
+
+pd_train_l |> ggplot(aes(x=Block,y=val,col=Resp))+
+  geom_point( stat = "summary", fun = mean) + 
+  stat_summary( geom = "line", fun = mean) +
+  stat_summary(geom="errorbar",fun.data=mean_se,width=.1,alpha=.4) +
+  #facet_wrap(condit~x,scales="free")
+  ggh4x::facet_nested_wrap(Fit_Method~condit~x,scales="free") +
+  coord_cartesian(ylim = c(600, 1300)) +labs(title="Full Posterior")
+
+
+pd_train_l |>filter(rank==1) |> ggplot(aes(x=Block,y=val,col=Resp))+
+  geom_point( stat = "summary", fun = mean) + 
+  stat_summary( geom = "line", fun = mean) +
+  stat_summary(geom="errorbar",fun.data=mean_se,width=.1,alpha=.4) +
+  #facet_wrap(condit~x,scales="free")
+  ggh4x::facet_nested_wrap(Fit_Method~condit~x,scales="free") +
+  coord_cartesian(ylim = c(600, 1300)) +labs(title="Best Parameters")
+
+pd_train_l |> filter(Fit_Method=="Train") |> 
+  mutate(x=as.factor(x), Resp=as.factor(Resp), Block=as.factor(Block)) |>
+  ggplot(aes(x=x,y=val,fill=Block))+
+  stat_bar +
+  #facet_wrap(condit~x,scales="free")
+  facet_wrap(condit~Resp,scales="free",ncol=3) +
+  coord_cartesian(ylim = c(600, 1300))
+
+
+# pd_train_l |> filter(id %in% c(1,33,66, 36,76), Fit_Method=="Train") |> 
+#   ggplot(aes(x=Block,y=val,col=Resp))+
+#   geom_point( stat = "summary", fun = mean) + 
+#   stat_summary( geom = "line", fun = mean) +
+#   stat_summary(geom="errorbar",fun.data=mean_se,width=.1,alpha=.4) +
+#   #facet_wrap(condit~x,scales="free")
+#   facet_wrap(id~x,scales="free",ncol=3) +
+#   coord_cartesian(ylim = c(600, 1300))
+
+
+pd_train_l |> filter(id %in% c(1,33,66, 36,76), Fit_Method=="Train") |> 
+  mutate(x=as.factor(x), Resp=as.factor(Resp), Block=as.factor(Block)) |>
+  ggplot(aes(x=x,y=val,fill=Block))+
+  stat_bar +
+  #facet_wrap(condit~x,scales="free")
+  facet_wrap(id~Resp,scales="free",ncol=3) +
+  coord_cartesian(ylim = c(600, 1300))
+
+
+```
+
+
+
+```{r}
+#| eval: true
+post_dat |> ggplot(aes(x=Model,y=mean_error,fill=Model))+geom_col()+facet_wrap(~Fit_Method)
+post_dat |> ggplot(aes(x=Model,y=mean_error,fill=Model))+geom_col()+facet_wrap(condit~Fit_Method)
+
+
+```
+
+
+
+```{r}
+# print(file_name)
+# print(getwd())
+post_tabs <- map(post_tabs, ~cbind(.x,run_info) |> mutate(fn=file_name))
+path1 = "../../../data/abc_tabs"
+saveRDS(post_tabs, paste0(tools::file_path_sans_ext(basename(file_name)),"_post_tab", ".rds"))
+saveRDS(post_tabs, paste0(path1, "/", tools::file_path_sans_ext(basename(file_name)),"_post_tab", ".rds"))
+
+
+
+
+```
+
+
+
+
+```{r}
+#| include: false
+
+rm(post_dat_l)
+rm(post_dat)
+rm(ind_fits_df)
+gc()
+```
+
+

@@ -2,16 +2,71 @@
 # https://kb.iu.edu/d/aews
 
 
-#https://www.mm218.dev/posts/2023-03-03-parallel/
-#https://win-vector.com/2016/01/22/running-r-jobs-quickly-on-many-machines/
+# https://www.mm218.dev/posts/2023-03-03-parallel/
+# https://win-vector.com/2016/01/22/running-r-jobs-quickly-on-many-machines/
 # https://mvuorre.github.io/posts/remote-r/
-#m1r1 10.147.17.45
-# m1l2 10.147.17.69
+# https://www.zachburchill.ml/remoteR2/
+# https://www.jottr.org/2016/10/11/future-remotes/
+# https://www.andrewheiss.com/blog/2018/07/30/disposable-supercomputer-future/
 
-#m1r2 10.147.17.211
+# m1l1 10.147.17.245
+# m1l2 10.147.17.69
+# m1l3 10.147.17.122
+# m1l4 10.147.17.46
+# m1l5 10.147.17.192
+# m1l6 10.147.17.66
+# m1l7 10.147.17.139
+
+# m1r1 10.147.17.45
+# m1r2 10.147.17.211
 
 # tg_m1 10.147.17.202
 
+
+tg_m1 <- '10.147.17.202'
+m1l1 <- '10.147.17.245'
+m1l2 <- '10.147.17.69'
+m1l3 <- '10.147.17.122'
+m1l4 <- '10.147.17.46'
+m1l5 <- '10.147.17.192'
+m1l6 <- '10.147.17.66'
+m1l7 <- '10.147.17.139'
+m1r1 <- '10.147.17.45'
+m1r2 <- '10.147.17.211'
+
+
+
+
+
+machineAddresses <- list(
+  list(host=m1l1,user='thomasgorman',ncore=6),
+  list(host=m1l2,user='thomasgorman', ncore=4), 
+  list(host=m1l3,user='thomasgorman',ncore=6), 
+  list(host=m1l4,user='thomasgorman',ncore=6),
+  list(host=m1l5,user='thomasgorman',ncore=6),
+  list(host=m1l6,user='thomasgorman',ncore=6)
+)
+
+spec <- lapply(machineAddresses,
+               function(machine) {
+                 rep(list(list(host=machine$host,
+                               user=machine$user)),
+                     machine$ncore)
+               })
+spec <- unlist(spec,recursive=FALSE)
+
+parallelCluster <- parallel::makeCluster(type='PSOCK',
+                                         master=m1l1,
+                                         spec=spec)
+print(parallelCluster)
+
+
+
+
+
+
+
+#############
 
 
 library(parallel)
@@ -49,6 +104,8 @@ print(parallelCluster)
 # socket cluster with 8 nodes on hosts ‘10.147.17.202’, ‘10.147.17.45’
 
 
+##################
+
 
 machineAddresses <- list(
   list(host=primary,user='thomasgorman',
@@ -71,7 +128,7 @@ parallelCluster <- parallel::makeCluster(type='PSOCK',
 print(parallelCluster)
 # socket cluster with 12 nodes on hosts ‘10.147.17.202’, ‘10.147.17.45’, ‘10.147.17.69’
 
-
+##################
 
 
 # https://mvuorre.github.io/posts/parallel-multiverse/
