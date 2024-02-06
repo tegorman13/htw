@@ -31,7 +31,6 @@ reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=5
 
   tol <- target_data[, .(m = mean(y), sd = sd(y)), by = .(x)][, .(tol = mean(sd) * tolM)]
 
-
   start_tol = round(tol,3); 
   abc <- list(); abc$dist_sd <- vector("list", num_iterations)
   try_count=0;
@@ -62,8 +61,8 @@ reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=5
     dist_sd <- intermediate_result[, .(mean_error = mean(mean_error)), by = .(id, condit)]
 
     closest_mean_errors <- sort(c(closest_mean_errors, dist_sd$mean_error))
-    if (length(closest_mean_errors) > 10) {
-      closest_mean_errors <- head(closest_mean_errors, 10)  
+    if (length(closest_mean_errors) > 5) {
+      closest_mean_errors <- head(closest_mean_errors, 5)  
     }
 
     if(dist_sd$mean_error< tol) {
@@ -77,7 +76,6 @@ reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=5
         average_closest_error <- mean(closest_mean_errors)
         tol <- (tol*tolInc) + (abs(average_closest_error-tol)/2) #* tolInc  # Adjust tolerance
         #tol=tol*tolInc
-
         inc_count=inc_count+1;
         try_count=0;
         cur_tol_success=0;
@@ -106,7 +104,6 @@ reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=5
 
 run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
   p_abc()
-
   cat("\nRunning ABC Test: ",as.character(substitute(simulation_function))," ",return_dat, "\n", "Parallel Execution\n")
 
   t1 <- system.time({
@@ -130,32 +127,22 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 ####################################
 
 args <- commandArgs(trailingOnly = TRUE)
-num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 100)
-n_try = ifelse(length(args) > 1, as.numeric(args[2]), 500)
-tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .76)
+num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 500)
+n_try = ifelse(length(args) > 1, as.numeric(args[2]), 3500)
+tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .85)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
-min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .009)
+min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .0004)
 
-# cMean <<- -5.5; 
-# cSig <<- 3.5; 
-# lrSig <<- 3.0
-
-# uniform dist between -4.5 and -6.0
-cMean <<- round(runif(1, min = -6.5, max = -4.0),1)
-cSig <<- round(runif(1, min = 2.0, max = 4.5),1)
-lrSig <<- round(runif(1, min = 2.0, max = 4.5),1)
+cMean <<- -6; 
+cSig <<- 3.5; 
+lrSig <<- 4.0
 
 # uniform dist between -4.5 and -6.0
 # cMean <<- runif(1, min = -4.5, max = -6.0)
 # cSig <<- runif(1, min = 1.5, max = 3.5)
 # lrSig <<- runif(1, min = 1.0, max = 3.0)
 
-# uniform dist between -4
-
-
-
 prior_samples <- samp_priors(n=13000) 
-
 
 p_abc <- function(){
   message(paste0("\n","cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig,"\n", "tolM: ",
@@ -165,61 +152,61 @@ p_abc <- function(){
   }
  
 ####################################
-
 # ids1 <- 1
-#ids1 <- c(1,33,66)
-#ids1 <- as.numeric(levels(ds$id))[1:8]
+# ids1 <- c(1,33,66)
+# ids1 <- as.numeric(levels(ds$id))[1:8]
 ids1 <- as.numeric(levels(ds$id))
-
 subjects_data <-  ds |> filter(id %in% ids1)  %>% with(split(.,f =c(id), drop=TRUE))
 
 
 save_folder <- paste0("n_iter_",num_iterations,"_ntry_",n_try,"_",format(Sys.time(),"%M%OS"))
 dir.create(paste0("data/abc_reject/",save_folder))
 
-
 parallel <<- 1
 #parallel <<- runif(1) <.5
 
-if (parallel) {
-  print(nc <- future::availableCores())
-  future::plan(cluster, workers = nc)
-  message("Running in parallel\n")
+if (parallel==1) {
+  # print(nc <- future::availableCores())
+  # future::plan(cluster, workers = nc)
+  # message("Running in parallel\n")
+  print("hi1")
+} else if(parallel==2){
+# spec <- make_spec()
+# pc <- parallel::makeCluster(type='PSOCK', master=macpro, spec)
+# plan(cluster, workers = pc)
+print("hi2")
 } else {
   message("Running in serial\n")
 }
 
-spec <- make_spec()
-pc <- parallel::makeCluster(type='PSOCK', master=macpro, spec)
-plan(cluster, workers = pc)
+
 # parallel::stopCluster(pc)
 
-
-run_function <- ifelse(parallel,run_abc_tests, run_abc_tests_serial)
-
+run_function <- ifelse(parallel>0,run_abc_tests, run_abc_tests_serial)
 
 
-t1<- ( exam_test <- run_function(full_sim_exam, subjects_data, "test_data", ids1) )
+
+t1<- system.time( exam_test <- run_function(full_sim_exam, subjects_data, "test_data", ids1) )
 save_abc_test_results(exam_test, "EXAM", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 rm(exam_test); gc()
 
-t1<- ( alm_test <- run_function(full_sim_alm, subjects_data, "test_data", ids1) )
+t1<- system.time( alm_test <- run_function(full_sim_alm, subjects_data, "test_data", ids1) )
 save_abc_test_results(alm_test, "ALM", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 rm(alm_test); gc()
 
-t1<- ( exam_test_train <- run_function(full_sim_exam, subjects_data, "train_data, test_data", ids1) )
+t1<- system.time( exam_test_train <- run_function(full_sim_exam, subjects_data, "train_data, test_data", ids1) )
 save_abc_test_results(exam_test_train, "EXAM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 rm(exam_test_train); gc()
 
-t1<- ( alm_test_train <- run_function(full_sim_alm, subjects_data, "train_data, test_data", ids1) )
+t1<- system.time( alm_test_train <- run_function(full_sim_alm, subjects_data, "train_data, test_data", ids1) )
 save_abc_test_results(alm_test_train, "ALM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 rm(alm_test_train); gc()
 
-t1<- ( exam_train <- run_function(full_sim_exam, subjects_data, "train_data", ids1) )
+t1<- system.time( exam_train <- run_function(full_sim_exam, subjects_data, "train_data", ids1) )
 save_abc_test_results(exam_train, "EXAM", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 rm(exam_train); gc()
 
-t1<- ( alm_train <- run_function(full_sim_alm, subjects_data, "train_data", ids1) )
+t1<- system.time( alm_train <- run_function(full_sim_alm, subjects_data, "train_data", ids1) )
 save_abc_test_results(alm_train, "ALM", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 
 

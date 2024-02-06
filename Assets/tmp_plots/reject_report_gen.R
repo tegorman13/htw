@@ -2,8 +2,6 @@ pacman::p_load(dplyr,purrr,tidyr,ggplot2, here, patchwork, conflicted, stringr, 
 conflict_prefer_all("dplyr", quiet = TRUE)
 
 
-
-
 render_report <- function(input) {
  title <- tools::file_path_sans_ext(basename(input))
   tmp_template <- paste0(tools::file_path_sans_ext(title),".qmd")
@@ -17,13 +15,11 @@ render_report <- function(input) {
 }
 
 
-
 folders <- tibble(path=list.files('../../data/abc_reject',full.names=TRUE)) |> 
     mutate(mtime = file.info(path)$mtime) |> 
     arrange(desc(mtime)) 
 
-folder_2_gen <- folders |> slice(1:55) |> pull(path)
-
+folder_2_gen <- folders |> slice(1:3) |> pull(path)
 
 complete_reports <- tools::file_path_sans_ext(list.files("reject_reports", pattern = "\\.qmd$"))
 # abc_files_modified <- sub("\\.rds$", ".qmd", basename(complete_reports))
@@ -34,7 +30,6 @@ abc_files <- folder_2_gen[-files_to_remove] # files that still need to be proces
 # file.remove(list.files("reject_reports", pattern = ".qmd", full.names = TRUE))
 
 purrr::map(abc_files, render_report)
-
 
 source("ind_fit_inspect.R")
 # run "python gen_index.py with system"
