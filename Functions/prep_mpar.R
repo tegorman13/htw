@@ -27,13 +27,13 @@ macpro <- '10.147.17.83'
 machineAddresses <- list(
   #list(host=tg_m1,user='thomasgorman', ncore=7),
   list(host=macpro,user='thomasgorman', ncore=1),
-  list(host=m1l2,user='thomasgorman', ncore=7),
-  #list(host=m1l4,user='thomasgorman', ncore=7),
-  #list(host=m1l5,user='thomasgorman', ncore=2),
-  # list(host=m1l6,user='thomasgorman', ncore=1),
-   list(host=m1l7,user='thomasgorman', ncore=7),
-   list(host=m1r1,user='thomasgorman', ncore=7),
-  list(host=m1r2,user='thomasgorman', ncore=7)
+  list(host=m1l2,user='thomasgorman', ncore=8),
+  list(host=m1l4,user='thomasgorman', ncore=8),
+  list(host=m1l5,user='thomasgorman', ncore=8),
+   list(host=m1l6,user='thomasgorman', ncore=8),
+   list(host=m1l7,user='thomasgorman', ncore=8),
+   list(host=m1r1,user='thomasgorman', ncore=8),
+  list(host=m1r2,user='thomasgorman', ncore=8)
 )
 
 spec <- lapply(machineAddresses,
