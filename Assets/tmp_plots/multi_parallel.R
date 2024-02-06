@@ -8,6 +8,7 @@
 # https://www.zachburchill.ml/remoteR2/
 # https://www.jottr.org/2016/10/11/future-remotes/
 # https://www.andrewheiss.com/blog/2018/07/30/disposable-supercomputer-future/
+# https://github.com/HenrikBengtsson/future/issues/323
 
 # m1l1 10.147.17.245
 # m1l2 10.147.17.69
@@ -22,6 +23,8 @@
 
 # tg_m1 10.147.17.202
 
+pacman::p_load(dplyr,purrr,tidyr, data.table, here, conflicted, future, furrr)
+
 
 tg_m1 <- '10.147.17.202'
 m1l1 <- '10.147.17.245'
@@ -33,6 +36,55 @@ m1l6 <- '10.147.17.66'
 m1l7 <- '10.147.17.139'
 m1r1 <- '10.147.17.45'
 m1r2 <- '10.147.17.211'
+
+tg15 <- '10.147.17.222'
+
+
+
+ips <- c(m1l2,tg_m1)
+
+cl <- makeClusterPSOCK(ips, user="thomasgorman")
+cl <- makeNodePSOCK(ips,master=tg_m1, user="thomasgorman")
+
+
+pc <- parallel::makeCluster(type='PSOCK', master=tg_m1, spec)
+
+plan(cluster, workers = pc)
+
+
+makePSOCKcluster(ips, verbose=TRUE)
+
+
+cl <- makeClusterPSOCK(tg15, verbose = TRUE)
+
+
+
+fr = future_map(1:390, ~ rnorm(30000) * .x)
+
+
+
+machineAddresses <- list(
+  list(host=tg_m1,user='thomasgorman', ncore=1),
+  list(host=m1l2,user='thomasgorman', ncore=4), 
+  list(host=m1l4,user='thomasgorman', ncore=6),
+ # list(host=m1l5,user='thomasgorman', ncore=6),
+  list(host=m1l6,user='thomasgorman', ncore=6),
+  list(host=m1l7,user='thomasgorman', ncore=6)
+)
+
+
+
+spec <- lapply(machineAddresses,
+               function(machine) {
+                 rep(list(list(host=machine$host,
+                               user=machine$user)),
+                     machine$ncore)
+               })
+spec <- unlist(spec,recursive=FALSE)
+
+
+parallel::stopCluster(pc)
+
 
 
 

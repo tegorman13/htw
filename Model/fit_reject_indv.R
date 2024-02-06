@@ -1,6 +1,6 @@
 pacman::p_load(dplyr,purrr,tidyr, data.table, here, conflicted, future, furrr)
 conflict_prefer_all("dplyr", quiet = TRUE)
-walk(c("fun_alm","fun_model","fun_indv_fit"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+walk(c("fun_alm","fun_model","fun_indv_fit", "prep_mpar"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 watch_ids <<- c(1)
@@ -188,6 +188,13 @@ if (parallel) {
 } else {
   message("Running in serial\n")
 }
+
+spec <- make_spec()
+pc <- parallel::makeCluster(type='PSOCK', master=macpro, spec)
+plan(cluster, workers = pc)
+# parallel::stopCluster(pc)
+
+
 run_function <- ifelse(parallel,run_abc_tests, run_abc_tests_serial)
 
 
