@@ -166,15 +166,13 @@ parallel <<- 1
 #parallel <<- runif(1) <.5
 
 if (parallel==1) {
-  # print(nc <- future::availableCores())
-  # future::plan(cluster, workers = nc)
-  # message("Running in parallel\n")
-  print("hi1")
+  print(nc <- future::availableCores())
+  future::plan(cluster, workers = nc)
+  message("Running in parallel\n")
 } else if(parallel==2){
-# spec <- make_spec()
-# pc <- parallel::makeCluster(type='PSOCK', master=macpro, spec)
-# plan(cluster, workers = pc)
-print("hi2")
+spec <- make_spec()
+pc <- parallel::makeCluster(type='PSOCK', master=macpro, spec)
+plan(cluster, workers = pc)
 } else {
   message("Running in serial\n")
 }
