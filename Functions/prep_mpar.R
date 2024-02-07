@@ -4,6 +4,7 @@
 
 tg_m1 <- '10.147.17.202'
 macpro <- '10.147.17.83'
+m1l1 <- '10.147.17.245'
 
 make_spec <- function() {
 
@@ -37,12 +38,19 @@ macpro <- '10.147.17.83'
 #   list(host=m1r2,user='thomasgorman', ncore=8)
 # )
 
+# machineAddresses <- list(
+#   list(host=tg_m1,user='thomasgorman', ncore=8),
+#   list(host=m1l1,user='thomasgorman', ncore=8),
+#   list(host=m1l3,user='thomasgorman', ncore=8),
+#   list(host=m1l8,user='thomasgorman', ncore=8)
+# )
+
 machineAddresses <- list(
-  list(host=tg_m1,user='thomasgorman', ncore=8),
   list(host=m1l1,user='thomasgorman', ncore=8),
   list(host=m1l3,user='thomasgorman', ncore=8),
   list(host=m1l8,user='thomasgorman', ncore=8)
 )
+
 
 
 spec <- lapply(machineAddresses,
