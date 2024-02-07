@@ -504,7 +504,7 @@ run_abc_tests_serial <- function(simulation_function, data_list, return_dat, ids
   t1 <- system.time({
     results <- map(data_list, 
                           ~reject_abc(simulation_function = simulation_function, 
-                                      prior_samples = prior_samples, 
+                                     # prior_samples = prior_samples, 
                                       data = .x, 
                                       num_iterations = num_iterations, 
                                       n_try = n_try,

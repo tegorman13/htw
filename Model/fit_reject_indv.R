@@ -3,6 +3,14 @@ conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("fun_alm","fun_model","fun_indv_fit", "prep_mpar"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
+nbins <- 3
+ds <- ds |> group_by(id) |> 
+  mutate(Block=case_when(expMode2=="Train" ~ cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE),
+                                         expMode2=="Test" ~ 4)) 
+
+
+
+
 watch_ids <<- c(1)
 
 seed <- round(runif(1,min=1,max=10),0)
@@ -29,7 +37,7 @@ reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=5
     return_dat == "train_data, test_data" ~ list( target_data_train_test <- data[expMode2 %in% c("Test", "Train"), ])
     ) |> pluck(1)
 
-  tol <- target_data[, .(m = mean(y), sd = sd(y)), by = .(x)][, .(tol = mean(sd) * tolM)]
+  tol <- target_data[, .(m = mean(y), sd = sd(y)), by = .(x,Block)][, .(tol = mean(sd) * tolM)] %>% as.numeric()
 
   start_tol = round(tol,3); 
   abc <- list(); abc$dist_sd <- vector("list", num_iterations)
@@ -43,9 +51,11 @@ reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=5
   for(j in 1:num_iterations) {
 
     found=0;
+    iter_count=0;
 
     while(found==0) {
     try_count=try_count+1;
+    iter_count = iter_count+1;
     #current_theta <- prior_samples[sample(1:nrow(prior_samples), 1), ]
     current_theta <- samp_priors()
     sim_data <- simulation_function(data, current_theta$c, current_theta$lr, input_layer = input_layer, output_layer = output_layer, return_dat = return_dat) 
@@ -57,8 +67,20 @@ reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=5
 
     target_data[, pred := sim_data]
     target_data[, error := abs(y - pred)]
-    intermediate_result <- target_data[, .(mean_error = mean(error)), by = .(id, condit, x)]
-    dist_sd <- intermediate_result[, .(mean_error = mean(mean_error)), by = .(id, condit)]
+    intermediate_result <- target_data[, .(mean_error = mean(error)), by = .(id, condit, x,Block)]
+
+    if(return_dat == "train_data, test_data") {
+          # Calculate mean errors separately for training and testing, then take their average
+          train_error <- intermediate_result[Block < 4, .(mean_error = mean(mean_error)),by = .(id, condit)]
+          test_error <- intermediate_result[Block >= 4, .(mean_error = mean(mean_error)),by = .(id, condit)]
+          # Ensure equal weighting by taking the simple average of train and test mean errors
+          dist_sd <- merge(train_error, test_error, 
+            by = c("id", "condit"), all = TRUE, suffixes = c("_train", "_test")) 
+          dist_sd[, mean_error := (mean_error_train + mean_error_test) / 2][, c("mean_error_train", "mean_error_test") := NULL]
+        } else {
+          # Original computation for cases other than combined train and test data
+          dist_sd <- intermediate_result[, .(mean_error = mean(mean_error)), by = .(id, condit)]
+        }
 
     closest_mean_errors <- sort(c(closest_mean_errors, dist_sd$mean_error))
     if (length(closest_mean_errors) > 5) {
@@ -66,15 +88,21 @@ reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=5
     }
 
     if(dist_sd$mean_error< tol) {
-      abc$dist_sd[[j]] <- cbind(current_theta,dist_sd,tol,inc_count)
+      abc$dist_sd[[j]] <- cbind(current_theta,dist_sd,tol,inc_count,iter_count)
       found=1
-      try_count=try_count+1;
+      #try_count=try_count+1;
       cur_tol_success = cur_tol_success+1;
       success_rate = cur_tol_success/try_count;
+
+      tol <- (tol) + ((mean(closest_mean_errors)-tol)/2) 
+
       } else if (try_count > n_try && success_rate < min_accept_rate){
        
         average_closest_error <- mean(closest_mean_errors)
-        tol <- (tol*tolInc) + (abs(average_closest_error-tol)/2) #* tolInc  # Adjust tolerance
+        bump_tol <- abs(rnorm(n=1,mean=(2*iter_count/(n_try)),sd=1))
+       # print(bump_tol)
+        #tol <- (tol*tolInc) + (abs(average_closest_error-tol)/2) #* tolInc  # Adjust tolerance
+        tol <- (tol) + ((average_closest_error-tol)/2) + bump_tol   # (max(0,min_accept_rate-success_rate)*tol)   #(min_accept_rate/(success_rate+.0001))
         #tol=tol*tolInc
         inc_count=inc_count+1;
         try_count=0;
@@ -127,11 +155,11 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 ####################################
 
 args <- commandArgs(trailingOnly = TRUE)
-num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 500)
-n_try = ifelse(length(args) > 1, as.numeric(args[2]), 3500)
-tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .85)
+num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 100)
+n_try = ifelse(length(args) > 1, as.numeric(args[2]), 200)
+tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .76)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
-min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .0004)
+min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .006)
 
 cMean <<- -6; 
 cSig <<- 3.5; 
