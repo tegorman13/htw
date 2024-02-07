@@ -4,7 +4,7 @@
 save_abc_test_results <- function(fit_results, model, fit_method, ri_func, subjects_data, ids,save_folder,t1) {
 
   ri <- ri_func() %>% append(., t1[3]) 
-  run_save <- tibble::lst(fit_results, Model = model, Fit_Method = fit_method, prior_samples, cMean, cSig, lrSig, tolM, min_accept_rate, ri, parallel)
+  run_save <- tibble::lst(fit_results, Model = model, Fit_Method = fit_method, prior_samples, cMean, cSig, lrSig, tolM, min_accept_rate, ri, parallel,type="bi_tol")
   
   file_name <- paste0("data/abc_reject/", save_folder, "/", "reject_", run_save$Model, "_", run_save$Fit_Method, "_",
                       num_iterations, "_", n_try, "_", format(Sys.time(), "%M%OS"), ".rds")

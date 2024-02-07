@@ -280,10 +280,11 @@ pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Me
    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 10, return_dat="train_data, test_data")
    })) |> 
   select(Fit_Method,pp,-data) |>  
-  unnest(pp) |> as.data.table() |> filter(expMode2=="Train") 
+  unnest(pp) |> as.data.table() |> filter(expMode2=="Train") |>
 
 
-nbins <- 6
+
+nbins <- 3
 pd_train <- pd_train |> group_by(id,condit,Model,Fit_Method) |>
   mutate(Block=cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE))
 setorder(pd_train, id, x,Block, rank)
@@ -291,18 +292,19 @@ setorder(pd_train, id, x,Block, rank)
 pd_train_l <- melt(pd_train, id.vars = c("id", "condit", "Model","Block", "Fit_Method", "x", "c", "lr", "rank"),
                    measure.vars = c("pred", "y"), variable.name = "Resp", value.name = "val") |> as.data.table()
 pd_train_l[, Resp := fifelse(Resp == "y", "Observed",
-                             fifelse(Model == "ALM", "ALM", "EXAM"))]
-setorder(pd_train_l, id,Block, Resp)
+                             fifelse(Model == "ALM", "ALM", "EXAM"))] 
+setorder(pd_train_l, id,Block, Resp) 
 
+pd_train_l <- pd_train_l |> mutate(dist=abs(x-val))
 
-
-pd_train_l |> ggplot(aes(x=Block,y=val,col=Resp))+
+pd_train_l |> ggplot(aes(x=Block,y=dist,col=Resp))+
   geom_point( stat = "summary", fun = mean) + 
   stat_summary( geom = "line", fun = mean) +
   stat_summary(geom="errorbar",fun.data=mean_se,width=.1,alpha=.4) +
   #facet_wrap(condit~x,scales="free")
   ggh4x::facet_nested_wrap(Fit_Method~condit~x,scales="free") +
-  coord_cartesian(ylim = c(600, 1300)) +labs(title="Full Posterior")
+  #coord_cartesian(ylim = c(600, 1300)) +
+  labs(title="Full Posterior")
 
 
 pd_train_l |>filter(rank==1) |> ggplot(aes(x=Block,y=val,col=Resp))+
@@ -332,13 +334,15 @@ pd_train_l |> filter(Fit_Method=="Train") |>
 #   coord_cartesian(ylim = c(600, 1300))
 
 
-pd_train_l |> filter(id %in% c(1,33,66, 36,76), Fit_Method=="Train") |> 
+pd_train_l |> 
+  #filter(id %in% c(1,33,66, 36,76), Fit_Method=="Train") |> 
   mutate(x=as.factor(x), Resp=as.factor(Resp), Block=as.factor(Block)) |>
-  ggplot(aes(x=x,y=val,fill=Block))+
+  ggplot(aes(x=x,y=dist,fill=Block))+
   stat_bar +
   #facet_wrap(condit~x,scales="free")
-  facet_wrap(id~Resp,scales="free",ncol=3) +
-  coord_cartesian(ylim = c(600, 1300))
+   #coord_cartesian(ylim = c(600, 1300)) +
+  facet_wrap(id~Resp,scales="free",ncol=3) 
+ 
 
 
 ```
