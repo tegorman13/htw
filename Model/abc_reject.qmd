@@ -24,7 +24,8 @@ ids3 <- c(20,71,101,4,76,192)
 idsBad <- c(76,192, 101)
 
 
-file_name <- "n_iter_300_ntry_3000_0800"
+#file_name <- "n_iter_300_ntry_3000_0800"
+file_name <- "n_iter_100_ntry_200_4509"
 
 # list.files(here('data/abc_reject'))
 # (grep("Train",list.files(here(paste0('data/abc_reject/',file_name)),
@@ -95,7 +96,7 @@ future::plan(multisession)
 nestSbjModelFit <- ind_fits_df %>% nest(.by=c(id,Model,Fit_Method))
 
 post_dat <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
-   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="test_data")
+   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 50, return_dat="test_data")
    })) |> 
   select(Fit_Method,pp,-data) |>  
   unnest(pp) |> filter(expMode2=="Test") |> as.data.table()
@@ -212,17 +213,12 @@ indv_best_plots(post_dat_l)
 
 post_dat_l |> group_by(condit,Model,Fit_Method,rank) |> 
    summarise(mean_error=mean(abs(error)), n=n()) |> 
-   ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(~Fit_Method)
+   ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(~Fit_Method,scales="free")
 
 post_dat_l |> group_by(condit,Model,Fit_Method,rank,x) |> 
    summarise(mean_error=mean(abs(error)), n=n()) |> 
-   ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(Fit_Method~x,ncol=6)
+   ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(Fit_Method~x,ncol=6,scales="free")
  
-
-post_dat_l |> group_by(condit,Model,Fit_Method,rank,x) |> 
-  #filter(id==1) |>
-   summarise(mean_error=mean(abs(error)), n=n()) |> 
-   ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(~Fit_Method)
 
 group_best_plots(post_dat_l)
 
@@ -280,7 +276,7 @@ pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Me
    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 10, return_dat="train_data, test_data")
    })) |> 
   select(Fit_Method,pp,-data) |>  
-  unnest(pp) |> as.data.table() |> filter(expMode2=="Train") |>
+  unnest(pp) |> as.data.table() |> filter(expMode2=="Train") 
 
 
 

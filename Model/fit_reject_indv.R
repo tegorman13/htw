@@ -155,14 +155,14 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 ####################################
 
 args <- commandArgs(trailingOnly = TRUE)
-num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 100)
-n_try = ifelse(length(args) > 1, as.numeric(args[2]), 400)
-tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .81)
+num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 50)
+n_try = ifelse(length(args) > 1, as.numeric(args[2]), 150)
+tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .84)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
-min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .06)
+min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .02)
 
 cMean <<- -6; 
-cSig <<- 3.5; 
+cSig <<- 4.5; 
 lrSig <<- 4.0
 
 # uniform dist between -4.5 and -6.0
@@ -190,12 +190,12 @@ subjects_data <-  ds |> filter(id %in% ids1)  %>% with(split(.,f =c(id), drop=TR
 save_folder <- paste0("n_iter_",num_iterations,"_ntry_",n_try,"_",format(Sys.time(),"%M%OS"))
 dir.create(paste0("data/abc_reject/",save_folder))
 
-parallel <<- 2
+parallel <<- 1
 #parallel <<- runif(1) <.5
 
 if (parallel==1) {
   print(nc <- future::availableCores())
-  future::plan(cluster, workers = nc)
+  future::plan(cluster, workers = nc-2)
   message("Running in parallel\n")
 } else if(parallel==2){
 spec <- make_spec()

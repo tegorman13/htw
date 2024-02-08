@@ -2,6 +2,9 @@ pacman::p_load(dplyr,purrr,tidyr,ggplot2, here, patchwork, conflicted, stringr, 
 conflict_prefer_all("dplyr", quiet = TRUE)
 
 
+bi_tol <- c("n_iter_100_ntry_200_4509","n_iter_100_ntry_400_3247","n_iter_50_ntry_400_4355","n_iter_50_ntry_400_4355","n_iter_50_ntry_200_5016")
+best <- c("n_iter_300_ntry_3000_0800","n_iter_300_ntry_10000_0955","n_iter_300_ntry_3000_2713")
+
 render_report <- function(input) {
  title <- tools::file_path_sans_ext(basename(input))
   tmp_template <- paste0(tools::file_path_sans_ext(title),".qmd")

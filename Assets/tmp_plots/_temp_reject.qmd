@@ -232,11 +232,6 @@ post_dat_l |> group_by(condit,Model,Fit_Method,rank,x) |>
    ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(Fit_Method~x,ncol=6)
  
 
-post_dat_l |> group_by(condit,Model,Fit_Method,rank,x) |> 
-  #filter(id==1) |>
-   summarise(mean_error=mean(abs(error)), n=n()) |> 
-   ggplot(aes(x=rank,y=mean_error,fill=Model))+geom_col()+facet_wrap(~Fit_Method)
-
 group_best_plots(post_dat_l)
 
 ```
