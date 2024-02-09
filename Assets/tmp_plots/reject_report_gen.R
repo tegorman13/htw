@@ -22,7 +22,7 @@ folders <- tibble(path=list.files('../../data/abc_reject',full.names=TRUE)) |>
     mutate(mtime = file.info(path)$mtime) |> 
     arrange(desc(mtime)) 
 
-folder_2_gen <- folders |> slice(1:20) |> pull(path)
+folder_2_gen <- folders |> slice(1:5) |> pull(path)
 
 complete_reports <- tools::file_path_sans_ext(list.files("reject_reports", pattern = "\\.qmd$"))
 # abc_files_modified <- sub("\\.rds$", ".qmd", basename(complete_reports))

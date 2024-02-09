@@ -25,7 +25,8 @@ idsBad <- c(76,192, 101)
 
 
 #file_name <- "n_iter_300_ntry_3000_0800"
-file_name <- "n_iter_100_ntry_200_4509"
+#file_name <- "n_iter_100_ntry_200_4509"
+file_name <- "n_iter_100_ntry_400_3247"
 
 # list.files(here('data/abc_reject'))
 # (grep("Train",list.files(here(paste0('data/abc_reject/',file_name)),
@@ -271,6 +272,10 @@ abc_tables(post_dat |> filter(id==36))$agg_best |> flextable() |> set_caption("M
 
 ## Learning Curves
 ```{r fig.width=11, fig.height=16}
+#| fig-cap: "Learning Curves"
+#| fig-width: 11
+#| fig-height: 13
+
 
 pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 10, return_dat="train_data, test_data")
@@ -357,10 +362,10 @@ post_dat |> ggplot(aes(x=Model,y=mean_error,fill=Model))+geom_col()+facet_wrap(c
 
 ```{r}
 
-post_tabs <- map(post_tabs, ~cbind(.x,run_info) |> mutate(fn=file_name))
-# path1 = "../../../data/abc_tabs"
-saveRDS(post_tabs, paste0(path1, "/", tools::file_path_sans_ext(basename(file_name)),"_post_tab", ".rds"))
-saveRDS(post_tabs, paste0(tools::file_path_sans_ext(basename(file_name)),"_post_tab", ".rds"))
+# post_tabs <- map(post_tabs, ~cbind(.x,run_info) |> mutate(fn=file_name))
+# # path1 = "../../../data/abc_tabs"
+# saveRDS(post_tabs, paste0(path1, "/", tools::file_path_sans_ext(basename(file_name)),"_post_tab", ".rds"))
+# saveRDS(post_tabs, paste0(tools::file_path_sans_ext(basename(file_name)),"_post_tab", ".rds"))
 ```
 
 
