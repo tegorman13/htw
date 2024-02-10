@@ -157,9 +157,9 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 args <- commandArgs(trailingOnly = TRUE)
 num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 200)
 n_try = ifelse(length(args) > 1, as.numeric(args[2]), 300)
-tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .85)
+tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .95)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
-min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .05)
+min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .1)
 
 cMean <<- -6; 
 cSig <<- 4.0; 
@@ -189,9 +189,9 @@ subjects_data <-  ds |> filter(id %in% ids1)  %>% with(split(.,f =c(id), drop=TR
 
 save_folder <- paste0("n_iter_",num_iterations,"_ntry_",n_try,"_",format(Sys.time(),"%M%OS"))
 dir.create(paste0("data/abc_reject/",save_folder))
-save_folder <- 'n_iter_200_ntry_300_5354'
+#save_folder <- 'n_iter_200_ntry_300_5354'
 
-parallel <<- 2
+parallel <<- 1
 #parallel <<- runif(1) <.5
 
 if (parallel==1) {
@@ -215,13 +215,13 @@ run_function <- ifelse(parallel>0,run_abc_tests, run_abc_tests_serial)
 
 
 
-# t1<- system.time( exam_test <- run_function(full_sim_exam, subjects_data, "test_data", ids1) )
-# save_abc_test_results(exam_test, "EXAM", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
-# rm(exam_test); gc()
+t1<- system.time( exam_test <- run_function(full_sim_exam, subjects_data, "test_data", ids1) )
+save_abc_test_results(exam_test, "EXAM", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
+rm(exam_test); gc()
 
-# t1<- system.time( alm_test <- run_function(full_sim_alm, subjects_data, "test_data", ids1) )
-# save_abc_test_results(alm_test, "ALM", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
-# rm(alm_test); gc()
+t1<- system.time( alm_test <- run_function(full_sim_alm, subjects_data, "test_data", ids1) )
+save_abc_test_results(alm_test, "ALM", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
+rm(alm_test); gc()
 
 t1<- system.time( exam_test_train <- run_function(full_sim_exam, subjects_data, "train_data, test_data", ids1) )
 save_abc_test_results(exam_test_train, "EXAM", "Test_Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
