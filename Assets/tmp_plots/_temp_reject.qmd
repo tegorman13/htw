@@ -282,7 +282,7 @@ abc_tables(post_dat |> filter(id==36))$agg_best |> flextable() |> set_caption("M
 
 ## Learning Curves
 ```{r fig.width=11, fig.height=16}
-#| eval: false
+#| eval: true
 pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 10, return_dat="train_data, test_data")
    })) |> 

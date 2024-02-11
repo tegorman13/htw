@@ -9,6 +9,19 @@ execute:
   eval: true
 ---
 
+### Approximate Bayesian Computation
+
+Models were fit to each individual participant. To estimate parameters, we used approximate bayesian computation (ABC), enabling us to obtain an approximation of the posterior distribution of the generalization and learning rate parameters for each individual. ABC belongs to the class of simulation-based inference methods [@cranmerFrontierSimulationbasedInference2020], which have begun being used for parameter estimation in cognitive modeling relatively recently [@turnerTutorialApproximateBayesian2012; @turnerBayesianAnalysisSimulationbased2016; @kangasraasioParameterInferenceComputational2019]. Although they can be applied to any model from which data can be simulated, ABC methods are most useful for complex models that lack a well defined likelihood function (e.g. many neural network and evidence accumulation models). The general approach of ABC is to 1) define a prior distribution over model parameters; 2) sample parameter values from the prior, which are used to simulate data from the model; 3) compute a measure of discrepancy between the simulated dataset and the observed dataset. 4) Establish a minimum tolerance, or degree of discrepancy, which determines whether a set of parameters are accepted into the posterior distribution. 
+
+
+
+
+
+
+
+
+
+
 ```{r}
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
                stringr,future,furrr, knitr, reactable, flextable,ggstance)
