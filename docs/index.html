@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.480">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -62,6 +62,7 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -184,6 +185,33 @@ ul.task-list li input[type="checkbox"] {
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -308,14 +336,14 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">load and view data</span></a>
+  <a href="./Model/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EXAM Group Fits</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Model/abc_htw.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Approximate Bayesian Fitting</span></a>
+  <a href="./Model/abc_reject.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Individual ABC Fits</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -490,8 +518,50 @@ ul.task-list li input[type="checkbox"] {
     </div>
 </div>
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="Modeling,ALM,R" data-listing-date-sort="1688518043000" data-listing-file-modified-sort="1688518043984" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1371">
-<a href="./Model/htw_exam.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-categories="Modeling,ALM,R,Bayesian" data-listing-date-sort="1704818493000" data-listing-file-modified-sort="1704818493259" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1779">
+<a href="./Model/abc_fit.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./images/abc_varied.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+ABC - HTW Fits
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Modeling'); return false;">
+Modeling
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ALM'); return false;">
+ALM
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
+Bayesian
+</div>
+</div>
+<div class="card-text listing-description">
+
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu">p_load</span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">data.table</span>,<span class="va">abc</span>,<span class="va">future</span>,<span class="va">furrr</span>,<span class="va">here</span>,<span class="va">patchwork</span>, <span class="va">conflicted</span><span class="op">)</span></span>
+<span><span class="fu">conflict_prefer_all</span><span class="op">(</span><span class="st">"dplyr"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">walk</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"fun_alm"</span>,<span class="st">"fun_model"</span>, <span class="st">"Display_Functi…</span><span class="op"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="fu"></span><span class="fu"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="va"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="fu"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fl"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="cn"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span></span><span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span></span><span></span><span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span></span></code></pre></div></details>
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+
+</div>
+<div class="listing-date">
+Jan 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="Modeling,ALM,R" data-listing-date-sort="1704818493000" data-listing-file-modified-sort="1704818493259" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1371">
+<a href="./Model/htw_exam_old.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
 <div class="card-body post-contents">
@@ -517,56 +587,14 @@ We can model the relation between performance and the number of practice trials 
 
 </div>
 <div class="listing-date">
-Jul 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-categories="Modeling,ALM,R,Bayesian" data-listing-date-sort="1699075467000" data-listing-file-modified-sort="1699075467496" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="742">
-<a href="./Model/abc_htw.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./images/abc_varied.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Approximate Bayesian Fitting
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Modeling'); return false;">
-Modeling
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ALM'); return false;">
-ALM
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
-Bayesian
-</div>
-</div>
-<div class="card-text listing-description">
-
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># load and view data</span></span>
-<span><span class="fu">pacman</span><span class="fu">::</span><span class="fu">p_load</span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">data.table</span>,<span class="va">lme4</span>,<span class="va">future</span>,<span class="va">furrr</span>,<span class="va">abc</span>,<span class="va">mvtnorm</span>,<span class="va">patchwork</span>,<span class="va">here</span><span class="op">)</span></span>
-<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu">walk</span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"Functions/alm_functions.R"</span>,<span class="st">"Functions/Display_…</span><span class="st"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="fu"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="fu"></span><span class="va"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output cell-output-stdout"><pre><code></code></pre></div><details class="code-fold"><summary></summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="st"></span><span class="st"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="op"></span></span></code></pre></div></details>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-
-</div>
-<div class="listing-date">
-Nov 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="Modeling,ALM,R" data-listing-date-sort="1688518043000" data-listing-file-modified-sort="1688518043984" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="798">
+<div class="g-col-1" data-index="2" data-categories="Modeling,ALM,R" data-listing-date-sort="1704818493000" data-listing-file-modified-sort="1704818493259" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="798">
 <a href="./Model/group_fits.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Model/group_fits_files/figure-html/unnamed-chunk-2-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -593,14 +621,14 @@ R
 <span><span class="fu">options</span><span class="op">(</span>dplyr.summarise.inform<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># select first row for each id in d, then create histogram for nTrain</span></span>
-<span><span class="co">#  d  %&gt;%…</span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="st"></span><span class="st"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="fl"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output cell-output-stdout"><pre><code></code></pre></div><details open="" class="code-fold"><summary></summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output cell-output-stdout"><pre><code></code></pre></div><details open="" class="code-fold"><summary></summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output cell-output-stdout"><pre><code></code></pre></div><details open="" class="code-fold"><summary></summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fl"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="cn"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output cell-output-stdout"><pre><code></code></pre></div><details open="" class="code-fold"><summary></summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output cell-output-stdout"><pre><code></code></pre></div></div></section><section id="empirical-learning-patterns---group-level" class="level3"><div class="cell"><details class="code-fold"><summary></summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span></span><span><span class="co"></span></span><span><span class="co"></span></span><span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output-display"><p></p></div><details class="code-fold"><summary></summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output-display"><p></p></div><details class="code-fold"><summary></summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span></code></pre></div></details></div><div class="cell"><details class="code-fold"><summary></summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="co"></span></span><span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="cn"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="kw"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fl"></span></span><span><span class="op"></span></span><span><span class="va"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="cn"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="kw"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fl"></span></span><span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span><span class="op"></span><span class="va"></span></span><span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span></span><span><span class="op"></span><span class="st"></span></span><span><span class="op"></span><span class="va"></span></span><span><span class="op"></span><span class="va"></span></span><span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="op"></span></span><span><span class="op"></span></span></code></pre></div></details></div><div class="cell"><details class="code-fold"><summary></summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="op"></span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span></span><span><span class="co"></span></span><span><span class="co"></span></span><span></span><span><span class="co"></span></span><span><span class="co"></span></span><span></span><span><span class="co"></span></span><span><span class="co"></span></span></code></pre></div></details></div><div class="cell"><details class="code-fold"><summary></summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="fl"></span><span class="fl"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span></span><span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="fl"></span><span class="fl"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span></span></code></pre></div></details></div><!-- --></section>
+<span><span class="co">#  d  %&gt;%…</span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="st"></span><span class="st"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="fl"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output cell-output-stdout"><pre><code></code></pre></div><details open="" class="code-fold"><summary></summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output cell-output-stdout"><pre><code></code></pre></div><details open="" class="code-fold"><summary></summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output cell-output-stdout"><pre><code></code></pre></div><details open="" class="code-fold"><summary></summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fl"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="cn"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output cell-output-stdout"><pre><code></code></pre></div><details open="" class="code-fold"><summary></summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output cell-output-stdout"><pre><code></code></pre></div></div></section><section id="empirical-learning-patterns---group-level" class="level3"><div class="cell"><details class="code-fold"><summary></summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span></span><span><span class="co"></span></span><span><span class="co"></span></span><span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output-display"><div><figure class="figure"><p></p></figure></div></div><details class="code-fold"><summary></summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span></span></code></pre></div></details><div class="cell-output-display"><div><figure class="figure"><p></p></figure></div></div><details class="code-fold"><summary></summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span></code></pre></div></details></div><div class="cell"><details class="code-fold"><summary></summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="co"></span></span><span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="cn"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="kw"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fl"></span></span><span><span class="op"></span></span><span><span class="va"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="cn"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="kw"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="va"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fl"></span></span><span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span></span><span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span><span class="op"></span><span class="va"></span></span><span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span></span><span><span class="op"></span><span class="st"></span></span><span><span class="op"></span><span class="va"></span></span><span><span class="op"></span><span class="va"></span></span><span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="op"></span></span><span><span class="op"></span></span></code></pre></div></details></div><div class="cell"><details class="code-fold"><summary></summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="op"></span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span></span><span><span class="co"></span></span><span><span class="co"></span></span><span></span><span><span class="co"></span></span><span><span class="co"></span></span><span></span><span><span class="co"></span></span><span><span class="co"></span></span></code></pre></div></details></div><div class="cell"><details class="code-fold"><summary></summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="fl"></span><span class="fl"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span></span><span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="fl"></span><span class="fl"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span></span></code></pre></div></details></div><!-- --></section>
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
 
 </div>
 <div class="listing-date">
-Jul 2023
+Jan 2024
 </div>
 </div>
 </div>
@@ -617,7 +645,7 @@ No matching items
 <h2 class="anchored" data-anchor-id="simulations">Simulations</h2>
 <div id="listing-Simulations" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="Simulation,ALM,R" data-listing-date-sort="1690244829000" data-listing-file-modified-sort="1690244829354" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2521">
+<div class="g-col-1" data-index="0" data-categories="Simulation,ALM,R" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512368" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2521">
 <a href="./Simulations/alm_learning.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -644,14 +672,14 @@ generate data that follows an exponetial decay function of error over trials, in
 
 </div>
 <div class="listing-date">
-Jul 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-categories="Simulation,ALM,R" data-listing-date-sort="1693736841000" data-listing-file-modified-sort="1693736841442" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3696">
+<div class="g-col-1" data-index="1" data-categories="Simulation,ALM,R" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3696">
 <a href="./Misc/benchmarks.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -678,14 +706,51 @@ tidybayes preds = 169.94 predict.brmsfit = 10.27
 
 </div>
 <div class="listing-date">
-Sep 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-categories="Simulation,ALM,EXAM,R" data-listing-date-sort="1688518043000" data-listing-file-modified-sort="1688518043985" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1236">
+<div class="g-col-1" data-index="2" data-categories="Simulation,ALM,EXAM,R" data-listing-date-sort="1707426006000" data-listing-file-modified-sort="1707426006558" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="21" data-listing-word-count-sort="4098">
+<a href="./Model/htw_exam.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="Model/htw_exam_files/figure-html/fig-alm-diagram-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+EXAM Group Fits
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Simulation'); return false;">
+Simulation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ALM'); return false;">
+ALM
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('EXAM'); return false;">
+EXAM
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="card-text listing-description">
+In project 1, I applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for…
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+
+</div>
+<div class="listing-date">
+Feb 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="3" data-categories="Simulation,ALM,EXAM,R" data-listing-date-sort="1704818493000" data-listing-file-modified-sort="1704818493259" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1236">
 <a href="./Simulations/SimReplications.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Simulations/SimReplications_files/figure-html/unnamed-chunk-2-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -715,14 +780,14 @@ Red dots are training points - gray lines are individual simulations, black line
 
 </div>
 <div class="listing-date">
-Jul 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-categories="Simulation,ALM,EXAM,R" data-listing-date-sort="1688518043000" data-listing-file-modified-sort="1688518043987" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1667">
+<div class="g-col-1" data-index="4" data-categories="Simulation,ALM,EXAM,R" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512368" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1667">
 <a href="./Simulations/simParameterRecovery.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -752,14 +817,14 @@ Assessing the parameter recovery of ALM and EXAM on synthetic data.
 
 </div>
 <div class="listing-date">
-Jul 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="4" data-categories="Simulation,ALM,EXAM,R" data-listing-date-sort="1699584982000" data-listing-file-modified-sort="1699584982958" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2954">
+<div class="g-col-1" data-index="5" data-categories="Simulation,ALM,EXAM,R" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512368" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2954">
 <a href="./Simulations/DeLosh97_Sim.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Simulations/DeLosh97_Sim_files/figure-html/unnamed-chunk-2-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -791,44 +856,7 @@ a_i(X)=\exp \left|-\gamma \cdot\left[X-X_i\right]^2\right|
 
 </div>
 <div class="listing-date">
-Nov 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="5" data-categories="Simulation,ALM,EXAM,R" data-listing-date-sort="1699959533000" data-listing-file-modified-sort="1699959533415" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="21" data-listing-word-count-sort="4098">
-<a href="./Simulations/htw_exam.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="Simulations/htw_exam_files/figure-html/fig-alm-diagram-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-load and view data
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Simulation'); return false;">
-Simulation
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ALM'); return false;">
-ALM
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('EXAM'); return false;">
-EXAM
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-In project 1, I applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-
-</div>
-<div class="listing-date">
-Nov 2023
+Jan 2024
 </div>
 </div>
 </div>
@@ -870,7 +898,7 @@ No matching items
     </div>
 </div>
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1693736841000" data-listing-file-modified-sort="1693736841436" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1080">
+<div class="g-col-1" data-index="0" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818529000" data-listing-file-modified-sort="1704818529782" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1080">
 <a href="./Analysis/brms_learning.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -897,14 +925,14 @@ b_mod3 &lt;- bf(dist ~ betaMu + (alphaMu - betaMu) * exp(-exp(gammaMu) * gt.trai
 Thomas Gorman
 </div>
 <div class="listing-date">
-Sep 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1697030702000" data-listing-file-modified-sort="1697030702247" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1157">
+<div class="g-col-1" data-index="1" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818517000" data-listing-file-modified-sort="1704818517546" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1157">
 <a href="./Analysis/full_analysis.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -931,14 +959,14 @@ Questions - difficulty difference between bands - effect of ordinal feedback. - 
 Thomas Gorman
 </div>
 <div class="listing-date">
-Oct 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-categories="Analysis,R" data-listing-date-sort="1692648131000" data-listing-file-modified-sort="1692648131263" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="561">
+<div class="g-col-1" data-index="2" data-categories="Analysis,R" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="561">
 <a href="./Misc/quartile_splits.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Misc/quartile_splits_files/figure-html/unnamed-chunk-3-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -967,14 +995,14 @@ R
 
 </div>
 <div class="listing-date">
-Aug 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1693736841000" data-listing-file-modified-sort="1693736841441" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="219">
+<div class="g-col-1" data-index="3" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="219">
 <a href="./Misc/Distributional_Explore.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -1003,14 +1031,14 @@ Bayesian
 
 </div>
 <div class="listing-date">
-Sep 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="4" data-categories="Analysis,R" data-listing-date-sort="1692648131000" data-listing-file-modified-sort="1692648131263" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="79" data-listing-word-count-sort="15770">
+<div class="g-col-1" data-index="4" data-categories="Analysis,R" data-listing-date-sort="1704818529000" data-listing-file-modified-sort="1704818529782" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="79" data-listing-word-count-sort="15770">
 <a href="./Analysis/e1_discrim.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Analysis/e1_discrim_files/figure-html/model-structure1b-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1039,14 +1067,14 @@ R
 Thomas Gorman
 </div>
 <div class="listing-date">
-Aug 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="5" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1692648131000" data-listing-file-modified-sort="1692648131263" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2146">
+<div class="g-col-1" data-index="5" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2146">
 <a href="./Misc/clust_gmm.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -1073,17 +1101,17 @@ https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/clusterin
 
 </div>
 <div class="listing-date">
-Aug 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="6" data-categories="Analysis,R" data-listing-date-sort="1697031069000" data-listing-file-modified-sort="1697031069059" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4318">
+<div class="g-col-1" data-index="6" data-categories="Analysis,R" data-listing-date-sort="1705586074000" data-listing-file-modified-sort="1705586074400" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4318">
 <a href="./Analysis/e1_Analysis.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="Analysis/data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBjbGFzcz0ic3ZnbGl0ZSIgd2lkdGg9IjQ4LjAwcHQiIGhlaWdodD0iMTIuMDBwdCIgdmlld2JveD0iMCAwIDQ4LjAwIDEyLjAwIj48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPgogICAgLnN2Z2xpdGUgbGluZSwgLnN2Z2xpdGUgcG9seWxpbmUsIC5zdmdsaXRlIHBvbHlnb24sIC5zdmdsaXRlIHBhdGgsIC5zdmdsaXRlIHJlY3QsIC5zdmdsaXRlIGNpcmNsZSB7CiAgICAgIGZpbGw6IG5vbmU7CiAgICAgIHN0cm9rZTogIzAwMDAwMDsKICAgICAgc3Ryb2tlLWxpbmVjYXA6IHJvdW5kOwogICAgICBzdHJva2UtbGluZWpvaW46IHJvdW5kOwogICAgICBzdHJva2UtbWl0ZXJsaW1pdDogMTAuMDA7CiAgICB9CiAgICAuc3ZnbGl0ZSB0ZXh0IHsKICAgICAgd2hpdGUtc3BhY2U6IHByZTsKICAgIH0KICA8L3N0eWxlPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBzdHlsZT0ic3Ryb2tlOiBub25lOyBmaWxsOiBub25lOyI+PC9yZWN0PjxkZWZzPjxjbGlwcGF0aCBpZD0iY3BNQzR3TUh3ME9DNHdNSHd3TGpBd2ZERXlMakF3Ij48cmVjdCB4PSIwLjAwIiB5PSIwLjAwIiB3aWR0aD0iNDguMDAiIGhlaWdodD0iMTIuMDAiPjwvcmVjdD48L2NsaXBwYXRoPjwvZGVmcz48ZyBjbGlwLXBhdGg9InVybCgjY3BNQzR3TUh3ME9DNHdNSHd3TGpBd2ZERXlMakF3KSI+PHBvbHlnb24gcG9pbnRzPSIxMC4xNiw4LjIyIDEwLjE2LDMuNzggMjIuNzgsMy43OCAyMi43OCw4LjIyICIgc3R5bGU9InN0cm9rZS13aWR0aDogMC43NTsgc3Ryb2tlOiBub25lOyBmaWxsOiAjRDNEM0QzOyI+PC9wb2x5Z29uPjxsaW5lIHgxPSIxNi42OCIgeTE9IjguMjIiIHgyPSIxNi42OCIgeTI9IjMuNzgiIHN0eWxlPSJzdHJva2Utd2lkdGg6IDAuNzU7IHN0cm9rZTogI0ZGMDAwMDsgc3Ryb2tlLWxpbmVjYXA6IGJ1dHQ7Ij48L2xpbmU+PGxpbmUgeDE9IjEuNzgiIHkxPSI2LjAwIiB4Mj0iMTAuMTYiIHkyPSI2LjAwIiBzdHlsZT0ic3Ryb2tlLXdpZHRoOiAwLjc1OyI+PC9saW5lPjxsaW5lIHgxPSI0MS41OCIgeTE9IjYuMDAiIHgyPSIyMi43OCIgeTI9IjYuMDAiIHN0eWxlPSJzdHJva2Utd2lkdGg6IDAuNzU7Ij48L2xpbmU+PGxpbmUgeDE9IjEuNzgiIHkxPSI3LjExIiB4Mj0iMS43OCIgeTI9IjQuODkiIHN0eWxlPSJzdHJva2Utd2lkdGg6IDAuNzU7Ij48L2xpbmU+PGxpbmUgeDE9IjQxLjU4IiB5MT0iNy4xMSIgeDI9IjQxLjU4IiB5Mj0iNC44OSIgc3R5bGU9InN0cm9rZS13aWR0aDogMC43NTsiPjwvbGluZT48cG9seWdvbiBwb2ludHM9IjEwLjE2LDguMjIgMTAuMTYsMy43OCAyMi43OCwzLjc4IDIyLjc4LDguMjIgIiBzdHlsZT0ic3Ryb2tlLXdpZHRoOiAwLjc1OyBzdHJva2U6IG5vbmU7Ij48L3BvbHlnb24+PC9nPjwvc3ZnPg==" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<p class="card-img-top"><img src="Analysis/e1_Analysis_files/figure-html/unnamed-chunk-4-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 E1 Extras
@@ -1104,14 +1132,14 @@ R
 Thomas Gorman
 </div>
 <div class="listing-date">
-Oct 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="7" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1693736841000" data-listing-file-modified-sort="1693736841443" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1963">
+<div class="g-col-1" data-index="7" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1963">
 <a href="./Misc/e1_brms_test.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -1138,14 +1166,14 @@ individual_coefs &lt;- coef(gt_vx)$id %&gt;% as_tibble(rownames = “id”) %&gt
 
 </div>
 <div class="listing-date">
-Sep 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="8" data-categories="Analysis,R" data-listing-date-sort="1692363771000" data-listing-file-modified-sort="1692363771203" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1054">
+<div class="g-col-1" data-index="8" data-categories="Analysis,R" data-listing-date-sort="1704818529000" data-listing-file-modified-sort="1704818529782" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1054">
 <a href="./Analysis/ME_Slopes.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -1172,14 +1200,14 @@ R
 Thomas Gorman
 </div>
 <div class="listing-date">
-Aug 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="9" data-categories="Analysis,R" data-listing-date-sort="1693736841000" data-listing-file-modified-sort="1693736841443" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2238">
+<div class="g-col-1" data-index="9" data-categories="Analysis,R" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2238">
 <a href="./Misc/gam_discrim.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -1208,14 +1236,14 @@ R
 
 </div>
 <div class="listing-date">
-Sep 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="10" data-categories="Analysis,Learning-Curve,R" data-listing-date-sort="1690761976000" data-listing-file-modified-sort="1690761976961" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4339">
+<div class="g-col-1" data-index="10" data-categories="Analysis,Learning-Curve,R" data-listing-date-sort="1704818517000" data-listing-file-modified-sort="1704818517546" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4339">
 <a href="./Analysis/analysis.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Analysis/analysis_files/figure-html/unnamed-chunk-6-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1242,14 +1270,14 @@ The linear mixed-effects models were used to analyze the training performance da
 Thomas Gorman
 </div>
 <div class="listing-date">
-Jul 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="11" data-categories="Analysis,R" data-listing-date-sort="1692647898000" data-listing-file-modified-sort="1692647898319" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="28" data-listing-word-count-sort="5422">
+<div class="g-col-1" data-index="11" data-categories="Analysis,R" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="28" data-listing-word-count-sort="5422">
 <a href="./Misc/data_dictionary.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Misc/data_dictionary_files/figure-html/unnamed-chunk-3-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1273,14 +1301,14 @@ id - unique subject identifier condit - primary training manipulation, Constant 
 
 </div>
 <div class="listing-date">
-Aug 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="12" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1699860372000" data-listing-file-modified-sort="1699860372972" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2381">
+<div class="g-col-1" data-index="12" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818529000" data-listing-file-modified-sort="1704818529782" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2381">
 <a href="./Analysis/e1_test.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Analysis/e1_test_files/figure-html/fig-e1-test-dev-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1307,14 +1335,14 @@ All data processing and statistical analyses were performed in R version 4.31 <s
 Thomas Gorman
 </div>
 <div class="listing-date">
-Nov 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="13" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1697089258000" data-listing-file-modified-sort="1697089258488" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2126">
+<div class="g-col-1" data-index="13" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818517000" data-listing-file-modified-sort="1704818517545" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2126">
 <a href="./Analysis/e2_test.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Analysis/e2_test_files/figure-html/fig-e2-test-dev-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1341,14 +1369,14 @@ Figure&nbsp;1 illustrates the design of Experiment 2. The stages of the experime
 Thomas Gorman
 </div>
 <div class="listing-date">
-Oct 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="14" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1697087662000" data-listing-file-modified-sort="1697087662099" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1686">
+<div class="g-col-1" data-index="14" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818529000" data-listing-file-modified-sort="1704818529782" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1686">
 <a href="./Analysis/e3_test.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Analysis/e3_test_files/figure-html/fig-e3-test-dev-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1375,14 +1403,14 @@ The major manipulation adjustment of experiment 3 is for participants to receive
 Thomas Gorman
 </div>
 <div class="listing-date">
-Oct 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="15" data-categories="Analysis,R" data-listing-date-sort="1693736841000" data-listing-file-modified-sort="1693736841443" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3885">
+<div class="g-col-1" data-index="15" data-categories="Analysis,R" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3885">
 <a href="./Misc/indv_diff.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Misc/indv_diff_files/figure-html/unnamed-chunk-3-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1406,14 +1434,14 @@ Band Only Model
 
 </div>
 <div class="listing-date">
-Sep 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="16" data-categories="Analysis,Learning-Curve,R,OJS" data-listing-date-sort="1689313398000" data-listing-file-modified-sort="1689313398684" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="684">
+<div class="g-col-1" data-index="16" data-categories="Analysis,Learning-Curve,R,OJS" data-listing-date-sort="1704818611000" data-listing-file-modified-sort="1704818611575" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="684">
 <a href="./Misc/Visuals_Interactives/ojs_explore.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -1450,14 +1478,14 @@ OJS
 
 </div>
 <div class="listing-date">
-Jul 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="17" data-categories="Analysis,R" data-listing-date-sort="1690761976000" data-listing-file-modified-sort="1690761976962" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2123">
+<div class="g-col-1" data-index="17" data-categories="Analysis,R" data-listing-date-sort="1704818529000" data-listing-file-modified-sort="1704818529782" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2123">
 <a href="./Analysis/discrim.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Analysis/discrim_files/figure-html/unnamed-chunk-5-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1484,7 +1512,7 @@ R
 Thomas Gorman
 </div>
 <div class="listing-date">
-Jul 2023
+Jan 2024
 </div>
 </div>
 </div>
@@ -1522,7 +1550,7 @@ No matching items
   </div>
 </div>
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="Simulation,ALM,EXAM,Shiny,Interactive,R" data-listing-date-sort="1689313398000" data-listing-file-modified-sort="1689313398684" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3185">
+<div class="g-col-1" data-index="0" data-categories="Simulation,ALM,EXAM,Shiny,Interactive,R" data-listing-date-sort="1704818611000" data-listing-file-modified-sort="1704818611575" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3185">
 <a href="./Misc/Visuals_Interactives/ALM_Shiny.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -1558,14 +1586,14 @@ You can play with the embedded version of the app below, or go to direct link
 
 </div>
 <div class="listing-date">
-Jul 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-categories="Task,js" data-listing-date-sort="1692363771000" data-listing-file-modified-sort="1692363771212" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="117">
+<div class="g-col-1" data-index="1" data-categories="Task,js" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="117">
 <a href="./Misc/Task.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="images/2023-04-19-16-20-55.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1589,14 +1617,14 @@ Experimental Task for the HTW Project. Programmed in Javascript, and making use 
 
 </div>
 <div class="listing-date">
-Aug 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-categories="Visualization,R,OJS" data-listing-date-sort="1690761976000" data-listing-file-modified-sort="1690761976965" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="44" data-listing-word-count-sort="8737">
+<div class="g-col-1" data-index="2" data-categories="Visualization,R,OJS" data-listing-date-sort="1704818611000" data-listing-file-modified-sort="1704818611575" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="44" data-listing-word-count-sort="8737">
 <a href="./Misc/Visuals_Interactives/mermaid_consort.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Misc/Visuals_Interactives/mermaid_consort_files/figure-html/unnamed-chunk-24-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1623,14 +1651,14 @@ Mean Vx over training blocks
 
 </div>
 <div class="listing-date">
-Jul 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-categories="Visualization,R,OJS" data-listing-date-sort="1689313398000" data-listing-file-modified-sort="1689313398684" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="31" data-listing-word-count-sort="6134">
+<div class="g-col-1" data-index="3" data-categories="Visualization,R,OJS" data-listing-date-sort="1704818611000" data-listing-file-modified-sort="1704818611575" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="31" data-listing-word-count-sort="6134">
 <a href="./Misc/Visuals_Interactives/model_viz.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Misc/Visuals_Interactives/model_viz_files/figure-html/unnamed-chunk-2-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1659,14 +1687,14 @@ OJS
 
 </div>
 <div class="listing-date">
-Jul 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="4" data-categories="Simulation,ALM,OJS,Interactive" data-listing-file-modified-sort="1692363771212" data-listing-reading-time-sort="8" data-listing-word-count-sort="1567">
+<div class="g-col-1" data-index="4" data-categories="Simulation,ALM,OJS,Interactive" data-listing-file-modified-sort="1704818611575" data-listing-reading-time-sort="8" data-listing-word-count-sort="1567">
 <a href="./Misc/Visuals_Interactives/ojs_alm.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -1700,7 +1728,7 @@ Interactive
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="5" data-categories="Analysis,Learning-Curve,R,OJS" data-listing-date-sort="1689313398000" data-listing-file-modified-sort="1689313398684" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="684">
+<div class="g-col-1" data-index="5" data-categories="Analysis,Learning-Curve,R,OJS" data-listing-date-sort="1704818611000" data-listing-file-modified-sort="1704818611575" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="684">
 <a href="./Misc/Visuals_Interactives/ojs_explore.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
@@ -1737,14 +1765,14 @@ OJS
 
 </div>
 <div class="listing-date">
-Jul 2023
+Jan 2024
 </div>
 </div>
 </div>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="6" data-categories="Visualization,R,OJS" data-listing-date-sort="1696839520000" data-listing-file-modified-sort="1696839520165" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="38" data-listing-word-count-sort="7581">
+<div class="g-col-1" data-index="6" data-categories="Visualization,R,OJS" data-listing-date-sort="1704818611000" data-listing-file-modified-sort="1704818611575" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="38" data-listing-word-count-sort="7581">
 <a href="./Misc/Visuals_Interactives/tikz_net.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="Misc/Visuals_Interactives/tikz_net_files/figure-html/rectangle-text-1.svg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -1771,7 +1799,7 @@ https://www.andrewheiss.com/blog/2021/08/27/tikz-knitr-html-svg-fun/ https://gis
 
 </div>
 <div class="listing-date">
-Oct 2023
+Jan 2024
 </div>
 </div>
 </div>
@@ -1903,6 +1931,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.tegorman13.github.io/htw\/custom");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1952,38 +1998,28 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
       if (note.children && note.children.length > 2) {
-        for (let i = 0; i < 2; i++) {
-          container.appendChild(note.children[i].cloneNode(true));
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
         }
-        typesetMath(container);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
         return container.innerHTML
       } else {
-        typesetMath(note);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
         return note.innerHTML;
       }
     } else {
@@ -1992,8 +2028,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      typesetMath(note);
-      return note.innerHTML;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {
@@ -2219,5 +2262,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/index.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

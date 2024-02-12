@@ -51,9 +51,22 @@ macpro <- '10.147.17.83'
 #   list(host=m1l8,user='thomasgorman', ncore=8)
 # )
 
+# machineAddresses <- list(
+#   list(host=tg_m1,user='thomasgorman', ncore=6),
+#   #list(host=macpro,user='thomasgorman', ncore=1),
+#   list(host=m1l1,user='thomasgorman', ncore=8),
+#   list(host=m1l2,user='thomasgorman', ncore=8),
+#   list(host=m1l3,user='thomasgorman', ncore=8),
+#   list(host=m1l4,user='thomasgorman', ncore=8),
+#   list(host=m1l5,user='thomasgorman', ncore=8),
+#    list(host=m1l6,user='thomasgorman', ncore=8),
+#    list(host=m1l7,user='thomasgorman', ncore=8),
+#    list(host=m1l8,user='thomasgorman', ncore=8),
+#    list(host=m1r1,user='thomasgorman', ncore=8),
+#   list(host=m1r2,user='thomasgorman', ncore=8)
+# )
+
 machineAddresses <- list(
-  list(host=tg_m1,user='thomasgorman', ncore=6),
-  #list(host=macpro,user='thomasgorman', ncore=1),
   list(host=m1l1,user='thomasgorman', ncore=8),
   list(host=m1l2,user='thomasgorman', ncore=8),
   list(host=m1l3,user='thomasgorman', ncore=8),

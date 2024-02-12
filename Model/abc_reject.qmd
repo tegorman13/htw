@@ -18,17 +18,17 @@ Models were fit to each individual participant. To estimate parameters, we used 
 
 
 
-
-
-
-
 ```{r}
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
-               stringr,future,furrr, knitr, reactable, flextable,ggstance)
+               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools)
 conflict_prefer_all("dplyr", quiet = TRUE)
 options(scipen = 999)
 walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
+test <- readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Test") 
+testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
+  summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
+
 input_layer <<- output_layer <<-  c(100,350,600,800,1000,1200)
 
 ids <- c(1,2,4,5,6,7,8, 10,11,12,13)
@@ -36,10 +36,10 @@ ids2 <- c(1,66,36)
 ids3 <- c(20,71,101,4,76,192)
 idsBad <- c(76,192, 101)
 
-
 #file_name <- "n_iter_300_ntry_3000_0800"
 #file_name <- "n_iter_100_ntry_200_4509"
 file_name <- "n_iter_100_ntry_400_3247"
+file_name <- "n_iter_200_ntry_300_5354"
 
 # list.files(here('data/abc_reject'))
 # (grep("Train",list.files(here(paste0('data/abc_reject/',file_name)),
@@ -106,11 +106,12 @@ future::plan(multisession)
 
 nestSbjModelFit <- ind_fits_df %>% nest(.by=c(id,Model,Fit_Method))
 
+# organize test data predictions
 post_dat <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 50, return_dat="test_data")
    })) |> 
   select(Fit_Method,pp,-data) |>  
-  unnest(pp) |> filter(expMode2=="Test") |> as.data.table()
+  unnest(pp) |>  filter(expMode2=="Test") |> as.data.table()
 
 post_dat_avg <- post_dat |> group_by(id, condit, Model, Fit_Method, x, c, lr, rank) |> 
   summarise(y = mean(y), pred = mean(pred), error = y - pred) |> as.data.table()
@@ -122,7 +123,31 @@ post_dat_l[, Resp := fifelse(Resp == "y", "Observed",
                              fifelse(Model == "ALM", "ALM", "EXAM"))]
 setorder(post_dat_l, id, Resp)
 rm(post_dat_avg)
+
+
+# organize training data predictions
+pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
+   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="train_data")
+   })) |>
+  select(Fit_Method,pp,-data) |>
+  unnest(pp) |> as.data.table() |> filter(expMode2=="Train")
+
+nbins <- 3
+pd_train <- pd_train |> group_by(id,condit,Model,Fit_Method) |>
+  mutate(Block=cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE))
+setorder(pd_train, id, x,Block, rank)
+
+pd_train_l <- melt(pd_train, id.vars = c("id", "condit", "Model","Block", "Fit_Method", "x", "c", "lr", "rank"),
+                   measure.vars = c("pred", "y"), variable.name = "Resp", value.name = "val") |> as.data.table()
+pd_train_l[, Resp := fifelse(Resp == "y", "Observed",
+                             fifelse(Model == "ALM", "ALM", "EXAM"))] 
+setorder(pd_train_l, id,Block, Resp) 
+
+pd_train_l <- pd_train_l |> mutate(dist=abs(x-val))
+
 plan(sequential)
+
+
 # AIC and BIC
 # mc2 <- post_dat |> filter(rank==1) |>
 #   group_by(id,condit,Model,Fit_Method) |>
@@ -132,7 +157,6 @@ plan(sequential)
 #   group_by(id,condit,Model,Fit_Method) |>
 #   summarise(e2=mean(e2), mean_error=first(mean_error),n=first(n),k=first(k)) |>
 #   mutate(AIC=2*k+n*mean_error, BIC=log(n)*k+n*mean_error)
-
 
 # Single run extraction:
 # exam_test <- ind_fits_df |> filter(Model == "EXAM", Fit_Method == "Test")
@@ -144,10 +168,7 @@ plan(sequential)
 # post_dat_avg <- post_dat_trial |> group_by(id,condit,x,c,lr,rank) |> 
 #   summarise(y = mean(y),pred = mean(pred)) |> arrange(id,x,rank)
 
-
-
 #post_dat_l |> filter(Model == "EXAM", Fit_Method == "Test",id==1) |> arrange(rank)
-
 # head(post_dat_l)
 
 ```
@@ -159,7 +180,7 @@ plan(sequential)
 #### `{r} kable(run_info)`
 
 
-##  Posterior Average Table: 
+##  Posterior Average Table 
 ```{r fig.width=12, fig.height=17}
 #| eval: true
 #| tbl-cap: "Posterior Distribution"
@@ -172,21 +193,150 @@ plan(sequential)
 
 post_tabs <- abc_tables(post_dat,post_dat_l)
 
+# tables with fit error
+# post_tabs$agg_full |> flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
+#                        `ME` = as_paragraph(mean_error)) |> as_flextable() |>
+#   set_caption("Mean from full_posterior") 
 
-post_tabs$agg_full |> flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
+# post_tabs$agg_best |> flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
+#                        `ME` = as_paragraph(mean_error)) |> as_flextable() |>
+#   set_caption("Mean from best parameters") 
+
+post_tabs$agg_pred_full |> flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
+                       `ME` = as_paragraph(mean_error)) |> as_flextable() |>
+  set_caption("Mean from full_posterior") 
+
+post_tabs$agg_pred_best |> flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
                        `ME` = as_paragraph(mean_error)) |> as_flextable() |>
   set_caption("Mean from full_posterior") 
 
 
-post_tabs$agg_best |> flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
-                       `ME` = as_paragraph(mean_error)) |> as_flextable() |>
-  set_caption("Mean from best parameters") 
+```
+
+
+## Interactive Test Predictions Table
+```{r}
+tags$select(
+  tags$option(value = "", "All"),
+  purrr::map(unique(post_tabs$agg_x_full$condit), tags$option),
+    purrr::map(unique(post_tabs$agg_x_full$Model), tags$option),
+    purrr::map(unique(post_tabs$agg_x_full$Fit_Method), tags$option),
+   purrr::map(unique(post_tabs$agg_x_full$x), tags$option)
+)
+
+
+selectFilter <- function(tableId, style = "width: 100%; height: 100%;") {
+  function(values, name) {
+    tags$select(
+      # Set to undefined to clear the filter
+      onchange = sprintf("
+        const value = event.target.value
+        Reactable.setFilter('%s', '%s', value === '__ALL__' ? undefined : value)
+      ", tableId, name),
+      # "All" has a special value to clear the filter, and is the default option
+      tags$option(value = "__ALL__", "All"),
+      lapply(unique(values), tags$option),
+      "aria-label" = sprintf("Filter %s", name),
+      style = style
+    )
+  }
+}
+
 
 post_tabs$agg_x_full |> 
-  left_join(post_tabs$agg_x_best |> rename("best_error"=mean_error), 
-            by=c("condit","Model","Fit_Method","x")) |> 
+  left_join(post_tabs$agg_x_best |> rename("best_error"=mean_error,"best_pred"=pred), 
+            by=c("condit","Model","Fit_Method","x","y")) |> 
   arrange(desc(condit),x,Fit_Method) |>
-  reactable::reactable() 
+  mutate(x=as.character(x)) |>
+  reactable::reactable(
+    columns = list(condit=colDef(name="Condit",filterInput=selectFilter("my-tbl")),
+                   Model=colDef(name="Model",filterInput=selectFilter("my-tbl")),
+                   Fit_Method=colDef(name="Fit_Method",filterInput=selectFilter("my-tbl"),
+                                     filterMethod = JS("(rows, columnId, filterValue) => {
+        return rows.filter(row => row.values[columnId] === filterValue)
+      }")),
+      x=colDef(name="x",filterInput=selectFilter("my-tbl"),
+               filterMethod = JS("(rows, columnId, filterValue) => {
+        return rows.filter(row => row.values[columnId] === filterValue)
+      }"))),
+    elementId = "my-tbl",
+    defaultPageSize=15,
+    filterable=TRUE) 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+## Train Predictions
+```{r}
+
+pt_train <- abc_train_tables(pd_train,pd_train_l)
+pt_train$agg_pred_full |> flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
+                       `ME` = as_paragraph(mean_error)) |> as_flextable() |>
+  set_caption("Mean from full_posterior")
+
+pt_train$block_pred_full |> 
+  flextable::tabulator(rows=c("Fit_Method","Model","Block"), columns=c("condit"), 
+                       `Observed` = as_paragraph(y), 
+                       `Predicted` = as_paragraph(pred),
+                       `ME` = as_paragraph(mean_error)) |> as_flextable() |>
+  set_caption("Mean from full_posterior")
+
+
+pt_train$block_pred_full |> filter(condit=="Varied") |>
+  flextable::tabulator(rows=c("Fit_Method","Block"), columns=c("Model"), 
+                      # `Observed` = as_paragraph(y), 
+                       `Predicted` = as_paragraph(pred),
+                       `ME` = as_paragraph(mean_error)) |> as_flextable() |>
+  set_caption("Mean from full_posterior")
+
+
+
+best_indices <- pt_train$block_pred_full_x %>%
+   filter(!(Fit_Method=="Test")) |>
+  nest(data = -condit) %>%
+  mutate(indices = map(data, ~{
+    .x %>%
+      select(-y, -pred, -mean_error) %>%
+      pivot_wider(names_from = Model, values_from = best) %>%
+      ungroup() |>
+      select(ALM, EXAM) %>%
+      pmap(.f = function(ALM, EXAM) {
+        which(c(ALM, EXAM) == 1)
+      })
+  })) %>%
+  select(condit, indices)
+   
+
+
+pt_train$block_pred_full_x |> filter(condit=="Varied",!(Fit_Method=="Test")) |>
+  flextable::tabulator(rows=c("Fit_Method","Block","x"), columns=c("Model"), 
+                      # `Observed` = as_paragraph(y), 
+                       `Predicted` = as_paragraph(pred),
+                       `ME` = as_paragraph(mean_error)) |> 
+  as_flextable() %>% 
+  apply_best_formatting(.,pull(filter(best_indices,condit=="Varied"),indices) %>% .[[1]]) |> 
+  set_caption("Vared Train Predictions")
+ 
+pt_train$block_pred_full_x |> filter(condit=="Constant",!(Fit_Method=="Test")) |>
+  flextable::tabulator(rows=c("Fit_Method","Block","x"), columns=c("Model"), 
+                      # `Observed` = as_paragraph(y), 
+                       `Predicted` = as_paragraph(pred),
+                       `ME` = as_paragraph(mean_error)) |> 
+  as_flextable() %>% 
+  apply_best_formatting(.,pull(filter(best_indices,condit=="Constant"),indices) %>% .[[1]]) |> 
+  set_caption("Constant Train Predictions")
+
+# pull(filter(best_indices,condit=="Varied"),indices) %>% .[[1]] 
+
 
 ```
 
@@ -196,6 +346,7 @@ post_tabs$agg_x_full |>
 #| eval: true
 group_predictive_plots(post_dat_l) 
 ```
+
 ### Alt grouping of Posterior Predictive
 ```{r, fig.width=12, fig.height=15}
  group_predictive_plots2(post_dat_l) 
@@ -277,36 +428,150 @@ abc_tables(post_dat |> filter(id==36))$agg_best |> flextable() |> set_caption("M
 ```
 
 
+## More Comparisons
+```{r fig.width=11, fig.height=12}
+
+best_id_x <- post_dat |> group_by(id,condit,Model,Fit_Method,x) |>
+  mutate(e2=abs(y-pred)) |>
+  summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
+  group_by(id,condit,Fit_Method,x) |> mutate(best=ifelse(mean_error==min(mean_error),1,0)) |>
+  group_by(id,condit,Fit_Method,Model) |> mutate(n_best=sum(best)) 
+
+best_id <- best_id_x |> group_by(id,condit,Fit_Method,Model) |>
+  summarise(mean_error=mean(mean_error), n_best=first(n_best)) 
+  
+lowest_error_model <- best_id %>%
+  group_by(id, condit,Fit_Method) %>%
+  summarise(Best_Model = Model[which.min(mean_error)],
+            n_best = n_best[which.min(mean_error)],
+            Lowest_error = min(mean_error),
+            differential = min(mean_error) - max(mean_error)) %>%
+  ungroup()
+
+error_difference <- best_id %>%
+  select(id, condit, Model,Fit_Method, mean_error) %>%
+  pivot_wider(names_from = Model, values_from = mean_error) %>%
+  mutate(Error_difference = (ALM - EXAM))
+
+full_comparison <- lowest_error_model |> left_join(error_difference, by=c("id","condit","Fit_Method"))  |> 
+  group_by(condit,Fit_Method,Best_Model) |> mutate(nGrp=n(), model_rank = nGrp - rank(Error_difference) ) |> 
+  arrange(Fit_Method,-Error_difference)
+
+full_comparison |> round_tibble(1) |> reactable(filterable=T,defaultPageSize=15)
 
 
+
+
+ggplot(full_comparison, aes(x = Best_Model, fill = condit)) +
+  geom_bar(position = "dodge") +
+  facet_wrap(~Fit_Method)+
+  labs(title = "Distribution of Subjects Best Fit by Model",
+       x = "Model with Lowest Error",
+       y = "Count of Subjects") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1")
+
+# Scatter plot showing the differential in mean error
+ggplot(full_comparison, aes(x = Error_difference, y = condit, color = Best_Model)) +
+  geom_point(alpha=.5) +
+  stat_pointinterval()+
+  facet_wrap(~Fit_Method)+
+  labs(title = "Differential in Mean Error Between Models",
+       x = "Error Difference (ALM - EXAM)",
+       y = "Condition") +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1")
+
+
+# ggplot(full_comparison, aes(x = Error_difference)) +
+#   geom_histogram(aes(fill=Best_Model),bins = 40, alpha = 0.7) +
+#   geom_vline(aes(xintercept = mean(Error_difference)), color = "red", linetype = "dashed", size = 1) +
+#   facet_wrap(~Fit_Method)+
+#   labs(
+#     title = "Distribution of Error Differential (ALM - EXAM)",
+#     x = "Error Differential",
+#     y = "Frequency"
+#   ) +
+#   theme_minimal()
+
+
+best_exam <- full_comparison |> filter(Best_Model=="EXAM") 
+best_alm <- full_comparison |> filter(Best_Model=="ALM") 
+
+
+d <- testAvg |> left_join(full_comparison, by=c("id","condit"))
+
+d |> ggplot(aes(x=vb,y=dist,fill=condit)) + stat_bar + facet_wrap(Fit_Method~Best_Model,ncol=2)
+
+d |> ggplot(aes(x=vb,y=vx,fill=condit)) + stat_bar + facet_wrap(Fit_Method~Best_Model,ncol=2)
+
+d |> filter(Fit_Method=="Test") |>
+  ggplot(aes(x=Error_difference,y=dist,col=condit)) + geom_point() + facet_wrap(~vb,scales="free",ncol=2)
+
+
+d |> group_by(id,condit,Fit_Method) |> summarise(Error_difference=mean(Error_difference),dist=mean(dist)) |> 
+  ggplot(aes(x=Error_difference,y=dist,col=condit)) + geom_point() + facet_wrap(~Fit_Method,scales="free")
+
+
+# ds |> filter(expMode2=="Test", id %in% best_exam$id) |> 
+#   group_by(id,condit,x) |> summarise(y=mean(y), dist=mean(abs(x-y))) |>
+#   mutate(x=as.factor(x)) |>
+#   ggplot(aes(x=x,y=dist,fill=condit)) + stat_bar
+
+```
+
+
+## Best Test - EXAM Fits
+```{r fig.width=11, fig.height=12}
+
+strong_fits <- full_comparison |> filter(model_rank<=1)
+strong_fits |> filter(Fit_Method=="Test",Best_Model=="EXAM") |> pull(id) %>% indv_predictive_plots(post_dat_l, .)
+```
+
+## Best Test - ALM Fits
+```{r fig.width=11, fig.height=12}
+
+strong_fits <- full_comparison |> filter(model_rank<=1)
+strong_fits |> filter(Fit_Method=="Test",Best_Model=="ALM") |> pull(id) %>% indv_predictive_plots(post_dat_l, .)
+```
+
+
+
+## Best Test_Train - EXAM Fits
+```{r fig.width=11, fig.height=12}
+
+strong_fits <- full_comparison |> filter(model_rank<1)
+strong_fits |> filter(Fit_Method=="Test_Train",Best_Model=="EXAM") |> pull(id) %>% indv_predictive_plots(post_dat_l, .)
+```
+
+## Best Test_Train - ALM Fits
+```{r fig.width=11, fig.height=12}
+
+strong_fits <- full_comparison |> filter(model_rank<=1)
+strong_fits |> filter(Fit_Method=="Test_Train",Best_Model=="ALM") |> pull(id) %>% indv_predictive_plots(post_dat_l, .)
+```
+
+
+
+## Best Train - EXAM Fits
+```{r fig.width=11, fig.height=12}
+
+strong_fits <- full_comparison |> filter(model_rank<=1)
+strong_fits |> filter(Fit_Method=="Train",Best_Model=="EXAM") |> pull(id) %>% indv_predictive_plots(post_dat_l, .)
+```
+
+## Best Train - ALM Fits
+```{r fig.width=11, fig.height=12}
+
+strong_fits <- full_comparison |> filter(model_rank<=1)
+strong_fits |> filter(Fit_Method=="Train",Best_Model=="ALM") |> pull(id) %>% indv_predictive_plots(post_dat_l, .)
+```
 
 ## Learning Curves
 ```{r fig.width=11, fig.height=16}
 #| fig-cap: "Learning Curves"
 #| fig-width: 11
 #| fig-height: 13
-
-
-pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
-   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 10, return_dat="train_data, test_data")
-   })) |> 
-  select(Fit_Method,pp,-data) |>  
-  unnest(pp) |> as.data.table() |> filter(expMode2=="Train") 
-
-
-
-nbins <- 3
-pd_train <- pd_train |> group_by(id,condit,Model,Fit_Method) |>
-  mutate(Block=cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE))
-setorder(pd_train, id, x,Block, rank)
-
-pd_train_l <- melt(pd_train, id.vars = c("id", "condit", "Model","Block", "Fit_Method", "x", "c", "lr", "rank"),
-                   measure.vars = c("pred", "y"), variable.name = "Resp", value.name = "val") |> as.data.table()
-pd_train_l[, Resp := fifelse(Resp == "y", "Observed",
-                             fifelse(Model == "ALM", "ALM", "EXAM"))] 
-setorder(pd_train_l, id,Block, Resp) 
-
-pd_train_l <- pd_train_l |> mutate(dist=abs(x-val))
 
 pd_train_l |> ggplot(aes(x=Block,y=dist,col=Resp))+
   geom_point( stat = "summary", fun = mean) + 
@@ -373,6 +638,10 @@ post_dat |> ggplot(aes(x=Model,y=mean_error,fill=Model))+geom_col()+facet_wrap(c
 ```{r}
 
 # post_tabs <- map(post_tabs, ~cbind(.x,run_info) |> mutate(fn=file_name))
+post_tabs$agg_pred_full_train <- pt_train$agg_pred_full
+post_tabs$block_pred_full <- pt_train$block_pred_full
+post_tabs$block_pred_full_x <- pt_train$block_pred_full_x
+
 # # path1 = "../../../data/abc_tabs"
 # saveRDS(post_tabs, paste0(path1, "/", tools::file_path_sans_ext(basename(file_name)),"_post_tab", ".rds"))
 # saveRDS(post_tabs, paste0(tools::file_path_sans_ext(basename(file_name)),"_post_tab", ".rds"))

@@ -7,7 +7,7 @@ conflict_prefer_all("dplyr", quiet = TRUE)
 
 pt <- map(ft,readRDS)
 pt2 <- imap_dfr(pt, ~.x[["et_sum"]]) |> arrange(Avg_EXAM_error) |> mutate(full_name = factor(fname, levels = unique(fname))) |>
-  select(-parallel, type) |> rename("accept_rate"=min_accept_rate)
+  select(-parallel, type,-fname) |> rename("accept_rate"=min_accept_rate) |> relocate(full_name)
 
 # it <- imap_dfr(pt, ~.x[["et_sum_x_indv"]])
 # pt2 |> filter(Fit_Method=="Test & Train") |> arrange(Avg_EXAM_error)

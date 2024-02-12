@@ -155,9 +155,9 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 ####################################
 
 args <- commandArgs(trailingOnly = TRUE)
-num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 300)
+num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 400)
 n_try = ifelse(length(args) > 1, as.numeric(args[2]), 100)
-tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .95)
+tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .85)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
 min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .1)
 
@@ -201,7 +201,7 @@ if (parallel==1) {
 } else if(parallel==2){
 spec <- make_spec()
 #pc <- parallel::makeCluster(type='PSOCK', master=macpro, spec)
-pc <- parallel::makeCluster(type='PSOCK', master=tg_m1, spec)
+pc <- parallel::makeCluster(type='PSOCK', master=m1l1 spec)
 
 plan(cluster, workers = pc)
 } else {

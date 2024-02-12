@@ -1,8 +1,89 @@
 
 
+abc_train_tables <- function(pd_train,pt_train_l)
+{
+  block_pred_full <-  pd_train  |> group_by(id,condit,Model,Fit_Method,x,Block) |> 
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
+    group_by(id,condit,Model,Fit_Method,Block) |> 
+    summarise(y=mean(y),pred=mean(pred),mean_error=mean(mean_error)) |> 
+    group_by(condit,Model,Fit_Method,Block) |> 
+    summarise(y=mean(y),pred=mean(pred),mean_error=mean(mean_error)) |> 
+    round_tibble(1) 
+  
+  block_pred_best <-  pd_train  |> group_by(id,condit,Model,Fit_Method,x,Block) |> 
+    filter(rank==1) |>
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
+    group_by(condit,Model,Fit_Method,Block) |> 
+    summarise(mean_error=mean(mean_error)) |> 
+    round_tibble(1)
+  
+  block_pred_full_x <-  pd_train  |> group_by(condit,Model,Fit_Method,x,Block) |> 
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
+    group_by(condit,Model,Fit_Method,Block,x) |> 
+    summarise(y=mean(y),pred=mean(pred),mean_error=mean(mean_error)) |> 
+    round_tibble(1) |>
+    group_by(Fit_Method,condit,Block,x) |>
+    mutate(best=if_else(mean_error==min(mean_error),1,0)) |> ungroup()
+  
+  block_pred_best_x <-  pd_train  |> group_by(condit,Model,Fit_Method,x,Block) |> 
+    filter(rank==1) |>
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
+    group_by(condit,Model,Fit_Method,Block,x) |> 
+    summarise(mean_error=mean(mean_error)) |> 
+    round_tibble(1)
+  
+  agg_pred_full <-  pd_train  |> group_by(condit,Model,Fit_Method,x) |> 
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
+    group_by(condit,Model,Fit_Method) |> 
+    summarise(mean_error=mean(mean_error)) |> 
+    round_tibble(1) 
+  
+  agg_pred_best <-  pd_train  |> group_by(condit,Model,Fit_Method,x) |> 
+    filter(rank==1) |>
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
+    group_by(condit,Model,Fit_Method) |> 
+    summarise(mean_error=mean(mean_error)) |> 
+    round_tibble(1)
+  
+  return(tibble::lst(agg_pred_full,agg_pred_best, block_pred_full, block_pred_best,block_pred_full_x, block_pred_best_x))
+  
+}
+
+apply_best_formatting <- function(ft, best_index) {
+  for (i in 1:length(best_index)) {
+    #ft <- ft %>% surround(i=i,j=best_index[i],border=fp_border_default(color="red",width=1))
+    ind = best_index[[i]]
+    ind <- ind  %>% map_dbl(~ .x*3+3)
+    ft <- ft %>% highlight(i=i,j=ind,color="wheat")
+  }
+  return(ft)
+}
+
+
 abc_tables <- function(post_dat,post_dat_l=NULL){
   
   # check if post_dat_l exists
+  
+ agg_pred_full <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
+    group_by(condit,Model,Fit_Method) |> 
+    summarise(mean_error=mean(mean_error)) |> 
+    round_tibble(1) 
+ 
+ agg_pred_best <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
+   filter(rank==1) |>
+   mutate(e2=abs(y-pred)) |> 
+   summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
+   group_by(condit,Model,Fit_Method) |> 
+   summarise(mean_error=mean(mean_error)) |> 
+   round_tibble(1)
   
   
  agg_full <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
@@ -26,17 +107,17 @@ agg_best <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |>
 
 agg_x_full <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
   mutate(e2=abs(y-pred)) |> 
-  summarise(y=mean(y), pred=mean(pred), mean_error=mean(mean_error)) |>
+  summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
   group_by(condit,Model,Fit_Method,x) |> 
-  summarise(mean_error=mean(mean_error)) |> 
+  summarise(y=mean(y), pred=mean(pred),mean_error=mean(mean_error)) |> 
   round_tibble(1) 
 
 agg_x_best <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |>
   filter(rank==1) |>
   mutate(e2=abs(y-pred)) |> 
-  summarise(y=mean(y), pred=mean(pred), mean_error=mean(mean_error)) |>
+  summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
   group_by(condit,Model,Fit_Method,x) |> 
-  summarise(mean_error=mean(mean_error)) |> 
+  summarise(y=mean(y), pred=mean(pred),mean_error=mean(mean_error)) |> 
   round_tibble(1)
 
 id_agg <-  post_dat  |> group_by(id,condit,Model,Fit_Method,x) |>
@@ -83,7 +164,7 @@ if(is.null(post_dat_l)) {
 
 
 
-  return(tibble::lst(agg_full,agg_best, agg_x_full, agg_x_best,id_agg, et_sum ))
+  return(tibble::lst(agg_full,agg_best, agg_x_full, agg_x_best,id_agg, et_sum,agg_pred_full,agg_pred_best ))
   
 }
 
