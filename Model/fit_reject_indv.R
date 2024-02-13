@@ -42,7 +42,7 @@ reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=5
   start_tol = round(tol,3); 
   abc <- list(); abc$dist_sd <- vector("list", num_iterations)
   try_count=0;
-  inc_count=0;
+  inc_count=0; # number of tolerance increases
   cur_tol_success=0;
   success_rate=0;
   closest_mean_errors <- numeric(0)
@@ -51,7 +51,7 @@ reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=5
   for(j in 1:num_iterations) {
 
     found=0;
-    iter_count=0;
+    iter_count=0; # number of unsuccessful samples taken this iteration
 
     while(found==0) {
     try_count=try_count+1;
