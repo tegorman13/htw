@@ -1,5 +1,5 @@
 ---
-title: Individual ABC Fits
+title: Individual ABC reject Fits
 author: Thomas Gorman
 date: "`r Sys.Date()`"
 code-fold: true
@@ -145,7 +145,7 @@ nestSbjModelFit <- ind_fits_df %>% nest(.by=c(id,Model,Fit_Method))
 
 # organize test data predictions
 post_dat <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
-   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 50, return_dat="test_data")
+   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="test_data")
    })) |> 
   select(Fit_Method,pp,-data) |>  
   unnest(pp) |>  filter(expMode2=="Test") |> as.data.table()
@@ -159,12 +159,12 @@ post_dat_l <- melt(post_dat_avg, id.vars = c("id", "condit", "Model", "Fit_Metho
 post_dat_l[, Resp := fifelse(Resp == "y", "Observed",
                              fifelse(Model == "ALM", "ALM", "EXAM"))]
 setorder(post_dat_l, id, Resp)
-rm(post_dat_avg)
+#rm(post_dat_avg)
 
 
 # organize training data predictions
 pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
-   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="train_data")
+   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 10, return_dat="train_data")
    })) |>
   select(Fit_Method,pp,-data) |>
   unnest(pp) |> as.data.table() |> filter(expMode2=="Train")
@@ -184,6 +184,11 @@ pd_train_l <- pd_train_l |> mutate(dist=abs(x-val))
 
 plan(sequential)
 
+
+theta_map <- post_dat_avg |> group_by(condit,Model,Fit_Method) |> summarize(c=median(c),lr=median(lr))
+
+map <- simulation_function(sbj_data <- ds |> theta_map$c[1], , params$lr, input_layer = input_layer, 
+                                    output_layer = output_layer, return_dat = return_dat)
 
 # AIC and BIC
 # mc2 <- post_dat |> filter(rank==1) |>
@@ -382,12 +387,66 @@ pt_train$block_pred_full_x |> filter(condit=="Constant",!(Fit_Method=="Test")) |
 ```{r, fig.width=12, fig.height=15}
 #| eval: true
 group_predictive_plots(post_dat_l) 
+
+
+testAvg |> ggplot(aes(x=vx)) + geom_density() + facet_wrap(~vb) +
+
+
+
+post_dat_avg |> filter(rank==1) |> ggplot(aes(x=pred)) + geom_density() + facet_wrap(~x)
+
+post_dat_avg |> filter(rank==1) |> ggplot(aes(x=pred)) + 
+  geom_density() + geom_density(data=post_dat_avg, aes(x=y), color="red") +
+  facet_wrap(condit~x,ncol=6)
+
+post_dat_avg |> filter(Model=="EXAM",Fit_Method=="Test") |> ggplot(aes(x=pred)) + 
+  geom_density() + geom_density(data=post_dat_avg, aes(x=y), color="red") +
+  facet_wrap(condit~x,ncol=6)
+
+post_dat_avg |> filter(Model=="ALM",Fit_Method=="Test") |> ggplot(aes(x=pred)) + 
+  geom_density() + geom_density(data=post_dat_avg, aes(x=y), color="red") +
+  facet_wrap(condit~x,ncol=6)
+
+
+
+post_dat_avg |> filter(Fit_Method=="Test") |> ggplot(aes(x=pred)) + 
+  geom_density(aes(fill=Model),alpha=.5) + geom_density(data=post_dat_avg, aes(x=y), color="black",alpha=2) +
+  facet_wrap(condit~x,ncol=6)
+
+post_dat_avg |> filter(Fit_Method=="Test_Train") |> ggplot(aes(x=pred)) + 
+  geom_density(aes(fill=Model),alpha=.5) + geom_density(data=post_dat_avg, aes(x=y), color="black",alpha=2) +
+  facet_wrap(condit~x,ncol=6)
+
+post_dat_avg |> filter(Fit_Method=="Train",pred>0,pred<2000) |> ggplot(aes(x=pred)) + 
+  geom_density(aes(fill=Model),alpha=.5) + geom_density(data=post_dat_avg, aes(x=y), color="black",alpha=2) +
+  facet_wrap(condit~x,ncol=6)
+
 ```
 
 ### Alt grouping of Posterior Predictive
 ```{r, fig.width=12, fig.height=15}
  group_predictive_plots2(post_dat_l) 
 ```
+
+
+```{r}
+
+post_dat_avg |> group_by(id,condit,Fit_Method,x) |>
+  ggplot(aes(x = x, y = error, fill=Model)) + 
+  stat_bar + 
+  facet_wrap(condit~Fit_Method, scales="free") + 
+  labs(title = "Model Resituals - full posterior")
+
+
+post_dat_avg |> group_by(id,condit,Fit_Method,x) |>
+  filter(rank==1) |> 
+  ggplot(aes(x = x, y = error, fill=Model)) + 
+  stat_bar + 
+  facet_wrap(condit~Fit_Method, scales="free") + 
+  labs(title = "Model Residuals - best parameters")
+
+```
+
 
 
 
@@ -680,31 +739,13 @@ post_dat |> ggplot(aes(x=Model,y=mean_error,fill=Model))+geom_col()+facet_wrap(c
 ```{r}
 
 # post_tabs <- map(post_tabs, ~cbind(.x,run_info) |> mutate(fn=file_name))
-post_tabs$agg_pred_full_train <- pt_train$agg_pred_full
-post_tabs$block_pred_full <- pt_train$block_pred_full
-post_tabs$block_pred_full_x <- pt_train$block_pred_full_x
+# post_tabs$agg_pred_full_train <- pt_train$agg_pred_full
+# post_tabs$block_pred_full <- pt_train$block_pred_full
+# post_tabs$block_pred_full_x <- pt_train$block_pred_full_x
 
 # # path1 = "../../../data/abc_tabs"
 # saveRDS(post_tabs, paste0(path1, "/", tools::file_path_sans_ext(basename(file_name)),"_post_tab", ".rds"))
 # saveRDS(post_tabs, paste0(tools::file_path_sans_ext(basename(file_name)),"_post_tab", ".rds"))
 ```
 
-
-```{r}
-
-library(pander)
-k = aov(dist~condit,data=testAvg)
-pander::pandoc.table(summary(k), style="grid")
-
-apaTables::apa.aov.table(k)
-
-stats.table <- as.data.frame(summary(k)$coefficients)
-rempsyc::nice_table(stats.table)
-
-kable(summary(k))
-
-summary(k)
-pander::pander(summary(k))
-
-```
 
