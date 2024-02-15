@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.480">
+<meta name="generator" content="quarto-1.4.549">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2023-07-30">
+<meta name="dcterms.date" content="2024-01-09">
 <title>HTW Project - Mermaid with R + consort</title>
 <style>
 code{white-space: pre-wrap;}
@@ -90,6 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -208,12 +209,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Simulations</span></a>
+ <span class="menu-text">Model</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EXAM Group Fits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Model/abc_reject.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ABC-rejection models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Model/htw_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Model</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Simulations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../Simulations/simParameterRecovery.html" class="sidebar-item-text sidebar-link">
@@ -236,36 +267,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../Simulations/alm_learning.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">ALM Learning</span></a>
-  </div>
-</li>
-      </ul>
-</li>
-        <li class="px-0"><hr class="sidebar-divider hi "></li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Model</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">load and view data</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Model/abc_htw.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Approximate Bayesian Fitting</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Model/group_fits.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Group Level Fits</span></a>
   </div>
 </li>
       </ul>
@@ -359,7 +360,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 30, 2023</p>
+      <p class="date">January 9, 2024</p>
     </div>
   </div>
   
@@ -373,9 +374,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">data.table</span>,<span class="va">igraph</span>,<span class="va">ggraph</span>,<span class="va">kableExtra</span>,<span class="va">DiagrammeR</span>,<span class="va">png</span>,<span class="va">consort</span>,<span class="va">data.table</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
     data1(Varied Training&lt;br/&gt;800-1000&lt;br/&gt;1000-1200&lt;br/&gt;1200-1400)
@@ -392,13 +394,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 %% https://quarto.org/docs/authoring/diagrams.html
 </pre>
 </div>
-<p>Mean Vx over training blocks</p>
+<p></p><figcaption> Mean Vx over training blocks</figcaption><p></p>
 </div>
 </div>
 </div>
-<div class="cell" data-fig-width="7.5" data-fig-responsive="false">
+<div class="cell" data-fig-width="7.5" data-fig-responsive="false" data-layout-align="default">
 <div class="cell-output-display">
-<div id="fig-simple" class="quarto-figure quarto-figure-center anchored">
+<div id="fig-simple" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-simple-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <svg width="720" height="480" viewbox="0.00 0.00 608.45 142.40" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 138.4)"><polygon fill="white" stroke="transparent" points="-4,4 -4,-138.4 604.45,-138.4 604.45,4 -4,4"></polygon><!-- data1 --><g id="node1" class="node"><title>data1</title>
@@ -413,15 +415,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <path fill="none" stroke="black" d="M441.41,-58.8C449.68,-58.8 458.33,-58.8 466.91,-58.8"></path><polygon fill="black" stroke="black" points="466.93,-62.3 476.93,-58.8 466.93,-55.3 466.93,-62.3"></polygon></g></g></svg>
 </div>
 </div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-simple-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-simple-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: This is a simple graphviz graph.
 </figcaption></figure>
 </div>
 </div>
 </div>
-<div class="cell" data-fig-width="7.5" data-fig-height="2.5">
+<div class="cell" data-fig-width="7.5" data-fig-height="2.5" data-layout-align="default">
 <div class="cell-output-display">
-<div id="fig-simple2" class="quarto-figure quarto-figure-center anchored">
+<div id="fig-simple2" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-simple2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <svg width="720" height="240" viewbox="0.00 0.00 305.39 243.20" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 239.2)"><polygon fill="white" stroke="transparent" points="-4,4 -4,-239.2 301.39,-239.2 301.39,4 -4,4"></polygon><!-- data1 --><g id="node1" class="node"><title>data1</title>
@@ -436,16 +438,17 @@ Figure&nbsp;1: This is a simple graphviz graph.
 <path fill="none" stroke="black" d="M112.76,-37.6C125.72,-37.6 139.8,-37.6 153.46,-37.6"></path><polygon fill="black" stroke="black" points="153.79,-41.1 163.79,-37.6 153.79,-34.1 153.79,-41.1"></polygon></g></g></svg>
 </div>
 </div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-simple2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-simple2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: This is a simple graphviz graph.
 </figcaption></figure>
 </div>
 </div>
 </div>
 <section id="subgraph" class="level2"><h2 class="anchored" data-anchor-id="subgraph">subgraph</h2>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 437.53 368.80" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 364.8)"><polygon fill="white" stroke="transparent" points="-4,4 -4,-364.8 433.53,-364.8 433.53,4 -4,4"></polygon><g id="clust1" class="cluster"><title>cluster_counterbalanced</title>
 <polygon fill="none" stroke="black" points="8,-143.8 8,-352.8 167.91,-352.8 167.91,-143.8 8,-143.8"></polygon><text text-anchor="middle" x="87.95" y="-336.2" font-family="Times,serif" font-size="14.00">Counterbalanced Order</text></g><!-- data1 --><g id="node1" class="node"><title>data1</title>
@@ -459,12 +462,14 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <polygon fill="Linen" stroke="black" points="429.68,-96.5 306.08,-96.5 306.08,-21.1 429.68,-21.1 429.68,-96.5"></polygon><text text-anchor="middle" x="367.88" y="-79.8" font-family="Times,serif" font-size="14.00">Testing - Feedback</text><text text-anchor="middle" x="367.88" y="-63" font-family="Times,serif" font-size="14.00">100-300</text><text text-anchor="middle" x="367.88" y="-46.2" font-family="Times,serif" font-size="14.00">350-550</text><text text-anchor="middle" x="367.88" y="-29.4" font-family="Times,serif" font-size="14.00">600-800</text></g><!-- subgraph1&#45;&gt;Test3 --><g id="edge3" class="edge"><title>subgraph1-&gt;Test3</title>
 <path fill="none" stroke="black" d="M270.36,-58.8C278.4,-58.8 287.18,-58.8 296.07,-58.8"></path><polygon fill="black" stroke="black" points="296.11,-62.3 306.11,-58.8 296.11,-55.3 296.11,-62.3"></polygon></g></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 608.45 144.80" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 140.8)"><polygon fill="white" stroke="transparent" points="-4,4 -4,-140.8 604.45,-140.8 604.45,4 -4,4"></polygon><g id="clust1" class="cluster"><title>cluster</title>
 <polygon fill="none" stroke="black" points="145.49,-12.8 145.49,-128.8 449.15,-128.8 449.15,-12.8 145.49,-12.8"></polygon><text text-anchor="middle" x="297.32" y="-112.2" font-family="Times,serif" font-size="14.00">Counterbalanced Order</text></g><!-- data1 --><g id="node1" class="node"><title>data1</title>
@@ -478,12 +483,14 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <path fill="none" stroke="black" d="M297.48,-58.8C306.01,-58.8 314.68,-58.8 323.1,-58.8"></path><polygon fill="black" stroke="black" points="323.2,-62.3 333.2,-58.8 323.2,-55.3 323.2,-62.3"></polygon></g><!-- Test2&#45;&gt;Test3 --><g id="edge4" class="edge"><title>Test2-&gt;Test3</title>
 <path fill="none" stroke="black" d="M441.41,-58.8C449.68,-58.8 458.33,-58.8 466.91,-58.8"></path><polygon fill="black" stroke="black" points="466.93,-62.3 476.93,-58.8 466.93,-55.3 466.93,-62.3"></polygon></g></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 608.45 144.80" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 140.8)"><polygon fill="white" stroke="transparent" points="-4,4 -4,-140.8 604.45,-140.8 604.45,4 -4,4"></polygon><g id="clust1" class="cluster"><title>cluster</title>
 <polygon fill="none" stroke="black" points="145.49,-12.8 145.49,-128.8 449.15,-128.8 449.15,-12.8 145.49,-12.8"></polygon><text text-anchor="middle" x="297.32" y="-112.2" font-family="Times,serif" font-size="14.00">Counterbalanced Order</text></g><!-- data1 --><g id="node1" class="node"><title>data1</title>
@@ -497,12 +504,14 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <path fill="none" stroke="black" d="M297.48,-58.8C306.01,-58.8 314.68,-58.8 323.1,-58.8"></path><polygon fill="black" stroke="black" points="323.2,-62.3 333.2,-58.8 323.2,-55.3 323.2,-62.3"></polygon></g><!-- Test2&#45;&gt;Test3 --><g id="edge4" class="edge"><title>Test2-&gt;Test3</title>
 <path fill="none" stroke="black" d="M441.41,-58.8C449.68,-58.8 458.33,-58.8 466.91,-58.8"></path><polygon fill="black" stroke="black" points="466.93,-62.3 476.93,-58.8 466.93,-55.3 466.93,-62.3"></polygon></g></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 591.83 336.80" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 332.8)"><title>ALM</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-332.8 587.83,-332.8 587.83,4 -4,4"></polygon><!-- Input1 --><g id="node1" class="node"><title>Input1</title>
@@ -520,13 +529,15 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <text text-anchor="middle" x="120.97" y="-111" font-family="Times,serif" font-size="10.00">a_i(X) = e^{-γ(X-X_i)^2}, normalized: a_i(X) / Σa_i(X)</text></g><!-- Input2&#45;&gt;equation1 --><!-- Output1&#45;&gt;Output2 --><!-- Output2&#45;&gt;Output3 --><!-- equation2 --><g id="node7" class="node"><title>equation2</title>
 <text text-anchor="middle" x="453.16" y="-87" font-family="Times,serif" font-size="10.00">O_j(X) = Σ w_{ji} ⋅ a_i(X), P[Y_j | X] = O_j(X) / Σ O_k(X)</text></g><!-- Output3&#45;&gt;equation2 --><!-- invis1 --><!-- equation1&#45;&gt;invis1 --><!-- invis2 --><!-- equation2&#45;&gt;invis2 --></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
 <p>test</p>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 515.52 415.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 411)"><title>ALM</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-411 511.52,-411 511.52,4 -4,4"></polygon><g id="clust1" class="cluster"><title>cluster_input</title>
@@ -546,13 +557,15 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <text text-anchor="middle" x="169.51" y="-260" font-family="Times,serif" font-size="10.00">Input activation ai(X) = exp(-gamma*(X-Xi)^2), normalized by dividing by sum</text></g><!-- invis1 --><!-- equation1&#45;&gt;invis1 --><!-- equation2 --><g id="node7" class="node"><title>equation2</title>
 <text text-anchor="middle" x="169.51" y="-386" font-family="Times,serif" font-size="10.00">Output Oj(X) = sum(w_ji * ai(X)), Probability P[Yj | X] = Oj(X) / sum(Ok(X))</text></g><!-- invis2 --><!-- equation2&#45;&gt;invis2 --></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
 <p>test2</p>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 248.70 214.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 210)"><title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-210 244.7,-210 244.7,4 -4,4"></polygon><!-- E1 --><g id="node1" class="node"><title>E1</title>
@@ -578,13 +591,15 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <path fill="none" stroke="black" d="M147.77,-134C156.75,-134 166.94,-134 176.55,-134"></path><polygon fill="black" stroke="black" points="176.65,-137.5 186.65,-134 176.65,-130.5 176.65,-137.5"></polygon></g><!-- x100&#45;&gt;Y --><g id="edge12" class="edge"><title>x100-&gt;Y</title>
 <path fill="none" stroke="black" d="M134.05,-34.13C149.53,-53.78 175.82,-87.16 193.7,-109.88"></path><polygon fill="black" stroke="black" points="191.17,-112.32 200.11,-118.01 196.67,-107.99 191.17,-112.32"></polygon></g></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
 <p>test3</p>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 438.00 222.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 218)"><title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-218 434,-218 434,4 -4,4"></polygon><g id="clust2" class="cluster"><title>clusterX</title>
@@ -605,14 +620,16 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <path fill="none" stroke="black" d="M250.4,-180C258.39,-180 267.31,-180 275.82,-180"></path><polygon fill="black" stroke="black" points="275.92,-183.5 285.92,-180 275.92,-176.5 275.92,-183.5"></polygon></g><!-- J6&#45;&gt;J5 --><g id="edge8" class="edge"><title>J6-&gt;J5</title>
 <path fill="none" stroke="black" d="M151.39,-180C161.23,-180 173.91,-180 185.81,-180"></path><polygon fill="black" stroke="black" points="185.97,-183.5 195.97,-180 185.97,-176.5 185.97,-183.5"></polygon></g></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
 <p>test4</p>
 <section id="nest-cluster---graphviz" class="level3"><h3 class="anchored" data-anchor-id="nest-cluster---graphviz">Nest Cluster - GraphViz</h3>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 457.00 182.40" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 178.4)"><title>D</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-178.4 453,-178.4 453,4 -4,4"></polygon><g id="clust1" class="cluster"><title>cluster_p</title>
@@ -627,12 +644,14 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <ellipse fill="none" stroke="black" cx="318" cy="-50" rx="27" ry="18"></ellipse><text text-anchor="middle" x="318" y="-45.8" font-family="Times,serif" font-size="14.00">d</text></g><!-- e --><g id="node5" class="node"><title>e</title>
 <ellipse fill="none" stroke="black" cx="51" cy="-50" rx="27" ry="18"></ellipse><text text-anchor="middle" x="51" y="-45.8" font-family="Times,serif" font-size="14.00">e</text></g></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 248.70 214.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 210)"><title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-210 244.7,-210 244.7,4 -4,4"></polygon><!-- E1 --><g id="node1" class="node"><title>E1</title>
@@ -658,26 +677,30 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <path fill="none" stroke="black" d="M147.77,-134C156.75,-134 166.94,-134 176.55,-134"></path><polygon fill="black" stroke="black" points="176.65,-137.5 186.65,-134 176.65,-130.5 176.65,-137.5"></polygon></g><!-- x100&#45;&gt;Y --><g id="edge12" class="edge"><title>x100-&gt;Y</title>
 <path fill="none" stroke="black" d="M134.05,-34.13C149.53,-53.78 175.82,-87.16 193.7,-109.88"></path><polygon fill="black" stroke="black" points="191.17,-112.32 200.11,-118.01 196.67,-107.99 191.17,-112.32"></polygon></g></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
 <p>test5</p>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 242.00 44.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 40)"><title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-40 238,-40 238,4 -4,4"></polygon><!-- n1 --><g id="node1" class="node"><title>n1</title></g><!-- n2 --><g id="node2" class="node"><title>n2</title></g><!-- n1&#45;&gt;n2 --><g id="edge1" class="edge"><title>n1-&gt;n2</title>
 <path fill="none" stroke="black" d="M54.4,-18C62.39,-18 71.31,-18 79.82,-18"></path><polygon fill="black" stroke="black" points="79.92,-21.5 89.92,-18 79.92,-14.5 79.92,-21.5"></polygon></g><!-- n4 --><g id="node3" class="node"><title>n4</title></g><!-- n2&#45;&gt;n4 --><g id="edge2" class="edge"><title>n2-&gt;n4</title>
 <path fill="none" stroke="black" d="M144.4,-18C152.39,-18 161.31,-18 169.82,-18"></path><polygon fill="black" stroke="black" points="169.92,-21.5 179.92,-18 169.92,-14.5 169.92,-21.5"></polygon></g></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
 <p>test6</p>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 306.83 286.84" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 282.84)"><title>ALM</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-282.84 302.83,-282.84 302.83,4 -4,4"></polygon><!-- Input1 --><g id="node1" class="node"><title>Input1</title>
@@ -695,13 +718,15 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <text text-anchor="middle" x="40.85" y="-225.64" font-family="Times,serif" font-size="14.00">Input Layer</text></g><!-- label_input&#45;&gt;Input1 --><!-- label_output --><g id="node7" class="node"><title>label_output</title>
 <text text-anchor="middle" x="253.32" y="-256.64" font-family="Times,serif" font-size="14.00">Output Layer</text></g><!-- label_output&#45;&gt;Output1 --></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
 <p>test7</p>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 602.85 462.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 458)"><title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-458 598.85,-458 598.85,4 -4,4"></polygon><g id="clust1" class="cluster"><title>cluster_0</title>
@@ -804,13 +829,15 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <path fill="none" stroke="black" d="M405.62,-248C405.62,-248 464.26,-203.77 486.25,-187.18"></path><polygon fill="black" stroke="black" points="488.57,-189.82 494.44,-181 484.35,-184.23 488.57,-189.82"></polygon></g><!-- a53&#45;&gt;O4 --><g id="edge76" class="edge"><title>a53:e-&gt;O4:w</title>
 <path fill="none" stroke="black" d="M405.62,-248C405.62,-248 469.44,-151.72 488.89,-122.38"></path><polygon fill="black" stroke="black" points="491.84,-124.27 494.44,-114 486,-120.4 491.84,-124.27"></polygon></g></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
 <p>test8</p>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 446.00 209.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 205)"><title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-205 442,-205 442,4 -4,4"></polygon><g id="clust1" class="cluster"><title>cluster_0</title>
@@ -837,12 +864,14 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <path fill="none" stroke="black" d="M233.08,-136.32C259.53,-126.99 312.42,-108.32 344.17,-97.12"></path><polygon fill="black" stroke="black" points="345.41,-100.39 353.67,-93.76 343.08,-93.79 345.41,-100.39"></polygon></g><!-- a32&#45;&gt;O --><g id="edge12" class="edge"><title>a32-&gt;O</title>
 <path fill="none" stroke="black" d="M234.25,-88C260.54,-88 310.87,-88 342.31,-88"></path><polygon fill="black" stroke="black" points="342.57,-91.5 352.57,-88 342.57,-84.5 342.57,-91.5"></polygon></g></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 846.90 529.41" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 525.41)"><title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-525.41 842.9,-525.41 842.9,4 -4,4"></polygon><!-- x0 --><g id="node1" class="node"><title>x0</title>
@@ -945,12 +974,14 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <text text-anchor="middle" x="534.89" y="-499.21" font-family="Times,serif" font-size="14.00">layer 3 (hidden layer)</text></g><!-- l2&#45;&gt;a03 --><!-- l3 --><g id="node24" class="node"><title>l3</title>
 <text text-anchor="middle" x="771.62" y="-418.21" font-family="Times,serif" font-size="14.00">layer 4 (output layer)</text></g><!-- l3&#45;&gt;O1 --></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"></figure><p></p>
 <div>
 <svg width="672" height="480" viewbox="0.00 0.00 270.55 167.39" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 163.39)"><title>threevar</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-163.39 266.55,-163.39 266.55,4 -4,4"></polygon><!-- k --><g id="node1" class="node"><title>k</title>
@@ -968,6 +999,7 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <ellipse fill="none" stroke="black" cx="241.85" cy="-20.69" rx="20.89" ry="20.89"></ellipse><text text-anchor="middle" x="241.85" y="-16.49" font-family="Times,serif" font-size="14.00">d3</text></g><!-- z3&#45;&gt;X3 --><g id="edge6" class="edge"><title>z3-&gt;X3</title>
 <path fill="none" stroke="black" d="M221.15,-21.41C213.14,-21.7 203.63,-22.04 194.45,-22.38"></path><polygon fill="black" stroke="black" points="194.19,-18.88 184.33,-22.74 194.45,-25.88 194.19,-18.88"></polygon></g></g></svg>
 </div>
+<p></p>
 </div>
 </div>
 </div>
@@ -1193,9 +1225,9 @@ Figure&nbsp;2: This is a simple graphviz graph.
 <span><span class="co"># cat('```\n')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell" data-file="assets/alm_exam.mer">
+<div class="cell" data-file="assets/alm_exam.mer" data-layout-align="default">
 <div class="cell-output-display">
-<div id="fig-doverview-mermaid2" class="quarto-figure quarto-figure-center anchored">
+<div id="fig-doverview-mermaid2" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-doverview-mermaid2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <pre class="mermaid mermaid-js" data-label="fig-doverview-mermaid2">graph LR
@@ -1225,7 +1257,7 @@ Figure&nbsp;2: This is a simple graphviz graph.
 </pre>
 </div>
 </div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-doverview-mermaid2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-doverview-mermaid2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: ALM diagram produced with <code>mermaid</code> with individual exclusions linked to the overall exclusions node, and with a tooltip to show more detail
 </figcaption></figure>
 </div>
@@ -1269,7 +1301,10 @@ Figure&nbsp;3: ALM diagram produced with <code>mermaid</code> with individual ex
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="mermaid_consort_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="mermaid_consort_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
@@ -1286,7 +1321,7 @@ Figure&nbsp;3: ALM diagram produced with <code>mermaid</code> with individual ex
 <span><span class="fu"><a href="https://rdrr.io/pkg/qreport/man/hookaddcap.html">hookaddcap</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span></span>
+<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span></span>
 <span>  id    <span class="op">=</span> <span class="fl">1</span> <span class="op">:</span> <span class="va">N</span>,</span>
 <span>  age   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">N</span>, <span class="fl">60</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  pain  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">0</span> <span class="op">:</span> <span class="fl">5</span>, <span class="va">N</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>,</span>
@@ -1520,7 +1555,10 @@ Figure&nbsp;3: ALM diagram produced with <code>mermaid</code> with individual ex
 <span>             allocation <span class="op">=</span> <span class="st">'tx'</span>,</span>
 <span>             labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'1'</span><span class="op">=</span><span class="st">'Screening'</span>, <span class="st">'3'</span><span class="op">=</span><span class="st">'Consent'</span>, <span class="st">'4'</span><span class="op">=</span><span class="st">'Randomization'</span>, <span class="st">'6'</span><span class="op">=</span><span class="st">'Follow-up'</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="mermaid_consort_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="mermaid_consort_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>htab</p>
@@ -1554,7 +1592,10 @@ Figure&nbsp;3: ALM diagram produced with <code>mermaid</code> with individual ex
 <span><span class="op">}</span></span>
 <span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="mermaid_consort_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="mermaid_consort_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>mermaid maker</p>
@@ -1593,9 +1634,9 @@ Figure&nbsp;3: ALM diagram produced with <code>mermaid</code> with individual ex
 <span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell" data-file="assets/mermaid1.mer">
+<div class="cell" data-file="assets/mermaid1.mer" data-layout-align="default">
 <div class="cell-output-display">
-<div id="fig-doverview-mermaid1" class="quarto-figure quarto-figure-center anchored">
+<div id="fig-doverview-mermaid1" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-doverview-mermaid1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <pre class="mermaid mermaid-js" data-label="fig-doverview-mermaid1">flowchart TD
@@ -1614,7 +1655,7 @@ class E largert;
 </pre>
 </div>
 </div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-doverview-mermaid1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-doverview-mermaid1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4: Consort diagram produced by <code>mermaid</code>
 </figcaption></figure>
 </div>
@@ -1771,9 +1812,9 @@ Figure&nbsp;4: Consort diagram produced by <code>mermaid</code>
 <span><span class="co">#  addCap('fig-doverview-graphviza', 'Consort diagram produced with `graphviz` with detailed exclusion frequencies in a separate node', scap='Consort diagram produced with `graphviz`')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell" data-file="assets/mermaid2.mer">
+<div class="cell" data-file="assets/mermaid2.mer" data-layout-align="default">
 <div class="cell-output-display">
-<div id="fig-doverview-mermaid2" class="quarto-figure quarto-figure-center anchored">
+<div id="fig-doverview-mermaid2" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-doverview-mermaid2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <pre class="mermaid mermaid-js" data-label="fig-doverview-mermaid2">flowchart TD
@@ -1808,7 +1849,7 @@ click E callback " # Exclusions # Subjects
 </pre>
 </div>
 </div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-doverview-mermaid2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-doverview-mermaid2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5: Consort diagram produced with <code>mermaid</code> with individual exclusions linked to the overall exclusions node, and with a tooltip to show more detail
 </figcaption></figure>
 </div>
@@ -1816,7 +1857,7 @@ Figure&nbsp;5: Consort diagram produced with <code>mermaid</code> with individua
 </div>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Hmisc/man/getHdata.html">getHdata</a></span><span class="op">(</span><span class="va">support</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setDT.html">setDT</a></span><span class="op">(</span><span class="va">support</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setDT.html">setDT</a></span><span class="op">(</span><span class="va">support</span><span class="op">)</span></span>
 <span><span class="co"># addCap('fig-doverview-missflow', 'Flowchart of sequential exclusion of observations due to missing values')</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/pkg/Hmisc/man/Cs.html">.q</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">sex</span>, <span class="va">dzgroup</span>, <span class="va">edu</span>, <span class="va">income</span>, <span class="va">meanbp</span>, <span class="va">wblc</span>,</span>
 <span>            <span class="va">alb</span>, <span class="va">bili</span>, <span class="va">crea</span>, <span class="va">glucose</span>, <span class="va">bun</span>, <span class="va">urine</span><span class="op">)</span></span>
@@ -2031,6 +2072,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.tegorman13.github.io/htw\/custom");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -2080,38 +2139,28 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
       if (note.children && note.children.length > 2) {
-        for (let i = 0; i < 2; i++) {
-          container.appendChild(note.children[i].cloneNode(true));
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
         }
-        typesetMath(container);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
         return container.innerHTML
       } else {
-        typesetMath(note);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
         return note.innerHTML;
       }
     } else {
@@ -2120,8 +2169,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      typesetMath(note);
-      return note.innerHTML;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {
@@ -3840,5 +3896,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Misc/Visuals_Interactives/mermaid_consort.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Misc/Visuals_Interactives/mermaid_consort.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

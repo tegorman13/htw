@@ -34,12 +34,12 @@ outFlow <- tibble(expand.grid(from=outNodes,to=resp)) %>% mutate_all(as.characte
 gd <- tibble(expand.grid(from=inNodes,to=outNodes)) %>% mutate_all(as.character) %>%
   rbind(inFlow,.) %>% rbind(.,outFlow)
 
-g = graph_from_data_frame(gd,directed=TRUE)
-coords2=layout_as_tree(g)
+g = igraph::graph_from_data_frame(gd,directed=TRUE)
+coords2=igraph::layout_as_tree(g)
 colnames(coords2)=c("y","x")
 
 odf <- as_tibble(coords2) %>% 
-  mutate(label=vertex_attr(g,"name"),
+  mutate(label=igraph::vertex_attr(g,"name"),
          type=c("stim",rep("Input",length(inNodes)),rep("Output",length(outNodes)),"Resp"),
          x=x*-1) %>%
   mutate(y=ifelse(type=="Resp",0,y),

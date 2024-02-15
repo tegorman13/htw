@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.480">
+<meta name="generator" content="quarto-1.4.549">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
-<meta name="dcterms.date" content="2023-07-30">
+<meta name="dcterms.date" content="2024-01-09">
 <title>HTW Project - Testing Discrimination Analysis</title>
 <style>
 code{white-space: pre-wrap;}
@@ -91,6 +91,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -206,12 +207,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Simulations</span></a>
+ <span class="menu-text">Model</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EXAM Group Fits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/abc_reject.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ABC-rejection models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/htw_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Model</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Simulations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Simulations/simParameterRecovery.html" class="sidebar-item-text sidebar-link">
@@ -234,36 +265,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../Simulations/alm_learning.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">ALM Learning</span></a>
-  </div>
-</li>
-      </ul>
-</li>
-        <li class="px-0"><hr class="sidebar-divider hi "></li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Model</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">load and view data</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Model/abc_htw.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Approximate Bayesian Fitting</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Model/group_fits.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Group Level Fits</span></a>
   </div>
 </li>
       </ul>
@@ -367,7 +368,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 30, 2023</p>
+      <p class="date">January 9, 2024</p>
     </div>
   </div>
   
@@ -511,8 +512,11 @@ F-statistic:  1443 on 1 and 2695 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span> </span>
 <span><span class="va">title</span> <span class="op">=</span> <span class="fu">ggdraw</span><span class="op">(</span><span class="op">)</span><span class="op">+</span><span class="fu">draw_label</span><span class="op">(</span><span class="st">"Highest and Lowest Slope Values"</span>,fontface <span class="op">=</span> <span class="st">'bold'</span>,x<span class="op">=</span><span class="fl">0</span>,hjust<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">+</span><span class="fu">theme</span><span class="op">(</span>plot.margin <span class="op">=</span> <span class="fu">margin</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">plot_grid</span><span class="op">(</span><span class="va">title</span>,<span class="cn">NULL</span>,<span class="va">tv</span>,<span class="va">tc</span>,<span class="va">bv</span>,<span class="va">bc</span>,<span class="cn">NULL</span>,ncol<span class="op">=</span><span class="fl">2</span>,rel_heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display column-page-right">
-<p><img src="discrim_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="1248"></p>
+</details><div class="cell-output-display page-columns page-full">
+<div class="page-columns page-full">
+<figure class="figure page-columns page-full"><p class="page-columns page-full"><img src="discrim_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img column-page-right" width="1248"></p>
+</figure>
+</div>
 </div>
 </div>
 </section><section id="fit-partial-pooling-model-linear-mixed-model-with-random-slope-and-intercept" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="fit-partial-pooling-model-linear-mixed-model-with-random-slope-and-intercept">Fit partial pooling model (linear mixed model with random slope and intercept)</h2>
@@ -615,8 +619,11 @@ Model is nearly unidentifiable: large eigenvalue ratio
 <span>     linewidth<span class="op">=</span> <span class="fl">.75</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">facet_wrap</span><span class="op">(</span><span class="st">"id"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"band"</span>, y <span class="op">=</span> <span class="st">"vxMean"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display column-page-inset-right">
-<p><img src="discrim_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="1152"></p>
+</details><div class="cell-output-display page-columns page-full">
+<div class="page-columns page-full">
+<figure class="figure page-columns page-full"><p class="page-columns page-full"><img src="discrim_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img column-page-inset-right" width="1152"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell page-columns page-full">
@@ -699,8 +706,11 @@ Model is nearly unidentifiable: large eigenvalue ratio
 <span></span>
 <span><span class="va">title</span> <span class="op">=</span> <span class="fu">ggdraw</span><span class="op">(</span><span class="op">)</span><span class="op">+</span><span class="fu">draw_label</span><span class="op">(</span><span class="st">"Examining the Fit Slopes and Intercepts"</span>,fontface <span class="op">=</span> <span class="st">'bold'</span>,x<span class="op">=</span><span class="fl">0</span>,hjust<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">+</span><span class="fu">theme</span><span class="op">(</span>plot.margin <span class="op">=</span> <span class="fu">margin</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">plot_grid</span><span class="op">(</span><span class="va">title</span>,<span class="cn">NULL</span>,<span class="va">p1</span>,<span class="va">p2</span>,<span class="va">p3</span>,<span class="va">p4</span>,<span class="va">p5</span>,ncol<span class="op">=</span><span class="fl">2</span>,rel_heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.15</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display column-page-inset-right">
-<p><img src="discrim_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="1152"></p>
+</details><div class="cell-output-display page-columns page-full">
+<div class="page-columns page-full">
+<figure class="figure page-columns page-full"><p class="page-columns page-full"><img src="discrim_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img column-page-inset-right" width="1152"></p>
+</figure>
+</div>
 </div>
 </div>
 </section><section id="correlation-between-fit-parameters-slope-and-intercept-and-testing-vx" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="correlation-between-fit-parameters-slope-and-intercept-and-testing-vx">Correlation between fit parameters (Slope and Intercept) and testing Vx</h2>
@@ -723,8 +733,11 @@ Model is nearly unidentifiable: large eigenvalue ratio
 </details><div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
-<div class="cell-output-display column-page-inset-right">
-<p><img src="discrim_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="1152"></p>
+<div class="cell-output-display page-columns page-full">
+<div class="page-columns page-full">
+<figure class="figure page-columns page-full"><p class="page-columns page-full"><img src="discrim_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img column-page-inset-right" width="1152"></p>
+</figure>
+</div>
 </div>
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_models</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">Model</span> <span class="op">==</span> <span class="st">"Partial pooling"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -737,8 +750,11 @@ Model is nearly unidentifiable: large eigenvalue ratio
 </details><div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
-<div class="cell-output-display column-page-inset-right">
-<p><img src="discrim_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="1152"></p>
+<div class="cell-output-display page-columns page-full">
+<div class="page-columns page-full">
+<figure class="figure page-columns page-full"><p class="page-columns page-full"><img src="discrim_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid figure-img column-page-inset-right" width="1152"></p>
+</figure>
+</div>
 </div>
 </div>
 <section id="correlation-between-parameters-and-mean-deviation." class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="correlation-between-parameters-and-mean-deviation.">Correlation between parameters and Mean Deviation.</h3>
@@ -760,8 +776,11 @@ Model is nearly unidentifiable: large eigenvalue ratio
 </details><div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
-<div class="cell-output-display column-page-inset-right">
-<p><img src="discrim_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="1152"></p>
+<div class="cell-output-display page-columns page-full">
+<div class="page-columns page-full">
+<figure class="figure page-columns page-full"><p class="page-columns page-full"><img src="discrim_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img column-page-inset-right" width="1152"></p>
+</figure>
+</div>
 </div>
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_models</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">Model</span> <span class="op">==</span> <span class="st">"Partial pooling"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -774,8 +793,11 @@ Model is nearly unidentifiable: large eigenvalue ratio
 </details><div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
-<div class="cell-output-display column-page-inset-right">
-<p><img src="discrim_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid" width="1152"></p>
+<div class="cell-output-display page-columns page-full">
+<div class="page-columns page-full">
+<figure class="figure page-columns page-full"><p class="page-columns page-full"><img src="discrim_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid figure-img column-page-inset-right" width="1152"></p>
+</figure>
+</div>
 </div>
 </div>
 
@@ -912,6 +934,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.tegorman13.github.io/htw\/custom");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -961,38 +1001,28 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
       if (note.children && note.children.length > 2) {
-        for (let i = 0; i < 2; i++) {
-          container.appendChild(note.children[i].cloneNode(true));
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
         }
-        typesetMath(container);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
         return container.innerHTML
       } else {
-        typesetMath(note);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
         return note.innerHTML;
       }
     } else {
@@ -1001,8 +1031,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      typesetMath(note);
-      return note.innerHTML;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {
@@ -1652,5 +1689,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/discrim.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/discrim.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

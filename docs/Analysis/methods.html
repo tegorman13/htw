@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.480">
+<meta name="generator" content="quarto-1.4.549">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
-<meta name="dcterms.date" content="2023-10-26">
+<meta name="dcterms.date" content="2024-01-09">
 <title>HTW Project - Methods</title>
 <style>
 code{white-space: pre-wrap;}
@@ -111,6 +111,7 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -224,12 +225,42 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Simulations</span></a>
+ <span class="menu-text">Model</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EXAM Group Fits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/abc_reject.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ABC-rejection models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/htw_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Model</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Simulations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Simulations/simParameterRecovery.html" class="sidebar-item-text sidebar-link">
@@ -252,36 +283,6 @@ div.csl-indent {
   <div class="sidebar-item-container"> 
   <a href="../Simulations/alm_learning.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">ALM Learning</span></a>
-  </div>
-</li>
-      </ul>
-</li>
-        <li class="px-0"><hr class="sidebar-divider hi "></li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Model</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">load and view data</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Model/abc_htw.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Approximate Bayesian Fitting</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Model/group_fits.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Group Level Fits</span></a>
   </div>
 </li>
       </ul>
@@ -384,7 +385,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 26, 2023</p>
+      <p class="date">January 9, 2024</p>
     </div>
   </div>
   
@@ -436,11 +437,11 @@ div.csl-indent {
 <span></span>
 <span><span class="va">linear_plot</span> <span class="op">+</span> <span class="va">exponential_plot</span> <span class="op">+</span> <span class="va">quadratic_plot</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-delosh-extrap" class="quarto-figure quarto-figure-center anchored" width="672">
+<div id="fig-delosh-extrap" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-delosh-extrap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="methods_files/figure-html/fig-delosh-extrap-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-delosh-extrap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-delosh-extrap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Generalization patterns from DeLosh et al.&nbsp;(1997)
 </figcaption></figure>
 </div>
@@ -457,7 +458,7 @@ Figure&nbsp;1: Generalization patterns from DeLosh et al.&nbsp;(1997)
 <p>The third and final phase of testing involved “feedback” testing for each of the three extrapolation bands (100-300, 350-550, and 600-800), with each band consisting of 10 trials. Participants received feedback on their performance during this phase.</p>
 <p>Throughout the experiment, participants’ performance was measured by calculating the distance between the produced x-velocity of the projectiles and the closest edge of the current velocity band. Lower distances indicated better performance.</p>
 <p>After completing the experiment, participants were debriefed and provided with an opportunity to ask questions about the study.</p>
-<div class="cell page-columns page-full" data-fig-width="8" data-fig-height="2.5" data-fig-responsive="false">
+<div class="cell page-columns page-full" data-fig-width="8" data-fig-height="2.5" data-fig-responsive="false" data-layout-align="default">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode dot code-with-copy"><code class="sourceCode dot"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">digraph</span> <span class="ot">{</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="va">graph</span><span class="co"> </span><span class="ot">[</span><span class="va">layout</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="va">dot</span><span class="co">, </span><span class="at">rankdir</span><span class="co"> </span><span class="ot">=</span><span class="co"> </span><span class="va">LR</span><span class="ot">]</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -484,7 +485,7 @@ Figure&nbsp;1: Generalization patterns from DeLosh et al.&nbsp;(1997)
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>#<span class="va">https</span>:<span class="co">//renenyffenegger.ch/notes/tools/Graphviz/examples/index</span></span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>#<span class="va">https</span>:<span class="co">//edotor.net/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display column-screen-inset-right">
-<div id="fig-design-e1" class="quarto-figure quarto-figure-center anchored">
+<div id="fig-design-e1" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-design-e1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <svg width="768" height="240" viewbox="0.00 0.00 643.85 174.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 170)"><polygon fill="white" stroke="transparent" points="-4,4 -4,-170 639.85,-170 639.85,4 -4,4"></polygon><g id="clust1" class="cluster"><title>cluster</title>
@@ -500,7 +501,7 @@ Figure&nbsp;1: Generalization patterns from DeLosh et al.&nbsp;(1997)
 <path fill="none" stroke="black" d="M447.05,-62C455.55,-62 464.24,-62 472.83,-62"></path><polygon fill="black" stroke="black" points="472.84,-65.5 482.84,-62 472.84,-58.5 472.84,-65.5"></polygon></g></g></svg>
 </div>
 </div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-design-e1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-design-e1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Experiment 1 Design. Constant and Varied participants complete different training conditions.
 </figcaption></figure>
 </div>
@@ -513,7 +514,10 @@ Figure&nbsp;2: Experiment 1 Design. Constant and Varied participants complete di
 <p>Experimental Task for the HTW Project. Programmed in Javascript, and making use of phaser.js.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<p><img src="../images/2023-04-19-16-20-55.png" class="img-fluid quarto-figure-center" style="width:70.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="../images/2023-04-19-16-20-55.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
 </div>
 </div>
 <!-- ![](images/2023-04-19-16-20-55.png) -->
@@ -533,7 +537,7 @@ Figure&nbsp;2: Experiment 1 Design. Constant and Varied participants complete di
 <!-- -->
 
 
-</section></section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+</section></section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-bottNonmonotonicExtrapolationFunction2004" class="csl-entry" role="listitem">
 Bott, L., &amp; Heit, E. (2004). Nonmonotonic <span>Extrapolation</span> in <span>Function Learning</span>. <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, <em>30</em>(1), 38–50. <a href="https://doi.org/10.1037/0278-7393.30.1.38">https://doi.org/10.1037/0278-7393.30.1.38</a>
 </div>
@@ -703,6 +707,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.tegorman13.github.io/htw\/custom");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -752,38 +774,28 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
       if (note.children && note.children.length > 2) {
-        for (let i = 0; i < 2; i++) {
-          container.appendChild(note.children[i].cloneNode(true));
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
         }
-        typesetMath(container);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
         return container.innerHTML
       } else {
-        typesetMath(note);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
         return note.innerHTML;
       }
     } else {
@@ -792,8 +804,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      typesetMath(note);
-      return note.innerHTML;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {
@@ -1131,5 +1150,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/methods.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/methods.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

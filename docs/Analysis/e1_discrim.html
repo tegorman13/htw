@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.480">
+<meta name="generator" content="quarto-1.4.549">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
-<meta name="dcterms.date" content="2023-08-21">
+<meta name="dcterms.date" content="2024-01-09">
 <title>HTW Project - E1 Discrimination Analysis</title>
 <style>
 code{white-space: pre-wrap;}
@@ -91,12 +91,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script><style>html{ scroll-behavior: smooth; }</style>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
 <body class="nav-sidebar docked">
 
@@ -207,12 +233,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Simulations</span></a>
+ <span class="menu-text">Model</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EXAM Group Fits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/abc_reject.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ABC-rejection models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/htw_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Model</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Simulations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Simulations/simParameterRecovery.html" class="sidebar-item-text sidebar-link">
@@ -235,36 +291,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../Simulations/alm_learning.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">ALM Learning</span></a>
-  </div>
-</li>
-      </ul>
-</li>
-        <li class="px-0"><hr class="sidebar-divider hi "></li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Model</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">load and view data</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Model/abc_htw.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Approximate Bayesian Fitting</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../Model/group_fits.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Group Level Fits</span></a>
   </div>
 </li>
       </ul>
@@ -358,7 +384,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 21, 2023</p>
+      <p class="date">January 9, 2024</p>
     </div>
   </div>
   
@@ -1061,7 +1087,10 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\draw</span> [-latex] (id) to (y2);</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="e1_discrim_files/figure-html/model-structure1b-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="e1_discrim_files/figure-html/model-structure1b-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section></section></section><section id="section-10" class="level2"><h2 class="anchored" data-anchor-id="section-10">12</h2>
@@ -1114,7 +1143,10 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\draw</span> [-latex] (id) to (disti);</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="e1_discrim_files/figure-html/model-structure2-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="e1_discrim_files/figure-html/model-structure2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The priors for the model parameters are:</p>
@@ -1421,7 +1453,10 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\draw</span> [-latex] (id) to (disti);</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="e1_discrim_files/figure-html/model-structure3-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="e1_discrim_files/figure-html/model-structure3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>This modified description aligns with the requested style by utilizing tables to succinctly represent connections between different aspects of the model, and visuals to present the structure.</p>
@@ -1503,7 +1538,10 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\draw</span> [-latex] (id) to (disti);</span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="e1_discrim_files/figure-html/model-structure4-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="e1_discrim_files/figure-html/model-structure4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>This rewrite aligns the description with the alternate writeup style, emphasizing tables and visual structure. It connects models, code, and conceptual ideas, creating a comprehensive overview of the analysis strategy.</p>
@@ -1594,7 +1632,10 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\draw</span> [-latex] (id) to (disti);</span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="e1_discrim_files/figure-html/model-structure5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="e1_discrim_files/figure-html/model-structure5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>This revised description integrates the use of tables and visuals, linking the equations, the associated code, and the underlying conceptual ideas, in line with the desired style.</p>
@@ -1876,7 +1917,10 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 <span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    {<span class="fu">\textsf</span>{Fixed effects:}<span class="fu">\\\texttt</span>{condit, bandInt}};</span>
 <span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="e1_discrim_files/figure-html/e1_distBMM-structure-annotated-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="e1_discrim_files/figure-html/e1_distBMM-structure-annotated-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>This revised presentation of the model offers a more comprehensive visualization of the hierarchical structure and distributional assumptions. It aligns the model description with the alternate writeup style that emphasizes connections between models, code, and conceptual ideas through tables and visual representation.</p>
@@ -1962,7 +2006,10 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 <span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>    {<span class="fu">\textsf</span>{Fixed effects:}<span class="fu">\\\texttt</span>{condit, bandInt}};</span>
 <span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="e1_discrim_files/figure-html/model-hierarchical-structure444-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="e1_discrim_files/figure-html/model-hierarchical-structure444-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The visual representation illustrates the mixed-effects model, where individual differences in distance are nested in conditions and band interactions within subjects. The random effects are associated with the ID, and the fixed effects are associated with the condition and band interactions.</p>
@@ -2034,7 +2081,10 @@ y_{ij} &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{condit}_{ij
 <span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>    {<span class="fu">\textsf</span>{Fixed effects:}<span class="fu">\\\texttt</span>{condit, bandInt}};</span>
 <span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="e1_discrim_files/figure-html/minivan-multilevel-structure-annotated56-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="e1_discrim_files/figure-html/minivan-multilevel-structure-annotated56-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section><section id="section-23" class="level2"><h2 class="anchored" data-anchor-id="section-23">25</h2>
@@ -3226,6 +3276,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.tegorman13.github.io/htw\/custom");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -3275,38 +3343,28 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
       if (note.children && note.children.length > 2) {
-        for (let i = 0; i < 2; i++) {
-          container.appendChild(note.children[i].cloneNode(true));
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
         }
-        typesetMath(container);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
         return container.innerHTML
       } else {
-        typesetMath(note);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
         return note.innerHTML;
       }
     } else {
@@ -3315,8 +3373,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      typesetMath(note);
-      return note.innerHTML;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {
@@ -4299,7 +4364,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb36-764"><a href="#cb36-764" aria-hidden="true" tabindex="-1"></a>| --- | --- |</span>
 <span id="cb36-765"><a href="#cb36-765" aria-hidden="true" tabindex="-1"></a>| <span class="sc">\\</span>( e1<span class="sc">\_</span>distBMM \sim \text{dist} + \text{condit} \times \text{bandInt} + (1 + \text{bandInt}\mid\text{id}) <span class="sc">\\</span>) | <span class="in">`e1_distBMM &lt;- brm(dist ~ condit * bandInt + (1 + bandInt|id))`</span> |</span>
 <span id="cb36-766"><a href="#cb36-766" aria-hidden="true" tabindex="-1"></a>| Family: gaussian  | Link function: identity |</span>
-<span id="cb36-767"><a href="#cb36-767" aria-hidden="true" tabindex="-1"></a>| Prior: <span class="sc">\\</span>((\text{flat}), \text{student}_t(3, 143.4, 212.7)\, \text{Intercept}, \text{lkj\_corr\_cholesky(1)}, \text{student}_t(3, 0, 212.7)\, \text{sd}, \text{sigma} <span class="sc">\\</span>) | <span class="in">`e1_distBMM$prior`</span> |</span>
+<span id="cb36-767"><a href="#cb36-767" aria-hidden="true" tabindex="-1"></a>| Prior: <span class="sc">\\</span>((\text{flat}), \text{student}_t(3, 143.4, 212.7)\, \text{Intercept}, \text{lkj<span class="sc">\_</span>corr<span class="sc">\_</span>cholesky(1)}, \text{student}_t(3, 0, 212.7)\, \text{sd}, \text{sigma} <span class="sc">\\</span>) | <span class="in">`e1_distBMM$prior`</span> |</span>
 <span id="cb36-768"><a href="#cb36-768" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-769"><a href="#cb36-769" aria-hidden="true" tabindex="-1"></a>| formula | meaning |</span>
 <span id="cb36-770"><a href="#cb36-770" aria-hidden="true" tabindex="-1"></a>| --- | --- |</span>

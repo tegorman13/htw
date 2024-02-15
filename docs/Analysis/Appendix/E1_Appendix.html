@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.480">
+<meta name="generator" content="quarto-1.4.549">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
-<meta name="dcterms.date" content="2023-09-05">
-<title>HTW Project – e1_appendix</title>
+<meta name="dcterms.date" content="2024-01-09">
+<title>HTW Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -91,6 +91,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -206,12 +207,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Simulations</span></a>
+ <span class="menu-text">Model</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Model/htw_exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EXAM Group Fits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Model/abc_reject.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ABC-rejection models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Model/htw_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Model</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Simulations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../Simulations/simParameterRecovery.html" class="sidebar-item-text sidebar-link">
@@ -234,36 +265,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../Simulations/alm_learning.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">ALM Learning</span></a>
-  </div>
-</li>
-      </ul>
-</li>
-        <li class="px-0"><hr class="sidebar-divider hi "></li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Model</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Simulations/htw_exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">load and view data</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Model/abc_htw.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Approximate Bayesian Fitting</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Model/group_fits.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Group Level Fits</span></a>
   </div>
 </li>
       </ul>
@@ -357,7 +358,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 5, 2023</p>
+      <p class="date">January 9, 2024</p>
     </div>
   </div>
   
@@ -418,30 +419,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>               size <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span> <span class="co"># 1</span></span>
 <span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">condit</span> <span class="op">~</span> <span class="va">vb</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">xlab</span><span class="op">(</span><span class="st">'Vx'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div id="fig-post-pred" class="cell quarto-figure quarto-figure-center anchored">
+</details><div id="fig-post-pred" class="cell quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-post-pred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="fig-post-pred-1" class="quarto-figure quarto-figure-center anchored" width="1248">
+<div id="fig-post-pred-1" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-post-pred-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="E1_Appendix_files/figure-html/fig-post-pred-1.png" class="img-fluid figure-img" data-ref-parent="fig-post-pred" width="1248">
 </div>
-<figcaption class="figure quarto-subfloat-caption quarto-subfloat-fig" id="fig-post-pred-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-post-pred-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Posterior Predictive Distribution - Deviation
 </figcaption></figure>
 </div>
 </div>
 <div class="cell-output-display">
-<div id="fig-post-pred-2" class="quarto-figure quarto-figure-center anchored" width="1248">
+<div id="fig-post-pred-2" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-post-pred-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="E1_Appendix_files/figure-html/fig-post-pred-2.png" class="img-fluid figure-img" data-ref-parent="fig-post-pred" width="1248">
 </div>
-<figcaption class="figure quarto-subfloat-caption quarto-subfloat-fig" id="fig-post-pred-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-post-pred-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Posterior Predictive Distribution - X Velocity
 </figcaption></figure>
 </div>
 </div>
 </div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-post-pred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-post-pred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Posterior Predictive distributions for Deviation and Vx. Posterior Draws in Blue, colored lines are empirical data.
 </figcaption></figure>
 </div>
@@ -495,11 +496,11 @@ Figure&nbsp;1: Posterior Predictive distributions for Deviation and Vx. Posterio
 <span>             size <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Empirical Vx"</span><span class="op">)</span> <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-empVsPred" class="quarto-figure quarto-figure-center anchored" width="1152">
+<div id="fig-empVsPred" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-empVsPred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="E1_Appendix_files/figure-html/fig-empVsPred-1.png" class="img-fluid figure-img" width="1152">
 </div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-empVsPred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-empVsPred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Bayesian Mixed Model predictions vs.&nbsp;Empirical Predictions - X velocity
 </figcaption></figure>
 </div>
@@ -546,11 +547,11 @@ Figure&nbsp;2: Bayesian Mixed Model predictions vs.&nbsp;Empirical Predictions -
 <span></span>
 <span><span class="va">epId</span> <span class="op">+</span> <span class="va">epTrial</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-empirical-vxGrp" class="quarto-figure quarto-figure-center anchored" width="1248">
+<div id="fig-empirical-vxGrp" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-empirical-vxGrp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="E1_Appendix_files/figure-html/fig-empirical-vxGrp-1.png" class="img-fluid figure-img" width="1248">
 </div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-empirical-vxGrp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-empirical-vxGrp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: E1. Distribution of vx at Participant and Trial level
 </figcaption></figure>
 </div>
@@ -596,11 +597,11 @@ Figure&nbsp;3: E1. Distribution of vx at Participant and Trial level
 <span></span>
 <span><span class="va">epId</span> <span class="op">+</span> <span class="va">epTrial</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-empirical-distGrp" class="quarto-figure quarto-figure-center anchored" width="1248">
+<div id="fig-empirical-distGrp" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-empirical-distGrp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="E1_Appendix_files/figure-html/fig-empirical-distGrp-1.png" class="img-fluid figure-img" width="1248">
 </div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-empirical-distGrp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-empirical-distGrp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4: E1. Distribution of Vx at Participant and Trial level
 </figcaption></figure>
 </div>
@@ -631,11 +632,11 @@ Figure&nbsp;4: E1. Distribution of Vx at Participant and Trial level
 <span></span>
 <span><span class="op">(</span><span class="va">bothConditGM</span> <span class="op">|</span> <span class="va">ameBand</span><span class="op">)</span> <span class="op">+</span> <span class="fu">plot_layout</span><span class="op">(</span>widths<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1.0</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e1-ame" class="quarto-figure quarto-figure-center anchored" width="960">
+<div id="fig-e1-ame" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-ame-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="E1_Appendix_files/figure-html/fig-e1-ame-1.png" class="img-fluid figure-img" width="960">
 </div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-e1-ame-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e1-ame-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5: E1. Predicted Means Per Condition and Band, and Average Marginal Effect (Constant - Varied)
 </figcaption></figure>
 </div>
@@ -775,6 +776,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.tegorman13.github.io/htw\/custom");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -824,38 +843,28 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
       if (note.children && note.children.length > 2) {
-        for (let i = 0; i < 2; i++) {
-          container.appendChild(note.children[i].cloneNode(true));
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
         }
-        typesetMath(container);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
         return container.innerHTML
       } else {
-        typesetMath(note);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
         return note.innerHTML;
       }
     } else {
@@ -864,8 +873,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      typesetMath(note);
-      return note.innerHTML;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {
@@ -1372,5 +1388,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/Appendix/E1_Appendix.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/Appendix/E1_Appendix.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

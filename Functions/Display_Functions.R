@@ -13,9 +13,20 @@ stat_bar <- list(stat_summary(fun=mean, geom="bar", position=position_dodge(), a
   stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()))
 
 
+stat_bar_sd <- list(stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75),
+  stat_summary(fun.data=mean_sdl, geom="errorbar", ,fun.args = list(mult = 1), position=position_dodge(), alpha=.9))
+
 
 #### Bayesian/Brms functions
 
+rename_fm <- function(fm){
+  case_when(
+    fm=="Test" ~ "Fit to Test Data",
+    fm=="Train" ~ "Fit to Training Data",
+    fm=="Test_Train" ~ "Fit to Test and Training Data",
+    TRUE ~ "WRONG INPUT"  
+  )
+}
 
 
 alm_plot <- function (){
@@ -479,7 +490,13 @@ plot_theme <- function(title_size = NULL,
     # Specify the default settings for the plot title
     plot.title = element_text(
       size = title_size,
-      face = "bold",
+      #face = "bold",
+      family = "serif"
+    ),
+     plot.tag = element_text(
+      size = title_size,
+      hjust=1,vjust=1,
+      #face = "bold",
       family = "serif"
     ),
     # Specify the default settings for caption text
@@ -608,12 +625,33 @@ big_text <- function() {
         legend.title = element_text(face = "bold"))
 }
 
+big_text2 <- function() {
+  theme(panel.grid.minor = element_blank(),
+        plot.background = element_rect(fill = "white", color = NA),
+        plot.title = element_text(face = "bold",size=16),
+        axis.title = element_text(face = "bold"),
+        axis.title.x=element_text(face="bold",size=14),
+        axis.title.y=element_text(face="bold",size=24),
+        axis.text.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        strip.text = element_text(face = "bold", size = rel(0.8), hjust = 0),
+        strip.background = element_rect(fill = "grey80", color = NA))
+        #legend.title = element_text(face = "bold"))
+}
 
 
 # options(ggplot2.continuous.colour="viridis")
 # options(ggplot2.continuous.fill = "viridis")
 
 #ggokabeito::palette_okabe_ito()
+
+
+# light_grey <- "#D3D3D3"  # This is a light grey color
+# dark_grey <- "#000000"   # This is a dark grey color
+# grey_palette <- colorRampPalette(colors = c("#D3D3D3", "#000000"))
+# custom_grey_colors = grey_palette(6)
+
+
 
 col_themes <- tibble::lst(darjeeling = c(wes_palette("Darjeeling1"),wes_palette("Darjeeling2"),wes_palette("AsteroidCity1")), 
                           wes2 = wes_palette("AsteroidCity1"), 

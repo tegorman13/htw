@@ -1,5 +1,5 @@
 ---
-title: Individual ABC reject Fits
+title: ABC-rejection models
 author: Thomas Gorman
 date: "`r Sys.Date()`"
 code-fold: true
@@ -7,40 +7,8 @@ code-tools: true
 execute: 
   warning: false
   eval: true
+  cache: true
 ---
-
-### Approximate Bayesian Computation
-
-Models were fit to each individual participant. To estimate parameters, we used approximate bayesian computation (ABC), enabling us to obtain an estimate of the posterior distribution of the generalization and learning rate parameters for each individual. ABC belongs to the class of simulation-based inference methods [@cranmerFrontierSimulationbasedInference2020], which have begun being used for parameter estimation in cognitive modeling relatively recently [@turnerTutorialApproximateBayesian2012; @turnerBayesianAnalysisSimulationbased2016; @kangasraasioParameterInferenceComputational2019]. Although they can be applied to any model from which data can be simulated, ABC methods are most useful for complex models that lack an explicit likelihood function (e.g. many neural network and evidence accumulation models). 
-
-The general ABC procedure is to 
-1) define a prior distribution over model parameters.
-2) sample candidate parameter values, $\theta^*$, from the prior.
-3) Use $\theta^*$ to generate a simulated dataset, $Data_{sim}$.
-4) Compute a measure of discrepancy between the simulated and observed datasets, $discrepancy$($Data_{sim}$, $Data_{obs}$). 
-5) Accept $\theta^*$ if the discrepancy is less than the tolerance threshold, $\epsilon$, otherwise reject $\theta^*$.
-6) Repeat until desired number of posterior samples are obtained. 
-
-Although simple in the abstract, implementations of ABC require researchers to make a number of non-trivial decisions as to i) the discrepancy function between observed and simulated data, ii) whether to compute the discrepancy between trial level data, or a summary statistic of the datasets, iii) the value of the minimum tolerance $\epsilon$. For the present work, we follow the guidelines from published ABC tutorials [@turnerTutorialApproximateBayesian2012; @farrellComputationalModelingCognition2018]. For the test stage, we summarized datasets with mean velocity of each band in the observed dataset as $V_{obs}^{(k)}$ and in the simulated dataset as $V_{sim}^{(k)}$, where $k \in \{1, 2, 3, 4, 5, 6\}$ represents each of the six velocity bands. For computing the discrepancy between datasets in the training stage, we aggregated training trials into three equally sized blocks (separately for each velocity band in the case of the varied group). After obtaining the summary statistics of the simulated and observed datasets, the discrepancy was computed as the mean of the absolute difference between simulated and observed datasets (#eq-discrep-test and #eq-discrep-train).
-
-$$
-discrepancy_{Test}(Data_{sim}, Data_{obs}) = \frac{1}{6} \sum_{k=1}^{6} |V_{obs}^{(k)} - V_{sim}^{(k)}|
-$$  {#eq-discrep-test}
-
-
-
-$$
-\begin{aligned}
-discrepancy_{Train,constant}(Data_{sim}, Data_{obs}) = \frac{1}{N_{blocks}} \sum_{j=1}^{N_{blocks}} |V_{obs,constant}^{(j)} - V_{sim,constant}^{(j)}| \\
-discrepancy_{Train,varied}(Data_{sim}, Data_{obs}) = \frac{1}{N_{blocks} \times 3} \sum_{j=1}^{N_{blocks}} \sum_{k=1}^{3} |V_{obs,varied}^{(j,k)} - V_{sim,varied}^{(j,k)}|
-\end{aligned}
-$$  {#eq-discrep-train}
-
-
-The final component of our ABC implementation is the determination the appropriate value of $\epsilon$. The setting of $\epsilon$ exerts strong influence on the approximated posterior distribution. Smaller values of $\epsilon$ increase the rejection rate, and improve the fidelity of the approximated posterior, while larger values result in an ABC sampler that reproduces the prior distribution. Because the individual participants in our dataset differed substantially in terms of the noisiness of their data, we employed an adaptive tolerance setting strategy to tailor $\epsilon$ to each individual. The initial value of $\epsilon$ was set to the overall standard deviation of each individuals velocity values. Thus, sampled parameter values that generated simulated data within a standard deviation of the observed data were accepted, while worse performing parameters were rejected. After every 300 samples the tolerance was allowed to increase only if the current acceptance rate of the algorithm was less than 1%. In such cases, the tolerance was shifted towards the average discrepancy of the 5 best samples obtained thus far. To ensure the acceptance rate did not become overly permissive, $\epsilon$ was also allowed to decrease every time a sample was accepted into the posterior. 
-
-For each of the 156 participants from Experiment 1, the ABC algorithm was run until 200 samples of parameters were accepted into the posterior distribution. Obtaining this number of posterior samples required an average of 205,000 simulation runs per participant. Fitting each combination of participant, Model (EXAM & ALM), and fitting method (Test only, Train only, Test & Train) required a total of 192 million simulation runs. To facilitate these intensive computational demands, we used the Future Package in R [@bengtssonUnifyingFrameworkParallel2021], allowing us to parallelize computations across a cluster of ten M1 iMacs, each with 8 cores. 
-
 
 
 
@@ -205,7 +173,7 @@ setorder(post_dat_l, id, Resp)
 
 # organize training data predictions
 pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
-   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 10, return_dat="train_data")
+   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="train_data")
    })) |>
   select(Fit_Method,pp,-data) |>
   unnest(pp) |> as.data.table() |> filter(expMode2=="Train")
@@ -261,13 +229,46 @@ plan(sequential)
 #post_dat_l |> filter(Model == "EXAM", Fit_Method == "Test",id==1) |> arrange(rank)
 # head(post_dat_l)
 
+
+bestTestEXAM <- post_dat_l |> 
+  filter(Fit_Method=="Test", rank==1, Resp=="EXAM") |> 
+  group_by(id,condit,Model,Fit_Method) |>
+  summarise(mae=mean(abs(error))) |> arrange(mae) |> ungroup() |>
+  mutate(group_rank = row_number(),.by=c(condit))
+
+bestTestALM<- post_dat_l |> 
+  filter(Fit_Method=="Test", rank==1, Resp=="ALM") |> 
+  group_by(id,condit,Model,Fit_Method) |>
+  summarise(mae=mean(abs(error))) |> arrange(mae) |> ungroup() |>
+  mutate(group_rank = row_number(),.by=c(condit))
+
+bestTrainALM<- post_dat_l |> 
+  filter(Fit_Method=="Train", rank==1, Resp=="ALM") |> 
+  group_by(id,condit,Model,Fit_Method) |>
+  summarise(mae=mean(abs(error))) |> arrange(mae) |> ungroup() |>
+  mutate(group_rank = row_number(),.by=c(condit))
+
+bestTrainEXAM<- post_dat_l |> 
+  filter(Fit_Method=="Train", rank==1, Resp=="EXAM") |> 
+  group_by(id,condit,Model,Fit_Method) |>
+  summarise(mae=mean(abs(error))) |> arrange(mae) |> ungroup() |>
+  mutate(group_rank = row_number(),.by=c(condit))
+
+bestTtEXAM <- post_dat_l |> 
+  filter(Fit_Method=="Test_Train", rank==1, Resp=="EXAM") |> 
+  group_by(id,condit,Model,Fit_Method) |>
+  summarise(mae=mean(abs(error))) |> arrange(mae) |> ungroup() |>
+  mutate(group_rank = row_number(),.by=c(condit))
+
+
+
 ```
 
 
 
 
 
-#### `{r} kable(run_info)`
+#### 
 
 
 ##  Posterior Average Table 
@@ -388,6 +389,19 @@ pt_train$block_pred_full |> filter(condit=="Varied") |>
                        `ME` = as_paragraph(mean_error)) |> as_flextable() |>
   set_caption("Mean from full_posterior")
 
+
+pt_train$block_pred_full |>
+  flextable::tabulator(rows=c("Fit_Method","Block"), columns=c("condit","Model"), 
+                      # `Observed` = as_paragraph(y), 
+                       `Predicted` = as_paragraph(pred),
+                       `ME` = as_paragraph(mean_error)) |> as_flextable() |>
+  set_caption("Mean from full_posterior")
+
+pt_train$block_pred_full |>
+  flextable::tabulator(rows=c("Fit_Method","Block"), columns=c("condit","Model"), 
+                      # `Observed` = as_paragraph(y), 
+                       `ME` = as_paragraph(mean_error)) |> as_flextable() |>
+  set_caption("Mean from full_posterior")
 
 
 best_indices <- pt_train$block_pred_full_x %>%
