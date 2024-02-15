@@ -54,7 +54,25 @@ conflict_prefer_all("dplyr", quiet = TRUE)
 options(scipen = 999)
 walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
-test <- readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Test") 
+
+fd <- readRDS(here("data/e1_08-21-23.rds"))
+test <- fd |> filter(expMode2 == "Test") 
+testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
+  summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
+nbins=3
+trainAvg <- fd |> filter(expMode2 == "Train") |> group_by(id) |> 
+  mutate(tr=trial,x=vb,Block=case_when(expMode2=="Train" ~ cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE),
+                                         expMode2=="Test" ~ 4)) |> 
+  group_by(id,condit,vb,x,Block) |> 
+  summarise(dist=mean(dist),y=mean(vx))
+
+# df with trial count columns for each level of expMode, for each id
+id_n <- ds |> group_by(id,condit) |> summarise(nTest=n_distinct(tr[expMode2=="Test"]),
+                                        nTrain=n_distinct(tr[expMode2=="Train"])) |>
+  mutate(nTotal=nTest+nTrain)
+
+
+
 testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
@@ -80,6 +98,8 @@ ind_fits <- map(list.files(here(paste0('data/abc_reject/'),file_name),full.names
 # ind_fits <- map(list.files(here('data/abc_reject/n_iter_2000_ntry_10_2918'),full.names=TRUE), readRDS)
 ind_fits_df <- ind_fits |> map(~list(dat=.x[[1]], Model = .x[["Model"]], Fit_Method=.x[["Fit_Method"]]))
 ind_fits_df <- ind_fits_df |> map(~rbindlist(.x$dat) |> mutate(Model = .x$Model, Fit_Method = .x$Fit_Method)) |> rbindlist() 
+
+
 avg_samples <- ind_fits_df |> group_by(id,condit,Model,Fit_Method) |> 
   summarise(inc=max(inc_count),iter_sum=sum(iter_count))
 mean(avg_samples$iter_sum)
@@ -151,7 +171,28 @@ post_dat <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Me
   unnest(pp) |>  filter(expMode2=="Test") |> as.data.table()
 
 post_dat_avg <- post_dat |> group_by(id, condit, Model, Fit_Method, x, c, lr, rank) |> 
-  summarise(y = mean(y), pred = mean(pred), error = y - pred) |> as.data.table()
+  summarise(y = mean(y), pred = mean(pred), error = y - pred) |> as.data.table() 
+
+post_dat_avg2 <- post_dat_avg |>
+  group_by(id, condit, Model, Fit_Method, c, lr, rank) |> 
+  summarise(y = mean(y), pred = mean(pred), error = y - pred) |> as.data.table() |> arrange(rank)
+
+map_id <- post_dat |> group_by(id, condit, Model, Fit_Method) |> 
+  filter(rank==1) |> slice_head(n=1) |> select(id,condit,Fit_Method,Model,c,lr,mean_error,rank) |>
+  left_join(id_n,by=(c("id","condit")))
+
+# compute BIC for each row of map_id; p=2 for c and lr
+map_id <- map_id |> mutate(n = fifelse(Fit_Method == "Test", nTest, fifelse(Fit_Method == "Train", nTrain, nTotal)),BIC = -2 * log(mean_error) + log(n)*2)
+
+bic_id <- map_id %>%
+  group_by(id, Fit_Method) %>%
+  arrange(Model) %>%
+  summarize(BIC_diff = diff(BIC),
+            .groups = 'drop') %>%
+  left_join(map_id, by = c("id", "Fit_Method")) %>%
+  select(id, Fit_Method, Model, BIC, BIC_diff)
+
+
 
 setorder(post_dat_avg, id, x, rank)
 post_dat_l <- melt(post_dat_avg, id.vars = c("id", "condit", "Model", "Fit_Method", "x", "c", "lr", "rank","error"),
@@ -180,15 +221,22 @@ pd_train_l[, Resp := fifelse(Resp == "y", "Observed",
                              fifelse(Model == "ALM", "ALM", "EXAM"))] 
 setorder(pd_train_l, id,Block, Resp) 
 
-pd_train_l <- pd_train_l |> mutate(dist=abs(x-val))
+pd_train_l <- pd_train_l |>
+  mutate(dist = case_when(
+    val >= x & val <= x + 200 ~ 0,                 
+    val < x ~ abs(x - val),                       
+    val > x + 200 ~ abs(val - (x + 200)),           
+    TRUE ~ NA_real_                                 
+  ))
+plan(sequential)
 
 plan(sequential)
 
 
-theta_map <- post_dat_avg |> group_by(condit,Model,Fit_Method) |> summarize(c=median(c),lr=median(lr))
-
-map <- simulation_function(sbj_data <- ds |> theta_map$c[1], , params$lr, input_layer = input_layer, 
-                                    output_layer = output_layer, return_dat = return_dat)
+# theta_map <- post_dat_avg |> group_by(condit,Model,Fit_Method) |> summarize(c=median(c),lr=median(lr))
+# 
+# map <- simulation_function(sbj_data <- ds |> theta_map$c[1], , params$lr, input_layer = input_layer, 
+#                                     output_layer = output_layer, return_dat = return_dat)
 
 # AIC and BIC
 # mc2 <- post_dat |> filter(rank==1) |>
@@ -462,6 +510,70 @@ plot_indv_posterior(post_dat |> filter(rank==1) |> mutate(Group=condit))
 
 post_dat |>  filter(c<.001) |> ggplot(aes(x=c,y=condit,fill=condit)) + geom_boxploth(width=.5) + facet_wrap(~Model+Fit_Method,scales="free")
 
+
+
+post_dist <- post_dat_avg %>%
+  group_by(id, condit, Model, Fit_Method, rank) %>%
+  slice_head(n = 1) %>%
+  ungroup() %>% # Make sure to remove the grouping by rank before the next group_by
+  group_by(id, condit, Model, Fit_Method) %>%
+  summarize(across(c:lr, list(mean = mean, sd = sd, se = ~sd(.)/sqrt(n()))), .groups = 'keep')
+
+post_dist |> 
+  group_by(condit, Model, Fit_Method) %>%
+  mutate(across(c_mean, list(gmean = mean, gsd = sd, gse = ~sd(.)/sqrt(n()))), .groups = 'keep') |>
+  filter(c_mean<(c_mean_gmean+(.5*c_mean_gse))) |>
+  ggplot(aes(y=id, x = c_mean)) + 
+  stat_pointinterval() + 
+  ggh4x::facet_nested_wrap(Fit_Method~condit~Model,scales="free")
+
+
+
+post_dist |> 
+  group_by(condit, Model, Fit_Method) %>%
+  mutate(across(c_mean, list(gmean = median, gsd = sd, gse = ~sd(.)/sqrt(n()))), .groups = 'keep') |>
+  filter(c_mean<(c_mean_gmean+(.5*c_mean_gse))) |>
+  ggplot(aes( x = c_mean,fill=condit)) + geom_density() +
+  ggh4x::facet_nested_wrap(Fit_Method~Model,scales="free")
+
+
+
+
+post_dist |> 
+  group_by(condit, Model, Fit_Method) %>%
+  mutate(across(c_mean, list(gmean = median, gsd = sd, gse = ~sd(.)/sqrt(n()))), .groups = 'keep') |>
+  filter(c_mean<(c_mean_gmean+(.5*c_mean_gse))) |>
+  ggplot(aes( x = log(c_mean),fill=condit)) + geom_density() +
+  ggh4x::facet_nested_wrap(Fit_Method~Model,scales="free")
+
+
+ post_dat_avg %>%
+    group_by(id, condit, Model, Fit_Method, rank) %>%
+    slice_head(n = 1) |>
+    ggplot(aes( x = log(c),fill=condit)) + geom_density() +
+    ggh4x::facet_nested_wrap(Fit_Method~Model,scales="free")
+ 
+ post_dat_avg %>%
+    group_by(id, condit, Model, Fit_Method, rank) %>%
+    slice_head(n = 1) |>
+    ggplot(aes(y=Fit_Method, x = log(c),col=condit)) + stat_pointinterval(position=position_dodge(.2)) +
+    ggh4x::facet_nested_wrap(~Model,scales="free")
+
+ post_dat_avg %>%
+    group_by(id, condit, Model, Fit_Method, rank) %>%
+    slice_head(n = 1) |>
+    ggplot(aes(y=Fit_Method, x = lr,col=condit)) + stat_pointinterval(position=position_dodge(.2)) +
+    ggh4x::facet_nested_wrap(~Model,scales="free")
+
+ 
+# post_dat_avg %>%
+#     group_by(id, condit, Model, Fit_Method, rank) %>%
+#     slice_head(n = 1) |>
+#     ggplot(aes(y=Fit_Method, x = (lr),fill=condit)) + 
+#     stat_halfeye(position=position_dodge(.2)) +
+#     ggh4x::facet_nested_wrap(~Model,scales="free")   
+#   
+  
 ```
 
 ## Model Comparison:
@@ -525,16 +637,18 @@ abc_tables(post_dat |> filter(id==36))$agg_best |> flextable() |> set_caption("M
 
 
 ## More Comparisons
-```{r fig.width=11, fig.height=12}
 
+
+
+```{r fig.width=11, fig.height=12}
 best_id_x <- post_dat |> group_by(id,condit,Model,Fit_Method,x) |>
-  mutate(e2=abs(y-pred)) |>
-  summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
+  mutate(e2=(y-pred)) |>
+  summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2),abs_me=abs(mean_error)) |>
   group_by(id,condit,Fit_Method,x) |> mutate(best=ifelse(mean_error==min(mean_error),1,0)) |>
   group_by(id,condit,Fit_Method,Model) |> mutate(n_best=sum(best)) 
 
 best_id <- best_id_x |> group_by(id,condit,Fit_Method,Model) |>
-  summarise(mean_error=mean(mean_error), n_best=first(n_best)) 
+  summarise(mean_error=mean(mean_error), n_best=first(n_best),abs_me=mean(abs(mean_error)))
   
 lowest_error_model <- best_id %>%
   group_by(id, condit,Fit_Method) %>%
@@ -544,24 +658,87 @@ lowest_error_model <- best_id %>%
             differential = min(mean_error) - max(mean_error)) %>%
   ungroup()
 
-
-
-
-
-
 error_difference <- best_id %>%
-  select(id, condit, Model,Fit_Method, mean_error) %>%
-  pivot_wider(names_from = Model, values_from = mean_error) %>%
-  mutate(Error_difference = (ALM - EXAM))
+  select(id, condit, Model,Fit_Method, mean_error,abs_me) %>%
+  pivot_wider(names_from = Model, values_from = c(abs_me,mean_error)) %>%
+  mutate(Error_difference = (mean_error_ALM - mean_error_EXAM), abs_error_dif = (abs_me_ALM - abs_me_EXAM))
 
 full_comparison <- lowest_error_model |> left_join(error_difference, by=c("id","condit","Fit_Method"))  |> 
   group_by(condit,Fit_Method,Best_Model) |> mutate(nGrp=n(), model_rank = nGrp - rank(Error_difference) ) |> 
   arrange(Fit_Method,-Error_difference)
 
-full_comparison |> round_tibble(1) |> reactable(filterable=T,defaultPageSize=15)
+
+
+best_id |> filter(Fit_Method=="Test_Train") |> 
+  arrange(mean_error) |>
+  ungroup() |>
+  mutate(id = reorder(id, mean_error)) %>%
+  ggplot(aes(y=id,x=mean_error,fill=Model))+
+  geom_col()+
+  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")
+
+
+best_id |> filter(Fit_Method=="Test_Train") |> 
+  ungroup() |>
+  mutate(id = reorder(id, abs_me)) %>%
+  ggplot(aes(y=id,x=abs_me,fill=Model))+
+  geom_col()+
+  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")
+
+full_comparison |> filter(Fit_Method=="Test_Train") |> 
+  ungroup() |>
+  mutate(id = reorder(id, abs_error_dif)) %>%
+  ggplot(aes(y=id,x=abs_error_dif))+
+  geom_col()+
+  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")
+
+full_comparison |> filter(Fit_Method=="Test_Train") |> 
+  ungroup() |>
+  mutate(id = reorder(id, Error_difference)) %>%
+  ggplot(aes(y=id,x=Error_difference))+
+  geom_col()+
+  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")
+
+
+d <- testAvg |> left_join(full_comparison, by=c("id","condit")) |> filter(Fit_Method=="Test_Train")
+
+d |> ggplot(aes(x=vb,y=dist,fill=condit)) + stat_bar + facet_wrap(Fit_Method~Best_Model,ncol=2)
+
+d |> 
+  group_by(condit,Fit_Method,Best_Model) |> 
+  mutate(nGrp2=n()) |>
+  filter(abs(Error_difference)>15) |> 
+  ggplot(aes(x=vb,y=dist,fill=condit)) + 
+  stat_bar + facet_wrap(Fit_Method~Best_Model,ncol=2)
+
+d |> group_by(condit,Fit_Method,Best_Model) %>% tally() |> mutate(n=n/6)
+
+d |> group_by(condit,Fit_Method,Best_Model) |> filter(abs(Error_difference)>15) |> tally() |> mutate(n=n/6)
+
+d |> filter(bandInt==100) |> group_by(condit,Fit_Method) |> summarise(m=mean(Error_difference), 
+                                              sd=sd(Error_difference), 
+                                              n=n(),se=sd/sqrt(n))
+
+
+# head(map_id,2)
+# # A tibble: 2 × 13
+# # Groups:   id, condit, Model, Fit_Method [2]
+#   id    condit Fit_Method Model          c    lr mean_error  rank nTest nTrain nTotal     n   BIC
+#   <fct> <fct>  <chr>      <chr>      <dbl> <dbl>      <dbl> <int> <int>  <int>  <int> <int> <dbl>
+# 1 1     Varied Test       ALM   0.00000165  5.32       238.     1    63     86    149    63 -6.80
+# 2 1     Varied Test_Train ALM   0.0000634   5.60       276.     1    63     86    149   149 -6.24
 
 
 
+```
+
+
+
+
+```{r fig.width=11, fig.height=12}
+
+
+#full_comparison |> round_tibble(1) |> reactable(filterable=T,defaultPageSize=15)
 
 ggplot(full_comparison, aes(x = Best_Model, fill = condit)) +
   geom_bar(position = "dodge") +
@@ -584,6 +761,8 @@ ggplot(full_comparison, aes(x = Error_difference, y = condit, color = Best_Model
   scale_color_brewer(palette = "Set1")
 
 
+
+
 # ggplot(full_comparison, aes(x = Error_difference)) +
 #   geom_histogram(aes(fill=Best_Model),bins = 40, alpha = 0.7) +
 #   geom_vline(aes(xintercept = mean(Error_difference)), color = "red", linetype = "dashed", size = 1) +
@@ -603,6 +782,12 @@ best_alm <- full_comparison |> filter(Best_Model=="ALM")
 d <- testAvg |> left_join(full_comparison, by=c("id","condit"))
 
 d |> ggplot(aes(x=vb,y=dist,fill=condit)) + stat_bar + facet_wrap(Fit_Method~Best_Model,ncol=2)
+
+d |> filter(abs(Error_difference)>20) |> 
+  ggplot(aes(x=vb,y=dist,fill=condit)) + 
+  stat_bar + facet_wrap(Fit_Method~Best_Model,ncol=2)
+
+
 
 d |> ggplot(aes(x=vb,y=vx,fill=condit)) + stat_bar + facet_wrap(Fit_Method~Best_Model,ncol=2)
 
