@@ -29,7 +29,7 @@ folders <- tibble(path=list.files('../../data/abc_reject',full.names=TRUE)) |>
     mutate(mtime = file.info(path)$mtime) |> 
     arrange(desc(mtime)) 
 
-folder_2_gen <- folders |> slice(1:20) |> pull(path)
+folder_2_gen <- folders |> slice(1) |> pull(path)
 
 complete_reports <- tools::file_path_sans_ext(list.files("reject_reports", pattern = "\\.qmd$"))
 # abc_files_modified <- sub("\\.rds$", ".qmd", basename(complete_reports))
@@ -43,7 +43,7 @@ abc_files <- folder_2_gen[-files_to_remove] # files that still need to be proces
 bi_tol <- c("n_iter_100_ntry_200_4509","n_iter_100_ntry_400_3247",
 "n_iter_50_ntry_400_4355","n_iter_50_ntry_400_4355","n_iter_50_ntry_200_5016",
 "n_iter_300_ntry_100_0538", "n_iter_200_ntry_300_5354","n_iter_200_ntry_300_5623", "n_iter_150_ntry_300_3202","n_iter_150_ntry_300_3907",
-"n_iter_50_ntry_150_3420","n_iter_50_ntry_150_4510","n_iter_50_ntry_150_2253")
+"n_iter_50_ntry_150_3420","n_iter_50_ntry_150_4510","n_iter_50_ntry_150_2253","n_iter_400_ntry_100_2944")
 
 
 best <- c("n_iter_300_ntry_3000_0800","n_iter_300_ntry_10000_0955","n_iter_300_ntry_3000_2713")
