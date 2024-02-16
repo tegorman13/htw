@@ -554,7 +554,6 @@ testE2 %>% group_by(id,vb,condit) |> plot_distByCondit()
 #| label: tbl-e2-test-nf-vx
 #| tbl-cap: "Testing vx - Empirical Summary"
 #| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]
-#| layout-ncol: 1
 
 result <- test_summary_table(testE2, "vx","X Velocity" ,mfun = list(mean = mean, median = median, sd = sd))
 result$constant |> kable()
@@ -607,7 +606,6 @@ e2_vxBMM |> emmeans( ~condit + bandInt,
 
 
 
-
 # Experiment 3
 
 ```{r setup3b}
@@ -635,8 +633,8 @@ To model differences in accuracy between groups, we fit Bayesian mixed effects r
 
 ```{r}
 #| label: tbl-e3-test-nf-deviation
-#| tbl-cap: "Testing Deviation - Empirical Summary"
-#| tbl-subcap: ["Constant Testing - Deviation", "Varied Testing - Deviation"]
+##| tbl-cap: "Testing Deviation - Empirical Summary"
+##| tbl-subcap: ["Constant Testing - Deviation", "Varied Testing - Deviation"]
 
 resultOrig <- test_summary_table(testE3 |> filter(bandOrder=="Original"), "dist","Deviation", mfun = list(mean = mean, median = median, sd = sd))
 resultOrig$constant |> kable()
@@ -650,7 +648,7 @@ resultRev$varied |> kable()
 
 ```{r}
 #| label: fig-e3-test-dev
-#| fig-cap: e3. Deviations from target band during testing without feedback stage. 
+##| fig-cap: e3. Deviations from target band during testing without feedback stage. 
 testE3 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
@@ -663,7 +661,7 @@ testE3 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
 
 ```{r}
 #| label: tbl-e3-bmm-dist
-#| tbl-cap: "Experiment 3. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band"
+##| tbl-cap: "Experiment 3. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band"
 
 modelName <- "e3_testDistBand_RF_5K"
 e3_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
@@ -685,7 +683,7 @@ The effect of training condition in Experiment 3 showed a similar pattern to Exp
 
 ```{r}
 #| label: fig-e3-bmm-dist
-#| fig-cap: e3. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals. 
+##| fig-cap: e3. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals. 
 
 
 e3_distBMM |> emmeans( ~condit + bandInt, 
@@ -715,7 +713,7 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 
 ```{r}
 #| label: fig-e3-test-vx
-#| fig-cap: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. 
+##| fig-cap: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. 
 #| fig-width: 12
 #| fig-height: 13
 # testE3 |> filter(bandOrder=="Original")|> group_by(id,vb,condit) |> plot_distByCondit()
@@ -731,8 +729,8 @@ testE3 |> group_by(id,vb,condit,bandOrder) |> plot_distByCondit() +
 
 ```{r}
 #| label: tbl-e3-test-nf-vx
-#| tbl-cap: "Testing vx - Empirical Summary"
-#| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]
+##| tbl-cap: "Testing vx - Empirical Summary"
+##| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]
 
 resultOrig <- test_summary_table(testE3 |> filter(bandOrder=="Original"), "vx","X Velocity", mfun = list(mean = mean, median = median, sd = sd))
 resultOrig$constant |> kable()
@@ -746,7 +744,7 @@ resultRev$varied |> kable()
 
 ```{r}
 #| label: tbl-e3-bmm-vx
-#| tbl-cap: "Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
+##| tbl-cap: "Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
 
 e3_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                         data=testE3,file=paste0(here::here("data/model_cache", "e3_testVxBand_RF_5k")),
