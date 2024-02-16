@@ -11,13 +11,10 @@ e1Sbjs <- test |> group_by(id,condit) |> summarise(n=n())
 testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
-
-
 ```
-
 ## Analyses Strategy
 
-All data processing and statistical analyses were performed in R version 4.31 @rcoreteamLanguageEnvironmentStatistical2020. To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R @burknerBrmsPackageBayesian2017, and descriptive stats and tables were extracted with the BayestestR package @makowskiBayestestRDescribingEffects2019a. Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as circumventing convergence issues common to the frequentist analogues of our mixed models. For each model, we report the median values of the posterior distribution, and 95% credible intervals.
+All data processing and statistical analyses were performed in R version 4.31 @rcoreteamLanguageEnvironmentStatistical2020. To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R @burknerBrmsPackageBayesian2017, and descriptive stats and tables were extracted with the BayestestR package @makowskiBayestestRDescribingEffects2019. Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as circumventing convergence issues common to the frequentist analogues of our mixed models. For each model, we report the median values of the posterior distribution, and 95% credible intervals.
 
 Each model was set to run with 4 chains, 5000 iterations per chain, with the first 2500 of which were discarded as warmup chains. Rhat values were generally within an acceptable range, with values \<=1.02 (see appendix for diagnostic plots). We used uninformative priors for the fixed effects of the model (condition and velocity band), and weakly informative Student T distributions for for the random effects.
 
@@ -53,7 +50,7 @@ datasummary(vx*vb*condit ~ Mean + SD + Histogram, data = testAvg)
 #| label: tbl-e1-test-nf-deviation
 #| tbl-cap: "Testing Deviation - Empirical Summary"
 #| tbl-subcap: ["Constant Testing - Deviation", "Varied Testing - Deviation"]
-#| layout-ncol: 2
+#| layout-ncol: 1
 #| echo: fenced
 
 result <- test_summary_table(test, "dist","Deviation", mfun = list(mean = mean, median = median, sd = sd))
@@ -160,7 +157,7 @@ result$varied |> kable()
 #| label: tbl-e1-bmm-vx
 #| tbl-cap: "Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
 #| tbl-subcap: ["Model fit to all 6 bands", "Model fit to 3 extrapolation bands"]
-#| layout-ncol: 2
+#| layout-ncol: 1
 #| echo: fenced
 e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                         data=test,file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k")),
@@ -186,7 +183,7 @@ intCoef2 <- get_coef_details(e1_extrap_VxBMM, "conditVaried:bandInt")
 
 ```
 
-See @tbl-e1-bmm-vx for the full model results. The estimated coefficient for training condition (β = `r cd1$estimate`, 95% CrI \[`r cd1$conf.low`, `r cd1$conf.high`\]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band (β = `r sc1$estimate`, 95% CrI \[`r sc1$conf.low`, `r sc1$conf.high`\]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition (β = `r intCoef1$estimate`, 95% CrI \[`r intCoef1$conf.low`, `r intCoef1$conf.high`\]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less senitivity between vands than the constant condition. This difference is depicted visually in @fig-e1-bmm-vx.@tbl-e1-slope-quartile shows the average slope coefficients for varied and constant participants separately for each quartile. The constant participant participants appear to have larger slopes across quartiles, but the difference between conditions may be less pronounced for the top quartiles of subjects who show the strongest discrimination. Figure @fig-e1-bmm-bx2 shows the distributions of slope values for each participant, and the compares the probability density of slope coefficients between training conditions. @fig-e1-indv-slopes 
+See @tbl-e1-bmm-vx for the full model results. The estimated coefficient for training condition (β = `r cd1$estimate`, 95% CrI \[`r cd1$conf.low`, `r cd1$conf.high`\]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band (β = `r sc1$estimate`, 95% CrI \[`r sc1$conf.low`, `r sc1$conf.high`\]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition (β = `r intCoef1$estimate`, 95% CrI \[`r intCoef1$conf.low`, `r intCoef1$conf.high`\]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition. This difference is depicted visually in @fig-e1-bmm-vx. @tbl-e1-slope-quartile shows the average slope coefficients for varied and constant participants separately for each quartile. The constant participant participants appear to have larger slopes across quartiles, but the difference between conditions may be less pronounced for the top quartiles of subjects who show the strongest discrimination. Figure @fig-e1-bmm-bx2 shows the distributions of slope values for each participant, and the compares the probability density of slope coefficients between training conditions. @fig-e1-indv-slopes 
 
 The second model, which focused solely on extrapolation bands, revealed similar patterns. The Velocity Band term (β = `r sc2$estimate`, 95% CrI \[`r sc2$conf.low`, `r sc2$conf.high`\]) still demonstrates a high degree of discrimination ability. However, the posterior distribution for interaction term (β = `r intCoef2$estimate`, 95% CrI \[`r intCoef2$conf.low`, `r intCoef2$conf.high`\] ) does across over 0, suggesting that the evidence for decreased discrimination ability for the varied participants is not as strong when considering only the three extrapolation bands.
 
@@ -194,7 +191,7 @@ The second model, which focused solely on extrapolation bands, revealed similar 
 #| label: fig-e1-bmm-vx
 #| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. 
 #| fig-subcap: ["Model fit to all 6 bands", "Model fit to only 3 extrapolation bands"]
-#| layout-ncol: 2
+#| layout-ncol: 1
 #| fig-height: 11
 #| fig-width: 12
 
@@ -272,7 +269,7 @@ random_effects <- e1_vxBMM |>
 #| label: fig-e1-bmm-bx2
 #| fig-cap: Slope distributions between condition
 #| fig-subcap: ["Slope estimates by participant - ordered from lowest to highest within each condition. ", "Destiny of slope coefficients by training group"]
-#| layout-ncol: 2
+#| layout-ncol: 1
 #| fig-height: 9
 #| fig-width: 10
 
