@@ -92,7 +92,7 @@ digraph {
 
 ## Analyses Strategy
 
-All data processing and statistical analyses were performed in R version 4.31 @rcoreteamLanguageEnvironmentStatistical2020. To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R @burknerBrmsPackageBayesian2017, and descriptive stats and tables were extracted with the BayestestR package @makowskiBayestestRDescribingEffects2019a. Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as circumventing convergence issues common to the frequentist analogues of our mixed models. For each model, we report the median values of the posterior distribution, and 95% credible intervals.
+All data processing and statistical analyses were performed in R version 4.31 @rcoreteamLanguageEnvironmentStatistical2020. To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R @burknerBrmsPackageBayesian2017, and descriptive stats and tables were extracted with the BayestestR package @makowskiBayestestRDescribingEffects2019. Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as circumventing convergence issues common to the frequentist analogues of our mixed models. For each model, we report the median values of the posterior distribution, and 95% credible intervals.
 
 Each model was set to run with 4 chains, 5000 iterations per chain, with the first 2500 of which were discarded as warmup chains. Rhat values were generally within an acceptable range, with values \<=1.02 (see appendix for diagnostic plots). We used uninformative priors for the fixed effects of the model (condition and velocity band), and weakly informative Student T distributions for for the random effects.
 
@@ -303,7 +303,7 @@ The second model, which focused solely on extrapolation bands, revealed similar 
 #| label: fig-e1-bmm-vx
 #| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. 
 #| fig-subcap: ["Model fit to all 6 bands", "Model fit to only 3 extrapolation bands"]
-#| layout-ncol: 2
+#| layout-ncol: 1
 #| include: true
 
 e1_vxBMM |> emmeans( ~condit + bandInt, 
@@ -377,7 +377,7 @@ random_effects <- e1_vxBMM |>
 #| label: fig-e1-bmm-bx2
 #| fig-cap: Slope distributions between condition
 #| fig-subcap: ["Slope estimates by participant - ordered from lowest to highest within each condition. ", "Destiny of slope coefficients by training group"]
-#| layout-ncol: 2
+#| layout-ncol: 1
 #| fig-height: 9
 #| fig-width: 10
 #| include: true
@@ -554,7 +554,7 @@ testE2 %>% group_by(id,vb,condit) |> plot_distByCondit()
 #| label: tbl-e2-test-nf-vx
 #| tbl-cap: "Testing vx - Empirical Summary"
 #| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]
-#| layout-ncol: 2
+#| layout-ncol: 1
 
 result <- test_summary_table(testE2, "vx","X Velocity" ,mfun = list(mean = mean, median = median, sd = sd))
 result$constant |> kable()
@@ -607,10 +607,11 @@ e2_vxBMM |> emmeans( ~condit + bandInt,
 
 
 
+
 # Experiment 3
 
-```{r setup3b, include=FALSE}
-testE3 <- readRDS(here("data/e3_08-04-23.rds")) |> filter(expMode2 == "Test") 
+```{r setup3b}
+testE3 <- readRDS(here::here("data/e3_08-21-23.rds")) |> filter(expMode2 == "Test") 
 e3Sbjs <- testE3 |> group_by(id,condit) |> summarise(n=n())
 testE3Avg <- testE3 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
@@ -653,7 +654,8 @@ resultRev$varied |> kable()
 testE3 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
-  labs(x="Band", y="Deviation From Target") + facet_wrap(~bandOrder)
+  labs(x="Band", y="Deviation From Target") + facet_wrap(~bandOrder) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
 ```
 
 
@@ -662,7 +664,6 @@ testE3 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
 ```{r}
 #| label: tbl-e3-bmm-dist
 #| tbl-cap: "Experiment 3. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band"
-#| eval: true
 
 modelName <- "e3_testDistBand_RF_5K"
 e3_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
@@ -717,14 +718,12 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 #| fig-cap: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. 
 #| fig-width: 12
 #| fig-height: 13
-
 # testE3 |> filter(bandOrder=="Original")|> group_by(id,vb,condit) |> plot_distByCondit()
 # testE3 |> filter(bandOrder=="Reverse")|> group_by(id,vb,condit) |> plot_distByCondit() +ggtitle("test")
 
 testE3 |> group_by(id,vb,condit,bandOrder) |> plot_distByCondit() + 
   facet_wrap(bandOrder~condit,scale="free_x") 
 
-# column: screen-inset-right
 
 ```
 
@@ -748,7 +747,7 @@ resultRev$varied |> kable()
 ```{r}
 #| label: tbl-e3-bmm-vx
 #| tbl-cap: "Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
-#| eval: true
+
 e3_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                         data=testE3,file=paste0(here::here("data/model_cache", "e3_testVxBand_RF_5k")),
                         iter=5000,chains=4,silent=0,
@@ -767,8 +766,9 @@ See @tbl-e3-bmm-vx for the full model results.
 Slope estimates for experiment 3 suggest that participants were capable of distinguishing between velocity bands even when provided only ordinal feedback during training (β = `r sc1$estimate`, 95% CrI \[`r sc1$conf.low`, `r sc1$conf.high`\]). Unlike the previous two experiments, the posterior distribution for the interaction between condition and band was consistently positive, suggestive of superior discrimination for the varied participants 
 β = `r intCoef1$estimate`, 95% CrI \[`r intCoef1$conf.low`, `r intCoef1$conf.high`\]. 
 
+### Computational Modelling 
 
-{{< include ../Simulations/htw_exam.qmd >}}
+{{< include ../Model/htw_model.qmd >}}
 
 
 
