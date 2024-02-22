@@ -296,7 +296,7 @@ theme(legend.title=element_blank(),axis.text.y = element_text(angle = 45, hjust 
 ```{r}
 #| label: fig-htw-post-dist
 #| fig-cap: Posterior Distributions of $c$ and $lr$ parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically.
-#| fig-height: 9
+#| fig-height: 7
 #| fig-width: 11
 
 c_post <- post_dat_avg %>%
@@ -328,7 +328,7 @@ To more accurately assess the relative abilities of ALM and EXAM to capture impo
 ```{r  fig.width=11, fig.height=10}
 #| label: fig-htw-indv-pred
 #| fig-cap: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. 
-#| fig-height: 16
+#| fig-height: 13
 #| fig-width: 12
 
 cId_tr <- c(137, 181, 11)
@@ -364,6 +364,70 @@ trainIndv <- post_dat_l |> filter(id %in% c(cId_tr,vId_tr), Fit_Method=="Train")
 (testIndv  / trainIndv) +
   plot_annotation(tag_levels = list(c('A','B')),tag_suffix = ') ') & 
   theme(plot.tag.position = c(0, 1))
+
+```
+
+
+#### Subjects with biggest differential favoring ALM
+```{r}
+#| fig-height: 6
+#| fig-width: 12
+vAlm <- c(29,70,68); cAlm <- c(73,49,128)
+
+post_dat_l |> filter(id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |> 
+   mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
+  group_by(id,condit,Fit_Method,Model,Resp) |>
+   mutate(flab=paste0("Subject: ",id)) |>
+  ggplot(aes(x = Resp, y = val, fill=x)) + 
+  stat_bar_sd + ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
+  labs(title="Subjects with biggest differential favoring ALM",
+       y="X Velocity",fill="Target Velocity") +
+   guides(fill = guide_legend(nrow = 1)) + 
+  theme(legend.position = "bottom",axis.title.x = element_blank())
+
+
+```
+
+
+
+#### Subjects with biggest differential favoring EXAM
+```{r}
+#| fig-height: 6
+#| fig-width: 12
+vAlm <- c(23,155,184); cAlm <- c(119,85,175)
+
+post_dat_l |> filter(id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |> 
+   mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
+  group_by(id,condit,Fit_Method,Model,Resp) |>
+   mutate(flab=paste0("Subject: ",id)) |>
+  ggplot(aes(x = Resp, y = val, fill=x)) + 
+  stat_bar_sd + ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
+  labs(title="Subjects with biggest differential favoring EXAM",
+       y="X Velocity",fill="Target Velocity") +
+   guides(fill = guide_legend(nrow = 1)) + 
+  theme(legend.position = "bottom",axis.title.x = element_blank())
+
+```
+
+
+
+
+#### Subjects with no clear best model
+```{r}
+#| fig-height: 6
+#| fig-width: 12
+vAlm <- c(129,192,105); cAlm <- c(101, 109,134)
+
+post_dat_l |> filter(id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |> 
+   mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
+  group_by(id,condit,Fit_Method,Model,Resp) |>
+   mutate(flab=paste0("Subject: ",id)) |>
+  ggplot(aes(x = Resp, y = val, fill=x)) + 
+  stat_bar_sd + ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
+  labs(title="Subjects with no clear best model",
+       y="X Velocity",fill="Target Velocity") +
+   guides(fill = guide_legend(nrow = 1)) + 
+  theme(legend.position = "bottom",axis.title.x = element_blank())
 
 ```
 
