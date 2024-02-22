@@ -19,13 +19,17 @@ stat_bar_sd <- list(stat_summary(fun=mean, geom="bar", position=position_dodge()
 
 #### Bayesian/Brms functions
 
-rename_fm <- function(fm){
-  case_when(
-    fm=="Test" ~ "Fit to Test Data",
-    fm=="Train" ~ "Fit to Training Data",
-    fm=="Test_Train" ~ "Fit to Test and Training Data",
-    TRUE ~ "WRONG INPUT"  
+rename_fm <- function(fm) {
+  # Apply case_when to transform fm values
+  transformed_fm <- dplyr::case_when(
+    fm == "Test" ~ "Fit to Test Data",
+    fm == "Train" ~ "Fit to Training Data",
+    fm == "Test_Train" ~ "Fit to Test and Training Data",
+    TRUE ~ "WRONG INPUT"
   )
+  
+  # Convert the transformed_fm into a factor with levels in the specific order
+  factor(transformed_fm, levels = c("Fit to Test Data", "Fit to Test and Training Data","Fit to Training Data","WRONG INPUT"))
 }
 
 

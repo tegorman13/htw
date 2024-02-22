@@ -5,11 +5,9 @@ date: "`r Sys.Date()`"
 page-layout: full
 code-fold: true
 code-tools: true
-toc: false
 execute: 
   warning: false
   eval: true
-  cache: true
 ---
 
 ```{r}
@@ -23,7 +21,7 @@ walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model"), ~ source(here:
 ```{r}
 #| label: fig-alm-diagram
 #| fig.cap: The basic structure of the ALM model. 
- alm_plot()
+alm_plot()
 ```
 
 {{< pagebreak >}}
@@ -89,7 +87,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
 ### Modelling Results
 
 ```{r}
-#| cache: true
+#| cache: false
 
 ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
 nbins <- 3
@@ -117,7 +115,7 @@ ind_fits_df <- ind_fits_df |> map(~rbindlist(.x$dat) |> mutate(Model = .x$Model,
 ```
 
 ```{r}
-#| cache: true
+#| cache: false
 
 generate_data <- function(Model, post_samples, data, num_samples = 1, return_dat = "train_data, test_data") {
   # Filter data for the specific id without invalidating selfref
@@ -148,16 +146,20 @@ generate_data <- function(Model, post_samples, data, num_samples = 1, return_dat
   return(result_dt)
 }
 
-future::plan(multisession)
+#future::plan(multisession)
 
 nestSbjModelFit <- ind_fits_df %>% nest(.by=c(id,Model,Fit_Method))
 
 # organize test data predictions
-post_dat <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
-   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 50, return_dat="test_data")
-   })) |> 
-  select(Fit_Method,pp,-data) |>  
-  unnest(pp) |>  filter(expMode2=="Test") |> as.data.table()
+# post_dat <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
+#    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 50, return_dat="test_data")
+#    })) |> 
+#   select(Fit_Method,pp,-data) |>  
+#   unnest(pp) |>  filter(expMode2=="Test") |> as.data.table()
+# 
+# saveRDS(post_dat, here("data/model_cache/post_dat.rds"))
+
+post_dat <- readRDS(here("data/model_cache/post_dat.rds"))
 
 post_dat_avg <- post_dat |> group_by(id, condit, Model, Fit_Method, x, c, lr, rank) |> 
   mutate(error2 = y - pred) |>
@@ -173,12 +175,15 @@ setorder(post_dat_l, id, Resp)
 
 
 # organize training data predictions
-pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
-   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="train_data")
-   })) |>
-  select(Fit_Method,pp,-data) |>
-  unnest(pp) |> as.data.table() |> filter(expMode2=="Train")
-plan(sequential)
+# pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
+#    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="train_data")
+#    })) |>
+#   select(Fit_Method,pp,-data) |>
+#   unnest(pp) |> as.data.table() |> filter(expMode2=="Train")
+
+#saveRDS(pd_train, here("data/model_cache/pd_train.rds"))
+
+pd_train <- readRDS(here("data/model_cache/pd_train.rds"))
 
 nbins <- 3
 pd_train <- pd_train |> group_by(id,condit,Model,Fit_Method) |>
@@ -199,6 +204,8 @@ pd_train_l <- pd_train_l  |>
     TRUE ~ NA_real_                                 
   ))
 
+#plan(sequential)
+
 ```
 
 ### Group level aggregations
@@ -208,11 +215,15 @@ pd_train_l <- pd_train_l  |>
 #| label: tbl-htw-modelError
 #| tbl-cap: "Mean model errors predicting testing data, aggregated over all participants and velocity bands. Note that Fit Method refers to how model parameters were optimized, while error values reflect mean absolute error for the 6 testing bands"
 post_tabs <- abc_tables(post_dat,post_dat_l)
-post_tabs$agg_pred_full |> flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
-                       `ME` = as_paragraph(mean_error)) |> as_flextable() 
+
+# post_tabs$agg_pred_full |> flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
+#                        `ME` = as_paragraph(mean_error)) |> as_flextable() 
+
+post_tabs$agg_pred_full |> pander::pandoc.table()
+
 ```
 
-The posterior distributions of the $c$ and $lr$ parameters are shown @fig-htw-post-dist (i.e. these plots combine all the posterior samples from all of the subjects). There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamping any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.
+The posterior distributions of the $c$ and $lr$ parameters are shown @fig-htw-post-dist (i.e. these plots combine all the posterior samples from all of the subjects). There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamped any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.
 
 We used the posterior distribution of $c$ and $lr$ parameters to generate a posterior predictive distribution of the observed data for each participant, which then allows us to compare the empirical data to the full range of predictions from each model. Model residuals are shown in the upper panels of @fig-htw-resid-pred. The pattern of training stage residual errors are unsurprising across the combinations of models and fitting method . Differences between ALM and EXAM are generally minor (the two models have identical learning mechanisms). The differences in the magnitude of residuals across the three fitting methods are also straightforward, with massive errors for the 'fit to Test Only' model, and the smallest errors for the 'fit to train only' models. It is also noteworthy that the residual errors are generally larger for the first block of training, which is likely due to the initial values of the ALM weights being unconstrained by whatever initial biases participants tend to bring to the task. Future work may explore the ability of the models to capture more fine grained aspects of the learning trajectories. However for the present purposes, our primary interest is in the ability of ALM and EXAM to account for the testing patterns while being constrained, or not constrained, by the training data. All subsequent analyses and discussion will thus focus on the testing stage.
 
@@ -220,7 +231,7 @@ The residuals of the model predictions for the testing stage (@fig-htw-resid-pre
 
 Panel B of @fig-htw-resid-pred directly compares the aggregated observed data to the posterior predictive distributions for the testing stage. Of interest are a) the extent to which the median estimates of the ALM and EXAM posteriors deviate from the observed medians for each velocity band; b) the ability of ALM and EXAM to discriminate between velocity bands; c) the relative performance of models that are constrained by the training data (i.e. the 'fit to train only' and 'fit to both' models) compared to the 'fit to test only' models; and d) the extent to which the variance of the posterior predictive distributions mimics the variance of the observed data.
 
-Considering first the models fit to only the testing data, which reflect the best possible performance of ALM and EXAM at capturing the group-aggregated testing patterns. For the varied group, both ALM and EXAM are able to capture the median values of the observed data within the 66% credible intervals, and the spread of model predictions generally matches that of the observed data. For the constant group, only EXAM is able to capture the median range of values across the velocity bands, with ALM generally underestimating human velocoties in the upper bands, and overestimating in the lower bands. In the case of band 100, the median ALM prediction appears to match that of our participants - however this is due to a large subset of participants have ALM predictions near 0 for band 100, a pattern we will explore further in our considertation of individual patterns below.
+Considering first the models fit to only the testing data, which reflect the best possible performance of ALM and EXAM at capturing the group-aggregated testing patterns. For the varied group, both ALM and EXAM are able to capture the median values of the observed data within the 66% credible intervals, and the spread of model predictions generally matches that of the observed data. For the constant group, only EXAM is able to capture the median range of values across the velocity bands, with ALM generally underestimating human velocoties in the upper bands, and overestimating in the lower bands. In the case of band 100, the median ALM prediction appears to match that of our participants - however this is due to a large subset of participants have ALM predictions near 0 for band 100, a pattern we will explore further in our considertation of individual patterns below. Models fit to both training and testing data show a similar pattern to only the testing data display the same basic pattern as those fit to only the testing data, albeit with slightly larger residuals. However models fit to only the training data display markedly worse performance at accounting for the key testing patterns. 
 
 -   \*\* explain how the constant group ALM predictions for band 100 look deceptively good due to aggregation of a large subset of subjects having ALM predictions of 0 for vb100, and a large subset with ALM predictions close to their position 800 value. This is relected by much greater variance of the ALM esimates in the posterior predictive plot
 
@@ -282,7 +293,7 @@ theme(legend.title=element_blank(),axis.text.y = element_text(angle = 45, hjust 
 ```{r}
 #| label: fig-htw-post-dist
 #| fig-cap: Posterior Distributions of $c$ and $lr$ parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically.
-#| fig-height: 10
+#| fig-height: 9
 #| fig-width: 11
 
 c_post <- post_dat_avg %>%
@@ -295,7 +306,7 @@ c_post <- post_dat_avg %>%
 lr_post <- post_dat_avg %>%
     group_by(id, condit, Model, Fit_Method, rank) %>%
     slice_head(n = 1) |>
-    ggplot(aes(y=lr, x = Fit_Method,col=condit)) + stat_pointinterval(position=position_dodge(.2)) +
+    ggplot(aes(y=lr, x = Fit_Method,col=condit)) + stat_pointinterval(position=position_dodge(.4)) +
     ggh4x::facet_nested_wrap(~Model) + labs(title="learning rate parameter") +
   theme(legend.title = element_blank(), legend.position = "none",plot.title=element_text(hjust=.4))
 c_post + lr_post
@@ -351,6 +362,53 @@ trainIndv <- post_dat_l |> filter(id %in% c(cId_tr,vId_tr), Fit_Method=="Train")
   plot_annotation(tag_levels = list(c('A','B')),tag_suffix = ') ') & 
   theme(plot.tag.position = c(0, 1))
 
+```
+
+
+```{r}
+#| label: fig-htw-best-model
+#| fig-cap: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM. 
+#| fig-height: 10
+#| fig-width: 11
+
+
+# could compute best model for each posterior parameter - examine consistency
+
+tid1 <- post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+  mutate(e2=abs(y-pred)) |> 
+  summarise(y1=mean(y), pred1=mean(pred),mean_error=abs(y1-pred1)) |>
+  group_by(id,condit,Model,Fit_Method) |> 
+  summarise(mean_error=mean(mean_error)) |> 
+  arrange(id,condit,Fit_Method) |>
+  round_tibble(1) 
+
+best_id <- tid1 |> 
+  group_by(id,condit,Fit_Method) |> mutate(best=ifelse(mean_error==min(mean_error),1,0)) 
+
+lowest_error_model <- best_id %>%
+  group_by(id, condit,Fit_Method) %>%
+  summarise(Best_Model = Model[which.min(mean_error)],
+            Lowest_error = min(mean_error),
+            differential = min(mean_error) - max(mean_error)) %>%
+  ungroup()
+
+
+error_difference<- best_id %>%
+  select(id, condit, Model,Fit_Method, mean_error) %>%
+  pivot_wider(names_from = Model, values_from = c(mean_error)) %>%
+  mutate(Error_difference = (ALM - EXAM))
+
+full_comparison <- lowest_error_model |> left_join(error_difference, by=c("id","condit","Fit_Method"))  |> 
+  group_by(condit,Fit_Method,Best_Model) |> mutate(nGrp=n(), model_rank = nGrp - rank(Error_difference) ) |> 
+  arrange(Fit_Method,-Error_difference)
+
+full_comparison |> filter(Fit_Method=="Test_Train") |> 
+  ungroup() |>
+  mutate(id = reorder(id, Error_difference)) %>%
+  ggplot(aes(y=id,x=Error_difference,fill=Best_Model))+
+  geom_col() +
+  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+
+  labs(fill="Best Model",x="Mean Model Error Difference (ALM - EXAM)",y="Participant")
 ```
 
 ```{r fig.width=11, fig.height=13}
@@ -466,13 +524,71 @@ bic_id |> group_by(condit,Fit_Method) |> summarise(mean(BIC_diff))
 
 ```{r}
 
-post_tabs$agg_x_full |> flextable::tabulator(rows=c("Fit_Method","x"), columns=c("condit","Model"), 
-                       `X` = as_paragraph(mean_error)) |> as_flextable() 
+# post_tabs$agg_x_full |> flextable::tabulator(rows=c("Fit_Method","x"), columns=c("condit","Model"), 
+#                        `X` = as_paragraph(mean_error)) |> as_flextable() 
+
+
+post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+  mutate(e2=abs(y-pred)) |> 
+  summarise(y1=mean(y), pred1=mean(pred)) |>
+  group_by(condit,Model,Fit_Method,x) |> 
+  summarise(y=mean(y1), pred=mean(pred1),mean_error=abs(y-pred)) |> 
+  round_tibble(1) |> pander::pandoc.table()
+
+
+# post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+#   mutate(e2=abs(y-pred)) |> 
+#   summarise(y1=mean(y), pred1=mean(pred)) |>
+#   group_by(condit,Model,Fit_Method) |> 
+#   summarise(y=mean(y1), pred=mean(pred1),mean_error=abs(y-pred)) |> 
+#   round_tibble(1) |> pander::pandoc.table()
+# 
+# post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+#   mutate(e2=abs(y-pred),Fit_Method=rename_fm(Fit_Method)) |> 
+#   summarise(y1=mean(y), pred1=mean(pred)) |>
+#   group_by(condit,Model,Fit_Method) |> 
+#   summarise(y=mean(y1), pred=mean(pred1),mean_error=abs(y-pred)) |> 
+#   select(-y,-pred) |>
+#   arrange(condit,Fit_Method) |>
+#   round_tibble(1) |> pander::pandoc.table()
+# 
+# 
+# 
+# post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+#   mutate(e2=abs(y-pred),Fit_Method=rename_fm(Fit_Method)) |> 
+#   summarise(y1=mean(y), pred1=mean(pred)) |>
+#   group_by(condit,Model,Fit_Method,x) |> 
+#   summarise(y2=mean(y1), pred2=mean(pred1)) |> 
+#   group_by(condit,Model,Fit_Method) |> 
+#   summarise(y=mean(y2), pred=mean(pred2),mean_error=abs(y-pred)) |> 
+#   select(-y,-pred) |>
+#   arrange(condit,Fit_Method) |>
+#   round_tibble(1) |> pander::pandoc.table()
+# 
+# 
+# post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+#   mutate(e2=abs(y-pred),Fit_Method=rename_fm(Fit_Method)) |> 
+#   summarise(y1=mean(y), pred1=mean(pred),mean_error=abs(y1-pred1)) |>
+#   group_by(id,condit,Model,Fit_Method) |> 
+#   summarise(mean_error=mean(mean_error)) |> 
+#   group_by(condit,Model,Fit_Method) |>
+#   summarise(mean_error=mean(mean_error)) |> 
+#   arrange(condit,Fit_Method) |>
+#   round_tibble(1) |> pander::pandoc.table()
+
+
 
 ```
 
+
+
+
+
+
 ```{r fig.width=11, fig.height=10}
-#| label: fig-htw-best-model
+#| label: fig-htw-best-model-old
+#| eval: false
+#| include: false
 #| fig-cap: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM. 
 #| fig-height: 10
 #| fig-width: 11
