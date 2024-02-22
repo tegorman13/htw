@@ -3,6 +3,7 @@ title: HTW Model
 author: Thomas Gorman
 date: "`r Sys.Date()`"
 page-layout: full
+toc: false
 code-fold: true
 code-tools: true
 execute: 
@@ -216,10 +217,12 @@ pd_train_l <- pd_train_l  |>
 #| tbl-cap: "Mean model errors predicting testing data, aggregated over all participants and velocity bands. Note that Fit Method refers to how model parameters were optimized, while error values reflect mean absolute error for the 6 testing bands"
 post_tabs <- abc_tables(post_dat,post_dat_l)
 
-# post_tabs$agg_pred_full |> flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"), 
-#                        `ME` = as_paragraph(mean_error)) |> as_flextable() 
+post_tabs$agg_pred_full |> 
+  mutate(Fit_Method=rename_fm(Fit_Method)) |>
+  flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"),
+                       `ME` = as_paragraph(mean_error)) |> as_flextable()
 
-post_tabs$agg_pred_full |> pander::pandoc.table()
+#post_tabs$agg_pred_full |> pander::pandoc.table()
 
 ```
 
@@ -308,7 +311,7 @@ lr_post <- post_dat_avg %>%
     slice_head(n = 1) |>
     ggplot(aes(y=lr, x = Fit_Method,col=condit)) + stat_pointinterval(position=position_dodge(.4)) +
     ggh4x::facet_nested_wrap(~Model) + labs(title="learning rate parameter") +
-  theme(legend.title = element_blank(), legend.position = "none",plot.title=element_text(hjust=.4))
+  theme(legend.title = element_blank(), legend.position = "none",plot.title=element_text(hjust=.5))
 c_post + lr_post
 ```
 
@@ -368,11 +371,12 @@ trainIndv <- post_dat_l |> filter(id %in% c(cId_tr,vId_tr), Fit_Method=="Train")
 ```{r}
 #| label: fig-htw-best-model
 #| fig-cap: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM. 
-#| fig-height: 10
+#| fig-height: 9
 #| fig-width: 11
 
 
 # could compute best model for each posterior parameter - examine consistency
+# then I'd have an error bar for each subject in the model error diff. figure
 
 tid1 <- post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
   mutate(e2=abs(y-pred)) |> 
@@ -524,23 +528,23 @@ bic_id |> group_by(condit,Fit_Method) |> summarise(mean(BIC_diff))
 
 ```{r}
 
-# post_tabs$agg_x_full |> flextable::tabulator(rows=c("Fit_Method","x"), columns=c("condit","Model"), 
-#                        `X` = as_paragraph(mean_error)) |> as_flextable() 
-
-
-post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
-  mutate(e2=abs(y-pred)) |> 
-  summarise(y1=mean(y), pred1=mean(pred)) |>
-  group_by(condit,Model,Fit_Method,x) |> 
-  summarise(y=mean(y1), pred=mean(pred1),mean_error=abs(y-pred)) |> 
-  round_tibble(1) |> pander::pandoc.table()
+post_tabs$agg_x_full |> flextable::tabulator(rows=c("Fit_Method","x"), columns=c("condit","Model"),
+                       `X` = as_paragraph(mean_error)) |> as_flextable()
 
 
 # post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
 #   mutate(e2=abs(y-pred)) |> 
 #   summarise(y1=mean(y), pred1=mean(pred)) |>
-#   group_by(condit,Model,Fit_Method) |> 
+#   group_by(condit,Model,Fit_Method,x) |> 
 #   summarise(y=mean(y1), pred=mean(pred1),mean_error=abs(y-pred)) |> 
+#   round_tibble(1) |> pander::pandoc.table()
+
+
+# post_dat  |> group_by(id,condit,Model,Fit_Method,x) |>
+#   mutate(e2=abs(y-pred)) |>
+#   summarise(y1=mean(y), pred1=mean(pred)) |>
+#   group_by(condit,Model,Fit_Method) |>
+#   summarise(y=mean(y1), pred=mean(pred1),mean_error=abs(y-pred)) |>
 #   round_tibble(1) |> pander::pandoc.table()
 # 
 # post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 

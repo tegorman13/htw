@@ -24,12 +24,12 @@ rename_fm <- function(fm) {
   transformed_fm <- dplyr::case_when(
     fm == "Test" ~ "Fit to Test Data",
     fm == "Train" ~ "Fit to Training Data",
-    fm == "Test_Train" ~ "Fit to Test and Training Data",
+    fm == "Test_Train" ~ "Fit to Test & Training Data",
     TRUE ~ "WRONG INPUT"
   )
   
   # Convert the transformed_fm into a factor with levels in the specific order
-  factor(transformed_fm, levels = c("Fit to Test Data", "Fit to Test and Training Data","Fit to Training Data","WRONG INPUT"))
+  factor(transformed_fm, levels = c("Fit to Test Data", "Fit to Test & Training Data","Fit to Training Data","WRONG INPUT"))
 }
 
 
