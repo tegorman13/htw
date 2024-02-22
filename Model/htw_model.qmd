@@ -433,6 +433,63 @@ post_dat_l |> filter(id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |>
 
 
 ```{r}
+#| fig-height: 8
+#| fig-width: 12
+#| 
+vAlm <- c(29,70,68); cAlm <- c(73,49,128)
+
+difAlm <-  post_dat_avg  |> filter(x==100,id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |>
+    group_by(id, condit, Model, rank) %>%
+      mutate(flab=paste0("Subject: ",id)) |>
+    ggplot(aes(y=log(c), x = id,col=Model)) + 
+  stat_pointinterval(position=position_dodge(.5)) +
+   # ggh4x::facet_nested_wrap(condit~flab, axes = "all",scales="free_y",ncol=3) + 
+      labs(title="c parameter - sbjs. with biggest diff. favoring ALM") +
+  theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4)) +ylim(c(-11,-4))
+
+
+vAlm <- c(23,155,184); cAlm <- c(119,85,175)
+
+difExam <- post_dat_avg  |> filter(x==100,id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |>
+    group_by(id, condit, Model, rank) %>%
+      mutate(flab=paste0("Subject: ",id)) |>
+    ggplot(aes(y=log(c), x = id,col=Model)) + 
+  stat_pointinterval(position=position_dodge(.1)) +
+   # ggh4x::facet_nested_wrap(condit~flab, axes = "all",scales="free_y",ncol=3) + 
+      labs(title="c parameter - sbjs. with biggest diff. favoring EXAM") +
+  theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4)) +ylim(c(-11,-4))
+
+difAlm/difExam
+
+
+vAlm <- c(29,70,68); cAlm <- c(73,49,128)
+
+difAlm <-  post_dat_avg  |> filter(x==100,id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |>
+    group_by(id, condit, Model, rank) %>%
+      mutate(flab=paste0("Subject: ",id)) |>
+    ggplot(aes(y=lr, x = id,col=Model)) + 
+  stat_pointinterval(position=position_dodge(.5)) +
+   # ggh4x::facet_nested_wrap(condit~flab, axes = "all",scales="free_y",ncol=3) + 
+      labs(title="lr parameter - sbjs. with biggest diff. favoring ALM") +
+  theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4))+ylim(c(0,12))
+
+
+vAlm <- c(23,155,184); cAlm <- c(119,85,175)
+
+difExam <- post_dat_avg  |> filter(x==100,id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |>
+    group_by(id, condit, Model, rank) %>%
+      mutate(flab=paste0("Subject: ",id)) |>
+    ggplot(aes(y=lr, x = id,col=Model)) + 
+  stat_pointinterval(position=position_dodge(.1)) +
+   # ggh4x::facet_nested_wrap(condit~flab, axes = "all",scales="free_y",ncol=3) + 
+      labs(title="lr parameter - sbjs. with biggest diff. favoring EXAM") +
+  theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4)) +ylim(c(0,12))
+
+difAlm/difExam
+```
+
+
+```{r}
 #| label: fig-htw-best-model
 #| fig-cap: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM. 
 #| fig-height: 9
@@ -477,6 +534,16 @@ full_comparison |> filter(Fit_Method=="Test_Train") |>
   geom_col() +
   ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+
   labs(fill="Best Model",x="Mean Model Error Difference (ALM - EXAM)",y="Participant")
+
+
+
+# full_comparison |> filter(Fit_Method=="Test_Train") |> 
+#   ungroup() |>
+#   mutate(id = reorder(id, Error_difference)) |>
+#   left_join(post_dat_avg |> filter(x==100) |> select(-x) |> ungroup(), by=c("id","condit")) |>
+#   ggplot(aes(y=id,x=c,fill=Best_Model))+
+#   stat_pointinterval(position=position_dodge(.1))
+  
 ```
 
 ```{r fig.width=11, fig.height=13}
