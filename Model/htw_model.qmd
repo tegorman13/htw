@@ -368,6 +368,64 @@ trainIndv <- post_dat_l |> filter(id %in% c(cId_tr,vId_tr), Fit_Method=="Train")
 ```
 
 
+
+```{r}
+#| label: fig-htw-best-model
+#| fig-cap: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM. 
+#| fig-height: 9
+#| fig-width: 11
+
+
+# could compute best model for each posterior parameter - examine consistency
+# then I'd have an error bar for each subject in the model error diff. figure
+
+tid1 <- post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+  mutate(e2=abs(y-pred)) |> 
+  summarise(y1=mean(y), pred1=mean(pred),mean_error=abs(y1-pred1)) |>
+  group_by(id,condit,Model,Fit_Method) |> 
+  summarise(mean_error=mean(mean_error)) |> 
+  arrange(id,condit,Fit_Method) |>
+  round_tibble(1) 
+
+best_id <- tid1 |> 
+  group_by(id,condit,Fit_Method) |> mutate(best=ifelse(mean_error==min(mean_error),1,0)) 
+
+lowest_error_model <- best_id %>%
+  group_by(id, condit,Fit_Method) %>%
+  summarise(Best_Model = Model[which.min(mean_error)],
+            Lowest_error = min(mean_error),
+            differential = min(mean_error) - max(mean_error)) %>%
+  ungroup()
+
+
+error_difference<- best_id %>%
+  select(id, condit, Model,Fit_Method, mean_error) %>%
+  pivot_wider(names_from = Model, values_from = c(mean_error)) %>%
+  mutate(Error_difference = (ALM - EXAM))
+
+full_comparison <- lowest_error_model |> left_join(error_difference, by=c("id","condit","Fit_Method"))  |> 
+  group_by(condit,Fit_Method,Best_Model) |> mutate(nGrp=n(), model_rank = nGrp - rank(Error_difference) ) |> 
+  arrange(Fit_Method,-Error_difference)
+
+full_comparison |> filter(Fit_Method=="Test_Train") |> 
+  ungroup() |>
+  mutate(id = reorder(id, Error_difference)) %>%
+  ggplot(aes(y=id,x=Error_difference,fill=Best_Model))+
+  geom_col() +
+  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+
+  labs(fill="Best Model",x="Mean Model Error Difference (ALM - EXAM)",y="Participant")
+
+
+
+# full_comparison |> filter(Fit_Method=="Test_Train") |> 
+#   ungroup() |>
+#   mutate(id = reorder(id, Error_difference)) |>
+#   left_join(post_dat_avg |> filter(x==100) |> select(-x) |> ungroup(), by=c("id","condit")) |>
+#   ggplot(aes(y=id,x=c,fill=Best_Model))+
+#   stat_pointinterval(position=position_dodge(.1))
+  
+```
+
 #### Subjects with biggest differential favoring ALM
 ```{r}
 #| fig-height: 6
@@ -489,62 +547,6 @@ difAlm/difExam
 ```
 
 
-```{r}
-#| label: fig-htw-best-model
-#| fig-cap: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM. 
-#| fig-height: 9
-#| fig-width: 11
-
-
-# could compute best model for each posterior parameter - examine consistency
-# then I'd have an error bar for each subject in the model error diff. figure
-
-tid1 <- post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
-  mutate(e2=abs(y-pred)) |> 
-  summarise(y1=mean(y), pred1=mean(pred),mean_error=abs(y1-pred1)) |>
-  group_by(id,condit,Model,Fit_Method) |> 
-  summarise(mean_error=mean(mean_error)) |> 
-  arrange(id,condit,Fit_Method) |>
-  round_tibble(1) 
-
-best_id <- tid1 |> 
-  group_by(id,condit,Fit_Method) |> mutate(best=ifelse(mean_error==min(mean_error),1,0)) 
-
-lowest_error_model <- best_id %>%
-  group_by(id, condit,Fit_Method) %>%
-  summarise(Best_Model = Model[which.min(mean_error)],
-            Lowest_error = min(mean_error),
-            differential = min(mean_error) - max(mean_error)) %>%
-  ungroup()
-
-
-error_difference<- best_id %>%
-  select(id, condit, Model,Fit_Method, mean_error) %>%
-  pivot_wider(names_from = Model, values_from = c(mean_error)) %>%
-  mutate(Error_difference = (ALM - EXAM))
-
-full_comparison <- lowest_error_model |> left_join(error_difference, by=c("id","condit","Fit_Method"))  |> 
-  group_by(condit,Fit_Method,Best_Model) |> mutate(nGrp=n(), model_rank = nGrp - rank(Error_difference) ) |> 
-  arrange(Fit_Method,-Error_difference)
-
-full_comparison |> filter(Fit_Method=="Test_Train") |> 
-  ungroup() |>
-  mutate(id = reorder(id, Error_difference)) %>%
-  ggplot(aes(y=id,x=Error_difference,fill=Best_Model))+
-  geom_col() +
-  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+
-  labs(fill="Best Model",x="Mean Model Error Difference (ALM - EXAM)",y="Participant")
-
-
-
-# full_comparison |> filter(Fit_Method=="Test_Train") |> 
-#   ungroup() |>
-#   mutate(id = reorder(id, Error_difference)) |>
-#   left_join(post_dat_avg |> filter(x==100) |> select(-x) |> ungroup(), by=c("id","condit")) |>
-#   ggplot(aes(y=id,x=c,fill=Best_Model))+
-#   stat_pointinterval(position=position_dodge(.1))
-  
-```
 
 ```{r fig.width=11, fig.height=13}
 
