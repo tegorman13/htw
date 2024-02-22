@@ -5,9 +5,11 @@ date: "`r Sys.Date()`"
 page-layout: full
 code-fold: true
 code-tools: true
+toc: false
 execute: 
   warning: false
   eval: true
+  cache: true
 ---
 
 ```{r}
@@ -210,7 +212,7 @@ post_tabs$agg_pred_full |> flextable::tabulator(rows=c("Fit_Method","Model"), co
                        `ME` = as_paragraph(mean_error)) |> as_flextable() 
 ```
 
-The posterior distributions of the $c$ and $lr$ parameters are shown @fig-htw-post-dist (i.e. these plots combine all the posterior samples from all of the subjects). There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamped any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.
+The posterior distributions of the $c$ and $lr$ parameters are shown @fig-htw-post-dist (i.e. these plots combine all the posterior samples from all of the subjects). There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamping any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.
 
 We used the posterior distribution of $c$ and $lr$ parameters to generate a posterior predictive distribution of the observed data for each participant, which then allows us to compare the empirical data to the full range of predictions from each model. Model residuals are shown in the upper panels of @fig-htw-resid-pred. The pattern of training stage residual errors are unsurprising across the combinations of models and fitting method . Differences between ALM and EXAM are generally minor (the two models have identical learning mechanisms). The differences in the magnitude of residuals across the three fitting methods are also straightforward, with massive errors for the 'fit to Test Only' model, and the smallest errors for the 'fit to train only' models. It is also noteworthy that the residual errors are generally larger for the first block of training, which is likely due to the initial values of the ALM weights being unconstrained by whatever initial biases participants tend to bring to the task. Future work may explore the ability of the models to capture more fine grained aspects of the learning trajectories. However for the present purposes, our primary interest is in the ability of ALM and EXAM to account for the testing patterns while being constrained, or not constrained, by the training data. All subsequent analyses and discussion will thus focus on the testing stage.
 
