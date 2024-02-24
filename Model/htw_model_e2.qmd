@@ -45,7 +45,7 @@ ids2 <- c(1,66,36)
 
 file_name <- "e2_n_iter_50_ntry_200_2506"
 #file_name <- "n_iter_400_ntry_100_2944"
-
+file_name <- "e2_n_iter_100_ntry_200_3436"
 
 ind_fits <- map(list.files(here(paste0('data/abc_reject/'),file_name),full.names=TRUE), readRDS)
 ind_fits_df <- ind_fits |> map(~list(dat=.x[[1]], Model = .x[["Model"]], Fit_Method=.x[["Fit_Method"]]))
@@ -349,7 +349,7 @@ full_comparison |> filter(Fit_Method=="Test_Train") |>
 ```{r}
 #| fig-height: 6
 #| fig-width: 12
-vAlm <- c(307,331,197); cAlm <- c(372,298,299)
+vAlm <- c(307,331,197); cAlm <- c(372,173,157)
 
 post_dat_l |> filter(id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |> 
    mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
