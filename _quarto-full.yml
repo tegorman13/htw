@@ -13,7 +13,7 @@ project:
     - "!Misc/External.qmd"
     - "!Manuscript/"
     - "Simulations/htw_exam.qmd"
-    - "!Analysis/Results.qmd"
+    #- "!Analysis/Results.qmd"
     - "!Model/dev*"
     - "!_working/*"
     - "!Assets/tmp_plots/*"
@@ -65,12 +65,15 @@ website:
       - text: "---"
       - paper.qmd
       - text: "---"
-      - section: Methods
+      - section: Sections
         contents: 
           # - Misc/Task.qmd
           # - Misc/data_dictionary.qmd
           # - Misc/data_organize.qmd
+          - Sections/Intro.qmd
           - Sections/Methods.qmd
+          - Sections/Results.qmd
+          - Sections/Discussion.qmd
       - text: "---"
       - section: Analyses
         contents: # Analysis/* 
@@ -85,16 +88,15 @@ website:
       - section: Model 
         contents: 
             - Model/htw_exam.qmd
-            - Model/abc_reject.qmd
             - Model/htw_model.qmd
             - Model/htw_model_e2.qmd
       - text: "---"
       - section: Simulations
         contents: 
-          - Simulations/simParameterRecovery.qmd
+         # - Simulations/simParameterRecovery.qmd
           - Simulations/DeLosh97_Sim.qmd
           - Simulations/SimReplications.qmd
-          - Simulations/alm_learning.qmd
+        #  - Simulations/alm_learning.qmd
 
       - text: "---"
       - section: Interactive
