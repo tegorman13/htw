@@ -2,7 +2,8 @@ pacman::p_load(dplyr,purrr,tidyr, data.table, here, conflicted, future, furrr)
 conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("fun_alm","fun_model","fun_indv_fit", "prep_mpar"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 
-ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
+#ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
+ds <- readRDS(here::here("data/e2_md_02-23-24.rds"))  |> as.data.table()
 nbins <- 3
 ds <- ds |> group_by(id) |> 
   mutate(Block=case_when(expMode2=="Train" ~ cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE),
@@ -155,11 +156,11 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 ####################################
 
 args <- commandArgs(trailingOnly = TRUE)
-num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 400)
-n_try = ifelse(length(args) > 1, as.numeric(args[2]), 100)
-tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .85)
+num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 200)
+n_try = ifelse(length(args) > 1, as.numeric(args[2]), 300)
+tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .89)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
-min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .1)
+min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .01)
 
 cMean <<- -6; 
 cSig <<- 4.0; 
@@ -187,7 +188,7 @@ ids1 <- as.numeric(levels(ds$id))
 subjects_data <-  ds |> filter(id %in% ids1)  %>% with(split(.,f =c(id), drop=TRUE))
 
 
-save_folder <- paste0("n_iter_",num_iterations,"_ntry_",n_try,"_",format(Sys.time(),"%M%OS"))
+save_folder <- paste0("e2_n_iter_",num_iterations,"_ntry_",n_try,"_",format(Sys.time(),"%M%OS"))
 dir.create(paste0("data/abc_reject/",save_folder))
 #save_folder <- 'n_iter_200_ntry_300_5623'
 
@@ -201,7 +202,7 @@ if (parallel==1) {
 } else if(parallel==2){
 spec <- make_spec()
 #pc <- parallel::makeCluster(type='PSOCK', master=macpro, spec)
-pc <- parallel::makeCluster(type='PSOCK', master=m1l1 spec)
+pc <- parallel::makeCluster(type='PSOCK', master=tg_m1, spec)
 
 plan(cluster, workers = pc)
 } else {
