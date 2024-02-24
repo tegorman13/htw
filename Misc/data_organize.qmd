@@ -113,6 +113,22 @@ ds <- d %>% filter(expMode2 %in% c("Train","Test")) |>
 #saveRDS(ds,here::here("data/e2_md_02-23-24.rds"))
 
 
+d <- readRDS(here::here("data/e3_08-21-23.rds"))
+levels(d$condit)
+dtest <- d %>% filter(expMode %in% c("test-Nf","test-train-nf")) %>% group_by(id,lowBound) %>% 
+  mutate(nBand=n(),band=bandInt,id=factor(id)) %>% group_by(id) %>% mutate(nd=n_distinct(lowBound))
+dtest <- dtest %>% group_by(id,lowBound) %>% filter(nBand>=5 & nd==6)
+dtest <- dtest %>% group_by(id) %>% filter(!id %in% unique(dtest$id[dtest$nBand<5]))
+
+ds <- d %>% filter(expMode2 %in% c("Train","Test")) |> 
+  filter(!id %in% unique(dtest$id[dtest$nBand<5])) |>   
+  group_by(id,condit,expMode2) |> 
+  mutate(input=bandInt,x=bandInt, y=vx, tr= row_number()) |>
+  select(id,condit,expMode2,tr,x,y) 
+
+
+#saveRDS(ds,here::here("data/e3_md_02-23-24.rds"))
+
 ```
 
 
