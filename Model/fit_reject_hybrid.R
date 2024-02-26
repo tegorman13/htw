@@ -2,13 +2,6 @@ pacman::p_load(dplyr,purrr,tidyr, data.table, here, conflicted, future, furrr)
 conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("fun_alm","fun_model","fun_indv_fit", "prep_mpar"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 
-ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
-#ds <- readRDS(here::here("data/e3_md_02-23-24.rds"))  |> as.data.table()
-nbins <- 3
-ds <- ds |> group_by(id) |> 
-  mutate(Block=case_when(expMode2=="Train" ~ cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE),
-                                         expMode2=="Test" ~ 4)) 
-
 
 
 
@@ -111,11 +104,11 @@ reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=5
         try_count=0;
         cur_tol_success=0;
 
-       if (data$id[1] %in% watch_ids){
-        message(paste0("increase tol(",round(tol,3),") for subject", data$id[1]," current iteration: ",j,"\n",
-        "cur accept rate: ",round(success_rate,4),"\n",
-         "avg closest error: ",round(average_closest_error,2), " new tol: ",round(tol,2),"\n"))
-        }
+      #  if (data$id[1] %in% watch_ids){
+      #   message(paste0("increase tol(",round(tol,3),") for subject", data$id[1]," current iteration: ",j,"\n",
+      #   "cur accept rate: ",round(success_rate,4),"\n",
+      #    "avg closest error: ",round(average_closest_error,2), " new tol: ",round(tol,2),"\n"))
+      #   }
 
       }
     }
@@ -158,16 +151,16 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 ####################################
 
 args <- commandArgs(trailingOnly = TRUE)
-num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 200)
-n_try = ifelse(length(args) > 1, as.numeric(args[2]), 300)
-tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .90)
+num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 100)
+n_try = ifelse(length(args) > 1, as.numeric(args[2]), 100)
+tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .85)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
 min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .1)
 
 cMean <<- -6; 
 cSig <<- 4.0; 
 lrSig <<- 4.0
-prior_samples <- samp_priors(n=13000) 
+prior_samples <- samp_priors(n=2000) 
 
 p_abc <- function(){
   message(paste0("\n","cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig,"\n", "tolM: ",
@@ -176,25 +169,13 @@ p_abc <- function(){
   "median-c=",round(median(prior_samples$c),4)," median-lr=",round(median(prior_samples$lr),4),"\n",
   " median-w=",round(median(prior_samples$weight_exam),3),"\n"))
   }
- 
-####################################
-# ids1 <- 1
-# ids1 <- c(1,33,66)
-# ids1 <- as.numeric(levels(ds$id))[1:8]
-ids1 <- as.numeric(levels(ds$id))
-subjects_data <-  ds |> filter(id %in% ids1)  %>% with(split(.,f =c(id), drop=TRUE))
-
-
-save_folder <- paste0("e1_hybrid_n_iter_",num_iterations,"_ntry_",n_try,"_",format(Sys.time(),"%M%OS"))
-dir.create(paste0("data/abc_reject/",save_folder))
-#save_folder <- 'n_iter_200_ntry_300_5623'
 
 parallel <<- 2
 #parallel <<- runif(1) <.5
 
 if (parallel==1) {
   print(nc <- future::availableCores())
-  future::plan(multicore, workers = nc-1)
+  future::plan(multicore, workers = nc-2)
   message("Running in parallel\n")
 } else if(parallel==2){
 spec <- make_spec()
@@ -210,8 +191,26 @@ plan(cluster, workers = pc)
 # parallel::stopCluster(pc)
 
 run_function <- ifelse(parallel>0,run_abc_tests, run_abc_tests_serial)
+ 
+####################################
+# ids1 <- 1
+# ids1 <- c(1,33,66)
+# ids1 <- as.numeric(levels(ds$id))[1:8]
 
 
+run_e1 <- function(){
+ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
+#ds <- readRDS(here::here("data/e3_md_02-23-24.rds"))  |> as.data.table()
+nbins <- 3
+ds <- ds |> group_by(id) |> 
+  mutate(Block=case_when(expMode2=="Train" ~ cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE),
+                                         expMode2=="Test" ~ 4)) 
+ids1 <- as.numeric(levels(ds$id))
+subjects_data <-  ds |> filter(id %in% ids1)  %>% with(split(.,f =c(id), drop=TRUE))
+save_folder <- paste0("e1_hybrid_n_iter_",num_iterations,"_ntry_",n_try,"_",format(Sys.time(),"%M%OS"))
+dir.create(paste0("data/abc_reject/",save_folder))
+
+#save_folder <- 'n_iter_200_ntry_300_5623'
 
 t1<- system.time( hybrid_test <- run_function(full_sim_hybrid, subjects_data, "test_data", ids1) )
 save_abc_test_results(hybrid_test, "hybrid", "Test", ri_reject_indv, subjects_data, ids1,save_folder, t1)
@@ -223,10 +222,14 @@ rm(hybrid_test_train); gc()
 
 t1<- system.time( hybrid_train <- run_function(full_sim_hybrid, subjects_data, "train_data", ids1) )
 save_abc_test_results(hybrid_train, "hybrid", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
-rm(hybrid_train); gc()
+rm(hybrid_train)
+rm(ds,ids1,subjects_data); gc()
+print("finish e1")
+
+}
 
 ####################
-
+run_e2 <- function(){
 ds <- readRDS(here::here("data/e2_md_02-23-24.rds"))  |> as.data.table()
 nbins <- 3
 ds <- ds |> group_by(id) |> 
@@ -249,11 +252,13 @@ rm(hybrid_test_train); gc()
 
 t1<- system.time( hybrid_train <- run_function(full_sim_hybrid, subjects_data, "train_data", ids1) )
 save_abc_test_results(hybrid_train, "hybrid", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
-rm(hybrid_train); gc()
-
-
+rm(hybrid_train); 
+rm(ds,ids1,subjects_data); gc()
+print("finish e2")
+}
 ####################
 
+run_e3 <- function(){
 ds <- readRDS(here::here("data/e3_md_02-23-24.rds"))  |> as.data.table()
 nbins <- 3
 ds <- ds |> group_by(id) |> 
@@ -276,8 +281,15 @@ rm(hybrid_test_train); gc()
 t1<- system.time( hybrid_train <- run_function(full_sim_hybrid, subjects_data, "train_data", ids1) )
 save_abc_test_results(hybrid_train, "hybrid", "Train", ri_reject_indv, subjects_data, ids1,save_folder, t1)
 rm(hybrid_train); gc()
+print("finish e3")
+}
 
 
+run_e1()
+
+run_e2()
+
+run_e3()
 
 # cat("\nend")
 # p_abc()
