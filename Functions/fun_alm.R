@@ -136,3 +136,42 @@ full_sim_alm <- function(data, c, lr,pred_fun=alm.responseOnly, input_layer, out
   if(mode=="sim"){return(fd$pred)
   }else {return(fd)}
 }
+
+
+
+
+full_sim_hybrid <- function(data, c, lr, weight_exam, pred_fun=exam.response, input_layer, output_layer,return_dat="test_data",mode="sim") {
+  train_data <- data[expMode2=="Train", c("condit","tr","expMode2", "x","y")] 
+  test_data <- data[expMode2=="Test", c("condit","tr","expMode2", "x","y")] 
+  trainVec=sort(unique(train_data$x))
+  if (train_data$condit[1] != "Varied") {
+    trainVec <- c(0, trainVec)
+  }
+  
+  train_results <- alm.sim(train_data, c, lr, input_layer, output_layer)
+  
+  exam_prediction <- map_dbl(test_data$x, ~ exam.response(.x, c, input_layer, 
+                                                     output_layer, train_results$wm,  trainVec=trainVec))
+
+  alm_prediction <- map_dbl(test_data$x, ~ alm.responseOnly(.x, c, input_layer, output_layer, train_results$wm,  trainVec=trainVec))   
+
+  train_data$pred <- train_results$d$almResp
+
+  hybrid_pred <- ((1 - weight_exam) * alm_prediction ) + (weight_exam * exam_prediction)
+  test_data$pred <- hybrid_pred
+  
+  fd = eval(parse(text=paste0("rbind(",return_dat,")")))
+  if(mode=="sim"){return(fd$pred)
+  }else {return(fd)}
+  
+}
+
+
+
+predict_alm_exam_weighted_hybrid <- function(input, c, weight_exam, input.layer, output.layer, weight.mat,trainVec) {
+  
+  alm_pred <- alm.responseOnly(input, c, input.layer, output.layer,weight.mat, trainVec=NULL)
+  
+  exam_pred <- exam.response(input, c, input.layer, output.layer,weight.mat, trainVec=trainVec)
+  (1 - weight_exam) * alm_pred + weight_exam * exam_pred
+}
