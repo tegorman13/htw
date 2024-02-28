@@ -138,7 +138,7 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
                                       num_iterations = num_iterations, 
                                       n_try = n_try,
                                       return_dat = return_dat), 
-                          .options = furrr_options(seed = TRUE),
+                          .options = furrr_options(seed = TRUE, scheduling = Inf),
                           future.stdout = NA) %>% 
               setNames(ids)
   })
