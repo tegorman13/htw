@@ -1,0 +1,285 @@
+---
+title: HTW Hybrid Models
+author: Thomas Gorman
+date: "`r Sys.Date()`"
+page-layout: full
+toc: false
+code-fold: true
+code-tools: true
+execute: 
+  warning: false
+  eval: true
+---
+
+
+```{r}
+pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
+               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools,kableExtra)
+conflict_prefer_all("dplyr", quiet = TRUE)
+options(scipen = 999)
+walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+
+
+
+```
+
+## E1
+```{r}
+ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
+nbins <- 3
+
+fd <- readRDS(here("data/e1_08-21-23.rds"))
+test <- fd |> filter(expMode2 == "Test") 
+testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
+  summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
+
+trainAvg <- fd |> filter(expMode2 == "Train") |> group_by(id) |> 
+  mutate(tr=trial,x=vb,Block=case_when(expMode2=="Train" ~ cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE),
+                                         expMode2=="Test" ~ 4)) |> 
+  group_by(id,condit,vb,x,Block) |> 
+  summarise(dist=mean(dist),y=mean(vx))
+
+input_layer <<- output_layer <<-  c(100,350,600,800,1000,1200)
+ids2 <- c(1,66,36)
+
+file_name <- "e1_hybrid_n_iter_250_ntry_200_0637"
+
+ind_fits <- map(list.files(here(paste0('data/abc_reject/'),file_name),full.names=TRUE), readRDS)
+ind_fits_df <- ind_fits |> map(~list(dat=.x[[1]], Model = .x[["Model"]], Fit_Method=.x[["Fit_Method"]]))
+ind_fits_df <- ind_fits_df |> map(~rbindlist(.x$dat) |> mutate(Model = .x$Model, Fit_Method = .x$Fit_Method)) |> rbindlist() 
+
+
+process_folder <- function(folder_name) {
+  ind_fits <- map(list.files(here(paste0('data/abc_reject/'), folder_name), 
+                             full.names = TRUE), readRDS)
+  ind_fits_df <- ind_fits |> 
+    map(~list(dat = .x[[1]], Model = .x[["Model"]], Fit_Method = .x[["Fit_Method"]],tolM=.x$tolM,ar=.x$min_accept_rate,
+              t=.x$ri$elapsed)) |> 
+    map(~rbindlist(.x$dat) |> 
+           mutate(Model = .x$Model, Fit_Method = .x$Fit_Method,
+                 exp = str_extract(folder_name, "^e\\d"),
+                 n_int = as.numeric(str_extract(folder_name, "(?<=_n_iter_)\\d+")),
+                 ntry = as.numeric(str_extract(folder_name, "(?<=_ntry_)\\d+")),
+                 tolM=.x$tolM,ar=.x$ar,
+                 run_name = folder_name,
+                 min = round(.x$t/60,0))) |> 
+    rbindlist()
+  return(ind_fits_df)
+}
+
+folder_names <- c("e1_hybrid_n_iter_250_ntry_200_0637",
+"e1_hybrid_n_iter_60_ntry_150_2335",
+"e1_hybrid_n_iter_200_ntry_300_0741",
+"e1_hybrid_n_iter_150_ntry_150_4749")
+
+
+all_fits <- map_df(folder_names, process_folder)
+
+all_fits |> 
+  group_by(exp,n_int,ntry,tolM,ar,condit,Fit_Method) |> 
+  summarise(min=first(min),me=mean(mean_error),
+            w=median(weight_exam),sd_w=sd(weight_exam),c=median(c),
+            lr=median(lr),n=n_distinct(id)) |>
+   mutate(across(c(me, w, lr, sd_w), ~round(., 2))) |>
+  arrange(condit,Fit_Method,me) |> kable(caption="E1 Fit Comparisons") |> 
+  kable_styling(full_width = F) |>
+  column_spec(8,bold=T,border_left=T) 
+
+
+
+all_fits |> 
+  filter(id %in% unique(all_fits$id)[1:2]) |>
+  group_by(id,exp,n_int,ntry,condit,Fit_Method) |> 
+  mutate(rank=rank(mean_error)) |> filter(rank<n_int*.90) |>
+  group_by(id,exp,n_int,ntry,condit,Fit_Method) |> 
+  summarise(me=mean(mean_error),w=median(weight_exam),sd_w=sd(weight_exam),c=median(c),lr=median(lr)) |>
+  arrange(id,condit,Fit_Method,me) |> 
+    kbl() |> kable_styling(full_width = F)
+
+
+k = all_fits |> 
+    filter(id %in% unique(all_fits$id)[1])  |>
+  group_by(Fit_Method) |> arrange(mean_error)
+
+id_mdif <- all_fits |> 
+    group_by(id,condit,Fit_Method,run_name) |> 
+  mutate(rank=rank(mean_error)) |>
+  summarize(n=n(),all_me=mean(mean_error),
+            p50=mean(mean_error[rank<n*.50]),
+         top10 = mean(mean_error[rank<10])) 
+
+id_wdif <- all_fits |> 
+    group_by(id,condit,Fit_Method,run_name) |> 
+  mutate(rank=rank(mean_error)) |>
+  summarize(n=n(),all_we=mean(weight_exam),
+            p50=mean(weight_exam[rank<n*.50]),
+         top10 = mean(weight_exam[rank<10])) |>
+  mutate(dif=all_we-top10,adif=abs(dif)) |> arrange(adif)
+
+id_wdifAll <- all_fits |> 
+    group_by(id,condit,Fit_Method) |> 
+  mutate(rank=rank(mean_error)) |>
+  summarize(n=n(),all_we=median(weight_exam),
+            p50=median(weight_exam[rank<n*.50]),
+         top10 = median(weight_exam[rank<30])) |>
+  mutate(dif=all_we-top10,adif=abs(dif)) |> arrange(-adif)
+
+
+lowest_error_model <- best_id %>%
+  group_by(id, condit,Fit_Method) %>%
+  summarise(Best_Model = Model[which.min(mean_error)],
+            Lowest_error = min(mean_error),
+            differential = min(mean_error) - max(mean_error)) %>%
+  ungroup()
+
+```
+
+```{r}
+#| fig-height: 16
+#| fig-width: 14
+
+ind_fits_df |> group_by(id,condit,Fit_Method) |> summarise(w=median(weight_exam),me=mean(mean_error))
+
+ind_fits_df |> group_by(id,condit,Fit_Method) |> summarise(we=median(weight_exam),me=mean(mean_error)) |>
+  group_by(condit,Fit_Method) |> summarise(w=mean(we),sd_w=sd(we),me=mean(me)) 
+
+ind_fits_df |> 
+  group_by(condit,Fit_Method) |> 
+  summarise(w=median(weight_exam),sd_w=sd(weight_exam),me=mean(mean_error)) 
+
+ind_fits_df |> 
+   filter(Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +geom_density(alpha=.5) 
+
+ind_fits_df |> ggplot(aes(x=condit,y=weight_exam,col=condit)) + stat_pointinterval() +
+  facet_wrap(~Fit_Method)
+
+ind_fits_df |> 
+   filter(id %in% unique(ind_fits_df$id)[1:50], Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +
+  geom_density() +
+  geom_vline(xintercept = .5,linetype="dashed") +
+  ggh4x::facet_wrap2(~id+condit, scales="free_y")
+
+all_fits |> 
+   filter(id %in% unique(ind_fits_df$id)[1:50], Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +
+  geom_density() +
+  geom_vline(xintercept = .5,linetype="dashed") +
+  ggh4x::facet_wrap2(~id+condit, scales="free_y")
+
+all_fits |> 
+   filter(id %in% unique(ind_fits_df$id)[1:50], Fit_Method=="Test_Train") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +
+  geom_density() +
+  geom_vline(xintercept = .5,linetype="dashed") +
+  ggh4x::facet_wrap2(~id+condit, scales="free_y")
+
+
+all_fits |> 
+    group_by(id,run_name,condit,Fit_Method) |> 
+  mutate(rank=rank(mean_error)) |> 
+  filter(rank<n_int*.50) |>
+   filter(id %in% unique(ind_fits_df$id)[1:50], Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +
+  geom_density() +
+  geom_vline(xintercept = .5,linetype="dashed") +
+  ggh4x::facet_wrap2(~id+condit, scales="free_y")
+
+
+ind_fits_df |> 
+  group_by(id,condit,Fit_Method) |>
+  mutate(we_med=median(weight_exam),
+         Best_Model=case_when(we_med>.5 ~"EXAM",we_med<.5 ~"ALM")) |>
+  filter(Fit_Method=="Test") |>
+  ungroup() |>
+  mutate(id=reorder(id,we_med,decreasing = TRUE)) |>
+  ggplot(aes(x=weight_exam,y=id,col=Best_Model)) + 
+  geom_vline(xintercept = .5,linetype="dashed") +
+  stat_pointinterval() + 
+  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+
+  theme_minimal() +
+  theme(legend.position="top")
+
+
+all_fits |> 
+   filter(Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +geom_density(alpha=.5) +
+  facet_wrap(~run_name)
+
+all_fits |> 
+  filter(Fit_Method=="Test") |>
+    group_by(id,run_name,condit,Fit_Method) |> 
+  mutate(rank=rank(mean_error)) |> 
+  filter(rank<n_int*.50) |>
+  group_by(id,condit,Fit_Method,run_name) |>
+  mutate(we_med=median(weight_exam),
+         Best_Model=case_when(we_med>.5 ~"EXAM",we_med<.5 ~"ALM")) |>
+  ungroup() |>
+  group_by(run_name) |>
+    mutate(id=reorder(id,we_med,decreasing = FALSE)) |>
+  ggplot(aes(x=weight_exam,y=id,col=Best_Model)) + 
+  geom_vline(xintercept = .5,linetype="dashed") +
+  stat_pointinterval() + 
+  ggh4x::facet_grid2(run_name~condit,axes="all",scales="free_y", independent = "y")+
+  theme_minimal() +
+  theme(legend.position="top")
+
+
+
+all_fits |> ggplot(aes(x=condit,y=weight_exam,col=run_name)) + 
+  stat_pointinterval(position=position_dodge(.5)) +
+  facet_wrap(condit~Fit_Method)
+
+
+all_fits |> 
+   filter(id %in% unique(ind_fits_df$id)[1:50], Fit_Method=="Test") |>
+  ggplot(aes(x=run_name,y=weight_exam,col=run_name)) + 
+  stat_pointinterval(position=position_dodge(.5)) +
+  ggh4x::facet_wrap2(~id+condit) + 
+  theme(axis.text.x = element_blank()) 
+
+```
+
+
+
+## E2
+```{r}
+
+folder_names <- c("e2_hybrid_n_iter_60_ntry_150_3658","e2_hybrid_n_iter_250_ntry_200_0540","e2_hybrid_n_iter_150_ntry_150_2904")
+
+all_fits <- map_df(folder_names, process_folder)
+
+all_fits |> 
+  group_by(exp,n_int,ntry,tolM,ar,condit,Fit_Method) |> 
+  summarise(min=first(min),me=mean(mean_error),
+            w=median(weight_exam),sd_w=sd(weight_exam),c=median(c),
+            lr=median(lr),n=n_distinct(id)) |>
+   mutate(across(c(me, w, lr, sd_w), ~round(., 2))) |>
+  arrange(condit,Fit_Method,me) |> kable(caption="E2 Fit Comparisons") |> 
+  kable_styling(full_width = F) |>
+  column_spec(8,bold=T,border_left=T) 
+
+
+```
+
+
+## E2
+```{r}
+
+folder_names <- c("e3_hybrid_n_iter_150_ntry_150_1757","e3_hybrid_n_iter_250_ntry_200_4300","e3_hybrid_n_iter_60_ntry_150_0946")
+
+all_fits <- map_df(folder_names, process_folder)
+
+all_fits |> 
+  group_by(exp,n_int,ntry,tolM,ar,condit,Fit_Method) |> 
+  summarise(min=first(min),me=mean(mean_error),
+            w=median(weight_exam),sd_w=sd(weight_exam),c=median(c),
+            lr=median(lr),n=n_distinct(id)) |>
+   mutate(across(c(me, w, lr, sd_w), ~round(., 2))) |>
+  arrange(condit,Fit_Method,me) |> kable(caption="E3 Fit Comparisons") |> 
+  kable_styling(full_width = F) |>
+  column_spec(8,bold=T,border_left=T) 
+
+
+```
