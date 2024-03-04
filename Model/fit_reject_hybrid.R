@@ -115,7 +115,7 @@ reject_abc <- function(simulation_function, data, num_iterations = 5000, n_try=5
   }  
   })
 
-  abc <- rbindlist(abc$dist_sd) |> arrange(mean_error) |> relocate(id,condit)
+  abc <- rbindlist(abc$dist_sd) |> arrange(mean_error) |> relocate(id,condit) |> mutate(t=round(t1[3],2))
   best <- abc |> head(1) |> round_tibble(7)
   message((paste0("\n", data$id[1], " completed in: ", round(t1[3],2))))
   message((paste0("inc count: ",inc_count," Start tol: ",start_tol ," end tol: ", round(tol,2)," success rate: ",round(success_rate,4))))
@@ -151,11 +151,11 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 ####################################
 
 args <- commandArgs(trailingOnly = TRUE)
-num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 100)
-n_try = ifelse(length(args) > 1, as.numeric(args[2]), 100)
+num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 50)
+n_try = ifelse(length(args) > 1, as.numeric(args[2]), 200)
 tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .85)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
-min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .1)
+min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .01)
 
 cMean <<- -6; 
 cSig <<- 4.0; 
@@ -170,12 +170,12 @@ p_abc <- function(){
   " median-w=",round(median(prior_samples$weight_exam),3),"\n"))
   }
 
-parallel <<- 2
+parallel <<- 1
 #parallel <<- runif(1) <.5
 
 if (parallel==1) {
   print(nc <- future::availableCores())
-  future::plan(multicore, workers = nc-2)
+  future::plan(multicore, workers = nc-1)
   message("Running in parallel\n")
 } else if(parallel==2){
 spec <- make_spec()
