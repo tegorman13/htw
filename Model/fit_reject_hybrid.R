@@ -155,7 +155,7 @@ num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 50)
 n_try = ifelse(length(args) > 1, as.numeric(args[2]), 200)
 tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .85)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
-min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .01)
+min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .05)
 
 cMean <<- -6; 
 cSig <<- 4.0; 

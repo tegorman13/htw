@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.4.550">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
-<meta name="dcterms.date" content="2024-01-09">
+<meta name="dcterms.date" content="2024-03-03">
 <title>HTW Project</title>
 <style>
 code{white-space: pre-wrap;}
@@ -240,6 +240,12 @@ div.csl-indent {
  <span class="menu-text">HTW Model e3</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/hybrid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Hybrid Models</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
@@ -377,7 +383,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 9, 2024</p>
+      <p class="date">March 3, 2024</p>
     </div>
   </div>
   
@@ -387,7 +393,8 @@ div.csl-indent {
 
 
 </header><section id="introduction" class="level1"><h1>Introduction</h1>
-<p>In project 1, I applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for the difference between varied and constant training via an extended version of a similarity based generalization model. In project 2, we will go a step further, implementing a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. Project 2 also places a greater emphasis on extrapolation performance following training. Although varied training has often been purported to be particularly beneficial for generalization or transfer, few experiments have compared varied and constant training in contexts with unambiguous extrapolation testing.</p>
+<p>A longstanding issue across both science and instruction has been to understand how various aspects of an educational curriculum or training program influence learning acquisition and generalization. One such aspect, which has received a great deal of research attention, is the variability of examples experienced during training.</p>
+<p>Although varied training has often been purported to be particularly beneficial for generalization or transfer, few experiments have compared varied and constant training in contexts with unambiguous extrapolation testing.</p>
 <section id="function-learning-and-extrapolation" class="level2"><h2 class="anchored" data-anchor-id="function-learning-and-extrapolation">Function Learning and Extrapolation</h2>
 <p>The study of human function learning investigates how people learn relationships between continuous input and output values. Function learning is studied both in tasks where individuals are exposed to a sequence of input/output pairs <span class="citation" data-cites="deloshExtrapolationSineQua1997 mcdanielEffectsSpacedMassed2013">(<a href="#ref-deloshExtrapolationSineQua1997" role="doc-biblioref">DeLosh et al., 1997</a>; <a href="#ref-mcdanielEffectsSpacedMassed2013" role="doc-biblioref">McDaniel et al., 2013</a>)</span>, or situations where observers are presented with a an incomplete scatterplot or line graph and make predictions about regions of the plot that don’t contain data <span class="citation" data-cites="ciccioneCanHumansPerform2021a courrieuQuickApproximationBivariate2012 saidExtrapolationAccuracyUnderestimates2021 schulzCommunicatingCompositionalPatterns2020">(<a href="#ref-ciccioneCanHumansPerform2021a" role="doc-biblioref">Ciccione &amp; Dehaene, 2021</a>; <a href="#ref-courrieuQuickApproximationBivariate2012" role="doc-biblioref">Courrieu, 2012</a>; <a href="#ref-saidExtrapolationAccuracyUnderestimates2021" role="doc-biblioref">Said &amp; Fischer, 2021</a>; <a href="#ref-schulzCommunicatingCompositionalPatterns2020" role="doc-biblioref">Schulz et al., 2020</a>)</span>.</p>
 <p><span class="citation" data-cites="carrollFunctionalLearningLearning1963">Carroll (<a href="#ref-carrollFunctionalLearningLearning1963" role="doc-biblioref">1963</a>)</span> conducted the earliest work on function learning. Input stimuli and output responses were both lines of varying length. The correct output response was related to the length of the input line by a linear, quadratic, or random function. Participants in the linear and quadratic performed above chance levels during extrapolation testing, with those in the linear condition performing the best overall. Carroll argued that these results were best explained by a ruled based model wherein learners form an abstract representation of the underlying function. Subsequent work by <span class="citation" data-cites="brehmerHypothesesRelationsScaled1974">Brehmer (<a href="#ref-brehmerHypothesesRelationsScaled1974" role="doc-biblioref">1974</a>)</span>,testing a wider array of functional forms, provided further evidence for superior extrapolation in tasks with linear functions. Brehmer argued that individuals start out with an assumption of a linear function, but given sufficient error will progressively test alternative hypothesis with polynomials of greater degree. <span class="citation" data-cites="kohFunctionLearningInduction1991">Koh &amp; Meyer (<a href="#ref-kohFunctionLearningInduction1991" role="doc-biblioref">1991</a>)</span> employed a visuomotor function learning task, wherein participants were trained on examples from an unknown function relating the length of an input line to the duration of a response (time between keystrokes). In this domain, participants performed best when the relation between line length and response duration was determined by a power, as opposed to linear function. Koh &amp; Meyer developed the log-polynomial adaptive-regression model to account for their results.</p>

@@ -131,8 +131,8 @@ id_wdifAll <- all_fits |>
 ```
 
 ```{r}
-#| fig-height: 16
-#| fig-width: 14
+#| fig-height: 14
+#| fig-width: 13
 
 ind_fits_df |> group_by(id,condit,Fit_Method) |> summarise(w=median(weight_exam),me=mean(mean_error))
 
@@ -143,29 +143,33 @@ ind_fits_df |>
   group_by(condit,Fit_Method) |> 
   summarise(w=median(weight_exam),sd_w=sd(weight_exam),me=mean(mean_error)) 
 
-ind_fits_df |> 
+{all_fits |> 
    filter(Fit_Method=="Test") |>
-    ggplot(aes(x=weight_exam,fill=condit)) +geom_density(alpha=.5) 
+    ggplot(aes(x=weight_exam,fill=condit)) +geom_density(alpha=.5) } /{
 
-ind_fits_df |> ggplot(aes(x=condit,y=weight_exam,col=condit)) + stat_pointinterval() +
+all_fits |> 
+   filter(Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +geom_density(alpha=.5) +
+  facet_wrap(~run_name)
+    }
+
+all_fits |> ggplot(aes(x=condit,y=weight_exam,col=condit)) + stat_pointinterval() +
   facet_wrap(~Fit_Method)
 
-ind_fits_df |> 
-   filter(id %in% unique(ind_fits_df$id)[1:50], Fit_Method=="Test") |>
+all_fits |> ggplot(aes(x=run_name,y=weight_exam,col=condit)) + stat_pointinterval() +
+  facet_wrap(condit~Fit_Method)
+
+
+
+all_fits |> 
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test") |>
     ggplot(aes(x=weight_exam,fill=condit)) +
   geom_density() +
   geom_vline(xintercept = .5,linetype="dashed") +
   ggh4x::facet_wrap2(~id+condit, scales="free_y")
 
 all_fits |> 
-   filter(id %in% unique(ind_fits_df$id)[1:50], Fit_Method=="Test") |>
-    ggplot(aes(x=weight_exam,fill=condit)) +
-  geom_density() +
-  geom_vline(xintercept = .5,linetype="dashed") +
-  ggh4x::facet_wrap2(~id+condit, scales="free_y")
-
-all_fits |> 
-   filter(id %in% unique(ind_fits_df$id)[1:50], Fit_Method=="Test_Train") |>
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test_Train") |>
     ggplot(aes(x=weight_exam,fill=condit)) +
   geom_density() +
   geom_vline(xintercept = .5,linetype="dashed") +
@@ -176,14 +180,14 @@ all_fits |>
     group_by(id,run_name,condit,Fit_Method) |> 
   mutate(rank=rank(mean_error)) |> 
   filter(rank<n_int*.50) |>
-   filter(id %in% unique(ind_fits_df$id)[1:50], Fit_Method=="Test") |>
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test") |>
     ggplot(aes(x=weight_exam,fill=condit)) +
   geom_density() +
   geom_vline(xintercept = .5,linetype="dashed") +
   ggh4x::facet_wrap2(~id+condit, scales="free_y")
 
 
-ind_fits_df |> 
+all_fits |> 
   group_by(id,condit,Fit_Method) |>
   mutate(we_med=median(weight_exam),
          Best_Model=case_when(we_med>.5 ~"EXAM",we_med<.5 ~"ALM")) |>
@@ -197,11 +201,6 @@ ind_fits_df |>
   theme_minimal() +
   theme(legend.position="top")
 
-
-all_fits |> 
-   filter(Fit_Method=="Test") |>
-    ggplot(aes(x=weight_exam,fill=condit)) +geom_density(alpha=.5) +
-  facet_wrap(~run_name)
 
 all_fits |> 
   filter(Fit_Method=="Test") |>
@@ -229,7 +228,18 @@ all_fits |> ggplot(aes(x=condit,y=weight_exam,col=run_name)) +
 
 
 all_fits |> 
-   filter(id %in% unique(ind_fits_df$id)[1:50], Fit_Method=="Test") |>
+   filter(Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +geom_density(alpha=.5) 
+
+all_fits |> 
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test") |>
+  ggplot(aes(x=run_name,y=weight_exam,col=run_name)) + 
+  stat_pointinterval(position=position_dodge(.5)) +
+  ggh4x::facet_wrap2(~id+condit) + 
+  theme(axis.text.x = element_blank()) 
+
+all_fits |> 
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test_Train") |>
   ggplot(aes(x=run_name,y=weight_exam,col=run_name)) + 
   stat_pointinterval(position=position_dodge(.5)) +
   ggh4x::facet_wrap2(~id+condit) + 
@@ -241,7 +251,9 @@ all_fits |>
 
 ## E2
 ```{r}
-
+#| fig-height: 13
+#| fig-width: 12
+#| 
 # folder_names <- c("e2_hybrid_n_iter_60_ntry_150_3658","e2_hybrid_n_iter_250_ntry_200_0540","e2_hybrid_n_iter_150_ntry_150_2904","e2_hybrid_n_iter_100_ntry_100_3211")
 
 folder_names <- list.files(here("data/abc_reject"),pattern="e2_hyb*")
@@ -260,17 +272,83 @@ all_fits |>
   column_spec(8,bold=T,border_left=T) 
 
 
+{all_fits |> 
+   filter(Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +geom_density(alpha=.5) } /{
+
+all_fits |> 
+   filter(Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +geom_density(alpha=.5) +
+  facet_wrap(~run_name)
+    }
+
+all_fits |> ggplot(aes(x=condit,y=weight_exam,col=condit)) + stat_pointinterval() +
+  facet_wrap(~Fit_Method)
+
+all_fits |> ggplot(aes(x=run_name,y=weight_exam,col=condit)) + stat_pointinterval() +
+  facet_wrap(condit~Fit_Method)
+
+
+
+all_fits |> 
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +
+  geom_density() +
+  geom_vline(xintercept = .5,linetype="dashed") +
+  ggh4x::facet_wrap2(~id+condit, scales="free_y")
+
+all_fits |> 
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test_Train") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +
+  geom_density() +
+  geom_vline(xintercept = .5,linetype="dashed") +
+  ggh4x::facet_wrap2(~id+condit, scales="free_y")
+
+
+all_fits |> 
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test") |>
+  ggplot(aes(x=run_name,y=weight_exam,col=run_name)) + 
+  stat_pointinterval(position=position_dodge(.5)) +
+  ggh4x::facet_wrap2(~id+condit) + 
+  theme(axis.text.x = element_blank()) 
+
+all_fits |> 
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test_Train") |>
+  ggplot(aes(x=run_name,y=weight_exam,col=run_name)) + 
+  stat_pointinterval(position=position_dodge(.5)) +
+  ggh4x::facet_wrap2(~id+condit) + 
+  theme(axis.text.x = element_blank()) 
+
+
+all_fits |> 
+  group_by(id,condit,Fit_Method) |>
+  mutate(we_med=median(weight_exam),
+         Best_Model=case_when(we_med>.5 ~"EXAM",we_med<.5 ~"ALM")) |>
+  filter(Fit_Method=="Test") |>
+  ungroup() |>
+  mutate(id=reorder(id,we_med,decreasing = TRUE)) |>
+  ggplot(aes(x=weight_exam,y=id,col=Best_Model)) + 
+  geom_vline(xintercept = .5,linetype="dashed") +
+  stat_pointinterval() + 
+  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+
+  theme_minimal() +
+  theme(legend.position="top")
 ```
 
 
 ## E3
 ```{r}
-
+#| fig-height: 13
+#| fig-width: 12
 # folder_names <- c("e3_hybrid_n_iter_150_ntry_150_1757","e3_hybrid_n_iter_250_ntry_200_4300","e3_hybrid_n_iter_60_ntry_150_0946","e3_hybrid_n_iter_100_ntry_100_0545")
+testE3 <- readRDS(here("data/e3_08-04-23.rds")) |> filter(expMode2 == "Test") 
+e3Sbjs <- testE3 |> group_by(id,condit,bandOrder) |> summarise(n=n())
 
 folder_names <- list.files(here("data/abc_reject"),pattern="e3_hyb*")
 
-all_fits <- map_df(folder_names, process_folder)
+all_fits <- map_df(folder_names, process_folder) |> 
+  left_join(e3Sbjs,by=c("id","condit")) 
+
 
 all_fits |> 
   group_by(exp,n_int,ntry,tolM,ar,condit,Fit_Method) |> 
@@ -283,4 +361,101 @@ all_fits |>
   column_spec(8,bold=T,border_left=T) 
 
 
+
+all_fits |> 
+  group_by(exp,n_int,ntry,tolM,ar,condit,Fit_Method) |> 
+  summarise(min=first(min),me=mean(mean_error),
+            w=median(weight_exam),sd_w=sd(weight_exam),c=median(c),
+            lr=median(lr),n=n_distinct(id)) |>
+   mutate(across(c(me, w, lr, sd_w), ~round(., 2))) |>
+  arrange(condit,Fit_Method,me) |> kable(caption="E2 Fit Comparisons") |> 
+  kable_styling(full_width = F) |>
+  column_spec(8,bold=T,border_left=T) 
+
+{all_fits |> 
+   filter(Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +geom_density(alpha=.5) } /{
+
+all_fits |> 
+   filter(Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +geom_density(alpha=.5) +
+  facet_wrap(~run_name)
+    }
+
+all_fits |> 
+   filter(Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +geom_density(alpha=.5) + facet_wrap(~bandOrder) 
+
+
+
+
+
+all_fits |> ggplot(aes(x=condit,y=weight_exam,col=condit)) + stat_pointinterval() +
+  facet_wrap(bandOrder~Fit_Method)
+
+all_fits |> ggplot(aes(x=run_name,y=weight_exam,col=condit)) + stat_pointinterval() +
+  facet_wrap(condit~Fit_Method)
+
+all_fits |> 
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +
+  geom_density() +
+  geom_vline(xintercept = .5,linetype="dashed") +
+  ggh4x::facet_wrap2(~id+condit, scales="free_y")
+
+all_fits |> 
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test_Train") |>
+    ggplot(aes(x=weight_exam,fill=condit)) +
+  geom_density() +
+  geom_vline(xintercept = .5,linetype="dashed") +
+  ggh4x::facet_wrap2(~id+condit, scales="free_y")
+
+
+all_fits |> 
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test") |>
+  ggplot(aes(x=run_name,y=weight_exam,col=run_name)) + 
+  stat_pointinterval(position=position_dodge(.5)) +
+  ggh4x::facet_wrap2(~id+condit) + 
+  theme(axis.text.x = element_blank()) 
+
+all_fits |> 
+   filter(id %in% unique(all_fits$id)[1:50], Fit_Method=="Test_Train") |>
+  ggplot(aes(x=run_name,y=weight_exam,col=run_name)) + 
+  stat_pointinterval(position=position_dodge(.5)) +
+  ggh4x::facet_wrap2(~id+condit) + 
+  theme(axis.text.x = element_blank()) 
+
+{all_fits |> 
+  group_by(id,condit,Fit_Method) |>
+  mutate(we_med=median(weight_exam),
+         Best_Model=case_when(we_med>.5 ~"EXAM",we_med<.5 ~"ALM")) |>
+  filter(Fit_Method=="Test") |>
+  ungroup() |>
+  mutate(id=reorder(id,we_med,decreasing = TRUE)) |>
+  ggplot(aes(x=weight_exam,y=id,col=Best_Model)) + 
+  geom_vline(xintercept = .5,linetype="dashed") +
+  stat_pointinterval() + 
+  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+
+  theme_minimal() +
+  theme(legend.position="top")} / 
+  {all_fits |> 
+  group_by(id,condit,Fit_Method,bandOrder) |>
+  mutate(we_med=median(weight_exam),
+         Best_Model=case_when(we_med>.5 ~"EXAM",we_med<.5 ~"ALM")) |>
+  filter(Fit_Method=="Test") |>
+  ungroup() |>
+  mutate(id=reorder(id,we_med,decreasing = TRUE)) |>
+  ggplot(aes(x=weight_exam,y=id,col=Best_Model)) + 
+  geom_vline(xintercept = .5,linetype="dashed") +
+  stat_pointinterval() + 
+  ggh4x::facet_grid2(~bandOrder+condit,axes="all",scales="free_y", independent = "y")+
+  theme_minimal() +
+  theme(legend.position="top")}
+
 ```
+
+
+
+
+
+

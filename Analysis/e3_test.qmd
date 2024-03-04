@@ -7,7 +7,7 @@ categories: [Analysis, R, Bayesian]
 source(here::here("Functions", "packages.R"))
 testE3 <- readRDS(here("data/e3_08-04-23.rds")) |> filter(expMode2 == "Test") 
 options(brms.backend="cmdstanr",mc.cores=4)
-e3Sbjs <- testE3 |> group_by(id,condit) |> summarise(n=n())
+e3Sbjs <- testE3 |> group_by(id,condit,bandOrder) |> summarise(n=n())
 testE3Avg <- testE3 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 ```
@@ -98,6 +98,11 @@ e3_distBMM |> emmeans( ~condit + bandInt,
                      labels = levels(testE3$vb), 
                      limits = c(0, 1400)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+
+
+
+
 ```
 
 
@@ -231,7 +236,7 @@ random_effects <- e3_vxBMM |>
     reframe(enframe(quantile(SlopeInt, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "SlopeInt")) |> 
   pivot_wider(names_from=quantile,values_from=SlopeInt,names_prefix="Q_") |>
   group_by(Condition) |>
-  summarise(across(starts_with("Q"), list(mean = mean))) |> kbl()
+  summarise(across(starts_with("Q"), list(mean = mean))) |> kable()
 
 ```
 
@@ -244,11 +249,29 @@ random_effects <- e3_vxBMM |>
 #| fig-height: 11
 #| fig-width: 12
 
-indvSlopes |> ggplot(aes(y=rankSlope, x=SlopeInt,fill=condit,color=condit)) + 
+indvSlopes |> 
+  ggplot(aes(y=rankSlope, x=SlopeInt,fill=condit,color=condit)) + 
   geom_pointrange(aes(xmin=SlopeInt.lower , xmax=SlopeInt.upper)) + 
-  labs(x="Estimated Slope", y="Participant")  + facet_wrap(~condit) +
-ggplot(indvSlopes, aes(x = SlopeInt, color = condit)) + 
-geom_density() + labs(x="Slope Coefficient",y="Density") 
+  labs(x="Estimated Slope", y="Participant")  + 
+  facet_wrap(~condit) +
+  ggplot(indvSlopes, aes(x = SlopeInt, color = condit)) + 
+  geom_density() + labs(x="Slope Coefficient",y="Density") 
+
+
+
+indvSlopes |> 
+  left_join(e3Sbjs, by=c("id","condit")) |>
+  ggplot(aes(y=rankSlope, x=SlopeInt,fill=condit,color=condit)) + 
+  geom_pointrange(aes(xmin=SlopeInt.lower , xmax=SlopeInt.upper)) + 
+  labs(x="Estimated Slope", y="Participant")  + 
+  facet_wrap(~bandOrder+condit) + 
+  {
+  ggplot(indvSlopes |> 
+    left_join(e3Sbjs, by=c("id","condit")), 
+    aes(x = SlopeInt, color = condit)) + 
+    geom_density() + 
+        facet_wrap(~bandOrder) +
+    labs(x="Slope Coefficient",y="Density")  }
 
 ```
 
