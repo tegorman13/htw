@@ -3,8 +3,6 @@ conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("fun_alm","fun_model","fun_indv_fit", "prep_mpar"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 
 
-
-
 watch_ids <<- c(1)
 
 seed <- round(runif(1,min=1,max=10),0)
@@ -151,16 +149,16 @@ run_abc_tests <- function(simulation_function, data_list, return_dat, ids) {
 ####################################
 
 args <- commandArgs(trailingOnly = TRUE)
-num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 50)
-n_try = ifelse(length(args) > 1, as.numeric(args[2]), 200)
+num_iterations = ifelse(length(args) > 0, as.numeric(args[1]), 70)
+n_try = ifelse(length(args) > 1, as.numeric(args[2]), 500)
 tolM <<- ifelse(length(args) > 2, as.numeric(args[3]), .85)
 tolInc <<- ifelse(length(args) > 3, as.numeric(args[4]), 1.01)
-min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .05)
+min_accept_rate <<- ifelse(length(args) > 4, as.numeric(args[5]), .1)
 
 cMean <<- -6; 
 cSig <<- 4.0; 
 lrSig <<- 4.0
-prior_samples <- samp_priors(n=2000) 
+prior_samples <- samp_priors(n=1000) 
 
 p_abc <- function(){
   message(paste0("\n","cMean: ",cMean," cSig: ",cSig," lrSig: ",lrSig,"\n", "tolM: ",
@@ -175,7 +173,7 @@ parallel <<- 1
 
 if (parallel==1) {
   print(nc <- future::availableCores())
-  future::plan(multicore, workers = nc-1)
+  future::plan(multicore, workers = nc-2)
   message("Running in parallel\n")
 } else if(parallel==2){
 spec <- make_spec()
