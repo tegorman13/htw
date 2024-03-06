@@ -3,6 +3,7 @@ title: HTW Hybrid Models
 author: Thomas Gorman
 date: "`r Sys.Date()`"
 page-layout: full
+categories: [Modeling, ALM, EXAM, R]
 toc: false
 code-fold: true
 code-tools: true
@@ -134,14 +135,14 @@ id_wdifAll <- all_fits |>
 #| fig-height: 14
 #| fig-width: 13
 
-ind_fits_df |> group_by(id,condit,Fit_Method) |> summarise(w=median(weight_exam),me=mean(mean_error))
-
-ind_fits_df |> group_by(id,condit,Fit_Method) |> summarise(we=median(weight_exam),me=mean(mean_error)) |>
-  group_by(condit,Fit_Method) |> summarise(w=mean(we),sd_w=sd(we),me=mean(me)) 
-
-ind_fits_df |> 
-  group_by(condit,Fit_Method) |> 
-  summarise(w=median(weight_exam),sd_w=sd(weight_exam),me=mean(mean_error)) 
+# ind_fits_df |> group_by(id,condit,Fit_Method) |> summarise(w=median(weight_exam),me=mean(mean_error))
+# 
+# ind_fits_df |> group_by(id,condit,Fit_Method) |> summarise(we=median(weight_exam),me=mean(mean_error)) |>
+#   group_by(condit,Fit_Method) |> summarise(w=mean(we),sd_w=sd(we),me=mean(me)) 
+# 
+# ind_fits_df |> 
+#   group_by(condit,Fit_Method) |> 
+#   summarise(w=median(weight_exam),sd_w=sd(weight_exam),me=mean(mean_error)) 
 
 {all_fits |> 
    filter(Fit_Method=="Test") |>
@@ -451,6 +452,7 @@ all_fits |>
   ggh4x::facet_grid2(~bandOrder+condit,axes="all",scales="free_y", independent = "y")+
   theme_minimal() +
   theme(legend.position="top")}
+
 
 ```
 

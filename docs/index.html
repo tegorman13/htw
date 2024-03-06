@@ -78,7 +78,7 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-image','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
+      valueNames: ['listing-title','listing-author','listing-date','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
       
       searchColumns: ["listing-date","listing-title","listing-categories"],
     };
@@ -370,6 +370,18 @@ window.Quarto = {
  <span class="menu-text">HTW Model e2</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Model/htw_model_e3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Model e3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Model/hybrid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Hybrid Models</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
@@ -483,13 +495,13 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#modeling-empircal-data" id="toc-modeling-empircal-data" class="nav-link active" data-scroll-target="#modeling-empircal-data">Modeling Empircal Data</a></li>
+  <li><a href="#analyses" id="toc-analyses" class="nav-link active" data-scroll-target="#analyses">Analyses</a></li>
+  <li><a href="#modeling-empircal-data" id="toc-modeling-empircal-data" class="nav-link" data-scroll-target="#modeling-empircal-data">Modeling Empircal Data</a></li>
   <li><a href="#simulations" id="toc-simulations" class="nav-link" data-scroll-target="#simulations">Simulations</a></li>
-  <li><a href="#analyses" id="toc-analyses" class="nav-link" data-scroll-target="#analyses">Analyses</a></li>
   <li><a href="#misc" id="toc-misc" class="nav-link" data-scroll-target="#misc">Misc</a></li>
   </ul>
 <div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/tegorman13/htw/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/index.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(31)</span></div><div class="category" data-category="ALM">ALM <span class="quarto-category-count">(8)</span></div><div class="category" data-category="Analysis">Analysis <span class="quarto-category-count">(19)</span></div><div class="category" data-category="Bayesian">Bayesian <span class="quarto-category-count">(8)</span></div><div class="category" data-category="EXAM">EXAM <span class="quarto-category-count">(5)</span></div><div class="category" data-category="Interactive">Interactive <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Learning-Curve">Learning-Curve <span class="quarto-category-count">(3)</span></div><div class="category" data-category="OJS">OJS <span class="quarto-category-count">(6)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(29)</span></div><div class="category" data-category="Shiny">Shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Simulation">Simulation <span class="quarto-category-count">(8)</span></div><div class="category" data-category="Task">Task <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Visualization">Visualization <span class="quarto-category-count">(3)</span></div><div class="category" data-category="js">js <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(20)</span></div><div class="category" data-category="ALM">ALM <span class="quarto-category-count">(12)</span></div><div class="category" data-category="Analyses">Analyses <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Analysis">Analysis <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Bayesian">Bayesian <span class="quarto-category-count">(3)</span></div><div class="category" data-category="EXAM">EXAM <span class="quarto-category-count">(9)</span></div><div class="category" data-category="Interactive">Interactive <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Learning-Curve">Learning-Curve <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Modeling">Modeling <span class="quarto-category-count">(4)</span></div><div class="category" data-category="OJS">OJS <span class="quarto-category-count">(5)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(18)</span></div><div class="category" data-category="Shiny">Shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Simulation">Simulation <span class="quarto-category-count">(8)</span></div><div class="category" data-category="Task">Task <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Visualization">Visualization <span class="quarto-category-count">(3)</span></div><div class="category" data-category="js">js <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content column-body" id="quarto-document-content">
 
@@ -512,15 +524,24 @@ window.Quarto = {
 </header>
 
 
-<section id="modeling-empircal-data" class="level2">
-<h2 class="anchored" data-anchor-id="modeling-empircal-data">Modeling Empircal Data</h2>
-<div id="listing-Modeling" class="quarto-listing quarto-listing-container-grid">
+<section id="analyses" class="level2">
+<h2 class="anchored" data-anchor-id="analyses">Analyses</h2>
+<div id="listing-Analyses" class="quarto-listing quarto-listing-container-grid">
 <div class="listing-actions-group">
    <div class="input-group input-group-sm quarto-listing-sort">
      <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-     <select id="listing-Modeling-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-Modeling'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+     <select id="listing-Analyses-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-Analyses'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
        <option value="" disabled="" selected="" hidden="">Order By</option>
        <option value="index" data-direction="asc">Default</option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+         <option value="listing-title" data-direction="asc">
+          Title
+        </option>
          <option value="listing-categories" data-direction="asc">
           Categories
         </option>
@@ -532,7 +553,293 @@ window.Quarto = {
     </div>
 </div>
 <div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="Analyses,R,Bayesian" data-listing-date-sort="1709741515000" data-listing-file-modified-sort="1709741515668" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2375">
+<a href="./Analysis/e1_test.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="Analysis/e1_test_files/figure-html/fig-e1-test-dev-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+HTW E1 Testing
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Analyses'); return false;">
+Analyses
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
+Bayesian
+</div>
+</div>
+<div class="card-text listing-description">
+All data processing and statistical analyses were performed in R version 4.31 <span class="citation" data-cites="rcoreteamLanguageEnvironmentStatistical2020">Team (2020)</span>. To assess differences between groups, we used Bayesian Mixed Effects Regression.…<span class="citation" data-cites="burknerBrmsPackageBayesian2017"></span><span class="citation" data-cites="makowskiBayestestRDescribingEffects2019"></span>
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Thomas Gorman
+</div>
+<div class="listing-date">
+Mar 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="Analyses,R,Bayesian" data-listing-date-sort="1709741830000" data-listing-file-modified-sort="1709741830357" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2122">
+<a href="./Analysis/e2_test.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="Analysis/e2_test_files/figure-html/fig-e2-test-dev-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+HTW E2 Testing
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Analyses'); return false;">
+Analyses
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
+Bayesian
+</div>
+</div>
+<div class="card-text listing-description">
+Figure&nbsp;1 illustrates the design of Experiment 2. The stages of the experiment (i.e.&nbsp;training, testing no-feedback, test with feedback), are identical to that of Experiment…
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Thomas Gorman
+</div>
+<div class="listing-date">
+Mar 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="2" data-categories="Analyses,R,Bayesian" data-listing-date-sort="1709742402000" data-listing-file-modified-sort="1709742402915" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1777">
+<a href="./Analysis/e3_test.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="Analysis/e3_test_files/figure-html/fig-e3-test-dev-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+HTW E3 Testing
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Analyses'); return false;">
+Analyses
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
+Bayesian
+</div>
+</div>
+<div class="card-text listing-description">
+The major manipulation adjustment of experiment 3 is for participants to receive ordinal feedback during training, in contrast to the continuous feedback of the earlier…
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Thomas Gorman
+</div>
+<div class="listing-date">
+Mar 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div>
+</section>
+<section id="modeling-empircal-data" class="level2">
+<h2 class="anchored" data-anchor-id="modeling-empircal-data">Modeling Empircal Data</h2>
+<div id="listing-Modeling" class="quarto-listing quarto-listing-container-grid">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+     <select id="listing-Modeling-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-Modeling'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+       <option value="" disabled="" selected="" hidden="">Order By</option>
+       <option value="index" data-direction="asc">Default</option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+         <option value="listing-title" data-direction="asc">
+          Title
+        </option>
+         <option value="listing-categories" data-direction="asc">
+          Categories
+        </option>
+     </select>
+  </div>
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="Modeling,ALM,EXAM,R" data-listing-date-sort="NaN" data-listing-file-modified-sort="1709741270662" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1674">
+<a href="./Model/hybrid.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="Model/hybrid_files/figure-html/unnamed-chunk-3-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+HTW Hybrid Models
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Modeling'); return false;">
+Modeling
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ALM'); return false;">
+ALM
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('EXAM'); return false;">
+EXAM
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="card-text listing-description">
 
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu">p_load</span><span class="op">(</span><span class="va">dplyr</span>,<span class="va">purrr</span>,<span class="va">tidyr</span>,<span class="va">ggplot2</span>, <span class="va">data.table</span>, <span class="va">here</span>, <span class="va">patchwork</span>, <span class="va">conflicted</span>, </span>
+<span>               <span class="va">stringr</span>,<span class="va">future</span>,<span class="va">furrr</span>, <span class="va">knitr</span>, <span class="va">reactable</span>, <span class="va">flextable</span>,<span class="va">ggstance</span>, <span class="va">htmltools</span>,<span class="va">…</span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="cn"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="st"></span><span class="st"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="fu"></span><span class="fu"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="va"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="op"></span></span></code></pre></div></details>
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Thomas Gorman
+</div>
+<div class="listing-date">
+Invalid Date
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="Modeling,ALM,EXAM,R" data-listing-date-sort="1709742375000" data-listing-file-modified-sort="1709742375791" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="36" data-listing-word-count-sort="7129">
+<a href="./Model/htw_model.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="Model/htw_model_files/figure-html/fig-alm-diagram-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+HTW Model
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Modeling'); return false;">
+Modeling
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ALM'); return false;">
+ALM
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('EXAM'); return false;">
+EXAM
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="card-text listing-description">
+In project 1, I applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for…<span class="citation" data-cites="deloshExtrapolationSineQua1997"></span><span class="citation" data-cites="kruschkeALCOVEExemplarbasedConnectionist1992"></span>
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Thomas Gorman
+</div>
+<div class="listing-date">
+Mar 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="2" data-categories="Modeling,ALM,EXAM,R" data-listing-date-sort="1709742367000" data-listing-file-modified-sort="1709742367341" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2191">
+<a href="./Model/htw_model_e2.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="Model/htw_model_e2_files/figure-html/fig-htw-resid-pred-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+HTW Model e2
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Modeling'); return false;">
+Modeling
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ALM'); return false;">
+ALM
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('EXAM'); return false;">
+EXAM
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="card-text listing-description">
+<span class="cl-07b3f15a">Fit_Method</span>
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Thomas Gorman
+</div>
+<div class="listing-date">
+Mar 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="3" data-categories="Modeling,ALM,EXAM,R" data-listing-date-sort="1709742360000" data-listing-file-modified-sort="1709742360671" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2291">
+<a href="./Model/htw_model_e3.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="Model/htw_model_e3_files/figure-html/fig-htw-resid-pred-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+HTW Model e3
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Modeling'); return false;">
+Modeling
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ALM'); return false;">
+ALM
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('EXAM'); return false;">
+EXAM
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="card-text listing-description">
+<span class="cl-962b99d4">Fit_Method</span>
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Thomas Gorman
+</div>
+<div class="listing-date">
+Mar 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
 </div>
 <div class="listing-no-matching d-none">
 No matching items
@@ -752,662 +1059,6 @@ a_i(X)=\exp \left|-\gamma \cdot\left[X-X_i\right]^2\right|
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
 
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div>
-</section>
-<section id="analyses" class="level2">
-<h2 class="anchored" data-anchor-id="analyses">Analyses</h2>
-<div id="listing-Analyses" class="quarto-listing quarto-listing-container-grid">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-     <select id="listing-Analyses-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-Analyses'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-       <option value="" disabled="" selected="" hidden="">Order By</option>
-       <option value="index" data-direction="asc">Default</option>
-         <option value="listing-date-sort" data-direction="asc">
-          Date - Oldest
-        </option>
-         <option value="listing-date-sort" data-direction="desc">
-          Date - Newest
-        </option>
-         <option value="listing-title" data-direction="asc">
-          Title
-        </option>
-         <option value="listing-categories" data-direction="asc">
-          Categories
-        </option>
-     </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818529000" data-listing-file-modified-sort="1704818529782" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1080">
-<a href="./Analysis/brms_learning.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Bayesian Mixed Effects Models - Training Data
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
-Bayesian
-</div>
-</div>
-<div class="card-text listing-description">
-b_mod3 &lt;- bf(dist ~ betaMu + (alphaMu - betaMu) * exp(-exp(gammaMu) * gt.train), betaMu ~ 1 + condit + bandInt + (1|id), alphaMu ~ 1 + condit + bandInt + (1|id), gammaMu ~ 1…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Thomas Gorman
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818517000" data-listing-file-modified-sort="1704818517546" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1157">
-<a href="./Analysis/full_analysis.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Combined Analysis of All 3 Experiments
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
-Bayesian
-</div>
-</div>
-<div class="card-text listing-description">
-Questions - difficulty difference between bands - effect of ordinal feedback. - effect of training with easier bands - do varied subjects who discriminate by end of training…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Thomas Gorman
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="Analysis,R" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="561">
-<a href="./Misc/quartile_splits.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="Misc/quartile_splits_files/figure-html/unnamed-chunk-3-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Comparing, High/Low performers
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu">p_load</span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span>,<span class="va">gt</span>,<span class="va">gghalves</span><span class="op">)</span></span>
-<span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu">readRDS</span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_08-04-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="kw">source</span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"Functions/Display_Functions.R"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">train</span> <span class="op">…</span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span></code></pre></div></details>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="3" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="219">
-<a href="./Misc/Distributional_Explore.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Distributional_Explorations
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
-Bayesian
-</div>
-</div>
-<div class="card-text listing-description">
-
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu">p_load</span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">tidybayes</span>,<span class="va">brms</span>,<span class="va">bayesplot</span>,<span class="va">broom</span>,<span class="va">broom.mixed</span>,<span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span>,<span class="va">gt</span>,<span class="va">gghalves</span>,<span class="va">patchwork</span>,<span class="va">ggforce</span>,<span class="va">ggdist</span>,<span class="va">moments</span><span class="op">)</span></span>
-<span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu">readRDS</span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"…</span><span class="op"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="kw"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="cn"></span><span class="op"></span><span class="op"></span></span><span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="fu"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="fu"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span></code></pre></div></details>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="4" data-categories="Analysis,R" data-listing-date-sort="1704818529000" data-listing-file-modified-sort="1704818529782" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="79" data-listing-word-count-sort="15770">
-<a href="./Analysis/e1_discrim.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="Analysis/e1_discrim_files/figure-html/model-structure1b-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-E1 Discrimination Analysis
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-<span class="math display">\[
-\begin{aligned}
-  \operatorname{vx}_{i}  &amp;\sim N \left(\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{bandInt}), \sigma^2 \right) \\    
-\left(
-  \begin{array}{c}
-   …</span>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Thomas Gorman
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="5" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2146">
-<a href="./Misc/clust_gmm.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-E1 Discrimination via Clustering
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
-Bayesian
-</div>
-</div>
-<div class="card-text listing-description">
-https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/clustering-analysis.html#gaussian-mixture-models
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="6" data-categories="Analysis,R" data-listing-date-sort="1705586074000" data-listing-file-modified-sort="1705586074400" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4318">
-<a href="./Analysis/e1_Analysis.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="Analysis/e1_Analysis_files/figure-html/unnamed-chunk-4-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-E1 Extras
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-&nbsp;
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Thomas Gorman
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="7" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1963">
-<a href="./Misc/e1_brms_test.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-E1 Testing - Bayesian Mixed Models
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
-Bayesian
-</div>
-</div>
-<div class="card-text listing-description">
-individual_coefs &lt;- coef(gt_vx)$id %&gt;% as_tibble(rownames = “id”) %&gt;% select(id, starts_with(“Estim”)) %&gt;% pivot_longer(cols = -id, names_to = “variable”, values_to =…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="8" data-categories="Analysis,R" data-listing-date-sort="1704818529000" data-listing-file-modified-sort="1704818529782" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1054">
-<a href="./Analysis/ME_Slopes.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Experiment 1 Testing
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu">p_load</span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">tidybayes</span>, <span class="va">brms</span>, <span class="va">broom</span>, <span class="va">broom.mixed</span>, <span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span>,<span class="va">gt</span>,<span class="va">ggh4x</span><span class="op">)</span></span>
-<span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu">readRDS</span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_08-04-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="kw">source</span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"Funct…</span><span class="op"></span><span class="op"></span></span><span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="co"></span></span><span><span class="op"></span><span class="st"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fl"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span></span><span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="st"></span></span><span><span class="op"></span><span class="st"></span><span class="op"></span><span class="cn"></span><span class="op"></span></span><span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="cn"></span><span class="op"></span></span><span><span class="op"></span><span class="cn"></span><span class="op"></span></span><span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span></code></pre></div></details>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Thomas Gorman
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="9" data-categories="Analysis,R" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2238">
-<a href="./Misc/gam_discrim.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-GAM
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu">p_load</span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">lme4</span>,<span class="va">emmeans</span>,<span class="va">here</span>,<span class="va">knitr</span>,<span class="va">kableExtra</span>,<span class="va">gt</span>,<span class="va">mgcv</span>,<span class="va">data.table</span><span class="op">)</span></span>
-<span><span class="kw">source</span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"Functions"</span>, <span class="st">"packages.R"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">readRDS</span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_08-21-23.rd…</span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="fl"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="fl"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span></span><span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span></span><span></span><span></span><span></span><span></span><span></span><span><span class="va"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span><span class="op"></span></span><span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span></span><span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span></span><span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="op"></span></span><span></span><span></span><span></span><span></span><span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="fl"></span><span class="op"></span><span class="kw"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="co"></span></span><span><span class="co"></span></span><span><span class="co"></span></span><span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span></span><span></span><span><span class="va"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span></span></code></pre></div></details>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="10" data-categories="Analysis,Learning-Curve,R" data-listing-date-sort="1704818517000" data-listing-file-modified-sort="1704818517546" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4339">
-<a href="./Analysis/analysis.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="Analysis/analysis_files/figure-html/unnamed-chunk-6-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-HTW Analysis
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Learning-Curve'); return false;">
-Learning-Curve
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-The linear mixed-effects models were used to analyze the training performance data. The first model (improvement_model) investigates the relationship between the training…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Thomas Gorman
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="11" data-categories="Analysis,R" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="28" data-listing-word-count-sort="5422">
-<a href="./Misc/data_dictionary.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="Misc/data_dictionary_files/figure-html/unnamed-chunk-3-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-HTW Data Dictionary
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-id - unique subject identifier condit - primary training manipulation, Constant vs.&nbsp;Varied. tOrder - order of blocks in no-feedback testing stage (extrapolation first or…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="12" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1708809646000" data-listing-file-modified-sort="1708809646179" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2375">
-<a href="./Analysis/e1_test.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="Analysis/e1_test_files/figure-html/fig-e1-test-dev-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-HTW E1 Testing
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
-Bayesian
-</div>
-</div>
-<div class="card-text listing-description">
-All data processing and statistical analyses were performed in R version 4.31 <span class="citation" data-cites="rcoreteamLanguageEnvironmentStatistical2020">Team (2020)</span>. To assess differences between groups, we used Bayesian Mixed Effects Regression.…<span class="citation" data-cites="burknerBrmsPackageBayesian2017"></span><span class="citation" data-cites="makowskiBayestestRDescribingEffects2019"></span>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Thomas Gorman
-</div>
-<div class="listing-date">
-Feb 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="13" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1708808820000" data-listing-file-modified-sort="1708808820043" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2122">
-<a href="./Analysis/e2_test.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="Analysis/e2_test_files/figure-html/fig-e2-test-dev-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-HTW E2 Testing
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
-Bayesian
-</div>
-</div>
-<div class="card-text listing-description">
-Figure&nbsp;1 illustrates the design of Experiment 2. The stages of the experiment (i.e.&nbsp;training, testing no-feedback, test with feedback), are identical to that of Experiment…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Thomas Gorman
-</div>
-<div class="listing-date">
-Feb 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="14" data-categories="Analysis,R,Bayesian" data-listing-date-sort="1708808837000" data-listing-file-modified-sort="1708808837231" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1680">
-<a href="./Analysis/e3_test.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="Analysis/e3_test_files/figure-html/fig-e3-test-dev-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-HTW E3 Testing
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Bayesian'); return false;">
-Bayesian
-</div>
-</div>
-<div class="card-text listing-description">
-The major manipulation adjustment of experiment 3 is for participants to receive ordinal feedback during training, in contrast to the continuous feedback of the earlier…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Thomas Gorman
-</div>
-<div class="listing-date">
-Feb 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="15" data-categories="Analysis,R" data-listing-date-sort="1704818512000" data-listing-file-modified-sort="1704818512382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3885">
-<a href="./Misc/indv_diff.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="Misc/indv_diff_files/figure-html/unnamed-chunk-3-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Individual Differenes
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-Band Only Model
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="16" data-categories="Analysis,Learning-Curve,R,OJS" data-listing-date-sort="1704818611000" data-listing-file-modified-sort="1704818611575" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="684">
-<a href="./Misc/Visuals_Interactives/ojs_explore.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-OJS data exploration
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Learning-Curve'); return false;">
-Learning-Curve
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('OJS'); return false;">
-OJS
-</div>
-</div>
-<div class="card-text listing-description">
-
-<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu">p_load</span><span class="op">(</span><span class="va">tidyverse</span>,<span class="va">here</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">readRDS</span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/dPrune-01-19-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Prepare the data for analysis</span></span>
-<span><span class="va">dtest</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%&gt;%</span></span>
-<span>    <span class="fu">filter</span><span class="op">(</span><span class="va">expMode</span> <span class="op">%in%</span> <span class="fu">c</span><span class="op">(</span><span class="st">"test-Nf"</span>, <span class="st">"test…</span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span></span><span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span></span><span><span class="op"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="st"></span><span class="st"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span></span><span></span><span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span></span></code></pre></div></details>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-
-</div>
-<div class="listing-date">
-Jan 2024
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="17" data-categories="Analysis,R" data-listing-date-sort="1704818529000" data-listing-file-modified-sort="1704818529782" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2123">
-<a href="./Analysis/discrim.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="Analysis/discrim_files/figure-html/unnamed-chunk-5-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Testing Discrimination Analysis
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Analysis'); return false;">
-Analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-</div>
-<div class="card-text listing-description">
-
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu">p_load</span><span class="op">(</span><span class="st">'tidyverse'</span>,<span class="st">'data.table'</span>,<span class="st">'lme4'</span>,<span class="st">'lmerTest'</span>,<span class="st">'knitr'</span>,<span class="st">'kableExtra'</span>,<span class="st">'cowplot'</span>,<span class="st">'gghalves'</span>,<span class="st">'here'</span><span class="op">)</span></span>
-<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">readRDS</span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/dPrune-07-27-23.rds"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="kw">source</span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"F…</span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="st"></span><span class="st"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span></span><span><span class="co"></span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span></span><span><span class="va"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="fl"></span><span class="fl"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="op"></span></span><span><span class="fu"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span></span><span><span class="op"></span><span class="fu"></span><span class="op"></span><span class="va"></span><span class="op"></span><span class="op"></span><span class="st"></span><span class="op"></span></span></code></pre></div></details>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Thomas Gorman
 </div>
 <div class="listing-date">
 Jan 2024

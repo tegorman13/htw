@@ -1,6 +1,6 @@
 ---
 title: "HTW E2 Testing"
-categories: [Analysis, R, Bayesian]
+categories: [Analyses, R, Bayesian]
 ---
 
 ```{r setup2b, include=FALSE}
@@ -11,6 +11,7 @@ e2Sbjs <- testE2 |> group_by(id,condit) |> summarise(n=n())
 testE2Avg <- testE2 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 ```
+
 
 @fig-design-e2 illustrates the design of Experiment 2. The stages of the experiment (i.e. training, testing no-feedback, test with feedback), are identical to that of Experiment 1. The only change is that Experiment 2 participants train, and then test, on bands in the reverse order of Experiment 1 (i.e. training on the softer bands; and testing on the harder bands). 
 ```{dot}
@@ -73,10 +74,11 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 #| tbl-subcap: ["Constant Testing - Deviation", "Varied Testing - Deviation"]
 
 result <- test_summary_table(testE2, "dist","Deviation", mfun = list(mean = mean, median = median, sd = sd))
-result$constant |> kbl()
-result$varied |> kbl()
+result$constant |> kable()
+result$varied |> kable()
 # make kable table with smaller font size
 # result$constant |> kbl(caption="Constant Testing - Deviation",booktabs=T,escape=F) |> kable_styling(font_size = 7)
+
 ```
 
 ```{r}
@@ -112,7 +114,7 @@ e2_distBMM |>
    select(contrast,Band=bandInt,value=y,lower=ymin,upper=ymax,pd) |> 
    mutate(across(where(is.numeric), \(x) round(x, 2)),
           pd=ifelse(value<0,1-pd,pd)) |>
-   kbl(caption="Contrasts")
+   kable(caption="Contrasts")
 
 coef_details <- get_coef_details(e2_distBMM, "conditVaried")
 
@@ -169,8 +171,8 @@ testE2 %>% group_by(id,vb,condit) |> plot_distByCondit()
 #| layout-ncol: 1
 
 result <- test_summary_table(testE2, "vx","X Velocity" ,mfun = list(mean = mean, median = median, sd = sd))
-result$constant |> kbl()
-result$varied |> kbl()
+result$constant |> kable()
+result$varied |> kable()
 
 ```
 
@@ -316,7 +318,7 @@ random_effects <- e2_vxBMM |>
     reframe(enframe(quantile(SlopeInt, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "SlopeInt")) |> 
   pivot_wider(names_from=quantile,values_from=SlopeInt,names_prefix="Q_") |>
   group_by(Condition) |>
-  summarise(across(starts_with("Q"), list(mean = mean))) |> kbl()
+  summarise(across(starts_with("Q"), list(mean = mean))) |> kable()
 
 ```
 

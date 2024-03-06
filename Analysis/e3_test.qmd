@@ -1,6 +1,7 @@
 ---
 title: "HTW E3 Testing"
-categories: [Analysis, R, Bayesian]
+categories: [Analyses, R, Bayesian]
+date:  last-modified #"`r Sys.Date()`"
 ---
 
 ```{r setup3b, include=FALSE}
@@ -34,12 +35,12 @@ To model differences in accuracy between groups, we fit Bayesian mixed effects r
 #| tbl-subcap: ["Constant Testing - Deviation", "Varied Testing - Deviation"]
 
 resultOrig <- test_summary_table(testE3 |> filter(bandOrder=="Original"), "dist","Deviation", mfun = list(mean = mean, median = median, sd = sd))
-resultOrig$constant 
-resultOrig$varied 
+resultOrig$constant |> kable() 
+resultOrig$varied |> kable() 
 
 resultRev <- test_summary_table(testE3 |> filter(bandOrder=="Reverse"), "dist","Deviation", mfun = list(mean = mean, median = median, sd = sd))
-resultRev$constant 
-resultRev$varied 
+resultRev$constant |> kable() 
+resultRev$varied |> kable() 
 
 ```
 
@@ -140,12 +141,12 @@ testE3 |> group_by(id,vb,condit,bandOrder) |> plot_distByCondit() +
 #| tbl-subcap: ["Constant Testing - vx", "Varied Testing - vx"]
 #| layout-ncol: 1
 resultOrig <- test_summary_table(testE3 |> filter(bandOrder=="Original"), "vx","X Velocity", mfun = list(mean = mean, median = median, sd = sd))
-resultOrig$constant 
-resultOrig$varied 
+resultOrig$constant |> kable() 
+resultOrig$varied |> kable() 
 
 resultRev <- test_summary_table(testE3 |> filter(bandOrder=="Reverse"), "vx","X Velocity", mfun = list(mean = mean, median = median, sd = sd))
-resultRev$constant 
-resultRev$varied 
+resultRev$constant |> kable() 
+resultRev$varied |> kable() 
 ```
 
 

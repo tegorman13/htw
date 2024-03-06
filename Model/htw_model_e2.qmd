@@ -1,8 +1,9 @@
 ---
 title: HTW Model e2
 author: Thomas Gorman
-date: "`r Sys.Date()`"
+date:  last-modified #"`r Sys.Date()`"
 page-layout: full
+categories: [Modeling, ALM, EXAM, R]
 toc: false
 code-fold: true
 code-tools: true
@@ -18,7 +19,6 @@ pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicte
 options(scipen = 999)
 walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 ```
-
 
 ### Modelling Results
 
@@ -43,9 +43,10 @@ trainAvg <- fd |> filter(expMode2 == "Train") |> group_by(id) |>
 input_layer <<- output_layer <<-  c(100,350,600,800,1000,1200)
 ids2 <- c(1,66,36)
 
-file_name <- "e2_n_iter_50_ntry_200_2506"
+#file_name <- "e2_n_iter_50_ntry_200_2506"
 #file_name <- "n_iter_400_ntry_100_2944"
-file_name <- "e2_n_iter_100_ntry_200_3436"
+#file_name <- "e2_n_iter_100_ntry_200_3436"
+file_name <- "e2_n_iter_200_ntry_300_2344"
 
 ind_fits <- map(list.files(here(paste0('data/abc_reject/'),file_name),full.names=TRUE), readRDS)
 ind_fits_df <- ind_fits |> map(~list(dat=.x[[1]], Model = .x[["Model"]], Fit_Method=.x[["Fit_Method"]]))
