@@ -89,16 +89,18 @@ generate_data <- function(Model, post_samples, data, num_samples = 1, return_dat
 
 nestSbjModelFit <- ind_fits_df %>% nest(.by=c(id,Model,Fit_Method))
 
-# organize test data predictions
- post_dat <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
-    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 50, return_dat="test_data")
-    })) |> 
-   select(Fit_Method,pp,-data) |>  
-   unnest(pp) |>  filter(expMode2=="Test") |> as.data.table()
-# 
-# saveRDS(post_dat, here("data/model_cache/post_dat.rds"))
 
-#post_dat <- readRDS(here("data/model_cache/post_dat.rds"))
+#  post_dat <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
+#     generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 50, return_dat="test_data")
+#     })) |> 
+#    select(Fit_Method,pp,-data) |>  
+#    unnest(pp) |>  filter(expMode2=="Test") |> as.data.table()
+
+# saveRDS(post_dat, here("data/model_cache/post_dat_e2.rds"))
+
+post_dat <- readRDS(here("data/model_cache/post_dat_e2.rds"))
+
+
 
 post_dat_avg <- post_dat |> group_by(id, condit, Model, Fit_Method, x, c, lr, rank) |> 
   mutate(error2 = y - pred) |>
@@ -111,6 +113,13 @@ post_dat_l[, Resp := fifelse(Resp == "y", "Observed",
                              fifelse(Model == "ALM", "ALM", "EXAM"))]
 setorder(post_dat_l, id, Resp)
 #rm(post_dat_avg)
+
+post_dat_l <- post_dat_l |> mutate(dist = case_when(
+    val >= x & val <= x + 200 ~ 0,                 
+    val < x ~ abs(x - val),                       
+    val > x + 200 ~ abs(val - (x + 200)),           
+    TRUE ~ NA_real_                                 
+  ))
 
 
 # organize training data predictions
@@ -212,6 +221,22 @@ theme(legend.title=element_blank(),axis.text.y = element_text(angle = 45, hjust 
   theme(plot.tag.position = c(0, 1))
 
 ```
+
+
+## Deviation Predictions
+
+```{r}
+#| fig-height: 12
+#| fig-width: 11
+ post_dat_l |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  ggplot(aes(x=condit,y=dist,fill=vbLab)) + 
+  stat_bar + 
+  #facet_wrap(~Resp)
+  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~Resp, axes = "all",ncol=3,scale="free")
+
+```
+
 
 ```{r}
 #| label: fig-htw-post-dist

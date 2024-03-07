@@ -1,0 +1,111 @@
+---
+title: "HTW All Exp Testing"
+categories: [Analyses, R, Bayesian]
+page-layout: full
+toc: false
+---
+
+
+
+```{r}
+pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
+               stringr,knitr,ggpattern,ggh4x)
+conflict_prefer_all("dplyr", quiet = TRUE)
+options(scipen = 999)
+walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+
+e1 <- readRDS(here("data/e1_08-21-23.rds")) 
+e2 <- readRDS(here("data/e2_08-04-23.rds")) 
+e3 <- readRDS(here("data/e3_08-04-23.rds")) 
+
+# combine all 3 experiments
+d <- rbind(e1,e2,e3)
+
+
+
+```
+
+
+## Testing Deviation
+```{r}
+#| fig-height: 12
+#| fig-width: 11
+
+d |> filter(expMode2=="Test") |> ggplot(aes(x = vb, y = dist,fill=condit)) +
+  stat_bar
+
+d |> filter(expMode2=="Test") |> ggplot(aes(x = condit, y = dist,fill=vb)) +
+  stat_bar + facet_wrap(~Exp)
+
+d |> filter(expMode2=="Test") |> ggplot(aes(x = condit, y = dist,fill=vb)) +
+  stat_bar + facet_wrap(fb~bandOrder)
+
+k1 <- d |>
+  filter(expMode2 == "Test") |>
+  group_by(condit, bandType, fb, bandOrder, vb) |>  # No need for 'id' if not used later
+  summarise(se_dist = sd(dist) / sqrt(n()),dist = mean(dist))
+
+ep1 <- d |>
+  filter(expMode2 == "Test") |>
+  group_by(condit, bandType, fb, bandOrder, vb) |>  # No need for 'id' if not used later
+  summarise(se_dist = sd(dist) / sqrt(n()),dist = mean(dist)) |>
+  ggplot(aes(x = condit, y = dist, fill = vb, pattern=bandType)) +
+   geom_bar_pattern(stat = "identity", 
+                    position = position_dodge()) + 
+  geom_errorbar(aes(ymin = dist - se_dist, ymax = dist + se_dist),position = position_dodge()) +
+  facet_wrap2(~fb*bandOrder,axes="all") +
+  labs(title="Testing Deviation",pattern = "Band Type") +
+   scale_pattern_manual(values = c("stripe", "circle"))
+
+
+ep2 <- d |>
+  filter(expMode2 == "Test") |>
+  group_by(condit, bandType, fb, bandOrder, vb) |>  # No need for 'id' if not used later
+  summarise(se_dist = sd(dist) / sqrt(n()),dist = mean(dist)) |>
+  ggplot(aes(x = vb, y = dist, fill = condit, pattern=bandType)) +
+   geom_bar_pattern(stat = "identity", 
+                    position = position_dodge()) + 
+  geom_errorbar(aes(ymin = dist - se_dist, ymax = dist + se_dist),position = position_dodge()) +
+  facet_wrap2(~fb*bandOrder,axes="all") +
+  labs(title="Testing Deviation",pattern = "Band Type") +
+   scale_pattern_manual(values = c("stripe", "circle"))
+
+ep1/ep2
+
+```
+
+
+## Testing Vx
+```{r}
+#| fig-height: 12
+#| fig-width: 11
+
+
+ep1 <- d |>
+  filter(expMode2 == "Test") |>
+  group_by(condit, bandType, fb, bandOrder, vb) |>  # No need for 'id' if not used later
+  summarise(se_vx = sd(vx) / sqrt(n()),vx = mean(vx)) |>
+  ggplot(aes(x = condit, y = vx, fill = vb, pattern=bandType)) +
+   geom_bar_pattern(stat = "identity", 
+                    position = position_dodge()) + 
+  geom_errorbar(aes(ymin = vx - se_vx, ymax = vx + se_vx),position = position_dodge()) +
+  facet_wrap2(~fb*bandOrder,axes="all") +
+  labs(title="Testing Vx",pattern = "Band Type") +
+   scale_pattern_manual(values = c("stripe", "circle"))
+
+
+ep2 <- d |>
+  filter(expMode2 == "Test") |>
+  group_by(condit, bandType, fb, bandOrder, vb) |>  # No need for 'id' if not used later
+  summarise(se_vx = sd(vx) / sqrt(n()),vx = mean(vx)) |>
+  ggplot(aes(x = vb, y = vx, fill = condit, pattern=bandType)) +
+   geom_bar_pattern(stat = "identity", 
+                    position = position_dodge()) + 
+  geom_errorbar(aes(ymin = vx - se_vx, ymax = vx + se_vx),position = position_dodge()) +
+  facet_wrap2(~fb*bandOrder,axes="all") +
+  labs(title="Testing Vx",pattern = "Band Type") +
+   scale_pattern_manual(values = c("stripe", "circle"))
+
+ep1/ep2
+
+```

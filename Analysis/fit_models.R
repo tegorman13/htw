@@ -2,7 +2,9 @@
 source(here::here("Functions", "packages.R"))
 options(brms.backend="cmdstanr",mc.cores=4)
 
-
+pacman::p_load(tidyverse,tidybayes,brms, lme4, bayesplot)
+# cmdstanr::rebuild_cmdstan()  
+             
 test <- readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Test") 
 testE2 <- readRDS(here("data/e2_08-04-23.rds")) |> filter(expMode2 == "Test") 
 testE3 <- readRDS(here("data/e3_08-04-23.rds")) |> filter(expMode2 == "Test") 
@@ -16,6 +18,32 @@ prior = c(prior(normal(30,200),lb=0,class= Intercept))
 
 
 
+### combo
+e1 <- readRDS(here("data/e1_08-21-23.rds")) 
+e2 <- readRDS(here("data/e2_08-04-23.rds")) 
+e3 <- readRDS(here("data/e3_08-04-23.rds")) 
+d <- rbind(e1,e2,e3)
+test <- d |> filter(expMode2 == "Test")
+
+modelName <- "combo_testVxBand_RF_5K.rds"
+combo_vx <- brm(vx ~ condit * fb * bandOrder * bandInt + (1 + bandInt|id),
+                data=test,file=paste0(here::here("data/model_cache",modelName)),
+                iter=1000,chains=2,silent=0, prior=prior, 
+                control=list(adapt_delta=0.94, max_treedepth=11))
+
+modelName <- "combo_testDistBand_RF_2K.rds"
+combo_dist <- brm(dist ~ condit * fb * bandOrder * bandInt + (1 + bandInt|id),
+                data=test,file=paste0(here::here("data/model_cache",modelName)),
+                iter=2000,chains=4,silent=0, prior=prior, 
+                control=list(adapt_delta=0.94, max_treedepth=11))
+
+# combo_vx <- brm(vx ~ condit * fb * bandOrder * bandInt,
+#                 data=test,
+#                 iter=1000,chains=2,silent=0, prior=prior, 
+#                 control=list(adapt_delta=0.94, max_treedepth=11))
+
+bayestestR::describe_posterior(combo_vx)
+bayestestR::describe_posterior(combo_dist)
 
 ######## Testing Models Fit to All 6 Bands
 
