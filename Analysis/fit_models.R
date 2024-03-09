@@ -9,6 +9,14 @@ test <- readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Test")
 testE2 <- readRDS(here("data/e2_08-04-23.rds")) |> filter(expMode2 == "Test") 
 testE3 <- readRDS(here("data/e3_08-04-23.rds")) |> filter(expMode2 == "Test") 
 
+e1 <- readRDS(here("data/e1_08-21-23.rds")) 
+e2 <- readRDS(here("data/e2_08-04-23.rds")) 
+e3 <- readRDS(here("data/e3_08-04-23.rds")) 
+d <- rbind(e1,e2,e3)
+testAll <- d |> filter(expMode2 == "Test")
+
+
+
 prior = c(prior(normal(30,200),lb=0,class= Intercept))
 
 
@@ -18,32 +26,100 @@ prior = c(prior(normal(30,200),lb=0,class= Intercept))
 
 
 
-### combo
-e1 <- readRDS(here("data/e1_08-21-23.rds")) 
-e2 <- readRDS(here("data/e2_08-04-23.rds")) 
-e3 <- readRDS(here("data/e3_08-04-23.rds")) 
-d <- rbind(e1,e2,e3)
-test <- d |> filter(expMode2 == "Test")
+
+## combo
 
 modelName <- "combo_testVxBand_RF_5K.rds"
 combo_vx <- brm(vx ~ condit * fb * bandOrder * bandInt + (1 + bandInt|id),
-                data=test,file=paste0(here::here("data/model_cache",modelName)),
-                iter=1000,chains=2,silent=0, prior=prior, 
+                data=testAll,file=paste0(here::here("data/model_cache",modelName)),
+                iter=5000,chains=4,silent=0, prior=prior, 
                 control=list(adapt_delta=0.94, max_treedepth=11))
 
-modelName <- "combo_testDistBand_RF_2K.rds"
+modelName <- "combo_testDistBand_RF_5K.rds"
 combo_dist <- brm(dist ~ condit * fb * bandOrder * bandInt + (1 + bandInt|id),
-                data=test,file=paste0(here::here("data/model_cache",modelName)),
-                iter=2000,chains=4,silent=0, prior=prior, 
+                data=testAll,file=paste0(here::here("data/model_cache",modelName)),
+                iter=5000,chains=4,silent=0, prior=prior, 
                 control=list(adapt_delta=0.94, max_treedepth=11))
-
-# combo_vx <- brm(vx ~ condit * fb * bandOrder * bandInt,
-#                 data=test,
-#                 iter=1000,chains=2,silent=0, prior=prior, 
-#                 control=list(adapt_delta=0.94, max_treedepth=11))
 
 bayestestR::describe_posterior(combo_vx)
 bayestestR::describe_posterior(combo_dist)
+
+## bandType combo
+
+
+modelName <- "combo_testVxBand_bt_RF_5K.rds"
+combo_vx_bt <- brm(vx ~ condit * fb * bandOrder * bandInt + (1 + bandInt|id),
+                data=testAll,file=paste0(here::here("data/model_cache",modelName)),
+                iter=5000,chains=4,silent=0, prior=prior, 
+                control=list(adapt_delta=0.94, max_treedepth=11))
+
+modelName <- "combo_testDistBand_bt_RF_5K.rds"
+combo_dist_bt <- brm(dist ~ condit * fb * bandOrder * bandInt + (1 + bandInt|id),
+                  data=testAll,file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4,silent=0, prior=prior, 
+                  control=list(adapt_delta=0.94, max_treedepth=11))
+
+bayestestR::describe_posterior(combo_vx_bt)
+bayestestR::describe_posterior(combo_dist_bt)
+
+
+######## Testing Models Fit to All 6 Bands - bandType
+
+modelName <- "e1_testDistBand_bt_RF_5K"
+e1_distBMM <- brm(dist ~ condit * bandInt * bandType + (1 + bandInt|id),
+                  data=test,file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4,silent=0, prior=prior,
+                  control=list(adapt_delta=0.94, max_treedepth=11)
+                  )
+
+
+modelName <- "e1_testVxBand_bt_RF_5k"
+e1_vxBMM <- brm(vx ~ condit * bandInt * bandType + (1 + bandInt|id),
+                data=test,file=paste0(here::here("data/model_cache", modelName)),
+                iter=5000,chains=4,silent=0, prior=prior, 
+                control=list(adapt_delta=0.94, max_treedepth=11))
+
+###
+
+modelName <- "e2_testDistBand_bt_RF_5K"
+e2_distBMM <- brm(dist ~ condit * bandInt * bandType + (1 + bandInt|id),
+                  data=testE2,file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4,silent=0, prior=prior,
+                  control=list(adapt_delta=0.94, max_treedepth=11)
+)
+
+
+modelName <- "e2_testVxBand_bt_RF_5k"
+e2_vxBMM <- brm(vx ~ condit * bandInt * bandType + (1 + bandInt|id),
+                data=testE2,file=paste0(here::here("data/model_cache", modelName)),
+                iter=5000,chains=4,silent=0, prior=prior, 
+                control=list(adapt_delta=0.94, max_treedepth=11))
+
+
+###
+
+modelName <- "e3_testDistBand_bt_RF_5K"
+e3_distBMM <- brm(dist ~ condit * bandInt*bandOrder * bandType + (1 + bandInt|id),
+                  data=testE3,file=paste0(here::here("data/model_cache",modelName)),
+                  iter=5000,chains=4,silent=0, prior=prior,
+                  control=list(adapt_delta=0.94, max_treedepth=11)
+)
+
+
+modelName <- "e3_testVxBand_bt_RF_5k"
+e3_vxBMM <- brm(vx ~ condit * bandInt*bandOrder * bandType + (1 + bandInt|id),
+                data=testE3,file=paste0(here::here("data/model_cache", modelName)),
+                iter=5000,chains=4,silent=0, prior=prior, 
+                control=list(adapt_delta=0.94, max_treedepth=11))
+
+
+####
+
+
+
+
+
+
 
 ######## Testing Models Fit to All 6 Bands
 
@@ -74,17 +150,19 @@ e2_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
 
 
 modelName <- "e3_testDistBand_RF_5K"
-e3_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
+e3_distBMM <- brm(dist ~ condit *bandOrder* bandInt + (1 + bandInt|id),
                       data=testE3,file=paste0(here::here("data/model_cache",modelName)),
-                      iter=5000,chains=4)
+                      iter=5000,chains=4, max_treedepth=11)
 
 
-e3_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
+e3_vxBMM <- brm(vx ~ condit * bandOrder * bandInt + (1 + bandInt|id),
                         data=testE3,file=paste0(here::here("data/model_cache", "e3_testVxBand_RF_5k")),
                         iter=5000,chains=4,silent=0,
                         control=list(adapt_delta=0.90, max_treedepth=11))
 
 
+bayestestR::describe_posterior(e3_distBMM)
+bayestestR::describe_posterior(e3_vxBMM)
 
 
 
