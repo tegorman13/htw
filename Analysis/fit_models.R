@@ -4,7 +4,11 @@ options(brms.backend="cmdstanr",mc.cores=4)
 
 pacman::p_load(tidyverse,tidybayes,brms, lme4, bayesplot)
 # cmdstanr::rebuild_cmdstan()  
-             
+
+conflict_prefer_all("dplyr", quiet = TRUE)
+conflict_prefer_all("brms", quiet = TRUE)
+
+           
 test <- readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Test") 
 testE2 <- readRDS(here("data/e2_08-04-23.rds")) |> filter(expMode2 == "Test") 
 testE3 <- readRDS(here("data/e3_08-04-23.rds")) |> filter(expMode2 == "Test") 
@@ -69,7 +73,7 @@ modelName <- "e1_testDistBand_bt_RF_5K"
 e1_distBMM <- brm(dist ~ condit * bandInt * bandType + (1 + bandInt|id),
                   data=test,file=paste0(here::here("data/model_cache",modelName)),
                   iter=5000,chains=4,silent=0, prior=prior,
-                  control=list(adapt_delta=0.94, max_treedepth=11)
+                  control=list(adapt_delta=0.94, max_treedepth=13)
                   )
 
 
@@ -77,7 +81,7 @@ modelName <- "e1_testVxBand_bt_RF_5k"
 e1_vxBMM <- brm(vx ~ condit * bandInt * bandType + (1 + bandInt|id),
                 data=test,file=paste0(here::here("data/model_cache", modelName)),
                 iter=5000,chains=4,silent=0, prior=prior, 
-                control=list(adapt_delta=0.94, max_treedepth=11))
+                control=list(adapt_delta=0.94, max_treedepth=13))
 
 ###
 
@@ -85,7 +89,7 @@ modelName <- "e2_testDistBand_bt_RF_5K"
 e2_distBMM <- brm(dist ~ condit * bandInt * bandType + (1 + bandInt|id),
                   data=testE2,file=paste0(here::here("data/model_cache",modelName)),
                   iter=5000,chains=4,silent=0, prior=prior,
-                  control=list(adapt_delta=0.94, max_treedepth=11)
+                  control=list(adapt_delta=0.94, max_treedepth=13)
 )
 
 
@@ -93,7 +97,7 @@ modelName <- "e2_testVxBand_bt_RF_5k"
 e2_vxBMM <- brm(vx ~ condit * bandInt * bandType + (1 + bandInt|id),
                 data=testE2,file=paste0(here::here("data/model_cache", modelName)),
                 iter=5000,chains=4,silent=0, prior=prior, 
-                control=list(adapt_delta=0.94, max_treedepth=11))
+                control=list(adapt_delta=0.94, max_treedepth=13))
 
 
 ###
@@ -102,7 +106,7 @@ modelName <- "e3_testDistBand_bt_RF_5K"
 e3_distBMM <- brm(dist ~ condit * bandInt*bandOrder * bandType + (1 + bandInt|id),
                   data=testE3,file=paste0(here::here("data/model_cache",modelName)),
                   iter=5000,chains=4,silent=0, prior=prior,
-                  control=list(adapt_delta=0.94, max_treedepth=11)
+                  control=list(adapt_delta=0.94, max_treedepth=13)
 )
 
 
@@ -110,7 +114,7 @@ modelName <- "e3_testVxBand_bt_RF_5k"
 e3_vxBMM <- brm(vx ~ condit * bandInt*bandOrder * bandType + (1 + bandInt|id),
                 data=testE3,file=paste0(here::here("data/model_cache", modelName)),
                 iter=5000,chains=4,silent=0, prior=prior, 
-                control=list(adapt_delta=0.94, max_treedepth=11))
+                control=list(adapt_delta=0.94, max_treedepth=13))
 
 
 ####

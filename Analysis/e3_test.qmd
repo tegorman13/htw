@@ -4,10 +4,14 @@ categories: [Analyses, R, Bayesian]
 date:  last-modified #"`r Sys.Date()`"
 ---
 
+
 ```{r setup3b, include=FALSE}
 source(here::here("Functions", "packages.R"))
 testE3 <- readRDS(here("data/e3_08-04-23.rds")) |> filter(expMode2 == "Test") 
-options(brms.backend="cmdstanr",mc.cores=4)
+#options(brms.backend="cmdstanr",mc.cores=4)
+conflict_prefer_all("brms", quiet = TRUE)
+
+
 e3Sbjs <- testE3 |> group_by(id,condit,bandOrder) |> summarise(n=n())
 testE3Avg <- testE3 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
@@ -64,11 +68,21 @@ testE3 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
 # contrasts(testE3$vb)
 
 modelName <- "e3_testDistBand_RF_5K"
-e3_distBMM <- brm(dist ~ condit * bandInt + (1 + bandInt|id),
+e3_distBMM <- brm(dist ~ condit * bandOrder * bandInt + (1 + bandInt|id),
                       data=testE3,file=paste0(here::here("data/model_cache",modelName)),
                       iter=5000,chains=4)
-mp3 <- GetModelStats(e3_distBMM) |> kable(escape=F,booktabs=T)
-mp3
+
+
+#bayestestR::describe_posterior(e3_distBMM)
+m1 <- as.data.frame(describe_posterior(e3_distBMM, centrality = "Mean"))
+m2 <- fixef(e3_distBMM)
+mp3 <- m1[, c(1,2,4,5,6)]
+colnames(mp3) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+                        
+mp3 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_replace_all(Term, "b_bandInt", "Band")) |>
+  kable(escape=F,booktabs=T)
 
 
 cd1 <- get_coef_details(e3_distBMM, "conditVaried")
@@ -88,7 +102,7 @@ The effect of training condition in Experiment 3 showed a similar pattern to Exp
 #| fig-cap: e3. Conditioinal Effect of Training Condition and Band. Ribbon indicated 95% Credible Intervals. 
 
 
-e3_distBMM |> emmeans( ~condit + bandInt, 
+e3_distBMM |> emmeans( ~condit * bandInt * bandOrder, 
                        at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
   gather_emmeans_draws() |>
   ggplot(aes(x = bandInt, y = .value, color = condit, fill = condit)) + 
@@ -98,6 +112,7 @@ e3_distBMM |> emmeans( ~condit + bandInt,
   scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
                      labels = levels(testE3$vb), 
                      limits = c(0, 1400)) +
+  facet_wrap(~bandOrder) +
   theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
 
 
@@ -153,12 +168,25 @@ resultRev$varied |> kable()
 ```{r}
 #| label: tbl-e3-bmm-vx
 #| tbl-cap: "Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
-e3_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
+e3_vxBMM <- brm(vx ~ condit * bandOrder * bandInt + (1 + bandInt|id),
                         data=testE3,file=paste0(here::here("data/model_cache", "e3_testVxBand_RF_5k")),
                         iter=5000,chains=4,silent=0,
                         control=list(adapt_delta=0.94, max_treedepth=13))
-mt4 <-GetModelStats(e3_vxBMM ) |> kable(escape=F,booktabs=T)
-mt4
+
+# mt4 <-GetModelStats(e3_vxBMM ) |> kable(escape=F,booktabs=T)
+# mt4
+
+#bayestestR::describe_posterior(e3_vxBMM)
+m1 <- as.data.frame(describe_posterior(e3_vxBMM, centrality = "Mean"))
+m2 <- fixef(e3_vxBMM)
+mp3 <- m1[, c(1,2,4,5,6)]
+colnames(mp3) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+                        
+mp3 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_replace_all(Term, "b_bandInt", "Band")) |>
+  kable(escape=F,booktabs=T)
+
 
 cd1 <- get_coef_details(e3_vxBMM, "conditVaried")
 sc1 <- get_coef_details(e3_vxBMM, "bandInt")
@@ -176,7 +204,7 @@ Slope estimates for experiment 3 suggest that participants were capable of disti
 #| label: fig-e3-bmm-vx
 #| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. 
 
-e3_vxBMM |> emmeans( ~condit + bandInt, 
+e3_vxBMM |> emmeans( ~condit* bandOrder* bandInt, 
                        at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
   gather_emmeans_draws() |>
   ggplot(aes(x = bandInt, y = .value, color = condit, fill = condit)) + 
@@ -186,6 +214,7 @@ e3_vxBMM |> emmeans( ~condit + bandInt,
   scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
                      labels = levels(testE3$vb), 
                      limits = c(0, 1400)) +
+  facet_wrap(~bandOrder) +
   theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
 ```
 
@@ -229,7 +258,7 @@ random_effects <- e3_vxBMM |>
 
   indvSlopes <- indvDraws |> group_by(id) |> median_qi(Slope,SlopeInt, Intercept,b_Intercept,b_bandInt) |>
   left_join(e3Sbjs, by=join_by(id)) |> group_by(condit) |>
-    select(id,condit,Intercept,b_Intercept,starts_with("Slope"),b_bandInt, n) |>
+    select(id,condit,bandOrder,Intercept,b_Intercept,starts_with("Slope"),b_bandInt, n) |>
   mutate(rankSlope=rank(Slope)) |> arrange(rankSlope)   |> ungroup()
  
   
@@ -237,6 +266,14 @@ random_effects <- e3_vxBMM |>
     reframe(enframe(quantile(SlopeInt, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "SlopeInt")) |> 
   pivot_wider(names_from=quantile,values_from=SlopeInt,names_prefix="Q_") |>
   group_by(Condition) |>
+  summarise(across(starts_with("Q"), list(mean = mean))) |> kable()
+  
+  
+    
+  indvSlopes |> mutate(Condition=condit) |>  group_by(Condition, bandOrder) |> 
+    reframe(enframe(quantile(SlopeInt, c(0.0,0.25, 0.5, 0.75,1)), "quantile", "SlopeInt")) |> 
+  pivot_wider(names_from=quantile,values_from=SlopeInt,names_prefix="Q_") |>
+  group_by(bandOrder,Condition) |>
   summarise(across(starts_with("Q"), list(mean = mean))) |> kable()
 
 ```
@@ -261,14 +298,14 @@ indvSlopes |>
 
 
 indvSlopes |> 
-  left_join(e3Sbjs, by=c("id","condit")) |>
+  #left_join(e3Sbjs, by=c("id","condit")) |>
   ggplot(aes(y=rankSlope, x=SlopeInt,fill=condit,color=condit)) + 
   geom_pointrange(aes(xmin=SlopeInt.lower , xmax=SlopeInt.upper)) + 
   labs(x="Estimated Slope", y="Participant")  + 
   facet_wrap(~bandOrder+condit) + 
   {
-  ggplot(indvSlopes |> 
-    left_join(e3Sbjs, by=c("id","condit")), 
+  ggplot(indvSlopes,
+    #left_join(e3Sbjs, by=c("id","condit")), 
     aes(x = SlopeInt, color = condit)) + 
     geom_density() + 
         facet_wrap(~bandOrder) +
