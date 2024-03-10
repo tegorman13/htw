@@ -24,6 +24,73 @@ testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
 
 
 
+```{r}
+
+plot_violin_condit <- function(fcondit, fvb, pvar) {
+
+  full_range <- testAvg |> pull({{pvar}}) |> range(na.rm=TRUE)
+  testAvg |>
+    filter(condit == fcondit, vb==fvb) |> 
+    ggplot(aes(.data[[pvar]])) +
+    geom_density(fill = 'dodgerblue4') +
+    theme_void() +
+    coord_cartesian(xlim = full_range)
+}
+
+unique_combinations = testAvg |> ungroup() |>
+  distinct(condit, vb)
+
+testAvg |> group_by(condit,vb) |> 
+  summarize(mean=mean(dist),sd=sd(dist)) |> 
+  mutate(Distribution=vb) |> 
+  gt() |>
+  tab_spanner(
+    label = 'Training Condit',
+    columns = -condit
+  ) |> 
+  cols_label_with(fn = str_to_title) |> 
+  fmt_number(decimals = 2) |> 
+  cols_align('left', columns = condit) |> 
+  text_transform(
+    locations = cells_body(columns = 'Distribution'),
+    fn = function(column) {
+      map2(unique_combinations$condit, unique_combinations$vb,~plot_violin_condit(.x,.y,'vx')) |>
+        ggplot_image(height = px(50), aspect_ratio = 3)
+    }
+  )
+
+vars_to_plot <- c('dist', 'vx')
+
+tables <- map(vars_to_plot, function(pvar) {
+  testAvg |>
+    group_by(condit, vb) |>
+    summarize(mean = mean(.data[[pvar]]), sd = sd(.data[[pvar]])) |>
+    mutate(Distribution = vb) |>
+    gt() |>
+    tab_spanner(
+      label = 'Training Condit',
+      columns = -condit
+    ) |>
+    cols_label_with(fn = str_to_title) |>
+    fmt_number(decimals = 2) |>
+    cols_align('left', columns = condit) |>
+    text_transform(
+      locations = cells_body(columns = 'Distribution'),
+      fn = function(column) {
+        map2(unique_combinations$condit, unique_combinations$vb, ~plot_violin_condit(.x, .y, pvar)) |>
+          ggplot_image(height = px(50), aspect_ratio = 3)
+      }
+    )
+})
+print(tables[[1]])
+print(tables[[2]])
+
+library(gtExtras)
+gt_two_column_layout(tables)
+
+
+```
+
 ```{r fig.width=12, fig.height=11}
 
 

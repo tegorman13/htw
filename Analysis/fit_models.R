@@ -120,7 +120,9 @@ e3_vxBMM <- brm(vx ~ condit * bandInt*bandOrder * bandType + (1 + bandInt|id),
 ####
 
 
-
+bayestestR::describe_posterior(e3_vxBMM)
+bayestestR::describe_posterior(e1_vxBMM)
+bayestestR::describe_posterior(e1_distBMM)
 
 
 
