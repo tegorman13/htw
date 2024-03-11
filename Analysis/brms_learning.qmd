@@ -25,7 +25,109 @@ options(brms.backend="cmdstanr",mc.cores=4)
 ```
 
 
+```{r}
 
+prior <- c(
+  prior(normal(200, 200), lb=0, nlpar = "a"),
+  prior(normal(800, 300), lb=0,  nlpar = "b"),
+  prior(normal(.3, .2), lb=0,  nlpar = "c")
+)
+
+prior <- c(
+  prior(normal(200, 200), lb=0, nlpar = "a"),
+  prior(normal(800, 300), lb=0,  nlpar = "b"),
+  prior(lognormal(.3, .2), lb=0,  nlpar = "c")
+)
+
+
+
+nlform <- bf(
+  dist ~ a + (b - a) * exp(-c * gt.train),
+  a ~ 0 + condit + (1|bandInt) + (1|id), 
+  b ~ 0 + condit + (1|bandInt)  + (1|id), 
+  c ~ 0 + condit + (1|id), 
+  nl = TRUE 
+)
+
+fit <- brm(
+  formula = nlform,
+  data = e1 |> filter(expMode2=="Train"),
+  family = gaussian(), # Assuming 'dist' is continuous; adjust as needed
+  prior = prior,
+  silent=0,
+  control = list(adapt_delta = 0.90), # Adjust for convergence issues if necessary
+  chains = 2, iter = 600 # Adjust these values based on your needs
+)
+
+summary(fit)
+bayestestR::describe_posterior(fit)
+coef(fit)$id |> as_tibble(rownames="id") |> select(id,starts_with("Esti")) |> print(n=15)
+
+
+```
+
+
+```{r}
+walk(c("brms","dplyr"), conflict_prefer_all, quiet = TRUE)
+options(brms.backend="cmdstanr",mc.cores=2)
+
+nlform <- bf(
+  dist ~ a + (b - a) * exp(-c * gt.train),
+  a ~ 1 + condit + vb, # a as a function of condit and vb
+  b ~ 1 + condit + vb, # b as a function of condit and vb
+  c ~ 1 + condit + vb, # c as a function of condit and vb
+  nl = TRUE # Indicates this is a non-linear model
+)
+
+# Define the prior (adjust according to your domain knowledge)
+prior <- c(
+  prior(normal(150, 50), nlpar = "a"),
+  prior(normal(800, 200), nlpar = "b"),
+  prior(normal(.3, .1), nlpar = "c")
+)
+
+
+fit <- brm(
+  formula = nlform,
+  data = e1 |> filter(expMode2=="Train"),
+  family = gaussian(), # Assuming 'dist' is continuous; adjust as needed
+  prior = prior,
+  control = list(adapt_delta = 0.95), # Adjust for convergence issues if necessary
+  chains = 2, iter = 1000 # Adjust these values based on your needs
+)
+
+# Display the summary of the model
+summary(fit)
+
+# To check diagnostics
+plot(fit)
+
+
+formula <- bf(dist ~ a + (b - a) * exp(-c * gt.train),
+              a + b + c ~ 1 + condit*vb,
+              nl = TRUE)
+
+# Fit the model with brms
+fit <- brm(formula,
+           data = filtered_data,
+           family = gaussian,
+           chains = 4, cores = 4,
+           control = list(adapt_delta = 0.99, max_treedepth = 15),
+           iter = 4000, warmup = 1000)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+### OLD
 
 ```{r}
 

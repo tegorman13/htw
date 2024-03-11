@@ -1,0 +1,393 @@
+
+
+
+```{r}
+pacman::p_load(dplyr,purrr,tidyr,here,conflicted,ggpmisc)
+walk(c("dplyr"), conflict_prefer_all, quiet = TRUE)
+walk(c("Display_Functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+
+e1 <- readRDS(here("data/e1_08-21-23.rds")) 
+e2 <- readRDS(here("data/e2_08-04-23.rds")) 
+e3 <- readRDS(here("data/e3_08-04-23.rds")) 
+d <- rbind(e1,e2,e3)
+
+```
+
+
+```{r}
+#| fig-height: 13
+#| fig-width: 12
+
+learn_curve_plot <- function(df, x_var, y_var, color_var, facet_var = NULL, groupVec, nbins, labels = FALSE, y_label=NULL) {
+
+  if (is.null(y_label)) {
+    y_label <- deparse(substitute(y_var))
+  }
+  df |> 
+    group_by(!!!syms(groupVec)) |> 
+    mutate(Trial_Bin = cut( {{x_var}}, breaks = seq(1, max({{x_var}}),length.out=nbins+1),include.lowest = TRUE, labels = labels)) |> 
+    ggplot(aes(x = Trial_Bin, y = {{ y_var }}, color = {{ color_var }})) +
+    stat_summary(aes(color = {{ color_var }}), geom = "line", fun = mean) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
+    #facet_wrap(vars({{facet_var}}), scales = 'free_y') + 
+    labs(y = y_label) + # Set the y axis label dynamically
+    scale_x_continuous(breaks = seq(1, nbins + 1)) 
+}
+
+nb=6
+e1 |> filter(expMode=="train") %>% 
+    learn_curve_plot(gt.train,dist,condit,facet_var=vb,groupVec = c("id", "condit","vb"),nbins=nb) + facet_wrap(~vb)
+
+
+d |> filter(expMode=="train") %>% 
+    learn_curve_plot(gt.train,dist,condit,facet_var=c("Exp","vb"),groupVec = c("id", "condit","vb"),nbins=nb) + facet_wrap(~bandOrder*fb*vb,ncol=3)
+
+# d |> group_by(id,condit,vb) |> ggplot(aes(x=gt.train,y=dist,col=condit)) + geom_smooth() + 
+#     facet_wrap(~bandOrder*fb*vb,ncol=3)
+# 
+# d |> group_by(gt.train,condit) |> ggplot(aes(x=gt.train,y=dist,col=condit)) + geom_smooth(method="loess") + 
+#     facet_wrap(~bandOrder*fb*vb,ncol=3)
+
+
+```
+
+
+
+```{r}
+#| fig-height: 13
+#| fig-width: 12
+nb=3
+formula <- y ~ poly(x,3,raw=TRUE)
+formula <- y ~ poly(x,2,raw=TRUE)
+
+d  |> filter(expMode=="train") %>% group_by(id,gt.train,condit,vb) |>
+    select(id,condit,bandOrder,fb,gt.train,vb,expMode,dist) |>
+    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, nb + 1), include.lowest = TRUE, labels = FALSE)) |> 
+    ggplot(aes(x=Trial_Bin,y=dist,col=condit)) + 
+    geom_smooth(method="lm",formula=formula) + 
+    facet_wrap(~bandOrder*fb*vb,ncol=3)
+
+d  |> filter(expMode=="train") %>% group_by(id,gt.train,condit,vb) |>
+    select(id,condit,bandOrder,fb,gt.train,vb,expMode,dist) |>
+    ggplot(aes(x=gt.train,y=dist,col=condit)) + 
+    geom_smooth(method="lm",formula=formula) + 
+    facet_wrap(~bandOrder*fb*vb,ncol=3)
+
+d  |> filter(expMode=="train",gt.train<=60) %>% group_by(id,gt.train,condit,vb) |>
+    ggplot(aes(x=gt.train,y=dist,col=condit)) + 
+    geom_smooth(method="lm",formula=formula) + 
+    facet_wrap(~bandOrder*fb*vb,ncol=3) + 
+  stat_poly_eq(geom = "text", aes(label = after_stat(eq.label)),
+               label.x = c(60, 0), label.y = c(-0.1, 400.1), hjust = "inward",
+               formula = formula)
+
+
+micmen.formula <- y ~ SSmicmen(x, Vm, K)
+d  |> filter(expMode=="train",gt.train<=60) %>% group_by(id,gt.train,condit,vb) |>
+    ggplot(aes(x=gt.train,y=dist,col=condit)) + 
+    geom_smooth(method="nls",formula = micmen.formula,se=FALSE) + 
+    facet_wrap(~bandOrder*fb*vb,ncol=3)
+
+
+d |>
+  filter(expMode == "train", gt.train <= 60) |>
+  group_by(id, gt.train, condit, vb) |>
+  ggplot(aes(x = gt.train, y = dist, col = condit)) +
+  geom_smooth(method = "nls", formula = micmen.formula, se = FALSE, method.args = list(start = list(Vm = 1, K = 1))) +
+  facet_wrap(~bandOrder * fb * vb, ncol = 3)
+
+#bf(dist ~ betaMu + (alphaMu - betaMu) * exp(-exp(gammaMu) * gt.train)
+
+
+exp_model_formula <- y ~ a * exp(b * x)
+d |> filter(expMode == "train", gt.train <= 60) %>%
+  group_by(id, gt.train, condit, vb) %>%
+  ggplot(aes(x = gt.train, y = dist, col = condit)) +
+  geom_smooth(method = "nls", formula = exp_model_formula, se = FALSE, method.args = list(start = list(a = 1, b = 0.1))) +
+  facet_wrap(~bandOrder * fb * vb, ncol = 3)
+
+
+
+
+
+
+nb=3
+e1 |> group_by(id) |> 
+    select(id,condit,bandOrder,gt.train,vb,expMode2,dist) |>
+    mutate(Block=case_when(expMode2=="Train" ~ cut(gt.train,breaks=seq(1,max(gt.train), length.out=nb+1),include.lowest=TRUE,labels=FALSE),expMode2=="Test" ~ nb+1)) %>%
+     ggplot(aes(x=Block,y=dist,col=condit)) + 
+    geom_smooth(method="lm", formula= formula) + 
+    facet_wrap(~vb)
+
+
+
+```
+
+
+```{r}
+#| fig-height: 13
+#| fig-width: 12
+three_param_exp_formula <- y ~ a + (b - a) * exp(-c * x)
+d |> filter(expMode == "train", gt.train <= 60) %>%
+  group_by(id, gt.train, condit, vb) %>%
+  ggplot(aes(x = gt.train, y = dist, col = condit)) +
+  geom_smooth(method = "nls", 
+              formula = three_param_exp_formula, 
+              method.args = list(start = list(a = 100, b = 500, c = 0.01)), # Starting values for a, b, c
+              se = FALSE) +
+  facet_wrap(~bandOrder * fb * vb, ncol = 3) 
+
+
+two_param_exp_formula <- y ~ a  * exp(-c * x)
+d |> filter(expMode == "train") %>%
+  group_by(id, gt.train, condit, vb) %>%
+  ggplot(aes(x = gt.train, y = dist, col = condit)) +
+  geom_smooth(method = "nls", 
+              formula = two_param_exp_formula, 
+              method.args = list(start = list(a = 500, c = 0.09)), # Starting values for a, b, c
+              se = FALSE) +
+  facet_wrap(~bandOrder * fb * vb, ncol = 3) 
+```
+
+
+
+```{r}
+#| fig-height: 13
+#| fig-width: 12
+#| 
+filtered_data <- d |> 
+  filter(expMode == "train", gt.train <= 60)
+
+# Fit the model
+nls_fit <- nls(dist ~ a + (b - a) * exp(-c * gt.train), 
+               data = filtered_data, 
+               start = list(a = 100, b = 500, c = 0.01))
+
+# Extract coefficients
+coeffs <- coef(nls_fit)
+
+# Create label (customize as needed)
+label_text <- sprintf("y = %.2f + (%.2f - %.2f) * exp(-%.2f * x)", coeffs["a"], coeffs["b"], coeffs["a"], coeffs["c"])
+
+# Plot with custom label
+filtered_data %>%
+  ggplot(aes(x = gt.train, y = dist, col = condit)) +
+  geom_smooth(method = "nls", 
+              formula = y ~ a + (b - a) * exp(-c * x), 
+              method.args = list(start = list(a = 100, b = 500, c = 0.01)),
+              se = FALSE) +
+  ggpp::annotate("text", x = Inf, y = Inf, label = label_text, hjust = 1, vjust = 1, size = 3.5) +
+  facet_wrap(~bandOrder * fb * vb, ncol = 3) 
+
+
+library(ggpmisc)
+
+d |> filter(expMode == "train", gt.train <= 60) %>%
+  group_by(id, gt.train, condit, vb) %>%
+  ggplot(aes(x = gt.train, y = dist, col = condit)) +
+  geom_smooth(method = "nlsLM",
+              formula = y ~ three_param_exp_formula(x, a, b, c),
+              method.args = list(start = list(a = 100, b = 500, c = 0.01)),
+              se = FALSE) +
+  stat_equation(aes(label = after_stat(eq.label)),
+                formula = y ~ three_param_exp_formula(x, a, b, c),
+                parse = TRUE) +
+  facet_wrap(~bandOrder * fb * vb, ncol = 3)
+
+```
+
+
+
+
+# Join the labels back to the original data
+filtered_data <- left_join(filtered_data, labels_df, by = c("condit", "bandOrder", "fb"))
+
+# Plot with annotations
+ggplot(filtered_data, aes(x = gt.train, y = dist, col = condit)) +
+  geom_smooth(method = "nls", formula = y ~ a + (b - a) * exp(-c * x), 
+              method.args = list(start = list(a = 100, b = 500, c = 0.01)), se = FALSE) +
+  facet_wrap(~bandOrder * fb * vb, ncol = 3) +
+  geom_text(data = labels_df, aes(label = label, x = 50, y = Inf), hjust = 0.5, vjust = 1, size = 3, inherit.aes = FALSE)
+
+
+
+```{r}
+#| fig-height: 16
+#| fig-width: 12
+
+fit_model_and_return_label <- function(data, condit, bandOrder, fb) {
+  # Default starting parameters
+  start_params <- list(a = 100, b = 500, c = 0.01)
+  
+  # Adjust starting parameters for the problematic condition
+  if (condit == "Constant" && fb == "Ordinal") {
+    start_params <- list(a = 100, b = 250, c = 0.01)
+  }
+  tryCatch({
+    model <- nls(dist ~ a + (b - a) * exp(-c * gt.train), data = data, start = start_params)
+    coeffs <- coef(model)
+    label=sprintf("y = %.2f + (%.2f - %.2f) * exp(-%.2f * x)", coeffs["a"], coeffs["b"], coeffs["a"], coeffs["c"])
+    data.frame(label = label, a = coeffs["a"], b = coeffs["b"], c = coeffs["c"])
+  }, error = function(e) {
+    # Return NA or some indication of failure
+    return(data.frame(label = NA, a = NA, b = NA, c = NA))
+  })
+}
+
+labels_df <- filtered_data %>%
+  group_by(condit, bandOrder, fb,vb) %>%
+  nest() %>%
+  mutate(result = map(data, ~fit_model_and_return_label(.x, condit, bandOrder, fb)),
+         data = NULL) %>%
+  unnest(result) %>%
+  ungroup()
+
+head(labels_df)
+
+
+generate_predictions <- function(x, a, b, c) {
+  return(a + (b - a) * exp(-c * x))
+}
+
+
+plot_data <- filtered_data %>%
+  left_join(labels_df, by = c("condit", "bandOrder", "fb"))
+
+# Define a sequence of x values for generating model predictions (adjust as needed)
+x_vals <- seq(min(filtered_data$gt.train), max(filtered_data$gt.train), length.out = 100)
+
+# Create a new data frame for model predictions
+predictions_data <- labels_df %>%
+  mutate(x = list(x_vals)) %>%
+  unnest(x) %>%
+  mutate(y = pmap_dbl(list(a, b, c, x), ~ generate_predictions(..4, ..1, ..2, ..3)))
+
+# Plot
+ggplot() +
+  #geom_point(data = plot_data, aes(x = gt.train, y = dist, color = condit), alpha = 0.6) +
+  geom_line(data = predictions_data, aes(x = x, y = y, color = condit), size = 1) +
+  facet_wrap(~ bandOrder * fb , ncol = 2, scales = "free_y") +
+  labs(x = "GT Train", y = "Dist") +
+  theme_minimal()
+
+ggplot(filtered_data, aes(x = gt.train, y = dist, color = condit)) +
+  geom_point() +
+  stat_function(fun = function(x) with(labels_df[1, ], a + (b - a) * exp(-c * x)),
+                linetype = "dashed", color = "black", size = 1) +
+  facet_grid(fb ~ bandOrder, labeller = label_both) +
+  labs(title = "Model Fits of Learning Curves",
+       x = "Training Generation",
+       y = "Distance",
+       color = "Condition") +
+  theme_bw()
+```
+
+
+
+
+
+
+
+### create learning models for condit and varied groups.
+
+We can model the relation between performance and the number of practice
+trials as a power law function, or exponential function. Aggregatign
+over ids in dst. The models predict dist as an exponential decay
+function of trial number. Band is an additional predictor.
+
+$$
+f_p(t) = \alpha + \beta t^{r} \enspace 
+$$ 
+
+$$
+f_e(t) = \alpha + \beta e^{rt} \enspace 
+$$
+
+
+
+
+
+```{r}
+
+# fit exponential decay model as a function of trial number
+
+fit_exp <- function(trial,dist,input){
+    # fit exponential decay model as a function of trial number, band is an additional predictor
+    fit <- nls(dist ~ yf + (y0-yf) * exp(-r*trial) + beta2*input, start = list(yf = 300, y0 = 364, beta2=0, r = .1), data = data.frame(trial=trial,dist=dist,input=input))
+
+    # extract parameters
+    alpha <- coef(fit)[1]
+    beta <- coef(fit)[2]
+    beta2 <- coef(fit)[3]
+    r <- coef(fit)[4]
+    sigma_e <- summary(fit)$sigma
+
+    # compute negative log likelihood
+    nllh <- negative_llh_exp(dist, trial, alpha, beta, r, sigma_e)
+
+    # return parameters and negative log likelihood
+    return(list(alpha=alpha,beta=beta,beta2=beta2,r=r,sigma_e=sigma_e,nllh=nllh))
+}
+
+# Compute group averages for dist over trial and band. dst 
+
+avgTrain <- dst %>% group_by(id,condit,trial,band,input) %>% summarise(dist=mean(dist)) %>% ungroup() %>% group_by(condit,trial,band) %>% summarise(dist=mean(dist)) %>% ungroup()
+ 
+ggplot(avgTrain,aes(x=trial,y=dist)) + geom_line(aes(group=band,color=band)) +facet_grid(~condit)
+
+avgTrain %>% filter(condit=="Constant") %>% nls(dist ~ yf + (y0-yf) * exp(-r*trial), start = list(yf = 120, y0 = 364, r = .1), data = .) %>% summary()
+
+avgTrain %>% filter(condit=="Constant") %>% nls(dist ~ SSasymp(trial, yf, y0, log_alpha),data=.)
+
+fit_condit <- avgTrain %>% group_by(condit) %>% do(fit_exp(trial=.$trial,dist=.$dist,input=.$input))
+
+
+```
+
+
+Interpretation of improvement_model:
+
+The intercept represents the performance when all factors are at their reference levels (Constant condition, original category order, and continuous feedback type).
+Subjects in the Varied condition improved at a slower rate than those in the Constant condition, as the coefficient for the interaction term conditVaried:trial_band is -2.37284, with a t-value of -6.940.
+Subjects in the Varied condition with reversed category order showed a greater decrease in performance, as the coefficient for the interaction term conditVaried:bandOrderrev is -43.67731, with a t-value of -2.323.
+Other significant factors and interactions include trial_band, bandOrderrev, trial_band:bandOrderrev, and trial_band:fbordinal.
+Interpretation of final_performance_model:
+
+The intercept represents the final performance when all factors are at their reference levels (Constant condition, original category order, and continuous feedback type).
+Subjects in the Varied condition had a better final performance than those in the Constant condition, with a coefficient of 109.73 and a t-value of 4.362.
+The interaction between the Varied condition and reversed category order (conditVaried:bandOrderrev) had a negative impact on the final performance, with a coefficient of -92.75 and a t-value of -2.342.
+The interaction between the Varied condition and ordinal feedback type (conditVaried:fbordinal) also had a negative impact on the final performance, with a coefficient of -85.44 and a t-value of -2.079.
+In summary, subjects in the Varied condition improved at a slower rate during training but achieved a better final performance level compared to those in the Constant condition. The reversed category order and ordinal feedback type in the Varied condition showed negative impacts on both improvement rate and final performance.
+
+
+### Exponential learning model
+
+```{r}
+#| eval: false
+library(dplyr)
+library(tidyr)
+library(nls.multstart)
+exp_fun <- function(a, b, c, x) {
+  a * (1 - exp(-b * x)) + c
+}
+exp_models <- dst %>%
+  nest(-id) %>%
+  mutate(model = map(data, ~ nls_multstart(dist ~ exp_fun(a, b, c, trial_band),
+                                           data = .x,
+                                           iter = 500,
+                                           start_lower = c(a = 0, b = 0, c = 0),
+                                           start_upper = c(a = 5000, b = 1, c = 5000)))) %>%
+  unnest(c(a = map_dbl(model, ~ coef(.x)['a']),
+           b = map_dbl(model, ~ coef(.x)['b']),
+           c = map_dbl(model, ~ coef(.x)['c'])))
+group_averages <- exp_models %>%
+  group_by(condit, bandOrder, fb) %>%
+  summarise(a_avg = mean(a), b_avg = mean(b), c_avg = mean(c))
+aic_improvement <- AIC(improvement_model)
+aic_final_performance <- AIC(final_performance_model)
+exp_models <- exp_models %>%
+  mutate(aic = map_dbl(model, AIC))
+
+aic_exp_avg <- exp_models %>%
+  summarise(aic_avg = mean(aic))
+```
