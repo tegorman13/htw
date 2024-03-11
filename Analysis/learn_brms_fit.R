@@ -51,7 +51,7 @@ prior <- c(
 
 
 
-drun <- "e1"; mstage <- "Tr_"; iv2="conBand"; dv="dist"
+drun <- "e1"; mstage <- "Train_"; iv2="conBand"; dv="dist"
 modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
 modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
 file_path <- paste0(here::here("data/model_cache", modelName))
@@ -71,6 +71,14 @@ fit <- brm(
 
 print(summary(fit))
 print(bayestestR::describe_posterior(fit) )
+
+
+  modelNameTxt <- sub("\\.rds$", ".txt", modelName) # Replace .rds with .txt
+  file_path_txt <- paste0(here::here("data/model_cache/brms", modelNameTxt))
+  sink(file_path_txt)
+  print(summary(fit))
+  print(bayestestR::describe_posterior(fit))
+  sink()
 
 
 
@@ -86,7 +94,7 @@ nlform <- bf(
 
 
 
-drun <- "e1"; mstage <- "Tr_"; iv2="conBandRF"; dv="dist"
+drun <- "e1"; mstage <- "Train_"; iv2="conBandRF"; dv="dist"
 modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
 modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
 file_path <- paste0(here::here("data/model_cache", modelName))
@@ -108,6 +116,12 @@ print(summary(fit))
 print(bayestestR::describe_posterior(fit) )
 
 
+  modelNameTxt <- sub("\\.rds$", ".txt", modelName) # Replace .rds with .txt
+  file_path_txt <- paste0(here::here("data/model_cache/brms", modelNameTxt))
+  sink(file_path_txt)
+  print(summary(fit))
+  print(bayestestR::describe_posterior(fit))
+  sink()
 
 
 
@@ -115,7 +129,16 @@ print(bayestestR::describe_posterior(fit) )
 print("start E2")
 
 
-drun <- "e2"; mstage <- "Tr_"; iv2="conBand"; dv="dist"
+
+nlform <- bf(
+  dist ~ a + (b - a) * exp(-c * gt.train),
+  a ~ 1 + condit + bandInt,
+  b ~ 1 + condit + bandInt,
+  c ~ 1 + condit + bandInt,
+  nl = TRUE 
+)
+
+drun <- "e2"; mstage <- "Train_"; iv2="conBand"; dv="dist"
 modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
 modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
 file_path <- paste0(here::here("data/model_cache", modelName))
@@ -136,7 +159,12 @@ fit <- brm(
 print(summary(fit))
 print(bayestestR::describe_posterior(fit) )
 
-
+  modelNameTxt <- sub("\\.rds$", ".txt", modelName) # Replace .rds with .txt
+  file_path_txt <- paste0(here::here("data/model_cache/brms", modelNameTxt))
+  sink(file_path_txt)
+  print(summary(fit))
+  print(bayestestR::describe_posterior(fit))
+  sink()
 
 print("Start E2 RF learn fits")
 
@@ -150,7 +178,7 @@ nlform <- bf(
 
 
 
-drun <- "e2"; mstage <- "Tr_"; iv2="conBandRF"; dv="dist"
+drun <- "e2"; mstage <- "Train_"; iv2="conBandRF"; dv="dist"
 modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
 modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
 file_path <- paste0(here::here("data/model_cache", modelName))
@@ -173,7 +201,12 @@ print(bayestestR::describe_posterior(fit) )
 
 
 
-
+  modelNameTxt <- sub("\\.rds$", ".txt", modelName) # Replace .rds with .txt
+  file_path_txt <- paste0(here::here("data/model_cache/brms", modelNameTxt))
+  sink(file_path_txt)
+  print(summary(fit))
+  print(bayestestR::describe_posterior(fit))
+  sink()
 
 
 
@@ -181,7 +214,16 @@ print(bayestestR::describe_posterior(fit) )
 print("start E3")
 
 
-drun <- "e3"; mstage <- "Tr_"; iv2="conBand"; dv="dist"
+nlform <- bf(
+  dist ~ a + (b - a) * exp(-c * gt.train),
+  a ~ 1 + condit *bandOrder + bandInt,
+  b ~ 1 + condit *bandOrder + bandInt,
+  c ~ 1 + condit *bandOrder + bandInt,
+  nl = TRUE 
+)
+
+
+drun <- "e3"; mstage <- "Train_"; iv2="conBand"; dv="dist"
 modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
 modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
 file_path <- paste0(here::here("data/model_cache", modelName))
@@ -203,20 +245,26 @@ print(summary(fit))
 print(bayestestR::describe_posterior(fit) )
 
 
+  modelNameTxt <- sub("\\.rds$", ".txt", modelName) # Replace .rds with .txt
+  file_path_txt <- paste0(here::here("data/model_cache/brms", modelNameTxt))
+  sink(file_path_txt)
+  print(summary(fit))
+  print(bayestestR::describe_posterior(fit))
+  sink()
 
 print("Start E3 RF learn fits")
 
 nlform <- bf(
   dist ~ a + (b - a) * exp(-c * gt.train),
-  a ~ 0 + condit + (1|bandInt) + (1|id), 
-  b ~ 0 + condit + (1|bandInt)  + (1|id), 
-  c ~ 0 + condit + (1|bandInt) + (1|id), 
+  a ~ 0 + condit *bandOrder + (1|bandInt) + (1|id), 
+  b ~ 0 + condit *bandOrder + (1|bandInt)  + (1|id), 
+  c ~ 0 + condit *bandOrder + (1|bandInt) + (1|id), 
   nl = TRUE 
 )
 
 
 
-drun <- "e3"; mstage <- "Tr_"; iv2="conBandRF"; dv="dist"
+drun <- "e3"; mstage <- "Train_"; iv2="conBandRF"; dv="dist"
 modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
 modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
 file_path <- paste0(here::here("data/model_cache", modelName))
@@ -236,3 +284,11 @@ fit <- brm(
 
 print(summary(fit))
 print(bayestestR::describe_posterior(fit) )
+
+
+  modelNameTxt <- sub("\\.rds$", ".txt", modelName) # Replace .rds with .txt
+  file_path_txt <- paste0(here::here("data/model_cache/brms", modelNameTxt))
+  sink(file_path_txt)
+  print(summary(fit))
+  print(bayestestR::describe_posterior(fit))
+  sink()
