@@ -60,8 +60,8 @@ combo_form <- "condit * bandType * bandOrder * fb + (1 + bandType|id)"
 run_model <- function(data, dv, formula_str, modelName_suffix, final_values) {
   formula <- as.formula(paste(dv, "~", formula_str))
   modelName <- paste0(modelName_suffix, "_",iv2, format(Sys.time(), "%M%OS"), ".rds")
-  file_path <- paste0(here::here("data/model_cache", modelName))
-  brm(formula,
+  file_path <- paste0(here::here("data/model_cache/brms", modelName))
+  m <- brm(formula,
       data = data,
       file = file_path,
       iter = final_values$niter,
@@ -69,6 +69,22 @@ run_model <- function(data, dv, formula_str, modelName_suffix, final_values) {
       silent = 1,
       #prior = prior,
       control = list(adapt_delta = final_values$adapt_delta, max_treedepth = final_values$max_treedepth))
+
+    
+  summary(m)
+  bayestestR::describe_posterior(m)
+
+  modelNameTxt <- sub("\\.rds$", ".txt", modelName) # Replace .rds with .txt
+  file_path_txt <- paste0(here::here("data/model_cache/brms", modelNameTxt))
+
+  # Use the corrected file_path for the sink function
+  sink(file_path_txt)
+  print(summary(m))
+  print(bayestestR::describe_posterior(m))
+  sink()
+
+  
+
 }
 
 
