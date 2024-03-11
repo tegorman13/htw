@@ -45,7 +45,7 @@ nlform <- bf(
   dist ~ a + (b - a) * exp(-c * gt.train),
   a ~ 0 + condit + (1|bandInt) + (1|id), 
   b ~ 0 + condit + (1|bandInt)  + (1|id), 
-  c ~ 0 + condit + (1|id), 
+  c ~ 0 + condit + (1|bandInt) + (1|id), 
   nl = TRUE 
 )
 

@@ -308,7 +308,7 @@ $$
 
 
 ```{r}
-
+#| eval: false
 # fit exponential decay model as a function of trial number
 
 fit_exp <- function(trial,dist,input){
@@ -331,17 +331,25 @@ fit_exp <- function(trial,dist,input){
 
 # Compute group averages for dist over trial and band. dst 
 
-avgTrain <- dst %>% group_by(id,condit,trial,band,input) %>% summarise(dist=mean(dist)) %>% ungroup() %>% group_by(condit,trial,band) %>% summarise(dist=mean(dist)) %>% ungroup()
+avgTrain <- e1 |> filter(expMode2=="Train") %>% group_by(id,condit,gt.train,vb,bandInt) %>% 
+  summarise(dist=mean(dist)) %>% ungroup() %>% 
+  group_by(condit,gt.train,vb,bandInt) %>% 
+  summarise(dist=mean(dist)) %>% ungroup()
  
-ggplot(avgTrain,aes(x=trial,y=dist)) + geom_line(aes(group=band,color=band)) +facet_grid(~condit)
+ggplot(avgTrain,aes(x=gt.train,y=dist)) + geom_line(aes(group=vb,color=vb)) +facet_grid(~condit)
 
-avgTrain %>% filter(condit=="Constant") %>% nls(dist ~ yf + (y0-yf) * exp(-r*trial), start = list(yf = 120, y0 = 364, r = .1), data = .) %>% summary()
+avgTrain %>% filter(condit=="Constant") %>% nls(dist ~ yf + (y0-yf) * exp(-r*gt.train), start = list(yf = 120, y0 = 364, r = .1), data = .) %>% summary()
 
-avgTrain %>% filter(condit=="Constant") %>% nls(dist ~ SSasymp(trial, yf, y0, log_alpha),data=.)
+avgTrain %>% filter(condit=="Constant") %>% nls(dist ~ SSasymp(gt.train, yf, y0, log_alpha),data=.)
 
-fit_condit <- avgTrain %>% group_by(condit) %>% do(fit_exp(trial=.$trial,dist=.$dist,input=.$input))
+fit_condit <- avgTrain %>% group_by(condit) %>% do(fit_exp(trial=.$gt.train,dist=.$dist,input=.$bandInt))
 
 
+#avgTrain %>% group_by(condit) |> mutate(fit=map(~fit_exp(trial=gt.train,dist=dist,input=bandInt)))
+
+ 
+
+ 
 ```
 
 
