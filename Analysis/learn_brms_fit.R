@@ -16,10 +16,6 @@ e2 <- readRDS(here("data/e2_08-04-23.rds"))
 e3 <- readRDS(here("data/e3_08-04-23.rds")) 
 d <- rbind(e1,e2,e3)
 
-drun <- "e1"; mstage <- "Tr_"; iv2="conBand"; dv="dist"
-modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
-modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
-file_path <- paste0(here::here("data/model_cache", modelName))
 
 
 
@@ -53,6 +49,14 @@ prior <- c(
   prior(normal(.3, .3), lb=0,  nlpar = "c")
 )
 
+
+
+drun <- "e1"; mstage <- "Tr_"; iv2="conBand"; dv="dist"
+modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
+modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
+file_path <- paste0(here::here("data/model_cache", modelName))
+
+
 fit <- brm(
   formula = nlform,
   data = e1 |> filter(expMode2=="Train"),
@@ -68,3 +72,38 @@ fit <- brm(
 print(summary(fit))
 print(bayestestR::describe_posterior(fit) )
 
+
+
+print("Start E1 RF learn fits")
+
+nlform <- bf(
+  dist ~ a + (b - a) * exp(-c * gt.train),
+  a ~ 0 + condit + (1|bandInt) + (1|id), 
+  b ~ 0 + condit + (1|bandInt)  + (1|id), 
+  c ~ 0 + condit + (1|bandInt) + (1|id), 
+  nl = TRUE 
+)
+
+
+
+drun <- "e1"; mstage <- "Tr_"; iv2="conBandRF"; dv="dist"
+modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
+modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
+file_path <- paste0(here::here("data/model_cache", modelName))
+
+
+
+fit <- brm(
+  formula = nlform,
+  data = e1 |> filter(expMode2=="Train"),
+  family = gaussian(), # Assuming 'dist' is continuous; adjust as needed
+  prior = prior,
+  iter = final_values$niter,
+  chains = final_values$nchain,
+  silent = 0,
+  control = list(adapt_delta = final_values$adapt_delta, max_treedepth = final_values$max_treedepth),
+  file = file_path
+)
+
+print(summary(fit))
+print(bayestestR::describe_posterior(fit) )
