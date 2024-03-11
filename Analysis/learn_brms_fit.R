@@ -92,7 +92,6 @@ modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
 file_path <- paste0(here::here("data/model_cache", modelName))
 
 
-
 fit <- brm(
   formula = nlform,
   data = e1 |> filter(expMode2=="Train"),
@@ -100,7 +99,137 @@ fit <- brm(
   prior = prior,
   iter = final_values$niter,
   chains = final_values$nchain,
+  silent = 1,
+  control = list(adapt_delta = final_values$adapt_delta, max_treedepth = final_values$max_treedepth),
+  file = file_path
+)
+
+print(summary(fit))
+print(bayestestR::describe_posterior(fit) )
+
+
+
+
+
+##### E2
+print("start E2")
+
+
+drun <- "e2"; mstage <- "Tr_"; iv2="conBand"; dv="dist"
+modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
+modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
+file_path <- paste0(here::here("data/model_cache", modelName))
+
+
+fit <- brm(
+  formula = nlform,
+  data = e2 |> filter(expMode2=="Train"),
+  family = gaussian(), # Assuming 'dist' is continuous; adjust as needed
+  prior = prior,
+  iter = final_values$niter,
+  chains = final_values$nchain,
   silent = 0,
+  control = list(adapt_delta = final_values$adapt_delta, max_treedepth = final_values$max_treedepth),
+  file = file_path
+)
+
+print(summary(fit))
+print(bayestestR::describe_posterior(fit) )
+
+
+
+print("Start E2 RF learn fits")
+
+nlform <- bf(
+  dist ~ a + (b - a) * exp(-c * gt.train),
+  a ~ 0 + condit + (1|bandInt) + (1|id), 
+  b ~ 0 + condit + (1|bandInt)  + (1|id), 
+  c ~ 0 + condit + (1|bandInt) + (1|id), 
+  nl = TRUE 
+)
+
+
+
+drun <- "e2"; mstage <- "Tr_"; iv2="conBandRF"; dv="dist"
+modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
+modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
+file_path <- paste0(here::here("data/model_cache", modelName))
+
+
+fit <- brm(
+  formula = nlform,
+  data = e2 |> filter(expMode2=="Train"),
+  family = gaussian(), # Assuming 'dist' is continuous; adjust as needed
+  prior = prior,
+  iter = final_values$niter,
+  chains = final_values$nchain,
+  silent = 1,
+  control = list(adapt_delta = final_values$adapt_delta, max_treedepth = final_values$max_treedepth),
+  file = file_path
+)
+
+print(summary(fit))
+print(bayestestR::describe_posterior(fit) )
+
+
+
+
+
+
+
+##### E3
+print("start E3")
+
+
+drun <- "e3"; mstage <- "Tr_"; iv2="conBand"; dv="dist"
+modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
+modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
+file_path <- paste0(here::here("data/model_cache", modelName))
+
+
+fit <- brm(
+  formula = nlform,
+  data = e3 |> filter(expMode2=="Train"),
+  family = gaussian(), # Assuming 'dist' is continuous; adjust as needed
+  prior = prior,
+  iter = final_values$niter,
+  chains = final_values$nchain,
+  silent = 0,
+  control = list(adapt_delta = final_values$adapt_delta, max_treedepth = final_values$max_treedepth),
+  file = file_path
+)
+
+print(summary(fit))
+print(bayestestR::describe_posterior(fit) )
+
+
+
+print("Start E3 RF learn fits")
+
+nlform <- bf(
+  dist ~ a + (b - a) * exp(-c * gt.train),
+  a ~ 0 + condit + (1|bandInt) + (1|id), 
+  b ~ 0 + condit + (1|bandInt)  + (1|id), 
+  c ~ 0 + condit + (1|bandInt) + (1|id), 
+  nl = TRUE 
+)
+
+
+
+drun <- "e3"; mstage <- "Tr_"; iv2="conBandRF"; dv="dist"
+modelName_suffix <- paste0(drun, "_", mstage, str_to_title(dv),iv2, "_", paste(unlist(final_values), collapse = "_"))
+modelName <- paste0(modelName_suffix, "_", format(Sys.time(), "%M%OS"), ".rds")
+file_path <- paste0(here::here("data/model_cache", modelName))
+
+
+fit <- brm(
+  formula = nlform,
+  data = e3 |> filter(expMode2=="Train"),
+  family = gaussian(), # Assuming 'dist' is continuous; adjust as needed
+  prior = prior,
+  iter = final_values$niter,
+  chains = final_values$nchain,
+  silent = 1,
   control = list(adapt_delta = final_values$adapt_delta, max_treedepth = final_values$max_treedepth),
   file = file_path
 )
