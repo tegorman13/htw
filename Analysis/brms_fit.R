@@ -3,7 +3,7 @@ pacman::p_load(dplyr,purrr,tidyr,brms,bayestestR,stringr, here,conflicted)
 
 walk(c("brms","dplyr"), conflict_prefer_all, quiet = TRUE)
 
-defaults <- list(nchain=2, niter=1000,adapt_delta=.94, max_treedepth=11)
+defaults <- list(nchain=4, niter=2000,adapt_delta=.94, max_treedepth=13)
 
 args <- commandArgs(trailingOnly = TRUE)
 args_numeric <- map(args, as.numeric)
@@ -38,21 +38,35 @@ testE3 <- e3 |> filter(expMode2 == "Test")
 modelName <- "combo_testVxBand_RF_5K.rds"
 param_str <- paste(unlist(final_values), sep="_",collapse = "_")
 
-iv2 <- "Bt_testNf"
-iv2 <<- "Bt_test6_"
+#iv2 <- "Bt_testNf"
+iv2 <<- "Bt_test6_RF_int"
 
 e1_e2_form <-  "condit * bandInt + (1 + bandInt|id)"
 e3_form <- "condit * bandInt * bandOrder + (1 + bandInt|id)"
 combo_form <- "condit * bandInt * bandOrder * fb + (1 + bandInt|id)"
 
-# e1_e2_form <-  "condit * bandType + (1 + bandInt|id)"
-# e3_form <- "condit * bandType * bandOrder + (1 + bandInt|id)"
-# combo_form <- "condit * bandType * bandOrder * fb + (1 + bandInt|id)"
+e1_e2_form <-  "condit * bandType + (1|id*bandInt)"
+e3_form <- "condit * bandType * bandOrder + (1|id*bandInt)"
+combo_form <- "condit * bandType * bandOrder *fb + (1|id*bandInt)"
 
 
-e1_e2_form <-  "condit * bandType + (1 + bandType|id)"
-e3_form <- "condit * bandType * bandOrder + (1 + bandType|id)"
-combo_form <- "condit * bandType * bandOrder * fb + (1 + bandType|id)"
+
+# e1_e2_form3 <-  "condit * bandType + (1|id) + (1|bandInt)"
+# m1 <- run_e1_model("dist", e1_e2_form3, final_values)
+# 
+# e1_e2_form3 <-  "condit * bandType + (1|id*bandInt)"
+# m2 <- run_e1_model("dist", e1_e2_form3, final_values)
+# 
+# e1_e2_form3 <-  "condit * bandType + bandInt + (1 | id)"
+# m3 <- run_e1_model("dist", e1_e2_form3, final_values)
+# 
+# e1_e2_form3 <-  "condit * bandType + (1|id)"
+# m4 <- run_e1_model("dist", e1_e2_form3, final_values)
+# 
+# 
+# e1_e2_form3 <-  "condit * bandType + ns(bandInt, df = 4) + (1 | id)"
+# m5 <- run_e1_model("dist", e1_e2_form3, final_values)
+
 
 
 
@@ -66,25 +80,21 @@ run_model <- function(data, dv, formula_str, modelName_suffix, final_values) {
       file = file_path,
       iter = final_values$niter,
       chains = final_values$nchain,
-      silent = 1,
+      silent = 2,
       #prior = prior,
       control = list(adapt_delta = final_values$adapt_delta, max_treedepth = final_values$max_treedepth))
 
-    
-  summary(m)
-  bayestestR::describe_posterior(m)
+  print(summary(m))
+  print(bayestestR::describe_posterior(m))
 
   modelNameTxt <- sub("\\.rds$", ".txt", modelName) # Replace .rds with .txt
   file_path_txt <- paste0(here::here("data/model_cache/brms", modelNameTxt))
-
-  # Use the corrected file_path for the sink function
   sink(file_path_txt)
   print(summary(m))
   print(bayestestR::describe_posterior(m))
   sink()
-
   
-
+  return(m)
 }
 
 
@@ -126,58 +136,90 @@ print(model_flags)
 
 if(model_flags[1] == 1) {
   print(paste("Running e1 model for vx and dist"))
-  run_e1_model("vx", e1_e2_form, final_values)
+  #run_e1_model("vx", e1_e2_form, final_values)
   run_e1_model("dist", e1_e2_form, final_values)
 }
 
 if(model_flags[2] == 1) {
   print(paste("Running e2 model for vx and dist"))
-  run_e2_model("vx", e1_e2_form, final_values)
+  #run_e2_model("vx", e1_e2_form, final_values)
   run_e2_model("dist", e1_e2_form, final_values)
 }
 
 if(model_flags[3] == 1) {
   print(paste("Running e3 model for vx and dist"))
-  run_e3_model("vx", e3_form, final_values)
+  #run_e3_model("vx", e3_form, final_values)
   run_e3_model("dist", e3_form, final_values)
 }
 
 if(model_flags[4] == 1) {
   print(paste("Running combo model for vx and dist"))
-  run_combo_model("vx", combo_form, final_values)
+  #run_combo_model("vx", combo_form, final_values)
   run_combo_model("dist", combo_form, final_values)
 }
 
 
 
-e1_e2_form <-  "condit * bandInt + (1 + bandInt|id)"
-e3_form <- "condit * bandInt * bandOrder + (1 + bandInt|id)"
-combo_form <- "condit * bandInt * bandOrder * fb + (1 + bandInt|id)"
+e1_e2_form <-  "condit * bandType + (1|id) + (1|bandInt)"
+e3_form <- "condit * bandType * bandOrder + (1|id) + (1|bandInt)"
+combo_form <- "condit * bandType * bandOrder *fb + (1|id) + (1|bandInt)"
 
-iv2 <<- "Band_test6_"
+
+iv2 <<- "Band_test6_RF_2"
 
 
 
 if(model_flags[1] == 1) {
   print(paste("Running e1 model for vx and dist"))
-  run_e1_model("vx", e1_e2_form, final_values)
+  #run_e1_model("vx", e1_e2_form, final_values)
   run_e1_model("dist", e1_e2_form, final_values)
 }
 
 if(model_flags[2] == 1) {
   print(paste("Running e2 model for vx and dist"))
-  run_e2_model("vx", e1_e2_form, final_values)
+  #run_e2_model("vx", e1_e2_form, final_values)
   run_e2_model("dist", e1_e2_form, final_values)
 }
 
 if(model_flags[3] == 1) {
   print(paste("Running e3 model for vx and dist"))
-  run_e3_model("vx", e3_form, final_values)
+  #run_e3_model("vx", e3_form, final_values)
   run_e3_model("dist", e3_form, final_values)
 }
 
 if(model_flags[4] == 1) {
   print(paste("Running combo model for vx and dist"))
-  run_combo_model("vx", combo_form, final_values)
+  #run_combo_model("vx", combo_form, final_values)
+  run_combo_model("dist", combo_form, final_values)
+}
+
+
+e1_e2_form <-  "condit * bandType + bandInt + (1|id)"
+e3_form <- "condit * bandType * bandOrder + bandInt + (1|id)"
+combo_form <- "condit * bandType * bandOrder *fb + bandInt + (1|id)"
+
+iv2 <<- "Band_test6_fixBandInt_RF_1"
+
+if(model_flags[1] == 1) {
+  print(paste("Running e1 model for vx and dist"))
+  #run_e1_model("vx", e1_e2_form, final_values)
+  run_e1_model("dist", e1_e2_form, final_values)
+}
+
+if(model_flags[2] == 1) {
+  print(paste("Running e2 model for vx and dist"))
+  #run_e2_model("vx", e1_e2_form, final_values)
+  run_e2_model("dist", e1_e2_form, final_values)
+}
+
+if(model_flags[3] == 1) {
+  print(paste("Running e3 model for vx and dist"))
+  #run_e3_model("vx", e3_form, final_values)
+  run_e3_model("dist", e3_form, final_values)
+}
+
+if(model_flags[4] == 1) {
+  print(paste("Running combo model for vx and dist"))
+  #run_combo_model("vx", combo_form, final_values)
   run_combo_model("dist", combo_form, final_values)
 }
