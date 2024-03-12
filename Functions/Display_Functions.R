@@ -1,6 +1,7 @@
 
 
-pacman::p_load(ggplot2,wesanderson,glue, ggdist,ggforce,patchwork,gghalves, ggh4x)
+#pacman::p_load(ggplot2,wesanderson,glue, ggdist,ggforce,patchwork,gghalves, ggh4x)
+pacman::p_load(ggplot2,wesanderson,glue)
 #pacman::p_load(ggplot2,ggpattern,viridis,scales,wesanderson,ggthemer)
 options(dplyr.summarise.inform=FALSE)
 
@@ -693,7 +694,7 @@ theme_clean <- function() {
           legend.title = element_text(face = "bold"))
 }
 
-nested_settings <- strip_nested(
+nested_settings <- ggh4x::strip_nested(
   background_x = list(element_rect(fill = "grey92"), NULL),
   by_layer_x = TRUE)
 

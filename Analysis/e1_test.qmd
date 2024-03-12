@@ -232,7 +232,7 @@ fixed_effects <- e1_vxBMM |>
 
 
 random_effects <- e1_vxBMM |> 
-  gather_draws(`^r_id.*$`, regex = TRUE, ndraws = 1500) |> 
+  gather_draws(`^r_id.*$`, regex = TRUE, ndraws = 500) |> 
   separate(.variable, into = c("effect", "id", "term"), sep = "\\[|,|\\]") |> 
   mutate(id = factor(id,levels=levels(test$id))) |> 
   pivot_wider(names_from = term, values_from = .value) |> arrange(id,.chain,.draw,.iteration)
