@@ -331,7 +331,7 @@ plot_distByCondit <- function(df) {
   
   bandLines4 <- list(geom_segment(data=vbRect,aes(x=vbLag,xend=vbLead,y=highBound,yend=highBound),alpha=1,linetype="dashed"),
                    geom_segment(data=vbRect,aes(x=vbLag,xend=vbLead,y=lowBound,yend=lowBound),alpha=1,linetype="dashed"),
-                   geom_text(data=vbRect,aes(x=vbLag-.03,y=lowBound+100,label=vb),angle=90,size=2.5,fontface="bold") )    
+                   geom_text(data=vbRect,aes(x=vbLag-.03,y=lowBound+100,label=vb),angle=90,size=3.5,fontface="bold") )    
 
 df %>% group_by(id,vb,condit,bandOrder) %>% 
   summarise(vxMean=mean(vx)) %>%
@@ -346,12 +346,13 @@ df %>% group_by(id,vb,condit,bandOrder) %>%
   #geom_text(data=sumStats,aes(x=vb,y=2100,label = groupMean),size=2, vjust = -0.5)+
   scale_y_continuous(expand=expansion(add=100),breaks=round(seq(0,2000,by=200),2))+
   theme(legend.position='none',
-        plot.title=element_text(face="bold"),
-        axis.title.x=element_text(face="bold"),
-        axis.title.y=element_text(face="bold"),
-        axis.text.x = element_text(size = 7.5))+
-  ylab("Mean X Velocity")+xlab("Target Velocity Band") + 
-  ggtitle("Testing Performance (no-feedback) - X-Velocity Per Band")
+        #plot.title=element_text(face="bold"),
+        #axis.title.x=element_text(face="bold"),
+        # axis.title.y=element_text(face="bold"),
+        axis.text.x = element_text(size = 8.5))+
+  #ggtitle("Testing Performance (no-feedback) - X-Velocity Per Band")     
+  ylab("Mean X Velocity")+xlab("Target  Band") 
+  
  # geom_text(data=sumStats2,aes(y=2090,label = sumStatLab),size=1.9)
 
 }

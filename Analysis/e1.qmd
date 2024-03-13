@@ -1,37 +1,55 @@
 ---
 title: "HTW E1"
 categories: [Analyses, R, Bayesian]
+code-fold: true
+cold-tools: true
 ---
 
+
 ```{r}
-pacman::p_load(dplyr,purrr,tidyr,tibble,ggplot2,brms,tidybayes,emmeans,broom,bayestestR,stringr, here,conflicted, patchwork, knitr)
-walk(c("brms","dplyr"), conflict_prefer_all, quiet = TRUE)
+pacman::p_load(dplyr,purrr,tidyr,tibble,ggplot2,
+  brms,tidybayes, rstanarm,emmeans,broom,bayestestR,
+  stringr, here,conflicted, patchwork, knitr,kableExtra)
+
+walk(c("brms","dplyr","bayestestR"), conflict_prefer_all, quiet = TRUE)
 walk(c("Display_Functions","org_functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 e1 <- readRDS(here("data/e1_08-21-23.rds")) 
 e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
 testE1 <- e1 |> filter(expMode2 == "Test")
+
 ```
 
 
 
-
 ```{r}
-
+#| label: tbl-e1-train-dist
+#| tbl-cap: "E1. Training vs. Extrapolation"
 nbins=6
 trainE1 <-  e1 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
     mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
 # bayesian comparison of condits in training
 trainE1_max <- trainE1 |> filter(Trial_Bin == nbins, bandInt==800)
 
-bayes_comp <- trainE1_max %>% brm(dist ~ condit, 
-                                data = .,
-                                iter = 2000,
-                                chains = 4,
-                                control = list(adapt_delta = .94, max_treedepth = 13))
+bmm_e1_train<- trainE1_max %>% 
+  brm(dist ~ condit, 
+      file=here("data/model_cache/e1_train_deviation"),
+      data = .,
+      iter = 2000,
+      chains = 4,
+      control = list(adapt_delta = .94, max_treedepth = 13))
 
-bayestestR::describe_posterior(bayes_comp)
+#bayestestR::describe_posterior(bayes_comp)
+
+mtr1 <- as.data.frame(describe_posterior(bmm_e1_train, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mtr1) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+
+mtr1 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_remove(Term, "b_")) |>
+  kable(booktabs=T) %>% kable_styling(font_size=9)
 
 ```
+
 
 ```{r}
 #| label: fig-e1-train-dev
@@ -42,29 +60,31 @@ trainE1 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
     stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
     facet_wrap(~vb)+
     scale_x_continuous(breaks = seq(1, nbins + 1)) +
-    labs(y = "Deviation") 
+    theme(legend.title=element_blank()) + 
+    labs(y = "Deviation", x="Training Block") 
 
 ```
 
 
 ```{r}
-options(brms.backend="cmdstanr",mc.cores=4)
+#| label: tbl-e1-bmm-dist
+#| tbl-cap: "E1. Training vs. Extrapolation"
+#| 
+#options(brms.backend="cmdstanr",mc.cores=4)
 modelFile <- paste0(here::here("data/model_cache/"), "e1_dist_Cond_Type_RFint")
 bmtd <- brm(dist ~ condit * bandType + (1|id*bandInt), 
     data=testE1, file=modelFile,
     iter=5000,chains=4, control = list(adapt_delta = .94, max_treedepth = 13))
                         
-bayestestR::describe_posterior(bmtd)
+#bayestestR::describe_posterior(bmtd)
 
-plot(bmtd,"^b_")
-pp_check(bmtd,type = "error_hist")
-pp_check(bmtd,type = "stat_grouped",group="condit",ndraws=150)
+mted1 <- as.data.frame(describe_posterior(bmtd, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mted1) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
 
-
-mcmc_plot(bmtd,type="intervals",prob=.5,variable=c("^r_id\\[1*,Intercept\\]"),regex=T)
-mcmc_plot(bmtd,type="intervals",prob=.5,variable=c("^r_bandInt*"),regex=T)
-plot(conditional_effects(bmtd),points=FALSE)
-
+mted1 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_remove(Term, "b_")) |>
+  kable() %>% kable_styling(font_size=5)
 
 ```
 
@@ -75,19 +95,20 @@ plot(conditional_effects(bmtd),points=FALSE)
 pe1td <- testE1 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
   labs(x="Band", y="Deviation From Target")
 
-condEffects <- function(m){
-  m |> ggplot(aes(x = bandType, y = .value, color = condit, fill = condit)) + 
+condEffects <- function(m,xvar){
+  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
   stat_dist_pointinterval() + 
   stat_halfeye(alpha=.1, height=.5) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
-  ylab("Absolute Deviation From Band") + xlab("Band")
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+  
 }
 
 pe1ce <- bmtd |> emmeans( ~condit + bandType) |>
   gather_emmeans_draws() |>
- condEffects()
+ condEffects(bandType) + labs(y="Absolute Deviation From Band", x="Band Type")
 
 pe1td + pe1ce
 
@@ -101,47 +122,41 @@ pe1td + pe1ce
 ```{r}
 #| label: tbl-e1-bmm-vx
 #| tbl-cap: "Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
-#| tbl-subcap: ["Model fit to all 6 bands", "Model fit to 3 extrapolation bands"]
 #| layout-ncol: 1
 e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
                         data=test,file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k")),
                         iter=5000,chains=4,silent=0,
                         control=list(adapt_delta=0.94, max_treedepth=13))
-GetModelStats(e1_vxBMM ) |> kable(escape=F,booktabs=T, caption="Fit to all 6 bands")
+
+GetModelStats(e1_vxBMM) |> 
+  kable(escape=F,booktabs=T) %>% 
+  kable_styling(font_size=9)
 
 cd1 <- get_coef_details(e1_vxBMM, "conditVaried")
 sc1 <- get_coef_details(e1_vxBMM, "bandInt")
 intCoef1 <- get_coef_details(e1_vxBMM, "conditVaried:bandInt")
 
-
-modelName <- "e1_extrap_testVxBand"
-e1_extrap_VxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
-                  data=test |>
-                    filter(expMode=="test-Nf"),file=paste0(here::here("data/model_cache",modelName)),
-                  iter=5000,chains=4)
-GetModelStats(e1_extrap_VxBMM ) |> kable(escape=F,booktabs=T, caption="Fit to 3 extrapolation bands")
-
-
-sc2 <- get_coef_details(e1_extrap_VxBMM, "bandInt")
-intCoef2 <- get_coef_details(e1_extrap_VxBMM, "conditVaried:bandInt")
-
-
-
 ```
 
 ```{r}
+#| label: fig-e1-test-vx
+#| fig-cap: Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. 
+#| fig-height: 16
+#| fig-width: 12
+
 
 pe1tv <- testE1 %>% group_by(id,vb,condit) |> plot_distByCondit()
 
 pe1vce <- e1_vxBMM |> emmeans( ~condit + bandInt,re_formula=NA, 
                        at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
   gather_emmeans_draws() |> 
-  condEffects() +
+  condEffects(bandInt) +
+  stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
   scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
                      labels = levels(testE1$vb), 
-                     limits = c(0, 1400))
-
-#pd1 <- pe1tv / pe1vce
+                     limits = c(0, 1400)) + 
+  theme(legend.title=element_blank()) + 
+  labs(y="Velcoity", x="Band")
 
 fe <- fixef(e1_vxBMM)[,1]
 fixed_effect_bandInt <- fixef(e1_vxBMM)[,1]["bandInt"]
@@ -154,16 +169,20 @@ re <- data.frame(ranef(e1_vxBMM, pars = "bandInt")$id[, ,'bandInt']) |>
 
 
 pid_den1 <- ggplot(re, aes(x = slope, fill = condit)) + 
-  geom_density(alpha=.5) + labs(x="Slope Coefficient",y="Density")
+  geom_density(alpha=.5) + 
+  xlim(c(min(re$slope)-.3, max(re$slope)+.3))+
+   theme(legend.title=element_blank()) + 
+  labs(x="Slope Coefficient",y="Density")
 
 pid_slopes1 <- re |>  mutate(id=reorder(id,slope)) |>
   ggplot(aes(y=id, x=slope,fill=condit,color=condit)) + 
     geom_pointrange(aes(xmin=Q2.5+adjust, xmax=Q97.5+adjust)) + 
+     theme(legend.title=element_blank()) + 
     labs(x="Estimated Slope", y="Participant")  + 
     ggh4x::facet_wrap2(~condit,axes="all",scales="free_y")
 
 
-pe1tv / (pe1vce + (pid_den1 + pid_slopes1))
+pe1tv / (pe1vce + pid_den1 + pid_slopes1) + plot_annotation(tag_levels= 'A')
 
 ```
 

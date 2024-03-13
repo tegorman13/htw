@@ -189,9 +189,9 @@ d |> filter(expMode == "train", gt.train <= 60) %>%
               formula = y ~ three_param_exp_formula(x, a, b, c),
               method.args = list(start = list(a = 100, b = 500, c = 0.01)),
               se = FALSE) +
-  stat_equation(aes(label = after_stat(eq.label)),
-                formula = y ~ three_param_exp_formula(x, a, b, c),
-                parse = TRUE) +
+  # stat_equation(aes(label = after_stat(eq.label)),
+  #               formula = y ~ three_param_exp_formula(x, a, b, c),
+  #               parse = TRUE) +
   facet_wrap(~bandOrder * fb * vb, ncol = 3)
 
 ```
