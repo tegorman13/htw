@@ -158,17 +158,24 @@ pe3vce <- e3_vxBMM |> emmeans( ~condit* bandOrder* bandInt,
   scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
                      labels = levels(testE3$vb), 
                      limits = c(0, 1400)) + 
+scale_y_continuous(expand=expansion(add=100),breaks=round(seq(0,2000,by=200),2)) +
   theme(legend.title=element_blank()) + 
   labs(y="Velcoity", x="Band")
 
 fe <- fixef(e3_vxBMM)[,1]
 fixed_effect_bandInt <- fixef(e3_vxBMM)[,1]["bandInt"]
-fixed_effect_interaction <- fixef(e3_vxBMM)[,1]["conditVaried:bandInt"]
+fixed_effect_interaction1 <- fixef(e3_vxBMM)[,1]["conditVaried:bandInt"]
+fixed_effect_interaction2 <- fixef(e3_vxBMM)[,1]["bandOrderReverse:bandInt"]
+fixed_effect_interaction3 <- fixef(e3_vxBMM)[,1]["conditVaried:bandOrderReverse:bandInt"]
+
 
 re <- data.frame(ranef(e3_vxBMM, pars = "bandInt")$id[, ,'bandInt']) |> 
   rownames_to_column("id") |> 
   left_join(e3Sbjs,by="id") |>
-  mutate(adjust= fixed_effect_bandInt + fixed_effect_interaction*(condit=="Varied"),slope = Estimate + adjust )
+  mutate(adjust= fixed_effect_bandInt + fixed_effect_interaction1*(condit=="Varied") + 
+           fixed_effect_interaction2*(bandOrder=="Reverse") + 
+           fixed_effect_interaction3*(condit=="Varied" & bandOrder=="Reverse"),
+  slope = Estimate + adjust )
 
 
 pid_den3 <- ggplot(re, aes(x = slope, fill = condit)) + 
@@ -178,10 +185,11 @@ pid_den3 <- ggplot(re, aes(x = slope, fill = condit)) +
   labs(x="Slope Coefficient",y="Density") +
   facet_wrap(~bandOrder,ncol=1)
 
-pid_slopes3 <- re |>  mutate(id=reorder(id,slope)) |>
+pid_slopes3 <- re |>  
+    mutate(id=reorder(id,slope)) |>
   ggplot(aes(y=id, x=slope,fill=condit,color=condit)) + 
     geom_pointrange(aes(xmin=Q2.5+adjust, xmax=Q97.5+adjust)) + 
-     theme(legend.title=element_blank()) + 
+    theme(legend.title=element_blank()) + 
     labs(x="Estimated Slope", y="Participant")  + 
     ggh4x::facet_wrap2(bandOrder~condit,axes="all",scales="free_y")
 
