@@ -146,7 +146,6 @@ intCoef3 <- get_coef_details(e3_vxBMM, "conditVaried:bandInt")
 #| fig-height: 19
 #| fig-width: 12
 
-
 pe3tv <- testE3 %>% group_by(id,vb,condit,bandOrder) |> plot_distByCondit() + ggh4x::facet_nested_wrap(bandOrder~condit,scale="free_x")
 
 pe3vce <- e3_vxBMM |> emmeans( ~condit* bandOrder* bandInt, 
@@ -168,7 +167,6 @@ fixed_effect_interaction1 <- fixef(e3_vxBMM)[,1]["conditVaried:bandInt"]
 fixed_effect_interaction2 <- fixef(e3_vxBMM)[,1]["bandOrderReverse:bandInt"]
 fixed_effect_interaction3 <- fixef(e3_vxBMM)[,1]["conditVaried:bandOrderReverse:bandInt"]
 
-
 re <- data.frame(ranef(e3_vxBMM, pars = "bandInt")$id[, ,'bandInt']) |> 
   rownames_to_column("id") |> 
   left_join(e3Sbjs,by="id") |>
@@ -176,7 +174,6 @@ re <- data.frame(ranef(e3_vxBMM, pars = "bandInt")$id[, ,'bandInt']) |>
            fixed_effect_interaction2*(bandOrder=="Reverse") + 
            fixed_effect_interaction3*(condit=="Varied" & bandOrder=="Reverse"),
   slope = Estimate + adjust )
-
 
 pid_den3 <- ggplot(re, aes(x = slope, fill = condit)) + 
   geom_density(alpha=.5) + 
@@ -191,23 +188,8 @@ pid_slopes3 <- re |>
     geom_pointrange(aes(xmin=Q2.5+adjust, xmax=Q97.5+adjust)) + 
     theme(legend.title=element_blank()) + 
     labs(x="Estimated Slope", y="Participant")  + 
-    ggh4x::facet_wrap2(bandOrder~condit,axes="all",scales="free_y")
-
+    ggh4x::facet_nested_wrap(bandOrder~condit,axes="all",scales="free_y")
 
 pe3tv / (pe3vce + pid_den3 + pid_slopes3)
-
-```
-
-
-
-
-
-
-
-```{r}
-
-
-
-
 
 ```
