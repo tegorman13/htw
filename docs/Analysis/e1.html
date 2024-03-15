@@ -51,7 +51,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
@@ -96,7 +116,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script><style>html{ scroll-behavior: smooth; }</style>
-<script src="../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
 <body class="nav-sidebar docked">
 
@@ -396,11 +441,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    </div>
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="e1-hugo.md"><i class="bi bi-file-code"></i>CommonMark (hugo)</a></li><li><a href="e1-gfm.md"><i class="bi bi-file-code"></i>Github (GFM)</a></li></ul></div></div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/e1.html">Analyses</a></li><li class="breadcrumb-item"><a href="../Analysis/e1.html">HTW E1</a></li></ol></nav><div class="quarto-title">
+<main class="content column-body" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/e1.html">Analyses</a></li><li class="breadcrumb-item"><a href="../Analysis/e1.html">HTW E1</a></li></ol></nav><div class="quarto-title">
 <h1 class="title">HTW E1</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Analyses</div>
@@ -411,7 +456,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div class="quarto-title-meta column-page-right">
+<div class="quarto-title-meta column-body">
 
     
   
@@ -429,40 +474,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">walk</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Display_Functions"</span>,<span class="st">"org_functions"</span><span class="op">)</span>, <span class="op">~</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Functions/"</span>, <span class="va">.x</span>, <span class="st">".R"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_08-21-23.rds"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">e1Sbjs</span> <span class="op">&lt;-</span> <span class="va">e1</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">summarise</span><span class="op">(</span>n<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">testE1</span> <span class="op">&lt;-</span> <span class="va">e1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode2</span> <span class="op">==</span> <span class="st">"Test"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nbins</span><span class="op">=</span><span class="fl">6</span></span>
+<span><span class="va">testE1</span> <span class="op">&lt;-</span> <span class="va">e1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode2</span> <span class="op">==</span> <span class="st">"Test"</span><span class="op">)</span></span>
+<span><span class="va">nbins</span><span class="op">=</span><span class="fl">5</span></span>
 <span><span class="va">trainE1</span> <span class="op">&lt;-</span>  <span class="va">e1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode2</span><span class="op">==</span><span class="st">"Train"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>, <span class="va">vb</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>Trial_Bin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span> <span class="va">gt.train</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">gt.train</span><span class="op">)</span>,length.out<span class="op">=</span><span class="va">nbins</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span>,include.lowest <span class="op">=</span> <span class="cn">TRUE</span>, labels<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="co"># bayesian comparison of condits in training</span></span>
-<span><span class="va">trainE1_max</span> <span class="op">&lt;-</span> <span class="va">trainE1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">Trial_Bin</span> <span class="op">==</span> <span class="va">nbins</span>, <span class="va">bandInt</span><span class="op">==</span><span class="fl">800</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">bmm_e1_train</span><span class="op">&lt;-</span> <span class="va">trainE1_max</span> <span class="op">%&gt;%</span> </span>
+<span><span class="va">trainE1_max</span> <span class="op">&lt;-</span> <span class="va">trainE1</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">Trial_Bin</span> <span class="op">==</span> <span class="va">nbins</span>, <span class="va">bandInt</span><span class="op">==</span><span class="fl">800</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="analyses-strategy" class="level3"><h3 class="anchored" data-anchor-id="analyses-strategy">Analyses Strategy</h3>
+<p>All data processing and statistical analyses were performed in R version 4.32 <span class="citation" data-cites="rcoreteamLanguageEnvironmentStatistical2020">Team (<a href="#ref-rcoreteamLanguageEnvironmentStatistical2020" role="doc-biblioref">2020</a>)</span>. To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R <span class="citation" data-cites="burknerBrmsPackageBayesian2017">Bürkner (<a href="#ref-burknerBrmsPackageBayesian2017" role="doc-biblioref">2017</a>)</span>, and descriptive stats and tables were extracted with the BayestestR package <span class="citation" data-cites="makowskiBayestestRDescribingEffects2019">Makowski et al. (<a href="#ref-makowskiBayestestRDescribingEffects2019" role="doc-biblioref">2019</a>)</span>. Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as circumventing convergence issues common to the frequentist analogues of our mixed models.</p>
+<p>Each model was set to run with 4 chains, 5000 iterations per chain, with the first 2500 discarded as warmup chains. Rhat values were within an acceptable range, with values &lt;=1.02 (see appendix for diagnostic plots). We used uninformative priors for the fixed effects of the model (condition and velocity band), and weakly informative Student T distributions for for the random effects. For each model, we report the median values of the posterior distribution, and 95% credible intervals. EXPLAIN WHAT PARAMETERS REPRESENT AND WHAT HDI &amp; PD</p>
+<p>For the testing phase of all experiments, we compare varied and constant performance across two measures, deviation and discrimination. Deviation was quantified as the absolute deviation from the nearest boundary of the velocity band, or set to 0 if the throw velocity fell anywhere inside the target band. Thus, when the target band was 600-800, throws of 400, 650, and 1100 would result in deviation values of 200, 0, and 300, respectively. The degree of discrimination between bands was measured by fitting a linear model to the testing throws of each subjects, with the lower end of the target velocity band as the predicted variable, and the x velocity produced by the participants as the predictor variable. Participants who reliably discriminated between velocity bands tended to have positive slopes with values ~1, while participants who made throws irrespective of the current target band would have slopes ~0.</p>
+<span class="math display">\[\begin{equation}
+dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \beta_3 \cdot condit_{ij} \cdot band_{ij} + b_{0i} + b_{1i} \cdot band_{ij} + \epsilon_{ij}
+\end{equation}\]</span>
+</section><section id="results" class="level3"><h3 class="anchored" data-anchor-id="results">Results</h3>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">trainE1</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Trial_Bin</span>, y <span class="op">=</span> <span class="va">dist</span>, color <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"line"</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"errorbar"</span>, fun.data <span class="op">=</span> <span class="va">mean_se</span>, width <span class="op">=</span> <span class="fl">.4</span>, alpha <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">vb</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">nbins</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">theme</span><span class="op">(</span>legend.title<span class="op">=</span><span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Deviation"</span>, x<span class="op">=</span><span class="st">"Training Block"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div id="fig-e1-train-dev" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="e1_files/figure-html/fig-e1-train-dev-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e1-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: E1. Deviations from target band during testing without feedback stage.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bmm_e1_train</span><span class="op">&lt;-</span> <span class="va">trainE1_max</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span>, </span>
 <span>      file<span class="op">=</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/model_cache/e1_train_deviation"</span><span class="op">)</span>,</span>
 <span>      data <span class="op">=</span> <span class="va">.</span>,</span>
 <span>      iter <span class="op">=</span> <span class="fl">2000</span>,</span>
 <span>      chains <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>      control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">.94</span>, max_treedepth <span class="op">=</span> <span class="fl">13</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#bayestestR::describe_posterior(bayes_comp)</span></span>
-<span></span>
 <span><span class="va">mtr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu">describe_posterior</span><span class="op">(</span><span class="va">bmm_e1_train</span>, centrality <span class="op">=</span> <span class="st">"Mean"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mtr1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Term"</span>, <span class="st">"Estimate"</span>,<span class="st">"95% CrI Lower"</span>, <span class="st">"95% CrI Upper"</span>, <span class="st">"pd"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mtr1</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">where</span><span class="op">(</span><span class="va">is.numeric</span><span class="op">)</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">remove_rownames</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>Term <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">Term</span>, <span class="st">"b_"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">kable</span><span class="op">(</span>booktabs<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span>font_size<span class="op">=</span><span class="fl">9</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>   <span class="fu">kable</span><span class="op">(</span>booktabs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">cdtr1</span> <span class="op">&lt;-</span> <span class="fu">get_coef_details</span><span class="op">(</span><span class="va">bmm_e1_train</span>, <span class="st">"conditVaried"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div id="tbl-e1-train-dist" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e1-train-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: E1. Training vs.&nbsp;Extrapolation
+Table&nbsp;1: Experiment 1 - Learning curves.
 </figcaption><div aria-describedby="tbl-e1-train-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<table class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Term</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Estimate</th>
@@ -493,29 +561,11 @@ Table&nbsp;1: E1. Training vs.&nbsp;Extrapolation
 </figure>
 </div>
 </div>
-<div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">trainE1</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Trial_Bin</span>, y <span class="op">=</span> <span class="va">dist</span>, color <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"line"</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"errorbar"</span>, fun.data <span class="op">=</span> <span class="va">mean_se</span>, width <span class="op">=</span> <span class="fl">.4</span>, alpha <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">vb</span><span class="op">)</span><span class="op">+</span></span>
-<span>    <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">nbins</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu">theme</span><span class="op">(</span>legend.title<span class="op">=</span><span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>    <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Deviation"</span>, x<span class="op">=</span><span class="st">"Training Block"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div id="fig-e1-train-dev" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="e1_files/figure-html/fig-e1-train-dev-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e1-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: E1. Deviations from target band during testing without feedback stage.
-</figcaption></figure>
-</div>
-</div>
-</div>
+<p><em>Training</em>. <a href="#fig-e1-train-dev" class="quarto-xref">Figure&nbsp;1</a> displays the average deviations across training blocks (recall that the varied group trains from 3 bands and the constant group from 1). We compared the training conditions from the final training block, on the position for which both groups trained (band 800-1000). Full model results are shown in <a href="#tbl-e1-train-dist" class="quarto-xref">Table&nbsp;1</a>. The varied group had a significantly greater deviation than the constant group. (β = 79.64, 95% CrI [57.92, 101.63]; pd = 100%).</p>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#options(brms.backend="cmdstanr",mc.cores=4)</span></span>
-<span><span class="va">modelFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache/"</span><span class="op">)</span>, <span class="st">"e1_dist_Cond_Type_RFint"</span><span class="op">)</span></span>
-<span><span class="va">bmtd</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandType</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">*</span><span class="va">bandInt</span><span class="op">)</span>, </span>
+<span><span class="va">modelFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache/"</span><span class="op">)</span>, <span class="st">"e1_dist_Cond_Type_RF_2"</span><span class="op">)</span></span>
+<span><span class="va">bmtd</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandType</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">bandInt</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, </span>
 <span>    data<span class="op">=</span><span class="va">testE1</span>, file<span class="op">=</span><span class="va">modelFile</span>,</span>
 <span>    iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">.94</span>, max_treedepth <span class="op">=</span> <span class="fl">13</span><span class="op">)</span><span class="op">)</span></span>
 <span>                        </span>
@@ -524,17 +574,26 @@ Figure&nbsp;1: E1. Deviations from target band during testing without feedback s
 <span><span class="va">mted1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu">describe_posterior</span><span class="op">(</span><span class="va">bmtd</span>, centrality <span class="op">=</span> <span class="st">"Mean"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mted1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Term"</span>, <span class="st">"Estimate"</span>,<span class="st">"95% CrI Lower"</span>, <span class="st">"95% CrI Upper"</span>, <span class="st">"pd"</span><span class="op">)</span></span>
 <span></span>
+<span></span>
+<span><span class="co"># r_bandInt_params &lt;- get_variables(bmtd)[grepl("r_bandInt", get_variables(bmtd))]</span></span>
+<span><span class="co"># posterior_summary(bmtd,variable=r_bandInt_params)</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># r_bandInt_params &lt;- get_variables(bmtd)[grepl("r_id:bandInt", get_variables(bmtd))]</span></span>
+<span><span class="co"># posterior_summary(bmtd,variable=r_bandInt_params)</span></span>
+<span></span>
 <span><span class="va">mted1</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">where</span><span class="op">(</span><span class="va">is.numeric</span><span class="op">)</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">remove_rownames</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>Term <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">Term</span>, <span class="st">"b_"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">kable</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span>font_size<span class="op">=</span><span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">mutate</span><span class="op">(</span>Term <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">Term</span>, <span class="st">"b_"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">kable</span><span class="op">(</span>booktabs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">cdted1</span> <span class="op">&lt;-</span> <span class="fu">get_coef_details</span><span class="op">(</span><span class="va">bmtd</span>, <span class="st">"conditVaried"</span><span class="op">)</span></span>
+<span><span class="va">cdted2</span> <span class="op">&lt;-</span><span class="fu">get_coef_details</span><span class="op">(</span><span class="va">bmtd</span>, <span class="st">"bandTypeExtrapolation"</span><span class="op">)</span></span>
+<span><span class="va">cdted3</span> <span class="op">&lt;-</span><span class="fu">get_coef_details</span><span class="op">(</span><span class="va">bmtd</span>, <span class="st">"conditVaried:bandTypeExtrapolation"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div id="tbl-e1-bmm-dist" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e1-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;2: E1. Training vs.&nbsp;Extrapolation
 </figcaption><div aria-describedby="tbl-e1-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<table class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Term</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Estimate</th>
@@ -545,31 +604,31 @@ Table&nbsp;2: E1. Training vs.&nbsp;Extrapolation
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Intercept</td>
-<td style="text-align: right;">159.46</td>
-<td style="text-align: right;">69.46</td>
-<td style="text-align: right;">244.09</td>
-<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">152.55</td>
+<td style="text-align: right;">70.63</td>
+<td style="text-align: right;">229.85</td>
+<td style="text-align: right;">1.0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried</td>
-<td style="text-align: right;">33.93</td>
-<td style="text-align: right;">-31.39</td>
-<td style="text-align: right;">97.50</td>
-<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">39.00</td>
+<td style="text-align: right;">-21.10</td>
+<td style="text-align: right;">100.81</td>
+<td style="text-align: right;">0.9</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">bandTypeExtrapolation</td>
-<td style="text-align: right;">67.65</td>
-<td style="text-align: right;">6.18</td>
-<td style="text-align: right;">129.88</td>
-<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">71.51</td>
+<td style="text-align: right;">33.24</td>
+<td style="text-align: right;">109.60</td>
+<td style="text-align: right;">1.0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried:bandTypeExtrapolation</td>
-<td style="text-align: right;">69.90</td>
-<td style="text-align: right;">11.15</td>
-<td style="text-align: right;">128.57</td>
-<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">66.46</td>
+<td style="text-align: right;">32.76</td>
+<td style="text-align: right;">99.36</td>
+<td style="text-align: right;">1.0</td>
 </tr>
 </tbody>
 </table>
@@ -579,6 +638,7 @@ Table&nbsp;2: E1. Training vs.&nbsp;Extrapolation
 </figure>
 </div>
 </div>
+<p><em>Testing.</em> To compare conditions in the testing stage, we first fit a model predicting deviation from the target band as a function of training condition and band type, with random intercepts for participants and bands. The model is shown in <a href="#tbl-e1-bmm-dist" class="quarto-xref">Table&nbsp;2</a>. The effect of training condition was not reliably different from 0 (β = 39, 95% CrI [-21.1, 100.81]; pd = 89.93%). The extrapolation testing items had a significantly greater deviation than the interpolation band (β = 71.51, 95% CrI [33.24, 109.6]; pd = 99.99%). The interaction between training condition and band type was significant (β = 66.46, 95% CrI [32.76, 99.36]; pd = 99.99%), with the varied group showing a greater deviation than the constant group in the extrapolation bands. See <a href="#fig-e1-test-dev" class="quarto-xref">Figure&nbsp;2</a>.</p>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pe1td</span> <span class="op">&lt;-</span> <span class="va">testE1</span> <span class="op">|&gt;</span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">vb</span>, y <span class="op">=</span> <span class="va">dist</span>,fill<span class="op">=</span><span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"bar"</span>, position<span class="op">=</span><span class="fu">position_dodge</span><span class="op">(</span><span class="op">)</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span>
@@ -598,7 +658,7 @@ Table&nbsp;2: E1. Training vs.&nbsp;Extrapolation
 <span>  <span class="fu">gather_emmeans_draws</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span> <span class="fu">condEffects</span><span class="op">(</span><span class="va">bandType</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>y<span class="op">=</span><span class="st">"Absolute Deviation From Band"</span>, x<span class="op">=</span><span class="st">"Band Type"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">pe1td</span> <span class="op">+</span> <span class="va">pe1ce</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">(</span><span class="va">pe1td</span> <span class="op">+</span> <span class="va">pe1ce</span><span class="op">)</span> <span class="op">+</span> <span class="fu">plot_annotation</span><span class="op">(</span>tag_levels<span class="op">=</span> <span class="st">'A'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div id="fig-e1-test-dev" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -610,25 +670,24 @@ Figure&nbsp;2: E1. Deviations from target band during testing without feedback s
 </div>
 </div>
 </div>
-<section id="discimination" class="level3"><h3 class="anchored" data-anchor-id="discimination">Discimination</h3>
+<div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">e1_vxBMM</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
 <span>                        data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>, <span class="st">"e1_testVxBand_RF_5k"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                        iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span>,silent<span class="op">=</span><span class="fl">0</span>,</span>
 <span>                        control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta<span class="op">=</span><span class="fl">0.94</span>, max_treedepth<span class="op">=</span><span class="fl">13</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">GetModelStats</span><span class="op">(</span><span class="va">e1_vxBMM</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">kable</span><span class="op">(</span>escape<span class="op">=</span><span class="cn">F</span>,booktabs<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">kable_styling</span><span class="op">(</span>font_size<span class="op">=</span><span class="fl">9</span><span class="op">)</span></span>
+<span>  <span class="fu">kable</span><span class="op">(</span>booktabs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">cd1</span> <span class="op">&lt;-</span> <span class="fu">get_coef_details</span><span class="op">(</span><span class="va">e1_vxBMM</span>, <span class="st">"conditVaried"</span><span class="op">)</span></span>
 <span><span class="va">sc1</span> <span class="op">&lt;-</span> <span class="fu">get_coef_details</span><span class="op">(</span><span class="va">e1_vxBMM</span>, <span class="st">"bandInt"</span><span class="op">)</span></span>
 <span><span class="va">intCoef1</span> <span class="op">&lt;-</span> <span class="fu">get_coef_details</span><span class="op">(</span><span class="va">e1_vxBMM</span>, <span class="st">"conditVaried:bandInt"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div id="tbl-e1-bmm-vx" class="quarto-layout-panel anchored">
+</details><div id="tbl-e1-bmm-vx" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e1-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;3: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs.&nbsp;Varied) and Velocity Band
 </figcaption><div aria-describedby="tbl-e1-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<table class="table do-not-create-environment cell" data-quarto-postprocess="true">
+<div class="cell-output-display">
+<div>
+<table class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Term</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Estimate</th>
@@ -672,6 +731,8 @@ Table&nbsp;3: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of 
 </div>
 </figure>
 </div>
+</div>
+<p>Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. See <a href="#tbl-e1-bmm-vx" class="quarto-xref">Table&nbsp;3</a> for the full model results. The estimated coefficient for training condition (β = 164.05, 95% CrI [45.5, 278.85]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band (β = 0.71, 95% CrI [0.62, 0.8]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition (β = -0.14, 95% CrI [-0.26, -0.01]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition. This difference is depicted visually in <a href="#fig-e1-test-vx" class="quarto-xref">Figure&nbsp;3</a>.</p>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pe1tv</span> <span class="op">&lt;-</span> <span class="va">testE1</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">vb</span>,<span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">plot_distByCondit</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -710,7 +771,6 @@ Table&nbsp;3: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of 
 <span>    <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Estimated Slope"</span>, y<span class="op">=</span><span class="st">"Participant"</span><span class="op">)</span>  <span class="op">+</span> </span>
 <span>    <span class="fu">ggh4x</span><span class="fu">::</span><span class="fu"><a href="https://teunbrand.github.io/ggh4x/reference/facet_wrap2.html">facet_wrap2</a></span><span class="op">(</span><span class="op">~</span><span class="va">condit</span>,axes<span class="op">=</span><span class="st">"all"</span>,scales<span class="op">=</span><span class="st">"free_y"</span><span class="op">)</span></span>
 <span></span>
-<span></span>
 <span><span class="va">pe1tv</span> <span class="op">/</span> <span class="op">(</span><span class="va">pe1vce</span> <span class="op">+</span> <span class="va">pid_den1</span> <span class="op">+</span> <span class="va">pid_slopes1</span><span class="op">)</span> <span class="op">+</span> <span class="fu">plot_annotation</span><span class="op">(</span>tag_levels<span class="op">=</span> <span class="st">'A'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div id="fig-e1-test-vx" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -725,7 +785,18 @@ Figure&nbsp;3: Experiment 1. Conditional effect of training condition and Band. 
 </div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-burknerBrmsPackageBayesian2017" class="csl-entry" role="listitem">
+Bürkner, P.-C. (2017). Brms: <span>An R Package</span> for <span>Bayesian Multilevel Models Using Stan</span>. <em>Journal of Statistical Software</em>, <em>80</em>, 1–28. <a href="https://doi.org/10.18637/jss.v080.i01">https://doi.org/10.18637/jss.v080.i01</a>
+</div>
+<div id="ref-makowskiBayestestRDescribingEffects2019" class="csl-entry" role="listitem">
+Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). <span class="nocase">bayestestR</span>: <span>Describing Effects</span> and their <span>Uncertainty</span>, <span>Existence</span> and <span>Significance</span> within the <span>Bayesian Framework</span>. <em>Journal of Open Source Software</em>, <em>4</em>(40), 1541. <a href="https://doi.org/10.21105/joss.01541">https://doi.org/10.21105/joss.01541</a>
+</div>
+<div id="ref-rcoreteamLanguageEnvironmentStatistical2020" class="csl-entry" role="listitem">
+Team, R. C. (2020). <em>R: <span>A Language</span> and <span>Environment</span> for <span>Statistical Computing</span></em>. R: A Language and Environment for Statistical Computing.
+</div>
+</div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1129,7 +1200,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script><nav class="page-navigation column-page-right"><div class="nav-page nav-page-previous">
+</script><nav class="page-navigation column-body"><div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
       <a href="../Analysis/e2.html" class="pagination-link" aria-label="HTW E2">

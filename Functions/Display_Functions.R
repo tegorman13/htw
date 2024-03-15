@@ -659,7 +659,7 @@ big_text2 <- function() {
 
 
 
-col_themes <- tibble::lst(darjeeling = c(wes_palette("Darjeeling1"),wes_palette("Darjeeling2"),
+col_themes <- tibble::lst(darjeeling = c(wes_palette("Darjeeling1"),wes_palette("Darjeeling2"), ggokabeito::palette_okabe_ito(),
   wes_palette("AsteroidCity1"), wes_palette("AsteroidCity2")), 
                           wes2 = wes_palette("AsteroidCity1"), 
                           okabeito = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#000000"))

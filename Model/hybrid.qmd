@@ -12,9 +12,10 @@ execute:
   eval: true
 ---
 
+
 ```{r}
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
-               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools,kableExtra)
+               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools,kableExtra,ggdist)
 conflict_prefer_all("dplyr", quiet = TRUE)
 options(scipen = 999)
 walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))

@@ -8,7 +8,7 @@ cold-tools: true
 
 
 ```{r}
-pacman::p_load(dplyr,purrr,tidyr,here,conflicted,ggpmisc)
+pacman::p_load(dplyr,purrr,tidyr,ggplot2,here,conflicted,ggpmisc,patchwork,ggh4x)
 walk(c("dplyr"), conflict_prefer_all, quiet = TRUE)
 walk(c("Display_Functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 
@@ -54,6 +54,200 @@ d |> filter(expMode=="train") %>%
 # d |> group_by(gt.train,condit) |> ggplot(aes(x=gt.train,y=dist,col=condit)) + geom_smooth(method="loess") + 
 #     facet_wrap(~bandOrder*fb*vb,ncol=3)
 
+
+```
+
+
+```{r}
+#| fig-height: 16
+#| fig-width: 12
+
+
+nbins=4
+trainE1 <-  e1 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
+    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
+trainE1_max <- trainE1 |> filter(Trial_Bin == nbins, bandInt==800) |> 
+  group_by(id,condit) |> summarize(dist=mean(dist)) |> arrange(dist) |>
+  mutate(id=reorder(id,dist))
+
+
+
+nbins=10
+ e1 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
+    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE))  |> filter(expMode=="train", id %in% unique(trainE1_max$id)[1:55]) |>
+   ggplot(aes(x = Trial_Bin, y = vx, color = vb)) +
+    stat_summary(geom = "line", fun = median) +
+    #stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
+    facet_wrap(~id,scales="free")+
+    scale_x_continuous(breaks = seq(1, nbins + 1)) +
+    theme(legend.title=element_blank()) + 
+    labs(y = "Deviation", x="Training Block") 
+ 
+ 
+  e1 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
+    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE))  |> filter(expMode=="train", id %in% unique(trainE1_max$id)[1:55]) |>
+    ggplot(aes(x = Trial_Bin, y = dist, color = vb)) +
+    stat_summary(geom = "line", fun = median) +
+    #stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
+    facet_wrap(~id,scales="fixed")+
+    scale_x_continuous(breaks = seq(1, nbins + 1)) +
+    theme(legend.title=element_blank()) + 
+    labs(y = "Deviation", x="Training Block") 
+  
+  
+e1 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
+    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE))  |> filter(expMode=="train", id %in% unique(e1$id)[1:55]) |> 
+    ggplot(aes(x = Trial_Bin, y = dist,color=condit)) +
+    stat_summary(geom = "line", fun = median) +
+    #stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
+    facet_wrap(~id,scales="free")+
+    scale_x_continuous(breaks = seq(1, nbins + 1)) +
+    theme(legend.title=element_blank()) + 
+    labs(y = "Deviation", x="Training Block") 
+
+e1  |> group_by(id,condit, vb,expMode2) |> 
+  mutate(mt=max(trial)) |>
+    mutate(Trial_Bin = cut( gt.stage, breaks = seq(1, max(gt.stage),length.out=nbins+1),include.lowest = TRUE, labels=FALSE))  |> 
+  #filter(expMode=="train", id %in% unique(e1$id)[1:55]) |> 
+    ggplot(aes(x = Trial_Bin, y = dist,color=condit)) +
+    stat_summary(geom = "line", fun = mean) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
+    ggh4x::facet_wrap2(~expMode2+vb,scales="free_x",ncol=3)+
+    scale_x_continuous(breaks = seq(1, nbins + 1)) +
+    theme(legend.title=element_blank()) + 
+    labs(y = "Deviation", x="Training Block") 
+
+
+e1  |> group_by(id,condit, vb,expMode2) |> 
+  mutate(mt=max(trial)) |>
+    mutate(Trial_Bin = cut( gt.stage, breaks = seq(1, max(gt.stage),length.out=nbins+1),include.lowest = TRUE, labels=FALSE))  |> 
+  #filter(expMode=="train", id %in% unique(e1$id)[1:55]) |> 
+    ggplot(aes(x = Trial_Bin, y = vx,color=vb)) +
+    stat_summary(geom = "line", fun = mean) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
+    ggh4x::facet_wrap2(~expMode2+condit,scales="free_x",ncol=2)+
+    scale_x_continuous(breaks = seq(1, nbins + 1)) +
+    theme(legend.title=element_blank()) + 
+    labs(y = "Deviation", x="Training Block") 
+
+
+
+
+
+```
+
+```{r}
+#| fig-height: 11
+#| fig-width: 12
+
+p1 <- e1  |> group_by(id,condit, vb,expMode2) |> 
+    ggplot(aes(x = vb, y = vx,fill=expMode2)) +
+    stat_bar + 
+    ggh4x::facet_wrap2(~condit,scales="free_x",ncol=2)+
+    theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+
+p2 <- e1  |> group_by(id,condit, vb,expMode2) |> 
+    ggplot(aes(x = expMode2, y = vx,fill=vb)) +
+    stat_bar + 
+    ggh4x::facet_wrap2(~condit,scales="free_x",ncol=2)+
+    theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+p1 + p2
+
+p1 <- e1  |> group_by(id,condit, vb,expMode2) |> 
+    ggplot(aes(x = vb, y = dist,fill=expMode2)) +
+    stat_bar + 
+    ggh4x::facet_wrap2(~condit,scales="free_x",ncol=2)+
+    theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+
+p2 <- e1  |> group_by(id,condit, vb,expMode2) |> 
+    ggplot(aes(x = expMode2, y = dist,fill=vb)) +
+    stat_bar + 
+    ggh4x::facet_wrap2(~condit,scales="free_x",ncol=2)+
+    theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+p1 + p2
+
+```
+
+
+
+E2
+```{r}
+#| fig-height: 11
+#| fig-width: 12
+
+p1 <- e2  |> group_by(id,condit, vb,expMode2) |> 
+    ggplot(aes(x = vb, y = vx,fill=expMode2)) +
+    stat_bar + 
+    ggh4x::facet_wrap2(~condit,scales="free_x",ncol=2)+
+    theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+
+p2 <- e2  |> group_by(id,condit, vb,expMode2) |> 
+    ggplot(aes(x = expMode2, y = vx,fill=vb)) +
+    stat_bar + 
+    ggh4x::facet_wrap2(~condit,scales="free_x",ncol=2)+
+    theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+p1 + p2
+
+p1 <- e2  |> group_by(id,condit, vb,expMode2) |> 
+    ggplot(aes(x = vb, y = dist,fill=expMode2)) +
+    stat_bar + 
+    ggh4x::facet_wrap2(~condit,scales="free_x",ncol=2)+
+    theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+
+p2 <- e2  |> group_by(id,condit, vb,expMode2) |> 
+    ggplot(aes(x = expMode2, y = dist,fill=vb)) +
+    stat_bar + 
+    ggh4x::facet_wrap2(~condit,scales="free_x",ncol=2)+
+    theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+p1 + p2
+
+```
+
+
+
+
+E3
+```{r}
+#| fig-height: 14
+#| fig-width: 12
+
+p1 <- e3  |> group_by(id,condit, vb,expMode2) |> 
+    ggplot(aes(x = vb, y = vx,fill=expMode2)) +
+    stat_bar + 
+    ggh4x::facet_wrap2(~bandOrder+condit,scales="free_x",ncol=2)+
+    theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+
+p2 <- e3  |> group_by(id,condit, vb,expMode2) |> 
+    ggplot(aes(x = expMode2, y = vx,fill=vb)) +
+    stat_bar + 
+    ggh4x::facet_wrap2(~bandOrder+condit,scales="free_x",ncol=2)+
+    theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+p1 + p2
+
+p1 <- e3  |> group_by(id,condit, vb,expMode2) |> 
+    ggplot(aes(x = vb, y = dist,fill=expMode2)) +
+    stat_bar + 
+    ggh4x::facet_wrap2(~bandOrder+condit,scales="free_x",ncol=2)+
+    theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+
+p2 <- e3  |> group_by(id,condit, vb,expMode2) |> 
+    ggplot(aes(x = expMode2, y = dist,fill=vb)) +
+    stat_bar + 
+    ggh4x::facet_wrap2(~bandOrder+condit,scales="free_x",ncol=2)+
+    theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+p1 + p2
 
 ```
 
