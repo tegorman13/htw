@@ -6,6 +6,7 @@ categories:
   - Bayesian
 code-fold: true
 cold-tools: true
+lightbox: true
 keep-md: true
 format:
   html: default

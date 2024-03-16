@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.4.550">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Gorman">
-<meta name="dcterms.date" content="2024-03-07">
+<meta name="dcterms.date" content="2024-03-16">
 <title>HTW Project - HTW Model e2</title>
 <style>
 code{white-space: pre-wrap;}
@@ -72,7 +72,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -451,7 +454,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 7, 2024</p>
+      <p class="date">March 16, 2024</p>
     </div>
   </div>
   
@@ -462,7 +465,7 @@ window.Quarto = {
 
 </header><div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">dplyr</span>,<span class="va">purrr</span>,<span class="va">tidyr</span>,<span class="va">ggplot2</span>, <span class="va">data.table</span>, <span class="va">here</span>, <span class="va">patchwork</span>, <span class="va">conflicted</span>, </span>
-<span>               <span class="va">stringr</span>,<span class="va">future</span>,<span class="va">furrr</span>, <span class="va">knitr</span>, <span class="va">reactable</span>, <span class="va">flextable</span>,<span class="va">ggstance</span>, <span class="va">htmltools</span><span class="op">)</span></span>
+<span>               <span class="va">stringr</span>,<span class="va">future</span>,<span class="va">furrr</span>, <span class="va">knitr</span>, <span class="va">reactable</span>, <span class="va">flextable</span>,<span class="va">ggstance</span>, <span class="va">htmltools</span>, <span class="va">ggdist</span><span class="op">)</span></span>
 <span><span class="co">#conflict_prefer_all("dplyr", quiet = TRUE)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>scipen <span class="op">=</span> <span class="fl">999</span><span class="op">)</span></span>
 <span><span class="fu">walk</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Display_Functions"</span>,<span class="st">"fun_alm"</span>,<span class="st">"fun_indv_fit"</span>,<span class="st">"fun_model"</span><span class="op">)</span>, <span class="op">~</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Functions/"</span>, <span class="va">.x</span>, <span class="st">".R"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -613,61 +616,61 @@ Table&nbsp;1: Mean model errors predicting testing data, aggregated over all par
 </figcaption><div aria-describedby="tbl-htw-modelError-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div class="tabwid">
-<style>.cl-cddcb792{}.cl-cdd904b2{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-cdda9944{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cdda994e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:0;padding-top:0;padding-left:0;padding-right:0;line-height: 1;background-color:transparent;}.cl-cdda9958{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cdda9962{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cdda9963{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:0;padding-top:0;padding-left:0;padding-right:0;line-height: 1;background-color:transparent;}.cl-cdda996c{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cddaa3f8{width:2.047in;background-color:transparent;vertical-align: bottom;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa3f9{width:0.697in;background-color:transparent;vertical-align: bottom;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa402{width:0.079in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa403{width:0.875in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa404{width:0.706in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa40c{width:2.047in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa416{width:0.697in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa417{width:0.079in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa420{width:0.875in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa421{width:0.706in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa42a{width:2.047in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa42b{width:0.697in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa434{width:0.079in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa435{width:0.875in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa43e{width:0.706in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa43f{width:2.047in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa440{width:0.697in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa448{width:0.875in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cddaa449{width:0.706in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table data-quarto-disable-processing="true" class="cl-cddcb792">
+<style>.cl-b74cd7f0{}.cl-b7494ea0{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-b74ad004{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-b74ad00e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:0;padding-top:0;padding-left:0;padding-right:0;line-height: 1;background-color:transparent;}.cl-b74ad00f{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-b74ad010{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-b74ad018{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:0;padding-top:0;padding-left:0;padding-right:0;line-height: 1;background-color:transparent;}.cl-b74ad022{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-b74ada68{width:2.047in;background-color:transparent;vertical-align: bottom;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada69{width:0.697in;background-color:transparent;vertical-align: bottom;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada6a{width:0.079in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada72{width:0.875in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada7c{width:0.706in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada7d{width:2.047in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada7e{width:0.697in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada86{width:0.079in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada87{width:0.875in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada88{width:0.706in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada90{width:2.047in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada91{width:0.697in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada92{width:0.079in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada9a{width:0.875in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada9b{width:0.706in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74ada9c{width:2.047in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74adaa4{width:0.697in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74adaa5{width:0.875in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b74adaae{width:0.706in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table data-quarto-disable-processing="true" class="cl-b74cd7f0">
 <thead><tr style="overflow-wrap:break-word;">
-<th class="cl-cddaa3f8"><p class="cl-cdda9944"><span class="cl-cdd904b2">Fit_Method</span></p></th>
-<th class="cl-cddaa3f9"><p class="cl-cdda9944"><span class="cl-cdd904b2">Model</span></p></th>
-<th class="cl-cddaa402"><p class="cl-cdda994e"><span class="cl-cdd904b2"></span></p></th>
-<th class="cl-cddaa403"><p class="cl-cdda9958"><span class="cl-cdd904b2">Constant</span></p></th>
-<th class="cl-cddaa402"><p class="cl-cdda994e"><span class="cl-cdd904b2"></span></p></th>
-<th class="cl-cddaa404"><p class="cl-cdda9958"><span class="cl-cdd904b2">Varied</span></p></th>
+<th class="cl-b74ada68"><p class="cl-b74ad004"><span class="cl-b7494ea0">Fit_Method</span></p></th>
+<th class="cl-b74ada69"><p class="cl-b74ad004"><span class="cl-b7494ea0">Model</span></p></th>
+<th class="cl-b74ada6a"><p class="cl-b74ad00e"><span class="cl-b7494ea0"></span></p></th>
+<th class="cl-b74ada72"><p class="cl-b74ad00f"><span class="cl-b7494ea0">Constant</span></p></th>
+<th class="cl-b74ada6a"><p class="cl-b74ad00e"><span class="cl-b7494ea0"></span></p></th>
+<th class="cl-b74ada7c"><p class="cl-b74ad00f"><span class="cl-b7494ea0">Varied</span></p></th>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-cddaa40c"><p class="cl-cdda9962"><span class="cl-cdd904b2">Fit to Test Data</span></p></td>
-<td class="cl-cddaa416"><p class="cl-cdda9962"><span class="cl-cdd904b2">ALM</span></p></td>
-<td class="cl-cddaa417"><p class="cl-cdda9963"><span class="cl-cdd904b2"></span></p></td>
-<td class="cl-cddaa420"><p class="cl-cdda996c"><span class="cl-cdd904b2">319.2</span></p></td>
-<td class="cl-cddaa417"><p class="cl-cdda9963"><span class="cl-cdd904b2"></span></p></td>
-<td class="cl-cddaa421"><p class="cl-cdda996c"><span class="cl-cdd904b2">233.9</span></p></td>
+<td rowspan="2" class="cl-b74ada7d"><p class="cl-b74ad010"><span class="cl-b7494ea0">Fit to Test Data</span></p></td>
+<td class="cl-b74ada7e"><p class="cl-b74ad010"><span class="cl-b7494ea0">ALM</span></p></td>
+<td class="cl-b74ada86"><p class="cl-b74ad018"><span class="cl-b7494ea0"></span></p></td>
+<td class="cl-b74ada87"><p class="cl-b74ad022"><span class="cl-b7494ea0">319.2</span></p></td>
+<td class="cl-b74ada86"><p class="cl-b74ad018"><span class="cl-b7494ea0"></span></p></td>
+<td class="cl-b74ada88"><p class="cl-b74ad022"><span class="cl-b7494ea0">233.9</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-cddaa416"><p class="cl-cdda9962"><span class="cl-cdd904b2">EXAM</span></p></td>
-<td class="cl-cddaa417"><p class="cl-cdda9963"><span class="cl-cdd904b2"></span></p></td>
-<td class="cl-cddaa420"><p class="cl-cdda996c"><span class="cl-cdd904b2">219.8</span></p></td>
-<td class="cl-cddaa417"><p class="cl-cdda9963"><span class="cl-cdd904b2"></span></p></td>
-<td class="cl-cddaa421"><p class="cl-cdda996c"><span class="cl-cdd904b2">205.0</span></p></td>
+<td class="cl-b74ada7e"><p class="cl-b74ad010"><span class="cl-b7494ea0">EXAM</span></p></td>
+<td class="cl-b74ada86"><p class="cl-b74ad018"><span class="cl-b7494ea0"></span></p></td>
+<td class="cl-b74ada87"><p class="cl-b74ad022"><span class="cl-b7494ea0">219.8</span></p></td>
+<td class="cl-b74ada86"><p class="cl-b74ad018"><span class="cl-b7494ea0"></span></p></td>
+<td class="cl-b74ada88"><p class="cl-b74ad022"><span class="cl-b7494ea0">205.0</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-cddaa42a"><p class="cl-cdda9962"><span class="cl-cdd904b2">Fit to Test &amp; Training Data</span></p></td>
-<td class="cl-cddaa42b"><p class="cl-cdda9962"><span class="cl-cdd904b2">ALM</span></p></td>
-<td class="cl-cddaa434"><p class="cl-cdda9963"><span class="cl-cdd904b2"></span></p></td>
-<td class="cl-cddaa435"><p class="cl-cdda996c"><span class="cl-cdd904b2">337.6</span></p></td>
-<td class="cl-cddaa434"><p class="cl-cdda9963"><span class="cl-cdd904b2"></span></p></td>
-<td class="cl-cddaa43e"><p class="cl-cdda996c"><span class="cl-cdd904b2">275.4</span></p></td>
+<td rowspan="2" class="cl-b74ada90"><p class="cl-b74ad010"><span class="cl-b7494ea0">Fit to Test &amp; Training Data</span></p></td>
+<td class="cl-b74ada91"><p class="cl-b74ad010"><span class="cl-b7494ea0">ALM</span></p></td>
+<td class="cl-b74ada92"><p class="cl-b74ad018"><span class="cl-b7494ea0"></span></p></td>
+<td class="cl-b74ada9a"><p class="cl-b74ad022"><span class="cl-b7494ea0">337.6</span></p></td>
+<td class="cl-b74ada92"><p class="cl-b74ad018"><span class="cl-b7494ea0"></span></p></td>
+<td class="cl-b74ada9b"><p class="cl-b74ad022"><span class="cl-b7494ea0">275.4</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-cddaa42b"><p class="cl-cdda9962"><span class="cl-cdd904b2">EXAM</span></p></td>
-<td class="cl-cddaa434"><p class="cl-cdda9963"><span class="cl-cdd904b2"></span></p></td>
-<td class="cl-cddaa435"><p class="cl-cdda996c"><span class="cl-cdd904b2">234.6</span></p></td>
-<td class="cl-cddaa434"><p class="cl-cdda9963"><span class="cl-cdd904b2"></span></p></td>
-<td class="cl-cddaa43e"><p class="cl-cdda996c"><span class="cl-cdd904b2">222.6</span></p></td>
+<td class="cl-b74ada91"><p class="cl-b74ad010"><span class="cl-b7494ea0">EXAM</span></p></td>
+<td class="cl-b74ada92"><p class="cl-b74ad018"><span class="cl-b7494ea0"></span></p></td>
+<td class="cl-b74ada9a"><p class="cl-b74ad022"><span class="cl-b7494ea0">234.6</span></p></td>
+<td class="cl-b74ada92"><p class="cl-b74ad018"><span class="cl-b7494ea0"></span></p></td>
+<td class="cl-b74ada9b"><p class="cl-b74ad022"><span class="cl-b7494ea0">222.6</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td rowspan="2" class="cl-cddaa43f"><p class="cl-cdda9962"><span class="cl-cdd904b2">Fit to Training Data</span></p></td>
-<td class="cl-cddaa42b"><p class="cl-cdda9962"><span class="cl-cdd904b2">ALM</span></p></td>
-<td class="cl-cddaa434"><p class="cl-cdda9963"><span class="cl-cdd904b2"></span></p></td>
-<td class="cl-cddaa435"><p class="cl-cdda996c"><span class="cl-cdd904b2">412.6</span></p></td>
-<td class="cl-cddaa434"><p class="cl-cdda9963"><span class="cl-cdd904b2"></span></p></td>
-<td class="cl-cddaa43e"><p class="cl-cdda996c"><span class="cl-cdd904b2">342.0</span></p></td>
+<td rowspan="2" class="cl-b74ada9c"><p class="cl-b74ad010"><span class="cl-b7494ea0">Fit to Training Data</span></p></td>
+<td class="cl-b74ada91"><p class="cl-b74ad010"><span class="cl-b7494ea0">ALM</span></p></td>
+<td class="cl-b74ada92"><p class="cl-b74ad018"><span class="cl-b7494ea0"></span></p></td>
+<td class="cl-b74ada9a"><p class="cl-b74ad022"><span class="cl-b7494ea0">412.6</span></p></td>
+<td class="cl-b74ada92"><p class="cl-b74ad018"><span class="cl-b7494ea0"></span></p></td>
+<td class="cl-b74ada9b"><p class="cl-b74ad022"><span class="cl-b7494ea0">342.0</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-cddaa440"><p class="cl-cdda9962"><span class="cl-cdd904b2">EXAM</span></p></td>
-<td class="cl-cddaa434"><p class="cl-cdda9963"><span class="cl-cdd904b2"></span></p></td>
-<td class="cl-cddaa448"><p class="cl-cdda996c"><span class="cl-cdd904b2">367.3</span></p></td>
-<td class="cl-cddaa434"><p class="cl-cdda9963"><span class="cl-cdd904b2"></span></p></td>
-<td class="cl-cddaa449"><p class="cl-cdda996c"><span class="cl-cdd904b2">295.7</span></p></td>
+<td class="cl-b74adaa4"><p class="cl-b74ad010"><span class="cl-b7494ea0">EXAM</span></p></td>
+<td class="cl-b74ada92"><p class="cl-b74ad018"><span class="cl-b7494ea0"></span></p></td>
+<td class="cl-b74adaa5"><p class="cl-b74ad022"><span class="cl-b7494ea0">367.3</span></p></td>
+<td class="cl-b74ada92"><p class="cl-b74ad018"><span class="cl-b7494ea0"></span></p></td>
+<td class="cl-b74adaae"><p class="cl-b74ad022"><span class="cl-b7494ea0">295.7</span></p></td>
 </tr>
 </tbody>
 </table>
@@ -719,7 +722,7 @@ Table&nbsp;1: Mean model errors predicting testing data, aggregated over all par
 </details><div class="cell-output-display page-columns page-full">
 <div id="fig-htw-resid-pred" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full"><div aria-describedby="fig-htw-resid-pred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
-<img src="htw_model_e2_files/figure-html/fig-htw-resid-pred-1.png" class="img-fluid figure-img column-page-inset-right" width="1152">
+<a href="htw_model_e2_files/figure-html/fig-htw-resid-pred-1.png" class="lightbox page-columns page-full" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="htw_model_e2_files/figure-html/fig-htw-resid-pred-1.png" class="img-fluid figure-img column-page-inset-right" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-htw-resid-pred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: A) Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y axes are scaled differently between facets. B) Full posterior predictive distributions vs.&nbsp;observed data from participants.Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median.
@@ -737,7 +740,7 @@ Figure&nbsp;1: A) Model residuals for each combination of training condition, fi
 <span>  <span class="fu">ggh4x</span><span class="fu">::</span><span class="fu"><a href="https://teunbrand.github.io/ggh4x/reference/facet_nested_wrap.html">facet_nested_wrap</a></span><span class="op">(</span><span class="fu">rename_fm</span><span class="op">(</span><span class="va">Fit_Method</span><span class="op">)</span><span class="op">~</span><span class="va">Resp</span>, axes <span class="op">=</span> <span class="st">"all"</span>,ncol<span class="op">=</span><span class="fl">3</span>,scale<span class="op">=</span><span class="st">"free"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="htw_model_e2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="1056"></p>
+<figure class="figure"><p><a href="htw_model_e2_files/figure-html/unnamed-chunk-6-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="htw_model_e2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="1056"></a></p>
 </figure>
 </div>
 </div>
@@ -760,7 +763,7 @@ Figure&nbsp;1: A) Model residuals for each combination of training condition, fi
 </details><div class="cell-output-display">
 <div id="fig-htw-post-dist" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-htw-post-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="htw_model_e2_files/figure-html/fig-htw-post-dist-1.png" class="img-fluid figure-img" width="1056">
+<a href="htw_model_e2_files/figure-html/fig-htw-post-dist-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="htw_model_e2_files/figure-html/fig-htw-post-dist-1.png" class="img-fluid figure-img" width="1056"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-htw-post-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Posterior Distributions of <span class="math inline">\(c\)</span> and <span class="math inline">\(lr\)</span> parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically.
@@ -820,7 +823,7 @@ Figure&nbsp;2: Posterior Distributions of <span class="math inline">\(c\)</span>
 </details><div class="cell-output-display">
 <div id="fig-htw-best-model" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-htw-best-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="htw_model_e2_files/figure-html/fig-htw-best-model-1.png" class="img-fluid figure-img" width="1056">
+<a href="htw_model_e2_files/figure-html/fig-htw-best-model-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4"><img src="htw_model_e2_files/figure-html/fig-htw-best-model-1.png" class="img-fluid figure-img" width="1056"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-htw-best-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM.
@@ -844,7 +847,7 @@ Figure&nbsp;3: Difference in model errors for each participant, with models fit 
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span>,axis.title.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="htw_model_e2_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="1152"></p>
+<figure class="figure"><p><a href="htw_model_e2_files/figure-html/unnamed-chunk-10-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="htw_model_e2_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="1152"></a></p>
 </figure>
 </div>
 </div>
@@ -865,7 +868,7 @@ Figure&nbsp;3: Difference in model errors for each participant, with models fit 
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span>,axis.title.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="htw_model_e2_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="1152"></p>
+<figure class="figure"><p><a href="htw_model_e2_files/figure-html/unnamed-chunk-11-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="htw_model_e2_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="1152"></a></p>
 </figure>
 </div>
 </div>
@@ -874,6 +877,11 @@ Figure&nbsp;3: Difference in model errors for each participant, with models fit 
 
 <!-- -->
 
+<div class="hidden" aria-hidden="true">
+<span class="glightbox-desc lightbox-desc-1">Figure&nbsp;1: A) Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y axes are scaled differently between facets. B) Full posterior predictive distributions vs.&nbsp;observed data from participants.Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median.</span>
+<span class="glightbox-desc lightbox-desc-3">Figure&nbsp;2: Posterior Distributions of <span class="math inline">\(c\)</span> and <span class="math inline">\(lr\)</span> parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically.</span>
+<span class="glightbox-desc lightbox-desc-4">Figure&nbsp;3: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM.</span>
+</div>
 </section></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1345,415 +1353,440 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> Thomas Gorman</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co">  last-modified #"`r Sys.Date()`"</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="an">page-layout:</span><span class="co"> full</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Modeling, ALM, EXAM, R]</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> false</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="an">code-fold:</span><span class="co"> true</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="an">code-tools:</span><span class="co"> true</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">  eval: true</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, </span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools)</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#conflict_prefer_all("dplyr", quiet = TRUE)</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="fu">walk</span>(<span class="fu">c</span>(<span class="st">"Display_Functions"</span>,<span class="st">"fun_alm"</span>,<span class="st">"fun_indv_fit"</span>,<span class="st">"fun_model"</span>), <span class="sc">~</span> <span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="fu">paste0</span>(<span class="st">"Functions/"</span>, .x, <span class="st">".R"</span>))))</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="fu">### Modelling Results</span></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co">#ds &lt;- readRDS(here::here("data/e1_md_11-06-23.rds"))  |&gt; as.data.table()</span></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>ds <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/e2_md_02-23-24.rds"</span>))  <span class="sc">|&gt;</span> <span class="fu">as.data.table</span>()</span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>nbins <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>fd <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/e2_08-21-23.rds"</span>))</span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> fd <span class="sc">|&gt;</span> <span class="fu">filter</span>(expMode2 <span class="sc">==</span> <span class="st">"Test"</span>) </span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>testAvg <span class="ot">&lt;-</span> test <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id, condit, vb, bandInt,bandType,tOrder) <span class="sc">%&gt;%</span></span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">nHits=</span><span class="fu">sum</span>(dist<span class="sc">==</span><span class="dv">0</span>),<span class="at">vx=</span><span class="fu">mean</span>(vx),<span class="at">dist=</span><span class="fu">mean</span>(dist),<span class="at">sdist=</span><span class="fu">mean</span>(sdist),<span class="at">n=</span><span class="fu">n</span>(),<span class="at">Percent_Hit=</span>nHits<span class="sc">/</span>n)</span>
-<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>trainAvg <span class="ot">&lt;-</span> fd <span class="sc">|&gt;</span> <span class="fu">filter</span>(expMode2 <span class="sc">==</span> <span class="st">"Train"</span>) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> </span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tr=</span>trial,<span class="at">x=</span>vb,<span class="at">Block=</span><span class="fu">case_when</span>(expMode2<span class="sc">==</span><span class="st">"Train"</span> <span class="sc">~</span> <span class="fu">cut</span>(tr,<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">max</span>(tr), <span class="at">length.out=</span>nbins<span class="sc">+</span><span class="dv">1</span>),<span class="at">include.lowest=</span><span class="cn">TRUE</span>,<span class="at">labels=</span><span class="cn">FALSE</span>),</span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>                                         expMode2<span class="sc">==</span><span class="st">"Test"</span> <span class="sc">~</span> <span class="dv">4</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,vb,x,Block) <span class="sc">|&gt;</span> </span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">dist=</span><span class="fu">mean</span>(dist),<span class="at">y=</span><span class="fu">mean</span>(vx))</span>
-<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>input_layer <span class="ot">&lt;&lt;-</span> output_layer <span class="ot">&lt;&lt;-</span>  <span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">350</span>,<span class="dv">600</span>,<span class="dv">800</span>,<span class="dv">1000</span>,<span class="dv">1200</span>)</span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>ids2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">66</span>,<span class="dv">36</span>)</span>
-<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="co">#file_name &lt;- "e2_n_iter_50_ntry_200_2506"</span></span>
-<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="co">#file_name &lt;- "n_iter_400_ntry_100_2944"</span></span>
-<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="co">#file_name &lt;- "e2_n_iter_100_ntry_200_3436"</span></span>
-<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>file_name <span class="ot">&lt;-</span> <span class="st">"e2_n_iter_200_ntry_300_2344"</span></span>
-<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>ind_fits <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="fu">list.files</span>(<span class="fu">here</span>(<span class="fu">paste0</span>(<span class="st">'data/abc_reject/'</span>),file_name),<span class="at">full.names=</span><span class="cn">TRUE</span>), readRDS)</span>
-<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>ind_fits_df <span class="ot">&lt;-</span> ind_fits <span class="sc">|&gt;</span> <span class="fu">map</span>(<span class="sc">~</span><span class="fu">list</span>(<span class="at">dat=</span>.x[[<span class="dv">1</span>]], <span class="at">Model =</span> .x[[<span class="st">"Model"</span>]], <span class="at">Fit_Method=</span>.x[[<span class="st">"Fit_Method"</span>]]))</span>
-<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>ind_fits_df <span class="ot">&lt;-</span> ind_fits_df <span class="sc">|&gt;</span> <span class="fu">map</span>(<span class="sc">~</span><span class="fu">rbindlist</span>(.x<span class="sc">$</span>dat) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Model =</span> .x<span class="sc">$</span>Model, <span class="at">Fit_Method =</span> .x<span class="sc">$</span>Fit_Method)) <span class="sc">|&gt;</span> <span class="fu">rbindlist</span>() </span>
-<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
-<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>generate_data <span class="ot">&lt;-</span> <span class="cf">function</span>(Model, post_samples, data, <span class="at">num_samples =</span> <span class="dv">1</span>, <span class="at">return_dat =</span> <span class="st">"train_data, test_data"</span>) {</span>
-<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Filter data for the specific id without invalidating selfref</span></span>
-<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  sbj_data <span class="ot">&lt;-</span> <span class="fu">copy</span>(data[id <span class="sc">==</span> post_samples<span class="sc">$</span>id[<span class="dv">1</span>]])</span>
-<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>  simulation_function <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(Model <span class="sc">==</span> <span class="st">"EXAM"</span>, full_sim_exam, full_sim_alm)</span>
-<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>  target_data <span class="ot">&lt;-</span> <span class="cf">switch</span>(return_dat,</span>
-<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"test_data"</span> <span class="ot">=</span> <span class="fu">copy</span>(sbj_data[expMode2 <span class="sc">==</span> <span class="st">"Test"</span>]),</span>
-<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"train_data"</span> <span class="ot">=</span> <span class="fu">copy</span>(sbj_data[expMode2 <span class="sc">==</span> <span class="st">"Train"</span>]),</span>
-<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"train_data, test_data"</span> <span class="ot">=</span> <span class="fu">copy</span>(sbj_data[expMode2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Test"</span>, <span class="st">"Train"</span>)]))</span>
-<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>  post_samples <span class="ot">&lt;-</span> post_samples[<span class="fu">order</span>(mean_error)][<span class="dv">1</span><span class="sc">:</span>num_samples, .(c, lr, mean_error, <span class="at">rank =</span> .I)]</span>
-<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>  simulated_data_list <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(post_samples), <span class="cf">function</span>(i) {</span>
-<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>    params <span class="ot">&lt;-</span> post_samples[i]</span>
-<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>    sim_data <span class="ot">&lt;-</span> <span class="fu">simulation_function</span>(sbj_data, params<span class="sc">$</span>c, params<span class="sc">$</span>lr, <span class="at">input_layer =</span> input_layer, </span>
-<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">output_layer =</span> output_layer, <span class="at">return_dat =</span> return_dat)</span>
-<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>    sim_data_dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">id =</span> sbj_data<span class="sc">$</span>id[<span class="dv">1</span>], <span class="at">condit =</span> sbj_data<span class="sc">$</span>condit[<span class="dv">1</span>], </span>
-<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>                              <span class="at">expMode2 =</span> target_data<span class="sc">$</span>expMode2, <span class="at">Model =</span> Model,<span class="at">tr=</span>target_data<span class="sc">$</span>tr,</span>
-<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>                              <span class="at">y =</span> target_data<span class="sc">$</span>y, <span class="at">x =</span> target_data<span class="sc">$</span>x, <span class="at">c =</span> params<span class="sc">$</span>c, </span>
-<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lr =</span> params<span class="sc">$</span>lr, <span class="at">mean_error =</span> params<span class="sc">$</span>mean_error, <span class="at">rank =</span> i,</span>
-<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>                              <span class="at">pred =</span> sim_data)</span>
-<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(sim_data_dt)</span>
-<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>  result_dt <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(simulated_data_list)</span>
-<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setcolorder</span>(result_dt, <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"condit"</span>, <span class="st">"expMode2"</span>,<span class="st">"tr"</span>, <span class="st">"c"</span>, <span class="st">"lr"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"pred"</span>))</span>
-<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result_dt)</span>
-<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a><span class="co">#future::plan(multisession)</span></span>
-<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a>nestSbjModelFit <span class="ot">&lt;-</span> ind_fits_df <span class="sc">%&gt;%</span> <span class="fu">nest</span>(<span class="at">.by=</span><span class="fu">c</span>(id,Model,Fit_Method))</span>
-<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="an">lightbox:</span><span class="co"> true</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Modeling, ALM, EXAM, R]</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> false</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="an">code-fold:</span><span class="co"> true</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="an">code-tools:</span><span class="co"> true</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">  eval: true</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, </span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools, ggdist)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#conflict_prefer_all("dplyr", quiet = TRUE)</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="fu">walk</span>(<span class="fu">c</span>(<span class="st">"Display_Functions"</span>,<span class="st">"fun_alm"</span>,<span class="st">"fun_indv_fit"</span>,<span class="st">"fun_model"</span>), <span class="sc">~</span> <span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="fu">paste0</span>(<span class="st">"Functions/"</span>, .x, <span class="st">".R"</span>))))</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="fu">### Modelling Results</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co">#ds &lt;- readRDS(here::here("data/e1_md_11-06-23.rds"))  |&gt; as.data.table()</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>ds <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/e2_md_02-23-24.rds"</span>))  <span class="sc">|&gt;</span> <span class="fu">as.data.table</span>()</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>nbins <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>fd <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/e2_08-21-23.rds"</span>))</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> fd <span class="sc">|&gt;</span> <span class="fu">filter</span>(expMode2 <span class="sc">==</span> <span class="st">"Test"</span>) </span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>testAvg <span class="ot">&lt;-</span> test <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id, condit, vb, bandInt,bandType,tOrder) <span class="sc">%&gt;%</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">nHits=</span><span class="fu">sum</span>(dist<span class="sc">==</span><span class="dv">0</span>),<span class="at">vx=</span><span class="fu">mean</span>(vx),<span class="at">dist=</span><span class="fu">mean</span>(dist),<span class="at">sdist=</span><span class="fu">mean</span>(sdist),<span class="at">n=</span><span class="fu">n</span>(),<span class="at">Percent_Hit=</span>nHits<span class="sc">/</span>n)</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>trainAvg <span class="ot">&lt;-</span> fd <span class="sc">|&gt;</span> <span class="fu">filter</span>(expMode2 <span class="sc">==</span> <span class="st">"Train"</span>) <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> </span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tr=</span>trial,<span class="at">x=</span>vb,<span class="at">Block=</span><span class="fu">case_when</span>(expMode2<span class="sc">==</span><span class="st">"Train"</span> <span class="sc">~</span> <span class="fu">cut</span>(tr,<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">max</span>(tr), <span class="at">length.out=</span>nbins<span class="sc">+</span><span class="dv">1</span>),<span class="at">include.lowest=</span><span class="cn">TRUE</span>,<span class="at">labels=</span><span class="cn">FALSE</span>),</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>                                         expMode2<span class="sc">==</span><span class="st">"Test"</span> <span class="sc">~</span> <span class="dv">4</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,vb,x,Block) <span class="sc">|&gt;</span> </span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">dist=</span><span class="fu">mean</span>(dist),<span class="at">y=</span><span class="fu">mean</span>(vx))</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>input_layer <span class="ot">&lt;&lt;-</span> output_layer <span class="ot">&lt;&lt;-</span>  <span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">350</span>,<span class="dv">600</span>,<span class="dv">800</span>,<span class="dv">1000</span>,<span class="dv">1200</span>)</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>ids2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">66</span>,<span class="dv">36</span>)</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="co">#file_name &lt;- "e2_n_iter_50_ntry_200_2506"</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="co">#file_name &lt;- "n_iter_400_ntry_100_2944"</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="co">#file_name &lt;- "e2_n_iter_100_ntry_200_3436"</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>file_name <span class="ot">&lt;-</span> <span class="st">"e2_n_iter_200_ntry_300_2344"</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>ind_fits <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="fu">list.files</span>(<span class="fu">here</span>(<span class="fu">paste0</span>(<span class="st">'data/abc_reject/'</span>),file_name),<span class="at">full.names=</span><span class="cn">TRUE</span>), readRDS)</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>ind_fits_df <span class="ot">&lt;-</span> ind_fits <span class="sc">|&gt;</span> <span class="fu">map</span>(<span class="sc">~</span><span class="fu">list</span>(<span class="at">dat=</span>.x[[<span class="dv">1</span>]], <span class="at">Model =</span> .x[[<span class="st">"Model"</span>]], <span class="at">Fit_Method=</span>.x[[<span class="st">"Fit_Method"</span>]]))</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>ind_fits_df <span class="ot">&lt;-</span> ind_fits_df <span class="sc">|&gt;</span> <span class="fu">map</span>(<span class="sc">~</span><span class="fu">rbindlist</span>(.x<span class="sc">$</span>dat) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Model =</span> .x<span class="sc">$</span>Model, <span class="at">Fit_Method =</span> .x<span class="sc">$</span>Fit_Method)) <span class="sc">|&gt;</span> <span class="fu">rbindlist</span>() </span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>generate_data <span class="ot">&lt;-</span> <span class="cf">function</span>(Model, post_samples, data, <span class="at">num_samples =</span> <span class="dv">1</span>, <span class="at">return_dat =</span> <span class="st">"train_data, test_data"</span>) {</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Filter data for the specific id without invalidating selfref</span></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>  sbj_data <span class="ot">&lt;-</span> <span class="fu">copy</span>(data[id <span class="sc">==</span> post_samples<span class="sc">$</span>id[<span class="dv">1</span>]])</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>  simulation_function <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(Model <span class="sc">==</span> <span class="st">"EXAM"</span>, full_sim_exam, full_sim_alm)</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>  target_data <span class="ot">&lt;-</span> <span class="cf">switch</span>(return_dat,</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"test_data"</span> <span class="ot">=</span> <span class="fu">copy</span>(sbj_data[expMode2 <span class="sc">==</span> <span class="st">"Test"</span>]),</span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"train_data"</span> <span class="ot">=</span> <span class="fu">copy</span>(sbj_data[expMode2 <span class="sc">==</span> <span class="st">"Train"</span>]),</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"train_data, test_data"</span> <span class="ot">=</span> <span class="fu">copy</span>(sbj_data[expMode2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Test"</span>, <span class="st">"Train"</span>)]))</span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>  post_samples <span class="ot">&lt;-</span> post_samples[<span class="fu">order</span>(mean_error)][<span class="dv">1</span><span class="sc">:</span>num_samples, .(c, lr, mean_error, <span class="at">rank =</span> .I)]</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>  simulated_data_list <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(post_samples), <span class="cf">function</span>(i) {</span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>    params <span class="ot">&lt;-</span> post_samples[i]</span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>    sim_data <span class="ot">&lt;-</span> <span class="fu">simulation_function</span>(sbj_data, params<span class="sc">$</span>c, params<span class="sc">$</span>lr, <span class="at">input_layer =</span> input_layer, </span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">output_layer =</span> output_layer, <span class="at">return_dat =</span> return_dat)</span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>    sim_data_dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">id =</span> sbj_data<span class="sc">$</span>id[<span class="dv">1</span>], <span class="at">condit =</span> sbj_data<span class="sc">$</span>condit[<span class="dv">1</span>], </span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>                              <span class="at">expMode2 =</span> target_data<span class="sc">$</span>expMode2, <span class="at">Model =</span> Model,<span class="at">tr=</span>target_data<span class="sc">$</span>tr,</span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>                              <span class="at">y =</span> target_data<span class="sc">$</span>y, <span class="at">x =</span> target_data<span class="sc">$</span>x, <span class="at">c =</span> params<span class="sc">$</span>c, </span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lr =</span> params<span class="sc">$</span>lr, <span class="at">mean_error =</span> params<span class="sc">$</span>mean_error, <span class="at">rank =</span> i,</span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>                              <span class="at">pred =</span> sim_data)</span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(sim_data_dt)</span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>  result_dt <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(simulated_data_list)</span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setcolorder</span>(result_dt, <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"condit"</span>, <span class="st">"expMode2"</span>,<span class="st">"tr"</span>, <span class="st">"c"</span>, <span class="st">"lr"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"pred"</span>))</span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result_dt)</span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a><span class="co">#future::plan(multisession)</span></span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>nestSbjModelFit <span class="ot">&lt;-</span> ind_fits_df <span class="sc">%&gt;%</span> <span class="fu">nest</span>(<span class="at">.by=</span><span class="fu">c</span>(id,Model,Fit_Method))</span>
 <span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a><span class="co">#  post_dat &lt;- nestSbjModelFit |&gt; mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{</span></span>
-<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a><span class="co">#     generate_data(..2, ..4 |&gt; mutate(id=..1), ds, num_samples = 50, return_dat="test_data")</span></span>
-<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a><span class="co">#     })) |&gt; </span></span>
-<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a><span class="co">#    select(Fit_Method,pp,-data) |&gt;  </span></span>
-<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a><span class="co">#    unnest(pp) |&gt;  filter(expMode2=="Test") |&gt; as.data.table()</span></span>
-<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a><span class="co"># saveRDS(post_dat, here("data/model_cache/post_dat_e2.rds"))</span></span>
-<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a>post_dat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/model_cache/post_dat_e2.rds"</span>))</span>
-<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a><span class="co">#  post_dat &lt;- nestSbjModelFit |&gt; mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{</span></span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a><span class="co">#     generate_data(..2, ..4 |&gt; mutate(id=..1), ds, num_samples = 50, return_dat="test_data")</span></span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a><span class="co">#     })) |&gt; </span></span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a><span class="co">#    select(Fit_Method,pp,-data) |&gt;  </span></span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a><span class="co">#    unnest(pp) |&gt;  filter(expMode2=="Test") |&gt; as.data.table()</span></span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a><span class="co"># saveRDS(post_dat, here("data/model_cache/post_dat_e2.rds"))</span></span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a>post_dat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/model_cache/post_dat_e2.rds"</span>))</span>
 <span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a>post_dat_avg <span class="ot">&lt;-</span> post_dat <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id, condit, Model, Fit_Method, x, c, lr, rank) <span class="sc">|&gt;</span> </span>
-<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">error2 =</span> y <span class="sc">-</span> pred) <span class="sc">|&gt;</span></span>
-<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">y =</span> <span class="fu">mean</span>(y), <span class="at">pred =</span> <span class="fu">mean</span>(pred), <span class="at">error =</span> y <span class="sc">-</span> pred, <span class="at">error2=</span><span class="fu">mean</span>(error2)) <span class="sc">|&gt;</span> <span class="fu">as.data.table</span>()</span>
-<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a><span class="fu">setorder</span>(post_dat_avg, id, x, rank)</span>
-<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a>post_dat_l <span class="ot">&lt;-</span> <span class="fu">melt</span>(post_dat_avg, <span class="at">id.vars =</span> <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"condit"</span>, <span class="st">"Model"</span>, <span class="st">"Fit_Method"</span>, <span class="st">"x"</span>, <span class="st">"c"</span>, <span class="st">"lr"</span>, <span class="st">"rank"</span>,<span class="st">"error"</span>),</span>
-<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a>                   <span class="at">measure.vars =</span> <span class="fu">c</span>(<span class="st">"pred"</span>, <span class="st">"y"</span>), <span class="at">variable.name =</span> <span class="st">"Resp"</span>, <span class="at">value.name =</span> <span class="st">"val"</span>)</span>
-<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a>post_dat_l[, Resp <span class="sc">:</span><span class="er">=</span> <span class="fu">fifelse</span>(Resp <span class="sc">==</span> <span class="st">"y"</span>, <span class="st">"Observed"</span>,</span>
-<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">fifelse</span>(Model <span class="sc">==</span> <span class="st">"ALM"</span>, <span class="st">"ALM"</span>, <span class="st">"EXAM"</span>))]</span>
-<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a><span class="fu">setorder</span>(post_dat_l, id, Resp)</span>
-<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="co">#rm(post_dat_avg)</span></span>
-<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a>post_dat_l <span class="ot">&lt;-</span> post_dat_l <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">dist =</span> <span class="fu">case_when</span>(</span>
-<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a>    val <span class="sc">&gt;=</span> x <span class="sc">&amp;</span> val <span class="sc">&lt;=</span> x <span class="sc">+</span> <span class="dv">200</span> <span class="sc">~</span> <span class="dv">0</span>,                 </span>
-<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a>    val <span class="sc">&lt;</span> x <span class="sc">~</span> <span class="fu">abs</span>(x <span class="sc">-</span> val),                       </span>
-<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a>    val <span class="sc">&gt;</span> x <span class="sc">+</span> <span class="dv">200</span> <span class="sc">~</span> <span class="fu">abs</span>(val <span class="sc">-</span> (x <span class="sc">+</span> <span class="dv">200</span>)),           </span>
-<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span>                                 </span>
-<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>post_dat_avg <span class="ot">&lt;-</span> post_dat <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id, condit, Model, Fit_Method, x, c, lr, rank) <span class="sc">|&gt;</span> </span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">error2 =</span> y <span class="sc">-</span> pred) <span class="sc">|&gt;</span></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">y =</span> <span class="fu">mean</span>(y), <span class="at">pred =</span> <span class="fu">mean</span>(pred), <span class="at">error =</span> y <span class="sc">-</span> pred, <span class="at">error2=</span><span class="fu">mean</span>(error2)) <span class="sc">|&gt;</span> <span class="fu">as.data.table</span>()</span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a><span class="fu">setorder</span>(post_dat_avg, id, x, rank)</span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a>post_dat_l <span class="ot">&lt;-</span> <span class="fu">melt</span>(post_dat_avg, <span class="at">id.vars =</span> <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"condit"</span>, <span class="st">"Model"</span>, <span class="st">"Fit_Method"</span>, <span class="st">"x"</span>, <span class="st">"c"</span>, <span class="st">"lr"</span>, <span class="st">"rank"</span>,<span class="st">"error"</span>),</span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a>                   <span class="at">measure.vars =</span> <span class="fu">c</span>(<span class="st">"pred"</span>, <span class="st">"y"</span>), <span class="at">variable.name =</span> <span class="st">"Resp"</span>, <span class="at">value.name =</span> <span class="st">"val"</span>)</span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>post_dat_l[, Resp <span class="sc">:</span><span class="er">=</span> <span class="fu">fifelse</span>(Resp <span class="sc">==</span> <span class="st">"y"</span>, <span class="st">"Observed"</span>,</span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">fifelse</span>(Model <span class="sc">==</span> <span class="st">"ALM"</span>, <span class="st">"ALM"</span>, <span class="st">"EXAM"</span>))]</span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="fu">setorder</span>(post_dat_l, id, Resp)</span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a><span class="co">#rm(post_dat_avg)</span></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a>post_dat_l <span class="ot">&lt;-</span> post_dat_l <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">dist =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a>    val <span class="sc">&gt;=</span> x <span class="sc">&amp;</span> val <span class="sc">&lt;=</span> x <span class="sc">+</span> <span class="dv">200</span> <span class="sc">~</span> <span class="dv">0</span>,                 </span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a>    val <span class="sc">&lt;</span> x <span class="sc">~</span> <span class="fu">abs</span>(x <span class="sc">-</span> val),                       </span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a>    val <span class="sc">&gt;</span> x <span class="sc">+</span> <span class="dv">200</span> <span class="sc">~</span> <span class="fu">abs</span>(val <span class="sc">-</span> (x <span class="sc">+</span> <span class="dv">200</span>)),           </span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span>                                 </span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a>  ))</span>
 <span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a><span class="co"># organize training data predictions</span></span>
-<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a> pd_train <span class="ot">&lt;-</span> nestSbjModelFit <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">pp=</span>furrr<span class="sc">::</span><span class="fu">future_pmap</span>(<span class="fu">list</span>(id,Model,Fit_Method,data), <span class="sc">~</span>{</span>
-<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a>   <span class="fu">generate_data</span>(..<span class="dv">2</span>, ..<span class="dv">4</span> <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">id=</span>..<span class="dv">1</span>), ds, <span class="at">num_samples =</span> <span class="dv">20</span>, <span class="at">return_dat=</span><span class="st">"train_data"</span>)</span>
-<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>    })) <span class="sc">|&gt;</span></span>
-<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(Fit_Method,pp,<span class="sc">-</span>data) <span class="sc">|&gt;</span></span>
-<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(pp) <span class="sc">|&gt;</span> <span class="fu">as.data.table</span>() <span class="sc">|&gt;</span> <span class="fu">filter</span>(expMode2<span class="sc">==</span><span class="st">"Train"</span>)</span>
-<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(pd_train, here("data/model_cache/pd_train.rds"))</span></span>
-<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a><span class="co">#pd_train &lt;- readRDS(here("data/model_cache/pd_train.rds"))</span></span>
-<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a>nbins <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a>pd_train <span class="ot">&lt;-</span> pd_train <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id,condit,Model,Fit_Method) <span class="sc">|&gt;</span></span>
-<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Block=</span><span class="fu">cut</span>(tr,<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">max</span>(tr), <span class="at">length.out=</span>nbins<span class="sc">+</span><span class="dv">1</span>),<span class="at">include.lowest=</span><span class="cn">TRUE</span>,<span class="at">labels=</span><span class="cn">FALSE</span>))</span>
-<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a><span class="fu">setorder</span>(pd_train, id, x,Block, rank)</span>
-<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a>pd_train_l <span class="ot">&lt;-</span> <span class="fu">melt</span>(pd_train, <span class="at">id.vars =</span> <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"condit"</span>, <span class="st">"Model"</span>,<span class="st">"Block"</span>, <span class="st">"Fit_Method"</span>, <span class="st">"x"</span>, <span class="st">"c"</span>, <span class="st">"lr"</span>, <span class="st">"rank"</span>),</span>
-<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a>                   <span class="at">measure.vars =</span> <span class="fu">c</span>(<span class="st">"pred"</span>, <span class="st">"y"</span>), <span class="at">variable.name =</span> <span class="st">"Resp"</span>, <span class="at">value.name =</span> <span class="st">"val"</span>) <span class="sc">|&gt;</span> <span class="fu">as.data.table</span>()</span>
-<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a>pd_train_l[, Resp <span class="sc">:</span><span class="er">=</span> <span class="fu">fifelse</span>(Resp <span class="sc">==</span> <span class="st">"y"</span>, <span class="st">"Observed"</span>,</span>
-<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">fifelse</span>(Model <span class="sc">==</span> <span class="st">"ALM"</span>, <span class="st">"ALM"</span>, <span class="st">"EXAM"</span>))] </span>
-<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a><span class="fu">setorder</span>(pd_train_l, id,Block, Resp) </span>
-<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a>pd_train_l <span class="ot">&lt;-</span> pd_train_l  <span class="sc">|&gt;</span></span>
-<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dist =</span> <span class="fu">case_when</span>(</span>
-<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a>    val <span class="sc">&gt;=</span> x <span class="sc">&amp;</span> val <span class="sc">&lt;=</span> x <span class="sc">+</span> <span class="dv">200</span> <span class="sc">~</span> <span class="dv">0</span>,                 </span>
-<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a>    val <span class="sc">&lt;</span> x <span class="sc">~</span> <span class="fu">abs</span>(x <span class="sc">-</span> val),                       </span>
-<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a>    val <span class="sc">&gt;</span> x <span class="sc">+</span> <span class="dv">200</span> <span class="sc">~</span> <span class="fu">abs</span>(val <span class="sc">-</span> (x <span class="sc">+</span> <span class="dv">200</span>)),           </span>
-<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span>                                 </span>
-<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a><span class="co">#plan(sequential)</span></span>
-<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a><span class="fu">### Group level aggregations</span></span>
-<span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
-<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-htw-modelError</span></span>
-<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Mean model errors predicting testing data, aggregated over all participants and velocity bands. Note that Fit Method refers to how model parameters were optimized, while error values reflect mean absolute error for the 6 testing bands"</span></span>
-<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a>post_tabs <span class="ot">&lt;-</span> <span class="fu">abc_tables</span>(post_dat,post_dat_l)</span>
-<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a>post_tabs<span class="sc">$</span>agg_pred_full <span class="sc">|&gt;</span> </span>
-<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Fit_Method=</span><span class="fu">rename_fm</span>(Fit_Method)) <span class="sc">|&gt;</span></span>
-<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">tabulator</span>(<span class="at">rows=</span><span class="fu">c</span>(<span class="st">"Fit_Method"</span>,<span class="st">"Model"</span>), <span class="at">columns=</span><span class="fu">c</span>(<span class="st">"condit"</span>),</span>
-<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a>                       <span class="st">`</span><span class="at">ME</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as_paragraph</span>(mean_error)) <span class="sc">|&gt;</span> <span class="fu">as_flextable</span>()</span>
-<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a><span class="co">#post_tabs$agg_pred_full |&gt; pander::pandoc.table()</span></span>
-<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a><span class="co"># organize training data predictions</span></span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a> pd_train <span class="ot">&lt;-</span> nestSbjModelFit <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">pp=</span>furrr<span class="sc">::</span><span class="fu">future_pmap</span>(<span class="fu">list</span>(id,Model,Fit_Method,data), <span class="sc">~</span>{</span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>   <span class="fu">generate_data</span>(..<span class="dv">2</span>, ..<span class="dv">4</span> <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">id=</span>..<span class="dv">1</span>), ds, <span class="at">num_samples =</span> <span class="dv">20</span>, <span class="at">return_dat=</span><span class="st">"train_data"</span>)</span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a>    })) <span class="sc">|&gt;</span></span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(Fit_Method,pp,<span class="sc">-</span>data) <span class="sc">|&gt;</span></span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(pp) <span class="sc">|&gt;</span> <span class="fu">as.data.table</span>() <span class="sc">|&gt;</span> <span class="fu">filter</span>(expMode2<span class="sc">==</span><span class="st">"Train"</span>)</span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(pd_train, here("data/model_cache/pd_train.rds"))</span></span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a><span class="co">#pd_train &lt;- readRDS(here("data/model_cache/pd_train.rds"))</span></span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a>nbins <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a>pd_train <span class="ot">&lt;-</span> pd_train <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id,condit,Model,Fit_Method) <span class="sc">|&gt;</span></span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Block=</span><span class="fu">cut</span>(tr,<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">max</span>(tr), <span class="at">length.out=</span>nbins<span class="sc">+</span><span class="dv">1</span>),<span class="at">include.lowest=</span><span class="cn">TRUE</span>,<span class="at">labels=</span><span class="cn">FALSE</span>))</span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a><span class="fu">setorder</span>(pd_train, id, x,Block, rank)</span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a>pd_train_l <span class="ot">&lt;-</span> <span class="fu">melt</span>(pd_train, <span class="at">id.vars =</span> <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"condit"</span>, <span class="st">"Model"</span>,<span class="st">"Block"</span>, <span class="st">"Fit_Method"</span>, <span class="st">"x"</span>, <span class="st">"c"</span>, <span class="st">"lr"</span>, <span class="st">"rank"</span>),</span>
+<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a>                   <span class="at">measure.vars =</span> <span class="fu">c</span>(<span class="st">"pred"</span>, <span class="st">"y"</span>), <span class="at">variable.name =</span> <span class="st">"Resp"</span>, <span class="at">value.name =</span> <span class="st">"val"</span>) <span class="sc">|&gt;</span> <span class="fu">as.data.table</span>()</span>
+<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a>pd_train_l[, Resp <span class="sc">:</span><span class="er">=</span> <span class="fu">fifelse</span>(Resp <span class="sc">==</span> <span class="st">"y"</span>, <span class="st">"Observed"</span>,</span>
+<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">fifelse</span>(Model <span class="sc">==</span> <span class="st">"ALM"</span>, <span class="st">"ALM"</span>, <span class="st">"EXAM"</span>))] </span>
+<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a><span class="fu">setorder</span>(pd_train_l, id,Block, Resp) </span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a>pd_train_l <span class="ot">&lt;-</span> pd_train_l  <span class="sc">|&gt;</span></span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dist =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a>    val <span class="sc">&gt;=</span> x <span class="sc">&amp;</span> val <span class="sc">&lt;=</span> x <span class="sc">+</span> <span class="dv">200</span> <span class="sc">~</span> <span class="dv">0</span>,                 </span>
+<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a>    val <span class="sc">&lt;</span> x <span class="sc">~</span> <span class="fu">abs</span>(x <span class="sc">-</span> val),                       </span>
+<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a>    val <span class="sc">&gt;</span> x <span class="sc">+</span> <span class="dv">200</span> <span class="sc">~</span> <span class="fu">abs</span>(val <span class="sc">-</span> (x <span class="sc">+</span> <span class="dv">200</span>)),           </span>
+<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span>                                 </span>
+<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a><span class="co">#plan(sequential)</span></span>
+<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a><span class="fu">### Group level aggregations</span></span>
+<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
+<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-htw-modelError</span></span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Mean model errors predicting testing data, aggregated over all participants and velocity bands. Note that Fit Method refers to how model parameters were optimized, while error values reflect mean absolute error for the 6 testing bands"</span></span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a>post_tabs <span class="ot">&lt;-</span> <span class="fu">abc_tables</span>(post_dat,post_dat_l)</span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a>post_tabs<span class="sc">$</span>agg_pred_full <span class="sc">|&gt;</span> </span>
+<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Fit_Method=</span><span class="fu">rename_fm</span>(Fit_Method)) <span class="sc">|&gt;</span></span>
+<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">tabulator</span>(<span class="at">rows=</span><span class="fu">c</span>(<span class="st">"Fit_Method"</span>,<span class="st">"Model"</span>), <span class="at">columns=</span><span class="fu">c</span>(<span class="st">"condit"</span>),</span>
+<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a>                       <span class="st">`</span><span class="at">ME</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as_paragraph</span>(mean_error)) <span class="sc">|&gt;</span> <span class="fu">as_flextable</span>()</span>
+<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a><span class="co">#post_tabs$agg_pred_full |&gt; pander::pandoc.table()</span></span>
+<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.height=12,fig.width=11}</span></span>
-<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: fig-htw-resid-pred</span></span>
-<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a><span class="in">#| column: page-inset-right</span></span>
-<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: A) Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y axes are scaled differently between facets. B) Full posterior predictive distributions vs. observed data from participants.Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. </span></span>
-<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-height: 19</span></span>
-<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-width: 12</span></span>
-<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a><span class="in">##| layout: [[45,-5, 45], [100]]</span></span>
-<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a><span class="in">##| fig-subcap: ["Model Residuals - training data", "Model Residuals - testing data","Full posterior predictive distributions vs. observed data from participants."]</span></span>
-<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a><span class="in">train_resid &lt;- pd_train |&gt; group_by(id,condit,Model,Fit_Method, Block) |&gt; </span></span>
-<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a><span class="in">  summarise(y = mean(y), pred = mean(pred), error = y - pred) |&gt;</span></span>
-<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = Block, y = abs(error), fill=Model)) + </span></span>
-<span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_bar + </span></span>
-<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a><span class="in">  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, scales="free",ncol=2) +</span></span>
-<span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_fill_manual(values=wes_palette("AsteroidCity2"))+</span></span>
-<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title="Model Residual Errors - Training Stage", y="RMSE", x= "Training Block") +</span></span>
-<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(legend.title = element_blank(), legend.position="top")</span></span>
-<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a><span class="in">test_resid &lt;-  post_dat |&gt; </span></span>
-<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a><span class="in">   group_by(id,condit,x,Model,Fit_Method,rank) |&gt;</span></span>
-<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a><span class="in">   summarize(error=mean(abs(y-pred)),n=n()) |&gt;</span></span>
-<span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a><span class="in">   group_by(id,condit,x,Model,Fit_Method) |&gt;</span></span>
-<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a><span class="in">   summarize(error=mean(error)) |&gt;</span></span>
-<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(vbLab = factor(paste0(x,"-",x+200))) |&gt;</span></span>
-<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = vbLab, y = abs(error), fill=Model)) + </span></span>
-<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_bar + </span></span>
-<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_fill_manual(values=wes_palette("AsteroidCity2"))+</span></span>
-<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a><span class="in">  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, axes = "all",ncol=2,scale="free") +</span></span>
-<span id="cb11-213"><a href="#cb11-213" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title="Model Residual Errors - Testing Stage",y="RMSE", x="Velocity Band") +</span></span>
-<span id="cb11-214"><a href="#cb11-214" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) </span></span>
-<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a><span class="in">group_pred &lt;- post_dat_l |&gt; </span></span>
-<span id="cb11-217"><a href="#cb11-217" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |&gt;</span></span>
-<span id="cb11-218"><a href="#cb11-218" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x=val,y=vbLab,col=Resp)) + </span></span>
-<span id="cb11-219"><a href="#cb11-219" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_pointinterval(position=position_dodge(.5), alpha=.9) + </span></span>
-<span id="cb11-220"><a href="#cb11-220" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_color_manual(values=wes_palette("AsteroidCity2"))+</span></span>
-<span id="cb11-221"><a href="#cb11-221" aria-hidden="true" tabindex="-1"></a><span class="in">  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, axes = "all",ncol=2,scale="free") +</span></span>
-<span id="cb11-222"><a href="#cb11-222" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title="Posterior Predictions - Testing Stage",y="Velocity Band (lower bound)", x="X Velocity") +</span></span>
-<span id="cb11-223"><a href="#cb11-223" aria-hidden="true" tabindex="-1"></a><span class="in">theme(legend.title=element_blank(),axis.text.y = element_text(angle = 45, hjust = 0.5, vjust = 0.5))</span></span>
-<span id="cb11-224"><a href="#cb11-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.height=12,fig.width=11}</span></span>
+<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: fig-htw-resid-pred</span></span>
+<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a><span class="in">#| column: page-inset-right</span></span>
+<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: A) Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y axes are scaled differently between facets. B) Full posterior predictive distributions vs. observed data from participants.Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. </span></span>
+<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-height: 19</span></span>
+<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-width: 12</span></span>
+<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a><span class="in">##| layout: [[45,-5, 45], [100]]</span></span>
+<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a><span class="in">##| fig-subcap: ["Model Residuals - training data", "Model Residuals - testing data","Full posterior predictive distributions vs. observed data from participants."]</span></span>
+<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a><span class="in">train_resid &lt;- pd_train |&gt; group_by(id,condit,Model,Fit_Method, Block) |&gt; </span></span>
+<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a><span class="in">  summarise(y = mean(y), pred = mean(pred), error = y - pred) |&gt;</span></span>
+<span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = Block, y = abs(error), fill=Model)) + </span></span>
+<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_bar + </span></span>
+<span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a><span class="in">  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, scales="free",ncol=2) +</span></span>
+<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_fill_manual(values=wes_palette("AsteroidCity2"))+</span></span>
+<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title="Model Residual Errors - Training Stage", y="RMSE", x= "Training Block") +</span></span>
+<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(legend.title = element_blank(), legend.position="top")</span></span>
+<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a><span class="in">test_resid &lt;-  post_dat |&gt; </span></span>
+<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a><span class="in">   group_by(id,condit,x,Model,Fit_Method,rank) |&gt;</span></span>
+<span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a><span class="in">   summarize(error=mean(abs(y-pred)),n=n()) |&gt;</span></span>
+<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a><span class="in">   group_by(id,condit,x,Model,Fit_Method) |&gt;</span></span>
+<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a><span class="in">   summarize(error=mean(error)) |&gt;</span></span>
+<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(vbLab = factor(paste0(x,"-",x+200))) |&gt;</span></span>
+<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = vbLab, y = abs(error), fill=Model)) + </span></span>
+<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_bar + </span></span>
+<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_fill_manual(values=wes_palette("AsteroidCity2"))+</span></span>
+<span id="cb11-213"><a href="#cb11-213" aria-hidden="true" tabindex="-1"></a><span class="in">  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, axes = "all",ncol=2,scale="free") +</span></span>
+<span id="cb11-214"><a href="#cb11-214" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title="Model Residual Errors - Testing Stage",y="RMSE", x="Velocity Band") +</span></span>
+<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) </span></span>
+<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-217"><a href="#cb11-217" aria-hidden="true" tabindex="-1"></a><span class="in">group_pred &lt;- post_dat_l |&gt; </span></span>
+<span id="cb11-218"><a href="#cb11-218" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |&gt;</span></span>
+<span id="cb11-219"><a href="#cb11-219" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x=val,y=vbLab,col=Resp)) + </span></span>
+<span id="cb11-220"><a href="#cb11-220" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_pointinterval(position=position_dodge(.5), alpha=.9) + </span></span>
+<span id="cb11-221"><a href="#cb11-221" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_color_manual(values=wes_palette("AsteroidCity2"))+</span></span>
+<span id="cb11-222"><a href="#cb11-222" aria-hidden="true" tabindex="-1"></a><span class="in">  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, axes = "all",ncol=2,scale="free") +</span></span>
+<span id="cb11-223"><a href="#cb11-223" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title="Posterior Predictions - Testing Stage",y="Velocity Band (lower bound)", x="X Velocity") +</span></span>
+<span id="cb11-224"><a href="#cb11-224" aria-hidden="true" tabindex="-1"></a><span class="in">theme(legend.title=element_blank(),axis.text.y = element_text(angle = 45, hjust = 0.5, vjust = 0.5))</span></span>
 <span id="cb11-225"><a href="#cb11-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-226"><a href="#cb11-226" aria-hidden="true" tabindex="-1"></a><span class="in">((train_resid | test_resid) / group_pred) +</span></span>
-<span id="cb11-227"><a href="#cb11-227" aria-hidden="true" tabindex="-1"></a><span class="in">  plot_layout(heights=c(1,1.5)) &amp; </span></span>
-<span id="cb11-228"><a href="#cb11-228" aria-hidden="true" tabindex="-1"></a><span class="in">  plot_annotation(tag_levels = list(c('A1','A2','B')),tag_suffix = ') ') &amp; </span></span>
-<span id="cb11-229"><a href="#cb11-229" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(plot.tag.position = c(0, 1))</span></span>
-<span id="cb11-230"><a href="#cb11-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-231"><a href="#cb11-231" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-232"><a href="#cb11-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-226"><a href="#cb11-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-227"><a href="#cb11-227" aria-hidden="true" tabindex="-1"></a><span class="in">((train_resid | test_resid) / group_pred) +</span></span>
+<span id="cb11-228"><a href="#cb11-228" aria-hidden="true" tabindex="-1"></a><span class="in">  plot_layout(heights=c(1,1.5)) &amp; </span></span>
+<span id="cb11-229"><a href="#cb11-229" aria-hidden="true" tabindex="-1"></a><span class="in">  plot_annotation(tag_levels = list(c('A1','A2','B')),tag_suffix = ') ') &amp; </span></span>
+<span id="cb11-230"><a href="#cb11-230" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(plot.tag.position = c(0, 1))</span></span>
+<span id="cb11-231"><a href="#cb11-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-232"><a href="#cb11-232" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-233"><a href="#cb11-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-234"><a href="#cb11-234" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deviation Predictions</span></span>
-<span id="cb11-235"><a href="#cb11-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-238"><a href="#cb11-238" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-239"><a href="#cb11-239" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 12</span></span>
-<span id="cb11-240"><a href="#cb11-240" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
-<span id="cb11-241"><a href="#cb11-241" aria-hidden="true" tabindex="-1"></a> post_dat_l <span class="sc">|&gt;</span> </span>
-<span id="cb11-242"><a href="#cb11-242" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vbLab =</span> <span class="fu">factor</span>(<span class="fu">paste0</span>(x,<span class="st">"-"</span>,x<span class="sc">+</span><span class="dv">200</span>),<span class="at">levels=</span><span class="fu">levels</span>(testAvg<span class="sc">$</span>vb))) <span class="sc">|&gt;</span></span>
-<span id="cb11-243"><a href="#cb11-243" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>condit,<span class="at">y=</span>dist,<span class="at">fill=</span>vbLab)) <span class="sc">+</span> </span>
-<span id="cb11-244"><a href="#cb11-244" aria-hidden="true" tabindex="-1"></a>  stat_bar <span class="sc">+</span> </span>
-<span id="cb11-245"><a href="#cb11-245" aria-hidden="true" tabindex="-1"></a>  <span class="co">#facet_wrap(~Resp)</span></span>
-<span id="cb11-246"><a href="#cb11-246" aria-hidden="true" tabindex="-1"></a>  ggh4x<span class="sc">::</span><span class="fu">facet_nested_wrap</span>(<span class="fu">rename_fm</span>(Fit_Method)<span class="sc">~</span>Resp, <span class="at">axes =</span> <span class="st">"all"</span>,<span class="at">ncol=</span><span class="dv">3</span>,<span class="at">scale=</span><span class="st">"free"</span>)</span>
-<span id="cb11-247"><a href="#cb11-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-248"><a href="#cb11-248" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-249"><a href="#cb11-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-234"><a href="#cb11-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-235"><a href="#cb11-235" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deviation Predictions</span></span>
+<span id="cb11-236"><a href="#cb11-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-239"><a href="#cb11-239" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-240"><a href="#cb11-240" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 12</span></span>
+<span id="cb11-241"><a href="#cb11-241" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
+<span id="cb11-242"><a href="#cb11-242" aria-hidden="true" tabindex="-1"></a> post_dat_l <span class="sc">|&gt;</span> </span>
+<span id="cb11-243"><a href="#cb11-243" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vbLab =</span> <span class="fu">factor</span>(<span class="fu">paste0</span>(x,<span class="st">"-"</span>,x<span class="sc">+</span><span class="dv">200</span>),<span class="at">levels=</span><span class="fu">levels</span>(testAvg<span class="sc">$</span>vb))) <span class="sc">|&gt;</span></span>
+<span id="cb11-244"><a href="#cb11-244" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>condit,<span class="at">y=</span>dist,<span class="at">fill=</span>vbLab)) <span class="sc">+</span> </span>
+<span id="cb11-245"><a href="#cb11-245" aria-hidden="true" tabindex="-1"></a>  stat_bar <span class="sc">+</span> </span>
+<span id="cb11-246"><a href="#cb11-246" aria-hidden="true" tabindex="-1"></a>  <span class="co">#facet_wrap(~Resp)</span></span>
+<span id="cb11-247"><a href="#cb11-247" aria-hidden="true" tabindex="-1"></a>  ggh4x<span class="sc">::</span><span class="fu">facet_nested_wrap</span>(<span class="fu">rename_fm</span>(Fit_Method)<span class="sc">~</span>Resp, <span class="at">axes =</span> <span class="st">"all"</span>,<span class="at">ncol=</span><span class="dv">3</span>,<span class="at">scale=</span><span class="st">"free"</span>)</span>
+<span id="cb11-248"><a href="#cb11-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-249"><a href="#cb11-249" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-250"><a href="#cb11-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-253"><a href="#cb11-253" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-254"><a href="#cb11-254" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-htw-post-dist</span></span>
-<span id="cb11-255"><a href="#cb11-255" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Posterior Distributions of $c$ and $lr$ parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically.</span></span>
-<span id="cb11-256"><a href="#cb11-256" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 7</span></span>
-<span id="cb11-257"><a href="#cb11-257" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
-<span id="cb11-258"><a href="#cb11-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-259"><a href="#cb11-259" aria-hidden="true" tabindex="-1"></a>c_post <span class="ot">&lt;-</span> post_dat_avg <span class="sc">%&gt;%</span></span>
-<span id="cb11-260"><a href="#cb11-260" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(id, condit, Model, Fit_Method, rank) <span class="sc">%&gt;%</span></span>
-<span id="cb11-261"><a href="#cb11-261" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-262"><a href="#cb11-262" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">log</span>(c), <span class="at">x =</span> Fit_Method,<span class="at">col=</span>condit)) <span class="sc">+</span> <span class="fu">stat_pointinterval</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(.<span class="dv">2</span>)) <span class="sc">+</span></span>
-<span id="cb11-263"><a href="#cb11-263" aria-hidden="true" tabindex="-1"></a>    ggh4x<span class="sc">::</span><span class="fu">facet_nested_wrap</span>(<span class="sc">~</span>Model) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"c parameter"</span>) <span class="sc">+</span></span>
-<span id="cb11-264"><a href="#cb11-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>(), <span class="at">legend.position=</span><span class="st">"right"</span>,<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">hjust=</span>.<span class="dv">4</span>))</span>
-<span id="cb11-265"><a href="#cb11-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-266"><a href="#cb11-266" aria-hidden="true" tabindex="-1"></a>lr_post <span class="ot">&lt;-</span> post_dat_avg <span class="sc">%&gt;%</span></span>
-<span id="cb11-267"><a href="#cb11-267" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(id, condit, Model, Fit_Method, rank) <span class="sc">%&gt;%</span></span>
-<span id="cb11-268"><a href="#cb11-268" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-269"><a href="#cb11-269" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>lr, <span class="at">x =</span> Fit_Method,<span class="at">col=</span>condit)) <span class="sc">+</span> <span class="fu">stat_pointinterval</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(.<span class="dv">4</span>)) <span class="sc">+</span></span>
-<span id="cb11-270"><a href="#cb11-270" aria-hidden="true" tabindex="-1"></a>    ggh4x<span class="sc">::</span><span class="fu">facet_nested_wrap</span>(<span class="sc">~</span>Model) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"learning rate parameter"</span>) <span class="sc">+</span></span>
-<span id="cb11-271"><a href="#cb11-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>(), <span class="at">legend.position =</span> <span class="st">"none"</span>,<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">hjust=</span>.<span class="dv">5</span>))</span>
-<span id="cb11-272"><a href="#cb11-272" aria-hidden="true" tabindex="-1"></a>c_post <span class="sc">+</span> lr_post</span>
-<span id="cb11-273"><a href="#cb11-273" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-274"><a href="#cb11-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-275"><a href="#cb11-275" aria-hidden="true" tabindex="-1"></a><span class="fu">### Accounting for individual patterns</span></span>
-<span id="cb11-276"><a href="#cb11-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-251"><a href="#cb11-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-254"><a href="#cb11-254" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-255"><a href="#cb11-255" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-htw-post-dist</span></span>
+<span id="cb11-256"><a href="#cb11-256" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Posterior Distributions of $c$ and $lr$ parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically.</span></span>
+<span id="cb11-257"><a href="#cb11-257" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 7</span></span>
+<span id="cb11-258"><a href="#cb11-258" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
+<span id="cb11-259"><a href="#cb11-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-260"><a href="#cb11-260" aria-hidden="true" tabindex="-1"></a>c_post <span class="ot">&lt;-</span> post_dat_avg <span class="sc">%&gt;%</span></span>
+<span id="cb11-261"><a href="#cb11-261" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(id, condit, Model, Fit_Method, rank) <span class="sc">%&gt;%</span></span>
+<span id="cb11-262"><a href="#cb11-262" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-263"><a href="#cb11-263" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">log</span>(c), <span class="at">x =</span> Fit_Method,<span class="at">col=</span>condit)) <span class="sc">+</span> <span class="fu">stat_pointinterval</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(.<span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb11-264"><a href="#cb11-264" aria-hidden="true" tabindex="-1"></a>    ggh4x<span class="sc">::</span><span class="fu">facet_nested_wrap</span>(<span class="sc">~</span>Model) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"c parameter"</span>) <span class="sc">+</span></span>
+<span id="cb11-265"><a href="#cb11-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>(), <span class="at">legend.position=</span><span class="st">"right"</span>,<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">hjust=</span>.<span class="dv">4</span>))</span>
+<span id="cb11-266"><a href="#cb11-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-267"><a href="#cb11-267" aria-hidden="true" tabindex="-1"></a>lr_post <span class="ot">&lt;-</span> post_dat_avg <span class="sc">%&gt;%</span></span>
+<span id="cb11-268"><a href="#cb11-268" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(id, condit, Model, Fit_Method, rank) <span class="sc">%&gt;%</span></span>
+<span id="cb11-269"><a href="#cb11-269" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-270"><a href="#cb11-270" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>lr, <span class="at">x =</span> Fit_Method,<span class="at">col=</span>condit)) <span class="sc">+</span> <span class="fu">stat_pointinterval</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(.<span class="dv">4</span>)) <span class="sc">+</span></span>
+<span id="cb11-271"><a href="#cb11-271" aria-hidden="true" tabindex="-1"></a>    ggh4x<span class="sc">::</span><span class="fu">facet_nested_wrap</span>(<span class="sc">~</span>Model) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"learning rate parameter"</span>) <span class="sc">+</span></span>
+<span id="cb11-272"><a href="#cb11-272" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>(), <span class="at">legend.position =</span> <span class="st">"none"</span>,<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">hjust=</span>.<span class="dv">5</span>))</span>
+<span id="cb11-273"><a href="#cb11-273" aria-hidden="true" tabindex="-1"></a>c_post <span class="sc">+</span> lr_post</span>
+<span id="cb11-274"><a href="#cb11-274" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-275"><a href="#cb11-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-276"><a href="#cb11-276" aria-hidden="true" tabindex="-1"></a><span class="fu">### Accounting for individual patterns</span></span>
 <span id="cb11-277"><a href="#cb11-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-278"><a href="#cb11-278" aria-hidden="true" tabindex="-1"></a><span class="in">```{r  fig.width=11, fig.height=10}</span></span>
-<span id="cb11-279"><a href="#cb11-279" aria-hidden="true" tabindex="-1"></a><span class="in">#| eval: false</span></span>
-<span id="cb11-280"><a href="#cb11-280" aria-hidden="true" tabindex="-1"></a><span class="in">#| include: false</span></span>
-<span id="cb11-281"><a href="#cb11-281" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: fig-htw-indv-pred</span></span>
-<span id="cb11-282"><a href="#cb11-282" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. </span></span>
-<span id="cb11-283"><a href="#cb11-283" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-height: 13</span></span>
-<span id="cb11-284"><a href="#cb11-284" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-width: 12</span></span>
-<span id="cb11-285"><a href="#cb11-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-286"><a href="#cb11-286" aria-hidden="true" tabindex="-1"></a><span class="in">cId_tr &lt;- c(137, 181, 11)</span></span>
-<span id="cb11-287"><a href="#cb11-287" aria-hidden="true" tabindex="-1"></a><span class="in">vId_tr &lt;- c(14, 193, 47)</span></span>
-<span id="cb11-288"><a href="#cb11-288" aria-hidden="true" tabindex="-1"></a><span class="in">cId_tt &lt;- c(11, 93, 35)</span></span>
-<span id="cb11-289"><a href="#cb11-289" aria-hidden="true" tabindex="-1"></a><span class="in">vId_tt &lt;- c(1,14,74)</span></span>
-<span id="cb11-290"><a href="#cb11-290" aria-hidden="true" tabindex="-1"></a><span class="in"># filter(id %in% (filter(bestTestEXAM,group_rank&lt;=9, Fit_Method=="Test")</span></span>
-<span id="cb11-291"><a href="#cb11-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-292"><a href="#cb11-292" aria-hidden="true" tabindex="-1"></a><span class="in">testIndv &lt;- post_dat_l |&gt; filter(id %in% c(cId_tt,vId_tt), Fit_Method=="Test_Train") |&gt; </span></span>
-<span id="cb11-293"><a href="#cb11-293" aria-hidden="true" tabindex="-1"></a><span class="in">   mutate(x=as.factor(x), Resp=as.factor(Resp)) |&gt;</span></span>
-<span id="cb11-294"><a href="#cb11-294" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(id,condit,Fit_Method,Model,Resp) |&gt;</span></span>
-<span id="cb11-295"><a href="#cb11-295" aria-hidden="true" tabindex="-1"></a><span class="in">   mutate(flab=paste0("Subject: ",id)) |&gt;</span></span>
-<span id="cb11-296"><a href="#cb11-296" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = Resp, y = val, fill=x)) + </span></span>
-<span id="cb11-297"><a href="#cb11-297" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_bar_sd + ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +</span></span>
-<span id="cb11-298"><a href="#cb11-298" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title="Individual Participant fits from Test &amp; Train Fitting Method",</span></span>
-<span id="cb11-299"><a href="#cb11-299" aria-hidden="true" tabindex="-1"></a><span class="in">       y="X Velocity",fill="Target Velocity") +</span></span>
-<span id="cb11-300"><a href="#cb11-300" aria-hidden="true" tabindex="-1"></a><span class="in">   guides(fill = guide_legend(nrow = 1)) + </span></span>
-<span id="cb11-301"><a href="#cb11-301" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(legend.position = "bottom",axis.title.x = element_blank())</span></span>
-<span id="cb11-302"><a href="#cb11-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-278"><a href="#cb11-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-279"><a href="#cb11-279" aria-hidden="true" tabindex="-1"></a><span class="in">```{r  fig.width=11, fig.height=10}</span></span>
+<span id="cb11-280"><a href="#cb11-280" aria-hidden="true" tabindex="-1"></a><span class="in">#| eval: false</span></span>
+<span id="cb11-281"><a href="#cb11-281" aria-hidden="true" tabindex="-1"></a><span class="in">#| include: false</span></span>
+<span id="cb11-282"><a href="#cb11-282" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: fig-htw-indv-pred</span></span>
+<span id="cb11-283"><a href="#cb11-283" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. </span></span>
+<span id="cb11-284"><a href="#cb11-284" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-height: 13</span></span>
+<span id="cb11-285"><a href="#cb11-285" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-width: 12</span></span>
+<span id="cb11-286"><a href="#cb11-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-287"><a href="#cb11-287" aria-hidden="true" tabindex="-1"></a><span class="in">cId_tr &lt;- c(137, 181, 11)</span></span>
+<span id="cb11-288"><a href="#cb11-288" aria-hidden="true" tabindex="-1"></a><span class="in">vId_tr &lt;- c(14, 193, 47)</span></span>
+<span id="cb11-289"><a href="#cb11-289" aria-hidden="true" tabindex="-1"></a><span class="in">cId_tt &lt;- c(11, 93, 35)</span></span>
+<span id="cb11-290"><a href="#cb11-290" aria-hidden="true" tabindex="-1"></a><span class="in">vId_tt &lt;- c(1,14,74)</span></span>
+<span id="cb11-291"><a href="#cb11-291" aria-hidden="true" tabindex="-1"></a><span class="in"># filter(id %in% (filter(bestTestEXAM,group_rank&lt;=9, Fit_Method=="Test")</span></span>
+<span id="cb11-292"><a href="#cb11-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-293"><a href="#cb11-293" aria-hidden="true" tabindex="-1"></a><span class="in">testIndv &lt;- post_dat_l |&gt; filter(id %in% c(cId_tt,vId_tt), Fit_Method=="Test_Train") |&gt; </span></span>
+<span id="cb11-294"><a href="#cb11-294" aria-hidden="true" tabindex="-1"></a><span class="in">   mutate(x=as.factor(x), Resp=as.factor(Resp)) |&gt;</span></span>
+<span id="cb11-295"><a href="#cb11-295" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(id,condit,Fit_Method,Model,Resp) |&gt;</span></span>
+<span id="cb11-296"><a href="#cb11-296" aria-hidden="true" tabindex="-1"></a><span class="in">   mutate(flab=paste0("Subject: ",id)) |&gt;</span></span>
+<span id="cb11-297"><a href="#cb11-297" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = Resp, y = val, fill=x)) + </span></span>
+<span id="cb11-298"><a href="#cb11-298" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_bar_sd + ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +</span></span>
+<span id="cb11-299"><a href="#cb11-299" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title="Individual Participant fits from Test &amp; Train Fitting Method",</span></span>
+<span id="cb11-300"><a href="#cb11-300" aria-hidden="true" tabindex="-1"></a><span class="in">       y="X Velocity",fill="Target Velocity") +</span></span>
+<span id="cb11-301"><a href="#cb11-301" aria-hidden="true" tabindex="-1"></a><span class="in">   guides(fill = guide_legend(nrow = 1)) + </span></span>
+<span id="cb11-302"><a href="#cb11-302" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(legend.position = "bottom",axis.title.x = element_blank())</span></span>
 <span id="cb11-303"><a href="#cb11-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-304"><a href="#cb11-304" aria-hidden="true" tabindex="-1"></a><span class="in">trainIndv &lt;- post_dat_l |&gt; filter(id %in% c(cId_tr,vId_tr), Fit_Method=="Train") |&gt; </span></span>
-<span id="cb11-305"><a href="#cb11-305" aria-hidden="true" tabindex="-1"></a><span class="in">   mutate(x=as.factor(x), Resp=as.factor(Resp), flab=paste0("Subject: ",id)) |&gt;</span></span>
-<span id="cb11-306"><a href="#cb11-306" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(id,condit,Fit_Method,Model,Resp) |&gt;</span></span>
-<span id="cb11-307"><a href="#cb11-307" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = Resp, y = val, fill=x)) + </span></span>
-<span id="cb11-308"><a href="#cb11-308" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_bar + </span></span>
-<span id="cb11-309"><a href="#cb11-309" aria-hidden="true" tabindex="-1"></a><span class="in">  ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +</span></span>
-<span id="cb11-310"><a href="#cb11-310" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title="Individual Participant fits from Train Only Fitting Method", y="X Velocity",</span></span>
-<span id="cb11-311"><a href="#cb11-311" aria-hidden="true" tabindex="-1"></a><span class="in">       fill="Target Velocity") +</span></span>
-<span id="cb11-312"><a href="#cb11-312" aria-hidden="true" tabindex="-1"></a><span class="in">     guides(fill = guide_legend(nrow = 1)) + </span></span>
-<span id="cb11-313"><a href="#cb11-313" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(legend.position = "bottom",axis.title.x = element_blank())</span></span>
-<span id="cb11-314"><a href="#cb11-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-304"><a href="#cb11-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-305"><a href="#cb11-305" aria-hidden="true" tabindex="-1"></a><span class="in">trainIndv &lt;- post_dat_l |&gt; filter(id %in% c(cId_tr,vId_tr), Fit_Method=="Train") |&gt; </span></span>
+<span id="cb11-306"><a href="#cb11-306" aria-hidden="true" tabindex="-1"></a><span class="in">   mutate(x=as.factor(x), Resp=as.factor(Resp), flab=paste0("Subject: ",id)) |&gt;</span></span>
+<span id="cb11-307"><a href="#cb11-307" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(id,condit,Fit_Method,Model,Resp) |&gt;</span></span>
+<span id="cb11-308"><a href="#cb11-308" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = Resp, y = val, fill=x)) + </span></span>
+<span id="cb11-309"><a href="#cb11-309" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_bar + </span></span>
+<span id="cb11-310"><a href="#cb11-310" aria-hidden="true" tabindex="-1"></a><span class="in">  ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +</span></span>
+<span id="cb11-311"><a href="#cb11-311" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title="Individual Participant fits from Train Only Fitting Method", y="X Velocity",</span></span>
+<span id="cb11-312"><a href="#cb11-312" aria-hidden="true" tabindex="-1"></a><span class="in">       fill="Target Velocity") +</span></span>
+<span id="cb11-313"><a href="#cb11-313" aria-hidden="true" tabindex="-1"></a><span class="in">     guides(fill = guide_legend(nrow = 1)) + </span></span>
+<span id="cb11-314"><a href="#cb11-314" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(legend.position = "bottom",axis.title.x = element_blank())</span></span>
 <span id="cb11-315"><a href="#cb11-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-316"><a href="#cb11-316" aria-hidden="true" tabindex="-1"></a><span class="in">(testIndv  / trainIndv) +</span></span>
-<span id="cb11-317"><a href="#cb11-317" aria-hidden="true" tabindex="-1"></a><span class="in">  plot_annotation(tag_levels = list(c('A','B')),tag_suffix = ') ') &amp; </span></span>
-<span id="cb11-318"><a href="#cb11-318" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(plot.tag.position = c(0, 1))</span></span>
-<span id="cb11-319"><a href="#cb11-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-320"><a href="#cb11-320" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-321"><a href="#cb11-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-316"><a href="#cb11-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-317"><a href="#cb11-317" aria-hidden="true" tabindex="-1"></a><span class="in">(testIndv  / trainIndv) +</span></span>
+<span id="cb11-318"><a href="#cb11-318" aria-hidden="true" tabindex="-1"></a><span class="in">  plot_annotation(tag_levels = list(c('A','B')),tag_suffix = ') ') &amp; </span></span>
+<span id="cb11-319"><a href="#cb11-319" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(plot.tag.position = c(0, 1))</span></span>
+<span id="cb11-320"><a href="#cb11-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-321"><a href="#cb11-321" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-322"><a href="#cb11-322" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-323"><a href="#cb11-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-326"><a href="#cb11-326" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-327"><a href="#cb11-327" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-htw-best-model</span></span>
-<span id="cb11-328"><a href="#cb11-328" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM. </span></span>
-<span id="cb11-329"><a href="#cb11-329" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
-<span id="cb11-330"><a href="#cb11-330" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
-<span id="cb11-331"><a href="#cb11-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-324"><a href="#cb11-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-327"><a href="#cb11-327" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-328"><a href="#cb11-328" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-htw-best-model</span></span>
+<span id="cb11-329"><a href="#cb11-329" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM. </span></span>
+<span id="cb11-330"><a href="#cb11-330" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
+<span id="cb11-331"><a href="#cb11-331" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
 <span id="cb11-332"><a href="#cb11-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-333"><a href="#cb11-333" aria-hidden="true" tabindex="-1"></a><span class="co"># could compute best model for each posterior parameter - examine consistency</span></span>
-<span id="cb11-334"><a href="#cb11-334" aria-hidden="true" tabindex="-1"></a><span class="co"># then I'd have an error bar for each subject in the model error diff. figure</span></span>
-<span id="cb11-335"><a href="#cb11-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-336"><a href="#cb11-336" aria-hidden="true" tabindex="-1"></a>tid1 <span class="ot">&lt;-</span> post_dat  <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id,condit,Model,Fit_Method,x) <span class="sc">|&gt;</span> </span>
-<span id="cb11-337"><a href="#cb11-337" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">e2=</span><span class="fu">abs</span>(y<span class="sc">-</span>pred)) <span class="sc">|&gt;</span> </span>
-<span id="cb11-338"><a href="#cb11-338" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">y1=</span><span class="fu">mean</span>(y), <span class="at">pred1=</span><span class="fu">mean</span>(pred),<span class="at">mean_error=</span><span class="fu">abs</span>(y1<span class="sc">-</span>pred1)) <span class="sc">|&gt;</span></span>
-<span id="cb11-339"><a href="#cb11-339" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,Model,Fit_Method) <span class="sc">|&gt;</span> </span>
-<span id="cb11-340"><a href="#cb11-340" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_error=</span><span class="fu">mean</span>(mean_error)) <span class="sc">|&gt;</span> </span>
-<span id="cb11-341"><a href="#cb11-341" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(id,condit,Fit_Method) <span class="sc">|&gt;</span></span>
-<span id="cb11-342"><a href="#cb11-342" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round_tibble</span>(<span class="dv">1</span>) </span>
-<span id="cb11-343"><a href="#cb11-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-344"><a href="#cb11-344" aria-hidden="true" tabindex="-1"></a>best_id <span class="ot">&lt;-</span> tid1 <span class="sc">|&gt;</span> </span>
-<span id="cb11-345"><a href="#cb11-345" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,Fit_Method) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">best=</span><span class="fu">ifelse</span>(mean_error<span class="sc">==</span><span class="fu">min</span>(mean_error),<span class="dv">1</span>,<span class="dv">0</span>)) </span>
-<span id="cb11-346"><a href="#cb11-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-347"><a href="#cb11-347" aria-hidden="true" tabindex="-1"></a>lowest_error_model <span class="ot">&lt;-</span> best_id <span class="sc">%&gt;%</span></span>
-<span id="cb11-348"><a href="#cb11-348" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, condit,Fit_Method) <span class="sc">%&gt;%</span></span>
-<span id="cb11-349"><a href="#cb11-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Best_Model =</span> Model[<span class="fu">which.min</span>(mean_error)],</span>
-<span id="cb11-350"><a href="#cb11-350" aria-hidden="true" tabindex="-1"></a>            <span class="at">Lowest_error =</span> <span class="fu">min</span>(mean_error),</span>
-<span id="cb11-351"><a href="#cb11-351" aria-hidden="true" tabindex="-1"></a>            <span class="at">differential =</span> <span class="fu">min</span>(mean_error) <span class="sc">-</span> <span class="fu">max</span>(mean_error)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-352"><a href="#cb11-352" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb11-353"><a href="#cb11-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-333"><a href="#cb11-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-334"><a href="#cb11-334" aria-hidden="true" tabindex="-1"></a><span class="co"># could compute best model for each posterior parameter - examine consistency</span></span>
+<span id="cb11-335"><a href="#cb11-335" aria-hidden="true" tabindex="-1"></a><span class="co"># then I'd have an error bar for each subject in the model error diff. figure</span></span>
+<span id="cb11-336"><a href="#cb11-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-337"><a href="#cb11-337" aria-hidden="true" tabindex="-1"></a>tid1 <span class="ot">&lt;-</span> post_dat  <span class="sc">|&gt;</span> <span class="fu">group_by</span>(id,condit,Model,Fit_Method,x) <span class="sc">|&gt;</span> </span>
+<span id="cb11-338"><a href="#cb11-338" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">e2=</span><span class="fu">abs</span>(y<span class="sc">-</span>pred)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-339"><a href="#cb11-339" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">y1=</span><span class="fu">mean</span>(y), <span class="at">pred1=</span><span class="fu">mean</span>(pred),<span class="at">mean_error=</span><span class="fu">abs</span>(y1<span class="sc">-</span>pred1)) <span class="sc">|&gt;</span></span>
+<span id="cb11-340"><a href="#cb11-340" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,Model,Fit_Method) <span class="sc">|&gt;</span> </span>
+<span id="cb11-341"><a href="#cb11-341" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_error=</span><span class="fu">mean</span>(mean_error)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-342"><a href="#cb11-342" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(id,condit,Fit_Method) <span class="sc">|&gt;</span></span>
+<span id="cb11-343"><a href="#cb11-343" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round_tibble</span>(<span class="dv">1</span>) </span>
+<span id="cb11-344"><a href="#cb11-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-345"><a href="#cb11-345" aria-hidden="true" tabindex="-1"></a>best_id <span class="ot">&lt;-</span> tid1 <span class="sc">|&gt;</span> </span>
+<span id="cb11-346"><a href="#cb11-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,Fit_Method) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">best=</span><span class="fu">ifelse</span>(mean_error<span class="sc">==</span><span class="fu">min</span>(mean_error),<span class="dv">1</span>,<span class="dv">0</span>)) </span>
+<span id="cb11-347"><a href="#cb11-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-348"><a href="#cb11-348" aria-hidden="true" tabindex="-1"></a>lowest_error_model <span class="ot">&lt;-</span> best_id <span class="sc">%&gt;%</span></span>
+<span id="cb11-349"><a href="#cb11-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, condit,Fit_Method) <span class="sc">%&gt;%</span></span>
+<span id="cb11-350"><a href="#cb11-350" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Best_Model =</span> Model[<span class="fu">which.min</span>(mean_error)],</span>
+<span id="cb11-351"><a href="#cb11-351" aria-hidden="true" tabindex="-1"></a>            <span class="at">Lowest_error =</span> <span class="fu">min</span>(mean_error),</span>
+<span id="cb11-352"><a href="#cb11-352" aria-hidden="true" tabindex="-1"></a>            <span class="at">differential =</span> <span class="fu">min</span>(mean_error) <span class="sc">-</span> <span class="fu">max</span>(mean_error)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-353"><a href="#cb11-353" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
 <span id="cb11-354"><a href="#cb11-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-355"><a href="#cb11-355" aria-hidden="true" tabindex="-1"></a>error_difference<span class="ot">&lt;-</span> best_id <span class="sc">%&gt;%</span></span>
-<span id="cb11-356"><a href="#cb11-356" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, condit, Model,Fit_Method, mean_error) <span class="sc">%&gt;%</span></span>
-<span id="cb11-357"><a href="#cb11-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Model, <span class="at">values_from =</span> <span class="fu">c</span>(mean_error)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-358"><a href="#cb11-358" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Error_difference =</span> (ALM <span class="sc">-</span> EXAM))</span>
-<span id="cb11-359"><a href="#cb11-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-360"><a href="#cb11-360" aria-hidden="true" tabindex="-1"></a>full_comparison <span class="ot">&lt;-</span> lowest_error_model <span class="sc">|&gt;</span> <span class="fu">left_join</span>(error_difference, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"Fit_Method"</span>))  <span class="sc">|&gt;</span> </span>
-<span id="cb11-361"><a href="#cb11-361" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit,Fit_Method,Best_Model) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">nGrp=</span><span class="fu">n</span>(), <span class="at">model_rank =</span> nGrp <span class="sc">-</span> <span class="fu">rank</span>(Error_difference) ) <span class="sc">|&gt;</span> </span>
-<span id="cb11-362"><a href="#cb11-362" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Fit_Method,<span class="sc">-</span>Error_difference)</span>
-<span id="cb11-363"><a href="#cb11-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-364"><a href="#cb11-364" aria-hidden="true" tabindex="-1"></a>full_comparison <span class="sc">|&gt;</span> <span class="fu">filter</span>(Fit_Method<span class="sc">==</span><span class="st">"Test_Train"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-365"><a href="#cb11-365" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb11-366"><a href="#cb11-366" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">reorder</span>(id, Error_difference)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-367"><a href="#cb11-367" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>id,<span class="at">x=</span>Error_difference,<span class="at">fill=</span>Best_Model))<span class="sc">+</span></span>
-<span id="cb11-368"><a href="#cb11-368" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb11-369"><a href="#cb11-369" aria-hidden="true" tabindex="-1"></a>  ggh4x<span class="sc">::</span><span class="fu">facet_grid2</span>(<span class="sc">~</span>condit,<span class="at">axes=</span><span class="st">"all"</span>,<span class="at">scales=</span><span class="st">"free_y"</span>, <span class="at">independent =</span> <span class="st">"y"</span>)<span class="sc">+</span></span>
-<span id="cb11-370"><a href="#cb11-370" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill=</span><span class="st">"Best Model"</span>,<span class="at">x=</span><span class="st">"Mean Model Error Difference (ALM - EXAM)"</span>,<span class="at">y=</span><span class="st">"Participant"</span>)</span>
-<span id="cb11-371"><a href="#cb11-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-355"><a href="#cb11-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-356"><a href="#cb11-356" aria-hidden="true" tabindex="-1"></a>error_difference<span class="ot">&lt;-</span> best_id <span class="sc">%&gt;%</span></span>
+<span id="cb11-357"><a href="#cb11-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, condit, Model,Fit_Method, mean_error) <span class="sc">%&gt;%</span></span>
+<span id="cb11-358"><a href="#cb11-358" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Model, <span class="at">values_from =</span> <span class="fu">c</span>(mean_error)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-359"><a href="#cb11-359" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Error_difference =</span> (ALM <span class="sc">-</span> EXAM))</span>
+<span id="cb11-360"><a href="#cb11-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-361"><a href="#cb11-361" aria-hidden="true" tabindex="-1"></a>full_comparison <span class="ot">&lt;-</span> lowest_error_model <span class="sc">|&gt;</span> <span class="fu">left_join</span>(error_difference, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"Fit_Method"</span>))  <span class="sc">|&gt;</span> </span>
+<span id="cb11-362"><a href="#cb11-362" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit,Fit_Method,Best_Model) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">nGrp=</span><span class="fu">n</span>(), <span class="at">model_rank =</span> nGrp <span class="sc">-</span> <span class="fu">rank</span>(Error_difference) ) <span class="sc">|&gt;</span> </span>
+<span id="cb11-363"><a href="#cb11-363" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Fit_Method,<span class="sc">-</span>Error_difference)</span>
+<span id="cb11-364"><a href="#cb11-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-365"><a href="#cb11-365" aria-hidden="true" tabindex="-1"></a>full_comparison <span class="sc">|&gt;</span> <span class="fu">filter</span>(Fit_Method<span class="sc">==</span><span class="st">"Test_Train"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-366"><a href="#cb11-366" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb11-367"><a href="#cb11-367" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">reorder</span>(id, Error_difference)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-368"><a href="#cb11-368" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>id,<span class="at">x=</span>Error_difference,<span class="at">fill=</span>Best_Model))<span class="sc">+</span></span>
+<span id="cb11-369"><a href="#cb11-369" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb11-370"><a href="#cb11-370" aria-hidden="true" tabindex="-1"></a>  ggh4x<span class="sc">::</span><span class="fu">facet_grid2</span>(<span class="sc">~</span>condit,<span class="at">axes=</span><span class="st">"all"</span>,<span class="at">scales=</span><span class="st">"free_y"</span>, <span class="at">independent =</span> <span class="st">"y"</span>)<span class="sc">+</span></span>
+<span id="cb11-371"><a href="#cb11-371" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill=</span><span class="st">"Best Model"</span>,<span class="at">x=</span><span class="st">"Mean Model Error Difference (ALM - EXAM)"</span>,<span class="at">y=</span><span class="st">"Participant"</span>)</span>
 <span id="cb11-372"><a href="#cb11-372" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-373"><a href="#cb11-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-374"><a href="#cb11-374" aria-hidden="true" tabindex="-1"></a><span class="co"># full_comparison |&gt; filter(Fit_Method=="Test_Train") |&gt; </span></span>
-<span id="cb11-375"><a href="#cb11-375" aria-hidden="true" tabindex="-1"></a><span class="co">#   ungroup() |&gt;</span></span>
-<span id="cb11-376"><a href="#cb11-376" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(id = reorder(id, Error_difference)) |&gt;</span></span>
-<span id="cb11-377"><a href="#cb11-377" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(post_dat_avg |&gt; filter(x==100) |&gt; select(-x) |&gt; ungroup(), by=c("id","condit")) |&gt;</span></span>
-<span id="cb11-378"><a href="#cb11-378" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(y=id,x=c,fill=Best_Model))+</span></span>
-<span id="cb11-379"><a href="#cb11-379" aria-hidden="true" tabindex="-1"></a><span class="co">#   stat_pointinterval(position=position_dodge(.1))</span></span>
-<span id="cb11-380"><a href="#cb11-380" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-381"><a href="#cb11-381" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-382"><a href="#cb11-382" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-383"><a href="#cb11-383" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Subjects with biggest differential favoring ALM</span></span>
-<span id="cb11-386"><a href="#cb11-386" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-387"><a href="#cb11-387" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
-<span id="cb11-388"><a href="#cb11-388" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
-<span id="cb11-389"><a href="#cb11-389" aria-hidden="true" tabindex="-1"></a>vAlm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">307</span>,<span class="dv">331</span>,<span class="dv">197</span>); cAlm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">372</span>,<span class="dv">173</span>,<span class="dv">157</span>)</span>
-<span id="cb11-390"><a href="#cb11-390" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-391"><a href="#cb11-391" aria-hidden="true" tabindex="-1"></a>post_dat_l <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> <span class="fu">c</span>(vAlm,cAlm), Fit_Method<span class="sc">==</span><span class="st">"Test_Train"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-392"><a href="#cb11-392" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">x=</span><span class="fu">as.factor</span>(x), <span class="at">Resp=</span><span class="fu">as.factor</span>(Resp)) <span class="sc">|&gt;</span></span>
-<span id="cb11-393"><a href="#cb11-393" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,Fit_Method,Model,Resp) <span class="sc">|&gt;</span></span>
-<span id="cb11-394"><a href="#cb11-394" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">flab=</span><span class="fu">paste0</span>(<span class="st">"Subject: "</span>,id)) <span class="sc">|&gt;</span></span>
-<span id="cb11-395"><a href="#cb11-395" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Resp, <span class="at">y =</span> val, <span class="at">fill=</span>x)) <span class="sc">+</span> </span>
-<span id="cb11-396"><a href="#cb11-396" aria-hidden="true" tabindex="-1"></a>  stat_bar_sd <span class="sc">+</span> ggh4x<span class="sc">::</span><span class="fu">facet_nested_wrap</span>(condit<span class="sc">~</span>flab, <span class="at">axes =</span> <span class="st">"all"</span>,<span class="at">ncol=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb11-397"><a href="#cb11-397" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Subjects with biggest differential favoring ALM"</span>,</span>
-<span id="cb11-398"><a href="#cb11-398" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"X Velocity"</span>,<span class="at">fill=</span><span class="st">"Target Velocity"</span>) <span class="sc">+</span></span>
-<span id="cb11-399"><a href="#cb11-399" aria-hidden="true" tabindex="-1"></a>   <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_legend</span>(<span class="at">nrow =</span> <span class="dv">1</span>)) <span class="sc">+</span> </span>
-<span id="cb11-400"><a href="#cb11-400" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>())</span>
-<span id="cb11-401"><a href="#cb11-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-374"><a href="#cb11-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-375"><a href="#cb11-375" aria-hidden="true" tabindex="-1"></a><span class="co"># full_comparison |&gt; filter(Fit_Method=="Test_Train") |&gt; </span></span>
+<span id="cb11-376"><a href="#cb11-376" aria-hidden="true" tabindex="-1"></a><span class="co">#   ungroup() |&gt;</span></span>
+<span id="cb11-377"><a href="#cb11-377" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(id = reorder(id, Error_difference)) |&gt;</span></span>
+<span id="cb11-378"><a href="#cb11-378" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(post_dat_avg |&gt; filter(x==100) |&gt; select(-x) |&gt; ungroup(), by=c("id","condit")) |&gt;</span></span>
+<span id="cb11-379"><a href="#cb11-379" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(y=id,x=c,fill=Best_Model))+</span></span>
+<span id="cb11-380"><a href="#cb11-380" aria-hidden="true" tabindex="-1"></a><span class="co">#   stat_pointinterval(position=position_dodge(.1))</span></span>
+<span id="cb11-381"><a href="#cb11-381" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-382"><a href="#cb11-382" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-383"><a href="#cb11-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-384"><a href="#cb11-384" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Subjects with biggest differential favoring ALM</span></span>
+<span id="cb11-387"><a href="#cb11-387" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-388"><a href="#cb11-388" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb11-389"><a href="#cb11-389" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb11-390"><a href="#cb11-390" aria-hidden="true" tabindex="-1"></a>vAlm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">307</span>,<span class="dv">331</span>,<span class="dv">197</span>); cAlm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">372</span>,<span class="dv">173</span>,<span class="dv">157</span>)</span>
+<span id="cb11-391"><a href="#cb11-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-392"><a href="#cb11-392" aria-hidden="true" tabindex="-1"></a>post_dat_l <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> <span class="fu">c</span>(vAlm,cAlm), Fit_Method<span class="sc">==</span><span class="st">"Test_Train"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-393"><a href="#cb11-393" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">x=</span><span class="fu">as.factor</span>(x), <span class="at">Resp=</span><span class="fu">as.factor</span>(Resp)) <span class="sc">|&gt;</span></span>
+<span id="cb11-394"><a href="#cb11-394" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,Fit_Method,Model,Resp) <span class="sc">|&gt;</span></span>
+<span id="cb11-395"><a href="#cb11-395" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">flab=</span><span class="fu">paste0</span>(<span class="st">"Subject: "</span>,id)) <span class="sc">|&gt;</span></span>
+<span id="cb11-396"><a href="#cb11-396" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Resp, <span class="at">y =</span> val, <span class="at">fill=</span>x)) <span class="sc">+</span> </span>
+<span id="cb11-397"><a href="#cb11-397" aria-hidden="true" tabindex="-1"></a>  stat_bar_sd <span class="sc">+</span> ggh4x<span class="sc">::</span><span class="fu">facet_nested_wrap</span>(condit<span class="sc">~</span>flab, <span class="at">axes =</span> <span class="st">"all"</span>,<span class="at">ncol=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb11-398"><a href="#cb11-398" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Subjects with biggest differential favoring ALM"</span>,</span>
+<span id="cb11-399"><a href="#cb11-399" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"X Velocity"</span>,<span class="at">fill=</span><span class="st">"Target Velocity"</span>) <span class="sc">+</span></span>
+<span id="cb11-400"><a href="#cb11-400" aria-hidden="true" tabindex="-1"></a>   <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_legend</span>(<span class="at">nrow =</span> <span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb11-401"><a href="#cb11-401" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>())</span>
 <span id="cb11-402"><a href="#cb11-402" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-403"><a href="#cb11-403" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-404"><a href="#cb11-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-403"><a href="#cb11-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-404"><a href="#cb11-404" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-405"><a href="#cb11-405" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-406"><a href="#cb11-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-407"><a href="#cb11-407" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Subjects with biggest differential favoring EXAM</span></span>
-<span id="cb11-410"><a href="#cb11-410" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-411"><a href="#cb11-411" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
-<span id="cb11-412"><a href="#cb11-412" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
-<span id="cb11-413"><a href="#cb11-413" aria-hidden="true" tabindex="-1"></a>vAlm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">312</span>,<span class="dv">334</span>,<span class="dv">295</span>); cAlm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">132</span>,<span class="dv">366</span>,<span class="dv">415</span>)</span>
-<span id="cb11-414"><a href="#cb11-414" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-415"><a href="#cb11-415" aria-hidden="true" tabindex="-1"></a>post_dat_l <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> <span class="fu">c</span>(vAlm,cAlm), Fit_Method<span class="sc">==</span><span class="st">"Test_Train"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-416"><a href="#cb11-416" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">x=</span><span class="fu">as.factor</span>(x), <span class="at">Resp=</span><span class="fu">as.factor</span>(Resp)) <span class="sc">|&gt;</span></span>
-<span id="cb11-417"><a href="#cb11-417" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,Fit_Method,Model,Resp) <span class="sc">|&gt;</span></span>
-<span id="cb11-418"><a href="#cb11-418" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">flab=</span><span class="fu">paste0</span>(<span class="st">"Subject: "</span>,id)) <span class="sc">|&gt;</span></span>
-<span id="cb11-419"><a href="#cb11-419" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Resp, <span class="at">y =</span> val, <span class="at">fill=</span>x)) <span class="sc">+</span> </span>
-<span id="cb11-420"><a href="#cb11-420" aria-hidden="true" tabindex="-1"></a>  stat_bar_sd <span class="sc">+</span> ggh4x<span class="sc">::</span><span class="fu">facet_nested_wrap</span>(condit<span class="sc">~</span>flab, <span class="at">axes =</span> <span class="st">"all"</span>,<span class="at">ncol=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb11-421"><a href="#cb11-421" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Subjects with biggest differential favoring EXAM"</span>,</span>
-<span id="cb11-422"><a href="#cb11-422" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"X Velocity"</span>,<span class="at">fill=</span><span class="st">"Target Velocity"</span>) <span class="sc">+</span></span>
-<span id="cb11-423"><a href="#cb11-423" aria-hidden="true" tabindex="-1"></a>   <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_legend</span>(<span class="at">nrow =</span> <span class="dv">1</span>)) <span class="sc">+</span> </span>
-<span id="cb11-424"><a href="#cb11-424" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>())</span>
-<span id="cb11-425"><a href="#cb11-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-426"><a href="#cb11-426" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-427"><a href="#cb11-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-407"><a href="#cb11-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-408"><a href="#cb11-408" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Subjects with biggest differential favoring EXAM</span></span>
+<span id="cb11-411"><a href="#cb11-411" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-412"><a href="#cb11-412" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb11-413"><a href="#cb11-413" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb11-414"><a href="#cb11-414" aria-hidden="true" tabindex="-1"></a>vAlm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">312</span>,<span class="dv">334</span>,<span class="dv">295</span>); cAlm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">132</span>,<span class="dv">366</span>,<span class="dv">415</span>)</span>
+<span id="cb11-415"><a href="#cb11-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-416"><a href="#cb11-416" aria-hidden="true" tabindex="-1"></a>post_dat_l <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> <span class="fu">c</span>(vAlm,cAlm), Fit_Method<span class="sc">==</span><span class="st">"Test_Train"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-417"><a href="#cb11-417" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">x=</span><span class="fu">as.factor</span>(x), <span class="at">Resp=</span><span class="fu">as.factor</span>(Resp)) <span class="sc">|&gt;</span></span>
+<span id="cb11-418"><a href="#cb11-418" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,Fit_Method,Model,Resp) <span class="sc">|&gt;</span></span>
+<span id="cb11-419"><a href="#cb11-419" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">flab=</span><span class="fu">paste0</span>(<span class="st">"Subject: "</span>,id)) <span class="sc">|&gt;</span></span>
+<span id="cb11-420"><a href="#cb11-420" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Resp, <span class="at">y =</span> val, <span class="at">fill=</span>x)) <span class="sc">+</span> </span>
+<span id="cb11-421"><a href="#cb11-421" aria-hidden="true" tabindex="-1"></a>  stat_bar_sd <span class="sc">+</span> ggh4x<span class="sc">::</span><span class="fu">facet_nested_wrap</span>(condit<span class="sc">~</span>flab, <span class="at">axes =</span> <span class="st">"all"</span>,<span class="at">ncol=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb11-422"><a href="#cb11-422" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Subjects with biggest differential favoring EXAM"</span>,</span>
+<span id="cb11-423"><a href="#cb11-423" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"X Velocity"</span>,<span class="at">fill=</span><span class="st">"Target Velocity"</span>) <span class="sc">+</span></span>
+<span id="cb11-424"><a href="#cb11-424" aria-hidden="true" tabindex="-1"></a>   <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_legend</span>(<span class="at">nrow =</span> <span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb11-425"><a href="#cb11-425" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb11-426"><a href="#cb11-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-427"><a href="#cb11-427" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-428"><a href="#cb11-428" aria-hidden="true" tabindex="-1"></a></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Model/htw_model_e2.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Model/htw_model_e2.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","descPosition":"bottom"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
 
 
-
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Model/htw_model_e2.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Model/htw_model_e2.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>
