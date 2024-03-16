@@ -1,15 +1,44 @@
 ---
 title: "HTW E1 Testing"
 categories: [Analyses, R, Bayesian]
+page-layout: full
+toc: false
+code-fold: true
+code-tools: true
 ---
 
 ```{r setup1, include=FALSE}
 source(here::here("Functions", "packages.R"))
-test <- readRDS(here("data/e1_08-21-23.rds")) |> filter(expMode2 == "Test") 
 options(brms.backend="cmdstanr",mc.cores=4)
-e1Sbjs <- test |> group_by(id,condit) |> summarise(n=n())
+
+e1 <- readRDS(here("data/e1_08-21-23.rds")) 
+e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
+testE1 <- test <-  e1 |> filter(expMode2 == "Test")
+
 testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
+
+
+nbins=5
+trainE1 <-  e1 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
+    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
+trainE1_max <- trainE1 |> filter(Trial_Bin == nbins, bandInt==800)
+trainE1_avg <- trainE1_max |> group_by(id,condit) |> summarise(avg = mean(dist))
+
+
+nbins=5
+trainE1 <-  e1 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
+    mutate(Trial_Bin = cut( gt.bandStage, breaks = seq(1, max(gt.bandStage),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
+trainE1_max <- trainE1 |> filter(Trial_Bin == nbins, bandInt==800)
+trainE1_avg <- trainE1_max |> group_by(id,condit) |> summarise(train_end = mean(dist))
+
+
+trainE1 |> select(id,condit,Trial_Bin,trial,vb,bandInt,dist,vx,gt.bandStage) |> 
+  group_by(id,condit,vb,Trial_Bin) |> 
+  summarise(mean_dist=mean(dist),mean_vx=mean(vx),n=n()) 
+
+
+testE1 <- testE1 |> left_join(trainE1_avg, by=c("id","condit")) 
 
 ```
 ### Analyses Strategy
@@ -62,36 +91,6 @@ result$varied |> kbl()
 
 
 ```{r}
-
-testE1 |> group_by(id,condit) |> pivot_longer(c("dist","train_end"),names_to="var",values_to="value") |> 
-  ggplot(aes(x=var,y=value, fill=condit)) + stat_bar + facet_wrap(~var)
-
-
-testE1 |> ggplot(aes(x=train_end,y=dist,fill=condit)) + 
-  stat_summary(geom = "line", position=position_dodge(), fun = mean) +
-    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
-    facet_wrap(~vb) +
-  labs(x="Band", y="Deviation From Target")
-
-testE1 |> ggplot(aes(x=train_end,y=dist,fill=condit,col=condit)) + 
-  #geom_point() +
-  geom_smooth(method="loess") +
-    facet_wrap(~vb) +
-  labs(x="Band", y="Deviation From Target")
-
-
-# create quartiles for train_end
-testE1 |> group_by(condit,vb) |> 
-  mutate(train_end_q = ntile(train_end,6)) |> 
-  ggplot(aes(x=train_end_q,y=dist,fill=condit)) + 
- stat_bar + 
-    facet_wrap(~vb) +
-  labs(x="Band", y="Deviation From Target")
-
-
-```
-
-```{r}
 #| label: fig-e1-test-dev
 #| fig-cap: E1. Deviations from target band during testing without feedback stage. 
 test |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
@@ -101,8 +100,70 @@ test |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
 ```
 
 
+
 ```{r}
 #| label: tbl-e1-bmm-dist
+#| tbl-cap: "E1. Training vs. Extrapolation"
+#| 
+#options(brms.backend="cmdstanr",mc.cores=4)
+modelFile <- paste0(here::here("data/model_cache/"), "e1_dist_Cond_Type_RF_2")
+bmtd <- brm(dist ~ condit * bandType + (1|bandInt) + (1|id), 
+    data=testE1, file=modelFile,
+    iter=5000,chains=4, control = list(adapt_delta = .94, max_treedepth = 13))
+                        
+#bayestestR::describe_posterior(bmtd)
+
+mted1 <- as.data.frame(describe_posterior(bmtd, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mted1) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+
+
+# r_bandInt_params <- get_variables(bmtd)[grepl("r_bandInt", get_variables(bmtd))]
+# posterior_summary(bmtd,variable=r_bandInt_params)
+# 
+# r_bandInt_params <- get_variables(bmtd)[grepl("r_id:bandInt", get_variables(bmtd))]
+# posterior_summary(bmtd,variable=r_bandInt_params)
+
+mted1 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE)
+
+
+cdted1 <- get_coef_details(bmtd, "conditVaried")
+cdted2 <-get_coef_details(bmtd, "bandTypeExtrapolation")
+cdted3 <-get_coef_details(bmtd, "conditVaried:bandTypeExtrapolation")
+
+```
+
+*Testing.* To compare conditions in the testing stage, we first fit a model predicting deviation from the target band as a function of training condition and band type, with random intercepts for participants and bands. The model is shown in @tbl-e1-bmm-dist. The effect of training condition was not reliably different from 0 (β = `r cdted1$estimate`, 95% CrI \[`r cdted1$conf.low`, `r cdted1$conf.high`\]; pd = `r cdted1$pd`). The extrapolation testing items had a significantly greater deviation than the interpolation band (β = `r cdted2$estimate`, 95% CrI \[`r cdted2$conf.low`, `r cdted2$conf.high`\]; pd = `r cdted2$pd`). The interaction between training condition and band type was significant (β = `r cdted3$estimate`, 95% CrI \[`r cdted3$conf.low`, `r cdted3$conf.high`\]; pd = `r cdted3$pd`), with the varied group showing a greater deviation than the constant group in the extrapolation bands. See @fig-e1-test-dev2.  
+
+```{r}
+#| label: fig-e1-test-dev2
+#| fig-cap: E1. Deviations from target band during testing without feedback stage. 
+pe1td <- testE1 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
+  labs(x="Band", y="Deviation From Target")
+
+condEffects <- function(m,xvar){
+  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() + 
+  stat_halfeye(alpha=.1, height=.5) +
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+  
+}
+
+pe1ce <- bmtd |> emmeans( ~condit + bandType) |>
+  gather_emmeans_draws() |>
+ condEffects(bandType) + labs(y="Absolute Deviation From Band", x="Band Type")
+
+(pe1td + pe1ce) + plot_annotation(tag_levels= 'A')
+
+```
+
+
+```{r}
+#| label: tbl-e1-bmm-dist2
 #| tbl-cap: "Experiment 1. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs. Varied) and Velocity Band"
 
 #contrasts(test$condit) 
@@ -326,8 +387,71 @@ indvDraws |> indv_model_plot(indvSlopes, testAvg,SlopeInt, rank_variable=Slope,n
 
 ```
 
+### control for training end performance
+
+```{r}
+#| fig-height: 9
+#| fig-width: 10
 
 
+testE1 |> group_by(id,condit) |> pivot_longer(c("dist","train_end"),names_to="var",values_to="value") |> 
+  ggplot(aes(x=var,y=value, fill=condit)) + stat_bar + facet_wrap(~var)
+
+
+testE1 |> ggplot(aes(x=train_end,y=dist,fill=condit)) + 
+  stat_summary(geom = "line", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+    facet_wrap(~vb) +
+  labs(x="Band", y="Deviation From Target")
+
+testE1 |> ggplot(aes(x=train_end,y=dist,fill=condit,col=condit)) + 
+  #geom_point() +
+  geom_smooth(method="loess") +
+    facet_wrap(~vb) +
+  labs(x="Band", y="Deviation From Target")
+
+
+# create quartiles for train_end
+testE1 |> group_by(condit,vb) |> 
+  mutate(train_end_q = ntile(train_end,6)) |> 
+  ggplot(aes(x=train_end_q,y=dist,fill=condit)) + 
+ stat_bar + 
+    facet_wrap(~vb) +
+  labs(x="quartile", y="Deviation From Target")
+
+
+```
+
+
+```{r}
+#| fig-height: 9
+#| fig-width: 10
+bmtd3 <- brm(dist ~ condit * bandType * train_end + (1|bandInt) + (1|id), 
+    data=testE1, 
+    file=paste0(here::here("data/model_cache","e1_trainEnd_BT_RF2")),
+    iter=1000,chains=2, control = list(adapt_delta = .92, max_treedepth = 11))
+summary(bmtd3)
+bayestestR::describe_posterior(bmtd3)
+
+
+
+condEffects <- function(m,xvar){
+  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() + 
+  stat_halfeye(alpha=.1, height=.5) +
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+  
+}
+
+ bmtd3 |> emmeans( ~condit * bandType * train_end) |>
+  gather_emmeans_draws() |>
+ condEffects(bandType) + labs(y="Absolute Deviation From Band", x="Band Type")
+
+
+ce_bmtd3 <- plot(conditional_effects(bmtd3),points=FALSE,plot=FALSE)
+wrap_plots(ce_bmtd3)
+
+```
 
 
 

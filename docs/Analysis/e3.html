@@ -529,8 +529,8 @@ Figure&nbsp;1: E3. Deviations from target band during testing without feedback s
 </div>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#options(brms.backend="cmdstanr",mc.cores=4)</span></span>
-<span><span class="va">modelFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache/"</span><span class="op">)</span>, <span class="st">"e3_dist_Cond_Type_RFint"</span><span class="op">)</span></span>
-<span><span class="va">bmtd3</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandType</span><span class="op">*</span><span class="va">bandOrder</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">*</span><span class="va">bandInt</span><span class="op">)</span>, </span>
+<span><span class="va">modelFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache/"</span><span class="op">)</span>, <span class="st">"e3_dist_Cond_Type_RF_2"</span><span class="op">)</span></span>
+<span><span class="va">bmtd3</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandType</span><span class="op">*</span><span class="va">bandOrder</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">bandInt</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, </span>
 <span>    data<span class="op">=</span><span class="va">testE3</span>, file<span class="op">=</span><span class="va">modelFile</span>,</span>
 <span>    iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">.94</span>, max_treedepth <span class="op">=</span> <span class="fl">13</span><span class="op">)</span><span class="op">)</span></span>
 <span>                        </span>
@@ -542,10 +542,10 @@ Figure&nbsp;1: E3. Deviations from target band during testing without feedback s
 <span><span class="va">mted3</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">where</span><span class="op">(</span><span class="va">is.numeric</span><span class="op">)</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">remove_rownames</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>Term <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">Term</span>, <span class="st">"b_"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">kable</span><span class="op">(</span>escape<span class="op">=</span><span class="cn">F</span>,booktabs<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span>font_size<span class="op">=</span><span class="fl">8</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">kable</span><span class="op">(</span>booktabs<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Term</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Estimate</th>
@@ -556,67 +556,75 @@ Figure&nbsp;1: E3. Deviations from target band during testing without feedback s
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Intercept</td>
-<td style="text-align: right;">286.69</td>
-<td style="text-align: right;">195.19</td>
-<td style="text-align: right;">378.48</td>
+<td style="text-align: right;">288.65</td>
+<td style="text-align: right;">199.45</td>
+<td style="text-align: right;">374.07</td>
 <td style="text-align: right;">1.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried</td>
-<td style="text-align: right;">-37.47</td>
-<td style="text-align: right;">-113.78</td>
-<td style="text-align: right;">38.94</td>
-<td style="text-align: right;">0.84</td>
+<td style="text-align: right;">-40.19</td>
+<td style="text-align: right;">-104.68</td>
+<td style="text-align: right;">23.13</td>
+<td style="text-align: right;">0.89</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">bandTypeExtrapolation</td>
-<td style="text-align: right;">-23.72</td>
-<td style="text-align: right;">-85.55</td>
-<td style="text-align: right;">39.23</td>
-<td style="text-align: right;">0.77</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">bandOrderReverse</td>
-<td style="text-align: right;">-86.08</td>
-<td style="text-align: right;">-176.58</td>
-<td style="text-align: right;">3.31</td>
-<td style="text-align: right;">0.97</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">conditVaried:bandTypeExtrapolation</td>
-<td style="text-align: right;">51.91</td>
-<td style="text-align: right;">-21.21</td>
-<td style="text-align: right;">121.93</td>
+<td style="text-align: right;">-23.35</td>
+<td style="text-align: right;">-57.28</td>
+<td style="text-align: right;">10.35</td>
 <td style="text-align: right;">0.92</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">bandOrderReverse</td>
+<td style="text-align: right;">-73.72</td>
+<td style="text-align: right;">-136.69</td>
+<td style="text-align: right;">-11.07</td>
+<td style="text-align: right;">0.99</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">conditVaried:bandTypeExtrapolation</td>
+<td style="text-align: right;">52.66</td>
+<td style="text-align: right;">14.16</td>
+<td style="text-align: right;">90.23</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">conditVaried:bandOrderReverse</td>
-<td style="text-align: right;">-25.14</td>
-<td style="text-align: right;">-126.92</td>
-<td style="text-align: right;">79.66</td>
-<td style="text-align: right;">0.69</td>
+<td style="text-align: right;">-37.48</td>
+<td style="text-align: right;">-123.28</td>
+<td style="text-align: right;">49.37</td>
+<td style="text-align: right;">0.80</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">bandTypeExtrapolation:bandOrderReverse</td>
-<td style="text-align: right;">99.60</td>
-<td style="text-align: right;">7.86</td>
-<td style="text-align: right;">189.42</td>
-<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">80.69</td>
+<td style="text-align: right;">30.01</td>
+<td style="text-align: right;">130.93</td>
+<td style="text-align: right;">1.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried:bandTypeExtrapolation:bandOrderReverse</td>
-<td style="text-align: right;">13.58</td>
-<td style="text-align: right;">-84.13</td>
-<td style="text-align: right;">111.69</td>
-<td style="text-align: right;">0.61</td>
+<td style="text-align: right;">30.42</td>
+<td style="text-align: right;">-21.00</td>
+<td style="text-align: right;">81.65</td>
+<td style="text-align: right;">0.87</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ce_bmtd3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu">conditional_effects</span><span class="op">(</span><span class="va">bmtd3</span><span class="op">)</span>,points<span class="op">=</span><span class="cn">FALSE</span>,plot<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu">wrap_plots</span><span class="op">(</span><span class="va">ce_bmtd3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="e3_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pe3td</span> <span class="op">&lt;-</span> <span class="va">testE3</span> <span class="op">|&gt;</span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">vb</span>, y <span class="op">=</span> <span class="va">dist</span>,fill<span class="op">=</span><span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pe3td</span> <span class="op">&lt;-</span> <span class="va">testE3</span> <span class="op">|&gt;</span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">vb</span>, y <span class="op">=</span> <span class="va">dist</span>,fill<span class="op">=</span><span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"bar"</span>, position<span class="op">=</span><span class="fu">position_dodge</span><span class="op">(</span><span class="op">)</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"errorbar"</span>, position<span class="op">=</span><span class="fu">position_dodge</span><span class="op">(</span><span class="fl">.9</span><span class="op">)</span>, fun.data <span class="op">=</span> <span class="va">mean_se</span>, width <span class="op">=</span> <span class="fl">.4</span>, alpha <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">bandOrder</span>,ncol<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
@@ -650,11 +658,11 @@ Figure&nbsp;2: E3. Deviations from target band during testing without feedback s
 </div>
 <section id="discimination" class="level3"><h3 class="anchored" data-anchor-id="discimination">Discimination</h3>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">e3_vxBMM</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandOrder</span> <span class="op">*</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">e3_vxBMM</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandOrder</span> <span class="op">*</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
 <span>                        data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>, <span class="st">"e3_testVxBand_RF_5k"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                        iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span>,silent<span class="op">=</span><span class="fl">0</span>,</span>
 <span>                        control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta<span class="op">=</span><span class="fl">0.94</span>, max_treedepth<span class="op">=</span><span class="fl">13</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">GetModelStats</span><span class="op">(</span><span class="va">e3_vxBMM</span> <span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">kable</span><span class="op">(</span>escape<span class="op">=</span><span class="cn">F</span>,booktabs<span class="op">=</span><span class="cn">T</span>, caption<span class="op">=</span><span class="st">"Fit to all 6 bands"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span>font_size<span class="op">=</span><span class="fl">8</span><span class="op">)</span></span>
+<span><span class="fu">GetModelStats</span><span class="op">(</span><span class="va">e3_vxBMM</span> <span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">kable</span><span class="op">(</span>escape<span class="op">=</span><span class="cn">F</span>,booktabs<span class="op">=</span><span class="cn">T</span>, caption<span class="op">=</span><span class="st">"Fit to all 6 bands"</span><span class="op">)</span> </span>
 <span><span class="va">cd3</span> <span class="op">&lt;-</span> <span class="fu">get_coef_details</span><span class="op">(</span><span class="va">e3_vxBMM</span>, <span class="st">"conditVaried"</span><span class="op">)</span></span>
 <span><span class="va">sc3</span> <span class="op">&lt;-</span> <span class="fu">get_coef_details</span><span class="op">(</span><span class="va">e3_vxBMM</span>, <span class="st">"bandInt"</span><span class="op">)</span></span>
 <span><span class="va">intCoef3</span> <span class="op">&lt;-</span> <span class="fu">get_coef_details</span><span class="op">(</span><span class="va">e3_vxBMM</span>, <span class="st">"conditVaried:bandInt"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -664,7 +672,7 @@ Table&nbsp;1: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of 
 </figcaption><div aria-describedby="tbl-e3-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<table class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <caption>Fit to all 6 bands</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Term</th>
@@ -739,7 +747,7 @@ Table&nbsp;1: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of 
 </div>
 </div>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pe3tv</span> <span class="op">&lt;-</span> <span class="va">testE3</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">vb</span>,<span class="va">condit</span>,<span class="va">bandOrder</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">plot_distByCondit</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggh4x</span><span class="fu">::</span><span class="fu"><a href="https://teunbrand.github.io/ggh4x/reference/facet_nested_wrap.html">facet_nested_wrap</a></span><span class="op">(</span><span class="va">bandOrder</span><span class="op">~</span><span class="va">condit</span>,scale<span class="op">=</span><span class="st">"free_x"</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pe3tv</span> <span class="op">&lt;-</span> <span class="va">testE3</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">vb</span>,<span class="va">condit</span>,<span class="va">bandOrder</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">plot_distByCondit</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggh4x</span><span class="fu">::</span><span class="fu"><a href="https://teunbrand.github.io/ggh4x/reference/facet_nested_wrap.html">facet_nested_wrap</a></span><span class="op">(</span><span class="va">bandOrder</span><span class="op">~</span><span class="va">condit</span>,scale<span class="op">=</span><span class="st">"free_x"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">pe3vce</span> <span class="op">&lt;-</span> <span class="va">e3_vxBMM</span> <span class="op">|&gt;</span> <span class="fu">emmeans</span><span class="op">(</span> <span class="op">~</span><span class="va">condit</span><span class="op">*</span> <span class="va">bandOrder</span><span class="op">*</span> <span class="va">bandInt</span>, </span>
 <span>                       at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>bandInt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">350</span>, <span class="fl">600</span>, <span class="fl">800</span>, <span class="fl">1000</span>, <span class="fl">1200</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>

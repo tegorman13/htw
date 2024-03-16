@@ -508,8 +508,8 @@ Figure&nbsp;1: E2. Deviations from target band during testing without feedback s
 </div>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#options(brms.backend="cmdstanr",mc.cores=4)</span></span>
-<span><span class="va">modelFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache/"</span><span class="op">)</span>, <span class="st">"e2_dist_Cond_Type_RFint"</span><span class="op">)</span></span>
-<span><span class="va">bmtd2</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandType</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">*</span><span class="va">bandInt</span><span class="op">)</span>, </span>
+<span><span class="va">modelFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache/"</span><span class="op">)</span>, <span class="st">"e2_dist_Cond_Type_RF_2"</span><span class="op">)</span></span>
+<span><span class="va">bmtd2</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandType</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">bandInt</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>, </span>
 <span>    data<span class="op">=</span><span class="va">testE2</span>, file<span class="op">=</span><span class="va">modelFile</span>,</span>
 <span>    iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">.94</span>, max_treedepth <span class="op">=</span> <span class="fl">13</span><span class="op">)</span><span class="op">)</span></span>
 <span>                        </span>
@@ -521,10 +521,10 @@ Figure&nbsp;1: E2. Deviations from target band during testing without feedback s
 <span><span class="va">mted2</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">where</span><span class="op">(</span><span class="va">is.numeric</span><span class="op">)</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">remove_rownames</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>Term <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">Term</span>, <span class="st">"b_"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">kable</span><span class="op">(</span>escape<span class="op">=</span><span class="cn">F</span>,booktabs<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span>font_size<span class="op">=</span><span class="fl">8</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">kable</span><span class="op">(</span>booktabs<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Term</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Estimate</th>
@@ -535,37 +535,30 @@ Figure&nbsp;1: E2. Deviations from target band during testing without feedback s
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Intercept</td>
-<td style="text-align: right;">117.01</td>
-<td style="text-align: right;">76.64</td>
-<td style="text-align: right;">157.32</td>
+<td style="text-align: right;">190.91</td>
+<td style="text-align: right;">125.03</td>
+<td style="text-align: right;">259.31</td>
 <td style="text-align: right;">1.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">conditVaried</td>
-<td style="text-align: right;">-5.33</td>
-<td style="text-align: right;">-55.05</td>
-<td style="text-align: right;">44.43</td>
-<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">-20.58</td>
+<td style="text-align: right;">-72.94</td>
+<td style="text-align: right;">33.08</td>
+<td style="text-align: right;">0.78</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">bandTypeExtrapolation</td>
-<td style="text-align: right;">30.62</td>
-<td style="text-align: right;">2.04</td>
-<td style="text-align: right;">59.01</td>
-<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">38.09</td>
+<td style="text-align: right;">-6.94</td>
+<td style="text-align: right;">83.63</td>
+<td style="text-align: right;">0.95</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">bandInt</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: right;">0.09</td>
-<td style="text-align: right;">0.13</td>
-<td style="text-align: right;">1.00</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">conditVaried:bandTypeExtrapolation</td>
-<td style="text-align: right;">57.33</td>
-<td style="text-align: right;">22.35</td>
-<td style="text-align: right;">92.46</td>
+<td style="text-align: right;">82.00</td>
+<td style="text-align: right;">41.89</td>
+<td style="text-align: right;">121.31</td>
 <td style="text-align: right;">1.00</td>
 </tr>
 </tbody>

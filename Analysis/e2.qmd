@@ -67,8 +67,8 @@ trainE2 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
 
 ```{r}
 #options(brms.backend="cmdstanr",mc.cores=4)
-modelFile <- paste0(here::here("data/model_cache/"), "e2_dist_Cond_Type_RFint")
-bmtd2 <- brm(dist ~ condit * bandType + (1|id*bandInt), 
+modelFile <- paste0(here::here("data/model_cache/"), "e2_dist_Cond_Type_RF_2")
+bmtd2 <- brm(dist ~ condit * bandType + (1|bandInt) + (1|id), 
     data=testE2, file=modelFile,
     iter=5000,chains=4, control = list(adapt_delta = .94, max_treedepth = 13))
                         
@@ -80,7 +80,7 @@ colnames(mted2) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
 mted2 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
   tibble::remove_rownames() |> 
   mutate(Term = stringr::str_remove(Term, "b_")) |>
-  kable(escape=F,booktabs=T) %>% kable_styling(font_size=8)
+  kable(booktabs=TRUE) 
 
 ```
 

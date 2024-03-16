@@ -54,6 +54,9 @@ mtr3 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
   mutate(Term = stringr::str_remove(Term, "b_")) |>
   kable(escape=F,booktabs=T) %>% kable_styling(font_size=8)
 
+
+
+
 ```
 
 
@@ -74,8 +77,8 @@ trainE3 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
 
 ```{r}
 #options(brms.backend="cmdstanr",mc.cores=4)
-modelFile <- paste0(here::here("data/model_cache/"), "e3_dist_Cond_Type_RFint")
-bmtd3 <- brm(dist ~ condit * bandType*bandOrder + (1|id*bandInt), 
+modelFile <- paste0(here::here("data/model_cache/"), "e3_dist_Cond_Type_RF_2")
+bmtd3 <- brm(dist ~ condit * bandType*bandOrder + (1|bandInt) + (1|id), 
     data=testE3, file=modelFile,
     iter=5000,chains=4, control = list(adapt_delta = .94, max_treedepth = 13))
                         
@@ -87,7 +90,10 @@ colnames(mted3) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
 mted3 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
   tibble::remove_rownames() |> 
   mutate(Term = stringr::str_remove(Term, "b_")) |>
-  kable(escape=F,booktabs=T) %>% kable_styling(font_size=8)
+  kable(booktabs=TRUE) 
+
+ce_bmtd3 <- plot(conditional_effects(bmtd3),points=FALSE,plot=FALSE)
+wrap_plots(ce_bmtd3)
 
 ```
 
@@ -132,7 +138,7 @@ e3_vxBMM <- brm(vx ~ condit * bandOrder * bandInt + (1 + bandInt|id),
                         data=test,file=paste0(here::here("data/model_cache", "e3_testVxBand_RF_5k")),
                         iter=5000,chains=4,silent=0,
                         control=list(adapt_delta=0.94, max_treedepth=13))
-GetModelStats(e3_vxBMM ) |> kable(escape=F,booktabs=T, caption="Fit to all 6 bands") %>% kable_styling(font_size=8)
+GetModelStats(e3_vxBMM ) |> kable(escape=F,booktabs=T, caption="Fit to all 6 bands") 
 
 cd3 <- get_coef_details(e3_vxBMM, "conditVaried")
 sc3 <- get_coef_details(e3_vxBMM, "bandInt")

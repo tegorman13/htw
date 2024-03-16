@@ -159,7 +159,7 @@ condEffects <- function(m,xvar){
   gather_emmeans_draws() |>
  condEffects(bandType) + labs(y="Absolute Deviation From Band", x="Band Type")
 
-plot(conditional_effects(bmtd3),points=FALSE)
+
 ce_bmtd3 <- plot(conditional_effects(bmtd3),points=FALSE)
 wrap_plots(ce_bmtd3)
 

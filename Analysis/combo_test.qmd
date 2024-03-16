@@ -3,13 +3,17 @@ title: "HTW All Exp Testing"
 categories: [Analyses, R, Bayesian]
 page-layout: full
 toc: false
+code-fold: true
+code-tools: true
 ---
 
 
 
 ```{r}
-pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
-               stringr,knitr,ggpattern,ggh4x)
+pacman::p_load(dplyr,purrr,tidyr,tibble,ggplot2,
+  brms,tidybayes, rstanarm,emmeans,broom,bayestestR,
+  stringr, here,conflicted, patchwork, knitr,kableExtra,ggh4x,ggpattern)
+
 conflict_prefer_all("dplyr", quiet = TRUE)
 options(scipen = 999)
 walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
@@ -27,7 +31,6 @@ d <- d |>
     bandOrder=="Reverse" ~ "600",
     TRUE ~ NA_character_
     ), trainCon=as.numeric(trainCon)) 
-
 
 
 nbins=5
@@ -48,77 +51,6 @@ test <- d |> filter(expMode2=="Test") |> left_join(train_avg, by=c("id","condit"
 
 ```
 
-
-
-```{r}
-ltest|> group_by(id,condit) |> pivot_longer(c("dist","train_end"),names_to="var",values_to="value") |> 
-  ggplot(aes(x=var,y=value, fill=condit)) + stat_bar + facet_wrap(~var)
-
-
-test2 |> ggplot(aes(x=bandInt,y=dist,fill=expMode2)) + stat_bar + facet_wrap(~condit+fb+bandOrder)
-
-test2 |> mutate(train_end_q = ntile(train_end,4)) |>  
-  ggplot(aes(x=bandInt,y=dist,fill=expMode2)) + stat_bar + facet_wrap(~condit+train_end_q+bandOrder)
-
-test2 |> mutate(train_end_q = ntile(train_end,4)) |>  
-  ggplot(aes(x=condit,y=dist,fill=vb)) + stat_bar + 
-  facet_wrap(~expMode2+train_end_q+bandOrder,scales="free")
-
-test2 |> mutate(train_end_q = ntile(train_end,4)) |>  
-  ggplot(aes(x=vb,y=dist,fill=condit)) + stat_bar + 
-  facet_wrap(~expMode2+train_end_q+bandOrder,scales="free")
-
-test2 |> mutate(train_end_q = ntile(train_end,4)) |>  
-  ggplot(aes(x=train_end_q,y=dist,fill=condit)) + stat_bar + 
-  facet_wrap(~expMode2+vb+bandOrder,scales="free")
-
-
-test |> ggplot(aes(x=train_end,y=dist,fill=condit)) + 
-  stat_summary(geom = "line", position=position_dodge(), fun = mean) +
-    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
-    facet_wrap(~vb) +
-  labs(x="Band", y="Deviation From Target")
-
-test |> filter(bandType=="Extrapolation") |>
-  ggplot(aes(x=train_end,y=dist,fill=condit,col=condit)) + 
-  #geom_point() +
-  geom_smooth(method="loess") +
-    facet_nested_wrap(~bandOrder+vb+fb) +
-  labs(x="Band", y="Deviation From Target")
-
-test |> filter(bandType=="Extrapolation") |>
-  ggplot(aes(x=train_end,y=dist,fill=condit,col=condit)) + 
-  #geom_point() +
-  geom_smooth() +
-    facet_nested_wrap(~bandOrder+vb+fb) +
-  labs(x="Band", y="Deviation From Target")
-
-test |> filter(bandType=="Extrapolation") |>
-  ggplot(aes(x=train_end,y=dist,fill=condit,col=condit)) + 
-  #geom_point() +
-  geom_smooth(method="lm") +
-    facet_nested_wrap(~bandOrder+vb) +
-  labs(x="Band", y="Deviation From Target")
-
-
-# create quartiles for train_end
-test |> group_by(condit,vb,fb,bandOrder) |>  filter(bandType=="Extrapolation") |>
-  mutate(train_end_q = ntile(train_end,4)) |> 
-  ggplot(aes(x=train_end_q,y=dist,fill=condit)) + 
- stat_bar + 
-    ggh4x::facet_wrap2(bandOrder~vb~fb) +
-  labs(x="Band", y="Deviation From Target")
-
-
-test |> group_by(condit,vb,fb,bandOrder) |>  #filter(bandType=="Extrapolation") |>
-  mutate(train_end_q = ntile(train_end,4)) |> 
-  ggplot(aes(x=condit,y=vx,fill=vb)) +
-  stat_bar + 
-    ggh4x::facet_wrap2(~train_end_q+bandOrder+fb) 
-
-
-
-```
 
 
 
@@ -205,5 +137,264 @@ ep2 <- d |>
    scale_pattern_manual(values = c("stripe", "circle"))
 
 ep1/ep2
+
+```
+
+
+
+
+
+### Control for end of training performance
+```{r}
+#| fig-height: 10
+#| fig-width: 11
+
+
+test|> group_by(id,condit) |> pivot_longer(c("dist","train_end"),names_to="var",values_to="value") |> 
+  ggplot(aes(x=var,y=value, fill=condit)) + stat_bar + facet_wrap(~var)
+
+
+test2 |> ggplot(aes(x=bandInt,y=dist,fill=expMode2)) + stat_bar + facet_wrap(~condit+fb+bandOrder)
+
+test2 |> mutate(train_end_q = ntile(train_end,4)) |>  
+  ggplot(aes(x=bandInt,y=dist,fill=expMode2)) + stat_bar + facet_wrap(~condit+train_end_q+bandOrder)
+
+test2 |> mutate(train_end_q = ntile(train_end,4)) |>  
+  ggplot(aes(x=condit,y=dist,fill=vb)) + stat_bar + 
+  facet_wrap(~expMode2+train_end_q+bandOrder,scales="free")
+
+test2 |> mutate(train_end_q = ntile(train_end,4)) |>  
+  ggplot(aes(x=vb,y=dist,fill=condit)) + stat_bar + 
+  facet_wrap(~expMode2+train_end_q+bandOrder,scales="free")
+
+test2 |> mutate(train_end_q = ntile(train_end,4)) |>  
+  ggplot(aes(x=train_end_q,y=dist,fill=condit)) + stat_bar + 
+  facet_wrap(~expMode2+vb+bandOrder,scales="free")
+
+
+test |> ggplot(aes(x=train_end,y=dist,fill=condit)) + 
+  stat_summary(geom = "line", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+    facet_wrap(~vb) +
+  labs(x="Band", y="Deviation From Target")
+
+test |> filter(bandType=="Extrapolation") |>
+  ggplot(aes(x=train_end,y=dist,fill=condit,col=condit)) + 
+  #geom_point() +
+  geom_smooth(method="loess") +
+    facet_nested_wrap(~bandOrder+vb+fb) +
+  labs(x="Band", y="Deviation From Target")
+
+test |> filter(bandType=="Extrapolation") |>
+  ggplot(aes(x=train_end,y=dist,fill=condit,col=condit)) + 
+  #geom_point() +
+  geom_smooth() +
+    facet_nested_wrap(~bandOrder+vb+fb) +
+  labs(x="Band", y="Deviation From Target")
+
+test |> filter(bandType=="Extrapolation") |>
+  ggplot(aes(x=train_end,y=dist,fill=condit,col=condit)) + 
+  #geom_point() +
+  geom_smooth(method="lm") +
+    facet_nested_wrap(~bandOrder+vb) +
+  labs(x="Band", y="Deviation From Target")
+
+
+# create quartiles for train_end
+test |> group_by(condit,vb,fb,bandOrder) |>  filter(bandType=="Extrapolation") |>
+  mutate(train_end_q = ntile(train_end,4)) |> 
+  ggplot(aes(x=train_end_q,y=dist,fill=condit)) + 
+ stat_bar + 
+    ggh4x::facet_wrap2(bandOrder~vb~fb) +
+  labs(x="quartile", y="Deviation From Target")
+
+
+test |> group_by(condit,vb,fb,bandOrder) |>  #filter(bandType=="Extrapolation") |>
+  mutate(train_end_q = ntile(train_end,4)) |> 
+  ggplot(aes(x=condit,y=vx,fill=vb)) +
+  stat_bar + 
+    ggh4x::facet_wrap2(~train_end_q+bandOrder+fb) 
+
+
+
+```
+
+
+
+### dist ~ condit * fb * bandOrder * bandInt + (1 + bandInt | id)
+```{r}
+#| fig-height: 10
+#| fig-width: 11
+#| 
+# dist ~ condit * fb * bandOrder * bandInt + (1 + bandInt | id)
+bmm_combo_testDistBand <- readRDS(paste0(here::here("data/model_cache","combo_testDistBand_RF_5k.rds")))
+
+mted1 <- as.data.frame(describe_posterior(bmm_combo_testDistBand, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mted1) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+
+mted1 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE, caption=(bmm_combo_testDistBand$formula[1]))
+
+ce_bmm1 <- plot(conditional_effects(bmm_combo_testDistBand),points=FALSE,plot=FALSE)
+wrap_plots(ce_bmm1)
+
+```
+
+
+### vx ~ condit * fb * bandOrder * bandInt + (1 + bandInt | id)
+```{r}
+#| fig-height: 10
+#| fig-width: 11
+#| 
+# vx ~ condit * fb * bandOrder * bandInt + (1 + bandInt | id)
+bmm_combo_testVxBand<- readRDS(paste0(here::here("data/model_cache","combo_testVxBand_RF_5K.rds")))
+
+mted2 <- as.data.frame(describe_posterior(bmm_combo_testVxBand, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mted2) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+
+mted2 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE, caption=(bmm_combo_testVxBand$formula[1]))
+
+ce_bmm1 <- plot(conditional_effects(bmm_combo_testVxBand),points=FALSE,plot=FALSE)
+wrap_plots(ce_bmm1)
+
+```
+
+
+
+### dist ~ condit * bandType * bandOrder * fb + (1 + bandType | id)
+```{r}
+#| fig-height: 10
+#| fig-width: 11
+#| 
+# dist ~ condit * bandType * bandOrder * fb + (1 + bandType | id)
+bmm_combo_testBT_dist<- readRDS(paste0(here::here("data/model_cache/brms","combo_TeDistBt_test6__4_5000_0.93_12_Bt_test6_1537.rds")))
+
+mted4 <- as.data.frame(describe_posterior(bmm_combo_testBT_dist, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mted4) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+
+mted4 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE, caption=(bmm_combo_testBT_dist$formula[1]))
+
+ce_bmm1 <- plot(conditional_effects(bmm_combo_testBT_dist),points=FALSE,plot=FALSE)
+wrap_plots(ce_bmm1)
+
+```
+
+
+
+
+### dist ~ condit * bandType * bandOrder * fb + (1 | id) + (1 | bandInt)
+```{r}
+#| fig-height: 10
+#| fig-width: 11
+#| 
+# dist ~ condit * bandType * bandOrder * fb + (1 | id) + (1 | bandInt)
+bmm_combo_testBT_dist3<- readRDS(paste0(here::here("data/model_cache/brms","combo_TeDistBand_test6_RF_2_2_8000_0.94_13_Band_test6_RF_21817.rds")))
+
+mted7 <- as.data.frame(describe_posterior(bmm_combo_testBT_dist3, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mted7) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+
+mted7 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE, caption=(bmm_combo_testBT_dist3$formula[1]))
+
+ce_bmm1 <- plot(conditional_effects(bmm_combo_testBT_dist3),points=FALSE,plot=FALSE)
+wrap_plots(ce_bmm1)
+
+```
+
+
+
+
+
+### dist ~ condit * bandType * bandOrder * fb + (1 | id) + (1 | bandInt)
+```{r}
+#| fig-height: 10
+#| fig-width: 11
+#| 
+# dist ~ condit * bandType * bandOrder * fb + (1 | id) + (1 | bandInt)
+bmm_combo_testBT_dist2<- readRDS(paste0(here::here("data/model_cache/brms","combo_TeDistBand_test6_RF_2_4_5000_0.94_14_Band_test6_RF_25437.rds")))
+
+mted5 <- as.data.frame(describe_posterior(bmm_combo_testBT_dist2, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mted5) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+
+mted5 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE, caption=(bmm_combo_testBT_dist2$formula[1]))
+
+ce_bmm1 <- plot(conditional_effects(bmm_combo_testBT_dist2),points=FALSE,plot=FALSE)
+wrap_plots(ce_bmm1)
+
+```
+
+
+### dist ~ condit * bandType * bandOrder * fb + (1 | id * bandInt)
+```{r}
+#| fig-height: 10
+#| fig-width: 11
+#| 
+# dist ~ condit * bandType * bandOrder * fb + (1 | id * bandInt)
+bmm_combo_testBT_dist4<- readRDS(paste0(here::here("data/model_cache/brms","combo_TeDistBt_test6_RF_int_2_8000_0.94_13_Bt_test6_RF_int4808.rds")))
+
+mted9 <- as.data.frame(describe_posterior(bmm_combo_testBT_dist4, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mted9) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+
+mted9 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE, caption=(bmm_combo_testBT_dist4$formula[1]))
+
+ce_bmm1 <- plot(conditional_effects(bmm_combo_testBT_dist4),points=FALSE,plot=FALSE)
+wrap_plots(ce_bmm1)
+
+```
+
+
+
+
+
+### dist ~ condit * bandType * bandOrder * fb + bandInt + (1 | id)
+```{r}
+#| fig-height: 10
+#| fig-width: 11
+#| 
+# dist ~ condit * bandType * bandOrder * fb + (1 | id) + (1 | bandInt)
+bmm_combo_testBT_dist3<- readRDS(paste0(here::here("data/model_cache/brms","combo_TeDistBand_test6_fixBandInt_RF_1_4_5000_0.94_14_Band_test6_fixBandInt_RF_10858.rds")))
+
+mted5 <- as.data.frame(describe_posterior(bmm_combo_testBT_dist3, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mted5) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+
+mted5 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE, caption=(bmm_combo_testBT_dist3$formula[1]))
+
+ce_bmm1 <- plot(conditional_effects(bmm_combo_testBT_dist3),points=FALSE,plot=FALSE)
+wrap_plots(ce_bmm1)
+
+```
+
+
+
+
+### vx ~ condit * bandType * bandOrder * fb + (1 + bandType | id)
+```{r}
+#| fig-height: 10
+#| fig-width: 11
+#| 
+# vx ~ condit * bandType * bandOrder * fb + (1 + bandType | id)
+bmm_combo_testBT<- readRDS(paste0(here::here("data/model_cache/brms","combo_TeVxBt_test6__4_5000_0.93_12_Bt_test6_3033.rds")))
+
+mted3 <- as.data.frame(describe_posterior(bmm_combo_testBT, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mted3) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+
+mted3 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  tibble::remove_rownames() |> 
+  mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE, caption=(bmm_combo_testBT$formula[1]))
+
+ce_bmm1 <- plot(conditional_effects(bmm_combo_testBT),points=FALSE,plot=FALSE)
+wrap_plots(ce_bmm1)
 
 ```
