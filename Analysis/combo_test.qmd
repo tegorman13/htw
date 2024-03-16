@@ -21,9 +21,107 @@ e3 <- readRDS(here("data/e3_08-04-23.rds"))
 # combine all 3 experiments
 d <- rbind(e1,e2,e3)
 
+d <- d |> 
+    mutate(trainCon=case_when(
+    bandOrder=="Original" ~ "800",
+    bandOrder=="Reverse" ~ "600",
+    TRUE ~ NA_character_
+    ), trainCon=as.numeric(trainCon)) 
+
+
+
+nbins=5
+train <-  d |> filter(expMode2=="Train") |> group_by(id,condit,fb,bandOrder, vb) |> 
+    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
+train_max <- train |> filter(Trial_Bin == nbins, bandInt==trainCon)
+train_avg <- train_max |> group_by(id,condit,fb,bandOrder) |> summarise(train_end = mean(dist))
+train_avg2 <- train_max |> select(id,condit,fb,bandOrder,expMode2,vb,bandInt,dist,vx)
+
+test2 <- d |> filter(expMode2=="Test") |> 
+  select(id,condit,fb,bandOrder,expMode2,vb,bandInt,dist,vx) |> 
+  rbind(train_avg2) |>
+  left_join(train_avg, by=c("id","condit", "fb", "bandOrder")) 
+
+test <- d |> filter(expMode2=="Test") |> left_join(train_avg, by=c("id","condit", "fb", "bandOrder")) |>
+  select(id,condit,bandType,bandInt,vb,vx,dist,train_end,fb,bandOrder)
 
 
 ```
+
+
+
+```{r}
+ltest|> group_by(id,condit) |> pivot_longer(c("dist","train_end"),names_to="var",values_to="value") |> 
+  ggplot(aes(x=var,y=value, fill=condit)) + stat_bar + facet_wrap(~var)
+
+
+test2 |> ggplot(aes(x=bandInt,y=dist,fill=expMode2)) + stat_bar + facet_wrap(~condit+fb+bandOrder)
+
+test2 |> mutate(train_end_q = ntile(train_end,4)) |>  
+  ggplot(aes(x=bandInt,y=dist,fill=expMode2)) + stat_bar + facet_wrap(~condit+train_end_q+bandOrder)
+
+test2 |> mutate(train_end_q = ntile(train_end,4)) |>  
+  ggplot(aes(x=condit,y=dist,fill=vb)) + stat_bar + 
+  facet_wrap(~expMode2+train_end_q+bandOrder,scales="free")
+
+test2 |> mutate(train_end_q = ntile(train_end,4)) |>  
+  ggplot(aes(x=vb,y=dist,fill=condit)) + stat_bar + 
+  facet_wrap(~expMode2+train_end_q+bandOrder,scales="free")
+
+test2 |> mutate(train_end_q = ntile(train_end,4)) |>  
+  ggplot(aes(x=train_end_q,y=dist,fill=condit)) + stat_bar + 
+  facet_wrap(~expMode2+vb+bandOrder,scales="free")
+
+
+test |> ggplot(aes(x=train_end,y=dist,fill=condit)) + 
+  stat_summary(geom = "line", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+    facet_wrap(~vb) +
+  labs(x="Band", y="Deviation From Target")
+
+test |> filter(bandType=="Extrapolation") |>
+  ggplot(aes(x=train_end,y=dist,fill=condit,col=condit)) + 
+  #geom_point() +
+  geom_smooth(method="loess") +
+    facet_nested_wrap(~bandOrder+vb+fb) +
+  labs(x="Band", y="Deviation From Target")
+
+test |> filter(bandType=="Extrapolation") |>
+  ggplot(aes(x=train_end,y=dist,fill=condit,col=condit)) + 
+  #geom_point() +
+  geom_smooth() +
+    facet_nested_wrap(~bandOrder+vb+fb) +
+  labs(x="Band", y="Deviation From Target")
+
+test |> filter(bandType=="Extrapolation") |>
+  ggplot(aes(x=train_end,y=dist,fill=condit,col=condit)) + 
+  #geom_point() +
+  geom_smooth(method="lm") +
+    facet_nested_wrap(~bandOrder+vb) +
+  labs(x="Band", y="Deviation From Target")
+
+
+# create quartiles for train_end
+test |> group_by(condit,vb,fb,bandOrder) |>  filter(bandType=="Extrapolation") |>
+  mutate(train_end_q = ntile(train_end,4)) |> 
+  ggplot(aes(x=train_end_q,y=dist,fill=condit)) + 
+ stat_bar + 
+    ggh4x::facet_wrap2(bandOrder~vb~fb) +
+  labs(x="Band", y="Deviation From Target")
+
+
+test |> group_by(condit,vb,fb,bandOrder) |>  #filter(bandType=="Extrapolation") |>
+  mutate(train_end_q = ntile(train_end,4)) |> 
+  ggplot(aes(x=condit,y=vx,fill=vb)) +
+  stat_bar + 
+    ggh4x::facet_wrap2(~train_end_q+bandOrder+fb) 
+
+
+
+```
+
+
+
 
 
 ## Testing Deviation

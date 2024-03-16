@@ -59,6 +59,38 @@ result$constant |> kbl()
 result$varied |> kbl()
 ```
 
+
+
+```{r}
+
+testE1 |> group_by(id,condit) |> pivot_longer(c("dist","train_end"),names_to="var",values_to="value") |> 
+  ggplot(aes(x=var,y=value, fill=condit)) + stat_bar + facet_wrap(~var)
+
+
+testE1 |> ggplot(aes(x=train_end,y=dist,fill=condit)) + 
+  stat_summary(geom = "line", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+    facet_wrap(~vb) +
+  labs(x="Band", y="Deviation From Target")
+
+testE1 |> ggplot(aes(x=train_end,y=dist,fill=condit,col=condit)) + 
+  #geom_point() +
+  geom_smooth(method="loess") +
+    facet_wrap(~vb) +
+  labs(x="Band", y="Deviation From Target")
+
+
+# create quartiles for train_end
+testE1 |> group_by(condit,vb) |> 
+  mutate(train_end_q = ntile(train_end,6)) |> 
+  ggplot(aes(x=train_end_q,y=dist,fill=condit)) + 
+ stat_bar + 
+    facet_wrap(~vb) +
+  labs(x="Band", y="Deviation From Target")
+
+
+```
+
 ```{r}
 #| label: fig-e1-test-dev
 #| fig-cap: E1. Deviations from target band during testing without feedback stage. 
