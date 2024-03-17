@@ -7,7 +7,10 @@ categories:
   - Analyses
   - R
   - Bayesian
+toc: false
+format-links: false
 page-layout: full
+cache: true
 code-fold: true
 cold-tools: true
 lightbox: true
@@ -26,7 +29,6 @@ format:
   docusaurus-md:
     echo: true
     output-file: e1-docusaurus.md
-prefer-html: false
 ---
 
 
@@ -65,32 +67,38 @@ effects regression enables us to take advantage of partial pooling,
 simultaneously estimating parameters at the individual and group level.
 Our use of Bayesian, rather than frequentist methods allows us to
 directly quantify the uncertainty in our parameter estimates, as well as
-circumventing convergence issues common to the frequentist analogues of
-our mixed models.
+avoiding convergence issues common to the frequentist analogues of our
+mixed models.
 
 Each model was set to run with 4 chains, 5000 iterations per chain, with
 the first 2500 discarded as warmup chains. Rhat values were within an
 acceptable range, with values \<=1.02 (see appendix for diagnostic
 plots). We used uninformative priors for the fixed effects of the model
 (condition and velocity band), and weakly informative Student T
-distributions for for the random effects. For each model, we report the
-median values of the posterior distribution, and 95% credible intervals.
-EXPLAIN WHAT PARAMETERS REPRESENT AND WHAT HDI & PD
+distributions for for the random effects. For each model, we report 1)
+the mean values of the posterior distribution for the parameters of
+interest, 2) the lower and upper credible intervals (CrI), and the
+probability of direction value (pd).
 
-For the testing phase of all experiments, we compare varied and constant
-performance across two measures, deviation and discrimination. Deviation
-was quantified as the absolute deviation from the nearest boundary of
-the velocity band, or set to 0 if the throw velocity fell anywhere
-inside the target band. Thus, when the target band was 600-800, throws
-of 400, 650, and 1100 would result in deviation values of 200, 0, and
-300, respectively. The degree of discrimination between bands was
-measured by fitting a linear model to the testing throws of each
-subjects, with the lower end of the target velocity band as the
-predicted variable, and the x velocity produced by the participants as
-the predictor variable. Participants who reliably discriminated between
-velocity bands tended to have positive slopes with values ~1, while
-participants who made throws irrespective of the current target band
-would have slopes ~0.
+| Group Comparison         | Code                                                  | Data                 |
+|-----------------|----------------------------------------|---------------|
+| End of Training Accuracy | `brm(dist ~ condit)`                                  | Final Training Block |
+| Test Accuracy            | `brm(dist ~ condit * bandType + (1|id) + (1|bandInt)` | All Testing trials   |
+| Band Discrimination      | `brm(vx ~ condit * band +(1 + bandInt|id)`            | All Testing Trials   |
+
+In each experiment we compare varied and constant performance on 1)
+accuracy in the final training block; 2) testing accuracy as a function
+of band type (trained vs. extrapolation); 3) degree of discrimination
+between all six testing bands. We quantified accuracy as the absolute
+deviation between the response velocity and the nearest boundary of the
+target band. Thus, when the target band was velocity 600-800, throws of
+400, 650, and 900 would result in deviation values of 200, 0, and 100,
+respectively. The degree of discrimination between bands was index by
+fitting a linear model predicting the response velocity as a function of
+the target velocity. Participants who reliably discriminated between
+velocity bands tended to haves slope values ~1, while participants who
+made throws irrespective of the current target band would have slopes
+~0.
 
 ### Results
 
@@ -145,7 +153,11 @@ cdtr1 <- get_coef_details(bmm_e1_train, "conditVaried")
 </details>
 <div id="tbl-e1-train-dist">
 
-Table 1: Experiment 1 - End of training performance
+Table 1: **Experiment 1 - End of training performance**. The Intercept
+represents the average of the baseline (constant condition), and the
+conditVaried coefficient reflects the difference between the constant
+and varied groups. A larger positive estimates indicates a greater
+deviation (lower accuracy) for the varied group.
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
 |:-------------|---------:|--------------:|--------------:|----:|
@@ -202,7 +214,9 @@ cdted3 <-get_coef_details(bmtd, "conditVaried:bandTypeExtrapolation")
 </details>
 <div id="tbl-e1-bmm-dist">
 
-Table 2: E1. Training vs. Extrapolation
+Table 2: **Experiment 1 testing accuracy**. Main effects of condition
+and band type (training vs. extrapolation), and the interaction between
+the two factors.
 
 | Term                               | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
 |:-----------------------|-----------:|-----------:|-----------:|-----------:|
@@ -366,7 +380,7 @@ pid_slopes1 <- re |>  mutate(id=reorder(id,slope)) |>
     ggh4x::facet_wrap2(~condit,axes="all",scales="free_y")
 
 p3 <- pe1tv / (pe1vce + pid_den1 + pid_slopes1) + plot_annotation(tag_levels= 'A')
-# ggsave(here::here("Assets/figs", "e1_test-vx.png"), p3, width=10, height=12, bg="white",dpi=500)
+#ggsave(here::here("Assets/figs", "e1_test-vx.png"), p3,width=9,height=11, bg="white",dpi=600)
 p3
 ```
 

@@ -491,9 +491,39 @@ window.Quarto = {
 </details>
 </div>
 <section id="analyses-strategy" class="level3"><h3 class="anchored" data-anchor-id="analyses-strategy">Analyses Strategy</h3>
-<p>All data processing and statistical analyses were performed in R version 4.32 <span class="citation" data-cites="rcoreteamLanguageEnvironmentStatistical2020">Team (<a href="#ref-rcoreteamLanguageEnvironmentStatistical2020" role="doc-biblioref">2020</a>)</span>. To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R <span class="citation" data-cites="burknerBrmsPackageBayesian2017">Bürkner (<a href="#ref-burknerBrmsPackageBayesian2017" role="doc-biblioref">2017</a>)</span>, and descriptive stats and tables were extracted with the BayestestR package <span class="citation" data-cites="makowskiBayestestRDescribingEffects2019">Makowski et al. (<a href="#ref-makowskiBayestestRDescribingEffects2019" role="doc-biblioref">2019</a>)</span>. Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as circumventing convergence issues common to the frequentist analogues of our mixed models.</p>
-<p>Each model was set to run with 4 chains, 5000 iterations per chain, with the first 2500 discarded as warmup chains. Rhat values were within an acceptable range, with values &lt;=1.02 (see appendix for diagnostic plots). We used uninformative priors for the fixed effects of the model (condition and velocity band), and weakly informative Student T distributions for for the random effects. For each model, we report the median values of the posterior distribution, and 95% credible intervals. EXPLAIN WHAT PARAMETERS REPRESENT AND WHAT HDI &amp; PD</p>
-<p>For the testing phase of all experiments, we compare varied and constant performance across two measures, deviation and discrimination. Deviation was quantified as the absolute deviation from the nearest boundary of the velocity band, or set to 0 if the throw velocity fell anywhere inside the target band. Thus, when the target band was 600-800, throws of 400, 650, and 1100 would result in deviation values of 200, 0, and 300, respectively. The degree of discrimination between bands was measured by fitting a linear model to the testing throws of each subjects, with the lower end of the target velocity band as the predicted variable, and the x velocity produced by the participants as the predictor variable. Participants who reliably discriminated between velocity bands tended to have positive slopes with values ~1, while participants who made throws irrespective of the current target band would have slopes ~0.</p>
+<p>All data processing and statistical analyses were performed in R version 4.32 <span class="citation" data-cites="rcoreteamLanguageEnvironmentStatistical2020">Team (<a href="#ref-rcoreteamLanguageEnvironmentStatistical2020" role="doc-biblioref">2020</a>)</span>. To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R <span class="citation" data-cites="burknerBrmsPackageBayesian2017">Bürkner (<a href="#ref-burknerBrmsPackageBayesian2017" role="doc-biblioref">2017</a>)</span>, and descriptive stats and tables were extracted with the BayestestR package <span class="citation" data-cites="makowskiBayestestRDescribingEffects2019">Makowski et al. (<a href="#ref-makowskiBayestestRDescribingEffects2019" role="doc-biblioref">2019</a>)</span>. Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as avoiding convergence issues common to the frequentist analogues of our mixed models.</p>
+<p>Each model was set to run with 4 chains, 5000 iterations per chain, with the first 2500 discarded as warmup chains. Rhat values were within an acceptable range, with values &lt;=1.02 (see appendix for diagnostic plots). We used uninformative priors for the fixed effects of the model (condition and velocity band), and weakly informative Student T distributions for for the random effects. For each model, we report 1) the mean values of the posterior distribution for the parameters of interest, 2) the lower and upper credible intervals (CrI), and the probability of direction value (pd).</p>
+<table class="table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 57%">
+<col style="width: 19%">
+</colgroup>
+<thead><tr class="header">
+<th>Group Comparison</th>
+<th>Code</th>
+<th>Data</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>End of Training Accuracy</td>
+<td><code>brm(dist ~ condit)</code></td>
+<td>Final Training Block</td>
+</tr>
+<tr class="even">
+<td>Test Accuracy</td>
+<td><code>brm(dist ~ condit * bandType + (1|id) + (1|bandInt)</code></td>
+<td>All Testing trials</td>
+</tr>
+<tr class="odd">
+<td>Band Discrimination</td>
+<td><code>brm(vx ~ condit * band +(1 + bandInt|id)</code></td>
+<td>All Testing Trials</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>In each experiment we compare varied and constant conditions in terms of 1) accuracy in the final training block; 2) testing accuracy as a function of band type (trained vs.&nbsp;extrapolation bands); 3) extent of discrimination between all six testing bands. We quantified accuracy as the absolute deviation between the response velocity and the nearest boundary of the target band. Thus, when the target band was velocity 600-800, throws of 400, 650, and 900 would result in deviation values of 200, 0, and 100, respectively. The degree of discrimination between bands was index by fitting a linear model predicting the response velocity as a function of the target velocity. Participants who reliably discriminated between velocity bands tended to haves slope values ~1, while participants who made throws irrespective of the current target band would have slopes ~0.</p>
 <span class="math display">\[\begin{equation}
 dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \beta_3 \cdot condit_{ij} \cdot band_{ij} + b_{0i} + b_{1i} \cdot band_{ij} + \epsilon_{ij}
 \end{equation}\]</span>
@@ -511,7 +541,7 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 </div>
 <div id="fig-e1-train-dev" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../Assets/figs/e1_train_deviation.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="../Assets/figs/e1_train_deviation.png" class="img-fluid figure-img"></a>
+<a href="../Assets/figs/e1_train_deviation.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="../Assets/figs/e1_train_deviation.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e1-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: E1. Deviations from target band during training
@@ -542,7 +572,7 @@ Figure&nbsp;1: E1. Deviations from target band during training
 </div>
 <div id="tbl-e1-train-dist" class="sm quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e1-train-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Experiment 1 - End of training performance
+Table&nbsp;1: <strong>Experiment 1 - End of training performance</strong>. The Intercept represents the average of the baseline (constant condition), and the conditVaried coefficient reflects the difference between the constant and varied groups. A larger positive estimates indicates a greater deviation (lower accuracy) for the varied group.
 </figcaption><div aria-describedby="tbl-e1-train-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table-sm small table">
 <thead><tr class="header">
@@ -573,7 +603,7 @@ Table&nbsp;1: Experiment 1 - End of training performance
 </figure>
 </div>
 <p><br></p>
-<p><em>Training</em>. <a href="#fig-e1-train-dev" class="quarto-xref">Figure&nbsp;1</a> displays the average deviations across training blocks (recall that the varied group trains from 3 bands and the constant group from 1). We compared the training conditions from the final training block, on the position for which both groups trained (band 800-1000). Full model results are shown in <a href="#tbl-e1-train-dist" class="quarto-xref">Table&nbsp;1</a>. The varied group had a significantly greater deviation than the constant group. (<span class="math inline">\(B\)</span> = 79.64, 95% CrI [57.92, 101.63]; pd = 100%).</p>
+<p><em>Training</em>. <a href="#fig-e1-train-dev" class="quarto-xref">Figure&nbsp;1</a> displays the average deviations across training blocks for the varied group, which trained on three velocity bands, and the constant group, which trained on one velocity band. To compare the training conditions at the end of training, we analyzed performance on the 800-1000 velocity band, which both groups trained on. The full model results are shown in Table 1. The varied group had a significantly greater deviation than the constant group in the final training block, (<span class="math inline">\(B\)</span> = 79.64, 95% CrI [57.92, 101.63]; pd = 100%).</p>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">##| label: tbl-e1-bmm-dist</span></span>
 <span><span class="co">##| tbl-cap: "E1. Training vs. Extrapolation"</span></span>
@@ -606,7 +636,7 @@ Table&nbsp;1: Experiment 1 - End of training performance
 </div>
 <div id="tbl-e1-bmm-dist" class="striped hover sm quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e1-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: E1. Training vs.&nbsp;Extrapolation
+Table&nbsp;2: <strong>Experiment 1 testing accuracy</strong>. Main effects of condition and band type (training vs.&nbsp;extrapolation), and the interaction between the two factors. Larger coefficient estimates indicate larger deviations from the baselines (constant &amp; trained bands) - and a positive interaction coefficient indicates disproporionate deviation for the varied condition on the extrapolation bands
 </figcaption><div aria-describedby="tbl-e1-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table-striped table-hover table-sm small table">
 <colgroup>
@@ -657,7 +687,7 @@ Table&nbsp;2: E1. Training vs.&nbsp;Extrapolation
 </div>
 </figure>
 </div>
-<p><em>Testing.</em> To compare conditions in the testing stage, we first fit a model predicting deviation from the target band as a function of training condition and band type, with random intercepts for participants and bands. The model is shown in <a href="#tbl-e1-bmm-dist" class="quarto-xref">Table&nbsp;2</a>. The effect of training condition was not reliably different from 0 (<span class="math inline">\(B\)</span> = 39, 95% CrI [-21.1, 100.81]; pd = 89.93%). The extrapolation testing items had a significantly greater deviation than the interpolation band (β = 71.51, 95% CrI [33.24, 109.6]; pd = 99.99%). The interaction between training condition and band type was significant (<span class="math inline">\(B\)</span> = 66.46, 95% CrI [32.76, 99.36]; pd = 99.99%), with the varied group showing a greater deviation than the constant group in the extrapolation bands. See <a href="#fig-e1-test-dev" class="quarto-xref">Figure&nbsp;2</a>.</p>
+<p><em>Testing.</em> To compare accuracy between groups in the testing stage, we fit a Bayesian mixed effects model predicting deviation from the target band as a function of training condition (varied vs.&nbsp;constant) and band type (trained vs.&nbsp;extrapolation), with random intercepts for participants and bands. The model results are shown in <a href="#tbl-e1-bmm-dist" class="quarto-xref">Table&nbsp;2</a>. The main effect of training condition was not significant (<span class="math inline">\(B\)</span> = 39, 95% CrI [-21.1, 100.81]; pd = 89.93%). The extrapolation testing items had a significantly greater deviation than the training bands (β = 71.51, 95% CrI [33.24, 109.6]; pd = 99.99%). Most importantly, the interaction between training condition and band type was significant (<span class="math inline">\(B\)</span> = 66.46, 95% CrI [32.76, 99.36]; pd = 99.99%), As shown in <a href="#fig-e1-test-dev" class="quarto-xref">Figure&nbsp;2</a>, the varied group had disproportionately larger deviations compared to the constant group in the extrapolation bands.</p>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">##| eval: FALSE</span></span>
 <span><span class="va">pe1td</span> <span class="op">&lt;-</span> <span class="va">testE1</span> <span class="op">|&gt;</span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">vb</span>, y <span class="op">=</span> <span class="va">dist</span>,fill<span class="op">=</span><span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -684,7 +714,7 @@ Table&nbsp;2: E1. Training vs.&nbsp;Extrapolation
 </div>
 <div id="fig-e1-test-dev" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../Assets/figs/e1_test-dev.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="../Assets/figs/e1_test-dev.png" class="img-fluid figure-img"></a>
+<a href="../Assets/figs/e1_test-dev.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="../Assets/figs/e1_test-dev.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e1-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: E1. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
@@ -800,7 +830,7 @@ Table&nbsp;3: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of 
 </details><div class="cell-output-display">
 <div id="fig-e1-test-vx" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="e1_files/figure-html/fig-e1-test-vx-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="e1_files/figure-html/fig-e1-test-vx-1.png" class="img-fluid figure-img" width="1152"></a>
+<a href="e1_files/figure-html/fig-e1-test-vx-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="e1_files/figure-html/fig-e1-test-vx-1.png" class="img-fluid figure-img" width="1152"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e1-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.
@@ -811,15 +841,15 @@ Figure&nbsp;3: Experiment 1. Conditional effect of training condition and Band. 
 <div style="page-break-after: always;"></div>
 <div id="fig-e1-test-vx" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../Assets/figs/e1_test-vx.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="../Assets/figs/e1_test-vx.png" class="img-fluid figure-img"></a>
+<a href="../Assets/figs/e1_test-vx.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4"><img src="../Assets/figs/e1_test-vx.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e1-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4: Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.
 </figcaption></figure>
 </div>
 <div style="page-break-after: always;"></div>
-<p><br>
-some text.<br></p>
+</section><section id="e1-discussion" class="level2"><h2 class="anchored" data-anchor-id="e1-discussion">E1 Discussion</h2>
+<p>In summary, variable training led to lower performance accuracy, impaired extrapolation to new stimuli, and decreased discrimination sensitivity compared to focused training on a single stimulus category.</p>
 </section><section id="references" class="level2"><h2 class="anchored" data-anchor-id="references">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-burknerBrmsPackageBayesian2017" class="csl-entry" role="listitem">
@@ -1253,7 +1283,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e1.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e1.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom"});
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e1.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e1.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"loop":false,"closeEffect":"zoom","descPosition":"bottom","selector":".lightbox","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

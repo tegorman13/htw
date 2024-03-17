@@ -7,6 +7,7 @@ categories: [Analyses, R, Bayesian]
 toc: false
 format-links: false
 page-layout: full
+cache: true
 code-fold: true
 cold-tools: true
 lightbox: true
@@ -57,18 +58,18 @@ format:
   #     - right=2cm
   #     - top=2cm
   #     - bottom=2cm
-  ipynb: default
-  hugo-md:
-    echo: false
-    html-math-method: mathjax
-    output-dir: "../_working"
-    output-file: e1-hugo.md
+  # ipynb: default
+  # hugo-md:
+  #   echo: false
+  #   html-math-method: mathjax
+  #   output-dir: "../_working"
+  #   output-file: e1-hugo.md
   gfm:
     echo: true
     output-file: e1-gfm.md
-  docusaurus-md:
-    echo: true
-    output-file: e1-docusaurus.md
+  # docusaurus-md:
+  #   echo: true
+  #   output-file: e1-docusaurus.md
 #prefer-html: false
 ---
 
@@ -93,11 +94,18 @@ trainE1_avg <- trainE1_max |> group_by(id,condit) |> summarise(avg = mean(dist))
 
 ### Analyses Strategy
 
-All data processing and statistical analyses were performed in R version 4.32 @rcoreteamLanguageEnvironmentStatistical2020. To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R @burknerBrmsPackageBayesian2017, and descriptive stats and tables were extracted with the BayestestR package @makowskiBayestestRDescribingEffects2019. Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as circumventing convergence issues common to the frequentist analogues of our mixed models.
+All data processing and statistical analyses were performed in R version 4.32 @rcoreteamLanguageEnvironmentStatistical2020. To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R @burknerBrmsPackageBayesian2017, and descriptive stats and tables were extracted with the BayestestR package @makowskiBayestestRDescribingEffects2019. Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as avoiding convergence issues common to the frequentist analogues of our mixed models.
 
-Each model was set to run with 4 chains, 5000 iterations per chain, with the first 2500 discarded as warmup chains. Rhat values were within an acceptable range, with values \<=1.02 (see appendix for diagnostic plots). We used uninformative priors for the fixed effects of the model (condition and velocity band), and weakly informative Student T distributions for for the random effects. For each model, we report the median values of the posterior distribution, and 95% credible intervals. EXPLAIN WHAT PARAMETERS REPRESENT AND WHAT HDI & PD
+Each model was set to run with 4 chains, 5000 iterations per chain, with the first 2500 discarded as warmup chains. Rhat values were within an acceptable range, with values \<=1.02 (see appendix for diagnostic plots). We used uninformative priors for the fixed effects of the model (condition and velocity band), and weakly informative Student T distributions for for the random effects. For each model, we report 1)  the mean values of the posterior distribution for the parameters of interest, 2) the lower and upper credible intervals (CrI), and the probability of direction value (pd). 
 
-For the testing phase of all experiments, we compare varied and constant performance across two measures, deviation and discrimination. Deviation was quantified as the absolute deviation from the nearest boundary of the velocity band, or set to 0 if the throw velocity fell anywhere inside the target band. Thus, when the target band was 600-800, throws of 400, 650, and 1100 would result in deviation values of 200, 0, and 300, respectively. The degree of discrimination between bands was measured by fitting a linear model to the testing throws of each subjects, with the lower end of the target velocity band as the predicted variable, and the x velocity produced by the participants as the predictor variable. Participants who reliably discriminated between velocity bands tended to have positive slopes with values \~1, while participants who made throws irrespective of the current target band would have slopes \~0.
+| Group Comparison         | Code                                                        | Data                 |
+| ------------------------ | ----------------------------------------------------------- | -------------------- |
+| End of Training Accuracy | `` brm(dist ~ condit) ``                                    | Final Training Block |
+| Test Accuracy            | `` brm(dist ~ condit * bandType + (1|id) + (1|bandInt) `` | All Testing trials   |
+| Band Discrimination      | `` brm(vx ~ condit * band +(1 + bandInt|id) ``             | All Testing Trials   |
+\
+
+In each experiment we compare varied and constant conditions in terms of 1) accuracy in the final training block; 2) testing accuracy as a function of  band type (trained vs. extrapolation bands); 3) extent of discrimination between all six testing bands. We quantified accuracy as the absolute deviation between the response velocity and the nearest boundary of the target  band. Thus, when the target band was velocity 600-800, throws of 400, 650, and 900 would result in deviation values of 200, 0, and 100, respectively. The degree of discrimination between bands was index by fitting a linear model predicting the response velocity as a function of the target velocity. Participants who reliably discriminated between velocity bands tended to haves slope values \~1, while participants who made throws irrespective of the current target band would have slopes \~0.
 
 ```{=tex}
 \begin{equation}
@@ -163,14 +171,16 @@ cdtr1 <- get_coef_details(bmm_e1_train, "conditVaried")
 | Intercept    |   106.34 |         95.46 |        117.25 |   1 |
 | conditVaried |    79.64 |         57.92 |        101.63 |   1 |
 
-: Experiment 1 - End of training performance {.sm}
+: **Experiment 1 - End of training performance**. The Intercept represents the average of the baseline (constant condition), and the conditVaried coefficient reflects the difference between the constant and varied groups. A larger positive estimates indicates a greater deviation (lower accuracy) for the varied group.  {.sm}
 
 :::
 
 \
 
 
-*Training*. @fig-e1-train-dev displays the average deviations across training blocks (recall that the varied group trains from 3 bands and the constant group from 1). We compared the training conditions from the final training block, on the position for which both groups trained (band 800-1000). Full model results are shown in @tbl-e1-train-dist. The varied group had a significantly greater deviation than the constant group. ($B$ = `r cdtr1$estimate`, 95% CrI \[`r cdtr1$conf.low`, `r cdtr1$conf.high`\]; pd = `r cdtr1$pd`).
+*Training*. @fig-e1-train-dev displays the average deviations across training blocks for the varied group, which trained on three velocity bands, and the constant group, which trained on one velocity band. To compare the training conditions at the end of training, we analyzed performance on the 800-1000 velocity band, which both groups trained on. The full model results are shown in Table 1. The varied group had a significantly greater deviation than the constant group in the final training block, ($B$ = `r cdtr1$estimate`, 95% CrI \[`r cdtr1$conf.low`, `r cdtr1$conf.high`\]; pd = `r cdtr1$pd`).
+
+
 
 ```{r}
 ##| label: tbl-e1-bmm-dist
@@ -215,13 +225,13 @@ cdted3 <-get_coef_details(bmtd, "conditVaried:bandTypeExtrapolation")
 | conditVaried:bandTypeExtrapolation |    66.46 |         32.76 |         99.36 | 1.0 |
 
 
-: E1. Training vs. Extrapolation {.striped .hover .sm}
+: **Experiment 1 testing accuracy**. Main effects of condition and band type (training vs. extrapolation), and the interaction between the two factors. Larger coefficient estimates indicate larger deviations from the baselines (constant & trained bands) - and a positive interaction coefficient indicates disproporionate deviation for the varied condition on the extrapolation bands {.striped .hover .sm}
 :::
 
 
 
 
-*Testing.* To compare conditions in the testing stage, we first fit a model predicting deviation from the target band as a function of training condition and band type, with random intercepts for participants and bands. The model is shown in @tbl-e1-bmm-dist. The effect of training condition was not reliably different from 0 ($B$ = `r cdted1$estimate`, 95% CrI \[`r cdted1$conf.low`, `r cdted1$conf.high`\]; pd = `r cdted1$pd`). The extrapolation testing items had a significantly greater deviation than the interpolation band (β = `r cdted2$estimate`, 95% CrI \[`r cdted2$conf.low`, `r cdted2$conf.high`\]; pd = `r cdted2$pd`). The interaction between training condition and band type was significant ($B$ = `r cdted3$estimate`, 95% CrI \[`r cdted3$conf.low`, `r cdted3$conf.high`\]; pd = `r cdted3$pd`), with the varied group showing a greater deviation than the constant group in the extrapolation bands. See @fig-e1-test-dev.
+*Testing.* To compare accuracy between groups in the testing stage, we fit a Bayesian mixed effects model predicting deviation from the target band as a function of training condition (varied vs. constant) and band type (trained vs. extrapolation), with random intercepts for participants and bands. The model results are shown in @tbl-e1-bmm-dist. The main effect of training condition was not significant ($B$ = `r cdted1$estimate`, 95% CrI \[`r cdted1$conf.low`, `r cdted1$conf.high`\]; pd = `r cdted1$pd`). The extrapolation testing items had a significantly greater deviation than the training bands (β = `r cdted2$estimate`, 95% CrI \[`r cdted2$conf.low`, `r cdted2$conf.high`\]; pd = `r cdted2$pd`). Most importantly, the interaction between training condition and band type was significant ($B$ = `r cdted3$estimate`, 95% CrI \[`r cdted3$conf.low`, `r cdted3$conf.high`\]; pd = `r cdted3$pd`), As shown in @fig-e1-test-dev,  the varied group had disproportionately larger deviations compared to the constant group in the extrapolation bands.
 
 ```{r}
 #| label: fig-e1-test-dev
@@ -291,7 +301,6 @@ Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Con
 :::
 
 
-
 Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. See @tbl-e1-bmm-vx for the full model results. The estimated coefficient for training condition (β = `r cd1$estimate`, 95% CrI \[`r cd1$conf.low`, `r cd1$conf.high`\]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band (β = `r sc1$estimate`, 95% CrI \[`r sc1$conf.low`, `r sc1$conf.high`\]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition (β = `r intCoef1$estimate`, 95% CrI \[`r intCoef1$conf.low`, `r intCoef1$conf.high`\]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition. This difference is depicted visually in @fig-e1-test-vx.
 
 ```{r}
@@ -356,9 +365,12 @@ Experiment 1. Conditional effect of training condition and Band. Ribbons indicat
 
 {{< pagebreak >}}
 
-\
-some text. 
-\
+
+## E1 Discussion  
+
+In Experiment 1, we investigated how variability in training influenced participants' ability learn and extrapolate in a visuomotor task. Our findings that training with variable conditions  rresulted in lower final training performance is consistent with much of the prior researchon the influence of training variability [@ravivHowVariabilityShapes2022; @soderstromLearningPerformanceIntegrative2015], and is particularly unsurprising in the present work, given that the constant group received three times the amount of training on the velocity band common to the two conditions. 
+
+ and testing phases compared to constant training conditions. Notably, participants in the varied group exhibited significantly greater deviations from target bands and demonstrated weaker discrimination between the full space of training and testing bands. 
 
 
 
