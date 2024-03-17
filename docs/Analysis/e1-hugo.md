@@ -1,22 +1,32 @@
 ---
 title: HTW E1
+author:
+  - name: Thomas Gorman
+    corresponding: true
 categories:
   - Analyses
   - R
   - Bayesian
+page-layout: full
 code-fold: true
 cold-tools: true
 lightbox: true
 keep-md: true
 format:
   html: default
+  ipynb: default
   hugo-md:
     echo: false
     html-math-method: mathjax
+    output-dir: ../_working
     output-file: e1-hugo.md
   gfm:
     echo: true
     output-file: e1-gfm.md
+  docusaurus-md:
+    echo: true
+    output-file: e1-docusaurus.md
+prefer-html: false
 ---
 
 
@@ -30,10 +40,8 @@ For the testing phase of all experiments, we compare varied and constant perform
 
 ### Results
 
-<img
-src="e1.markdown_strict_files/figure-markdown_strict/fig-e1-train-dev-1.png"
-id="fig-e1-train-dev"
-alt="Figure 1: E1. Deviations from target band during testing without feedback stage." />
+<img src="../Assets/figs/e1_train_deviation.png" id="fig-e1-train-dev"
+alt="Figure 1: E1. Deviations from target band during training" />
 <div id="tbl-e1-train-dist">
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
@@ -41,15 +49,17 @@ alt="Figure 1: E1. Deviations from target band during testing without feedback 
 | Intercept    |   106.34 |         95.46 |        117.25 |   1 |
 | conditVaried |    79.64 |         57.92 |        101.63 |   1 |
 
-Table 1: Experiment 1 - Learning curves.
+Table 1: Experiment 1 - End of training performance
 </div>
 
-*Training*. <a href="#fig-e1-train-dev" class="quarto-xref">Figure 1</a> displays the average deviations across training blocks (recall that the varied group trains from 3 bands and the constant group from 1). We compared the training conditions from the final training block, on the position for which both groups trained (band 800-1000). Full model results are shown in <a href="#tbl-e1-train-dist" class="quarto-xref">Table 1</a>. The varied group had a significantly greater deviation than the constant group. (β = 79.64, 95% CrI \[57.92, 101.63\]; pd = 100%).
+  
+
+*Training*. <a href="#fig-e1-train-dev" class="quarto-xref">Figure 1</a> displays the average deviations across training blocks (recall that the varied group trains from 3 bands and the constant group from 1). We compared the training conditions from the final training block, on the position for which both groups trained (band 800-1000). Full model results are shown in <a href="#tbl-e1-train-dist" class="quarto-xref">Table 1</a>. The varied group had a significantly greater deviation than the constant group. ($B$ = 79.64, 95% CrI \[57.92, 101.63\]; pd = 100%).
 
 <div id="tbl-e1-bmm-dist">
 
 | Term                               | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
-|:-----------------------------------|---------:|--------------:|--------------:|----:|
+|:-----------------------|-----------:|-----------:|-----------:|-----------:|
 | Intercept                          |   152.55 |         70.63 |        229.85 | 1.0 |
 | conditVaried                       |    39.00 |        -21.10 |        100.81 | 0.9 |
 | bandTypeExtrapolation              |    71.51 |         33.24 |        109.60 | 1.0 |
@@ -58,12 +68,13 @@ Table 1: Experiment 1 - Learning curves.
 Table 2: E1. Training vs. Extrapolation
 </div>
 
-*Testing.* To compare conditions in the testing stage, we first fit a model predicting deviation from the target band as a function of training condition and band type, with random intercepts for participants and bands. The model is shown in <a href="#tbl-e1-bmm-dist" class="quarto-xref">Table 2</a>. The effect of training condition was not reliably different from 0 (β = 39, 95% CrI \[-21.1, 100.81\]; pd = 89.93%). The extrapolation testing items had a significantly greater deviation than the interpolation band (β = 71.51, 95% CrI \[33.24, 109.6\]; pd = 99.99%). The interaction between training condition and band type was significant (β = 66.46, 95% CrI \[32.76, 99.36\]; pd = 99.99%), with the varied group showing a greater deviation than the constant group in the extrapolation bands. See <a href="#fig-e1-test-dev" class="quarto-xref">Figure 2</a>.
+*Testing.* To compare conditions in the testing stage, we first fit a model predicting deviation from the target band as a function of training condition and band type, with random intercepts for participants and bands. The model is shown in <a href="#tbl-e1-bmm-dist" class="quarto-xref">Table 2</a>. The effect of training condition was not reliably different from 0 ($B$ = 39, 95% CrI \[-21.1, 100.81\]; pd = 89.93%). The extrapolation testing items had a significantly greater deviation than the interpolation band (β = 71.51, 95% CrI \[33.24, 109.6\]; pd = 99.99%). The interaction between training condition and band type was significant ($B$ = 66.46, 95% CrI \[32.76, 99.36\]; pd = 99.99%), with the varied group showing a greater deviation than the constant group in the extrapolation bands. See <a href="#fig-e1-test-dev" class="quarto-xref">Figure 2</a>.
 
-<img
-src="e1.markdown_strict_files/figure-markdown_strict/fig-e1-test-dev-1.png"
-id="fig-e1-test-dev"
-alt="Figure 2: E1. Deviations from target band during testing without feedback stage." />
+<img src="../Assets/figs/e1_test-dev.png" id="fig-e1-test-dev"
+alt="Figure 2: E1. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals." />
+
+  
+
 <div id="tbl-e1-bmm-vx">
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
@@ -76,12 +87,24 @@ alt="Figure 2: E1. Deviations from target band during testing without feedback 
 Table 3: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band
 </div>
 
-Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. See <a href="#tbl-e1-bmm-vx" class="quarto-xref">Table 3</a> for the full model results. The estimated coefficient for training condition (β = 164.05, 95% CrI \[45.5, 278.85\]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band (β = 0.71, 95% CrI \[0.62, 0.8\]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition (β = -0.14, 95% CrI \[-0.26, -0.01\]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition. This difference is depicted visually in <a href="#fig-e1-test-vx" class="quarto-xref">Figure 3</a>.
+Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. See <a href="#tbl-e1-bmm-vx" class="quarto-xref">Table 3</a> for the full model results. The estimated coefficient for training condition (β = 164.05, 95% CrI \[45.5, 278.85\]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band (β = 0.71, 95% CrI \[0.62, 0.8\]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition (β = -0.14, 95% CrI \[-0.26, -0.01\]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition. This difference is depicted visually in <a href="#fig-e1-test-vx" class="quarto-xref">Figure 4</a>.
 
 <img
 src="e1.markdown_strict_files/figure-markdown_strict/fig-e1-test-vx-1.png"
 id="fig-e1-test-vx"
 alt="Figure 3: Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands." />
+
+
+
+<img src="../Assets/figs/e1_test-vx.png" id="fig-e1-test-vx"
+alt="Figure 4: Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands." />
+
+
+
+  
+some text.  
+
+## References
 
 Bürkner, P.-C. (2017). Brms: An R Package for Bayesian Multilevel Models Using Stan. *Journal of Statistical Software*, *80*, 1--28. <https://doi.org/10.18637/jss.v080.i01>
 

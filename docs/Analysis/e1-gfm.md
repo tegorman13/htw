@@ -1,5 +1,5 @@
 # HTW E1
-
+Thomas Gorman
 
 ### Analyses Strategy
 
@@ -41,22 +41,14 @@ would have slopes ~0.
 
 ### Results
 
-<img
-src="e1.markdown_strict_files/figure-markdown_strict/fig-e1-train-dev-1.png"
-width="768" />
-
-<div class="cell-output-display">
-
-<div>
+![](../Assets/figs/e1_train_deviation.png)
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
 |:-------------|---------:|--------------:|--------------:|----:|
 | Intercept    |   106.34 |         95.46 |        117.25 |   1 |
 | conditVaried |    79.64 |         57.92 |        101.63 |   1 |
 
-</div>
-
-</div>
+  
 
 *Training*. <a href="#fig-e1-train-dev" class="quarto-xref">Figure 1</a>
 displays the average deviations across training blocks (recall that the
@@ -65,12 +57,8 @@ compared the training conditions from the final training block, on the
 position for which both groups trained (band 800-1000). Full model
 results are shown in
 <a href="#tbl-e1-train-dist" class="quarto-xref">Table 1</a>. The varied
-group had a significantly greater deviation than the constant group. (β
-= 79.64, 95% CrI \[57.92, 101.63\]; pd = 100%).
-
-<div class="cell-output-display">
-
-<div>
+group had a significantly greater deviation than the constant group.
+($B$ = 79.64, 95% CrI \[57.92, 101.63\]; pd = 100%).
 
 | Term                               | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
 |:-----------------------------------|---------:|--------------:|--------------:|----:|
@@ -79,31 +67,23 @@ group had a significantly greater deviation than the constant group. (β
 | bandTypeExtrapolation              |    71.51 |         33.24 |        109.60 | 1.0 |
 | conditVaried:bandTypeExtrapolation |    66.46 |         32.76 |         99.36 | 1.0 |
 
-</div>
-
-</div>
-
 *Testing.* To compare conditions in the testing stage, we first fit a
 model predicting deviation from the target band as a function of
 training condition and band type, with random intercepts for
 participants and bands. The model is shown in
 <a href="#tbl-e1-bmm-dist" class="quarto-xref">Table 2</a>. The effect
-of training condition was not reliably different from 0 (β = 39, 95% CrI
-\[-21.1, 100.81\]; pd = 89.93%). The extrapolation testing items had a
-significantly greater deviation than the interpolation band (β = 71.51,
-95% CrI \[33.24, 109.6\]; pd = 99.99%). The interaction between training
-condition and band type was significant (β = 66.46, 95% CrI \[32.76,
-99.36\]; pd = 99.99%), with the varied group showing a greater deviation
-than the constant group in the extrapolation bands. See
+of training condition was not reliably different from 0 ($B$ = 39, 95%
+CrI \[-21.1, 100.81\]; pd = 89.93%). The extrapolation testing items had
+a significantly greater deviation than the interpolation band (β =
+71.51, 95% CrI \[33.24, 109.6\]; pd = 99.99%). The interaction between
+training condition and band type was significant ($B$ = 66.46, 95% CrI
+\[32.76, 99.36\]; pd = 99.99%), with the varied group showing a greater
+deviation than the constant group in the extrapolation bands. See
 <a href="#fig-e1-test-dev" class="quarto-xref">Figure 2</a>.
 
-<img
-src="e1.markdown_strict_files/figure-markdown_strict/fig-e1-test-dev-1.png"
-width="768" />
+![](../Assets/figs/e1_test-dev.png)
 
-<div class="cell-output-display">
-
-<div>
+  
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
 |:-------------|---------:|--------------:|--------------:|-----:|
@@ -111,10 +91,6 @@ width="768" />
 | conditVaried |   164.05 |         45.50 |        278.85 | 1.00 |
 | Band         |     0.71 |          0.62 |          0.80 | 1.00 |
 | condit\*Band |    -0.14 |         -0.26 |         -0.01 | 0.98 |
-
-</div>
-
-</div>
 
 Finally, to assess the ability of both conditions to discriminate
 between velocity bands, we fit a model predicting velocity as a function
@@ -134,11 +110,22 @@ slope and condition (β = -0.14, 95% CrI \[-0.26, -0.01\]), suggests that
 the discrimination was somewhat modulated by training condition, with
 the varied participants showing less sensitivity between bands than the
 constant condition. This difference is depicted visually in
-<a href="#fig-e1-test-vx" class="quarto-xref">Figure 3</a>.
+<a href="#fig-e1-test-vx" class="quarto-xref">Figure 4</a>.
 
 <img
 src="e1.markdown_strict_files/figure-markdown_strict/fig-e1-test-vx-1.png"
 width="1152" />
+
+
+
+![](../Assets/figs/e1_test-vx.png)
+
+
+
+  
+some text.  
+
+## References
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0" line-spacing="2">
