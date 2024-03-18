@@ -135,7 +135,7 @@ cdtr2 <- get_coef_details(bmm_e2_train, "conditVaried")
 
 \
 
-*Training*. @fig-e2-train-dev displays the average deviations across training blocks for both training groups. To compare the training conditions at the end of training, we analyzed performance on the 600-800 velocity band, which both groups trained on. The full model results are shown in Table 1. The varied group had a significantly greater deviation than the constant group in the final training block, ($B$ = `r cdtr2$estimate`, 95% CrI \[`r cdtr2$conf.low`, `r cdtr2$conf.high`\]; pd = `r cdtr2$pd`).
+*Training*. @fig-e2-train-dev presents the deviations across training blocks for both constant and varied training groups. We again compared training performance on the band common to both groups (600-800). The full model results are shown in Table 1. The varied group had a significantly greater deviation than the constant group in the final training block, ( $\beta$ = `r cdtr2$estimate`, 95% CrI \[`r cdtr2$conf.low`, `r cdtr2$conf.high`\]; pd = `r cdtr2$pd`).
 
 ```{r}
 modelFile <- paste0(here::here("data/model_cache/"), "e2_dist_Cond_Type_RF_2")
@@ -169,7 +169,7 @@ cd2ted3 <-get_coef_details(bmtd2, "conditVaried:bandTypeExtrapolation")
 : **Experiment 2 testing accuracy**. Main effects of condition and band type (training vs. extrapolation), and the interaction between the two factors. Larger coefficient estimates indicate larger deviations from the baselines (constant & trained bands) - and a positive interaction coefficient indicates disproporionate deviation for the varied condition on the extrapolation bands {.striped .hover .sm}
 :::
 
-*Testing.* To compare accuracy between groups in the testing stage, we fit a Bayesian mixed effects model predicting deviation from the target band as a function of training condition (varied vs. constant) and band type (trained vs. extrapolation), with random intercepts for participants and bands. The model results are shown in @tbl-e2-bmm-dist. The main effect of training condition was not significant ($B$ = `r cd2ted1$estimate`, 95% CrI \[`r cd2ted1$conf.low`, `r cd2ted1$conf.high`\]; pd = `r cd2ted1$pd`). The extrapolation testing items had a significantly greater deviation than the training bands (β = `r cd2ted2$estimate`, 95% CrI \[`r cd2ted2$conf.low`, `r cd2ted2$conf.high`\]; pd = `r cd2ted2$pd`). Most importantly, the interaction between training condition and band type was significant ($B$ = `r cd2ted3$estimate`, 95% CrI \[`r cd2ted3$conf.low`, `r cd2ted3$conf.high`\]; pd = `r cd2ted3$pd`), As shown in @fig-e2-test-dev,  the varied group had disproportionately larger deviations compared to the constant group in the extrapolation bands.
+*Testing.* The analysis of testing accuracy examined deviations from the target band as influenced by training condition (Varied vs. Constant) and band type (training vs. extrapolation bands). The results, summarized in @tbl-e2-bmm-dist, reveal no significant main effect of training condition ($\beta$ = `r cd2ted1$estimate`, 95% CrI \[`r cd2ted1$conf.low`, `r cd2ted1$conf.high`\]; pd = `r cd2ted1$pd`). However, the interaction between training condition and band type was significant ($\beta$ = `r cd2ted3$estimate`, 95% CrI \[`r cd2ted3$conf.low`, `r cd2ted3$conf.high`\]; pd = `r cd2ted3$pd`), with the varied group showing disproportionately larger deviations compared to the constant group on the extrapolation bands (see @fig-e2-test-dev).
 
 
 ```{r}
@@ -235,7 +235,11 @@ intCoef2 <- get_coef_details(e2_vxBMM, "conditVaried:bandInt")
 Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band {.striped .hover .sm}
 :::
 
-See @tbl-e2-bmm-vx for the full model results. The estimated coefficient for training condition (β = `r cd2$estimate`, 95% CrI \[`r cd2$conf.low`, `r cd2$conf.high`\]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band (β = `r sc2$estimate`, 95% CrI \[`r sc2$conf.low`, `r sc2$conf.high`\]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition (β = `r intCoef2$estimate`, 95% CrI \[`r intCoef2$conf.low`, `r intCoef2$conf.high`\]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition. This difference is depicted visually in @fig-e2-test-vx.
+Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. The full model results are shown in @tbl-e2-bmm-vx. The overall slope on target velocity band predictor was significantly positive, ($\beta$ = `r sc2$estimate`, 95% CrI \[`r sc2$conf.low`, `r sc2$conf.high`\]; pd= `r sc2$pd`), indicating that participants exhibited discrimination between bands. The interaction between slope and condition was not significant, ($\beta$ = `r intCoef2$estimate`, 95% CrI \[`r intCoef2$conf.low`, `r intCoef2$conf.high`\]; pd= `r intCoef2$pd`), suggesting that the two conditions did not differ in their ability to discriminate between bands (see @fig-e2-test-vx). 
+
+
+
+
 
 ```{r}
 #| label: e2_test-vx
@@ -299,3 +303,5 @@ Experiment 2. Conditional effect of training condition and Band. Ribbons indicat
 
 
 ## E2 Discussion  
+
+Experiment 2 extended the findings of Experiment 1 by examining the effects of training variability on extrapolation performance in a visuomotor function learning task, but with reversed training and testing bands. Similar to Experiment 1, the Varied group exhibited poorer performance during training and testing. However unlike experiment 1, the Varied group did not show a significant difference in discrimination between bands. 
