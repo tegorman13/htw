@@ -24,18 +24,30 @@ trainE3 <-  e3 |> filter(expMode2=="Train") |> group_by(id,condit,bandOrder, vb)
     mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
 # bayesian comparison of condits in training
 trainE3_max <- trainE3 |> filter(Trial_Bin == nbins, bandInt==trainCon)
+
+# e3 |> group_by(condit, bandOrder) |> summarise(n_distinct(id))
 ```
 
 </details>
 
-The major manipulation adjustment of experiment 3 is for participants to
-receive ordinal feedback during training, in contrast to the continuous
-feedback of the earlier experiments. Ordinal feedback informs
-participants whether a throw was too soft, too hard, or fell within the
-target velocity range. Experiment 3 participants were randomly assigned
-to both a training condition (Constant vs. Varied) and a Band Order
-condition (original order used in Experiment 1, or the Reverse order of
-Experiment 2).
+### Methods & Procedure
+
+The major adjustment of Experiment 3 is for participants to receive
+ordinal feedback during training, in contrast to the continuous feedback
+of the prior experiments. After each training throw, participants are
+informed whether a throw was too soft, too hard, or correct (i.e. within
+the target velocity range). All other aspects of the task and design are
+identical to Experiments 1 and 2. We utilized the order of training and
+testing bands from both of the prior experiments, thus assigning
+participants to both an order condition (Original or Reverse) and a
+training condition (Constant or Varied). Participants were once again
+recruited from the online Indiana University Introductory Psychology
+Course pool. Following exclusions, 195 participants were included in the
+final analysis, n=51 in the Constant-Original condition, n=59 in the
+Constant-Reverse condition, n=39 in the Varied-Original condition, and
+n=46 in the Varied-Reverse condition.
+
+### Results
 
 <details class="code-fold">
 <summary>Code</summary>

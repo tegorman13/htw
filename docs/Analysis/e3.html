@@ -440,10 +440,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">trainE3</span> <span class="op">&lt;-</span>  <span class="va">e3</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode2</span><span class="op">==</span><span class="st">"Train"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>,<span class="va">bandOrder</span>, <span class="va">vb</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>Trial_Bin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span> <span class="va">gt.train</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">gt.train</span><span class="op">)</span>,length.out<span class="op">=</span><span class="va">nbins</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span>,include.lowest <span class="op">=</span> <span class="cn">TRUE</span>, labels<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="co"># bayesian comparison of condits in training</span></span>
-<span><span class="va">trainE3_max</span> <span class="op">&lt;-</span> <span class="va">trainE3</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">Trial_Bin</span> <span class="op">==</span> <span class="va">nbins</span>, <span class="va">bandInt</span><span class="op">==</span><span class="va">trainCon</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">trainE3_max</span> <span class="op">&lt;-</span> <span class="va">trainE3</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">Trial_Bin</span> <span class="op">==</span> <span class="va">nbins</span>, <span class="va">bandInt</span><span class="op">==</span><span class="va">trainCon</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># e3 |&gt; group_by(condit, bandOrder) |&gt; summarise(n_distinct(id))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The major manipulation adjustment of experiment 3 is for participants to receive ordinal feedback during training, in contrast to the continuous feedback of the earlier experiments. Ordinal feedback informs participants whether a throw was too soft, too hard, or fell within the target velocity range. Experiment 3 participants were randomly assigned to both a training condition (Constant vs.&nbsp;Varied) and a Band Order condition (original order used in Experiment 1, or the Reverse order of Experiment 2).</p>
+<section id="methods-procedure" class="level3"><h3 class="anchored" data-anchor-id="methods-procedure">Methods &amp; Procedure</h3>
+<p>The major adjustment of Experiment 3 is for participants to receive ordinal feedback during training, in contrast to the continuous feedback of the prior experiments. After each training throw, participants are informed whether a throw was too soft, too hard, or correct (i.e.&nbsp;within the target velocity range). All other aspects of the task and design are identical to Experiments 1 and 2. We utilized the order of training and testing bands from both of the prior experiments, thus assigning participants to both an order condition (Original or Reverse) and a training condition (Constant or Varied). Participants were once again recruited from the online Indiana University Introductory Psychology Course pool. Following exclusions, 195 participants were included in the final analysis, n=51 in the Constant-Original condition, n=59 in the Constant-Reverse condition, n=39 in the Varied-Original condition, and n=46 in the Varied-Reverse condition.</p>
+</section><section id="results" class="level3"><h3 class="anchored" data-anchor-id="results">Results</h3>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bmm_e3_train</span> <span class="op">&lt;-</span> <span class="va">trainE3_max</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span><span class="op">*</span><span class="va">bandOrder</span>, </span>
@@ -528,7 +532,7 @@ Table&nbsp;1: <strong>Experiment 3 - End of training performance</strong>. The I
 </div>
 <div id="fig-e3-train-dev" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e3-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../Assets/figs/e3_train_deviation.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="../Assets/figs/e3_train_deviation.png" class="img-fluid figure-img"></a>
+<a href="../Assets/figs/e3_train_deviation.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="../Assets/figs/e3_train_deviation.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: E3. Deviations from target band across training blocks.
@@ -637,7 +641,7 @@ Table&nbsp;2: <strong>Experiment 3 testing accuracy</strong>. Main effects of co
 </div>
 <div id="fig-e3-test-condEffect" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e3-test-condEffect-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../Assets/figs/e3_cond_effects_dist.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="../Assets/figs/e3_cond_effects_dist.png" class="img-fluid figure-img"></a>
+<a href="../Assets/figs/e3_cond_effects_dist.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="../Assets/figs/e3_cond_effects_dist.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-test-condEffect-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
@@ -669,13 +673,13 @@ Figure&nbsp;2: E3. A) Deviations from target band during testing without feedbac
 </div>
 <div id="fig-e3-test-dev" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e3-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../Assets/figs/e3_test-dev.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="../Assets/figs/e3_test-dev.png" class="img-fluid figure-img"></a>
+<a href="../Assets/figs/e3_test-dev.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="../Assets/figs/e3_test-dev.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
 </figcaption></figure>
 </div>
-<section id="discimination" class="level3"><h3 class="anchored" data-anchor-id="discimination">Discimination</h3>
+</section><section id="discimination" class="level3"><h3 class="anchored" data-anchor-id="discimination">Discimination</h3>
 <div id="tbl-e3-bmm-vx" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e3-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;3: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs.&nbsp;Varied) and Velocity Band
@@ -836,7 +840,7 @@ Table&nbsp;4: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of 
 <div style="page-break-after: always;"></div>
 <div id="fig-e3-test-vx" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e3-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../Assets/figs/e3_test-vx.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="../Assets/figs/e3_test-vx.png" class="img-fluid figure-img"></a>
+<a href="../Assets/figs/e3_test-vx.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4"><img src="../Assets/figs/e3_test-vx.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4: Experiment 3. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.
@@ -1266,7 +1270,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e3.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e3.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom","selector":".lightbox"});
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e3.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e3.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","openEffect":"zoom","descPosition":"bottom","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

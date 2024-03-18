@@ -18,16 +18,21 @@ nbins=5
 trainE2 <-  e2 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
     mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
 trainE2_max <- trainE2 |> filter(Trial_Bin == nbins, bandInt==600)
+
+# e2 |> group_by(condit, bandOrder) |> summarise(n_distinct(id))
 ```
 
 </details>
 
-<a href="#fig-design-e2" class="quarto-xref">Figure 2</a> illustrates
-the design of Experiment 2. The stages of the experiment (i.e. training,
-testing no-feedback, test with feedback), are identical to that of
-Experiment 1. The only change is that Experiment 2 participants train,
-and then test, on bands in the reverse order of Experiment 1
-(i.e. training on the softer bands; and testing on the harder bands).
+### Methods & Procedure
+
+The task and procedure of Experiment was identical to Experiment 1, with
+the exception that the training and testing bands were reversed (see
+<a href="#fig-design-e2" class="quarto-xref">Figure 1</a>). The Varied
+group trained on bands 100-300, 350-550, 600-800, and the constant group
+trained on band 600-800. Both groups were tested from all six bands. A
+total of 110 participants completed the experiment (Varied: 55,
+Constant: 55).
 
 <details class="code-fold">
 <summary>Code</summary>
@@ -55,9 +60,12 @@ digraph {
 
 <div>
 
+<img src="e2_files/figure-commonmark/dot-figure-1.png"
+style="width:8in;height:2.5in" />
+
 </div>
 
-![](../Assets/figs/e2_design.png)
+### Results
 
 <details class="code-fold">
 <summary>Code</summary>
@@ -107,7 +115,7 @@ cdtr2 <- get_coef_details(bmm_e2_train, "conditVaried")
 
   
 
-*Training*. <a href="#fig-e2-train-dev" class="quarto-xref">Figure 3</a>
+*Training*. <a href="#fig-e2-train-dev" class="quarto-xref">Figure 2</a>
 presents the deviations across training blocks for both constant and
 varied training groups. We again compared training performance on the
 band common to both groups (600-800). The full model results are shown
@@ -145,10 +153,12 @@ cd2ted3 <-get_coef_details(bmtd2, "conditVaried:bandTypeExtrapolation")
 | bandTypeExtrapolation              |    38.09 |         -6.94 |         83.63 | 0.95 |
 | conditVaried:bandTypeExtrapolation |    82.00 |         41.89 |        121.31 | 1.00 |
 
-*Testing.* The analysis of testing accuracy examined deviations from the
-target band as influenced by training condition (Varied vs. Constant)
-and band type (training vs. extrapolation bands). The results,
-summarized in
+   
+
+*Testing Accuracy.* The analysis of testing accuracy examined deviations
+from the target band as influenced by training condition (Varied
+vs. Constant) and band type (training vs. extrapolation bands). The
+results, summarized in
 <a href="#tbl-e2-bmm-dist" class="quarto-xref">Table 2</a>, reveal no
 significant main effect of training condition ($\beta$ = -20.58, 95% CrI
 \[-72.94, 33.08\]; pd = 77.81%). However, the interaction between
@@ -156,7 +166,7 @@ training condition and band type was significant ($\beta$ = 82, 95% CrI
 \[41.89, 121.31\]; pd = 100%), with the varied group showing
 disproportionately larger deviations compared to the constant group on
 the extrapolation bands (see
-<a href="#fig-e2-test-dev" class="quarto-xref">Figure 4</a>).
+<a href="#fig-e2-test-dev" class="quarto-xref">Figure 3</a>).
 
 <details class="code-fold">
 <summary>Code</summary>
@@ -186,8 +196,6 @@ p2 <- (pe2td + pe2ce) + plot_annotation(tag_levels= 'A')
 </details>
 ![](../Assets/figs/e2_test-dev.png)
 
-### Discimination
-
 <details class="code-fold">
 <summary>Code</summary>
 
@@ -216,18 +224,19 @@ intCoef2 <- get_coef_details(e2_vxBMM, "conditVaried:bandInt")
 | Band         |     0.71 |          0.58 |          0.84 | 1.00 |
 | condit\*Band |    -0.06 |         -0.24 |          0.13 | 0.73 |
 
-Finally, to assess the ability of both conditions to discriminate
-between velocity bands, we fit a model predicting velocity as a function
-of training condition and velocity band, with random intercepts and
-random slopes for each participant. The full model results are shown in
+*Testing Discrimination.* Finally, to assess the ability of both
+conditions to discriminate between velocity bands, we fit a model
+predicting velocity as a function of training condition and velocity
+band, with random intercepts and random slopes for each participant. The
+full model results are shown in
 <a href="#tbl-e2-bmm-vx" class="quarto-xref">Table 3</a>. The overall
 slope on target velocity band predictor was significantly positive,
 ($\beta$ = 0.71, 95% CrI \[0.58, 0.84\]; pd= 100%), indicating that
 participants exhibited discrimination between bands. The interaction
 between slope and condition was not significant, ($\beta$ = -0.06, 95%
-CrI \[-0.24, 0.13\]; pd= `rintCoef2$pd`), suggesting that the two
-conditions did not differ in their ability to discriminate between bands
-(see <a href="#fig-e2-test-vx" class="quarto-xref">Figure 5</a>).
+CrI \[-0.24, 0.13\]; pd= 72.67%), suggesting that the two conditions did
+not differ in their ability to discriminate between bands (see
+<a href="#fig-e2-test-vx" class="quarto-xref">Figure 4</a>).
 
 <details class="code-fold">
 <summary>Code</summary>
@@ -282,3 +291,11 @@ p3 <- pe2tv / (pe2vce + pid_den2 + pid_slopes2) + plot_annotation(tag_levels= 'A
 ![](../Assets/figs/e2_test-vx.png)
 
 ## E2 Discussion
+
+Experiment 2 extended the findings of Experiment 1 by examining the
+effects of training variability on extrapolation performance in a
+visuomotor function learning task, but with reversed training and
+testing bands. Similar to Experiment 1, the Varied group exhibited
+poorer performance during training and testing. However unlike
+experiment 1, the Varied group did not show a significant difference in
+discrimination between bands.

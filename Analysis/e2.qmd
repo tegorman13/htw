@@ -10,7 +10,7 @@ cold-tools: true
 lightbox: true
 # execute: 
 #   cache: true
-keep-md: true
+# keep-md: true
 format:
   html: default
   hugo-md:
@@ -37,10 +37,19 @@ nbins=5
 trainE2 <-  e2 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
     mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
 trainE2_max <- trainE2 |> filter(Trial_Bin == nbins, bandInt==600)
+
+# e2 |> group_by(condit, bandOrder) |> summarise(n_distinct(id))
 ```
 
 
-@fig-design-e2 illustrates the design of Experiment 2. The stages of the experiment (i.e. training, testing no-feedback, test with feedback), are identical to that of Experiment 1. The only change is that Experiment 2 participants train, and then test, on bands in the reverse order of Experiment 1 (i.e. training on the softer bands; and testing on the harder bands). 
+### Methods & Procedure 
+
+The task and procedure of Experiment was identical to Experiment 1, with the exception that the training and testing bands were reversed (see @fig-design-e2). The Varied group trained on bands 100-300, 350-550, 600-800,  and the constant group trained on band 600-800. Both groups were tested from all six bands. A total of 110 participants completed the experiment (Varied: 55, Constant: 55).
+  
+
+
+
+
 ```{dot}
 //| label: fig-design-e2
 //| fig-cap: "Experiment 2 Design. Constant and Varied participants complete different training conditions. The training and testing bands are the reverse of Experiment 1. "
@@ -48,7 +57,6 @@ trainE2_max <- trainE2 |> filter(Trial_Bin == nbins, bandInt==600)
 //| fig-height: 2.5
 //| fig-responsive: false
 //| column: screen-inset-right
-//| eval: FALSE 
 digraph {
   graph [layout = dot, rankdir = LR]
   node [shape = rectangle, style = filled]
@@ -66,18 +74,12 @@ digraph {
   Test2 -> Test3
 }
 ```
-
-
-::: {#fig-design-e2}
-
-![](../Assets/figs/e2_design.png)
-
-Experiment 2 Design. Constant and Varied participants complete different training conditions. The training and testing bands are the reverse of Experiment 1.
-:::
+  
 
 
 
-
+   
+### Results
 
 ```{r}
 #| label: fig-e2-train-dev
@@ -168,8 +170,9 @@ cd2ted3 <-get_coef_details(bmtd2, "conditVaried:bandTypeExtrapolation")
 
 : **Experiment 2 testing accuracy**. Main effects of condition and band type (training vs. extrapolation), and the interaction between the two factors. Larger coefficient estimates indicate larger deviations from the baselines (constant & trained bands) - and a positive interaction coefficient indicates disproporionate deviation for the varied condition on the extrapolation bands {.striped .hover .sm}
 :::
+\ \
 
-*Testing.* The analysis of testing accuracy examined deviations from the target band as influenced by training condition (Varied vs. Constant) and band type (training vs. extrapolation bands). The results, summarized in @tbl-e2-bmm-dist, reveal no significant main effect of training condition ($\beta$ = `r cd2ted1$estimate`, 95% CrI \[`r cd2ted1$conf.low`, `r cd2ted1$conf.high`\]; pd = `r cd2ted1$pd`). However, the interaction between training condition and band type was significant ($\beta$ = `r cd2ted3$estimate`, 95% CrI \[`r cd2ted3$conf.low`, `r cd2ted3$conf.high`\]; pd = `r cd2ted3$pd`), with the varied group showing disproportionately larger deviations compared to the constant group on the extrapolation bands (see @fig-e2-test-dev).
+*Testing Accuracy.* The analysis of testing accuracy examined deviations from the target band as influenced by training condition (Varied vs. Constant) and band type (training vs. extrapolation bands). The results, summarized in @tbl-e2-bmm-dist, reveal no significant main effect of training condition ($\beta$ = `r cd2ted1$estimate`, 95% CrI \[`r cd2ted1$conf.low`, `r cd2ted1$conf.high`\]; pd = `r cd2ted1$pd`). However, the interaction between training condition and band type was significant ($\beta$ = `r cd2ted3$estimate`, 95% CrI \[`r cd2ted3$conf.low`, `r cd2ted3$conf.high`\]; pd = `r cd2ted3$pd`), with the varied group showing disproportionately larger deviations compared to the constant group on the extrapolation bands (see @fig-e2-test-dev).
 
 
 ```{r}
@@ -196,6 +199,9 @@ pe2ce <- bmtd2 |> emmeans( ~condit + bandType) |>
 p2 <- (pe2td + pe2ce) + plot_annotation(tag_levels= 'A')
 #ggsave(here::here("Assets/figs", "e2_test-dev.png"), p2, width=8, height=4, bg="white")
 ```
+  
+
+
 
 ::: {#fig-e2-test-dev}
 
@@ -204,8 +210,6 @@ p2 <- (pe2td + pe2ce) + plot_annotation(tag_levels= 'A')
 E2. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
 :::
 
-
-### Discimination 
 
 ```{r}
 ##| label: tbl-e2-bmm-vx
@@ -234,8 +238,16 @@ intCoef2 <- get_coef_details(e2_vxBMM, "conditVaried:bandInt")
 
 Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band {.striped .hover .sm}
 :::
+   
 
-Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. The full model results are shown in @tbl-e2-bmm-vx. The overall slope on target velocity band predictor was significantly positive, ($\beta$ = `r sc2$estimate`, 95% CrI \[`r sc2$conf.low`, `r sc2$conf.high`\]; pd= `r sc2$pd`), indicating that participants exhibited discrimination between bands. The interaction between slope and condition was not significant, ($\beta$ = `r intCoef2$estimate`, 95% CrI \[`r intCoef2$conf.low`, `r intCoef2$conf.high`\]; pd= `r intCoef2$pd`), suggesting that the two conditions did not differ in their ability to discriminate between bands (see @fig-e2-test-vx). 
+
+    
+
+
+
+
+
+*Testing Discrimination.* Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. The full model results are shown in @tbl-e2-bmm-vx. The overall slope on target velocity band predictor was significantly positive, ($\beta$ = `r sc2$estimate`, 95% CrI \[`r sc2$conf.low`, `r sc2$conf.high`\]; pd= `r sc2$pd`), indicating that participants exhibited discrimination between bands. The interaction between slope and condition was not significant, ($\beta$ = `r intCoef2$estimate`, 95% CrI \[`r intCoef2$conf.low`, `r intCoef2$conf.high`\]; pd= `r intCoef2$pd`), suggesting that the two conditions did not differ in their ability to discriminate between bands (see @fig-e2-test-vx). 
 
 
 
