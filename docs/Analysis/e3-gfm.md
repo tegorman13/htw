@@ -78,6 +78,8 @@ bmm_e3_train <- trainE3_max %>%
 | bandOrderReverse              |     1.11 |        -16.02 |         18.16 | 0.55 |
 | conditVaried:bandOrderReverse |   -77.02 |       -114.16 |        -39.61 | 1.00 |
 
+*Training*. <a href="#fig-e3-train-dev" class="quarto-xref">Figure 1</a>
+
 <details class="code-fold">
 <summary>Code</summary>
 
@@ -89,7 +91,6 @@ p1 <- trainE3 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
     scale_x_continuous(breaks = seq(1, nbins + 1)) +
     theme(legend.title=element_blank()) + 
     labs(y = "Deviation", x="Training Block") 
-
 #ggsave(here("Assets/figs/e3_train_deviation.png"), p1, width = 9, height = 8,bg="white")
 ```
 
@@ -184,12 +185,21 @@ e3_vxBMM <- brm(vx ~ condit * bandOrder * bandInt + (1 + bandInt|id),
 #   mutate(Term = stringr::str_replace_all(Term, "b_bandInt", "Band")) |>
 #   kable(escape=F,booktabs=T)
 
+
+ce_bmtd3 <- plot(conditional_effects(e3_vxBMM),points=FALSE,plot=FALSE)
+wrap_plots(ce_bmtd3)
 cd1 <- get_coef_details(e3_vxBMM, "conditVaried")
 sc1 <- get_coef_details(e3_vxBMM, "bandInt")
 intCoef1 <- get_coef_details(e3_vxBMM, "conditVaried:bandInt")
 ```
 
 </details>
+
+<div class="cell-output-display">
+
+![](e3_files/figure-commonmark/tbl-e3-bmm-vx-1.png)
+
+</div>
 
 | Term                                    | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
 |:----------------------------------------|---------:|--------------:|--------------:|-----:|
@@ -257,6 +267,70 @@ p3 <- pe3tv / (pe3vce + pid_den3 + pid_slopes3) + plot_annotation(tag_levels= 'A
 ```
 
 </details>
+<details class="code-fold">
+<summary>Code</summary>
+
+``` r
+fe <- fixef(e3_vxBMM)[,1]
+fixed_effect_Intercept <- fe["Intercept"]
+fixed_effect_bandInt <- fe["bandInt"]
+fixed_effect_interaction1 <- fe["conditVaried:bandInt"]
+fixed_effect_interaction2 <- fe["bandOrderReverse:bandInt"]
+fixed_effect_interaction3 <- fe["conditVaried:bandOrderReverse:bandInt"]
+
+re <- data.frame(ranef(e3_vxBMM, pars = "bandInt")$id[, ,'bandInt']) %>% 
+  rownames_to_column("id") %>% 
+  left_join(e3Sbjs, by = "id") %>%
+  mutate(intercept = fixed_effect_Intercept + fe["conditVaried"]*(condit=="Varied") + 
+           fe["bandOrderReverse"]*(bandOrder=="Reverse") +
+           fe["conditVaried:bandOrderReverse"]*(condit=="Varied" & bandOrder=="Reverse"), 
+         adjust = fixed_effect_bandInt + fixed_effect_interaction1 * (condit == "Varied") + 
+         fixed_effect_interaction2 * (bandOrder == "Reverse") + 
+         fixed_effect_interaction3 * (condit == "Varied" & bandOrder == "Reverse"),
+         slope = Estimate + adjust)
+
+slopes <- re |>
+  group_by(condit, bandOrder) |>
+  summarize(
+    intercept = mean(intercept),
+    slope = mean(slope)
+  )
+```
+
+</details>
+
+    `summarise()` has grouped output by 'condit'. You can override using the
+    `.groups` argument.
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` r
+plot_data <- e3 |> distinct(condit, bandOrder, bandInt) |> 
+  left_join(slopes, by = c("condit", "bandOrder")) |>
+  mutate(pred_y=intercept + slope*bandInt) |> arrange(condit,bandOrder,bandInt)
+
+
+#a_line <- function(x,intercept,slope) (slope * x) +int
+
+plot_data |> 
+  ggplot(aes(x=bandInt,y=pred_y,color = condit,group=interaction(condit, bandOrder))) +
+  geom_point() +
+  geom_abline(
+    mapping = aes(
+      intercept = intercept,
+      slope = slope, 
+      color = interaction(condit, bandOrder)
+    ),size = 1.2) + 
+  coord_equal()
+```
+
+</details>
+
+    Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+    ℹ Please use `linewidth` instead.
+
+![](e3_files/figure-commonmark/unnamed-chunk-8-1.png)
 
 
 

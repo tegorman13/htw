@@ -4,12 +4,13 @@ categories: [Analyses, R, Bayesian]
 toc: false
 format-links: false
 page-layout: full
-cache: true
+#cache: true
 code-fold: true
 cold-tools: true
 lightbox: true
-# execute: 
-#   cache: true
+execute:
+  cache: true
+  warning: false
 # keep-md: true
 format:
   html: default
@@ -17,9 +18,9 @@ format:
     echo: false
     html-math-method: mathjax
     output-file: e2-hugo.md
-  gfm:
-    echo: true
-    output-file: e2-gfm.md
+  # gfm:
+  #   echo: true
+  #   output-file: e2-gfm.md
 ---
 
 
@@ -28,6 +29,7 @@ pacman::p_load(dplyr,purrr,tidyr,tibble,ggplot2,
   brms,tidybayes, rstanarm,emmeans,broom,bayestestR,
   stringr, here,conflicted, patchwork, knitr,kableExtra)
 #options(brms.backend="cmdstanr",mc.cores=4)
+options(dplyr.summarise.inform = FALSE)
 walk(c("brms","dplyr","bayestestR"), conflict_prefer_all, quiet = TRUE)
 walk(c("Display_Functions","org_functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 e2 <- readRDS(here("data/e2_08-04-23.rds")) 
@@ -138,7 +140,6 @@ cdtr2 <- get_coef_details(bmm_e2_train, "conditVaried")
 \
 
 *Training*. @fig-e2-train-dev presents the deviations across training blocks for both constant and varied training groups. We again compared training performance on the band common to both groups (600-800). The full model results are shown in Table 1. The varied group had a significantly greater deviation than the constant group in the final training block, ( $\beta$ = `r cdtr2$estimate`, 95% CrI \[`r cdtr2$conf.low`, `r cdtr2$conf.high`\]; pd = `r cdtr2$pd`).
-
 ```{r}
 modelFile <- paste0(here::here("data/model_cache/"), "e2_dist_Cond_Type_RF_2")
 bmtd2 <- brm(dist ~ condit * bandType + (1|bandInt) + (1|id), 
@@ -285,6 +286,7 @@ re <- data.frame(ranef(e2_vxBMM, pars = "bandInt")$id[, ,'bandInt']) |>
 
 pid_den2 <- ggplot(re, aes(x = slope, fill = condit)) + 
   geom_density(alpha=.5) + 
+  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
   xlim(c(min(re$slope)-.3, max(re$slope)+.3))+
    theme(legend.title=element_blank()) + 
   labs(x="Slope Coefficient",y="Density")
@@ -292,6 +294,7 @@ pid_den2 <- ggplot(re, aes(x = slope, fill = condit)) +
 pid_slopes2 <- re |>  mutate(id=reorder(id,slope)) |>
   ggplot(aes(y=id, x=slope,fill=condit,color=condit)) + 
     geom_pointrange(aes(xmin=Q2.5+adjust, xmax=Q97.5+adjust)) + 
+  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
       theme(legend.title=element_blank(), 
         axis.text.y = element_text(size=6) ) + 
     labs(x="Estimated Slope", y="Participant")  + 

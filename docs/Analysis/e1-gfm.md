@@ -295,6 +295,7 @@ re <- data.frame(ranef(e1_vxBMM, pars = "bandInt")$id[, ,'bandInt']) |>
 
 pid_den1 <- ggplot(re, aes(x = slope, fill = condit)) + 
   geom_density(alpha=.5) + 
+  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
   xlim(c(min(re$slope)-.3, max(re$slope)+.3))+
    theme(legend.title=element_blank()) + 
   labs(x="Slope Coefficient",y="Density")
@@ -302,6 +303,7 @@ pid_den1 <- ggplot(re, aes(x = slope, fill = condit)) +
 pid_slopes1 <- re |>  mutate(id=reorder(id,slope)) |>
   ggplot(aes(y=id, x=slope,fill=condit,color=condit)) + 
     geom_pointrange(aes(xmin=Q2.5+adjust, xmax=Q97.5+adjust)) + 
+  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
      theme(legend.title=element_blank(), 
            axis.text.y = element_text(size=6) ) + 
     labs(x="Estimated Slope", y="Participant")  + 

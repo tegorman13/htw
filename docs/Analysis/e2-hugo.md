@@ -7,19 +7,18 @@ categories:
 toc: false
 format-links: false
 page-layout: full
-cache: true
 code-fold: true
 cold-tools: true
 lightbox: true
+execute:
+  cache: true
+  warning: false
 format:
   html: default
   hugo-md:
     echo: false
     html-math-method: mathjax
     output-file: e2-hugo.md
-  gfm:
-    echo: true
-    output-file: e2-gfm.md
 ---
 
 

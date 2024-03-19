@@ -14,13 +14,11 @@ cache: true
 code-fold: true
 cold-tools: true
 lightbox: true
-keep-md: true
 format:
   html: default
   hugo-md:
     echo: false
     html-math-method: mathjax
-    output-dir: ../_working
     output-file: e1-hugo.md
   gfm:
     echo: true
