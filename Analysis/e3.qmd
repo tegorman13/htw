@@ -8,15 +8,17 @@ lightbox: true
 code-fold: true
 cold-tools: true
 execute:
-  cache: true
+  #cache: true
   warning: false
 #keep-md: true
-format:
-  html: default
-  hugo-md:
-    echo: false
-    html-math-method: mathjax
-    output-file: e3-hugo.md
+format: 
+  html:
+    column: 
+      - screen-inset-right
+  # hugo-md:
+  #   echo: false
+  #   html-math-method: mathjax
+  #   output-file: e3-hugo.md
   # gfm:
   #   echo: true
   #   output-file: e3-gfm.md
@@ -97,7 +99,7 @@ cd3tr3 <-get_coef_details(bmm_e3_train, "conditVaried:bandOrderReverse")
 ```{r}
 #| label: fig-e3-train-dev
 #| fig-cap: E3. Deviations from target band during testing without feedback stage. 
-#| eval: FALSE
+#| eval: true
 p1 <- trainE3 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
     stat_summary(geom = "line", fun = mean) +
     stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
@@ -106,14 +108,9 @@ p1 <- trainE3 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
     theme(legend.title=element_blank()) + 
     labs(y = "Deviation", x="Training Block") 
 #ggsave(here("Assets/figs/e3_train_deviation.png"), p1, width = 9, height = 8,bg="white")
+p1
 ```
 
-::: {#fig-e3-train-dev}
-
-![](../Assets/figs/e3_train_deviation.png)
-
-E3. Deviations from target band across training blocks. 
-:::
 
 
 
@@ -181,15 +178,9 @@ E3. A) Deviations from target band during testing without feedback stage. B) Est
 
 ```{r}
 #| label: fig-e3-test-dev
-#| fig-cap: E3. Deviations from target band during testing without feedback stage. 
-#| eval: FALSE
+#| fig-cap: E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
+#| eval: true
 
-pe3td <- testE3 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
-    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
-    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
-    facet_wrap(~bandOrder,ncol=1) +
-  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
-  labs(x="Band", y="Deviation From Target")
 
 condEffects <- function(m,xvar){
   m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
@@ -198,6 +189,15 @@ condEffects <- function(m,xvar){
   theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
   
 }
+
+pe3td <- testE3 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+    facet_wrap(~bandOrder,ncol=1) +
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
+  labs(x="Band", y="Deviation From Target")
+
+
 pe3ce <- bmtd3 |> emmeans( ~condit *bandOrder*bandType) |>
   gather_emmeans_draws() |>
  condEffects(bandType) + labs(y="Absolute Deviation From Band", x="Band Type") + 
@@ -205,22 +205,16 @@ pe3ce <- bmtd3 |> emmeans( ~condit *bandOrder*bandType) |>
 
 p2 <- pe3td + pe3ce + plot_annotation(tag_levels= 'A')
 #ggsave(here::here("Assets/figs", "e3_test-dev.png"), p2, width=9, height=8, bg="white")
-
+p2
 ```
 
-::: {#fig-e3-test-dev}
-
-![](../Assets/figs/e3_test-dev.png)
-
-E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
-:::
 
 
-### Discimination 
+
 
 ```{r}
-#| label: tbl-e3-bmm-vx
-#| tbl-cap: "Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
+##| label: tbl-e3-bmm-vx
+##| tbl-cap: "Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
 
 e3_vxBMM <- brm(vx ~ condit * bandOrder * bandInt + (1 + bandInt|id),
                         data=test,file=paste0(here::here("data/model_cache", "e3_testVxBand_RF_5k")),
@@ -268,18 +262,39 @@ Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Con
 :::
 
 
-
 *Testing Discrimination.* The full results of the discrimination model are presented in @tbl-e3-bmm-dist. For the purposes of assessing group differences in discrimination, only the coefficients including the band variable are of interest. The baseline effect of band represents the slope cofficient for the constant training - original order condition, this effect was significant $\beta$ = `r sc1$estimate`, 95% CrI \[`r sc1$conf.low`, `r sc1$conf.high`\]; pd = `r sc1$pd`. Neither of the two way interactions reached significance, $\beta$ = `r intCoef1$estimate`, 95% CrI \[`r intCoef1$conf.low`, `r intCoef1$conf.high`\]; pd = `r intCoef1$pd`, $\beta$ = `r intCoef2$estimate`, 95% CrI \[`r intCoef2$conf.low`, `r intCoef2$conf.high`\]; pd = `r intCoef2$pd`. However, the three way interaction between training condition, band order, and target band was significant, $\beta$ = `r coef3$estimate`, 95% CrI \[`r coef3$conf.low`, `r coef3$conf.high`\]; pd = `r coef3$pd` - indicating that the varied condition showed a greater slope coefficient on the reverse order bands, compared to the constant condition - this is clearly shown in @fig-e3-test-vx, where the steepness of the best fitting line for the varied-reversed condition is noticably steeper than the other conditions. 
 
+
+```{r}
+#| label: fig-e3-test-vx
+#| fig-cap: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. 
+#| fig-width: 11
+#| fig-height: 10
+##| column: screen-inset-right
+# testE3 |> filter(bandOrder=="Original")|> group_by(id,vb,condit) |> plot_distByCondit()
+# testE3 |> filter(bandOrder=="Reverse")|> group_by(id,vb,condit) |> plot_distByCondit() +ggtitle("test")
+
+testE3 |> group_by(id,vb,condit,bandOrder) |> plot_distByCondit() + 
+   ggh4x::facet_nested_wrap(bandOrder~condit,scale="free_x")
+```
 
 
 ```{r}
 #| label: fig-e3-bmm-vx
 #| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. 
-#| fig-height: 9
-#| fig-width: 12
-#| eval: FALSE
-pe3tv <- testE3 %>% group_by(id,vb,condit,bandOrder) |> plot_distByCondit() + ggh4x::facet_nested_wrap(bandOrder~condit,scale="free_x")
+#| fig-height: 10
+#| fig-width: 11
+##| eval: FALSE
+# pe3tv <- testE3 %>% group_by(id,vb,condit,bandOrder) |> plot_distByCondit() + ggh4x::facet_nested_wrap(bandOrder~condit,scale="free_x")
+
+
+condEffects <- function(m,xvar){
+  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() + 
+  stat_halfeye(alpha=.1, height=.5) +
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+  
+}
 
 pe3vce <- e3_vxBMM |> emmeans( ~condit* bandOrder* bandInt, 
                        at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
@@ -326,108 +341,16 @@ pid_slopes3 <- re |>
     labs(x="Estimated Slope", y="Participant")  + 
     ggh4x::facet_nested_wrap(bandOrder~condit,axes="all",scales="free_y")
 
-p3 <- pe3tv / (pe3vce + pid_den3 + pid_slopes3) + plot_annotation(tag_levels= 'A')
+p3 <- (pe3vce + pid_den3 + pid_slopes3) + plot_annotation(tag_levels= 'A')
+
 #ggsave(here::here("Assets/figs", "e3_test-vx.png"), p3,width=11,height=13, bg="white",dpi=800)
-#p3
-
-  # vbRect<- testE3 |> group_by(vb) |>
-  #   summarise(lowBound=first(bandInt),highBound=first(highBound)) |> 
-  #   mutate(vbn=as.numeric(vb), rectWidth=.2,
-  #          vbLag=vbn-rectWidth,vbLead=vbn+rectWidth)
-  
-  # bandLines4 <- list(geom_segment(data=vbRect,aes(x=vbLag,xend=vbLead,y=highBound,yend=highBound),alpha=1,linetype="dashed"),
-  #                  geom_segment(data=vbRect,aes(x=vbLag,xend=vbLead,y=lowBound,yend=lowBound),alpha=1,linetype="dashed"),
-  #                  geom_text(data=vbRect,aes(x=vbLag-.03,y=lowBound+100,label=vb),angle=90,size=3.5,fontface="bold") )   
-
-# testE3 |>
-#    select(id,condit,bandOrder,vb,band,lowBound,highBound,vx) |>
-#   group_by(id,condit,bandOrder,vb,highBound) |> 
-#   summarize(vx=mean(vx)) |> 
-#   group_by(condit,bandOrder,vb,highBound) |>
-#   summarise(mvx=mean(vx),sdvx=sd(vx), n=n(),se= sdvx/sqrt(n),.groups="drop" ) |>
-#   mutate(vbn=highBound-200, rectWidth=.2,
-#           band_index=as.numeric(factor(vb)),
-#           rectX = as.numeric(condit) ) |>
-#   ggplot(aes(x=condit,y=mvx,group=vb)) +
-#   geom_bar(stat="identity",aes(fill=vb),position="dodge") +
-#   geom_errorbar(aes(ymin=mvx-se,ymax=mvx+se,group=vb),position="dodge",width=.9,alpha=.5) +
-#   geom_segment(aes(x=band_index-.25,xend=rectX+.05,y=highBound,yend=highBound, col=vb,group=vb),
-#                alpha=.8,linetype="dashed",position = "dodge") +
-#   # geom_hline(data=vbRect,aes(yintercept=vbn,col=vb),alpha=.5,linetype="dashed") +
-#   # geom_hline(data=vbRect,aes(yintercept=highBound,col=vb),alpha=.5,linetype="dashed") +
-#   scale_x_discrete(labels = c("Constant", "Varied")) +
-#   scale_y_continuous(expand=expansion(add=100),breaks=round(seq(0,2000,by=200),2)) +
-#   facet_wrap(~bandOrder,ncol=1)
-  # geom_rect(aes(xmin = rectX-.3, xmax = rectX+.3,
-  #               ymin = vbn, ymax = highBound),
-  #           col="black",linetype="dashed",
-  #         position = position_dodge(width = 1),
-  #           alpha = 0.1)  +
-
-
+p3
 
 ```
 
 
 
-```{r}
-#| eval: false
-#| include: false
-
-fe <- fixef(e3_vxBMM)[,1]
-fixed_effect_Intercept <- fe["Intercept"]
-fixed_effect_bandInt <- fe["bandInt"]
-fixed_effect_interaction1 <- fe["conditVaried:bandInt"]
-fixed_effect_interaction2 <- fe["bandOrderReverse:bandInt"]
-fixed_effect_interaction3 <- fe["conditVaried:bandOrderReverse:bandInt"]
-
-re <- data.frame(ranef(e3_vxBMM, pars = "bandInt")$id[, ,'bandInt']) %>% 
-  rownames_to_column("id") %>% 
-  left_join(e3Sbjs, by = "id") %>%
-  mutate(intercept = fixed_effect_Intercept + fe["conditVaried"]*(condit=="Varied") + 
-           fe["bandOrderReverse"]*(bandOrder=="Reverse") +
-           fe["conditVaried:bandOrderReverse"]*(condit=="Varied" & bandOrder=="Reverse"), 
-         adjust = fixed_effect_bandInt + fixed_effect_interaction1 * (condit == "Varied") + 
-         fixed_effect_interaction2 * (bandOrder == "Reverse") + 
-         fixed_effect_interaction3 * (condit == "Varied" & bandOrder == "Reverse"),
-         slope = Estimate + adjust)
-
-slopes <- re |>
-  group_by(condit, bandOrder) |>
-  summarize(
-    intercept = mean(intercept),
-    slope = mean(slope)
-  )
-
-
-plot_data <- e3 |> distinct(condit, bandOrder, bandInt) |> 
-  left_join(slopes, by = c("condit", "bandOrder")) |>
-  mutate(pred_y=intercept + slope*bandInt) |> arrange(condit,bandOrder,bandInt)
-
-
-#a_line <- function(x,intercept,slope) (slope * x) +int
-
-plot_data |> 
-  ggplot(aes(x=bandInt,y=pred_y,color=interaction(condit, bandOrder))) +
-  geom_point() +
-  geom_abline(
-    mapping = aes(
-      intercept = intercept,
-      slope = slope, 
-      color = interaction(condit, bandOrder)
-    ),size = 1.2) + 
-  coord_equal() + theme(legend.title=element_blank()) 
-
-```
 
 
 
-{{< pagebreak >}}
 
-::: {#fig-e3-test-vx}
-
-![](../Assets/figs/e3_test-vx.png)
-
-Experiment 3. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.
-
-:::

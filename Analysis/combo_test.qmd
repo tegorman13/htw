@@ -79,13 +79,20 @@ ep1 <- d |>
   filter(expMode2 == "Test") |>
   group_by(condit, bandType, fb, bandOrder, vb) |>  # No need for 'id' if not used later
   summarise(se_dist = sd(dist) / sqrt(n()),dist = mean(dist)) |>
-  ggplot(aes(x = condit, y = dist, fill = vb, pattern=bandType)) +
+  ggplot(aes(x = condit, y = dist, fill = vb,
+             pattern=bandType,
+             pattern_density=0.35,
+             pattern_fill=bandType, 
+             ppatern_angle=bandType,
+            )) +
    geom_bar_pattern(stat = "identity", 
+                   # pattern_density=.25,
                     position = position_dodge()) + 
   geom_errorbar(aes(ymin = dist - se_dist, ymax = dist + se_dist),position = position_dodge()) +
   facet_wrap2(~fb*bandOrder,axes="all") +
   labs(title="Testing Deviation",pattern = "Band Type") +
-   scale_pattern_manual(values = c("stripe", "circle"))
+  # scale_pattern_manual(values = c("stripe", "circle"))
+  scale_pattern_spacing_discrete(range = c(0.01, 0.05)) 
 
 
 ep2 <- d |>
@@ -94,6 +101,7 @@ ep2 <- d |>
   summarise(se_dist = sd(dist) / sqrt(n()),dist = mean(dist)) |>
   ggplot(aes(x = vb, y = dist, fill = condit, pattern=bandType)) +
    geom_bar_pattern(stat = "identity", 
+                    
                     position = position_dodge()) + 
   geom_errorbar(aes(ymin = dist - se_dist, ymax = dist + se_dist),position = position_dodge()) +
   facet_wrap2(~fb*bandOrder,axes="all") +

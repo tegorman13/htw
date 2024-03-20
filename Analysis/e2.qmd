@@ -9,15 +9,15 @@ code-fold: true
 cold-tools: true
 lightbox: true
 execute:
-  cache: true
+  #cache: true
   warning: false
 # keep-md: true
 format:
   html: default
-  hugo-md:
-    echo: false
-    html-math-method: mathjax
-    output-file: e2-hugo.md
+  # hugo-md:
+  #   echo: false
+  #   html-math-method: mathjax
+  #   output-file: e2-hugo.md
   # gfm:
   #   echo: true
   #   output-file: e2-gfm.md
@@ -86,7 +86,7 @@ digraph {
 ```{r}
 #| label: fig-e2-train-dev
 #| fig-cap: E2. Deviations from target band across training blocks. 
-#| eval: FALSE
+#| eval: TRUE
 p1 <- trainE2 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
     stat_summary(geom = "line", fun = mean) +
     stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
@@ -95,15 +95,9 @@ p1 <- trainE2 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
     theme(legend.title=element_blank()) + 
     labs(y = "Deviation", x="Training Block") 
 #ggsave(here("Assets/figs/e2_train_deviation.png"), p1, width = 8, height = 4,bg="white")
-
+p1
 ```
 
-::: {#fig-e2-train-dev}
-
-![](../Assets/figs/e2_train_deviation.png)
-
-E2. Deviations from target band across training blocks. 
-:::
 
 
 ```{r}
@@ -178,20 +172,24 @@ cd2ted3 <-get_coef_details(bmtd2, "conditVaried:bandTypeExtrapolation")
 
 ```{r}
 #| label: fig-e2-test-dev
-#| fig-cap: E2. Deviations from target band during testing without feedback stage. 
-#| eval: FALSE
-pe2td <- testE2 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
-    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
-    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
-  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
-  labs(x="Band", y="Deviation From Target")
+#| fig-cap:  A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
+#| eval: TRUE
+
 
 condEffects <- function(m,xvar){
   m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
   stat_dist_pointinterval() + 
   stat_halfeye(alpha=.1, height=.5) +
   theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+  
 }
+pe2td <- testE2 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
+  labs(x="Band", y="Deviation From Target")
+
+
 
 pe2ce <- bmtd2 |> emmeans( ~condit + bandType) |>
   gather_emmeans_draws() |>
@@ -199,17 +197,12 @@ pe2ce <- bmtd2 |> emmeans( ~condit + bandType) |>
 
 p2 <- (pe2td + pe2ce) + plot_annotation(tag_levels= 'A')
 #ggsave(here::here("Assets/figs", "e2_test-dev.png"), p2, width=8, height=4, bg="white")
+p2
 ```
   
 
 
 
-::: {#fig-e2-test-dev}
-
-![](../Assets/figs/e2_test-dev.png)
-
-E2. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
-:::
 
 
 ```{r}
@@ -243,25 +236,34 @@ Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Con
 
 
     
-
-
-
-
-
 *Testing Discrimination.* Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. The full model results are shown in @tbl-e2-bmm-vx. The overall slope on target velocity band predictor was significantly positive, ($\beta$ = `r sc2$estimate`, 95% CrI \[`r sc2$conf.low`, `r sc2$conf.high`\]; pd= `r sc2$pd`), indicating that participants exhibited discrimination between bands. The interaction between slope and condition was not significant, ($\beta$ = `r intCoef2$estimate`, 95% CrI \[`r intCoef2$conf.low`, `r intCoef2$conf.high`\]; pd= `r intCoef2$pd`), suggesting that the two conditions did not differ in their ability to discriminate between bands (see @fig-e2-test-vx). 
 
 
 
+```{r}
+#| label: fig-e2-test-vx
+#| fig-cap: E2 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. 
+#| fig-width: 11
+#| fig-height: 9
+testE2 %>% group_by(id,vb,condit) |> plot_distByCondit()
+
+```
 
 
 ```{r}
-#| label: e2_test-vx
+#| label: tbl-e2-bmm-vx
 #| fig-cap: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. 
-#| fig-height: 16
-#| fig-width: 12
-#| eval: FALSE
+#| fig-height: 12
+#| fig-width: 11
+#| eval: TRUE
 
-pe2tv <- testE2 %>% group_by(id,vb,condit) |> plot_distByCondit()
+
+condEffects <- function(m,xvar){
+  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() + 
+  stat_halfeye(alpha=.1, height=.5) +
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+}
 
 pe2vce <- e2_vxBMM |> emmeans( ~condit + bandInt,re_formula=NA, 
                        at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
@@ -300,20 +302,11 @@ pid_slopes2 <- re |>  mutate(id=reorder(id,slope)) |>
     labs(x="Estimated Slope", y="Participant")  + 
     ggh4x::facet_wrap2(~condit,axes="all",scales="free_y")
 
-p3 <- pe2tv / (pe2vce + pid_den2 + pid_slopes2) + plot_annotation(tag_levels= 'A')
+p3 <- (pe2vce + pid_den2 + pid_slopes2) + plot_annotation(tag_levels= 'A')
 #ggsave(here::here("Assets/figs", "e2_test-vx.png"), p3,width=9,height=11, bg="white",dpi=600)
-#p3
+p3
 ```
 
-{{< pagebreak >}}
-
-::: {#fig-e2-test-vx}
-
-![](../Assets/figs/e2_test-vx.png)
-
-Experiment 2. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.
-
-:::
 
 
 

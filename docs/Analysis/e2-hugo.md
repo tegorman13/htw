@@ -11,7 +11,6 @@ code-fold: true
 cold-tools: true
 lightbox: true
 execute:
-  cache: true
   warning: false
 format:
   html: default
@@ -115,7 +114,9 @@ Figure 1: Experiment 2 Design. Constant and Varied participants complete differ
 
 ### Results
 
-<img src="../Assets/figs/e2_train_deviation.png" id="fig-e2-train-dev"
+<img
+src="e2.markdown_strict_files/figure-markdown_strict/fig-e2-train-dev-1.png"
+id="fig-e2-train-dev"
 alt="Figure 2: E2. Deviations from target band across training blocks." />
 <div id="tbl-e2-train-dist">
 
@@ -147,8 +148,10 @@ Table 2: **Experiment 2 testing accuracy**. Main effects of condition and band 
 
 *Testing Accuracy.* The analysis of testing accuracy examined deviations from the target band as influenced by training condition (Varied vs. Constant) and band type (training vs. extrapolation bands). The results, summarized in <a href="#tbl-e2-bmm-dist" class="quarto-xref">Table 2</a>, reveal no significant main effect of training condition ($\beta$ = -20.58, 95% CrI \[-72.94, 33.08\]; pd = 77.81%). However, the interaction between training condition and band type was significant ($\beta$ = 82, 95% CrI \[41.89, 121.31\]; pd = 100%), with the varied group showing disproportionately larger deviations compared to the constant group on the extrapolation bands (see <a href="#fig-e2-test-dev" class="quarto-xref">Figure 3</a>).
 
-<img src="../Assets/figs/e2_test-dev.png" id="fig-e2-test-dev"
-alt="Figure 3: E2. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals." />
+<img
+src="e2.markdown_strict_files/figure-markdown_strict/fig-e2-test-dev-1.png"
+id="fig-e2-test-dev"
+alt="Figure 3: A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals." />
 <div id="tbl-e2-bmm-vx">
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
@@ -161,12 +164,21 @@ alt="Figure 3: E2. A) Deviations from target band during testing without feedba
 Table 3: Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band
 </div>
 
-*Testing Discrimination.* Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. The full model results are shown in <a href="#tbl-e2-bmm-vx" class="quarto-xref">Table 3</a>. The overall slope on target velocity band predictor was significantly positive, ($\beta$ = 0.71, 95% CrI \[0.58, 0.84\]; pd= 100%), indicating that participants exhibited discrimination between bands. The interaction between slope and condition was not significant, ($\beta$ = -0.06, 95% CrI \[-0.24, 0.13\]; pd= 72.67%), suggesting that the two conditions did not differ in their ability to discriminate between bands (see <a href="#fig-e2-test-vx" class="quarto-xref">Figure 4</a>).
+*Testing Discrimination.* Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. The full model results are shown in <a href="#tbl-e2-bmm-vx" class="quarto-xref">Table 4</a>. The overall slope on target velocity band predictor was significantly positive, ($\beta$ = 0.71, 95% CrI \[0.58, 0.84\]; pd= 100%), indicating that participants exhibited discrimination between bands. The interaction between slope and condition was not significant, ($\beta$ = -0.06, 95% CrI \[-0.24, 0.13\]; pd= 72.67%), suggesting that the two conditions did not differ in their ability to discriminate between bands (see <a href="#fig-e2-test-vx" class="quarto-xref">Figure 4</a>).
 
-
+<img
+src="e2.markdown_strict_files/figure-markdown_strict/fig-e2-test-vx-1.png"
+id="fig-e2-test-vx"
+alt="Figure 4: E2 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band." />
+<div id="tbl-e2-bmm-vx">
 
-<img src="../Assets/figs/e2_test-vx.png" id="fig-e2-test-vx"
-alt="Figure 4: Experiment 2. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands." />
+<figure>
+<img src="e2.markdown_strict_files/figure-markdown_strict/tbl-e2-bmm-vx-1.png" width="1056" alt="Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands." />
+<figcaption aria-hidden="true">Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.</figcaption>
+</figure>
+
+Table 4
+</div>
 
 ## E2 Discussion
 

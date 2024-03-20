@@ -1,71 +1,24 @@
 ---
-title: "HTW E1"
-author:
-  - name: Thomas Gorman
-    corresponding: true
+title: "Experiment 1"
 categories: [Analyses, R, Bayesian]
 toc: false
 format-links: false
 page-layout: full
-cache: true
 code-fold: true
 cold-tools: true
 lightbox: true
-# execute: 
-#   cache: true
-#keep-md: true
+execute:
+  #cache: true
+  warning: false
 format:
   html: default
-  # hikmah-manuscript-pdf:
+  # hugo-md:
   #   echo: false
-  #   output-file: "hikmah-e1.pdf"
-  #   mainfont: "Linux Libertine O"
-  #   mainfontoptions:
-  #     - "Numbers=Proportional"
-  #     - "Numbers=OldStyle"
-  #   mathfont: "Libertinus Math"
-  # hikmah-pdf:
-  #   echo: false
-  #   cite-method: citeproc
-  #   output-file: "hikmah.pdf"
-  #   mainfont: "Linux Libertine O"
-  #   mainfontoptions:
-  #     - "Numbers=Proportional"
-  #     - "Numbers=OldStyle"
-  #   sansfont: "IBM Plex Sans"
-  #   mathfont: "Libertinus Math"
-  #   geometry:
-  #     - top=1in     
-  #     - bottom=1in  
-  #     - left=1in    
-  #     - right=1in  
-  #     - heightrounded
-  #   # linestretch: 1.05
-  #   include-in-header:
-  #     # The \everydisplay thing makes all math blocks use \small font
-  #     text: |
-  #       \usepackage{mathtools}
-  #       \everydisplay\expandafter{\the\everydisplay\small}
-  #       \usepackage{float}
-  #       \floatplacement{figure}{H}
-  #       \floatplacement{table}{H}
-  # pdf: 
-  #   echo: false
-  #   documentclass: article
-  #   papersize: a4
-  #   geometry:
-  #     - left=2cm
-  #     - right=2cm
-  #     - top=2cm
-  #     - bottom=2cm
-  # ipynb: default
-  hugo-md:
-    echo: false
-    html-math-method: mathjax
-    output-file: e1-hugo.md
-  gfm:
-    echo: true
-    output-file: e1-gfm.md
+  #   html-math-method: mathjax
+  #   output-file: e1-hugo.md
+  # gfm:
+  #   echo: true
+  #   output-file: e1-gfm.md
   # docusaurus-md:
   #   echo: true
   #   output-file: e1-docusaurus.md
@@ -118,7 +71,7 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 ```{r}
 #| label: fig-e1-train-dev
 #| fig-cap: E1. Deviations from target band across training blocks. 
-#| eval: FALSE
+#| eval: true
 p1 <- trainE1 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
     stat_summary(geom = "line", fun = mean) +
     stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
@@ -127,15 +80,10 @@ p1 <- trainE1 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
     theme(legend.title=element_blank()) + 
     labs(y = "Deviation", x="Training Block") 
 #ggsave(here("Assets/figs/e1_train_deviation.png"), p1, width = 8, height = 4,bg="white")
-
+p1
 ```
 
-::: {#fig-e1-train-dev}
 
-![](../Assets/figs/e1_train_deviation.png)
-
-E1. Deviations from target band during training
-:::
 
 ```{r}
 ##| label: tbl-e1-train-dist
@@ -230,7 +178,7 @@ cdted3 <-get_coef_details(bmtd, "conditVaried:bandTypeExtrapolation")
 ```{r}
 #| label: fig-e1-test-dev
 #| fig-cap: E1. Deviations from target band during testing without feedback stage. 
-#| eval: FALSE
+#| eval: TRUE
 pe1td <- testE1 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
@@ -251,7 +199,7 @@ pe1ce <- bmtd |> emmeans( ~condit + bandType) |>
 
 p2 <- (pe1td + pe1ce) + plot_annotation(tag_levels= 'A')
 #ggsave(here::here("Assets/figs", "e1_test-dev.png"), p2, width=8, height=4, bg="white")
-
+p2
 
 ```
 
@@ -295,16 +243,33 @@ Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Con
 :::
 
 
-Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. See @tbl-e1-bmm-vx for the full model results. The estimated coefficient for training condition ($\beta$ = `r cd1$estimate`, 95% CrI \[`r cd1$conf.low`, `r cd1$conf.high`\]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band ($\beta$ = `r sc1$estimate` 95% CrI \[`r sc1$conf.low`, `r sc1$conf.high`\]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition ($\beta$ = `r intCoef1$estimate`, 95% CrI \[`r intCoef1$conf.low`, `r intCoef1$conf.high`\]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition. This difference is depicted visually in @fig-e1-test-vx.
+Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. See @tbl-e1-bmm-vx for the full model results. The estimated coefficient for training condition ($\beta$ = `r cd1$estimate`, 95% CrI \[`r cd1$conf.low`, `r cd1$conf.high`\]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the coefficient on the Band predictor ($\beta$ = `r sc1$estimate` 95% CrI \[`r sc1$conf.low`, `r sc1$conf.high`\]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition ($\beta$ = `r intCoef1$estimate`, 95% CrI \[`r intCoef1$conf.low`, `r intCoef1$conf.high`\]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition. This difference is depicted visually in @fig-e1-test-vx.
+
+
 
 ```{r}
 #| label: fig-e1-test-vx
-#| fig-cap: Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. 
-#| fig-height: 16
-#| fig-width: 12
-#| eval: FALSE
+#| fig-cap: E1 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. 
+#| fig-width: 11
+#| fig-height: 9
+ 
+testE1 %>% group_by(id,vb,condit) |> plot_distByCondit()
 
-pe1tv <- testE1 %>% group_by(id,vb,condit) |> plot_distByCondit()
+```
+
+
+
+
+
+```{r}
+#| label: tbl-e1-bmm-vx
+#| fig-cap: Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. 
+#| fig-height: 12
+#| fig-width: 11
+#| eval: TRUE
+
+
+
 
 pe1vce <- e1_vxBMM |> emmeans( ~condit + bandInt,re_formula=NA, 
                        at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
@@ -344,22 +309,12 @@ pid_slopes1 <- re |>  mutate(id=reorder(id,slope)) |>
     labs(x="Estimated Slope", y="Participant")  + 
     ggh4x::facet_wrap2(~condit,axes="all",scales="free_y")
 
-p3 <- pe1tv / (pe1vce + pid_den1 + pid_slopes1) + plot_annotation(tag_levels= 'A')
+
+p3 <- (pe1vce + pid_den1 + pid_slopes1) + plot_annotation(tag_levels= 'A')
 #ggsave(here::here("Assets/figs", "e1_test-vx.png"), p3,width=9,height=11, bg="white",dpi=600)
 p3
 ```
 
-{{< pagebreak >}}
-
-::: {#fig-e1-test-vx}
-
-![](../Assets/figs/e1_test-vx.png)
-
-Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.
-
-:::
-
-{{< pagebreak >}}
 
 
 ## E1 Discussion  
@@ -367,11 +322,3 @@ Experiment 1. Conditional effect of training condition and Band. Ribbons indicat
 In Experiment 1, we investigated how variability in training influenced participants' ability learn and extrapolate in a visuomotor task. Our findings that training with variable conditions  rresulted in lower final training performance is consistent with much of the prior researchon the influence of training variability [@ravivHowVariabilityShapes2022; @soderstromLearningPerformanceIntegrative2015], and is particularly unsurprising in the present work, given that the constant group received three times the amount of training on the velocity band common to the two conditions. 
 
 More importantly, the varied training group exhibited significantly larger deviations from the target velocity bands during the testing phase, particularly for the extrapolation bands that were not encountered by either condition during training.
-
-
-
-
-## References
-
-::: {#refs}
-:::

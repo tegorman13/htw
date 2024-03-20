@@ -197,13 +197,7 @@ pe1td <- testE1 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
   theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
   labs(x="Band", y="Deviation From Target")
 
-condEffects <- function(m,xvar){
-  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
-  stat_dist_pointinterval() + 
-  stat_halfeye(alpha=.1, height=.5) +
-  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
-  
-}
+
 
 pe1ce <- bmtd |> emmeans( ~condit + bandType) |>
   gather_emmeans_draws() |>
@@ -249,7 +243,7 @@ Finally, to assess the ability of both conditions to discriminate
 between velocity bands, we fit a model predicting velocity as a function
 of training condition and velocity band, with random intercepts and
 random slopes for each participant. See
-<a href="#tbl-e1-bmm-vx" class="quarto-xref">Table 3</a> for the full
+<a href="#tbl-e1-bmm-vx" class="quarto-xref">Table 4</a> for the full
 model results. The estimated coefficient for training condition ($\beta$
 = 164.05, 95% CrI \[45.5, 278.85\]) suggests that the varied group tends
 to produce harder throws than the constant group, but is not in and of
@@ -263,13 +257,28 @@ slope and condition ($\beta$ = -0.14, 95% CrI \[-0.26, -0.01\]),
 suggests that the discrimination was somewhat modulated by training
 condition, with the varied participants showing less sensitivity between
 bands than the constant condition. This difference is depicted visually
-in <a href="#fig-e1-test-vx" class="quarto-xref">Figure 3</a>.
+in <a href="#fig-e1-test-vx" class="quarto-xref">Figure 4</a>.
 
 <details class="code-fold">
 <summary>Code</summary>
 
 ``` r
-pe1tv <- testE1 %>% group_by(id,vb,condit) |> plot_distByCondit()
+testE1 %>% group_by(id,vb,condit) |> plot_distByCondit()
+```
+
+</details>
+![](e1_files/figure-commonmark/fig-e1-test-vx-1.png)
+
+<details class="code-fold">
+<summary>Code</summary>
+
+``` r
+condEffects <- function(m,xvar){
+  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() + 
+  stat_halfeye(alpha=.1, height=.5) +
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+}
 
 pe1vce <- e1_vxBMM |> emmeans( ~condit + bandInt,re_formula=NA, 
                        at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
@@ -309,12 +318,22 @@ pid_slopes1 <- re |>  mutate(id=reorder(id,slope)) |>
     labs(x="Estimated Slope", y="Participant")  + 
     ggh4x::facet_wrap2(~condit,axes="all",scales="free_y")
 
-p3 <- pe1tv / (pe1vce + pid_den1 + pid_slopes1) + plot_annotation(tag_levels= 'A')
+
+p3 <- (pe1vce + pid_den1 + pid_slopes1) + plot_annotation(tag_levels= 'A')
 #ggsave(here::here("Assets/figs", "e1_test-vx.png"), p3,width=9,height=11, bg="white",dpi=600)
 p3
 ```
 
 </details>
+
+<div class="cell-output-display">
+
+![Experiment 1. Conditional effect of training condition and Band.
+Ribbons indicate 95% HDI. The steepness of the lines serves as an
+indicator of how well participants discriminated between velocity
+bands.](e1_files/figure-commonmark/tbl-e1-bmm-vx-1.png)
+
+</div>
 
 
 
@@ -337,8 +356,6 @@ More importantly, the varied training group exhibited significantly
 larger deviations from the target velocity bands during the testing
 phase, particularly for the extrapolation bands that were not
 encountered by either condition during training.
-
-## References
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0" line-spacing="2">

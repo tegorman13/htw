@@ -225,7 +225,7 @@ window.Quarto = {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Analysis/e1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HTW E1</span></a>
+ <span class="menu-text">Experiment 1</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -427,7 +427,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/e1.html">Analyses</a></li><li class="breadcrumb-item"><a href="../Analysis/e3.html">Experiment 3</a></li></ol></nav><div class="quarto-title">
+<main class="content page-columns page-full column-body" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/e1.html">Analyses</a></li><li class="breadcrumb-item"><a href="../Analysis/e3.html">Experiment 3</a></li></ol></nav><div class="quarto-title">
 <h1 class="title">Experiment 3</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Analyses</div>
@@ -438,7 +438,7 @@ window.Quarto = {
 
 
 
-<div class="quarto-title-meta column-page-right">
+<div class="quarto-title-meta column-body">
 
     
   
@@ -473,7 +473,7 @@ window.Quarto = {
 </div>
 <section id="methods-procedure" class="level3"><h3 class="anchored" data-anchor-id="methods-procedure">Methods &amp; Procedure</h3>
 <p>The major adjustment of Experiment 3 is for participants to receive ordinal feedback during training, in contrast to the continuous feedback of the prior experiments. After each training throw, participants are informed whether a throw was too soft, too hard, or correct (i.e.&nbsp;within the target velocity range). All other aspects of the task and design are identical to Experiments 1 and 2. We utilized the order of training and testing bands from both of the prior experiments, thus assigning participants to both an order condition (Original or Reverse) and a training condition (Constant or Varied). Participants were once again recruited from the online Indiana University Introductory Psychology Course pool. Following exclusions, 195 participants were included in the final analysis, n=51 in the Constant-Original condition, n=59 in the Constant-Reverse condition, n=39 in the Varied-Original condition, and n=46 in the Varied-Reverse condition.</p>
-</section><section id="results" class="level3"><h3 class="anchored" data-anchor-id="results">Results</h3>
+</section><section id="results" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="results">Results</h3>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bmm_e3_train</span> <span class="op">&lt;-</span> <span class="va">trainE3_max</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">brm</span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">condit</span><span class="op">*</span><span class="va">bandOrder</span>, </span>
@@ -548,8 +548,8 @@ Table&nbsp;1: <strong>Experiment 3 - End of training performance</strong>. The I
 </div>
 </figure>
 </div>
-<p><em>Training</em>. <a href="#fig-e3-train-dev" class="quarto-xref">Figure&nbsp;1</a> displays the average deviations from the target band across training blocks, and <a href="#tbl-e3-train-dist" class="quarto-xref">Table&nbsp;1</a> shows the results of the Bayesian regression model predicting the deviation from the common band at the end of training (600-800 for reversed order, and 800-1000 for original order conditions). The main effect of training condition is significant, with the varied condition showing larger deviations ( <span class="math inline">\(\beta\)</span> = 64.93, 95% CrI [36.99, 90.8]; pd = 100%). The main effect of band order is not significant $ = 1.11, 95% CrI [-16.02, 18.16]; pd = 55.4%, however the interaction between training condition and band order is significant, with the varied condition showing greater accuracy in the reverse order condition ( <span class="math inline">\(\beta\)</span> = -77.02, 95% CrI [-114.16, -39.61]; pd = 100%).</p>
-<div class="cell">
+<p><em>Training</em>. <a href="#fig-e3-train-dev" class="quarto-xref">Figure&nbsp;1</a> displays the average deviations from the target band across training blocks, and <a href="#tbl-e3-train-dist" class="quarto-xref">Table&nbsp;1</a> shows the results of the Bayesian regression model predicting the deviation from the common band at the end of training (600-800 for reversed order, and 800-1000 for original order conditions). The main effect of training condition is significant, with the varied condition showing larger deviations ( <span class="math inline">\(\beta\)</span> = 64.93, 95% CrI [36.99, 90.8]; pd = 100%). The main effect of band order is not significant <span class="math inline">\(\beta\)</span> = 1.11, 95% CrI [-16.02, 18.16]; pd = 55.4%, however the interaction between training condition and band order is significant, with the varied condition showing greater accuracy in the reverse order condition ( <span class="math inline">\(\beta\)</span> = -77.02, 95% CrI [-114.16, -39.61]; pd = 100%).</p>
+<div class="cell page-columns page-full">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="va">trainE3</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Trial_Bin</span>, y <span class="op">=</span> <span class="va">dist</span>, color <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"line"</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"errorbar"</span>, fun.data <span class="op">=</span> <span class="va">mean_se</span>, width <span class="op">=</span> <span class="fl">.4</span>, alpha <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span> <span class="op">+</span></span>
@@ -557,16 +557,18 @@ Table&nbsp;1: <strong>Experiment 3 - End of training performance</strong>. The I
 <span>    <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">nbins</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">theme</span><span class="op">(</span>legend.title<span class="op">=</span><span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Deviation"</span>, x<span class="op">=</span><span class="st">"Training Block"</span><span class="op">)</span> </span>
-<span><span class="co">#ggsave(here("Assets/figs/e3_train_deviation.png"), p1, width = 9, height = 8,bg="white")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div id="fig-e3-train-dev" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e3-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../Assets/figs/e3_train_deviation.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="../Assets/figs/e3_train_deviation.png" class="img-fluid figure-img"></a>
+<span><span class="co">#ggsave(here("Assets/figs/e3_train_deviation.png"), p1, width = 9, height = 8,bg="white")</span></span>
+<span><span class="va">p1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display page-columns page-full">
+<div id="fig-e3-train-dev" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full"><div aria-describedby="fig-e3-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<a href="e3_files/figure-html/fig-e3-train-dev-1.png" class="lightbox page-columns page-full" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="e3_files/figure-html/fig-e3-train-dev-1.png" class="img-fluid figure-img column-screen-inset-right" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: E3. Deviations from target band across training blocks.
+Figure&nbsp;1: E3. Deviations from target band during testing without feedback stage.
 </figcaption></figure>
+</div>
+</div>
 </div>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#options(brms.backend="cmdstanr",mc.cores=4)</span></span>
@@ -684,44 +686,47 @@ Table&nbsp;2: <strong>Experiment 3 testing accuracy</strong>. Main effects of co
 
 E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
 ::: -->
-<div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pe3td</span> <span class="op">&lt;-</span> <span class="va">testE3</span> <span class="op">|&gt;</span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">vb</span>, y <span class="op">=</span> <span class="va">dist</span>,fill<span class="op">=</span><span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"bar"</span>, position<span class="op">=</span><span class="fu">position_dodge</span><span class="op">(</span><span class="op">)</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"errorbar"</span>, position<span class="op">=</span><span class="fu">position_dodge</span><span class="op">(</span><span class="fl">.9</span><span class="op">)</span>, fun.data <span class="op">=</span> <span class="va">mean_se</span>, width <span class="op">=</span> <span class="fl">.4</span>, alpha <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>    <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">bandOrder</span>,ncol<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme</span><span class="op">(</span>legend.title<span class="op">=</span><span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Band"</span>, y<span class="op">=</span><span class="st">"Deviation From Target"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">condEffects</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">m</span>,<span class="va">xvar</span><span class="op">)</span><span class="op">{</span></span>
+<div class="cell page-columns page-full">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">condEffects</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">m</span>,<span class="va">xvar</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">m</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="op">{</span><span class="op">{</span><span class="va">xvar</span><span class="op">}</span><span class="op">}</span>, y <span class="op">=</span> <span class="va">.value</span>, color <span class="op">=</span> <span class="va">condit</span>, fill <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">stat_dist_pointinterval</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">stat_halfeye</span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">.1</span>, height<span class="op">=</span><span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.title<span class="op">=</span><span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> </span>
 <span>  </span>
 <span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">pe3td</span> <span class="op">&lt;-</span> <span class="va">testE3</span> <span class="op">|&gt;</span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">vb</span>, y <span class="op">=</span> <span class="va">dist</span>,fill<span class="op">=</span><span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"bar"</span>, position<span class="op">=</span><span class="fu">position_dodge</span><span class="op">(</span><span class="op">)</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"errorbar"</span>, position<span class="op">=</span><span class="fu">position_dodge</span><span class="op">(</span><span class="fl">.9</span><span class="op">)</span>, fun.data <span class="op">=</span> <span class="va">mean_se</span>, width <span class="op">=</span> <span class="fl">.4</span>, alpha <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">bandOrder</span>,ncol<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span>legend.title<span class="op">=</span><span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Band"</span>, y<span class="op">=</span><span class="st">"Deviation From Target"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
 <span><span class="va">pe3ce</span> <span class="op">&lt;-</span> <span class="va">bmtd3</span> <span class="op">|&gt;</span> <span class="fu">emmeans</span><span class="op">(</span> <span class="op">~</span><span class="va">condit</span> <span class="op">*</span><span class="va">bandOrder</span><span class="op">*</span><span class="va">bandType</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">gather_emmeans_draws</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span> <span class="fu">condEffects</span><span class="op">(</span><span class="va">bandType</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>y<span class="op">=</span><span class="st">"Absolute Deviation From Band"</span>, x<span class="op">=</span><span class="st">"Band Type"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span> <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">bandOrder</span>,ncol<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">pe3td</span> <span class="op">+</span> <span class="va">pe3ce</span> <span class="op">+</span> <span class="fu">plot_annotation</span><span class="op">(</span>tag_levels<span class="op">=</span> <span class="st">'A'</span><span class="op">)</span></span>
-<span><span class="co">#ggsave(here::here("Assets/figs", "e3_test-dev.png"), p2, width=9, height=8, bg="white")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div id="fig-e3-test-dev" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e3-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../Assets/figs/e3_test-dev.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="../Assets/figs/e3_test-dev.png" class="img-fluid figure-img"></a>
+<span><span class="co">#ggsave(here::here("Assets/figs", "e3_test-dev.png"), p2, width=9, height=8, bg="white")</span></span>
+<span><span class="va">p2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display page-columns page-full">
+<div id="fig-e3-test-dev" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full"><div aria-describedby="fig-e3-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<a href="e3_files/figure-html/fig-e3-test-dev-1.png" class="lightbox page-columns page-full" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="e3_files/figure-html/fig-e3-test-dev-1.png" class="img-fluid figure-img column-screen-inset-right" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
 </figcaption></figure>
 </div>
-</section><section id="discimination" class="level3"><h3 class="anchored" data-anchor-id="discimination">Discimination</h3>
-<div id="tbl-e3-bmm-vx" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e3-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs.&nbsp;Varied) and Velocity Band
-</figcaption><div aria-describedby="tbl-e3-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">e3_vxBMM</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandOrder</span> <span class="op">*</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">##| label: tbl-e3-bmm-vx</span></span>
+<span><span class="co">##| tbl-cap: "Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"</span></span>
+<span></span>
+<span><span class="va">e3_vxBMM</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandOrder</span> <span class="op">*</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
 <span>                        data<span class="op">=</span><span class="va">test</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/model_cache"</span>, <span class="st">"e3_testVxBand_RF_5k"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                        iter<span class="op">=</span><span class="fl">5000</span>,chains<span class="op">=</span><span class="fl">4</span>,silent<span class="op">=</span><span class="fl">0</span>,</span>
 <span>                        control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta<span class="op">=</span><span class="fl">0.94</span>, max_treedepth<span class="op">=</span><span class="fl">13</span><span class="op">)</span><span class="op">)</span></span>
@@ -747,11 +752,9 @@ Table&nbsp;3: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of 
 <span><span class="va">coef3</span> <span class="op">&lt;-</span> <span class="fu">get_coef_details</span><span class="op">(</span><span class="va">e3_vxBMM</span>,<span class="st">"conditVaried:bandOrderReverse:bandInt"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</figure>
-</div>
 <div id="tbl-e3-bmm-vx" class="striped hover sm quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e3-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs.&nbsp;Varied) and Velocity Band
+Table&nbsp;3: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs.&nbsp;Varied) and Velocity Band
 </figcaption><div aria-describedby="tbl-e3-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table-striped table-hover table-sm small table">
 <colgroup>
@@ -831,8 +834,36 @@ Table&nbsp;4: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of 
 </figure>
 </div>
 <p><em>Testing Discrimination.</em> The full results of the discrimination model are presented in <a href="#tbl-e3-bmm-dist" class="quarto-xref">Table&nbsp;2</a>. For the purposes of assessing group differences in discrimination, only the coefficients including the band variable are of interest. The baseline effect of band represents the slope cofficient for the constant training - original order condition, this effect was significant <span class="math inline">\(\beta\)</span> = 0.49, 95% CrI [0.36, 0.62]; pd = 100%. Neither of the two way interactions reached significance, <span class="math inline">\(\beta\)</span> = -0.04, 95% CrI [-0.23, 0.15]; pd = 66.63%, <span class="math inline">\(\beta\)</span> = -0.1, 95% CrI [-0.27, 0.08]; pd = 86.35%. However, the three way interaction between training condition, band order, and target band was significant, <span class="math inline">\(\beta\)</span> = 0.42, 95% CrI [0.17, 0.7]; pd = 99.96% - indicating that the varied condition showed a greater slope coefficient on the reverse order bands, compared to the constant condition - this is clearly shown in <a href="#fig-e3-test-vx" class="quarto-xref">Figure&nbsp;3</a>, where the steepness of the best fitting line for the varied-reversed condition is noticably steeper than the other conditions.</p>
-<div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pe3tv</span> <span class="op">&lt;-</span> <span class="va">testE3</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">vb</span>,<span class="va">condit</span>,<span class="va">bandOrder</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">plot_distByCondit</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggh4x</span><span class="fu">::</span><span class="fu"><a href="https://teunbrand.github.io/ggh4x/reference/facet_nested_wrap.html">facet_nested_wrap</a></span><span class="op">(</span><span class="va">bandOrder</span><span class="op">~</span><span class="va">condit</span>,scale<span class="op">=</span><span class="st">"free_x"</span><span class="op">)</span></span>
+<div class="cell page-columns page-full">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">##| column: screen-inset-right</span></span>
+<span><span class="co"># testE3 |&gt; filter(bandOrder=="Original")|&gt; group_by(id,vb,condit) |&gt; plot_distByCondit()</span></span>
+<span><span class="co"># testE3 |&gt; filter(bandOrder=="Reverse")|&gt; group_by(id,vb,condit) |&gt; plot_distByCondit() +ggtitle("test")</span></span>
+<span></span>
+<span><span class="va">testE3</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">vb</span>,<span class="va">condit</span>,<span class="va">bandOrder</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">plot_distByCondit</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>   <span class="fu">ggh4x</span><span class="fu">::</span><span class="fu"><a href="https://teunbrand.github.io/ggh4x/reference/facet_nested_wrap.html">facet_nested_wrap</a></span><span class="op">(</span><span class="va">bandOrder</span><span class="op">~</span><span class="va">condit</span>,scale<span class="op">=</span><span class="st">"free_x"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display page-columns page-full">
+<div id="fig-e3-test-vx" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full"><div aria-describedby="fig-e3-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<a href="e3_files/figure-html/fig-e3-test-vx-1.png" class="lightbox page-columns page-full" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="e3_files/figure-html/fig-e3-test-vx-1.png" class="img-fluid figure-img column-screen-inset-right" width="1056"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<div class="cell page-columns page-full">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">##| eval: FALSE</span></span>
+<span><span class="co"># pe3tv &lt;- testE3 %&gt;% group_by(id,vb,condit,bandOrder) |&gt; plot_distByCondit() + ggh4x::facet_nested_wrap(bandOrder~condit,scale="free_x")</span></span>
+<span></span>
+<span></span>
+<span><span class="va">condEffects</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">m</span>,<span class="va">xvar</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">m</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="op">{</span><span class="op">{</span><span class="va">xvar</span><span class="op">}</span><span class="op">}</span>, y <span class="op">=</span> <span class="va">.value</span>, color <span class="op">=</span> <span class="va">condit</span>, fill <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">stat_dist_pointinterval</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">stat_halfeye</span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">.1</span>, height<span class="op">=</span><span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span>legend.title<span class="op">=</span><span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> </span>
+<span>  </span>
+<span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">pe3vce</span> <span class="op">&lt;-</span> <span class="va">e3_vxBMM</span> <span class="op">|&gt;</span> <span class="fu">emmeans</span><span class="op">(</span> <span class="op">~</span><span class="va">condit</span><span class="op">*</span> <span class="va">bandOrder</span><span class="op">*</span> <span class="va">bandInt</span>, </span>
 <span>                       at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>bandInt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">350</span>, <span class="fl">600</span>, <span class="fl">800</span>, <span class="fl">1000</span>, <span class="fl">1200</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -879,60 +910,28 @@ Table&nbsp;4: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of 
 <span>    <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Estimated Slope"</span>, y<span class="op">=</span><span class="st">"Participant"</span><span class="op">)</span>  <span class="op">+</span> </span>
 <span>    <span class="fu">ggh4x</span><span class="fu">::</span><span class="fu"><a href="https://teunbrand.github.io/ggh4x/reference/facet_nested_wrap.html">facet_nested_wrap</a></span><span class="op">(</span><span class="va">bandOrder</span><span class="op">~</span><span class="va">condit</span>,axes<span class="op">=</span><span class="st">"all"</span>,scales<span class="op">=</span><span class="st">"free_y"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="va">pe3tv</span> <span class="op">/</span> <span class="op">(</span><span class="va">pe3vce</span> <span class="op">+</span> <span class="va">pid_den3</span> <span class="op">+</span> <span class="va">pid_slopes3</span><span class="op">)</span> <span class="op">+</span> <span class="fu">plot_annotation</span><span class="op">(</span>tag_levels<span class="op">=</span> <span class="st">'A'</span><span class="op">)</span></span>
+<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">pe3vce</span> <span class="op">+</span> <span class="va">pid_den3</span> <span class="op">+</span> <span class="va">pid_slopes3</span><span class="op">)</span> <span class="op">+</span> <span class="fu">plot_annotation</span><span class="op">(</span>tag_levels<span class="op">=</span> <span class="st">'A'</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co">#ggsave(here::here("Assets/figs", "e3_test-vx.png"), p3,width=11,height=13, bg="white",dpi=800)</span></span>
-<span><span class="co">#p3</span></span>
-<span></span>
-<span>  <span class="co"># vbRect&lt;- testE3 |&gt; group_by(vb) |&gt;</span></span>
-<span>  <span class="co">#   summarise(lowBound=first(bandInt),highBound=first(highBound)) |&gt; </span></span>
-<span>  <span class="co">#   mutate(vbn=as.numeric(vb), rectWidth=.2,</span></span>
-<span>  <span class="co">#          vbLag=vbn-rectWidth,vbLead=vbn+rectWidth)</span></span>
-<span>  </span>
-<span>  <span class="co"># bandLines4 &lt;- list(geom_segment(data=vbRect,aes(x=vbLag,xend=vbLead,y=highBound,yend=highBound),alpha=1,linetype="dashed"),</span></span>
-<span>  <span class="co">#                  geom_segment(data=vbRect,aes(x=vbLag,xend=vbLead,y=lowBound,yend=lowBound),alpha=1,linetype="dashed"),</span></span>
-<span>  <span class="co">#                  geom_text(data=vbRect,aes(x=vbLag-.03,y=lowBound+100,label=vb),angle=90,size=3.5,fontface="bold") )   </span></span>
-<span></span>
-<span><span class="co"># testE3 |&gt;</span></span>
-<span><span class="co">#    select(id,condit,bandOrder,vb,band,lowBound,highBound,vx) |&gt;</span></span>
-<span><span class="co">#   group_by(id,condit,bandOrder,vb,highBound) |&gt; </span></span>
-<span><span class="co">#   summarize(vx=mean(vx)) |&gt; </span></span>
-<span><span class="co">#   group_by(condit,bandOrder,vb,highBound) |&gt;</span></span>
-<span><span class="co">#   summarise(mvx=mean(vx),sdvx=sd(vx), n=n(),se= sdvx/sqrt(n),.groups="drop" ) |&gt;</span></span>
-<span><span class="co">#   mutate(vbn=highBound-200, rectWidth=.2,</span></span>
-<span><span class="co">#           band_index=as.numeric(factor(vb)),</span></span>
-<span><span class="co">#           rectX = as.numeric(condit) ) |&gt;</span></span>
-<span><span class="co">#   ggplot(aes(x=condit,y=mvx,group=vb)) +</span></span>
-<span><span class="co">#   geom_bar(stat="identity",aes(fill=vb),position="dodge") +</span></span>
-<span><span class="co">#   geom_errorbar(aes(ymin=mvx-se,ymax=mvx+se,group=vb),position="dodge",width=.9,alpha=.5) +</span></span>
-<span><span class="co">#   geom_segment(aes(x=band_index-.25,xend=rectX+.05,y=highBound,yend=highBound, col=vb,group=vb),</span></span>
-<span><span class="co">#                alpha=.8,linetype="dashed",position = "dodge") +</span></span>
-<span><span class="co">#   # geom_hline(data=vbRect,aes(yintercept=vbn,col=vb),alpha=.5,linetype="dashed") +</span></span>
-<span><span class="co">#   # geom_hline(data=vbRect,aes(yintercept=highBound,col=vb),alpha=.5,linetype="dashed") +</span></span>
-<span><span class="co">#   scale_x_discrete(labels = c("Constant", "Varied")) +</span></span>
-<span><span class="co">#   scale_y_continuous(expand=expansion(add=100),breaks=round(seq(0,2000,by=200),2)) +</span></span>
-<span><span class="co">#   facet_wrap(~bandOrder,ncol=1)</span></span>
-<span>  <span class="co"># geom_rect(aes(xmin = rectX-.3, xmax = rectX+.3,</span></span>
-<span>  <span class="co">#               ymin = vbn, ymax = highBound),</span></span>
-<span>  <span class="co">#           col="black",linetype="dashed",</span></span>
-<span>  <span class="co">#         position = position_dodge(width = 1),</span></span>
-<span>  <span class="co">#           alpha = 0.1)  +</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<span><span class="va">p3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display page-columns page-full">
+<div id="fig-e3-bmm-vx" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full"><div aria-describedby="fig-e3-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<a href="e3_files/figure-html/fig-e3-bmm-vx-1.png" class="lightbox page-columns page-full" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="e3_files/figure-html/fig-e3-bmm-vx-1.png" class="img-fluid figure-img column-screen-inset-right" width="1056"></a>
 </div>
-<div style="page-break-after: always;"></div>
-<div id="fig-e3-test-vx" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e3-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../Assets/figs/e3_test-vx.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="../Assets/figs/e3_test-vx.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Experiment 3. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.
 </figcaption></figure>
+</div>
+</div>
 </div>
 
 
 <div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">Figure&nbsp;1: E3. Deviations from target band across training blocks.</span>
+<span class="glightbox-desc lightbox-desc-1">Figure&nbsp;1: E3. Deviations from target band during testing without feedback stage.</span>
 <span class="glightbox-desc lightbox-desc-2">Figure&nbsp;2: E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.</span>
-<span class="glightbox-desc lightbox-desc-3">Figure&nbsp;3: Experiment 3. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.</span>
+<span class="glightbox-desc lightbox-desc-3">Figure&nbsp;3: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band.</span>
+<span class="glightbox-desc lightbox-desc-4">Figure&nbsp;4: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.</span>
 </div>
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1338,7 +1337,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script><nav class="page-navigation column-page-right"><div class="nav-page nav-page-previous">
+</script><nav class="page-navigation column-body"><div class="nav-page nav-page-previous">
       <a href="../Analysis/e2.html" class="pagination-link" aria-label="Experiment 2">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Experiment 2</span>
       </a>          
@@ -1350,7 +1349,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e3.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e3.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"openEffect":"zoom","closeEffect":"zoom","selector":".lightbox"});
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e3.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e3.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"closeEffect":"zoom","openEffect":"zoom","selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
