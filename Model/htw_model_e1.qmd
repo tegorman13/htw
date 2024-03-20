@@ -1,0 +1,1132 @@
+---
+title: HTW Model e1
+author: Thomas Gorman
+date:  last-modified #"`r Sys.Date()`"
+page-layout: full
+categories: [Modeling, ALM, EXAM, R]
+lightbox: true
+toc: false
+code-fold: true
+code-tools: true
+execute: 
+  warning: false
+  eval: true
+---
+
+```{r}
+pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
+               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools,ggdist)
+#conflict_prefer_all("dplyr", quiet = TRUE)
+walk(c("flextable","dplyr"), conflict_prefer_all, quiet = TRUE)
+
+options(scipen = 999)
+walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+```
+
+```{r}
+#| label: fig-alm-diagram
+#| fig.cap: The basic structure of the ALM model. 
+alm_plot()
+```
+
+{{< pagebreak >}}
+
+# Modeling Approach
+
+In project 1, I applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for the difference between varied and constant training via an extended version of a similarity based generalization model. In project 2, I will go a step further, implementing a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning [@deloshExtrapolationSineQua1997]. ALM is a simple connectionist learning model which closely resembles Kruschke's ALCOVE model [@kruschkeALCOVEExemplarbasedConnectionist1992], with modifications to allow for the generation of continuous responses.
+
+## ALM & Exam Description
+
+ALM is a localist neural network model [@pageConnectionistModellingPsychology2000a], with each input node corresponding to a particular stimulus, and each output node corresponding to a particular response value. The units in the input layer activate as a function of their Gaussian similarity to the input stimulus. So, for example, an input stimulus of value 55 would induce maximal activation of the input unit tuned to 55. Depending on the value of the generalization parameter, the nearby units (e.g. 54 and 56; 53 and 57) may also activate to some degree. ALM is structured with input and output nodes that correspond to regions of the stimulus space, and response space, respectively. The units in the input layer activate as a function of their similarity to a presented stimulus. As was the case with the exemplar-based models, similarity in ALM is exponentially decaying function of distance. The input layer is fully connected to the output layer, and the activation for any particular output node is simply the weighted sum of the connection weights between that node and the input activations. The network then produces a response by taking the weighted average of the output units (recall that each output unit has a value corresponding to a particular response). During training, the network receives feedback which activates each output unit as a function of its distance from the ideal level of activation necessary to produce the correct response. The connection weights between input and output units are then updated via the standard delta learning rule, where the magnitude of weight changes are controlled by a learning rate parameter. The EXAM model is an extension of ALM, with the same learning rule and representational scheme for input and output units. The primary difference is that EXAM includes a linear extrapolation mechanism for generating novel responses during testing, a modification necessary to account for human extrapolation patterns in past research [@deloshExtrapolationSineQua1997 @mcdanielPredictingTransferPerformance2009 @brownUnderestimationLinearFunction2017]. Although this extrapolation rule departs from a strictly similarity-based generalization mechanism, EXAM is distinct from pure rule-based models in that it remains constrained by the weights learned during training.
+
+See @tbl-alm-exam for a full specification of the equations that define ALM and EXAM.
+
+::: column-page-inset-right
+|                    | **ALM Response Generation**                                        |                                                                                               |
+|------------------|-----------------------------|-------------------------|
+| Input Activation   | $a_i(X) = \frac{e^{-c(X-X_i)^2}}{\sum_{k=1}^M e^{-c(X-X_k)^2}}$    | Input nodes activate as a function of Gaussian similarity to stimulus                         |
+| Output Activation  | $O_j(X) = \sum_{k=1}^M w_{ji} \cdot a_i(X)$                        | Output unit $O_j$ activation is the weighted sum of input activations and association weights |
+| Output Probability | $P[Y_j|X] = \frac{O_j(X)}{\sum_{k=1}^M O_k(X)}$                    | The response, $Y_j$ probabilites computed via Luce's choice rule                              |
+| Mean Output        | $m(X) = \sum_{j=1}^L Y_j \cdot \frac{O_j(x)}{\sum_{k=1}^M O_k(X)}$ | Weighted average of probabilities determines response to X                                    |
+|                    | **ALM Learning**                                                   |                                                                                               |
+| Feedback           | $f_j(Z) = e^{-c(Z-Y_j)^2}$                                         | feedback signal Z computed as similarity between ideal response and observed response         |
+| magnitude of error | $\Delta_{ji}=(f_{j}(Z)-o_{j}(X))a_{i}(X)$                          | Delta rule to update weights.                                                                 |
+| Update Weights     | $w_{ji}^{new}=w_{ji}+\eta\Delta_{ji}$                              | Updates scaled by learning rate parameter $\eta$.                                             |
+|                    | **EXAM Extrapolation**                                             |                                                                                               |
+| Instance Retrieval | $P[X_i|X] = \frac{a_i(X)}{\sum_{k=1}^M a_k(X)}$                    | Novel test stimulus $X$ activates input nodes $X_i$                                           |
+| Slope Computation  | $S =$ $\frac{m(X_{1})-m(X_{2})}{X_{1}-X_{2}}$                      | Slope value, $S$ computed from nearest training instances                                     |
+| Response           | $E[Y|X_i] = m(X_i) + S \cdot [X - X_i]$                            | ALM response $m(X_i)$ adjusted by slope.                                                      |
+
+: ALM & EXAM Equations {#tbl-alm-exam}
+:::
+
+## Model Fitting Strategy
+
+To fit ALM and EXAM to our participant data, we employ a similar method to @mcdanielPredictingTransferPerformance2009, wherein we examine the performance of each model after being fit to various subsets of the data. Each model was fit to the data in with separate procedures: 1) fit to maximize predictions of the testing data, 2) fit to maximize predictions of both the training and testing data, 3) fit to maximize predictions of the just the training data. We refer to this fitting manipulations as "Fit Method" in the tables and figures below. It should be emphasized that for all three fit methods, the ALM and EXAM models behave identically - with weights updating only during the training phase.Models to were fit separately to the data of each individual participant. The free parameters for both models are the generalization ($c$) and learning rate ($lr$) parameters. Parameter estimation was performed using approximate bayesian computation (ABC), which we describe in detail below.
+
+
+::: {.callout}
+**{{< fa regular lightbulb >}} Approximate Bayesian Computation**
+
+
+To estimate parameters, we used approximate bayesian computation (ABC), enabling us to obtain an estimate of the posterior distribution of the generalization and learning rate parameters for each individual. ABC belongs to the class of simulation-based inference methods [@cranmerFrontierSimulationbasedInference2020], which have begun being used for parameter estimation in cognitive modeling relatively recently [@turnerTutorialApproximateBayesian2012; @turnerBayesianAnalysisSimulationbased2016; @kangasraasioParameterInferenceComputational2019]. Although they can be applied to any model from which data can be simulated, ABC methods are most useful for complex models that lack an explicit likelihood function (e.g. many neural network and evidence accumulation models).
+
+The general ABC procedure is to 1) define a prior distribution over model parameters. 2) sample candidate parameter values, $\theta^*$, from the prior. 3) Use $\theta^*$ to generate a simulated dataset, $Data_{sim}$. 4) Compute a measure of discrepancy between the simulated and observed datasets, $discrep$($Data_{sim}$, $Data_{obs}$). 5) Accept $\theta^*$ if the discrepancy is less than the tolerance threshold, $\epsilon$, otherwise reject $\theta^*$. 6) Repeat until desired number of posterior samples are obtained.
+
+Although simple in the abstract, implementations of ABC require researchers to make a number of non-trivial decisions as to i) the discrepancy function between observed and simulated data, ii) whether to compute the discrepancy between trial level data, or a summary statistic of the datasets, iii) the value of the minimum tolerance $\epsilon$ between simulated and observed data. For the present work, we follow the guidelines from previously published ABC tutorials [@turnerTutorialApproximateBayesian2012; @farrellComputationalModelingCognition2018]. For the test stage, we summarized datasets with mean velocity of each band in the observed dataset as $V_{obs}^{(k)}$ and in the simulated dataset as $V_{sim}^{(k)}$, where $k$ represents each of the six velocity bands. For computing the discrepancy between datasets in the training stage, we aggregated training trials into three equally sized blocks (separately for each velocity band in the case of the varied group). After obtaining the summary statistics of the simulated and observed datasets, the discrepancy was computed as the mean of the absolute difference between simulated and observed datasets (@eq-discrep-test and @eq-discrep-train). For the models fit to both training and testing data, discrepancies were computed for both stages, and then averaged together.
+
+::: column-page-inset-left
+$$
+discrep_{Test}(Data_{sim}, Data_{obs}) = \frac{1}{6} \sum_{k=1}^{6} |V_{obs}^{(k)} - V_{sim}^{(k)}|
+$$ {#eq-discrep-test}
+
+$$
+\begin{aligned} \\
+discrep_{Train,constant}(Data_{sim}, Data_{obs}) = \frac{1}{N_{blocks}} \sum_{j=1}^{N_{blocks}} |V_{obs,constant}^{(j)} - V_{sim,constant}^{(j)}| \\ \\
+discrep_{Train,varied}(Data_{sim}, Data_{obs}) = \frac{1}{N_{blocks} \times 3} \sum_{j=1}^{N_{blocks}} \sum_{k=1}^{3} |V_{obs,varied}^{(j,k)} - V_{sim,varied}^{(j,k)}|
+\end{aligned}
+$$ {#eq-discrep-train}
+:::
+
+The final component of our ABC implementation is the determination of an appropriate value of $\epsilon$. The setting of $\epsilon$ exerts strong influence on the approximated posterior distribution. Smaller values of $\epsilon$ increase the rejection rate, and improve the fidelity of the approximated posterior, while larger values result in an ABC sampler that simply reproduces the prior distribution. Because the individual participants in our dataset differed substantially in terms of the noisiness of their data, we employed an adaptive tolerance setting strategy to tailor $\epsilon$ to each individual. The initial value of $\epsilon$ was set to the overall standard deviation of each individuals velocity values. Thus, sampled parameter values that generated simulated data within a standard deviation of the observed data were accepted, while worse performing parameters were rejected. After every 300 samples the tolerance was allowed to increase only if the current acceptance rate of the algorithm was less than 1%. In such cases, the tolerance was shifted towards the average discrepancy of the 5 best samples obtained thus far. To ensure the acceptance rate did not become overly permissive, $\epsilon$ was also allowed to decrease every time a sample was accepted into the posterior.
+::: 
+
+
+For each of the 156 participants from Experiment 1, the ABC algorithm was run until 200 samples of parameters were accepted into the posterior distribution. Obtaining this number of posterior samples required an average of 205,000 simulation runs per participant. Fitting each combination of participant, Model (EXAM & ALM), and fitting method (Test only, Train only, Test & Train) required a total of 192 million simulation runs. To facilitate these intensive computational demands, we used the Future Package in R [@bengtssonUnifyingFrameworkParallel2021], allowing us to parallelize computations across a cluster of ten M1 iMacs, each with 8 cores.
+
+### Modelling Results
+
+```{r}
+#| cache: false
+
+ds <- readRDS(here::here("data/e1_md_11-06-23.rds"))  |> as.data.table()
+nbins <- 3
+e1Sbjs <- ds |> group_by(id,condit) |> summarise(n=n())
+fd <- readRDS(here("data/e1_08-21-23.rds"))
+test <- testE1 <-  fd |> filter(expMode2 == "Test") 
+testAvg <- testE1 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
+  summarise(nHits=sum(dist==0),vxAvg=mean(vx),distAvg=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
+
+trainAvg <- fd |> filter(expMode2 == "Train") |> group_by(id) |> 
+  mutate(tr=trial,x=vb,Block=case_when(expMode2=="Train" ~ cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE),
+                                         expMode2=="Test" ~ 4)) |> 
+  group_by(id,condit,vb,x,Block) |> 
+  summarise(dist=mean(dist),y=mean(vx))
+
+input_layer <<- output_layer <<-  c(100,350,600,800,1000,1200)
+ids2 <- c(1,66,36)
+file_name <- "n_iter_200_ntry_300_5354"
+#file_name <- "n_iter_400_ntry_100_2944"
+
+
+ind_fits <- map(list.files(here(paste0('data/abc_reject/'),file_name),full.names=TRUE), readRDS)
+ind_fits_df <- ind_fits |> map(~list(dat=.x[[1]], Model = .x[["Model"]], Fit_Method=.x[["Fit_Method"]]))
+ind_fits_df <- ind_fits_df |> map(~rbindlist(.x$dat) |> mutate(Model = .x$Model, Fit_Method = .x$Fit_Method)) |> rbindlist() 
+```
+
+```{r}
+#| cache: false
+
+generate_data <- function(Model, post_samples, data, num_samples = 1, return_dat = "train_data, test_data") {
+  # Filter data for the specific id without invalidating selfref
+  sbj_data <- copy(data[id == post_samples$id[1]])
+  simulation_function <- ifelse(Model == "EXAM", full_sim_exam, full_sim_alm)
+
+  target_data <- switch(return_dat,
+                        "test_data" = copy(sbj_data[expMode2 == "Test"]),
+                        "train_data" = copy(sbj_data[expMode2 == "Train"]),
+                        "train_data, test_data" = copy(sbj_data[expMode2 %in% c("Test", "Train")]))
+  
+  post_samples <- post_samples[order(mean_error)][1:num_samples, .(c, lr, mean_error, rank = .I)]
+
+  simulated_data_list <- lapply(1:nrow(post_samples), function(i) {
+    params <- post_samples[i]
+    sim_data <- simulation_function(sbj_data, params$c, params$lr, input_layer = input_layer, 
+                                    output_layer = output_layer, return_dat = return_dat)
+    sim_data_dt <- data.table(id = sbj_data$id[1], condit = sbj_data$condit[1], 
+                              expMode2 = target_data$expMode2, Model = Model,tr=target_data$tr,
+                              y = target_data$y, x = target_data$x, c = params$c, 
+                              lr = params$lr, mean_error = params$mean_error, rank = i,
+                              pred = sim_data)
+    return(sim_data_dt)
+  })
+  
+  result_dt <- rbindlist(simulated_data_list)
+  setcolorder(result_dt, c("id", "condit", "expMode2","tr", "c", "lr", "x", "y", "pred"))
+  return(result_dt)
+}
+
+#future::plan(multisession)
+
+nestSbjModelFit <- ind_fits_df %>% nest(.by=c(id,Model,Fit_Method))
+
+# organize test data predictions
+# post_dat <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
+#    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 50, return_dat="test_data")
+#    })) |> 
+#   select(Fit_Method,pp,-data) |>  
+#   unnest(pp) |>  filter(expMode2=="Test") |> as.data.table()
+# 
+# saveRDS(post_dat, here("data/model_cache/post_dat.rds"))
+
+post_dat <- readRDS(here("data/model_cache/post_dat.rds"))
+
+post_dat_avg <- post_dat |> group_by(id, condit, Model, Fit_Method, x, c, lr, rank) |> 
+  mutate(error2 = y - pred) |>
+  summarise(y = mean(y), pred = mean(pred), error = y - pred, error2=mean(error2)) |> as.data.table()
+
+setorder(post_dat_avg, id, x, rank)
+post_dat_l <- melt(post_dat_avg, id.vars = c("id", "condit", "Model", "Fit_Method", "x", "c", "lr", "rank","error"),
+                   measure.vars = c("pred", "y"), variable.name = "Resp", value.name = "val")
+post_dat_l[, Resp := fifelse(Resp == "y", "Observed",
+                             fifelse(Model == "ALM", "ALM", "EXAM"))]
+setorder(post_dat_l, id, Resp)
+#rm(post_dat_avg)
+
+post_dat_l <- post_dat_l |> mutate(dist = case_when(
+    val >= x & val <= x + 200 ~ 0,                 
+    val < x ~ abs(x - val),                       
+    val > x + 200 ~ abs(val - (x + 200)),           
+    TRUE ~ NA_real_                                 
+  ), signed_dist = case_when(
+    val >= x & val <= x + 200 ~ 0,                 
+    val < x ~ x - val,                             
+    val > x + 200 ~ val - (x + 200),               
+    TRUE ~ NA_real_                                 
+  ))
+
+post_dat <- post_dat |>  mutate(dist = case_when(
+    y >= x & y <= x + 200 ~ 0,                 
+    y < x ~ abs(x - y),                       
+    y > x + 200 ~ abs(y - (x + 200)),           
+    TRUE ~ NA_real_                                 
+  ), pred_dist = case_when(
+    pred >= x & pred <= x + 200 ~ 0,                 
+    pred < x ~ abs(x - pred),                       
+    pred > x + 200 ~ abs(pred - (x + 200)),           
+    TRUE ~ NA_real_                                 
+  ))
+
+# organize training data predictions
+# pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
+#    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="train_data")
+#    })) |>
+#   select(Fit_Method,pp,-data) |>
+#   unnest(pp) |> as.data.table() |> filter(expMode2=="Train")
+
+#saveRDS(pd_train, here("data/model_cache/pd_train.rds"))
+
+pd_train <- readRDS(here("data/model_cache/pd_train.rds"))
+
+nbins <- 3
+pd_train <- pd_train |> group_by(id,condit,Model,Fit_Method) |>
+  mutate(Block=cut(tr,breaks=seq(1,max(tr), length.out=nbins+1),include.lowest=TRUE,labels=FALSE))
+setorder(pd_train, id, x,Block, rank)
+
+pd_train_l <- reshape2::melt(pd_train, id.vars = c("id", "condit", "Model","Block", "Fit_Method", "x", "c", "lr", "rank"),
+                   measure.vars = c("pred", "y"), variable.name = "Resp", value.name = "val") |> as.data.table()
+pd_train_l[, Resp := fifelse(Resp == "y", "Observed",
+                             fifelse(Model == "ALM", "ALM", "EXAM"))] 
+setorder(pd_train_l, id,Block, Resp) 
+
+pd_train_l <- pd_train_l  |>
+  mutate(dist = case_when(
+    val >= x & val <= x + 200 ~ 0,                 
+    val < x ~ abs(x - val),                       
+    val > x + 200 ~ abs(val - (x + 200)),           
+    TRUE ~ NA_real_                                 
+  ))
+
+#plan(sequential)
+
+```
+
+### Group level aggregations
+
+```{r}
+#| eval: true
+#| label: tbl-htw-modelError
+#| tbl-cap: "Mean model errors predicting empirical data from the testing and training stage, aggregated over all participants and velocity bands. Note that Fit Method refers to the subset of the data that the model was trained on"
+post_tabs <- abc_tables(post_dat,post_dat_l)
+train_tab <- abc_train_tables(pd_train,pd_train_l)
+# post_tabs$agg_pred_full |> 
+#   mutate(Fit_Method=rename_fm(Fit_Method)) |>
+#   flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"),
+#                        `ME` = as_paragraph(mean_error)) |> as_flextable()
+
+#post_tabs$agg_pred_full |> pander::pandoc.table()
+
+# train_tab$agg_pred_full |> 
+#   mutate(Fit_Method=rename_fm(Fit_Method)) |>
+#   flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"),
+#                        `ME` = as_paragraph(mean_error)) |> as_flextable()
+# 
+
+rbind(post_tabs$agg_pred_full |> mutate(stage="Test"), train_tab$agg_pred_full |> mutate(stage="Train")) |> 
+  mutate(Fit_Method=rename_fm(Fit_Method)) |>
+  flextable::tabulator(rows=c("stage","Fit_Method","Model"), columns=c("condit"),
+                       `ME` = as_paragraph(mean_error)) |> as_flextable()
+
+
+ post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
+    mutate(e2=abs(dist-pred_dist)) |> 
+    summarise(dist=mean(dist), pred=mean(pred_dist), mean_error=mean(e2)) |>
+    group_by(condit,Model,Fit_Method) |> 
+    summarise(mean_error=mean(mean_error)) |> 
+    round_tibble(1) |> 
+  mutate(Fit_Method=rename_fm(Fit_Method)) |>
+  flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"),
+                       `ME` = as_paragraph(mean_error)) |> as_flextable()
+ 
+ 
+
+ 
+```
+
+
+```{r}
+#| fig-height: 11
+#| fig-width: 11
+#| 
+post_dat_l |> group_by(condit, Fit_Method,Resp,x) |>mutate(x=as.factor(x)) |>
+ summarize(vx=mean(val)) |> ggplot(aes(x=condit,y=vx, fill=x)) + stat_bar + facet_wrap(~Resp+Fit_Method)
+
+post_dat_l |> group_by(condit, Fit_Method,Resp,x) |>mutate(x=as.factor(x)) |>
+ summarize(dist=mean(dist)) |> ggplot(aes(x=condit,y=dist, fill=x)) + stat_bar + facet_wrap(~Resp+Fit_Method)
+
+post_dat_l |> group_by(id,condit, Fit_Method,Resp,x) |>mutate(x=as.factor(x)) |>
+ summarize(dist=mean(dist)) |> ggplot(aes(x=Resp,y=dist, fill=condit)) + stat_bar + facet_wrap(~Fit_Method+x)
+
+post_dat_l |> group_by(id,condit, Fit_Method,Resp) |>mutate(x=as.factor(x)) |>
+ summarize(dist=mean(dist)) |> ggplot(aes(x=Resp,y=dist, fill=condit)) + stat_bar + facet_wrap(~Fit_Method)
+
+post_dat_l |> group_by(id,condit, Fit_Method,Resp) |>mutate(x=as.factor(x)) |>
+ summarize(dist=mean(dist)) |> ggplot(aes(x=Resp,y=dist, fill=condit)) + stat_bar + facet_wrap(~Fit_Method)
+
+
+
+
+
+
+
+```
+
+```{r}
+#| eval: false 
+
+pdl <- post_dat_l |> rename("bandInt"=x) |> left_join(testAvg,by=c("id","condit","bandInt")) 
+pd <- post_dat |> rename("bandInt"=x) |> left_join(testAvg,by=c("id","condit","bandInt"))
+
+
+pdl |> group_by(id,condit, bandType,Resp) |>
+ summarize(dist=mean(dist)) |> ggplot(aes(x=Resp,y=dist, fill=condit)) + stat_bar + facet_wrap(~bandType)
+
+
+# mixed effects model of post_dat, predicting mean_error from Model
+# and Fit_Method, with random intercepts for id and condit
+
+lme4::lmer(data=post_dat |> filter(rank==1),mean_error ~ Model*Fit_Method + (1|condit), REML=FALSE) |> summary()
+
+lme4::lmer(data=post_dat |> filter(rank==1),mean_error ~ Model*condit + (1|id), REML=FALSE) |> summary()
+
+lme4::lmer(data=post_dat |> filter(rank==1),mean_error ~ Model*condit*x + (1|id), REML=FALSE) |> summary()
+
+lme4::lmer(data=pd |> filter(rank==1),mean_error ~ Model*bandType + (1|id), REML=FALSE) |> summary()
+lme4::lmer(data=pd |> filter(rank==1),mean_error ~ Model*bandType*condit + (1|id), REML=FALSE) |> summary()
+
+lme4::lmer(data=pd |> filter(rank<=50, condit=="Varied",Fit_Method=="Test_Train"),mean_error ~ Model*bandType + (1|id), REML=FALSE) |> summary()
+lme4::lmer(data=pd |> filter(rank<=50, condit=="Constant",Fit_Method=="Test_Train"),mean_error ~ Model*bandType + (1|id), REML=FALSE) |> summary()
+
+library(brms)
+options(brms.backend="cmdstanr",mc.cores=4)
+b1 <- brm(data=pd |> 
+    filter(rank==1),
+    mean_error ~ Model*bandType*condit, 
+    chains=2, iter=1000, control=list(adapt_delta=0.92, max_treedepth=11))
+summary(b1)
+
+
+b2 <- brm(data=pd |> filter(rank==1),mean_error ~ Model*bandInt*condit, chains=2, iter=1000, control=list(adapt_delta=0.92, max_treedepth=11))
+summary(b2)
+
+
+b3 <- brm(data=pd |> filter(rank==1),
+  mean_error ~ Model*id, 
+  file = paste0(here("data/model_cache/e1_brms_examEst_ModelxID.rds")),
+  chains=2, iter=500, control=list(adapt_delta=0.92, max_treedepth=11))
+summary(b3)
+
+
+b3_coef <- fixef(b3) |> as_tibble() %>% mutate(term=rownames(fixef(b3))) 
+exam_coef <- b3_coef |> filter(term=="ModelEXAM") |> pull(Estimate)
+head(b3_coef)
+# A tibble: 6 × 5
+#   Estimate Est.Error  Q2.5   Q97.5 term     
+#      <dbl>     <dbl> <dbl>   <dbl> <chr>    
+# 1   270.        3.42 264.  276.    Intercept
+# 2    -8.68      5.60 -18.5   0.269 ModelEXAM
+# 3   133.        4.69 124.  142.    id2      
+# 4    53.9       4.59  45.8  63.2   id3      
+# 5   -42.6       4.57 -51.7 -33.7   id4 
+
+# extract id's from term column - Intercept is id 1, term=ModelEXAM doesn't have an id, so don't include
+k <- b3_coef |> filter(term!="Intercept" & term!="ModelEXAM") |> mutate(id=as.factor(str_extract(term,"\\d+"))) |> left_join(testAvg |> filter(bandInt==100) |> ungroup() |> select(-bandType,-vb,-bandInt),by="id") |> 
+  mutate(exam_coef=exam_coef) 
+
+# add new variable parType, which is set to "Model" if term contains "ModelEXAM" and "id" otherwise
+k <- k |> mutate(parType=case_when(
+  str_detect(term,"ModelEXAM") ~ "Model",
+  TRUE ~ "id"
+))
+
+
+k |> ggplot(aes(x=parType,y=Estimate,fill=condit)) + geom_boxplot()
+
+# plot Model coefficients for each individual
+
+k |> filter(parType=="Model") |> mutate(id=reorder(id,Estimate), Estimate=Estimate+exam_coef) |> 
+  ggplot(aes(x=id,y=Estimate,fill=condit)) + 
+  geom_col() +  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y") + coord_flip()
+
+# t test for Model coefficients between conditions
+t.test(Estimate ~ condit, data=k |> filter(parType=="Model"))
+
+
+k2 <- k |> filter(parType=="Model") |> mutate(id=reorder(id,Estimate), Estimate=Estimate+exam_coef) |> 
+  select(id,condit,Estimate) |> left_join(testAvg,by=c("id","condit"))
+
+k3 <- k |> filter(parType=="Model") |> mutate(id=reorder(id,Estimate), Estimate=Estimate+exam_coef) |> 
+  select(id,condit,Estimate) |> left_join(testE1,by=c("id","condit"))
+
+
+# assess group differences, while controlling for the effect of the Model coefficient
+
+lme4::lmer(data=k2,distAvg ~ Estimate + bandInt +condit+ (1|id), REML=FALSE) |> summary()
+lme4::lmer(data=k2,distAvg ~  bandType* condit+ (1|id), REML=FALSE) |> summary()
+
+lme4::lmer(data=k3,dist ~ Estimate + bandInt +condit+ (1|id), REML=FALSE) |> summary()
+lme4::lmer(data=k3,dist ~ Estimate * bandInt * condit+ (1|id), REML=FALSE) |> summary()
+lme4::lmer(data=k3,dist ~ Estimate * bandType * condit+ (1|id), REML=FALSE) |> summary()
+lme4::lmer(data=k3,dist ~ Estimate * bandType * condit+ (1|id) + (1|bandInt), REML=FALSE) |> summary()
+lme4::lmer(data=k3,vx ~ Estimate * bandInt * condit+ (1|id), REML=FALSE) |> summary()
+
+
+# bin k3 in quantiles based on value of Estimate
+k3 |> group_by(condit) |>  mutate(quantile=ntile(Estimate,4)) |> group_by(quantile,condit) |> summarise(dist=mean(dist),.groups="drop")
+
+  k3 |> group_by(condit) |>  mutate(quantile=ntile(Estimate,4)) |> ggplot(aes(x=vb,y=dist,fill=condit)) + stat_bar + facet_wrap(~quantile)
+
+  k2 |> ggplot(aes(x=Estimate,y=distAvg,col=condit)) + geom_point() + geom_smooth(method="lm",se=FALSE) + facet_wrap(~vb)
+  
+fe <- fixef(e1_vxBMM)[,1]
+fixed_effect_bandInt <- fixef(e1_vxBMM)[,1]["bandInt"]
+fixed_effect_interaction <- fixef(e1_vxBMM)[,1]["conditVaried:bandInt"]
+
+e1_slopes <- readRDS(paste0(here::here("data/model_cache/e1_testVxBand_RF_5k.rds")))  
+re <-data.frame(ranef(e1_slopes, pars = "bandInt")$id[, ,'bandInt']) |> tibble::rownames_to_column("id") |> 
+  left_join(e1Sbjs,by="id") |>
+  mutate(adjust= fixef(e1_slopes)[,1]["bandInt"] + 
+           fixef(e1_slopes)[,1]["conditVaried:bandInt"]*(condit=="Varied"),slope = Estimate + adjust )
+
+id_est <- k |> filter(parType=="Model") |> transmute(id=reorder(id,Estimate), exam_est=Estimate+exam_coef) |> 
+  left_join(re,by="id")
+
+id_est |> ggplot(aes(x=slope,y=exam_est,fill=condit)) + geom_point() + geom_smooth(method="lm",se=FALSE) + facet_wrap(~condit)
+
+# combine with testE1, and assess whether slope or exam_est is a better predictor of dist
+lme4::lmer(data=.,dist ~ slope + exam_est + (1|id), REML=FALSE) |> summary()
+
+# assess whether the effect of slope on dist is different between conditions
+id_est |> left_join(testE1,by=c("id","condit")) %>%  lme4::lmer(data=.,dist ~ slope * condit + (1|id), REML=FALSE) |> summary()
+id_est |> left_join(testE1,by=c("id","condit")) %>%  lme4::lmer(data=.,dist ~ exam_est * condit + (1|id), REML=FALSE) |> summary()
+
+# see whether exam_est or slope can predict condit better (condit is a factor)
+id_est |> left_join(testE1,by=c("id","condit")) %>%  lme4::lmer(data=.,condit ~ slope + exam_est + (1|id), REML=FALSE) |> summary()
+#Error in mkRespMod(fr, REML = REMLpass) : response must be numeric
+# try logistic regression or classification
+id_est |> left_join(testE1,by=c("id","condit")) %>% glm(data=.,condit ~ slope + exam_est, family="binomial") |> summary()
+# coefficients:
+#             Estimate Std. Error z value             Pr(>|z|)    
+# (Intercept) 0.203035   0.046429   4.373            0.0000123 ***
+# slope       3.050911   0.107725  28.321 < 0.0000000000000002 ***
+# exam_est    0.145142   0.003311  43.834 < 0.0000000000000002 ***
+
+
+
+```
+
+
+```{r}
+
+et_sum_dist <- post_dat_l |>
+  group_by(id,condit, Fit_Method, Resp) |>
+  summarise(val = mean(dist), .groups = 'drop') |>
+  pivot_wider(
+    names_from = Resp,
+    values_from = val,
+    values_fill = list(val = NA)
+  ) |>
+  mutate(
+    ALM_error = round(abs(ALM - Observed),1),
+    EXAM_error = round(abs(EXAM - Observed),1),
+    Best_Model = case_when(
+      ALM_error < EXAM_error ~ "ALM",
+      EXAM_error < ALM_error ~ "EXAM",
+      TRUE ~ NA_character_  # In case of a tie or missing data
+    )
+  ) |>
+  group_by(condit, Fit_Method) %>%
+  summarise(
+    Avg_ALM_error = round(mean(ALM_error, na.rm = TRUE),1),
+    Avg_EXAM_error = round(mean(EXAM_error, na.rm = TRUE),1),
+    N_Best_ALM = sum(Best_Model == "ALM", na.rm = TRUE),
+    N_Best_EXAM = sum(Best_Model == "EXAM", na.rm = TRUE)
+  ) %>%
+  mutate(
+    Best_Model = case_when(
+      Avg_ALM_error < Avg_EXAM_error ~ "ALM",
+      Avg_EXAM_error < Avg_ALM_error ~ "EXAM",
+      TRUE ~ "Tie"  # In case of a tie or missing data
+    )
+  )
+
+
+et_sum_vx <- post_dat_l |>
+  group_by(id,condit, Fit_Method, Resp) |>
+  summarise(val = mean(val), .groups = 'drop') |>
+  pivot_wider(
+    names_from = Resp,
+    values_from = val,
+    values_fill = list(val = NA)
+  ) |>
+  mutate(
+    ALM_error = round(abs(ALM - Observed),1),
+    EXAM_error = round(abs(EXAM - Observed),1),
+    Best_Model = case_when(
+      ALM_error < EXAM_error ~ "ALM",
+      EXAM_error < ALM_error ~ "EXAM",
+      TRUE ~ NA_character_  # In case of a tie or missing data
+    )
+  ) |>
+  group_by(condit, Fit_Method) %>%
+  summarise(
+    Avg_ALM_error = round(mean(ALM_error, na.rm = TRUE),1),
+    Avg_EXAM_error = round(mean(EXAM_error, na.rm = TRUE),1),
+    N_Best_ALM = sum(Best_Model == "ALM", na.rm = TRUE),
+    N_Best_EXAM = sum(Best_Model == "EXAM", na.rm = TRUE)
+  ) %>%
+  mutate(
+    Best_Model = case_when(
+      Avg_ALM_error < Avg_EXAM_error ~ "ALM",
+      Avg_EXAM_error < Avg_ALM_error ~ "EXAM",
+      TRUE ~ "Tie"  # In case of a tie or missing data
+    )
+  )
+```
+
+
+
+
+
+The posterior distributions of the $c$ and $lr$ parameters are shown @fig-htw-post-dist (i.e. these plots combine all the posterior samples from all of the subjects). There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamped any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.
+
+We used the posterior distribution of $c$ and $lr$ parameters to generate a posterior predictive distribution of the observed data for each participant, which then allows us to compare the empirical data to the full range of predictions from each model. Model residuals are shown in the upper panels of @fig-htw-resid-pred. The pattern of training stage residual errors are unsurprising across the combinations of models and fitting method . Differences between ALM and EXAM are generally minor (the two models have identical learning mechanisms). The differences in the magnitude of residuals across the three fitting methods are also straightforward, with massive errors for the 'fit to Test Only' model, and the smallest errors for the 'fit to train only' models. It is also noteworthy that the residual errors are generally larger for the first block of training, which is likely due to the initial values of the ALM weights being unconstrained by whatever initial biases participants tend to bring to the task. Future work may explore the ability of the models to capture more fine grained aspects of the learning trajectories. However for the present purposes, our primary interest is in the ability of ALM and EXAM to account for the testing patterns while being constrained, or not constrained, by the training data. All subsequent analyses and discussion will thus focus on the testing stage.
+
+The residuals of the model predictions for the testing stage (@fig-htw-resid-pred) also show an unsurprising pattern across fitting methods - with models fit only to the test data showing the best performance, followed by models fit to both training and test data, and with models fit only to the training data showing the worst performance (note that y axes are scaled different between plots). Unsurprisingly, the advantage of EXAM is strongest for extrapolation positions (the three smallest bands for both groups - as well as the two highest bands for the Constant group). Although EXAM tends to perform better for both Constant and Varied participants (see also @tbl-htw-modelError), the relative advantage of EXAM is generally larger for the Constant group - a pattern consistent across all three fitting methods.
+
+Panel B of @fig-htw-resid-pred directly compares the aggregated observed data to the posterior predictive distributions for the testing stage. Of interest are a) the extent to which the median estimates of the ALM and EXAM posteriors deviate from the observed medians for each velocity band; b) the ability of ALM and EXAM to discriminate between velocity bands; c) the relative performance of models that are constrained by the training data (i.e. the 'fit to train only' and 'fit to both' models) compared to the 'fit to test only' models; and d) the extent to which the variance of the posterior predictive distributions mimics the variance of the observed data.
+
+Considering first the models fit to only the testing data, which reflect the best possible performance of ALM and EXAM at capturing the group-aggregated testing patterns. For the varied group, both ALM and EXAM are able to capture the median values of the observed data within the 66% credible intervals, and the spread of model predictions generally matches that of the observed data. For the constant group, only EXAM is able to capture the median range of values across the velocity bands, with ALM generally underestimating human velocoties in the upper bands, and overestimating in the lower bands. In the case of band 100, the median ALM prediction appears to match that of our participants - however this is due to a large subset of participants have ALM predictions near 0 for band 100, a pattern we will explore further in our considertation of individual patterns below. Models fit to both training and testing data show a similar pattern to only the testing data display the same basic pattern as those fit to only the testing data, albeit with slightly larger residuals. However models fit to only the training data display markedly worse performance at accounting for the key testing patterns. 
+
+-   \*\* explain how the constant group ALM predictions for band 100 look deceptively good due to aggregation of a large subset of subjects having ALM predictions of 0 for vb100, and a large subset with ALM predictions close to their position 800 value. This is relected by much greater variance of the ALM esimates in the posterior predictive plot
+
+-   \*\* comment on how much constrained by the training data has a worse impact on the EXAM predictions for varied than for constant - perhaps due to the varied training data being much noisier than the constant training data.
+
+-   \*\* comment on EXAM doing a better job mimicing the within-condition variance of the observed data
+
+-   \*\* comment on the % of Constant subjects being best accounted for by EXAM being higher.
+
+-   \*\* does EXAM do better for the Constant group because the constant group performs better? Or does training with a single example encourage an exam sort of strategy?
+
+```{r fig.height=12,fig.width=11}
+#| label: fig-htw-resid-pred
+#| column: page-inset-right
+#| fig-cap: A) Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y axes are scaled differently between facets. B) Full posterior predictive distributions vs. observed data from participants.Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. 
+#| fig-height: 19
+#| fig-width: 12
+##| layout: [[45,-5, 45], [100]]
+##| fig-subcap: ["Model Residuals - training data", "Model Residuals - testing data","Full posterior predictive distributions vs. observed data from participants."]
+train_resid <- pd_train |> group_by(id,condit,Model,Fit_Method, Block) |> 
+  summarise(y = mean(y), pred = mean(pred), error = y - pred) |>
+  ggplot(aes(x = Block, y = abs(error), fill=Model)) + 
+  stat_bar + 
+  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, scales="free",ncol=2) +
+  scale_fill_manual(values=wes_palette("AsteroidCity2"))+
+  labs(title="Model Residual Errors - Training Stage", y="RMSE", x= "Training Block") +
+  theme(legend.title = element_blank(), legend.position="top")
+
+test_resid <-  post_dat |> 
+   group_by(id,condit,x,Model,Fit_Method,rank) |>
+   summarize(error=mean(abs(y-pred)),n=n()) |>
+   group_by(id,condit,x,Model,Fit_Method) |>
+   summarize(error=mean(error)) |>
+  mutate(vbLab = factor(paste0(x,"-",x+200))) |>
+  ggplot(aes(x = vbLab, y = abs(error), fill=Model)) + 
+  stat_bar + 
+  scale_fill_manual(values=wes_palette("AsteroidCity2"))+
+  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, axes = "all",ncol=2,scale="free") +
+  labs(title="Model Residual Errors - Testing Stage",y="RMSE", x="Velocity Band") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+group_pred <- post_dat_l |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  ggplot(aes(x=val,y=vbLab,col=Resp)) + 
+  stat_pointinterval(position=position_dodge(.5), alpha=.9) + 
+  scale_color_manual(values=wes_palette("AsteroidCity2"))+
+  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, axes = "all",ncol=2,scale="free") +
+  labs(title="Posterior Predictions - Testing Stage",y="Velocity Band (lower bound)", x="X Velocity") +
+theme(legend.title=element_blank(),axis.text.y = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
+
+
+((train_resid | test_resid) / group_pred) +
+  plot_layout(heights=c(1,1.5)) & 
+  plot_annotation(tag_levels = list(c('A1','A2','B')),tag_suffix = ') ') & 
+  theme(plot.tag.position = c(0, 1))
+
+```
+
+## Deviation Predictions
+
+```{r}
+#| fig-height: 12
+#| fig-width: 11
+ post_dat_l |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  ggplot(aes(x=condit,y=dist,fill=vbLab)) + 
+  stat_bar + 
+  #facet_wrap(~Resp)
+  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~Resp, axes = "all",ncol=3,scale="free")
+
+ 
+post_dat_l |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  ggplot(aes(x=Resp,y=dist,fill=vbLab)) + 
+  stat_bar + 
+  #facet_wrap(~Resp)
+  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, axes = "all",ncol=2,scale="free")
+ 
+
+
+
+p1 <- post_dat_l |> 
+  filter(Fit_Method=="Test_Train") |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  ggplot(aes(x=Resp,y=dist,fill=vbLab)) + 
+  stat_bar + 
+  #facet_wrap(~Resp)
+  ggh4x::facet_nested_wrap(~condit, axes = "all",ncol=2,scale="free")
+ 
+
+p2 <- post_dat_l |> 
+  filter(Fit_Method=="Test_Train") |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  ggplot(aes(x=Resp,y=val,fill=vbLab)) + 
+  stat_bar + 
+  #facet_wrap(~Resp)
+  ggh4x::facet_nested_wrap(~condit, axes = "all",ncol=2,scale="free")
+ 
+p1/p2
+
+ post_dat_l |> filter(Fit_Method=="Test_Train") |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  ggplot(aes(x=Resp,y=dist,fill=condit)) + 
+  stat_bar + 
+  #facet_wrap(~Resp)
+  ggh4x::facet_nested_wrap(~vbLab, axes = "all",ncol=2,scale="free")
+
+ post_dat_l |> filter(Fit_Method=="Test_Train") |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  ggplot(aes(x=Resp,y=val,fill=condit)) + 
+  stat_bar + 
+  #facet_wrap(~Resp)
+  ggh4x::facet_nested_wrap(~vbLab, axes = "all",ncol=2,scale="free")
+
+
+```
+
+
+
+```{r}
+#| label: fig-htw-post-dist
+#| fig-cap: Posterior Distributions of $c$ and $lr$ parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically.
+#| fig-height: 7
+#| fig-width: 11
+
+c_post <- post_dat_avg %>%
+    group_by(id, condit, Model, Fit_Method, rank) %>%
+    slice_head(n = 1) |>
+    ggplot(aes(y=log(c), x = Fit_Method,col=condit)) + stat_pointinterval(position=position_dodge(.2)) +
+    ggh4x::facet_nested_wrap(~Model) + labs(title="c parameter") +
+  theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4))
+
+lr_post <- post_dat_avg %>%
+    group_by(id, condit, Model, Fit_Method, rank) %>%
+    slice_head(n = 1) |>
+    ggplot(aes(y=lr, x = Fit_Method,col=condit)) + stat_pointinterval(position=position_dodge(.4)) +
+    ggh4x::facet_nested_wrap(~Model) + labs(title="learning rate parameter") +
+  theme(legend.title = element_blank(), legend.position = "none",plot.title=element_text(hjust=.5))
+c_post + lr_post
+```
+
+### Accounting for individual patterns
+
+To more accurately assess the relative abilities of ALM and EXAM to capture important empirical patterns - we will now examine the predictions of both models for the subset of individual participants shown in @fig-htw-indv-pred. Panel A presents three varied and constant participants who demonstrated a reasonable degree of discrimination between the 6 velocity bands during testing.
+
+-   \*\* comment on the different ways ALM can completely fail to mimic discrimination patterns (sbj. 35; sbj. 137),and on how it can sometimes partially succeed (sbj. 11; 14,74)
+
+-   \*\* comment on how EXAM can somtimes mimic non-monotonic spacing between bands due to associative stregth from training (i.e. subject 47)
+
+-   \*\* compare c values to slope parameters from the statistical models earlier in paper
+
+```{r  fig.width=11, fig.height=10}
+#| label: fig-htw-indv-pred
+#| fig-cap: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. 
+#| fig-height: 13
+#| fig-width: 12
+
+cId_tr <- c(137, 181, 11)
+vId_tr <- c(14, 193, 47)
+cId_tt <- c(11, 93, 35)
+vId_tt <- c(1,14,74)
+# filter(id %in% (filter(bestTestEXAM,group_rank<=9, Fit_Method=="Test")
+
+testIndv <- post_dat_l |> filter(id %in% c(cId_tt,vId_tt), Fit_Method=="Test_Train") |> 
+   mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
+  group_by(id,condit,Fit_Method,Model,Resp) |>
+   mutate(flab=paste0("Subject: ",id)) |>
+  ggplot(aes(x = Resp, y = val, fill=x)) + 
+  stat_bar_sd + ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
+  labs(title="Individual Participant fits from Test & Train Fitting Method",
+       y="X Velocity",fill="Target Velocity") +
+   guides(fill = guide_legend(nrow = 1)) + 
+  theme(legend.position = "bottom",axis.title.x = element_blank())
+
+
+trainIndv <- post_dat_l |> filter(id %in% c(cId_tr,vId_tr), Fit_Method=="Train") |> 
+   mutate(x=as.factor(x), Resp=as.factor(Resp), flab=paste0("Subject: ",id)) |>
+  group_by(id,condit,Fit_Method,Model,Resp) |>
+  ggplot(aes(x = Resp, y = val, fill=x)) + 
+  stat_bar + 
+  ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
+  labs(title="Individual Participant fits from Train Only Fitting Method", y="X Velocity",
+       fill="Target Velocity") +
+     guides(fill = guide_legend(nrow = 1)) + 
+  theme(legend.position = "bottom",axis.title.x = element_blank())
+
+
+(testIndv  / trainIndv) +
+  plot_annotation(tag_levels = list(c('A','B')),tag_suffix = ') ') & 
+  theme(plot.tag.position = c(0, 1))
+
+```
+
+
+
+```{r}
+#| label: fig-htw-best-model
+#| fig-cap: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM. 
+#| fig-height: 9
+#| fig-width: 11
+
+
+# could compute best model for each posterior parameter - examine consistency
+# then I'd have an error bar for each subject in the model error diff. figure
+
+tid1 <- post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+  mutate(e2=abs(y-pred)) |> 
+  summarise(y1=mean(y), pred1=mean(pred),mean_error=abs(y1-pred1)) |>
+  group_by(id,condit,Model,Fit_Method) |> 
+  summarise(mean_error=mean(mean_error)) |> 
+  arrange(id,condit,Fit_Method) |>
+  round_tibble(1) 
+
+best_id <- tid1 |> 
+  group_by(id,condit,Fit_Method) |> mutate(best=ifelse(mean_error==min(mean_error),1,0)) 
+
+lowest_error_model <- best_id %>%
+  group_by(id, condit,Fit_Method) %>%
+  summarise(Best_Model = Model[which.min(mean_error)],
+            Lowest_error = min(mean_error),
+            differential = min(mean_error) - max(mean_error)) %>%
+  ungroup()
+
+
+error_difference<- best_id %>%
+  select(id, condit, Model,Fit_Method, mean_error) %>%
+  pivot_wider(names_from = Model, values_from = c(mean_error)) %>%
+  mutate(Error_difference = (ALM - EXAM))
+
+full_comparison <- lowest_error_model |> left_join(error_difference, by=c("id","condit","Fit_Method"))  |> 
+  group_by(condit,Fit_Method,Best_Model) |> mutate(nGrp=n(), model_rank = nGrp - rank(Error_difference) ) |> 
+  arrange(Fit_Method,-Error_difference)
+
+full_comparison |> filter(Fit_Method=="Test_Train") |> 
+  ungroup() |>
+  mutate(id = reorder(id, Error_difference)) %>%
+  ggplot(aes(y=id,x=Error_difference,fill=Best_Model))+
+  geom_col() +
+  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+
+  labs(fill="Best Model",x="Mean Model Error Difference (ALM - EXAM)",y="Participant")
+
+
+
+# full_comparison |> filter(Fit_Method=="Test_Train") |> 
+#   ungroup() |>
+#   mutate(id = reorder(id, Error_difference)) |>
+#   left_join(post_dat_avg |> filter(x==100) |> select(-x) |> ungroup(), by=c("id","condit")) |>
+#   ggplot(aes(y=id,x=c,fill=Best_Model))+
+#   stat_pointinterval(position=position_dodge(.1))
+  
+```
+
+#### Subjects with biggest differential favoring ALM
+```{r}
+#| fig-height: 6
+#| fig-width: 12
+vAlm <- c(29,70,68); cAlm <- c(73,49,128)
+
+post_dat_l |> filter(id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |> 
+   mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
+  group_by(id,condit,Fit_Method,Model,Resp) |>
+   mutate(flab=paste0("Subject: ",id)) |>
+  ggplot(aes(x = Resp, y = val, fill=x)) + 
+  stat_bar_sd + ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
+  labs(title="Subjects with biggest differential favoring ALM",
+       y="X Velocity",fill="Target Velocity") +
+   guides(fill = guide_legend(nrow = 1)) + 
+  theme(legend.position = "bottom",axis.title.x = element_blank())
+
+
+```
+
+
+
+#### Subjects with biggest differential favoring EXAM
+```{r}
+#| fig-height: 6
+#| fig-width: 12
+vAlm <- c(23,155,184); cAlm <- c(119,85,175)
+
+post_dat_l |> filter(id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |> 
+   mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
+  group_by(id,condit,Fit_Method,Model,Resp) |>
+   mutate(flab=paste0("Subject: ",id)) |>
+  ggplot(aes(x = Resp, y = val, fill=x)) + 
+  stat_bar_sd + ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
+  labs(title="Subjects with biggest differential favoring EXAM",
+       y="X Velocity",fill="Target Velocity") +
+   guides(fill = guide_legend(nrow = 1)) + 
+  theme(legend.position = "bottom",axis.title.x = element_blank())
+
+```
+
+
+
+
+#### Subjects with no clear best model
+```{r}
+#| fig-height: 6
+#| fig-width: 12
+vAlm <- c(129,192,105); cAlm <- c(101, 109,134)
+
+post_dat_l |> filter(id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |> 
+   mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
+  group_by(id,condit,Fit_Method,Model,Resp) |>
+   mutate(flab=paste0("Subject: ",id)) |>
+  ggplot(aes(x = Resp, y = val, fill=x)) + 
+  stat_bar_sd + ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
+  labs(title="Subjects with no clear best model",
+       y="X Velocity",fill="Target Velocity") +
+   guides(fill = guide_legend(nrow = 1)) + 
+  theme(legend.position = "bottom",axis.title.x = element_blank())
+
+```
+
+
+```{r}
+#| fig-height: 8
+#| fig-width: 12
+#| 
+vAlm <- c(29,70,68); cAlm <- c(73,49,128)
+
+difAlm <-  post_dat_avg  |> filter(x==100,id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |>
+    group_by(id, condit, Model, rank) %>%
+      mutate(flab=paste0("Subject: ",id)) |>
+    ggplot(aes(y=log(c), x = id,col=Model)) + 
+  stat_pointinterval(position=position_dodge(.5)) +
+   # ggh4x::facet_nested_wrap(condit~flab, axes = "all",scales="free_y",ncol=3) + 
+      labs(title="c parameter - sbjs. with biggest diff. favoring ALM") +
+  theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4)) +ylim(c(-11,-4))
+
+
+vAlm <- c(23,155,184); cAlm <- c(119,85,175)
+
+difExam <- post_dat_avg  |> filter(x==100,id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |>
+    group_by(id, condit, Model, rank) %>%
+      mutate(flab=paste0("Subject: ",id)) |>
+    ggplot(aes(y=log(c), x = id,col=Model)) + 
+  stat_pointinterval(position=position_dodge(.1)) +
+   # ggh4x::facet_nested_wrap(condit~flab, axes = "all",scales="free_y",ncol=3) + 
+      labs(title="c parameter - sbjs. with biggest diff. favoring EXAM") +
+  theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4)) +ylim(c(-11,-4))
+
+difAlm/difExam
+
+
+vAlm <- c(29,70,68); cAlm <- c(73,49,128)
+
+difAlm <-  post_dat_avg  |> filter(x==100,id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |>
+    group_by(id, condit, Model, rank) %>%
+      mutate(flab=paste0("Subject: ",id)) |>
+    ggplot(aes(y=lr, x = id,col=Model)) + 
+  stat_pointinterval(position=position_dodge(.5)) +
+   # ggh4x::facet_nested_wrap(condit~flab, axes = "all",scales="free_y",ncol=3) + 
+      labs(title="lr parameter - sbjs. with biggest diff. favoring ALM") +
+  theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4))+ylim(c(0,12))
+
+
+vAlm <- c(23,155,184); cAlm <- c(119,85,175)
+
+difExam <- post_dat_avg  |> filter(x==100,id %in% c(vAlm,cAlm), Fit_Method=="Test_Train") |>
+    group_by(id, condit, Model, rank) %>%
+      mutate(flab=paste0("Subject: ",id)) |>
+    ggplot(aes(y=lr, x = id,col=Model)) + 
+  stat_pointinterval(position=position_dodge(.1)) +
+   # ggh4x::facet_nested_wrap(condit~flab, axes = "all",scales="free_y",ncol=3) + 
+      labs(title="lr parameter - sbjs. with biggest diff. favoring EXAM") +
+  theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4)) +ylim(c(0,12))
+
+difAlm/difExam
+```
+
+
+
+```{r fig.width=11, fig.height=13}
+
+# 
+# 
+# full_comparison |> filter(Fit_Method=="Test_Train") |>
+#   ungroup() |>
+#   mutate(id = reorder(id, Error_difference)) %>%
+#   ggplot(aes(y=id,x=Error_difference,fill=Best_Model))+
+#   geom_col()+
+#   ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")
+# 
+
+# d <- testAvg |> left_join(full_comparison, by=c("id","condit")) |> filter(Fit_Method=="Test_Train")
+# 
+# 
+# 
+# d |> ggplot(aes(x=vb,y=vx,fill=condit)) + stat_bar + facet_wrap(Fit_Method~Best_Model2,ncol=2)
+# 
+# d |> 
+#   group_by(condit,Fit_Method,Best_Model) |> 
+#   mutate(nGrp2=n()) |>
+#   filter(abs(Error_difference)>15) |> 
+#   ggplot(aes(x=vb,y=dist,fill=condit)) + 
+#   stat_bar + facet_wrap(Fit_Method~Best_Model,ncol=2)
+# 
+# d |> group_by(condit,Fit_Method,Best_Model) %>% tally() |> mutate(n=n/6)
+# 
+# d |> group_by(condit,Fit_Method,Best_Model) |> filter(abs(Error_difference)>15) |> tally() |> mutate(n=n/6)
+# 
+# d |> group_by(condit,Fit_Method) |> mutate(m=mean(Error_difference), 
+#                                               sd=sd(Error_difference), 
+#                                               n=n()/6,se=sd/sqrt(n)) |>
+#    group_by(condit,Fit_Method,Best_Model) |> 
+#  # filter(abs(Error_difference)>(2.5*se)) |> 
+#   ggplot(aes(x=vb,y=dist,fill=condit)) + 
+#   stat_bar + facet_wrap(Fit_Method~Best_Model,ncol=2)
+#   
+
+
+
+   
+```
+
+```{r fig.width=11, fig.height=13}
+#| eval: false
+#| include: false
+
+
+posterior <- post_dat |> group_by(id, condit, Model, Fit_Method,rank) |> 
+    slice_head(n=1) |> select(id,condit,Model,Fit_Method,rank,c,lr, mean_error)
+head(posterior)
+
+# Combine the MAP density values with your original posterior data frame
+posterior_with_density <- left_join(posterior, posterior_densities, by = c("id", "condit", "Model", "Fit_Method"))
+
+head(posterior_with_density)
+
+posterior %>%
+  group_by(id, condit, Model, Fit_Method) %>%
+  do({
+    data = .
+    c_density = density(data$c)
+    lr_density = density(data$lr)
+    
+    # Find the index of the MAP estimate in your density objects
+    map_c_index = which.min(abs(c_density$x - data$c[data$rank == 1]))
+    map_lr_index = which.min(abs(lr_density$x - data$lr[data$rank == 1]))
+    
+    data.frame(
+      c_density_at_MAP = c_density$y[map_c_index],
+      lr_density_at_MAP = lr_density$y[map_lr_index]
+    )
+  }) -> densities_at_map
+
+# Combine the MAP density values with your original posterior data frame
+posterior_with_density <- left_join(posterior, posterior_densities, by = c("id", "condit", "Model", "Fit_Method"))
+
+head(posterior_with_density)
+
+map_id <- post_dat |> group_by(id, condit, Model, Fit_Method) |> 
+  filter(rank==1) |> slice_head(n=1) |> select(id,condit,Fit_Method,Model,c,lr,mean_error,rank) |>
+  left_join(id_n,by=(c("id","condit")))
+
+map_id <- map_id |> 
+  mutate(n = fifelse(Fit_Method == "Test", nTest, fifelse(Fit_Method == "Train", nTrain, nTotal)),
+         BIC = -2 * log(1/mean_error) + log(n)*2) |>
+  group_by(id,Fit_Method) |>
+  mutate(Best_Model=Model[which.min(BIC)])
+
+bic_id <- map_id %>%
+  group_by(id, condit, Fit_Method) %>%
+  arrange(Model) %>%
+  summarize(BIC_diff = diff(BIC),
+            .groups = 'drop') 
+
+ bic_id |> filter(Fit_Method=="Test_Train") |>
+     ungroup() |>
+   mutate(id = reorder(id, BIC_diff),decreasing=FALSE) %>%
+   ggplot(aes(y=id,x=BIC_diff))+
+  geom_col()+
+  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y") 
+
+ 
+bic_id |> group_by(condit,Fit_Method) |> summarise(mean(BIC_diff))
+
+
+ 
+```
+
+### To add to appendix
+
+```{r}
+
+post_tabs$agg_x_full |> flextable::tabulator(rows=c("Fit_Method","x"), columns=c("condit","Model"),
+                       `X` = as_paragraph(mean_error)) |> as_flextable()
+
+
+# post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+#   mutate(e2=abs(y-pred)) |> 
+#   summarise(y1=mean(y), pred1=mean(pred)) |>
+#   group_by(condit,Model,Fit_Method,x) |> 
+#   summarise(y=mean(y1), pred=mean(pred1),mean_error=abs(y-pred)) |> 
+#   round_tibble(1) |> pander::pandoc.table()
+
+
+# post_dat  |> group_by(id,condit,Model,Fit_Method,x) |>
+#   mutate(e2=abs(y-pred)) |>
+#   summarise(y1=mean(y), pred1=mean(pred)) |>
+#   group_by(condit,Model,Fit_Method) |>
+#   summarise(y=mean(y1), pred=mean(pred1),mean_error=abs(y-pred)) |>
+#   round_tibble(1) |> pander::pandoc.table()
+# 
+# post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+#   mutate(e2=abs(y-pred),Fit_Method=rename_fm(Fit_Method)) |> 
+#   summarise(y1=mean(y), pred1=mean(pred)) |>
+#   group_by(condit,Model,Fit_Method) |> 
+#   summarise(y=mean(y1), pred=mean(pred1),mean_error=abs(y-pred)) |> 
+#   select(-y,-pred) |>
+#   arrange(condit,Fit_Method) |>
+#   round_tibble(1) |> pander::pandoc.table()
+# 
+# 
+# 
+# post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+#   mutate(e2=abs(y-pred),Fit_Method=rename_fm(Fit_Method)) |> 
+#   summarise(y1=mean(y), pred1=mean(pred)) |>
+#   group_by(condit,Model,Fit_Method,x) |> 
+#   summarise(y2=mean(y1), pred2=mean(pred1)) |> 
+#   group_by(condit,Model,Fit_Method) |> 
+#   summarise(y=mean(y2), pred=mean(pred2),mean_error=abs(y-pred)) |> 
+#   select(-y,-pred) |>
+#   arrange(condit,Fit_Method) |>
+#   round_tibble(1) |> pander::pandoc.table()
+# 
+# 
+# post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+#   mutate(e2=abs(y-pred),Fit_Method=rename_fm(Fit_Method)) |> 
+#   summarise(y1=mean(y), pred1=mean(pred),mean_error=abs(y1-pred1)) |>
+#   group_by(id,condit,Model,Fit_Method) |> 
+#   summarise(mean_error=mean(mean_error)) |> 
+#   group_by(condit,Model,Fit_Method) |>
+#   summarise(mean_error=mean(mean_error)) |> 
+#   arrange(condit,Fit_Method) |>
+#   round_tibble(1) |> pander::pandoc.table()
+
+
+
+```
+
+
+
+{{< include ../Sections/Discussion.qmd >}}
+
+
+
+```{r fig.width=11, fig.height=10}
+#| label: fig-htw-best-model-old
+#| eval: false
+#| include: false
+#| fig-cap: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM. 
+#| fig-height: 10
+#| fig-width: 11
+best_id_x <- post_dat_avg |> group_by(id,condit,Model,Fit_Method,x) |>
+  mutate(e2=(y-pred)) |>
+  summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2),abs_me=abs(mean_error)) |>
+  group_by(id,condit,Fit_Method,x) |> mutate(best=ifelse(mean_error==min(mean_error),1,0)) |>
+  group_by(id,condit,Fit_Method,Model) |> mutate(n_best=sum(best)) 
+
+best_id <- best_id_x |> group_by(id,condit,Fit_Method,Model) |>
+  summarise(mean_error=mean(mean_error), n_best=dplyr::first(n_best),abs_me=mean(abs_me))
+  
+lowest_error_model <- best_id %>%
+  group_by(id, condit,Fit_Method) %>%
+  summarise(Best_Model = Model[which.min(mean_error)],
+            Best_Model2 = Model[which.min(abs_me)],
+            n_best = n_best[which.min(mean_error)],
+            Lowest_error = min(mean_error),
+            differential = min(mean_error) - max(mean_error)) %>%
+  ungroup()
+
+error_difference <- best_id %>%
+  select(id, condit, Model,Fit_Method, mean_error,abs_me) %>%
+  pivot_wider(names_from = Model, values_from = c(abs_me,mean_error)) %>%
+  mutate(Error_difference = (mean_error_ALM - mean_error_EXAM), abs_error_dif = (abs_me_ALM - abs_me_EXAM))
+
+full_comparison <- lowest_error_model |> left_join(error_difference, by=c("id","condit","Fit_Method"))  |> 
+  group_by(condit,Fit_Method,Best_Model) |> mutate(nGrp=n(), model_rank = nGrp - rank(Error_difference) ) |> 
+  arrange(Fit_Method,-Error_difference)
+
+full_comparison |> filter(Fit_Method=="Test_Train") |> 
+  ungroup() |>
+  mutate(id = reorder(id, abs_error_dif)) %>%
+  ggplot(aes(y=id,x=abs_error_dif,fill=Best_Model2))+
+  geom_col()+
+  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+
+  labs(fill="Best Model",x="Mean Model Error Difference (ALM - EXAM)",y="Participant")
+
+
+```
