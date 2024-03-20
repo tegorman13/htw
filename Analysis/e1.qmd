@@ -177,8 +177,10 @@ cdted3 <-get_coef_details(bmtd, "conditVaried:bandTypeExtrapolation")
 
 ```{r}
 #| label: fig-e1-test-dev
-#| fig-cap: E1. Deviations from target band during testing without feedback stage. 
+#| fig-cap: E1. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% credible intervals.
 #| eval: TRUE
+
+
 pe1td <- testE1 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
     stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
@@ -205,13 +207,6 @@ p2
 
 
 
-::: {#fig-e1-test-dev}
-
-![](../Assets/figs/e1_test-dev.png)
-
-E1. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
-
-:::
 
 ```{r}
 ##| label: tbl-e1-bmm-vx
