@@ -316,7 +316,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Model/htw_model.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">HTW Model</span></a>
+ <span class="menu-text">HTW Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Model/htw_model_e1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Model e1</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -477,6 +483,7 @@ window.Quarto = {
 <span>  <span class="va">brms</span>,<span class="va">tidybayes</span>, <span class="va">rstanarm</span>,<span class="va">emmeans</span>,<span class="va">broom</span>,<span class="va">bayestestR</span>,</span>
 <span>  <span class="va">stringr</span>, <span class="va">here</span>,<span class="va">conflicted</span>, <span class="va">patchwork</span>, <span class="va">knitr</span>,<span class="va">kableExtra</span><span class="op">)</span></span>
 <span><span class="co">#options(brms.backend="cmdstanr",mc.cores=4)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span>, scipen<span class="op">=</span><span class="fl">999</span>, dplyr.summarise.inform<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">walk</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"brms"</span>,<span class="st">"dplyr"</span>,<span class="st">"bayestestR"</span><span class="op">)</span>, <span class="va">conflict_prefer_all</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">walk</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Display_Functions"</span>,<span class="st">"org_functions"</span><span class="op">)</span>, <span class="op">~</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Functions/"</span>, <span class="va">.x</span>, <span class="st">".R"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/e1_08-21-23.rds"</span><span class="op">)</span><span class="op">)</span> </span>
@@ -1292,7 +1299,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e1.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e1.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","loop":false,"openEffect":"zoom","closeEffect":"zoom"});
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e1.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e1.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","selector":".lightbox","closeEffect":"zoom","loop":false});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

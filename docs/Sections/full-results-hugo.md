@@ -70,15 +70,12 @@ Table 1: **Experiment 1 - End of training performance**. The Intercept represen
 Table 2: **Experiment 1 testing accuracy**. Main effects of condition and band type (training vs. extrapolation), and the interaction between the two factors. Larger coefficient estimates indicate larger deviations from the baselines (constant & trained bands) - and a positive interaction coefficient indicates disproporionate deviation for the varied condition on the extrapolation bands
 </div>
 
-*Testing.* To compare accuracy between groups in the testing stage, we fit a Bayesian mixed effects model predicting deviation from the target band as a function of training condition (varied vs. constant) and band type (trained vs. extrapolation), with random intercepts for participants and bands. The model results are shown in <a href="#tbl-e1-bmm-dist" class="quarto-xref">Table 2</a>. The main effect of training condition was not significant ($\beta$ = 39, 95% CrI \[-21.1, 100.81\]; pd = 89.93%). The extrapolation testing items had a significantly greater deviation than the training bands ($\beta$ = 71.51, 95% CrI \[33.24, 109.6\]; pd = 99.99%). Most importantly, the interaction between training condition and band type was significant ($\beta$ = 66.46, 95% CrI \[32.76, 99.36\]; pd = 99.99%), As shown in <a href="#fig-e1-test-dev" class="quarto-xref">Figure 3</a>, the varied group had disproportionately larger deviations compared to the constant group in the extrapolation bands.
+*Testing.* To compare accuracy between groups in the testing stage, we fit a Bayesian mixed effects model predicting deviation from the target band as a function of training condition (varied vs. constant) and band type (trained vs. extrapolation), with random intercepts for participants and bands. The model results are shown in <a href="#tbl-e1-bmm-dist" class="quarto-xref">Table 2</a>. The main effect of training condition was not significant ($\beta$ = 39, 95% CrI \[-21.1, 100.81\]; pd = 89.93%). The extrapolation testing items had a significantly greater deviation than the training bands ($\beta$ = 71.51, 95% CrI \[33.24, 109.6\]; pd = 99.99%). Most importantly, the interaction between training condition and band type was significant ($\beta$ = 66.46, 95% CrI \[32.76, 99.36\]; pd = 99.99%), As shown in <a href="#fig-e1-test-dev" class="quarto-xref">Figure 2</a>, the varied group had disproportionately larger deviations compared to the constant group in the extrapolation bands.
 
 <img
 src="Results.markdown_strict_files/figure-markdown_strict/fig-e1-test-dev-1.png"
 id="fig-e1-test-dev"
-alt="Figure 2: E1. Deviations from target band during testing without feedback stage." />
-
-<img src="../Assets/figs/e1_test-dev.png" id="fig-e1-test-dev"
-alt="Figure 3: E1. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals." />
+alt="Figure 2: E1. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% credible intervals." />
 
   
 
@@ -94,12 +91,12 @@ alt="Figure 3: E1. A) Deviations from target band during testing without feedba
 Table 3: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band
 </div>
 
-Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. See <a href="#tbl-e1-bmm-vx" class="quarto-xref">Table 4</a> for the full model results. The estimated coefficient for training condition ($\beta$ = 164.05, 95% CrI \[45.5, 278.85\]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the coefficient on the Band predictor ($\beta$ = 0.71 95% CrI \[0.62, 0.8\]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition ($\beta$ = -0.14, 95% CrI \[-0.26, -0.01\]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition. This difference is depicted visually in <a href="#fig-e1-test-vx" class="quarto-xref">Figure 4</a>.
+Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. See <a href="#tbl-e1-bmm-vx" class="quarto-xref">Table 4</a> for the full model results. The estimated coefficient for training condition ($\beta$ = 164.05, 95% CrI \[45.5, 278.85\]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the coefficient on the Band predictor ($\beta$ = 0.71 95% CrI \[0.62, 0.8\]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition ($\beta$ = -0.14, 95% CrI \[-0.26, -0.01\]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition. This difference is depicted visually in <a href="#fig-e1-test-vx" class="quarto-xref">Figure 3</a>.
 
 <img
 src="Results.markdown_strict_files/figure-markdown_strict/fig-e1-test-vx-1.png"
 id="fig-e1-test-vx"
-alt="Figure 4: E1 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band." />
+alt="Figure 3: E1 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band." />
 <div id="tbl-e1-bmm-vx">
 
 <figure>
@@ -120,7 +117,7 @@ More importantly, the varied training group exhibited significantly larger devia
 
 ### Methods & Procedure
 
-The task and procedure of Experiment was identical to Experiment 1, with the exception that the training and testing bands were reversed (see <a href="#fig-design-e2" class="quarto-xref">Figure 5</a>). The Varied group trained on bands 100-300, 350-550, 600-800, and the constant group trained on band 600-800. Both groups were tested from all six bands. A total of 110 participants completed the experiment (Varied: 55, Constant: 55).
+The task and procedure of Experiment was identical to Experiment 1, with the exception that the training and testing bands were reversed (see <a href="#fig-design-e2" class="quarto-xref">Figure 4</a>). The Varied group trained on bands 100-300, 350-550, 600-800, and the constant group trained on band 600-800. Both groups were tested from all six bands. A total of 110 participants completed the experiment (Varied: 55, Constant: 55).
 
 <div id="fig-design-e2">
 
@@ -206,7 +203,7 @@ The task and procedure of Experiment was identical to Experiment 1, with the exc
 </g>
 </svg>
 
-Figure 5: Experiment 2 Design. Constant and Varied participants complete different training conditions. The training and testing bands are the reverse of Experiment 1.
+Figure 4: Experiment 2 Design. Constant and Varied participants complete different training conditions. The training and testing bands are the reverse of Experiment 1.
 </div>
 
 ### Results
@@ -214,7 +211,7 @@ Figure 5: Experiment 2 Design. Constant and Varied participants complete differ
 <img
 src="Results.markdown_strict_files/figure-markdown_strict/fig-e2-train-dev-1.png"
 id="fig-e2-train-dev"
-alt="Figure 6: E2. Deviations from target band across training blocks." />
+alt="Figure 5: E2. Deviations from target band across training blocks." />
 <div id="tbl-e2-train-dist">
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
@@ -227,7 +224,7 @@ Table 5: **Experiment 2 - End of training performance**. The Intercept represen
 
   
 
-*Training*. <a href="#fig-e2-train-dev" class="quarto-xref">Figure 6</a> presents the deviations across training blocks for both constant and varied training groups. We again compared training performance on the band common to both groups (600-800). The full model results are shown in Table 1. The varied group had a significantly greater deviation than the constant group in the final training block, ( $\beta$ = 36.15, 95% CrI \[16.35, 55.67\]; pd = 99.95%).
+*Training*. <a href="#fig-e2-train-dev" class="quarto-xref">Figure 5</a> presents the deviations across training blocks for both constant and varied training groups. We again compared training performance on the band common to both groups (600-800). The full model results are shown in Table 1. The varied group had a significantly greater deviation than the constant group in the final training block, ( $\beta$ = 36.15, 95% CrI \[16.35, 55.67\]; pd = 99.95%).
 
 <div id="tbl-e2-bmm-dist">
 
@@ -243,12 +240,12 @@ Table 6: **Experiment 2 testing accuracy**. Main effects of condition and band 
 
    
 
-*Testing Accuracy.* The analysis of testing accuracy examined deviations from the target band as influenced by training condition (Varied vs. Constant) and band type (training vs. extrapolation bands). The results, summarized in <a href="#tbl-e2-bmm-dist" class="quarto-xref">Table 6</a>, reveal no significant main effect of training condition ($\beta$ = -20.58, 95% CrI \[-72.94, 33.08\]; pd = 77.81%). However, the interaction between training condition and band type was significant ($\beta$ = 82, 95% CrI \[41.89, 121.31\]; pd = 100%), with the varied group showing disproportionately larger deviations compared to the constant group on the extrapolation bands (see <a href="#fig-e2-test-dev" class="quarto-xref">Figure 7</a>).
+*Testing Accuracy.* The analysis of testing accuracy examined deviations from the target band as influenced by training condition (Varied vs. Constant) and band type (training vs. extrapolation bands). The results, summarized in <a href="#tbl-e2-bmm-dist" class="quarto-xref">Table 6</a>, reveal no significant main effect of training condition ($\beta$ = -20.58, 95% CrI \[-72.94, 33.08\]; pd = 77.81%). However, the interaction between training condition and band type was significant ($\beta$ = 82, 95% CrI \[41.89, 121.31\]; pd = 100%), with the varied group showing disproportionately larger deviations compared to the constant group on the extrapolation bands (see <a href="#fig-e2-test-dev" class="quarto-xref">Figure 6</a>).
 
 <img
 src="Results.markdown_strict_files/figure-markdown_strict/fig-e2-test-dev-1.png"
 id="fig-e2-test-dev"
-alt="Figure 7: A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals." />
+alt="Figure 6: A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals." />
 <div id="tbl-e2-bmm-vx">
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
@@ -261,12 +258,12 @@ alt="Figure 7: A) Deviations from target band during testing without feedback s
 Table 7: Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band
 </div>
 
-*Testing Discrimination.* Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. The full model results are shown in <a href="#tbl-e2-bmm-vx" class="quarto-xref">Table 8</a>. The overall slope on target velocity band predictor was significantly positive, ($\beta$ = 0.71, 95% CrI \[0.58, 0.84\]; pd= 100%), indicating that participants exhibited discrimination between bands. The interaction between slope and condition was not significant, ($\beta$ = -0.06, 95% CrI \[-0.24, 0.13\]; pd= 72.67%), suggesting that the two conditions did not differ in their ability to discriminate between bands (see <a href="#fig-e2-test-vx" class="quarto-xref">Figure 8</a>).
+*Testing Discrimination.* Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. The full model results are shown in <a href="#tbl-e2-bmm-vx" class="quarto-xref">Table 8</a>. The overall slope on target velocity band predictor was significantly positive, ($\beta$ = 0.71, 95% CrI \[0.58, 0.84\]; pd= 100%), indicating that participants exhibited discrimination between bands. The interaction between slope and condition was not significant, ($\beta$ = -0.06, 95% CrI \[-0.24, 0.13\]; pd= 72.67%), suggesting that the two conditions did not differ in their ability to discriminate between bands (see <a href="#fig-e2-test-vx" class="quarto-xref">Figure 7</a>).
 
 <img
 src="Results.markdown_strict_files/figure-markdown_strict/fig-e2-test-vx-1.png"
 id="fig-e2-test-vx"
-alt="Figure 8: E2 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band." />
+alt="Figure 7: E2 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band." />
 <div id="tbl-e2-bmm-vx">
 
 <figure>
@@ -301,12 +298,12 @@ The major adjustment of Experiment 3 is for participants to receive ordinal feed
 Table 9: **Experiment 3 - End of training performance**. The Intercept represents the average of the baseline (constant condition), and the conditVaried coefficient reflects the difference between the constant and varied groups. A larger positive coefficient indicates a greater deviation (lower accuracy) for the varied group.
 </div>
 
-*Training*. <a href="#fig-e3-train-dev" class="quarto-xref">Figure 9</a> displays the average deviations from the target band across training blocks, and <a href="#tbl-e3-train-dist" class="quarto-xref">Table 9</a> shows the results of the Bayesian regression model predicting the deviation from the common band at the end of training (600-800 for reversed order, and 800-1000 for original order conditions). The main effect of training condition is significant, with the varied condition showing larger deviations ( $\beta$ = 64.93, 95% CrI \[36.99, 90.8\]; pd = 100%). The main effect of band order is not significant $\beta$ = 1.11, 95% CrI \[-16.02, 18.16\]; pd = 55.4%, however the interaction between training condition and band order is significant, with the varied condition showing greater accuracy in the reverse order condition ( $\beta$ = -77.02, 95% CrI \[-114.16, -39.61\]; pd = 100%).
+*Training*. <a href="#fig-e3-train-dev" class="quarto-xref">Figure 8</a> displays the average deviations from the target band across training blocks, and <a href="#tbl-e3-train-dist" class="quarto-xref">Table 9</a> shows the results of the Bayesian regression model predicting the deviation from the common band at the end of training (600-800 for reversed order, and 800-1000 for original order conditions). The main effect of training condition is significant, with the varied condition showing larger deviations ( $\beta$ = 64.93, 95% CrI \[36.99, 90.8\]; pd = 100%). The main effect of band order is not significant $\beta$ = 1.11, 95% CrI \[-16.02, 18.16\]; pd = 55.4%, however the interaction between training condition and band order is significant, with the varied condition showing greater accuracy in the reverse order condition ( $\beta$ = -77.02, 95% CrI \[-114.16, -39.61\]; pd = 100%).
 
 <img
 src="Results.markdown_strict_files/figure-markdown_strict/fig-e3-train-dev-1.png"
 id="fig-e3-train-dev"
-alt="Figure 9: E3. Deviations from target band during testing without feedback stage." />
+alt="Figure 8: E3. Deviations from target band during testing without feedback stage." />
 <div id="tbl-e3-bmm-dist">
 
 | Term                                                | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
@@ -328,7 +325,7 @@ Table 10: **Experiment 3 testing accuracy**. Main effects of condition and band
 <img
 src="Results.markdown_strict_files/figure-markdown_strict/fig-e3-test-dev-1.png"
 id="fig-e3-test-dev"
-alt="Figure 10: E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals." />
+alt="Figure 9: E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals." />
 <div id="tbl-e3-bmm-vx">
 
 | Term                                  | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
@@ -345,17 +342,29 @@ alt="Figure 10: E3. A) Deviations from target band during testing without feedb
 Table 11: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band
 </div>
 
-*Testing Discrimination.* The full results of the discrimination model are presented in <a href="#tbl-e3-bmm-dist" class="quarto-xref">Table 10</a>. For the purposes of assessing group differences in discrimination, only the coefficients including the band variable are of interest. The baseline effect of band represents the slope cofficient for the constant training - original order condition, this effect was significant $\beta$ = 0.49, 95% CrI \[0.36, 0.62\]; pd = 100%. Neither of the two way interactions reached significance, $\beta$ = -0.04, 95% CrI \[-0.23, 0.15\]; pd = 66.63%, $\beta$ = -0.1, 95% CrI \[-0.27, 0.08\]; pd = 86.35%. However, the three way interaction between training condition, band order, and target band was significant, $\beta$ = 0.42, 95% CrI \[0.17, 0.7\]; pd = 99.96% - indicating that the varied condition showed a greater slope coefficient on the reverse order bands, compared to the constant condition - this is clearly shown in <a href="#fig-e3-test-vx" class="quarto-xref">Figure 11</a>, where the steepness of the best fitting line for the varied-reversed condition is noticably steeper than the other conditions.
+*Testing Discrimination.* The full results of the discrimination model are presented in <a href="#tbl-e3-bmm-dist" class="quarto-xref">Table 10</a>. For the purposes of assessing group differences in discrimination, only the coefficients including the band variable are of interest. The baseline effect of band represents the slope cofficient for the constant training - original order condition, this effect was significant $\beta$ = 0.49, 95% CrI \[0.36, 0.62\]; pd = 100%. Neither of the two way interactions reached significance, $\beta$ = -0.04, 95% CrI \[-0.23, 0.15\]; pd = 66.63%, $\beta$ = -0.1, 95% CrI \[-0.27, 0.08\]; pd = 86.35%. However, the three way interaction between training condition, band order, and target band was significant, $\beta$ = 0.42, 95% CrI \[0.17, 0.7\]; pd = 99.96% - indicating that the varied condition showed a greater slope coefficient on the reverse order bands, compared to the constant condition - this is clearly shown in <a href="#fig-e3-test-vx" class="quarto-xref">Figure 10</a>, where the steepness of the best fitting line for the varied-reversed condition is noticably steeper than the other conditions.
 
 <img
 src="Results.markdown_strict_files/figure-markdown_strict/fig-e3-test-vx-1.png"
 id="fig-e3-test-vx"
-alt="Figure 11: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band." />
+alt="Figure 10: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band." />
 
 <img
 src="Results.markdown_strict_files/figure-markdown_strict/fig-e3-bmm-vx-1.png"
 id="fig-e3-bmm-vx"
-alt="Figure 12: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands." />
+alt="Figure 11: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands." />
+
+## Results Summary
+
+## Overall Summary of Experiments 1-3
+
+Across three experiments, we investigated the impact of training variability on learning, transfer, and extrapolation in a visuomotor function learning task. In Experiment 1, participants in the varied training condition, who experienced a wider range of velocity bands during training, showed lower accuracy at the end of training compared to those in the constant training condition. Crucially, during the testing phase, the varied group exhibited significantly larger deviations from the target velocity bands, particularly for the extrapolation bands that were not encountered during training. The varied group also showed less discrimination between velocity bands, as evidenced by shallower slopes when predicting response velocity from target velocity band.
+
+Experiment 2 extended these findings by reversing the order of the training and testing bands. Similar to Experiment 1, the varied group demonstrated poorer performance during both training and testing phases. However, unlike Experiment 1, the varied group did not show a significant difference in discrimination between bands compared to the constant group.
+
+In Experiment 3, we introduced an ordinal feedback system during training, in contrast to the continuous feedback provided in the previous experiments. Participants were assigned to both an order condition (original or reverse) and a training condition (constant or varied). The varied condition showed larger deviations at the end of training, consistent with the previous experiments. Interestingly, there was a significant interaction between training condition and band order, with the varied condition showing greater accuracy in the reverse order condition. During testing, the varied group once again exhibited larger deviations, particularly for the extrapolation bands. The reverse order conditions showed smaller deviations compared to the original order conditions. Discrimination between velocity bands was poorer for the varied group in the original order condition, but not in the reverse order condition.
+
+In summary, these experiments consistently demonstrated that training with greater variability led to lower accuracy during both training and testing phases, with the detrimental effect being more pronounced for extrapolation items. The varied training condition also tended to show less discrimination between velocity bands, although this effect was modulated by the order of the training and testing bands. These findings suggest that while variable training can hinder initial learning, it may have differential effects on transfer and extrapolation depending on the specific task structure and the range of stimuli encountered during training and testing.
 
 ## References
 

@@ -11,7 +11,22 @@ code-tools: true
 execute: 
   warning: false
   eval: true
+format:
+  html: default
+  hugo-md:
+    echo: false
+    html-math-method: mathjax
+    output-file: e1-hugo.md
+  gfm:
+    echo: true
+    output-file: e1-gfm.md
+  docusaurus-md:
+    echo: true
+    output-file: e1-docusaurus.md
+#prefer-html: false
 ---
+
+
 
 ```{r}
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
@@ -19,11 +34,21 @@ pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicte
 #conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("flextable","dplyr"), conflict_prefer_all, quiet = TRUE)
 #options(brms.backend="cmdstanr",mc.cores=4)
-options(scipen = 999, dplyr.summarise.inform = FALSE)
-walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
-
+options(digits=2, scipen=999, dplyr.summarise.inform=FALSE)
+walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model", "prep_model_data"), ~source(here::here(paste0("Functions/", .x, ".R"))))
 
 ```
+
+
+```{r}
+#| cache: true
+
+invisible(list2env(load_sbj_data(), envir = .GlobalEnv))
+invisible(list2env(load_e1(), envir = .GlobalEnv))
+e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
+```
+
+
 
 
 
@@ -92,3 +117,227 @@ The final component of our ABC implementation is the determination of an appropr
 For each of the 156 participants from Experiment 1, the ABC algorithm was run until 200 samples of parameters were accepted into the posterior distribution. Obtaining this number of posterior samples required an average of 205,000 simulation runs per participant. Fitting each combination of participant, Model (EXAM & ALM), and fitting method (Test only, Train only, Test & Train) required a total of 192 million simulation runs. To facilitate these intensive computational demands, we used the Future Package in R [@bengtssonUnifyingFrameworkParallel2021], allowing us to parallelize computations across a cluster of ten M1 iMacs, each with 8 cores.
 
 ### Modelling Results
+
+#### Group level Patterns
+
+```{r}
+#| label: tbl-htw-modelError
+#| tbl-cap: "Mean model errors predicting empirical data from the testing and training stage, aggregated over all participants and velocity bands. Note that Fit Method refers to the subset of the data that the model was trained on"
+post_tabs <- abc_tables(post_dat,post_dat_l)
+train_tab <- abc_train_tables(pd_train,pd_train_l)
+
+
+
+rbind(post_tabs$agg_pred_full |> mutate(stage="Test"), train_tab$agg_pred_full |> mutate(stage="Train")) |> 
+  mutate(Fit_Method=rename_fm(Fit_Method)) |>
+  flextable::tabulator(rows=c("stage","Fit_Method","Model"), columns=c("condit"),
+                       `ME` = as_paragraph(mean_error)) |> as_flextable()
+ # post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
+ #    mutate(e2=abs(dist-pred_dist)) |> 
+ #    summarise(dist=mean(dist), pred=mean(pred_dist), mean_error=mean(e2)) |>
+ #    group_by(condit,Model,Fit_Method) |> 
+ #    summarise(mean_error=mean(mean_error)) |> 
+ #    round_tibble(1) |> 
+ #  mutate(Fit_Method=rename_fm(Fit_Method)) |>
+ #  flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"),
+ #                       `ME` = as_paragraph(mean_error)) |> as_flextable()
+
+```
+
+
+```{r}
+#| label: fig-htw-post-dist
+#| fig-cap: Posterior Distributions of $c$ and $lr$ parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically.
+#| fig-height: 6
+#| fig-width: 10
+
+c_post <- post_dat_avg %>%
+    group_by(id, condit, Model, Fit_Method, rank) %>%
+    slice_head(n = 1) |>
+    ggplot(aes(y=log(c), x = Fit_Method,col=condit)) + stat_pointinterval(position=position_dodge(.2)) +
+    ggh4x::facet_nested_wrap(~Model) + labs(title="c parameter") +
+  theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4))
+
+lr_post <- post_dat_avg %>%
+    group_by(id, condit, Model, Fit_Method, rank) %>%
+    slice_head(n = 1) |>
+    ggplot(aes(y=lr, x = Fit_Method,col=condit)) + stat_pointinterval(position=position_dodge(.4)) +
+    ggh4x::facet_nested_wrap(~Model) + labs(title="learning rate parameter") +
+  theme(legend.title = element_blank(), legend.position = "none",plot.title=element_text(hjust=.5))
+c_post + lr_post
+```
+
+
+```{r}
+#| label: fig-htw-resid-pred
+#| fig-cap:  Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y axes are scaled differently between facets. 
+#| fig-height: 14
+#| fig-width: 11
+##| layout: [[45,-5, 45], [100]]
+##| fig-subcap: ["Model Residuals - training data", "Model Residuals - testing data","Full posterior predictive distributions vs. observed data from participants."]
+train_resid <- pd_train |> group_by(id,condit,Model,Fit_Method, Block) |> 
+  summarise(y = mean(y), pred = mean(pred), error = y - pred) |>
+  ggplot(aes(x = Model, y = abs(error), fill=factor(Block))) + 
+  stat_bar + 
+  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, scales="free",ncol=2) +
+  scale_fill_manual(values=wes_palette("AsteroidCity2"))+
+  labs(title="Model Residual Errors - Training Stage", y="RMSE", x= "Model") +
+  theme(legend.title = element_blank(), legend.position="top")
+
+test_resid <-  post_dat |> 
+   group_by(id,condit,x,Model,Fit_Method,rank) |>
+   summarize(error=mean(abs(y-pred)),n=n()) |>
+   group_by(id,condit,x,Model,Fit_Method) |>
+   summarize(error=mean(error)) |>
+  mutate(vbLab = factor(paste0(x,"-",x+200))) |>
+  ggplot(aes(x = Model, y = abs(error), fill=vbLab)) + 
+  stat_bar + 
+  scale_fill_manual(values=wes_palette("AsteroidCity2"))+
+  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, axes = "all",ncol=2,scale="free") +
+  labs(title="Model Residual Errors - Testing Stage",y="RMSE", x="Velocity Band") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+
+
+
+(train_resid / test_resid) +
+  #plot_layout(heights=c(1,1.5)) & 
+  plot_annotation(tag_levels = list(c('A','B')),tag_suffix = ') ') 
+```
+
+The posterior distributions of the $c$ and $lr$ parameters are shown @fig-htw-post-dist, and model predictions are shown alongside the empirical data in fig-cm-vx-pat and fig-cm-dev-pat (i.e. these plots combine all the posterior samples from all of the subjects). There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamped any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.
+
+We used the posterior distribution of $c$ and $lr$ parameters to generate a posterior predictive distribution of the observed data for each participant, which then allows us to compare the empirical data to the full range of predictions from each model. Aggregated residuals are displayed in @tbl-htw-modelError. The pattern of training stage residual errors are unsurprising across the combinations of models and fitting method . Differences in training performance between ALM and EXAM  are generally minor (the two models have identical learning mechanisms). The differences in the magnitude of residuals across the three fitting methods are also straightforward, with massive errors for the 'fit to Test Only' model, and the smallest errors for the 'fit to train only' models. It is also noteworthy that the residual errors are generally larger for the first block of training, which is likely due to the initial values of the ALM weights being unconstrained by whatever initial biases participants tend to bring to the task. Future work may explore the ability of the models to capture more fine grained aspects of the learning trajectories. However for the present purposes, our primary interest is in the ability of ALM and EXAM to account for the testing patterns while being constrained, or not constrained, by the training data. All subsequent analyses and discussion will thus focus on the testing stage.
+
+The residuals of the model predictions for the testing stage (@fig-htw-resid-pred) also show an unsurprising pattern across fitting methods - with models fit only to the test data showing the best performance, followed by models fit to both training and test data, and with models fit only to the training data showing the worst performance (note that y axes are scaled different between plots). Unsurprisingly, the advantage of EXAM is strongest for extrapolation positions (the three smallest bands for both groups - as well as the two highest bands for the Constant group). Although EXAM tends to perform better for both Constant and Varied participants (see also @tbl-htw-modelError), the relative advantage of EXAM is generally larger for the Constant group - a pattern consistent across all three fitting methods.
+
+Panel B of @fig-htw-resid-pred directly compares the aggregated observed data to the posterior predictive distributions for the testing stage. Of interest are a) the extent to which the median estimates of the ALM and EXAM posteriors deviate from the observed medians for each velocity band; b) the ability of ALM and EXAM to discriminate between velocity bands; c) the relative performance of models that are constrained by the training data (i.e. the 'fit to train only' and 'fit to both' models) compared to the 'fit to test only' models; 
+
+Considering first the models fit to only the testing data, which reflect the best possible performance of ALM and EXAM at capturing the group-aggregated testing patterns. For the varied group, both ALM and EXAM are able to capture the median values of the observed data within the 66% credible intervals, and the spread of model predictions generally matches that of the observed data. For the constant group, only EXAM is able to capture the median range of values across the velocity bands, with ALM generally underestimating human velocoties in the upper bands, and overestimating in the lower bands. In the case of band 100, the median ALM prediction appears to match that of our participants - however this is due to a large subset of participants have ALM predictions near 0 for band 100, a pattern we will explore further in our considertation of individual patterns below. Models fit to both training and testing data show a similar pattern to only the testing data display the same basic pattern as those fit to only the testing data, albeit with slightly larger residuals. However models fit to only the training data display markedly worse performance at accounting for the key testing patterns. 
+
+-   \*\* explain how the constant group ALM predictions for band 100 look deceptively good due to aggregation of a large subset of subjects having ALM predictions of 0 for vb100, and a large subset with ALM predictions close to their position 800 value. This is relected by much greater variance of the ALM esimates in the posterior predictive plot
+
+-   \*\* comment on how much constrained by the training data has a worse impact on the EXAM predictions for varied than for constant - perhaps due to the varied training data being much noisier than the constant training data.
+
+-   \*\* comment on EXAM doing a better job mimicing the within-condition variance of the observed data
+
+-   \*\* comment on the % of Constant subjects being best accounted for by EXAM being higher.
+
+-   \*\* does EXAM do better for the Constant group because the constant group performs better? Or does training with a single example encourage an exam sort of strategy?
+
+
+```{r}
+#| label: fig-cm-vx-pat
+#| fig-height: 11
+#| fig-width: 11
+
+
+#post_dat_l |> group_by(id,condit,x) |> filter(Resp=="Observed") |> slice_head(n=1)
+
+pemp1 <- e1 |> filter(expMode2=="Test") |> mutate(Resp="Observed") |> 
+  ggplot(aes(x=condit,y=vx, fill=vb)) + 
+  stat_bar+ 
+  labs(y="vx", x="Condition") + ggh4x::facet_nested_wrap(~Resp)
+
+layout <- "
+#A#
+#B#
+CCC
+"
+
+pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |> 
+  group_by(id,condit, Fit_Method,Resp,x) |> 
+  mutate(x=as.factor(x)) |>
+ summarize(vx=mean(val)) |> 
+  ggplot(aes(x=condit,y=vx, fill=x)) + 
+  stat_bar + 
+    ggh4x::facet_nested_wrap(~Resp+rename_fm(Fit_Method), axes = "all",ncol=3,scale="free") + 
+  theme(legend.position = "none",plot.title = element_text(hjust=.55) ) + labs(title="Model Predictions", y="vx", x="Condition")
+
+(pemp1) / plot_spacer() / pmod1 + 
+  plot_layout(design = layout, heights = unit(c(5,-5, 8), c('cm','null')))
+
+```
+
+
+
+```{r}
+#| label: fig-cm-dev-pat
+#| fig-height: 11
+#| fig-width: 11
+#| fig-cap: "Posterior predictives for absolute deviation from target (accuracy). Observed data is shown on top, and predictions from each combination of model and fitting method are shown below. "
+
+
+pemp1 <- e1 |> filter(expMode2=="Test") |> mutate(Resp="Observed") |> 
+  ggplot(aes(x=condit,y=dist, fill=vb)) + 
+  stat_bar+ theme(legend.position="top")
+  labs(y="Absolute Deviation", x="Condition") + ggh4x::facet_nested_wrap(~Resp) 
+
+layout <- "
+#A#
+#B#
+CCC
+"
+
+pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |> 
+  group_by(id,condit, Fit_Method,Resp,x) |> 
+  mutate(x=as.factor(x)) |>
+ summarize(dist=mean(dist)) |> 
+  ggplot(aes(x=condit,y=dist, fill=x)) + 
+  stat_bar + 
+    ggh4x::facet_nested_wrap(~Resp+rename_fm(Fit_Method), axes = "all",ncol=3) + 
+  theme(legend.position = "none",plot.title = element_text(hjust=.55) ) + labs(title="Model Predictions", y="Absolute Deviation", x="Condition")
+
+# (pemp1) / plot_spacer() / pmod1 + 
+#   plot_layout(design = layout, heights = unit(c(4,-5, 9), c('cm','null')))
+
+(pemp1) / plot_spacer() / pmod1 + 
+  plot_layout(design = layout, heights = unit(c(5,-5, 8), c('cm','null')))
+
+# (pemp1) / pmod1 + plot_layout(design = layout,heights = unit(c(2,3),c("null","null")))
+# 
+# 
+# (pemp1) / plot_spacer() / pmod1 + 
+#   plot_layout(design = layout, heights = unit(c(6,-5, 8), c('cm','null')))
+
+```
+
+
+
+### Accounting for individual patterns
+
+To more accurately assess the relative abilities of ALM and EXAM to capture important empirical patterns - we will now examine the predictions of both models for the subset of individual participants shown in @fig-htw-indv-pred. Panel A presents three varied and constant participants who demonstrated a reasonable degree of discrimination between the 6 velocity bands during testing.
+
+-   \*\* comment on the different ways ALM can completely fail to mimic discrimination patterns (sbj. 35; sbj. 137),and on how it can sometimes partially succeed (sbj. 11; 14,74)
+
+-   \*\* comment on how EXAM can somtimes mimic non-monotonic spacing between bands due to associative stregth from training (i.e. subject 47)
+
+-   \*\* compare c values to slope parameters from the statistical models earlier in paper
+
+
+
+
+```{r}
+
+# 175, 185, 134, 155, 68, 93, 74
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+```{r}
+
+
+e2_model <- load_e2()
+
+
+
+```

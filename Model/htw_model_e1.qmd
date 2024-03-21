@@ -19,7 +19,7 @@ pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicte
 #conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("flextable","dplyr"), conflict_prefer_all, quiet = TRUE)
 
-options(scipen = 999)
+options(digits=2, scipen=999, dplyr.summarise.inform=FALSE)
 walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 ```
 
