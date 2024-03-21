@@ -23,14 +23,13 @@ format:
   docusaurus-md:
     echo: true
     output-file: e1-docusaurus.md
-#prefer-html: false
+prefer-html: true
 ---
-
 
 
 ```{r}
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
-               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools,ggdist)
+               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools,ggdist,ggh4x)
 #conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("flextable","dplyr"), conflict_prefer_all, quiet = TRUE)
 #options(brms.backend="cmdstanr",mc.cores=4)
@@ -142,6 +141,9 @@ rbind(post_tabs$agg_pred_full |> mutate(stage="Test"), train_tab$agg_pred_full |
  #  flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"),
  #                       `ME` = as_paragraph(mean_error)) |> as_flextable()
 
+
+
+
 ```
 
 
@@ -175,28 +177,27 @@ c_post + lr_post
 #| fig-width: 11
 ##| layout: [[45,-5, 45], [100]]
 ##| fig-subcap: ["Model Residuals - training data", "Model Residuals - testing data","Full posterior predictive distributions vs. observed data from participants."]
-train_resid <- pd_train |> group_by(id,condit,Model,Fit_Method, Block) |> 
-  summarise(y = mean(y), pred = mean(pred), error = y - pred) |>
-  ggplot(aes(x = Model, y = abs(error), fill=factor(Block))) + 
+train_resid <- pd_train |> group_by(id,condit,Model,Fit_Method, Block,x) |> 
+  summarise(y=mean(y), pred=mean(pred), mean_error=abs(y-pred)) |>
+  group_by(id,condit,Model,Fit_Method,Block) |>
+  summarise(mean_error=mean(mean_error)) |>
+  ggplot(aes(x=interaction(Block,Model), y = mean_error, fill=factor(Block))) + 
   stat_bar + 
   ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, scales="free",ncol=2) +
-  scale_fill_manual(values=wes_palette("AsteroidCity2"))+
-  labs(title="Model Residual Errors - Training Stage", y="RMSE", x= "Model") +
-  theme(legend.title = element_blank(), legend.position="top")
+   scale_x_discrete(guide = "axis_nested") +
+  scale_fill_manual(values=c("gray10","gray50","gray92"))+
+  labs(title="Model Residual Errors - Training Stage", y="RMSE", x= "Model",fill="Training Block") +
+  theme(legend.position="top")
 
 test_resid <-  post_dat |> 
-   group_by(id,condit,x,Model,Fit_Method,rank) |>
-   summarize(error=mean(abs(y-pred)),n=n()) |>
    group_by(id,condit,x,Model,Fit_Method) |>
-   summarize(error=mean(error)) |>
+    summarise(y=mean(y), pred=mean(pred), error=abs(y-pred)) |> 
   mutate(vbLab = factor(paste0(x,"-",x+200))) |>
   ggplot(aes(x = Model, y = abs(error), fill=vbLab)) + 
   stat_bar + 
-  scale_fill_manual(values=wes_palette("AsteroidCity2"))+
+  #scale_fill_manual(values=wes_palette("AsteroidCity2"))+
   ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, axes = "all",ncol=2,scale="free") +
-  labs(title="Model Residual Errors - Testing Stage",y="RMSE", x="Velocity Band") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
-
+  labs(title="Model Residual Errors - Testing Stage",y="RMSE", x="Velocity Band") 
 
 
 (train_resid / test_resid) +
@@ -204,7 +205,7 @@ test_resid <-  post_dat |>
   plot_annotation(tag_levels = list(c('A','B')),tag_suffix = ') ') 
 ```
 
-The posterior distributions of the $c$ and $lr$ parameters are shown @fig-htw-post-dist, and model predictions are shown alongside the empirical data in fig-cm-vx-pat and fig-cm-dev-pat (i.e. these plots combine all the posterior samples from all of the subjects). There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamped any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.
+The posterior distributions of the $c$ and $lr$ parameters are shown @fig-htw-post-dist, and model predictions are shown alongside the empirical data in @fig-cm-vx-pat and @fig-cm-dev-pat (i.e. these plots combine all the posterior samples from all of the subjects). There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamped any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.
 
 We used the posterior distribution of $c$ and $lr$ parameters to generate a posterior predictive distribution of the observed data for each participant, which then allows us to compare the empirical data to the full range of predictions from each model. Aggregated residuals are displayed in @tbl-htw-modelError. The pattern of training stage residual errors are unsurprising across the combinations of models and fitting method . Differences in training performance between ALM and EXAM  are generally minor (the two models have identical learning mechanisms). The differences in the magnitude of residuals across the three fitting methods are also straightforward, with massive errors for the 'fit to Test Only' model, and the smallest errors for the 'fit to train only' models. It is also noteworthy that the residual errors are generally larger for the first block of training, which is likely due to the initial values of the ALM weights being unconstrained by whatever initial biases participants tend to bring to the task. Future work may explore the ability of the models to capture more fine grained aspects of the learning trajectories. However for the present purposes, our primary interest is in the ability of ALM and EXAM to account for the testing patterns while being constrained, or not constrained, by the training data. All subsequent analyses and discussion will thus focus on the testing stage.
 
@@ -225,80 +226,149 @@ Considering first the models fit to only the testing data, which reflect the bes
 -   \*\* does EXAM do better for the Constant group because the constant group performs better? Or does training with a single example encourage an exam sort of strategy?
 
 
+
 ```{r}
 #| label: fig-cm-vx-pat
-#| fig-height: 11
+#| fig-height: 12
 #| fig-width: 11
 
 
 #post_dat_l |> group_by(id,condit,x) |> filter(Resp=="Observed") |> slice_head(n=1)
 
 pemp1 <- e1 |> filter(expMode2=="Test") |> mutate(Resp="Observed") |> 
-  ggplot(aes(x=condit,y=vx, fill=vb)) + 
+  ggplot(aes(x=condit,y=vx, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
   stat_bar+ 
-  labs(y="vx", x="Condition") + ggh4x::facet_nested_wrap(~Resp)
+  scale_color_manual(values = c("black" = "black"), guide = FALSE) +
+  scale_size_manual(values = c("black" = .5), guide = FALSE) + 
+  theme(legend.position="right", axis.title.x = element_blank(), plot.title = element_text(hjust=.50)) +
+  labs(title="Empirical Data - Experiment 1",y="vx", x="Condition",fill="Band") 
 
 layout <- "
 #A#
-#B#
 CCC
 "
 
+# pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |> 
+#   group_by(id,condit, Fit_Method,Resp,x) |> 
+#  summarize(vx=mean(val)) |> 
+#  left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
+#   ggplot(aes(x=condit,y=vx, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+#   stat_bar + 
+#     scale_color_manual(values = c("black" = "black"), guide = FALSE) +
+#   scale_size_manual(values = c("black" = .5), guide = FALSE) +
+#     ggh4x::facet_nested_wrap(~Resp+rename_fm(Fit_Method), axes = "all",ncol=3,scale="free") + 
+#   theme(legend.position = "none",plot.title = element_text(hjust=.55) ) + labs(title="Model Predictions", y="vx", x="Condition")
+
 pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |> 
   group_by(id,condit, Fit_Method,Resp,x) |> 
-  mutate(x=as.factor(x)) |>
- summarize(vx=mean(val)) |> 
-  ggplot(aes(x=condit,y=vx, fill=x)) + 
+ summarize(vx=median(val)) |> 
+ left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
+ ggplot( aes(x=condit,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
   stat_bar + 
-    ggh4x::facet_nested_wrap(~Resp+rename_fm(Fit_Method), axes = "all",ncol=3,scale="free") + 
-  theme(legend.position = "none",plot.title = element_text(hjust=.55) ) + labs(title="Model Predictions", y="vx", x="Condition")
+    facet_wrap(~Resp+rename_fm(Fit_Method), strip.position = "top", scales = "free_x") +
+        scale_color_manual(values = c("black" = "black"), guide = FALSE) +
+  scale_size_manual(values = c("black" = .5), guide = FALSE) +
+    theme(panel.spacing = unit(0, "lines"), 
+         strip.background = element_blank(),
+         strip.placement = "outside",
+         legend.position = "none",plot.title = element_text(hjust=.50),
+         axis.title.x = element_blank(),
+         plot.margin = unit(c(20,0,0,0), "pt")) + 
+         labs(title="Model Predictions - Experiment 1 Data", y="vx")
 
-(pemp1) / plot_spacer() / pmod1 + 
-  plot_layout(design = layout, heights = unit(c(5,-5, 8), c('cm','null')))
+(pemp1)  / pmod1 + 
+  plot_layout(design = layout) #heights = unit(c(5,-5, 8), c('cm','null'))
 
 ```
 
 
-
 ```{r}
 #| label: fig-cm-dev-pat
+#| fig-cap: "Empirical data and Model predictions for absolute deviation from target (accuracy). Observed data is shown on top, and predictions from each combination of model and fitting method are shown below. "
 #| fig-height: 11
 #| fig-width: 11
-#| fig-cap: "Posterior predictives for absolute deviation from target (accuracy). Observed data is shown on top, and predictions from each combination of model and fitting method are shown below. "
 
 
-pemp1 <- e1 |> filter(expMode2=="Test") |> mutate(Resp="Observed") |> 
-  ggplot(aes(x=condit,y=dist, fill=vb)) + 
-  stat_bar+ theme(legend.position="top")
-  labs(y="Absolute Deviation", x="Condition") + ggh4x::facet_nested_wrap(~Resp) 
+pemp1 <- e1 |> filter(expMode2=="Test") |> 
+  group_by(id,condit,vb,bandType) |> 
+  ggplot(aes(x=condit,y=dist, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) + 
+  stat_summary(fun.data=mean_se, geom="errorbar", color="black", position=position_dodge(), size=.5) + 
+  scale_color_manual(values = c("black" = "black"), guide = FALSE) +
+  scale_size_manual(values = c("black" = .5), guide = FALSE) + 
+  scale_y_continuous( breaks=seq(0,600,by=200),labels=as.character(seq(0,600,by=200))) +
+  expand_limits(y=600) +
+  theme(legend.position="right", axis.title.x = element_blank(),plot.title = element_text(hjust=.40)) +
+  labs(title="Empirical Data", y="Deviation from target band", fill="Band") 
 
-layout <- "
-#A#
-#B#
-CCC
-"
+# layout <- "#A#
+# #B#
+# CCC"
+
+layout <- "#A#
+CCC"
+
+# pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |> 
+#   left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
+#   group_by(id,condit, Fit_Method,Resp,x,bandType) |> 
+#   mutate(x=as.factor(x)) |>
+#  summarize(dist=median(dist)) |> 
+#   mutate(oc = ifelse(bandType == "Trained", "black", NA)) |> 
+#   ggplot(aes(x=condit,y=dist, fill=x,col=oc,size=oc)) + 
+#   stat_bar +
+#   ggh4x::facet_nested_wrap(~Resp+rename_fm(Fit_Method), axes = "all",ncol=3) + 
+#    scale_color_manual(values = c("black" = "black"), guide = FALSE) +
+#    scale_size_manual(values = c("black" = .3), guide = FALSE) + 
+#   theme(legend.position = "none",plot.title = element_text(hjust=.55) ) + 
+#   labs(title="Model Predictions", y="Deviation from target band", x="Condition")
 
 pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |> 
-  group_by(id,condit, Fit_Method,Resp,x) |> 
-  mutate(x=as.factor(x)) |>
- summarize(dist=mean(dist)) |> 
-  ggplot(aes(x=condit,y=dist, fill=x)) + 
+  left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
+  group_by(id,condit, Fit_Method,Resp,vb,bandType) |> 
+ summarize(dist=median(dist)) |> 
+ ggplot( aes(x=condit,y=dist, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
   stat_bar + 
-    ggh4x::facet_nested_wrap(~Resp+rename_fm(Fit_Method), axes = "all",ncol=3) + 
-  theme(legend.position = "none",plot.title = element_text(hjust=.55) ) + labs(title="Model Predictions", y="Absolute Deviation", x="Condition")
+    facet_wrap(~Resp+rename_fm(Fit_Method), strip.position = "top", scales = "free_x") +
+        scale_color_manual(values = c("black" = "black"), guide = FALSE) +
+  scale_size_manual(values = c("black" = .5), guide = FALSE) +
+    theme(panel.spacing = unit(0, "lines"), 
+         strip.background = element_blank(),
+         strip.placement = "outside",
+         legend.position = "none",
+         plot.title = element_text(hjust=.50),
+         plot.margin = unit(c(20,0,0,0), "pt"),
+         axis.title.x = element_blank()) + 
+         labs(title="Model Predictions - Experiment 1 Data", y="Deviation from target band")
 
-# (pemp1) / plot_spacer() / pmod1 + 
-#   plot_layout(design = layout, heights = unit(c(4,-5, 9), c('cm','null')))
 
-(pemp1) / plot_spacer() / pmod1 + 
-  plot_layout(design = layout, heights = unit(c(5,-5, 8), c('cm','null')))
 
-# (pemp1) / pmod1 + plot_layout(design = layout,heights = unit(c(2,3),c("null","null")))
+(pemp1) / pmod1 + plot_layout(design = layout) #heights = unit(c(5,-5, 8), c('cm','null'))
+
+```
+
+
+```{r}
+
+
+testAvgE1 |> ggplot( aes(x=(interaction(vb,bandType,sep="!")),y=vxAvg, fill=vb)) + 
+    stat_summary(fun=mean, geom="bar", position="dodge", alpha=.75)+
+    facet_wrap(~condit, scales = "free_x") +
+    theme( ggh4x.axis.nestline  = element_line(colour = "black"),
+           strip.background = element_blank(),
+           strip.placement = "outside",
+            axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5),) +   
+    scale_x_discrete(guide = guide_axis_nested(delim = "!"), name = "Condit")
+
+# stat_bar <- list(stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75),
+#   stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()))
 # 
-# 
-# (pemp1) / plot_spacer() / pmod1 + 
-#   plot_layout(design = layout, heights = unit(c(6,-5, 8), c('cm','null')))
-
+#   scale_x_discrete(limits = c(levels(df_plot$Top_contributor)[1:4],
+#                               "ABC",
+#                               levels(df_plot$Top_contributor)[5:8],
+#                               "DEF",
+#                               levels(df_plot$Top_contributor)[9:12]),
+#                    labels = c("ABC" = "",
+#                               "DEF" = ""))
 ```
 
 
@@ -333,11 +403,14 @@ To more accurately assess the relative abilities of ALM and EXAM to capture impo
 
 
 
-```{r}
 
+```{r}
+#| eval: false
 
 e2_model <- load_e2()
 
 
+
+e3_model <- load_e3()
 
 ```

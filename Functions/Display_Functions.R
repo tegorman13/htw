@@ -10,9 +10,13 @@ mutate <- dplyr::mutate
 filter <- dplyr::filter
 map <- purrr::map
 
-stat_bar <- list(stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75),
-  stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()))
+# stat_bar <- list(stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75),
+#   stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()))
 
+stat_bar <- list(stat_summary(fun=mean, geom="bar", position=position_dodge()),
+                 stat_summary(fun.data=mean_se, geom="errorbar", color="black", position=position_dodge(), size=.5))
+
+  
 
 stat_bar_sd <- list(stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75),
   stat_summary(fun.data=mean_sdl, geom="errorbar", ,fun.args = list(mult = 1), position=position_dodge(), alpha=.9))

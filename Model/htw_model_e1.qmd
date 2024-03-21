@@ -285,6 +285,144 @@ rbind(post_tabs$agg_pred_full |> mutate(stage="Test"), train_tab$agg_pred_full |
 
 
 ```{r}
+#| eval: false
+
+post_tabs$et_sum
+
+
+et_sum <- post_dat_l |>
+  group_by(id,condit, Fit_Method, Resp) |>
+  summarise(val = mean(val), .groups = 'drop') |>
+  pivot_wider(
+    names_from = Resp,
+    values_from = val,
+    values_fill = list(val = NA)
+  ) |>
+  mutate(
+    ALM_error = round(abs(ALM - Observed),1),
+    EXAM_error = round(abs(EXAM - Observed),1),
+    Best_Model = case_when(
+      ALM_error < EXAM_error ~ "ALM",
+      EXAM_error < ALM_error ~ "EXAM",
+      TRUE ~ NA_character_  # In case of a tie or missing data
+    )
+  ) |>
+  group_by(condit, Fit_Method) %>%
+  summarise(
+    Avg_ALM_error = round(mean(ALM_error, na.rm = TRUE),1),
+    Avg_EXAM_error = round(mean(EXAM_error, na.rm = TRUE),1),
+    N_Best_ALM = sum(Best_Model == "ALM", na.rm = TRUE),
+    N_Best_EXAM = sum(Best_Model == "EXAM", na.rm = TRUE)
+  ) %>%
+  mutate(
+    Best_Model = case_when(
+      Avg_ALM_error < Avg_EXAM_error ~ "ALM",
+      Avg_EXAM_error < Avg_ALM_error ~ "EXAM",
+      TRUE ~ "Tie"  # In case of a tie or missing data
+    ))
+
+
+
+
+et_sum_x <- post_dat_l |>
+  group_by(id,condit, Fit_Method, Resp,x) |>
+  summarise(val = mean(val), .groups = 'drop') |>
+  pivot_wider(
+    names_from = Resp,
+    values_from = val,
+    values_fill = list(val = NA)
+  ) |>
+  mutate(
+    ALM_error = round(abs(ALM - Observed),1),
+    EXAM_error = round(abs(EXAM - Observed),1),
+    Best_Model = case_when(
+      ALM_error < EXAM_error ~ "ALM",
+      EXAM_error < ALM_error ~ "EXAM",
+      TRUE ~ NA_character_  # In case of a tie or missing data
+    )
+  ) |>
+  group_by(condit, Fit_Method) %>%
+  summarise(
+    Avg_ALM_error = round(mean(ALM_error, na.rm = TRUE),1),
+    Avg_EXAM_error = round(mean(EXAM_error, na.rm = TRUE),1),
+    N_Best_ALM = sum(Best_Model == "ALM", na.rm = TRUE),
+    N_Best_EXAM = sum(Best_Model == "EXAM", na.rm = TRUE)
+  ) %>%
+  mutate(
+    Best_Model = case_when(
+      Avg_ALM_error < Avg_EXAM_error ~ "ALM",
+      Avg_EXAM_error < Avg_ALM_error ~ "EXAM",
+      TRUE ~ "Tie"  # In case of a tie or missing data
+    ))
+
+
+
+
+et_sum_x_id <- post_dat_l |>
+  group_by(id,condit, Fit_Method, Resp,x) |>
+  summarise(val = mean(val), .groups = 'drop') |>
+  pivot_wider(
+    names_from = Resp,
+    values_from = val,
+    values_fill = list(val = NA)
+  ) |>
+  mutate(
+    ALM_error = round(abs(ALM - Observed),1),
+    EXAM_error = round(abs(EXAM - Observed),1),
+    Best_Model = case_when(
+      ALM_error < EXAM_error ~ "ALM",
+      EXAM_error < ALM_error ~ "EXAM",
+      TRUE ~ NA_character_  # In case of a tie or missing data
+    )
+  ) |>
+  group_by(condit, Fit_Method) %>%
+  summarise(
+    Avg_ALM_error = round(mean(ALM_error, na.rm = TRUE),1),
+    Avg_EXAM_error = round(mean(EXAM_error, na.rm = TRUE),1),
+    N_Best_ALM = sum(Best_Model == "ALM", na.rm = TRUE),
+    N_Best_EXAM = sum(Best_Model == "EXAM", na.rm = TRUE)
+  ) %>%
+  mutate(
+    Best_Model = case_when(
+      Avg_ALM_error < Avg_EXAM_error ~ "ALM",
+      Avg_EXAM_error < Avg_ALM_error ~ "EXAM",
+      TRUE ~ "Tie"  # In case of a tie or missing data
+    ))
+
+
+ agg_pred_full <-  post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2),ei2=abs(y-pred)) |>
+    group_by(id,condit,Model,Fit_Method) |> 
+    summarise(mean_error=mean(mean_error),imean_error=mean(ei2)) |> 
+    round_tibble(1) |> 
+    group_by(Fit_Method,Model,condit) |> 
+   # summarise(mean_error=mean(mean_error),imean_error=mean(imean_error))
+   summarise(mean_error=mean(imean_error))
+
+ 
+ 
+   agg_pred_full <-  pd_train  |> group_by(condit,Model,Fit_Method,Block,x) |> 
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2),ei2=abs(y-pred)) |>
+    group_by(condit,Model,Fit_Method,Block) |> 
+    summarise(mean_error=mean(mean_error), mean_ei2=mean(ei2)) |> 
+    group_by(Fit_Method,Model,condit) |>
+    summarise(mean_error=mean(mean_error),mean_ei2=mean(mean_ei2)) 
+   
+ 
+ pd_train  |> group_by(id, condit,Model,Fit_Method,Block,x) |> 
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2),ei2=abs(y-pred)) |>
+    group_by(condit,Model,Fit_Method,Block) |> 
+    summarise(mean_error=mean(mean_error), mean_ei2=mean(ei2)) |> 
+    group_by(Fit_Method,Model,condit) |>
+    summarise(mean_error=mean(mean_error),mean_ei2=mean(mean_ei2))   
+   
+```
+
+
+```{r}
 #| fig-height: 11
 #| fig-width: 11
 #| 

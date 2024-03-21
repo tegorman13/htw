@@ -36,12 +36,20 @@ abc_train_tables <- function(pd_train,pt_train_l)
     summarise(mean_error=mean(mean_error)) |> 
     round_tibble(1)
   
-  agg_pred_full <-  pd_train  |> group_by(condit,Model,Fit_Method,x) |> 
+  # agg_pred_full <-  pd_train  |> group_by(condit,Model,Fit_Method,x) |> 
+  #   mutate(e2=abs(y-pred)) |> 
+  #   summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
+  #   group_by(condit,Model,Fit_Method) |> 
+  #   summarise(mean_error=mean(mean_error)) |> 
+  #   round_tibble(1) 
+   
+   agg_pred_full <-  pd_train  |> group_by(condit,Model,Fit_Method,Block,x) |> 
     mutate(e2=abs(y-pred)) |> 
-    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
-    group_by(condit,Model,Fit_Method) |> 
-    summarise(mean_error=mean(mean_error)) |> 
-    round_tibble(1) 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2),ei2=abs(y-pred)) |>
+    group_by(condit,Model,Fit_Method,Block) |> 
+    summarise(mean_error=mean(mean_error), mean_ei2=mean(ei2)) |> 
+    group_by(Fit_Method,Model,condit) |>
+    summarise(mean_error=mean(mean_ei2)) 
   
   agg_pred_best <-  pd_train  |> group_by(condit,Model,Fit_Method,x) |> 
     filter(rank==1) |>
@@ -70,20 +78,26 @@ abc_tables <- function(post_dat,post_dat_l=NULL){
   
   # check if post_dat_l exists
   
- agg_pred_full <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
+ agg_pred_full <-  post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
     mutate(e2=abs(y-pred)) |> 
-    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
-    group_by(condit,Model,Fit_Method) |> 
-    summarise(mean_error=mean(mean_error)) |> 
-    round_tibble(1) 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2),ei2=abs(y-pred)) |>
+    group_by(id,condit,Model,Fit_Method) |> 
+    summarise(mean_error=mean(mean_error),imean_error=mean(ei2)) |> 
+    round_tibble(1) |> 
+    group_by(Fit_Method,Model,condit) |> 
+   # summarise(mean_error=mean(mean_error),imean_error=mean(imean_error))
+   summarise(mean_error=mean(imean_error))
  
- agg_pred_best <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
+ agg_pred_best <-  post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
    filter(rank==1) |>
-   mutate(e2=abs(y-pred)) |> 
-   summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2)) |>
-   group_by(condit,Model,Fit_Method) |> 
-   summarise(mean_error=mean(mean_error)) |> 
-   round_tibble(1)
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2),ei2=abs(y-pred)) |>
+    group_by(id,condit,Model,Fit_Method) |> 
+    summarise(mean_error=mean(mean_error),imean_error=mean(ei2)) |> 
+    round_tibble(1) |> 
+    group_by(Fit_Method,Model,condit) |> 
+   # summarise(mean_error=mean(mean_error),imean_error=mean(imean_error))
+   summarise(mean_error=mean(imean_error))
   
   
  agg_full <-  post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
