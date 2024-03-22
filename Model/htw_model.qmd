@@ -344,30 +344,6 @@ pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |>
 ```
 
 
-```{r}
-
-
-testAvgE1 |> ggplot( aes(x=(interaction(vb,bandType,sep="!")),y=vxAvg, fill=vb)) + 
-    stat_summary(fun=mean, geom="bar", position="dodge", alpha=.75)+
-    facet_wrap(~condit, scales = "free_x") +
-    theme( ggh4x.axis.nestline  = element_line(colour = "black"),
-           strip.background = element_blank(),
-           strip.placement = "outside",
-            axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5),) +   
-    scale_x_discrete(guide = guide_axis_nested(delim = "!"), name = "Condit")
-
-# stat_bar <- list(stat_summary(fun=mean, geom="bar", position=position_dodge(), alpha=.75),
-#   stat_summary(fun.data=mean_se, geom="errorbar", position=position_dodge()))
-# 
-#   scale_x_discrete(limits = c(levels(df_plot$Top_contributor)[1:4],
-#                               "ABC",
-#                               levels(df_plot$Top_contributor)[5:8],
-#                               "DEF",
-#                               levels(df_plot$Top_contributor)[9:12]),
-#                    labels = c("ABC" = "",
-#                               "DEF" = ""))
-```
-
 
 
 ### Accounting for individual patterns
@@ -382,14 +358,6 @@ To more accurately assess the relative abilities of ALM and EXAM to capture impo
 
 
 
-
-```{r}
-
-# 175, 185, 134, 155, 68, 93, 74
-
-
-
-```
 
 
 ```{r  fig.width=11, fig.height=10}
