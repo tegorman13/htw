@@ -1,7 +1,7 @@
 ---
 title: HTW Model e1
 author: Thomas Gorman
-date:  last-modified #"`r Sys.Date()`"
+date: last-modified #"`r Sys.Date()`"
 page-layout: full
 categories: [Modeling, ALM, EXAM, R]
 lightbox: true
@@ -882,9 +882,9 @@ trainIndv <- post_dat_l |> filter(id %in% c(cId_tr,vId_tr), Fit_Method=="Train")
 # could compute best model for each posterior parameter - examine consistency
 # then I'd have an error bar for each subject in the model error diff. figure
 
-tid1 <- post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
+tid1 <- post_dat  |> filter(Fit_Method=="Test_Train") |> group_by(id,condit,Model,Fit_Method) |> 
   mutate(e2=abs(y-pred)) |> 
-  summarise(y1=mean(y), pred1=mean(pred),mean_error=abs(y1-pred1)) |>
+  summarise(y1=median(y), pred1=median(pred),mean_error=abs(y1-pred1)) |>
   group_by(id,condit,Model,Fit_Method) |> 
   summarise(mean_error=mean(mean_error)) |> 
   arrange(id,condit,Fit_Method) |>

@@ -1,11 +1,12 @@
 ---
 title: HTW Modeling 
 author: Thomas Gorman
-date:  last-modified #"`r Sys.Date()`"
+date: last-modified #"`r Sys.Date()`"
 page-layout: full
 categories: [Modeling, ALM, EXAM, R]
 lightbox: true
 toc: false
+format-links: false
 code-fold: true
 code-tools: true
 execute: 
@@ -370,8 +371,11 @@ cId_tr <- c(137, 181, 11)
 vId_tr <- c(14, 193, 47)
 cId_tt <- c(11, 93, 35)
 vId_tt <- c(1,14,74)
-cId_new <- c(175, 185, 134, 155, 68, 93, 74)
+cId_new <- c(175, 185, 134, 155, 68, 93, 74, 134)
 # filter(id %in% (filter(bestTestEXAM,group_rank<=9, Fit_Method=="Test")
+
+# e3 sbjs - 245, 219, 264, 280, 249, 274
+
 
 testIndv <- post_dat_l |> filter(id %in% c(cId_tt,vId_tt,cId_new), Fit_Method=="Test_Train") |> 
    mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
