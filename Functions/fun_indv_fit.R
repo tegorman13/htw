@@ -88,6 +88,22 @@ abc_tables <- function(post_dat,post_dat_l=NULL){
    # summarise(mean_error=mean(mean_error),imean_error=mean(imean_error))
    summarise(mean_error=mean(imean_error))
  
+ agg_pred_full_bt <-  post_dat  |> group_by(id,condit,Model,Fit_Method,x,bandType) |> 
+   mutate(e2=abs(y-pred)) |> 
+   summarise(y=mean(y), pred=mean(pred), mean_error=mean(e2),ei2=abs(y-pred)) |>
+   group_by(id,condit,Model,Fit_Method,bandType) |> 
+   summarise(mean_error=mean(mean_error),imean_error=mean(ei2)) |> 
+   round_tibble(1) |> 
+   group_by(Fit_Method,Model,bandType,condit) |> 
+   # summarise(mean_error=mean(mean_error),imean_error=mean(imean_error))
+   summarise(mean_error=mean(imean_error))
+ 
+ agg_x_full_bt <-  post_dat  |> group_by(condit,Model,Fit_Method,x,bandType) |> 
+   summarise(y=mean(y), pred=mean(pred), mean_error=abs(y-pred)) |>
+   group_by(condit,Model,Fit_Method,x,bandType) |> 
+   summarise(mean_error=mean(mean_error)) |> 
+   round_tibble(1) 
+ 
  agg_pred_best <-  post_dat  |> group_by(id,condit,Model,Fit_Method,x) |> 
    filter(rank==1) |>
     mutate(e2=abs(y-pred)) |> 
@@ -178,7 +194,7 @@ if(is.null(post_dat_l)) {
 
 
 
-  return(tibble::lst(agg_full,agg_best, agg_x_full, agg_x_best,id_agg, et_sum,agg_pred_full,agg_pred_best ))
+  return(tibble::lst(agg_full,agg_best, agg_x_full, agg_x_best,id_agg, et_sum,agg_pred_full,agg_pred_best, agg_x_full_bt,agg_pred_full_bt))
   
 }
 

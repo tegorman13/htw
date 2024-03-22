@@ -7,7 +7,9 @@ walk(c("flextable","dplyr"), conflict_prefer_all, quiet = TRUE)
 options(digits=2, scipen=999, dplyr.summarise.inform=FALSE)
 walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model", "prep_model_data"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
 
+library(emmeans)
 library(brms)
+library(tidybayes)
 options(brms.backend="cmdstanr",mc.cores=1)
 
 
@@ -16,15 +18,90 @@ invisible(list2env(load_e1(), envir = .GlobalEnv))
 
 e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
 
-pdl <- post_dat_l |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
+pdl <- post_dat_l |> rename("bandInt"=x) |> #left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
     filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
 
-pdl_all <- post_dat_l |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
+pdl_all <- post_dat_l |> rename("bandInt"=x) |> #left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
     filter(rank<=1, !(Resp=="Observed")) |> mutate(aerror = abs(error))
 
 
-pd <- post_dat |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
-    filter(rank<=1,Fit_Method=="Test_Train") 
+pd <- post_dat_avg |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
+    filter(rank<=1,Fit_Method=="Test_Train")  |> mutate(aerror = abs(error))
+
+
+
+e1_ee_brm_ae <- brm(data=pdl,
+                    aerror ~  Model * condit *dist+ (1+bandInt|id), 
+                    #file = paste0(here("data/model_cache/e1_ae_modelCond_RFint.rds")),
+                    chains=2,silent=1, iter=1000, control=list(adapt_delta=0.92, max_treedepth=11))
+
+bayestestR::describe_posterior(e1_ee_brm_ae)
+wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))
+
+
+
+plot(conditional_effects(e1_ee_brm_ae, 
+                         effects = "condit:Model", 
+                         conditions=make_conditions(e1_ee_brm_ae,vars=c("dist","aerror"))),
+     points=FALSE,plot=TRUE)
+
+marginaleffects::plot_predictions(e1_ee_brm_ae, condition = list(
+  "Model","condit","dist"
+)
+)
+
+
+
+pd |> ggplot(aes(x=distAvg,y=error,color=condit)) + geom_point() + facet_wrap(~Model+vb)
+
+brm_dist_ae <- pd %>% brm(data=.,aerror~distAvg*condit*bandInt*Model,chains=1)
+bayestestR::describe_posterior(brm_dist_ae)
+wrap_plots(plot(conditional_effects(brm_dist_ae),points=FALSE,plot=FALSE))
+
+brm_dist_ae2 <- pd %>% brm(data=.,distAvg~c*condit*lr*Model+vb + (1 + Model|id),chains=1)
+bayestestR::describe_posterior(brm_dist_ae2)
+wrap_plots(plot(conditional_effects(brm_dist_ae2),points=FALSE,plot=FALSE))
+
+
+plot(conditional_effects(brm_dist_ae2, 
+                         effects = "condit:Model", 
+                         conditions=make_conditions(brm_dist_ae2,vars=c("vb","aerror"))),
+     points=FALSE,plot=TRUE)
+
+marginaleffects::plot_predictions(brm_dist_ae, condition = list(
+  "Model","condit","aerror",
+  "bandInt" = c(100)
+)
+)
+
+marginaleffects::plot_predictions(brm_dist_ae, condition = list(
+  "Model","distAvg"
+)
+)
+
+
+
+
+e1_c_brm1 <- pdl %>% brm(data=.,c~condit,chains=1)
+bayestestR::describe_posterior(e1_c_brm1)
+
+e1_c_brm2 <- pdl %>% brm(data=.,c~condit*Model*aerror,chains=1)
+bayestestR::describe_posterior(e1_c_brm2)
+
+# try again taking in to consideration that c is typically small, ~ .001, it cannot be zero, and it was generated from a lognormal distribution
+#e1_c_brm3 <- pdl %>% brm(data=.,c~condit*Model*aerror,chains=1, prior = c(prior(normal(0,.1), class = "Intercept"), prior(normal(0,.1), class = "b"))
+
+
+e1_c_brm3 <- pdl %>% 
+  brm(data = ., c ~ condit * Model * aerror, chains = 1,
+      prior = c(prior(normal(0, 0.1), class = "Intercept"),
+                prior(normal(0, 0.1), class = "b"),
+                prior(lognormal(0, 0.1), class = "sigma")),
+      control = list(adapt_delta = 0.92, max_treedepth = 11))
+bayestestR::describe_posterior(e1_c_brm3)
+
+
+
 
 
 
@@ -32,12 +109,215 @@ pd <- post_dat |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit",
 
 
 e1_ee_brm <- brm(data=pdl,
+                 aerror ~  Model * condit*bandType + (1+bandInt|id), 
+                 #file = paste0(here("data/model_cache/e1_ee1_1_rf2.rds")),
+                 chains=1,silent=0, iter=500, control=list(adapt_delta=0.92, max_treedepth=11))
+
+summary(e1_ee_brm)
+as.data.frame(bayestestR::describe_posterior(e1_ee_brm, centrality = "Mean"))[seq(1:6)]
+
+
+wrap_plots(plot(conditional_effects(e1_ee_brm),points=FALSE,plot=FALSE))
+
+
+e1_ee_brm <- brm(data=pdl_all,
+                 aerror ~  Model * condit*Fit_Method + (1+bandInt|id), 
+                 #file = paste0(here("data/model_cache/e1_ee1_1_rf2.rds")),
+                 chains=1,silent=0, iter=500, control=list(adapt_delta=0.92, max_treedepth=11))
+
+as.data.frame(bayestestR::describe_posterior(e1_ee_brm, centrality = "Mean"))[seq(1:6)]
+
+plot(conditional_effects(e1_ee_brm, 
+                         effects = "Model:condit", 
+                         conditions=make_conditions(e1_ee_brm,"Fit_Method" )),
+     points=FALSE,plot=TRUE)
+
+
+marginaleffects::plot_predictions(e1_ee_brm, condition = list(
+  "Model","condit",
+  "bandInt" = c(100,350,600,800,1000,1200)
+)
+)
+
+
+
+### with Fit_Method
+
+e1_ee_brm_ae_fm <- brm(data=pdl_all,
+                       aerror ~ 1 + Model*condit*bandInt*Fit_Method  + (1+Model|id), 
+                       file = paste0(here("data/model_cache/e1_ae1_1_fm_rf.rds")),
+                       chains=2,silent=1, iter=1000, control=list(adapt_delta=0.92, max_treedepth=11))
+
+wrap_plots(plot(conditional_effects(e1_ee_brm_ae_fm),points=FALSE,plot=FALSE))
+as.data.frame(bayestestR::describe_posterior(e1_ee_brm_ae_fm, centrality = "Mean"))[seq(1:6)]
+
+
+
+plot(conditional_effects(e1_ee_brm_ae_fm, 
+                         effects = "Model:condit", 
+                         conditions=make_conditions(e1_ee_brm,"Fit_Method" )),
+     points=FALSE,plot=TRUE)
+
+
+plot(conditional_effects(e1_ee_brm_ae_fm, 
+                         effects = "Model:condit"),
+     points=FALSE,plot=TRUE)
+
+plot(conditional_effects(e1_ee_brm_ae_fm, 
+                         effects = "Model:condit",
+                         conditions=make_conditions(e1_ee_brm_ae_fm,"Fit_Method" )),
+     points=FALSE,plot=TRUE)
+
+
+plot(conditional_effects(e1_ee_brm_ae_fm, 
+                         effects = "Fit_Method:bandInt",
+                         conditions=make_conditions(e1_ee_brm_ae_fm,"Model" )),
+     points=FALSE,plot=TRUE)
+
+e1_ee_brm_ae_fm |> emmeans( ~condit *bandInt*Fit_Method*Model, 
+                       at=list(bandInt=c(100,350,600,800,1000,1200) )) |>
+  gather_emmeans_draws() |>
+  ggplot(aes(x=bandInt,y=.value,color=condit)) + 
+  stat_dist_pointinterval(position="dodge") +
+  facet_wrap(~Model+Fit_Method)
+
+
+e1_ee_brm_ae_fm |> emmeans( ~condit *Fit_Method*Model) |>
+  gather_emmeans_draws() |>
+  ggplot(aes(x=Model,y=.value,color=condit)) + 
+  stat_dist_pointinterval(position="dodge") +
+  facet_wrap(~Fit_Method)
+
+e1_ee_brm_ae_fm |> emmeans( ~condit *Model) |>
+  gather_emmeans_draws() |>
+  ggplot(aes(x=Model,y=.value,color=condit)) + 
+  stat_dist_pointinterval(position="dodge") 
+
+marginaleffects::plot_predictions(e1_ee_brm_ae_fm, condition = list(
+  "Model","condit","Fit_Method",
+  "bandInt" = c(100,350,600)
+)
+)
+
+marginaleffects::plot_predictions(e1_ee_brm_ae_fm, condition = list(
+  "Model","condit","Fit_Method",
+  "bandInt" = c(800,1000,1200)
+)
+)
+
+
+conditional_effects(e1_ee_brm_ae_fm,effects = "Model:condit",conditions=make_conditions(e1_ee_brm,"bandInt" ))
+
+marginaleffects::plot_predictions(e1_ee_brm_ae_fm, condition = list(
+  "Model","condit","Fit_Method",
+  "bandInt" = c(100,350,600,800,1000,1200)
+)
+)
+
+
+
+e1_ee_brm_ae <- brm(data=pdl,
+                    aerror ~ 1 + Model*condit*bandType + (1+Model*bandInt|id) + (1+Model|bandInt), 
+                    file = paste0(here("data/model_cache/e1_ae1_1_rf6.rds")),
+                    chains=2,silent=1, iter=1000, control=list(adapt_delta=0.92, max_treedepth=11))
+summary(e1_ee_brm)
+
+plot(conditional_effects(e1_ee_brm_ae,effects = "condit:bandType"), points=FALSE,plot=TRUE)
+
+
+
+
+marginaleffects::plot_predictions(e1_ee_brm_ae, condition = list(
+  "Model","condit","bandType"
+)
+)
+
+
+
+
+
+marginaleffects::plot_predictions(e1_ee_brm_ae_fm, condition = list(
+  "Model","condit","Fit_Method",
+  "bandInt" = c(100,350,600,800,1000,1200)
+)
+)
+
+
+
+
+  conditional_effects(e1_ee_brm_ae_fm, 
+                      effects = "condit:bandInt",
+                      int_conditions = list(bandInt=c(100,350, 600, 800, 1000, 1200)))
+
+  conditional_effects(e1_ee_brm_ae_fm, 
+                      effects = "Model:bandInt",
+                      int_conditions = list(bandInt=c(100,350, 600, 800, 1000, 1200)))
+
+
+  
+ mc <-  make_conditions(e1_ee_brm,"bandInt" )  
+
+ new_data_grid=map_dfr(1, ~data.frame(unique(testAvgE1[,c("bandInt")])))
+ out <- list(bandInt=c(100,350,600,800,1000,1200))
+ out <- list(100,350,600,800,1000,1200)
+ out$cond__ <- brms:::rows2labels(new_data_grid)
+ 
+ conditional_effects(e1_ee_brm_ae_fm,effects = "Model:condit",conditions=out)
+ 
+ 
+ 
+ marginaleffects::plot_predictions(e1_ee_brm_ae_fm, condition = list(
+    "Model","condit",
+   "bandInt" = c(100,350,600,800,1000,1200)
+ )
+ )
+ 
+ 
+ 
+ 
+ #make_condtions
+ vars <- rev(as.character(vars))
+ if (!is.data.frame(x) && "data" %in% names(x)) {
+   x <- x$data
+ }
+ x <- as.data.frame(x)
+ out <- brms:::named_list(vars)
+ for (v in vars) {
+   tmp <- get(v, x)
+   if (brms:::is_like_factor(tmp)) {
+     tmp <- levels(as.factor(tmp))
+   }
+   else {
+     tmp <- mean(tmp, na.rm = TRUE) + (-1:1) * sd(tmp, 
+                                                  na.rm = TRUE)
+   }
+   out[[v]] <- tmp
+ }
+ out <- rev(expand.grid(out))
+ out$cond__ <- brms:::rows2labels(out, ...)
+ out
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+e1_ee_brm <- brm(data=pdl,
   error ~ 1 + (Model*condit)+bandType + (1|id) + (1|bandInt), 
   #file = paste0(here("data/model_cache/e1_ee1_1_rf2.rds")),
   chains=1,silent=0, iter=500, control=list(adapt_delta=0.92, max_treedepth=11))
 
 summary(e1_ee_brm)
 as.data.frame(bayestestR::describe_posterior(e1_ee_brm, centrality = "Mean"))[seq(1:6)]
+
+
+
+
+
+
+
+
 
 
 

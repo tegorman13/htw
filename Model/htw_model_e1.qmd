@@ -104,7 +104,7 @@ nbins <- 3
 e1Sbjs <- ds |> group_by(id,condit) |> summarise(n=n())
 fd <- readRDS(here("data/e1_08-21-23.rds"))
 test <- testE1 <-  fd |> filter(expMode2 == "Test") 
-testAvg <- testE1 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
+testAvgE1 <- testE1 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vxAvg=mean(vx),distAvg=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
 trainAvg <- fd |> filter(expMode2 == "Train") |> group_by(id) |> 
@@ -207,6 +207,19 @@ post_dat <- post_dat |>  mutate(dist = case_when(
     TRUE ~ NA_real_                                 
   ))
 
+
+post_dat <- post_dat |> 
+ left_join(testAvgE1 |> 
+             select(id,condit,bandInt,bandType,vb,bandInt), 
+           by=join_by(id,condit,x==bandInt))
+
+post_dat_l <- post_dat_l |> 
+ left_join(testAvgE1 |> 
+             select(id,condit,bandInt,bandType,vb,bandInt), 
+           by=join_by(id,condit,x==bandInt))
+
+
+
 # organize training data predictions
 # pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
 #    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="train_data")
@@ -280,7 +293,33 @@ rbind(post_tabs$agg_pred_full |> mutate(stage="Test"), train_tab$agg_pred_full |
  
  
 
+agg_x_full_bt <-  post_dat  |> group_by(condit,Model,Fit_Method,x,bandType) |> 
+ summarise(y=mean(y), pred=mean(pred), mean_error=abs(y-pred)) |>
+    group_by(condit,Model,Fit_Method,x,bandType) |> 
+    summarise(mean_error=mean(mean_error)) |> 
+    round_tibble(1) 
+
+agg_x_full_bt |> 
+  filter(!(Fit_Method=="Train")) |>
+  mutate(Fit_Method=rename_fm(Fit_Method)) |>
+  rename("Band"=x) |>
+  flextable::tabulator(rows=c("Fit_Method","condit","Model","bandType"), columns=c("Band"),
+                       `ME` = as_paragraph(mean_error)) |> as_flextable()
+
+agg_x_full_bt |> 
+  filter((Fit_Method=="Test_Train")) |>
+  mutate(Fit_Method=(Fit_Method)) |>
+  rename("Band"=x, "Condition"=condit) |>
+  pander::pandoc.table(style="rmarkdown", split.table=Inf)
  
+
+post_tabs$agg_pred_full_bt |> 
+   pander::pandoc.table(style="rmarkdown", split.table=Inf)
+  
+post_tabs$agg_pred_full |> 
+   pander::pandoc.table(style="rmarkdown", split.table=Inf)
+  
+  
 ```
 
 
@@ -452,8 +491,8 @@ post_dat_l |> group_by(id,condit, Fit_Method,Resp) |>mutate(x=as.factor(x)) |>
 ```{r}
 #| eval: false 
 
-pdl <- post_dat_l |> rename("bandInt"=x) |> left_join(testAvg,by=c("id","condit","bandInt")) 
-pd <- post_dat |> rename("bandInt"=x) |> left_join(testAvg,by=c("id","condit","bandInt"))
+pdl <- post_dat_l |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt")) 
+pd <- post_dat |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt"))
 
 
 pdl |> group_by(id,condit, bandType,Resp) |>
@@ -508,7 +547,7 @@ head(b3_coef)
 # 5   -42.6       4.57 -51.7 -33.7   id4 
 
 # extract id's from term column - Intercept is id 1, term=ModelEXAM doesn't have an id, so don't include
-k <- b3_coef |> filter(term!="Intercept" & term!="ModelEXAM") |> mutate(id=as.factor(str_extract(term,"\\d+"))) |> left_join(testAvg |> filter(bandInt==100) |> ungroup() |> select(-bandType,-vb,-bandInt),by="id") |> 
+k <- b3_coef |> filter(term!="Intercept" & term!="ModelEXAM") |> mutate(id=as.factor(str_extract(term,"\\d+"))) |> left_join(testAvgE1 |> filter(bandInt==100) |> ungroup() |> select(-bandType,-vb,-bandInt),by="id") |> 
   mutate(exam_coef=exam_coef) 
 
 # add new variable parType, which is set to "Model" if term contains "ModelEXAM" and "id" otherwise
@@ -531,7 +570,7 @@ t.test(Estimate ~ condit, data=k |> filter(parType=="Model"))
 
 
 k2 <- k |> filter(parType=="Model") |> mutate(id=reorder(id,Estimate), Estimate=Estimate+exam_coef) |> 
-  select(id,condit,Estimate) |> left_join(testAvg,by=c("id","condit"))
+  select(id,condit,Estimate) |> left_join(testAvgE1,by=c("id","condit"))
 
 k3 <- k |> filter(parType=="Model") |> mutate(id=reorder(id,Estimate), Estimate=Estimate+exam_coef) |> 
   select(id,condit,Estimate) |> left_join(testE1,by=c("id","condit"))
@@ -719,7 +758,7 @@ test_resid <-  post_dat |>
   theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
 
 group_pred <- post_dat_l |> 
-  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvgE1$vb))) |>
   ggplot(aes(x=val,y=vbLab,col=Resp)) + 
   stat_pointinterval(position=position_dodge(.5), alpha=.9) + 
   scale_color_manual(values=wes_palette("AsteroidCity2"))+
@@ -741,7 +780,7 @@ theme(legend.title=element_blank(),axis.text.y = element_text(angle = 45, hjust 
 #| fig-height: 12
 #| fig-width: 11
  post_dat_l |> 
-  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvgE1$vb))) |>
   ggplot(aes(x=condit,y=dist,fill=vbLab)) + 
   stat_bar + 
   #facet_wrap(~Resp)
@@ -749,7 +788,7 @@ theme(legend.title=element_blank(),axis.text.y = element_text(angle = 45, hjust 
 
  
 post_dat_l |> 
-  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvgE1$vb))) |>
   ggplot(aes(x=Resp,y=dist,fill=vbLab)) + 
   stat_bar + 
   #facet_wrap(~Resp)
@@ -760,7 +799,7 @@ post_dat_l |>
 
 p1 <- post_dat_l |> 
   filter(Fit_Method=="Test_Train") |> 
-  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvgE1$vb))) |>
   ggplot(aes(x=Resp,y=dist,fill=vbLab)) + 
   stat_bar + 
   #facet_wrap(~Resp)
@@ -769,7 +808,7 @@ p1 <- post_dat_l |>
 
 p2 <- post_dat_l |> 
   filter(Fit_Method=="Test_Train") |> 
-  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvgE1$vb))) |>
   ggplot(aes(x=Resp,y=val,fill=vbLab)) + 
   stat_bar + 
   #facet_wrap(~Resp)
@@ -778,14 +817,14 @@ p2 <- post_dat_l |>
 p1/p2
 
  post_dat_l |> filter(Fit_Method=="Test_Train") |> 
-  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvgE1$vb))) |>
   ggplot(aes(x=Resp,y=dist,fill=condit)) + 
   stat_bar + 
   #facet_wrap(~Resp)
   ggh4x::facet_nested_wrap(~vbLab, axes = "all",ncol=2,scale="free")
 
  post_dat_l |> filter(Fit_Method=="Test_Train") |> 
-  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvg$vb))) |>
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvgE1$vb))) |>
   ggplot(aes(x=Resp,y=val,fill=condit)) + 
   stat_bar + 
   #facet_wrap(~Resp)
@@ -1063,7 +1102,7 @@ difAlm/difExam
 #   ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")
 # 
 
-# d <- testAvg |> left_join(full_comparison, by=c("id","condit")) |> filter(Fit_Method=="Test_Train")
+# d <- testAvgE1 |> left_join(full_comparison, by=c("id","condit")) |> filter(Fit_Method=="Test_Train")
 # 
 # 
 # 

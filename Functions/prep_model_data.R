@@ -178,6 +178,16 @@ post_dat <- post_dat |>  mutate(dist = case_when(
     TRUE ~ NA_real_                                 
   ))
 
+post_dat <- post_dat |> 
+  left_join(testAvgE1 |> 
+              select(id,condit,bandInt,bandType,vb,bandInt), 
+            by=join_by(id,condit,x==bandInt))
+
+post_dat_l <- post_dat_l |> 
+  left_join(testAvgE1 |> 
+              select(id,condit,bandInt,bandType,vb,bandInt), 
+            by=join_by(id,condit,x==bandInt))
+
 # organize training data predictions
 # pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
 #    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = n_post_train, return_dat="train_data")
@@ -229,8 +239,8 @@ ds <- readRDS(here::here("data/e2_md_02-23-24.rds"))  |> as.data.table()
 nbins <- 3
 
 fd <- readRDS(here("data/e2_08-21-23.rds"))
-test <- fd |> filter(expMode2 == "Test") 
-testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
+testE2 <- fd |> filter(expMode2 == "Test") 
+testAvgE2 <- testE2 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
 trainAvg <- fd |> filter(expMode2 == "Train") |> group_by(id) |> 
@@ -319,6 +329,16 @@ post_dat_l <- post_dat_l |> mutate(dist = case_when(
     TRUE ~ NA_real_                                 
   ))
 
+post_dat <- post_dat |> 
+  left_join(testAvgE2 |> 
+              select(id,condit,bandInt,bandType,vb,bandInt), 
+            by=join_by(id,condit,x==bandInt))
+
+post_dat_l <- post_dat_l |> 
+  left_join(testAvgE2 |> 
+              select(id,condit,bandInt,bandType,vb,bandInt), 
+            by=join_by(id,condit,x==bandInt))
+
 
 # organize training data predictions
  pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
@@ -327,9 +347,9 @@ post_dat_l <- post_dat_l |> mutate(dist = case_when(
    select(Fit_Method,pp,-data) |>
   unnest(pp) |> as.data.table() |> filter(expMode2=="Train")
 
-#saveRDS(pd_train, here("data/model_cache/pd_train.rds"))
+#saveRDS(pd_train, here("data/model_cache/pd_train2.rds"))
 
-#pd_train <- readRDS(here("data/model_cache/pd_train.rds"))
+#pd_train <- readRDS(here("data/model_cache/pd_train2.rds"))
 
 nbins <- 3
 pd_train <- pd_train |> group_by(id,condit,Model,Fit_Method) |>
@@ -379,8 +399,8 @@ nbins <- 3
 
 fd <- readRDS(here("data/e3_08-21-23.rds"))
 group_ids <- fd |> distinct(id,condit,bandOrder,fb)
-test <- fd |> filter(expMode2 == "Test") 
-testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
+testE3 <- fd |> filter(expMode2 == "Test") 
+testAvgE3 <- testE3 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
 trainAvg <- fd |> filter(expMode2 == "Train") |> group_by(id) |> 
@@ -468,6 +488,16 @@ post_dat_l <- post_dat_l |> mutate(dist = case_when(
     TRUE ~ NA_real_                                 
   ))
 
+post_dat <- post_dat |> 
+  left_join(testAvgE3 |> 
+              select(id,condit,bandInt,bandType,vb,bandInt), 
+            by=join_by(id,condit,x==bandInt))
+
+post_dat_l <- post_dat_l |> 
+  left_join(testAvgE3 |> 
+              select(id,condit,bandInt,bandType,vb,bandInt), 
+            by=join_by(id,condit,x==bandInt))
+
 
 # organize training data predictions
 #  pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
@@ -478,7 +508,7 @@ post_dat_l <- post_dat_l |> mutate(dist = case_when(
 
 #saveRDS(pd_train, here("data/model_cache/pd_train_e3.rds"))
 
-pd_train <- readRDS(here("data/model_cache/pd_train.rds"))
+pd_train <- readRDS(here("data/model_cache/pd_train_e3.rds"))
 
 nbins <- 3
 pd_train <- pd_train |> group_by(id,condit,Model,Fit_Method) |>
