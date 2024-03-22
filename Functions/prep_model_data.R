@@ -400,7 +400,7 @@ nbins <- 3
 fd <- readRDS(here("data/e3_08-21-23.rds"))
 group_ids <- fd |> distinct(id,condit,bandOrder,fb)
 testE3 <- fd |> filter(expMode2 == "Test") 
-testAvgE3 <- testE3 %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
+testAvgE3 <- testE3 %>% group_by(id, condit, vb, bandInt,bandType,bandOrder,tOrder) %>%
   summarise(nHits=sum(dist==0),vx=mean(vx),dist=mean(dist),sdist=mean(sdist),n=n(),Percent_Hit=nHits/n)
 
 trainAvg <- fd |> filter(expMode2 == "Train") |> group_by(id) |> 
@@ -490,12 +490,12 @@ post_dat_l <- post_dat_l |> mutate(dist = case_when(
 
 post_dat <- post_dat |> 
   left_join(testAvgE3 |> 
-              select(id,condit,bandInt,bandType,vb,bandInt), 
+              select(id,condit,bandInt,bandType,bandOrder,vb,bandInt), 
             by=join_by(id,condit,x==bandInt))
 
 post_dat_l <- post_dat_l |> 
-  left_join(testAvgE3 |> 
-              select(id,condit,bandInt,bandType,vb,bandInt), 
+  left_join(testAvgE3 |> ungroup() |> 
+              select(id,condit,bandInt,bandType,vb,bandInt,-bandOrder), 
             by=join_by(id,condit,x==bandInt))
 
 

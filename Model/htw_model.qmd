@@ -488,36 +488,7 @@ bm3 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM:conditVaried")
 ```
 
 
-```{r}
 
-
-pemp2 <- e2 |> filter(expMode2=="Test") |> mutate(Resp="Observed") |> 
-  ggplot(aes(x=condit,y=vx, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
-  stat_bar+ 
-  scale_color_manual(values = c("black" = "black"), guide = FALSE) +
-  scale_size_manual(values = c("black" = .5), guide = FALSE) + 
-  theme(legend.position="right", axis.title.x = element_blank(), plot.title = element_text(hjust=.50)) +
-  labs(title="Empirical Data - Experiment 1",y="vx", x="Condition",fill="Band") 
-
-pmod2 <- e2_model$post_dat_l |> filter(!(Resp=="Observed")) |> 
-  group_by(id,condit, Fit_Method,Resp,bandType,x,vb) |> 
- summarize(vx=median(val)) |> 
- ggplot( aes(x=condit,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
-  stat_bar + 
-    facet_wrap(~Resp+rename_fm(Fit_Method), strip.position = "top", scales = "free_x") +
-        scale_color_manual(values = c("black" = "black"), guide = "none") +
-  scale_size_manual(values = c("black" = .5), guide = "none") +
-    theme(panel.spacing = unit(0, "lines"), 
-         strip.background = element_blank(),
-         strip.placement = "outside",
-         legend.position = "none",plot.title = element_text(hjust=.50),
-         axis.title.x = element_blank(),
-         plot.margin = unit(c(20,0,0,0), "pt")) + 
-         labs(title="Model Predictions - Experiment 1 Data", y="vx")
-
-(pemp2)  / pmod2 + 
-  plot_layout(design = layout, heights = unit(c(4, 9), c('cm','null')))
-```
 
 
 
@@ -526,8 +497,8 @@ pmod2 <- e2_model$post_dat_l |> filter(!(Resp=="Observed")) |>
 
 
 e3_model <- load_e3()
-post_tabs3 <- abc_tables(e2_model$post_dat,e3_model$post_dat_l)
-train_tab3 <- abc_train_tables(e2_model$pd_train,e3_model$pd_train_l)
+post_tabs3 <- abc_tables(e3_model$post_dat,e3_model$post_dat_l)
+train_tab3 <- abc_train_tables(e3_model$pd_train,e3_model$pd_train_l)
 
 
 pdl3 <- e3_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
@@ -580,9 +551,62 @@ bm2 <- get_coef_details(e3_ee_brm_ae, "ModelEXAM")
 bm3 <- get_coef_details(e3_ee_brm_ae, "ModelEXAM:conditVaried")
 
 
-
+#modelsummary::modelsummary(list("e1"=e1_ee_brm_ae,"e2"=e2_ee_brm_ae,"e3"=e3_ee_brm_ae), gof_map = tribble())
 ```
 
+
+
+
+```{r}
+#| fig-height: 13
+#| fig-width: 11
+
+
+# pemp2 <- e2 |> filter(expMode2=="Test") |> mutate(Resp="Observed") |> 
+#   ggplot(aes(x=condit,y=vx, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+#   stat_bar+ 
+#   scale_color_manual(values = c("black" = "black"), guide = FALSE) +
+#   scale_size_manual(values = c("black" = .5), guide = FALSE) + 
+#   theme(legend.position="right", axis.title.x = element_blank(), plot.title = element_text(hjust=.50)) +
+#   labs(title="Empirical Data - Experiment 1",y="vx", x="Condition",fill="Band") 
+
+pmod2 <- e2_model$post_dat_l |> filter( Fit_Method=="Test_Train") |> 
+  group_by(id,condit, Fit_Method,Resp,bandType,x,vb) |> 
+ summarize(vx=median(val)) |> 
+ ggplot( aes(x=condit,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+  stat_bar + 
+    facet_wrap(~Resp+rename_fm(Fit_Method), strip.position = "top", scales = "free_x") +
+        scale_color_manual(values = c("black" = "black"), guide = "none") +
+  scale_size_manual(values = c("black" = .5), guide = "none") +
+    theme(panel.spacing = unit(0, "lines"), 
+         strip.background = element_blank(),
+         strip.placement = "outside",
+         legend.position = "none",plot.title = element_text(hjust=.50),
+         axis.title.x = element_blank(),
+         plot.margin = unit(c(20,0,0,0), "pt")) + 
+         labs(title="Model Predictions Experiment 2", y="vx")
+
+
+pmod3 <- e3_model$post_dat_l |> filter(Fit_Method=="Test_Train") |> 
+  group_by(id,condit, Fit_Method,Resp,bandType,bandOrder,x,vb) |> 
+ summarize(vx=median(val)) |> 
+ ggplot( aes(x=condit,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+  stat_bar + 
+    facet_wrap(~bandOrder + Resp+rename_fm(Fit_Method), strip.position = "top", scales = "free_x") +
+        scale_color_manual(values = c("black" = "black"), guide = "none") +
+  scale_size_manual(values = c("black" = .5), guide = "none") +
+    theme(panel.spacing = unit(0, "lines"), 
+         strip.background = element_blank(),
+         strip.placement = "outside",
+         legend.position = "none",plot.title = element_text(hjust=.50),
+         axis.title.x = element_blank(),
+         plot.margin = unit(c(20,0,0,0), "pt")) + 
+         labs(title="Model Predictions Experiment 3", y="vx")
+
+pmod2 / pmod3
+
+
+```
 
 
 
