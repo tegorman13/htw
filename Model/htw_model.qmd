@@ -20,9 +20,6 @@ format:
   gfm:
     echo: true
     output-file: e1-gfm.md
-  docusaurus-md:
-    echo: true
-    output-file: e1-docusaurus.md
 prefer-html: true
 ---
 
@@ -394,6 +391,34 @@ To more accurately assess the relative abilities of ALM and EXAM to capture impo
 
 ```
 
+
+```{r  fig.width=11, fig.height=10}
+#| label: fig-htw-indv-pred
+#| fig-cap: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. 
+#| fig-height: 11
+#| fig-width: 12
+
+cId_tr <- c(137, 181, 11)
+vId_tr <- c(14, 193, 47)
+cId_tt <- c(11, 93, 35)
+vId_tt <- c(1,14,74)
+cId_new <- c(175, 185, 134, 155, 68, 93, 74)
+# filter(id %in% (filter(bestTestEXAM,group_rank<=9, Fit_Method=="Test")
+
+testIndv <- post_dat_l |> filter(id %in% c(cId_tt,vId_tt,cId_new), Fit_Method=="Test_Train") |> 
+   mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
+  group_by(id,condit,Fit_Method,Model,Resp) |>
+   mutate(flab=paste0("Subject: ",id)) |>
+  ggplot(aes(x = Resp, y = val, fill=x)) + 
+  stat_bar_sd + ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
+  labs(title="Individual Participant fits from Test & Train Fitting Method",
+       y="X Velocity",fill="Target Velocity") +
+   guides(fill = guide_legend(nrow = 1)) + 
+  theme(legend.position = "bottom",axis.title.x = element_blank())
+
+testIndv 
+
+```
 
 
 

@@ -595,6 +595,8 @@ id_est |> left_join(testE1,by=c("id","condit")) %>% glm(data=.,condit ~ slope + 
 
 
 ```{r}
+#| eval: false 
+
 
 et_sum_dist <- post_dat_l |>
   group_by(id,condit, Fit_Method, Resp) |>
@@ -1268,3 +1270,5 @@ full_comparison |> filter(Fit_Method=="Test_Train") |>
 
 
 ```
+
+
