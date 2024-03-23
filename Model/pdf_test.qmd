@@ -1,0 +1,940 @@
+---
+title: HTW Model2
+author: Thomas Gorman
+pdf-engine: pdflatex
+execute: 
+  warning: false
+  eval: false
+  include: false
+  echo: false
+format:
+  #html: default
+  pdf: 
+    header-includes:
+    - '\KOMAoption{captions}{tableheading}'
+    - '\usepackage{float}'
+    - '\floatplacement{table}{H}'
+    - '\usepackage{tabularx}'
+    - '\usepackage{etoolbox}'
+---
+
+
+
+```{r}
+pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
+               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools,ggdist,ggh4x,brms,tidybayes,bayestestR,gt,gtsummary,gtExtras)
+#conflict_prefer_all("dplyr", quiet = TRUE)
+walk(c("flextable","dplyr"), conflict_prefer_all, quiet = TRUE)
+#options(brms.backend="cmdstanr",mc.cores=4)
+options(digits=3, scipen=999, dplyr.summarise.inform=FALSE)
+walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model", "prep_model_data","org_functions"), ~source(here::here(paste0("Functions/", .x, ".R"))))
+
+
+options(kableExtra.auto_format=FALSE)
+options(
+  digits = 3, width = 120,
+  dplyr.summarise.inform = FALSE
+)
+
+
+invisible(list2env(load_sbj_data(), envir = .GlobalEnv))
+#invisible(list2env(load_e1(), envir = .GlobalEnv))
+
+
+```
+
+
+
+
+
+```{r}
+
+# e2_model <- load_e2()
+# post_tabs2 <- abc_tables(e2_model$post_dat,e2_model$post_dat_l)
+# train_tab2 <- abc_train_tables(e2_model$pd_train,e2_model$pd_train_l)
+
+# pdl2 <- e2_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
+
+
+# e2_tab <- rbind(post_tabs2$agg_pred_full |> mutate("Task Stage"="Test"), train_tab2$agg_pred_full |> mutate("Task Stage"="Train")) |> 
+#   mutate(Fit_Method=rename_fm(Fit_Method)) 
+
+
+  # |>
+  # flextable::tabulator(rows=c("Task Stage","Fit_Method","Model"), columns=c("condit"),
+  #                      `ME` = as_paragraph(mean_error)) |> as_flextable()
+
+
+
+
+# e3_model <- load_e3()
+# post_tabs3 <- abc_tables(e3_model$post_dat,e3_model$post_dat_l)
+# train_tab3 <- abc_train_tables(e3_model$pd_train,e3_model$pd_train_l)
+
+
+# pdl3 <- e3_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
+
+
+# e3_tab <- rbind(post_tabs3$agg_pred_full |> 
+#   mutate("Task Stage"="Test"), train_tab3$agg_pred_full |> mutate("Task Stage"="Train")) |> 
+#   mutate(Fit_Method=rename_fm(Fit_Method)) 
+  # |>
+  # flextable::tabulator(rows=c("Task Stage","Fit_Method","Model"), columns=c("condit"),
+  #                      `ME` = as_paragraph(mean_error)) |> as_flextable()
+
+
+
+
+
+
+
+
+#  e23_tab <- rbind(e2_tab |> mutate(Exp="E2"), e3_tab |> mutate(Exp="E3"))
+
+# saveRDS(e23_tab, here("data/model_cache/e23_tab.rds"))
+
+e23_tab <- readRDS(here("data/model_cache/e23_tab.rds"))
+
+
+# rbind(e2_tab |> mutate(Exp="E2"), e3_tab |> mutate(Exp="E3")) |> 
+#   flextable::tabulator(rows=c("Task Stage","Fit_Method","Model"), columns=c("Exp", "condit"),
+#                        `ME` = as_paragraph(mean_error)) |> flextable::as_flextable()
+
+
+
+#e23_tab <- e2_tab |> mutate(Exp="E2")
+
+
+```
+
+
+
+## First gt
+
+```{r}
+#| label: tbl-metricsvoters
+#| tbl-cap: "Average metrics across the 10"
+
+wide_data <- e23_tab %>%
+  pivot_wider(
+    names_from = c(Exp, condit),
+    values_from = mean_error,
+    names_sep = "_"
+  )
+
+# Create a gt table with the wider data
+gt_table <- wide_data %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error by Model and Condition",
+    subtitle = "Comparison of ALM and EXAM Models across Different Fit Methods"
+  ) %>%
+  fmt_number(
+    columns = everything(),
+    decimals = 1  # Adjust the number of decimal places as needed
+  ) %>%
+  cols_label(
+    `Task Stage` = "Task Stage"
+  ) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_style(
+    style = cell_fill(color = "gray95"),
+    locations = cells_body(columns = TRUE, rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = px(2)),
+    locations = cells_column_labels()
+  ) %>%
+  tab_style(
+    style = cell_text(align = "left"),
+    locations = cells_column_labels(columns = TRUE)
+  ) %>%
+  tab_options(
+    column_labels.font.size = "small",
+    heading.title.font.size = "large",
+    heading.subtitle.font.size = "medium",
+     quarto.disable_processing = TRUE
+  )
+
+# Print the table
+print(gt_table)
+```
+
+
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-pdf-html
+#| tbl-cap: "Mean Error by Fit Method, Task Stage, and Experiment" 
+
+wide_data <- e23_tab %>%
+  pivot_wider(
+    names_from = c(Exp, Model, condit),
+    values_from = mean_error,
+    names_glue = "{Exp}_{Model}_{condit}"
+  ) %>%
+  arrange(Fit_Method, `Task Stage`)  # Sort for clarity
+
+# Create a gt table with the wider data
+gt_table <- wide_data %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error by Fit Method, Task Stage, and Experiment",
+    subtitle = "Comparison across Conditions and Models"
+  ) %>%
+  cols_move_to_start(columns = c(`Task Stage`)) %>% # Move Task Stage column to the start
+  cols_label(
+    `Task Stage` = "Task Stage"
+  ) %>%
+  fmt_number(
+    columns = matches("E2|E3"),
+    decimals = 1  # Adjust the number of decimal places as needed
+  ) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_style(
+    style = cell_fill(color = "gray95"),
+    locations = cells_body(columns = TRUE, rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "all", color = "gray90"),
+    locations = cells_body(columns = TRUE, rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = px(1)),
+    locations = cells_column_labels()
+  ) %>%
+  tab_options(
+    quarto.disable_processing = TRUE,
+    column_labels.font.size = 10,
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.width = pct(100), # Set the table width to 100% of the container
+    table.font.size = 10,
+    table.font.names = "Arial", # Specify a font that is available in both HTML and PDF
+    data_row.padding = px(3), # Adjust padding for better rendering in PDF
+    source_notes.font.size = 8 # Adjust font size for source notes
+  ) %>%
+  tab_footnote(
+    footnote = "Note: Mean errors are calculated as the absolute difference between the predicted and actual values.",
+    locations = cells_title(groups = "subtitle")
+  )
+
+  gt_table
+
+
+# gtsave(gt_table, "table.png", expand = 10, vwidth = 1000, vheight = 500)
+
+```
+
+
+
+```{r}
+
+wide_data <- e23_tab %>%
+  pivot_wider(
+    names_from = c(Exp, Model, condit),
+    values_from = mean_error,
+    names_glue = "{Exp}_{Model}_{condit}"
+  ) %>%
+  arrange(Fit_Method, `Task Stage`)
+
+gt_table <- wide_data %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error by Fit Method, Task Stage, and Experiment"
+  ) %>%
+  cols_move_to_start(columns = c(`Task Stage`)) %>%
+  cols_label(
+    `Task Stage` = "Task Stage"
+  ) %>%
+  fmt_number(
+    columns = matches("E2|E3"),
+    decimals = 2
+  ) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_options(
+    column_labels.font.size = 12,
+    heading.title.font.size = 12,
+    table.font.size = 12,
+    table.font.names = "Times New Roman",
+    table.width = pct(100),
+    table.border.top.style = "solid",
+    table.border.top.width = px(2),
+    table.border.bottom.style = "solid",
+    table.border.bottom.width = px(2),
+    column_labels.border.top.style = "solid",
+    column_labels.border.top.width = px(2),
+    column_labels.border.bottom.style = "solid",
+    column_labels.border.bottom.width = px(1),
+    quarto.disable_processing = TRUE
+  ) %>%
+  tab_footnote(
+    footnote = "Note. Mean errors are calculated as the absolute difference between the predicted and actual values.",
+    locations = cells_title(groups = "title")
+  ) # %>% opt_align_table_header(align = "left")
+
+gt_table
+# gtsave(gt_table, "table.png")
+```
+
+
+
+```{r}
+wide_data <- e23_tab %>%
+  pivot_wider(
+    names_from = c(Exp, Model, condit),
+    values_from = mean_error,
+    names_glue = "{Exp}_{Model}_{condit}"
+  ) %>%
+  arrange(Fit_Method, `Task Stage`)  # Sort for clarity
+
+# Create a gt table with the wider data
+gt_table <- wide_data %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error by Fit Method, Task Stage, and Experiment",
+    subtitle = "Comparison across Conditions and Models"
+  ) %>%
+  cols_move_to_start(columns = c(`Task Stage`)) %>% # Move Task Stage column to the start
+  cols_label(
+    `Task Stage` = "Task Stage"
+  ) %>%
+  fmt_number(
+    columns = matches("E2|E3"),
+    decimals = 1  # Adjust the number of decimal places as needed
+  ) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_style(
+    style = cell_fill(color = "white"), # Ensure readability in grayscale
+    locations = cells_body(columns = TRUE, rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = px(1)),
+    locations = cells_column_labels()
+  ) %>%
+  tab_options(
+    column_labels.font.size = 10,
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.size = 10,
+    quarto.disable_processing = TRUE
+  ) %>%
+  tab_footnote(
+    footnote = "Note: Mean errors are calculated as the absolute difference between the predicted and actual values.",
+    locations = cells_title(groups = "subtitle")
+  )
+
+gt_table
+```
+
+```{r}
+wide_data <- e23_tab %>%
+  pivot_wider(
+    names_from = c(Exp, Model, condit),
+    values_from = mean_error,
+    names_glue = "{Exp}_{Model}_{condit}"
+  ) %>%
+  arrange(Fit_Method, `Task Stage`)  # Sort for clarity
+
+# Create a gt table with the wider data
+gt_table <- wide_data %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error by Fit Method, Task Stage, and Experiment",
+    subtitle = "Comparison across Conditions and Models"
+  ) %>%
+  cols_move_to_start(columns = c(`Task Stage`)) %>% # Move Task Stage column to the start
+  cols_label(
+    `Task Stage` = "Task Stage"
+  ) %>%
+  fmt_number(
+    columns = matches("E2|E3"),
+    decimals = 1  # Adjust the number of decimal places as needed
+  ) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_style(
+    style = cell_fill(color = "gray95"),
+    locations = cells_body(columns = TRUE, rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "all", color = "gray90"),
+    locations = cells_body(columns = TRUE, rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = px(1)),
+    locations = cells_column_labels()
+  ) %>%
+  tab_options(
+    column_labels.font.size = 10,
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.width = pct(100), # Set the table width to 100% of the container
+    table.font.size = 10
+  ) %>%
+  tab_footnote(
+    footnote = "Note: Mean errors are calculated as the absolute difference between the predicted and actual values.",
+    locations = cells_title(groups = "subtitle")
+  )
+
+gt_table
+
+# Print the table for HTML output
+#as_raw_html(gt_table)
+
+# For PDF output, you might need to save the table as an image and then include it
+# This is a workaround due to the limited support for HTML tables in PDF
+#gtsave(gt_table, "table_for_pdf.png", path = "path_to_directory")
+
+```
+
+```{r}
+
+gt_table <- wide_data %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error by Fit Method, Task Stage, and Experiment",
+    subtitle = "Comparison across Conditions and Models"
+  ) %>%
+  cols_move_to_start(columns = c(`Task Stage`)) %>% # Move Task Stage column to the start
+  cols_label(
+    `Task Stage` = "Task Stage"
+  ) %>%
+  fmt_number(
+    columns = matches("E2|E3"),
+    decimals = 1  # Adjust the number of decimal places as needed
+  ) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_style(
+    style = cell_fill(color = "gray95"),
+    locations = cells_body(columns = everything(), rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = c("left", "right", "top", "bottom"), color = "gray90"),
+    locations = cells_body(columns = everything(), rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = px(1)),
+    locations = cells_column_labels()
+  ) %>%
+  tab_options(
+    column_labels.font.size = 10,
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.width = pct(100), # Set the table width to 100% of the container
+    table.font.size = 10,
+    quarto.disable_processing = TRUE
+  ) %>%
+  tab_footnote(
+    footnote = "Note: Mean errors are calculated as the absolute difference between the predicted and actual values.",
+    locations = cells_title(groups = "subtitle")
+  )
+gt_table
+```
+
+```{r}
+e23_tab_wide <- e23_tab %>%
+  pivot_wider(
+    id_cols = c(Fit_Method, `Task Stage`, Exp),
+    names_from = c(condit, Model),
+    values_from = mean_error
+  )
+
+# Reorder columns
+e23_tab_wide <- e23_tab_wide %>%
+  select(Fit_Method, Exp, contains("Varied"), contains("Constant"), `Task Stage`)
+
+# Rename columns
+e23_tab_wide <- e23_tab_wide %>%
+  rename_with(~ str_replace(., "_Varied_", " (Varied) "), starts_with("Varied")) %>%
+  rename_with(~ str_replace(., "_Constant_", " (Constant) "), starts_with("Constant")) %>%
+  rename_with(~ str_replace(., "_ALM", " (ALM)"), ends_with("ALM")) %>%
+  rename_with(~ str_replace(., "_EXAM", " (EXAM)"), ends_with("EXAM"))
+
+# Create gt table
+gt_table <- gt(e23_tab_wide) %>%
+  tab_header(
+    title = md("**Table 1.** Mean Error by Fit Method, Experiment, and Condition"),
+    subtitle = md("Note. ALM = additive linear model, EXAM = exam score model.")
+  ) %>%
+  tab_options(
+    column_labels.hidden = FALSE,
+    heading.title.font.size = px(16),
+    heading.subtitle.font.size = px(12),
+    table.font.size = px(10)
+  ) %>%
+  fmt_number(
+    columns = everything(),
+    decimals = 1
+  ) %>%
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_body(columns = Fit_Method)
+  ) %>%
+  tab_style(
+    style = cell_text(align = "left"),
+    locations = cells_body(columns = c(Fit_Method, Exp, contains("Varied"), contains("Constant"), `Task Stage`))
+  ) %>%
+  tab_style(
+    style = cell_text(align = "center"),
+    locations = cells_body(columns = starts_with("Varied"), starts_with("Constant"))
+  ) %>%
+  tab_spanner(
+    label = md("**Fit Method**"),
+    columns = Fit_Method
+  ) %>%
+  tab_spanner(
+    label = md("**Experiment**"),
+    columns = c(Exp, contains("Varied"), contains("Constant"))
+  ) %>%
+  tab_spanner(
+    label = md("**Condition**"),
+    columns = starts_with("Varied")
+  ) %>%
+  tab_spanner(
+    label = md(""),
+    columns = starts_with("Constant")
+  ) %>%
+  tab_spanner(
+    label = md("**Task Stage**"),
+    columns = `Task Stage`
+  ) %>%
+  cols_hide(columns = Fit_Method) %>%
+  cols_label(
+    Fit_Method = "",
+    `Task Stage` = "Task Stage"
+  )
+
+# Print table
+gt_table
+```
+
+```{r}
+
+e23_tab_wide <- e23_tab %>%
+  pivot_wider(
+    id_cols = c(Fit_Method, `Task Stage`, Exp),
+    names_from = c(condit, Model),
+    values_from = mean_error
+  )
+
+# Rename columns
+e23_tab_wide <- e23_tab_wide %>%
+  rename_with(~ str_replace(., "_Constant_", " (Constant) "), starts_with("Constant")) %>%
+  rename_with(~ str_replace(., "_Varied_", " (Varied) "), starts_with("Varied")) %>%
+  rename_with(~ str_replace(., "_ALM", " (ALM)"), ends_with("ALM")) %>%
+  rename_with(~ str_replace(., "_EXAM", " (EXAM)"), ends_with("EXAM"))
+
+# Create gt table
+gt_table <- gt(e23_tab_wide) %>%
+  tab_header(
+    title = md("**Table 1.**"),
+    subtitle = md("An example of a gt table with e23_tab data")
+  ) %>%
+  tab_options(
+    column_labels.hidden = FALSE,
+    heading.title.font.size = px(16),
+    heading.subtitle.font.size = px(12),
+     quarto.disable_processing = TRUE
+  ) %>%
+  fmt_number(
+    columns = everything(),
+    decimals = 1
+  ) %>%
+  tab_style(
+    style = list(
+      cell_text(weight = "bold"),
+      cell_fill(color = "lightgray")
+    ),
+    locations = cells_stub()
+  ) %>%
+  tab_style(
+    style = cell_text(align = "left"),
+    locations = cells_body(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_text(align = "center"),
+    locations = cells_body(columns = starts_with("Constant"), starts_with("Varied"))
+  )
+
+# Print table
+gt_table
+```
+
+
+
+```{r}
+e23_tab_wide <- e23_tab %>%
+  pivot_wider(
+    id_cols = c(Fit_Method, `Task Stage`, Exp),
+    names_from = c(condit, Model),
+    values_from = mean_error
+  )
+
+# Reorder columns
+e23_tab_wide <- e23_tab_wide %>%
+  select(Fit_Method, `Task Stage`, Exp, contains("Varied"), contains("Constant"))
+
+# Rename columns
+e23_tab_wide <- e23_tab_wide %>%
+  rename_with(~ str_replace(., "_Varied_", " (Varied) "), starts_with("Varied")) %>%
+  rename_with(~ str_replace(., "_Constant_", " (Constant) "), starts_with("Constant")) %>%
+  rename_with(~ str_replace(., "_ALM", " (ALM)"), ends_with("ALM")) %>%
+  rename_with(~ str_replace(., "_EXAM", " (EXAM)"), ends_with("EXAM"))
+
+# Create gt table
+gt_table <- gt(e23_tab_wide) %>%
+  tab_header(
+    title = md("**Table 1.**"),
+    subtitle = md("An example of a gt table with e23_tab data")
+  ) %>%
+  tab_options(
+    column_labels.hidden = FALSE,
+    heading.title.font.size = px(16),
+    heading.subtitle.font.size = px(12)
+  ) %>%
+  fmt_number(
+    columns = everything(),
+    decimals = 1
+  ) %>%
+  tab_style(
+    style = list(
+      cell_text(weight = "bold"),
+      cell_fill(color = "lightgray")
+    ),
+    locations = cells_stub()
+  ) %>%
+  tab_style(
+    style = cell_text(align = "left"),
+    locations = cells_body(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_text(align = "center"),
+    locations = cells_body(columns = starts_with("Varied"), starts_with("Constant"))
+  )
+
+# Print table
+gt_table
+
+```
+
+
+```{r}
+#| label: "potential2"
+#| tbl-cap: "this one has potential2"
+
+#| 
+wide_data <- e23_tab %>%
+  pivot_wider(
+    names_from = c(Exp, Model, condit),
+    values_from = mean_error,
+    names_glue = "{Exp}_{Model}_{condit}"
+  ) %>%
+  arrange(Fit_Method, `Task Stage`)  # Sort for clarity
+
+# Create a gt table with the wider data
+gt_table <- wide_data %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error by Fit Method, Task Stage, and Experiment",
+    subtitle = "Comparison across Conditions and Models"
+  ) %>%
+  cols_move_to_start(columns = c(`Task Stage`)) %>% # Move Task Stage column to the start
+  fmt_number(
+    columns = matches("E2|E3"),
+    decimals = 1  # Adjust the number of decimal places as needed
+  ) %>%
+  cols_label(
+    `Task Stage` = md("**Task Stage**")
+  ) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_spanner(
+    label = md("**Fit Method**"),
+    columns = vars(Fit_Method)
+  ) %>%
+  tab_style(
+    style = cell_fill(color = "gray95"),
+    locations = cells_body(columns = TRUE, rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = px(2)),
+    locations = cells_column_labels()
+  ) %>%
+  tab_options(
+    column_labels.font.size = 10,
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.width = pct(100)  # Set the table width to 100% of the container
+
+  ) %>%
+  tab_footnote(
+    footnote = "Note: All values represent mean errors.",
+    locations = cells_column_labels(columns = TRUE)
+  )
+
+# Print the table
+print(gt_table)
+```
+
+
+
+
+
+
+```{r}
+#| label: tbl-metricsvoters222
+#| tbl-cap: "this one has potential"
+
+wide_data <- e23_tab %>%
+  pivot_wider(
+    names_from = c(Model, condit),
+    values_from = mean_error,
+    names_sep = "_"
+  ) %>%
+  arrange(Fit_Method, `Task Stage`, Exp)  # Sorting the data can help with clarity in presentation
+
+# Create a gt table with the wider data
+gt_table <- wide_data %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error by Fit Method, Task Stage, and Experiment",
+    subtitle = "Comparison across Conditions and Models"
+  ) %>%
+  fmt_number(
+    columns = matches("ALM_|EXAM_"),
+    decimals = 1  # Adjust the number of decimal places as needed
+  ) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_style(
+    style = cell_fill(color = "gray95"),
+    locations = cells_body(columns = TRUE, rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = px(2)),
+    locations = cells_column_labels()
+  ) %>%
+  tab_options(
+    column_labels.font.size = "small",
+    heading.title.font.size = "large",
+    heading.subtitle.font.size = "medium",
+    table.width = pct(100), # Set the table width to 100% of the container,
+    quarto.disable_processing = TRUE
+  )
+
+# Print the table
+print(gt_table)
+```
+
+
+```{r}
+#| label: tbl-potential1
+#| tbl-cap: "this one has even more potential"
+
+
+wide_data <- e23_tab %>%
+  pivot_wider(
+    names_from = c(Exp, Model, condit),
+    values_from = mean_error,
+    names_glue = "{Exp}_{Model}_{condit}"
+  ) %>%
+  arrange(Fit_Method, `Task Stage`)  # Sort for clarity
+
+# Create a gt table with the wider data
+gt_table <- wide_data %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error by Fit Method, Task Stage, and Experiment",
+    subtitle = "Comparison across Conditions and Models"
+  ) %>%
+  cols_move_to_start(columns = c(`Task Stage`)) %>% # Move Task Stage column to the start
+  cols_label(
+    `Task Stage` = "Task Stage"
+  ) %>%
+  fmt_number(
+    columns = matches("E2|E3"),
+    decimals = 1  # Adjust the number of decimal places as needed
+  ) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_style(
+    style = cell_fill(color = "gray95"),
+    locations = cells_body(columns = TRUE, rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "all", color = "gray90"),
+    locations = cells_body(columns = TRUE, rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = px(1)),
+    locations = cells_column_labels()
+  ) %>%
+  tab_options(
+    column_labels.font.size = 10,
+    quarto.disable_processing = TRUE,
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.width = pct(100), # Set the table width to 100% of the container
+    table.font.size = 10
+  ) %>%
+  tab_footnote(
+    footnote = "Note: Mean errors are calculated as the absolute difference between the predicted and actual values.",
+    locations = cells_title(groups = "subtitle")
+  )
+
+# Print the table
+print(gt_table)
+```
+
+
+```{r}
+
+# Load necessary packages
+pacman::p_load(dplyr, tidyr, gt)
+
+# Pivot the data wider
+e23_tab_wide <- e23_tab %>%
+  pivot_wider(
+    id_cols = c(Fit_Method, Model, `Task Stage`),
+    names_from = c(condit, Exp),
+    values_from = mean_error
+  )
+
+# Rename columns
+e23_tab_wide <- e23_tab_wide %>%
+  rename_with(~ str_replace(., "_Constant", " (Constant)"), starts_with("Constant")) %>%
+  rename_with(~ str_replace(., "_Varied", " (Varied)"), starts_with("Varied")) %>%
+  rename_with(~ str_replace(., "_E2", " (E2)"), ends_with("E2")) %>%
+  rename_with(~ str_replace(., "_E3", " (E3)"), ends_with("E3"))
+
+# Create gt table
+gt_table <- gt(e23_tab_wide) %>%
+  tab_header(
+    title = md("**Table 1.**"),
+    subtitle = md("An example of a gt table with e23_tab data")
+  ) %>%
+  tab_options(
+    column_labels.hidden = FALSE,
+    heading.title.font.size = px(16),
+    heading.subtitle.font.size = px(12),
+     quarto.disable_processing = TRUE
+  ) %>%
+  fmt_number(
+    columns = everything(),
+    decimals = 1
+  ) %>%
+  tab_style(
+    style = list(
+      cell_text(weight = "bold"),
+      cell_fill(color = "lightgray")
+    ),
+    locations = cells_stub()
+  ) %>%
+  tab_style(
+    style = cell_text(align = "left"),
+    locations = cells_body(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_text(align = "center"),
+    locations = cells_body(columns = starts_with("Constant"), starts_with("Varied"))
+  )
+
+# Print table
+gt_table
+```
+
+
+
+```{r}
+
+```
+
+
+
+
+```{r}
+
+
+e23_tab %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error by Model and Condition",
+    subtitle = "Comparison of ALM and EXAM Models across Different Fit Methods"
+  ) %>%
+  fmt_number(
+    columns = c("mean_error"),
+    decimals = 1  # Adjust the number of decimal places as needed
+  ) %>%
+  cols_label(
+    mean_error = "Mean Error",
+    `Task Stage` = "Task Stage",
+    Exp = "Experiment"
+  ) %>%
+  # The below spanner code should be adjusted if `Task Stage` and `Exp` are not directly next to each other
+  tab_spanner(
+    label = "Details",
+    columns = c(`Task Stage`, Exp)
+  ) %>%
+  tab_style(
+    style = cell_fill(color = "gray95"),
+    locations = cells_body(columns = TRUE, rows = TRUE)
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = px(2)),
+    locations = cells_column_labels()
+  ) %>%
+  tab_style(
+    style = cell_text(align = "left"),
+    locations = cells_column_labels(columns = TRUE)
+  ) %>%
+  tab_options(
+    column_labels.font.size = "small",
+    heading.title.font.size = "large",
+    heading.subtitle.font.size = "medium",
+     quarto.disable_processing = TRUE
+  )
+```
+
+
+
+
+
+```{r}
+
+
+
+e23_tab %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error for Different Fitting Methods and Models",
+    subtitle = "Results from Experiments E2 and E3"
+  ) %>%
+  cols_label(
+    Fit_Method = md("Fitting Method"),
+    Model = md("Model"),
+    condit = md("Condition"),
+    mean_error = md("Mean Error"),
+    `Task Stage` = md("Task Stage"),
+    Exp = md("Experiment")
+  ) %>%
+  tab_source_note(
+    source_note = "Data source: e23_tab"
+  ) %>%
+  tab_footnote(
+    footnote = "Constant and Varied refer to the conditions of the experiment.",
+    locations = cells_body(columns = condit)
+  ) %>%
+  fmt_number(
+    columns = mean_error,
+    decimals = 1
+  ) %>%
+  cols_align(
+    align = "left",
+    columns = c(Fit_Method, Model, condit, `Task Stage`, Exp)
+  ) %>%
+  cols_align(
+    align = "center",
+    columns = mean_error
+  )  %>%
+    tab_options(
+     quarto.disable_processing = TRUE
+  )
+```

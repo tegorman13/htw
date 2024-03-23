@@ -27,7 +27,7 @@ prefer-html: true
 
 ```{r}
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
-               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools,ggdist,ggh4x)
+               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools,ggdist,ggh4x,brms,tidybayes,bayestestR, gt)
 #conflict_prefer_all("dplyr", quiet = TRUE)
 walk(c("flextable","dplyr"), conflict_prefer_all, quiet = TRUE)
 #options(brms.backend="cmdstanr",mc.cores=4)
@@ -44,10 +44,6 @@ invisible(list2env(load_sbj_data(), envir = .GlobalEnv))
 invisible(list2env(load_e1(), envir = .GlobalEnv))
 e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
 ```
-
-
-
-
 
 
 # Modeling Approach
@@ -118,26 +114,78 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
 #### Group level Patterns
 
 ```{r}
-#| label: tbl-htw-modelError
+#| label: tbl-htw-modelError-e1
 #| tbl-cap: "Mean model errors predicting empirical data from the testing and training stage, aggregated over all participants and velocity bands. Note that Fit Method refers to the subset of the data that the model was trained on"
 post_tabs <- abc_tables(post_dat,post_dat_l)
 train_tab <- abc_train_tables(pd_train,pd_train_l)
 
 
 
-rbind(post_tabs$agg_pred_full |> mutate(stage="Test"), train_tab$agg_pred_full |> mutate(stage="Train")) |> 
-  mutate(Fit_Method=rename_fm(Fit_Method)) |>
-  flextable::tabulator(rows=c("stage","Fit_Method","Model"), columns=c("condit"),
-                       `ME` = as_paragraph(mean_error)) |> as_flextable()
- # post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
- #    mutate(e2=abs(dist-pred_dist)) |> 
- #    summarise(dist=mean(dist), pred=mean(pred_dist), mean_error=mean(e2)) |>
- #    group_by(condit,Model,Fit_Method) |> 
- #    summarise(mean_error=mean(mean_error)) |> 
- #    round_tibble(1) |> 
- #  mutate(Fit_Method=rename_fm(Fit_Method)) |>
- #  flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"),
- #                       `ME` = as_paragraph(mean_error)) |> as_flextable()
+e1_tab <- rbind(post_tabs$agg_pred_full |> mutate("Task Stage"="Test"), train_tab$agg_pred_full |> mutate("Task Stage"="Train")) |> 
+  mutate(Fit_Method=rename_fm(Fit_Method)) 
+  # |>
+  # flextable::tabulator(rows=c("stage","Fit_Method","Model"), columns=c("condit"),
+  #                      `ME` = as_paragraph(mean_error)) |> as_flextable()
+
+
+
+e1_tab %>%
+  group_by(`Task Stage`, Fit_Method, Model, condit) %>%
+  summarize(ME = mean(mean_error), .groups = "drop") %>%
+  pivot_wider(
+    names_from = c(Model, condit),
+    values_from = ME,
+    names_sep = "_"  # Add this line to specify the separator for column names
+  ) %>%
+  rename("Fit Method" = Fit_Method) %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error by Fit Method, Task Stage, and Condition",
+    subtitle = "Comparison across Models"
+  ) %>%
+  cols_move_to_start(columns = c(`Task Stage`)) %>%
+  cols_label(
+    `Task Stage` = "Task Stage"
+  ) %>%
+  fmt_number(
+    columns = starts_with("ALM") | starts_with("EXAM"),
+    decimals = 2
+  ) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_style(
+    style = cell_fill(color = "white"),
+     locations = cells_body(columns = everything(), rows = everything())
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = px(1)),
+    locations = cells_column_labels()
+  ) %>%
+  tab_options(
+    column_labels.font.size = 10,
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.size = 10, 
+    quarto.disable_processing = TRUE
+  ) %>%
+  tab_footnote(
+    footnote = "Note: Mean errors are calculated as the absolute difference between the predicted and actual values.",
+    locations = cells_title(groups = "subtitle")
+  ) %>%
+  sub_missing(missing_text = "")
+
+
+
+#  post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
+#     mutate(e2=abs(dist-pred_dist)) |> 
+#     summarise(dist=mean(dist), pred=mean(pred_dist), mean_error=mean(e2)) |>
+#     group_by(condit,Model,Fit_Method) |> 
+#     summarise(mean_error=mean(mean_error)) |> 
+#     round_tibble(1) |> 
+#   mutate(Fit_Method=rename_fm(Fit_Method)) |>
+#   flextable::tabulator(rows=c("Fit_Method","Model"), columns=c("condit"),
+#                        `ME` = as_paragraph(mean_error)) |> as_flextable()
+
+
 
 # post_tabs$agg_pred_full_bt |> 
 #    pander::pandoc.table(style="rmarkdown", split.table=Inf)
@@ -235,8 +283,8 @@ Considering first the models fit to only the testing data, which reflect the bes
 
 ```{r}
 
-library(brms)
-options(brms.backend="cmdstanr",mc.cores=4)
+# library(brms)
+# options(brms.backend="cmdstanr",mc.cores=4)
 
 # pdl <- post_dat_l |> rename("bandInt"=x) |> #left_join(testAvgE1,by=c("id","condit","bandInt")) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
 
@@ -247,12 +295,13 @@ e1_ee_brm_ae <- brm(data=pdl,
   file = paste0(here("data/model_cache/e1_ae_modelCond_RFint.rds")),
   chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
 
-bct <- as.data.frame(bayestestR::describe_posterior(e1_ee_brm_ae, centrality = "Mean"))[, c(1,2,4,5,6)]
-colnames(bct) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
-
-bct <- bct |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
-  tibble::remove_rownames() |>
-  mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE)
+bct_e1 <- as.data.frame(bayestestR::describe_posterior(e1_ee_brm_ae, centrality = "Mean")) %>%
+  select(1,2,4,5,6) %>%
+  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
+  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
+  tibble::remove_rownames() %>%
+  mutate(Term = stringr::str_remove(Term, "b_")) %>%
+  kable(booktabs = TRUE)
 
 #wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))
 
@@ -264,7 +313,7 @@ p3 <- plot(conditional_effects(e1_ee_brm_ae, effects="Model:condit"),points=FALS
   scale_color_manual(values=wes_palette("Darjeeling1")) +
   labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
   
-p1 + p2+ p3
+(p1 + p2+ p3) + plot_annotation(tag_levels = c('A'), tag_suffix=".")
 
 bm1 <- get_coef_details(e1_ee_brm_ae, "conditVaried")
 bm2 <- get_coef_details(e1_ee_brm_ae, "ModelEXAM")
@@ -308,7 +357,6 @@ Comparison of model errors - experiment 1 - assessed bayesian regression in the 
 #| label: fig-cm-vx-pat
 #| fig-height: 12
 #| fig-width: 11
-
 
 #post_dat_l |> group_by(id,condit,x) |> filter(Resp=="Observed") |> slice_head(n=1)
 
@@ -374,6 +422,7 @@ Model predictions experiment 1 -  empirically observed values and predictions of
 #| fig-cap: "Empirical data and Model predictions for absolute deviation from target (accuracy). Observed data is shown on top, and predictions from each combination of model and fitting method are shown below. "
 #| fig-height: 11
 #| fig-width: 11
+#| eval: false
 
 
 pemp1 <- e1 |> filter(expMode2=="Test") |> 
@@ -395,19 +444,6 @@ pemp1 <- e1 |> filter(expMode2=="Test") |>
 layout <- "#A#
 CCC"
 
-# pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |> 
-#   left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
-#   group_by(id,condit, Fit_Method,Resp,x,bandType) |> 
-#   mutate(x=as.factor(x)) |>
-#  summarize(dist=median(dist)) |> 
-#   mutate(oc = ifelse(bandType == "Trained", "black", NA)) |> 
-#   ggplot(aes(x=condit,y=dist, fill=x,col=oc,size=oc)) + 
-#   stat_bar +
-#   ggh4x::facet_nested_wrap(~Resp+rename_fm(Fit_Method), axes = "all",ncol=3) + 
-#    scale_color_manual(values = c("black" = "black"), guide = FALSE) +
-#    scale_size_manual(values = c("black" = .3), guide = FALSE) + 
-#   theme(legend.position = "none",plot.title = element_text(hjust=.55) ) + 
-#   labs(title="Model Predictions", y="Deviation from target band", x="Condition")
 
 pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |> 
   #left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
@@ -427,18 +463,13 @@ pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |>
          axis.title.x = element_blank()) + 
          labs(title="Model Predictions - Experiment 1 Data", y="Deviation from target band")
 
-
-
 (pemp1) / pmod1 + plot_layout(design = layout) #heights = unit(c(5,-5, 8), c('cm','null'))
 
 ```
 
 
-
 ```{r}
-#| fig-height: 11
-#| fig-width: 11
-
+#| label: tbl-htw-modelError-e23
 
 e2_model <- load_e2()
 post_tabs2 <- abc_tables(e2_model$post_dat,e2_model$post_dat_l)
@@ -447,10 +478,11 @@ train_tab2 <- abc_train_tables(e2_model$pd_train,e2_model$pd_train_l)
 pdl2 <- e2_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
 
 
-rbind(post_tabs2$agg_pred_full |> mutate(stage="Test"), train_tab2$agg_pred_full |> mutate(stage="Train")) |> 
-  mutate(Fit_Method=rename_fm(Fit_Method)) |>
-  flextable::tabulator(rows=c("stage","Fit_Method","Model"), columns=c("condit"),
-                       `ME` = as_paragraph(mean_error)) |> as_flextable()
+e2_tab <- rbind(post_tabs2$agg_pred_full |> mutate("Task Stage"="Test"), train_tab2$agg_pred_full |> mutate("Task Stage"="Train")) |> 
+  mutate(Fit_Method=rename_fm(Fit_Method)) 
+  # |>
+  # flextable::tabulator(rows=c("Task Stage","Fit_Method","Model"), columns=c("condit"),
+  #                      `ME` = as_paragraph(mean_error)) |> as_flextable()
 
 
 e2_ee_brm_ae <- brm(data=pdl2,
@@ -458,42 +490,16 @@ e2_ee_brm_ae <- brm(data=pdl2,
   file = paste0(here("data/model_cache/e2_ae_modelCond_RFint.rds")),
   chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
 
-bct <- as.data.frame(bayestestR::describe_posterior(e2_ee_brm_ae, centrality = "Mean"))[, c(1,2,4,5,6)]
-colnames(bct) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
 
-bct <- bct |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
-  tibble::remove_rownames() |>
-  mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE)
-
-#wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))
-
-p1 <- plot(conditional_effects(e2_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + 
-  ggplot2::xlab("Condition") +ylab("Model Error")
-p2 <- plot(conditional_effects(e2_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + 
-  labs(x="Model",y=NULL)
-p3 <- plot(conditional_effects(e2_ee_brm_ae, effects="Model:condit"),points=FALSE, plot=FALSE)$`Model:condit` + 
-  scale_color_manual(values=wes_palette("Darjeeling1")) +
-  labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
-  
- p1 + p2+ p3
-
-bm1 <- get_coef_details(e2_ee_brm_ae, "conditVaried")
-bm2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM")
-bm3 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM:conditVaried")
+bct_e2 <- as.data.frame(bayestestR::describe_posterior(e2_ee_brm_ae, centrality = "Mean")) %>%
+  select(1,2,4,5,6) %>%
+  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
+  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
+  tibble::remove_rownames() %>%
+  mutate(Term = stringr::str_remove(Term, "b_")) %>%
+  kable(booktabs = TRUE)
 
 
-
-
-
-```
-
-
-
-
-
-
-
-```{r}
 
 
 e3_model <- load_e3()
@@ -504,10 +510,65 @@ train_tab3 <- abc_train_tables(e3_model$pd_train,e3_model$pd_train_l)
 pdl3 <- e3_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
 
 
-rbind(post_tabs3$agg_pred_full |> mutate(stage="Test"), train_tab3$agg_pred_full |> mutate(stage="Train")) |> 
-  mutate(Fit_Method=rename_fm(Fit_Method)) |>
-  flextable::tabulator(rows=c("stage","Fit_Method","Model"), columns=c("condit"),
-                       `ME` = as_paragraph(mean_error)) |> as_flextable()
+e3_tab <- rbind(post_tabs3$agg_pred_full |> 
+  mutate("Task Stage"="Test"), train_tab3$agg_pred_full |> mutate("Task Stage"="Train")) |> 
+  mutate(Fit_Method=rename_fm(Fit_Method)) 
+  # |>
+  # flextable::tabulator(rows=c("Task Stage","Fit_Method","Model"), columns=c("condit"),
+  #                      `ME` = as_paragraph(mean_error)) |> as_flextable()
+
+
+e23_tab <- rbind(e2_tab |> mutate(Exp="E2"), e3_tab |> mutate(Exp="E3")) 
+# |> 
+#   flextable::tabulator(rows=c("Task Stage","Fit_Method","Model"), columns=c("Exp", "condit"),
+#                        `ME` = as_paragraph(mean_error)) |> flextable::as_flextable()
+
+
+wide_data <- e23_tab %>%
+  pivot_wider(
+    names_from = c(Exp, Model, condit),
+    values_from = mean_error,
+    names_glue = "{Exp}_{Model}_{condit}"
+  ) %>%
+  arrange(Fit_Method, `Task Stage`)  # Sort for clarity
+
+# Create a gt table with the wider data
+gt_table <- wide_data %>%
+  gt() %>%
+  tab_header(
+    title = "Mean Error by Fit Method, Task Stage, and Experiment",
+    subtitle = "Comparison across Conditions and Models"
+  ) %>%
+  cols_move_to_start(columns = c(`Task Stage`)) %>% # Move Task Stage column to the start
+  cols_label(
+    `Task Stage` = "Task Stage"
+  ) %>%
+  fmt_number(
+    columns = matches("E2|E3"),
+    decimals = 1  # Adjust the number of decimal places as needed
+  ) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_style(
+    style = cell_fill(color = "white"), # Ensure readability in grayscale
+    locations = cells_body(columns = everything(), rows = everything())
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = px(1)),
+    locations = cells_body(columns = everything(), rows = everything())
+  ) %>%
+  tab_options(
+    column_labels.font.size = 10,
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.size = 10,
+    quarto.disable_processing = TRUE
+  ) %>%
+  tab_footnote(
+    footnote = "Note: Mean errors are calculated as the absolute difference between the predicted and actual values.",
+    locations = cells_title(groups = "subtitle")
+  )
+
+gt_table
 
 
 # e3_ee_brm_ae <- brm(data=pdl3,
@@ -520,21 +581,53 @@ e3_ee_brm_ae <- brm(data=pdl3,
   file = paste0(here("data/model_cache/e3_ae_modelCondBo_RFint2.rds")),
   chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
 
+bct_e3  <- as.data.frame(bayestestR::describe_posterior(e3_ee_brm_ae, centrality = "Mean")) %>%
+  select(1,2,4,5,6) %>%
+  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
+  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
+  tibble::remove_rownames() %>%
+  mutate(Term = stringr::str_remove(Term, "b_")) %>%
+  kable(booktabs = TRUE)
+
+```
 
 
-bct <- as.data.frame(bayestestR::describe_posterior(e3_ee_brm_ae, centrality = "Mean"))[, c(1,2,4,5,6)]
-colnames(bct) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
 
-bct <- bct |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
-  tibble::remove_rownames() |>
-  mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE)
+
+
+```{r}
+#| label: fig-e2_e3_ae
+#| fig-cap: "Conditional effects of Model and Condition on Model Error for Experiment 2 and 3 data."
+#| fig-height: 11
+#| fig-width: 11
+
+
+#wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))
+
+p1 <- plot(conditional_effects(e2_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + 
+  ggplot2::xlab("Condition") +ylab("Model Error") + labs(title="E2. Model Error")
+p2 <- plot(conditional_effects(e2_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + 
+  labs(x="Model",y=NULL)
+p3 <- plot(conditional_effects(e2_ee_brm_ae, effects="Model:condit"),points=FALSE, plot=FALSE)$`Model:condit` + 
+  scale_color_manual(values=wes_palette("Darjeeling1")) +
+  labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
+  
+ p_e2 <- (p1 + p2+ p3) 
+
+bm1 <- get_coef_details(e2_ee_brm_ae, "conditVaried")
+bm2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM")
+bm3 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM:conditVaried")
+
 
 #wrap_plots(plot(conditional_effects(e3_ee_brm_ae),points=FALSE,plot=FALSE))
 
-plot(conditional_effects(e3_ee_brm_ae, 
+p_e3 <- plot(conditional_effects(e3_ee_brm_ae, 
                          effects = "Model:condit", 
                          conditions=make_conditions(e3_ee_brm_ae,vars=c("bandOrder"))),
-     points=FALSE,plot=TRUE)
+     points=FALSE,plot=FALSE)$`Model:condit` + 
+     labs(x="Model",y="Model Error", title="E3. Model Error") + 
+     theme(legend.position="right") + 
+     scale_color_manual(values=wes_palette("Darjeeling1")) 
 
 p1 <- plot(conditional_effects(e3_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + 
   ggplot2::xlab("Condition") +ylab("Model Error")
@@ -544,66 +637,49 @@ p3 <- plot(conditional_effects(e3_ee_brm_ae, effects="Model:condit"),points=FALS
   scale_color_manual(values=wes_palette("Darjeeling1")) +
   labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
   
- p1 + p2+ p3
+ #p2 <- (p1 + p2+ p3)
 
 bm1 <- get_coef_details(e3_ee_brm_ae, "conditVaried")
 bm2 <- get_coef_details(e3_ee_brm_ae, "ModelEXAM")
 bm3 <- get_coef_details(e3_ee_brm_ae, "ModelEXAM:conditVaried")
 
-
 #modelsummary::modelsummary(list("e1"=e1_ee_brm_ae,"e2"=e2_ee_brm_ae,"e3"=e3_ee_brm_ae), gof_map = tribble())
+
+ (p_e2 / p_e3) + plot_annotation(tag_levels = c('A'), tag_suffix=".")
+
+
 ```
 
 
 
 
+
+
 ```{r}
-#| fig-height: 13
+#| fig-height: 10
 #| fig-width: 11
+#| fig-cap: "Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right. "
 
 
-# pemp2 <- e2 |> filter(expMode2=="Test") |> mutate(Resp="Observed") |> 
-#   ggplot(aes(x=condit,y=vx, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
-#   stat_bar+ 
-#   scale_color_manual(values = c("black" = "black"), guide = FALSE) +
-#   scale_size_manual(values = c("black" = .5), guide = FALSE) + 
-#   theme(legend.position="right", axis.title.x = element_blank(), plot.title = element_text(hjust=.50)) +
-#   labs(title="Empirical Data - Experiment 1",y="vx", x="Condition",fill="Band") 
-
-pmod2 <- e2_model$post_dat_l |> filter( Fit_Method=="Test_Train") |> 
+rbind(e2_model$post_dat_l |> filter( Fit_Method=="Test_Train") |> 
   group_by(id,condit, Fit_Method,Resp,bandType,x,vb) |> 
- summarize(vx=median(val)) |> 
- ggplot( aes(x=condit,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+ summarize(vx=median(val)) |> mutate(Exp="E2",bandOrder="Reverse"), 
+ e3_model$post_dat_l |> filter( Fit_Method=="Test_Train") |> 
+  group_by(id,condit, Fit_Method,Resp,bandType,x,vb,bandOrder) |>
+  summarize(vx=median(val)) |> mutate(Exp="E3")) |>
+  ggplot( aes(x=condit,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) +
   stat_bar + 
-    facet_wrap(~Resp+rename_fm(Fit_Method), strip.position = "top", scales = "free_x") +
-        scale_color_manual(values = c("black" = "black"), guide = "none") +
-  scale_size_manual(values = c("black" = .5), guide = "none") +
+    facet_nested_wrap(~Exp+bandOrder+Resp, strip.position = "top", scales = "free_x") +
+    scale_color_manual(values = c("black" = "black"), guide = "none") +
+  scale_size_manual(values = c("black" = .7), guide = "none") +
     theme(panel.spacing = unit(0, "lines"), 
-         strip.background = element_blank(),
-         strip.placement = "outside",
+        #  strip.background = element_blank(),
+        #  strip.placement = "outside",
          legend.position = "none",plot.title = element_text(hjust=.50),
          axis.title.x = element_blank(),
          plot.margin = unit(c(20,0,0,0), "pt")) + 
-         labs(title="Model Predictions Experiment 2", y="vx")
+         labs(title="Model Predictions Experiment 2 & 3", y="vx")
 
-
-pmod3 <- e3_model$post_dat_l |> filter(Fit_Method=="Test_Train") |> 
-  group_by(id,condit, Fit_Method,Resp,bandType,bandOrder,x,vb) |> 
- summarize(vx=median(val)) |> 
- ggplot( aes(x=condit,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
-  stat_bar + 
-    facet_wrap(~bandOrder + Resp+rename_fm(Fit_Method), strip.position = "top", scales = "free_x") +
-        scale_color_manual(values = c("black" = "black"), guide = "none") +
-  scale_size_manual(values = c("black" = .5), guide = "none") +
-    theme(panel.spacing = unit(0, "lines"), 
-         strip.background = element_blank(),
-         strip.placement = "outside",
-         legend.position = "none",plot.title = element_text(hjust=.50),
-         axis.title.x = element_blank(),
-         plot.margin = unit(c(20,0,0,0), "pt")) + 
-         labs(title="Model Predictions Experiment 3", y="vx")
-
-pmod2 / pmod3
 
 
 ```
