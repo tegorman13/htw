@@ -42,6 +42,7 @@ walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model", "prep_model_dat
 
 invisible(list2env(load_sbj_data(), envir = .GlobalEnv))
 invisible(list2env(load_e1(), envir = .GlobalEnv))
+
 e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
 ```
 
@@ -198,12 +199,25 @@ e1_tab %>%
 #   rename("Band"=x, "Condition"=condit, "Model Error"=mean_error) |>
 #   pander::pandoc.table(style="rmarkdown", split.table=Inf)
 
+
+#  post_dat |> group_by(id,condit,Model,Fit_Method) |> summarise(y=mean(y), pred=mean(pred), ae=abs(y-pred)) |>
+#     group_by(id,condit,Model,Fit_Method) |> 
+#     summarise(mean_error=mean(ae)) |> 
+# ggplot(aes(x=mean_error,fill=condit,y=interaction(Model,Fit_Method))) + stat_halfeye()
+# 
+#  post_dat |> group_by(id,condit,Model,Fit_Method,x) |> summarise(y=mean(y), pred=mean(pred), ae=abs(y-pred)) |>
+#     group_by(id,condit,Model,Fit_Method,x) |> 
+#     summarise(mean_error=mean(ae)) |> 
+#   ggplot(aes(x=mean_error,fill=condit,y=interaction(Model,Fit_Method))) + 
+#   stat_halfeye() +
+#   facet_wrap(~x)
+
 ```
 
 
 ```{r}
 #| label: fig-htw-post-dist
-#| fig-cap: Posterior Distributions of $c$ and $lr$ parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically.
+#| fig-cap: "Posterior Distributions of $c$ and $lr$ parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically."
 #| fig-height: 6
 #| fig-width: 10
 
@@ -221,6 +235,35 @@ lr_post <- post_dat_avg %>%
     ggh4x::facet_nested_wrap(~Model) + labs(title="learning rate parameter") +
   theme(legend.title = element_blank(), legend.position = "none",plot.title=element_text(hjust=.5))
 c_post + lr_post
+
+
+
+# post_dat_avg %>%
+#     group_by(id, condit, Model, Fit_Method, rank<3) %>%
+#     slice_head(n = 1) |>
+#     ggplot(aes(y=interaction(Model,Fit_Method), x = c, col=condit)) + 
+#   #stat_pointinterval(position=position_dodge(.2)) +
+#  # geom_freqpoly() +
+#   scale_x_continuous(trans='log10')+
+#   stat_halfeye() +
+#   #geom_density() +
+#    # ggh4x::facet_nested_wrap(~Model) + 
+#   labs(title="c parameter") +
+#   theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4))
+# 
+#     
+#     p1 <- post_dat_avg |> group_by(id,Model,Fit_Method,condit) |> 
+#     summarise(c=median(c),lr=median(lr)) |> 
+#       group_by(Model,Fit_Method,condit) |> 
+#       mutate(c=scale(c),lr=scale(lr)) |> 
+#       #ggplot(aes(scale(c),scale(lr),color=condit))+
+#       ggplot(aes(c,lr,color=condit))+
+#       geom_point() +
+#       scale_x_continuous(trans='log10')
+#     
+#     ggExtra::ggMarginal(p1, groupColor=TRUE,groupFill = TRUE)
+
+
 ```
 
 
@@ -282,11 +325,15 @@ Considering first the models fit to only the testing data, which reflect the bes
 
 
 ```{r}
+#| fig-caption: Marginal differences
+#| fig-height: 9
+#| fig-width: 6
 
 # library(brms)
 # options(brms.backend="cmdstanr",mc.cores=4)
 
-# pdl <- post_dat_l |> rename("bandInt"=x) |> #left_join(testAvgE1,by=c("id","condit","bandInt")) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
+pdl <- post_dat_l |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
+  filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
 
 
 # aerror is model error, which is predicted by Model(ALM vs. EXAM) & condit (Constant vs. Varied)
@@ -323,16 +370,77 @@ posterior_estimates <- as.data.frame(e1_ee_brm_ae) %>%
   select(starts_with("b_")) %>%
   setNames(c("Intercept", "ModelEXAM", "conditVaried", "ModelEXAM_conditVaried"))
 
+
+library(tidybayes)
+library(emmeans)
+
 constant_EXAM <- posterior_estimates$Intercept + posterior_estimates$ModelEXAM
 varied_EXAM <- posterior_estimates$Intercept + posterior_estimates$ModelEXAM + posterior_estimates$conditVaried + posterior_estimates$ModelEXAM_conditVaried
 comparison_EXAM <- constant_EXAM - varied_EXAM
 summary_EXAM <- bayestestR::describe_posterior(comparison_EXAM, centrality = "Mean")
+
+# e1_ee_brm_ae |> emmeans(pairwise ~ Model * condit, re_formula=NULL)
+# e1_ee_brm_ae |> emmeans(pairwise ~ Model * condit, re_formula=NA)
+
+
+  # full set of Model x condit contrasts
+
+
+
+# ALM - EXAM
+btw_model <- e1_ee_brm_ae |> emmeans(pairwise~ Model | condit, re_formula=NULL)  |> 
+  pluck("contrasts") |> 
+  gather_emmeans_draws() |> 
+  group_by(contrast,.draw,condit) |> summarise(value=mean(.value), n=n()) 
+
+# btw_model |> ggplot(aes(x=value,y=contrast,fill=condit)) +stat_halfeye()
+
+
+# Constant - Varied
+emm_condit <- e1_ee_brm_ae |> emmeans(~ condit | Model, re_formula = NULL)
+btw_con <- emm_condit |>  pairs() |> gather_emmeans_draws() |> 
+  group_by(contrast,.draw, Model) |> summarise(value=mean(.value), n=n()) 
+# btw_con |> ggplot(aes(x=value,y=Model,fill=Model)) +stat_halfeye()                              
+
+
+
+e1_ee_brm_ae |> emmeans(pairwise~ Model*condit, re_formula=NA)  |> 
+  pluck("contrasts") |>
+  gather_emmeans_draws() |> 
+  group_by(contrast,.draw) |> summarise(value=mean(.value), n=n()) |> 
+  filter(!(contrast %in% c("ALM Constant - EXAM Constant","ALM Constant - EXAM Varied","ALM Varied - EXAM Varied ", "EXAM Constant - ALM Varied" ))) |> 
+  ggplot(aes(x=value,y=contrast,fill=contrast)) +stat_halfeye()
+
+
+# {btw_con |> ggplot(aes(x=value,y=Model,fill=Model)) +stat_halfeye()} +
+# {btw_model |> ggplot(aes(x=value,y=contrast,fill=condit)) +stat_halfeye()}
+
+
+# emm_models_bandint_specific <- e1_ee_brm_ae |>
+#   emmeans(~ Model | condit, at = list(bandInt = c(100,350,600,800,1000,1200)),
+#           re_formula = NA)
+# 
+# 
+# emm_models_bandint_by_levels <- e1_ee_brm_ae |>
+#   emmeans(~ Model | condit | bandInt, 
+#           at = list(bandInt = c(100,350,600,800,1000,1200)),
+#           re_formula = NULL, by = "bandInt")
+
+# within_condition_bandint_by_levels_contrasts <- emm_models_bandint_by_levels |>
+#   pairs()
+# 
+# emm_models_bandint_by_levels |> as_tibble() 
+
+# emm_models_bandint_by_levels |> pairs() |> gather_emmeans_draws() |> 
+#   as_tibble() |> group_by(bandInt,condit) |> tidybayes::median_hdi(.value) |>
+#   ggplot(aes(x=.value,y=condit,fill=condit)) + stat_halfeye() +facet_wrap(~bandInt,ncol=1)
+
+  
 #print(summary_EXAM)
 
 # alternative emmeans approach to assess constant vs. varied difference in EXAM
 #emmeans(e1_ee_brm_ae, specs = "condit", by = "Model") |> summary()
 # is the difference significant for EXAM in particular
-
 
 ```
 
@@ -355,8 +463,8 @@ Comparison of model errors - experiment 1 - assessed bayesian regression in the 
 
 ```{r}
 #| label: fig-cm-vx-pat
-#| fig-height: 12
-#| fig-width: 11
+#| fig-height: 11
+#| fig-width: 10
 
 #post_dat_l |> group_by(id,condit,x) |> filter(Resp=="Observed") |> slice_head(n=1)
 
@@ -391,7 +499,7 @@ pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |>
          labs(title="Model Predictions - Experiment 1 Data", y="vx")
 
 (pemp1)  / pmod1 + 
-  plot_layout(design = layout) #heights = unit(c(5,-5, 8), c('cm','null'))
+  plot_layout(design = layout, heights = unit(c(5,7),c('cm','cm'))) #heights = unit(c(5,-5, 8), c('cm','null'))
 
 ```
 
@@ -444,7 +552,6 @@ pemp1 <- e1 |> filter(expMode2=="Test") |>
 layout <- "#A#
 CCC"
 
-
 pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |> 
   #left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
   group_by(id,condit, Fit_Method,Resp,vb,bandType) |> 
@@ -469,14 +576,14 @@ pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |>
 
 
 ```{r}
-#| label: tbl-htw-modelError-e23
+#| label: tbl-htw-modelError-e123
+#| tbl-cap: "Results of Bayesian Regression models predictin model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and the interaction between Model and Condition. The values represent the estimate coefficient for each term, with 95% credible intervals in brackets.  The intercept reflects the baseline of ALM and Constant. The other estimates indicate deviations from the baseline for the EXAM mode and varied condition. Lower values indicate better model fit."
 
 e2_model <- load_e2()
 post_tabs2 <- abc_tables(e2_model$post_dat,e2_model$post_dat_l)
 train_tab2 <- abc_train_tables(e2_model$pd_train,e2_model$pd_train_l)
 
 pdl2 <- e2_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
-
 
 e2_tab <- rbind(post_tabs2$agg_pred_full |> mutate("Task Stage"="Test"), train_tab2$agg_pred_full |> mutate("Task Stage"="Train")) |> 
   mutate(Fit_Method=rename_fm(Fit_Method)) 
@@ -490,17 +597,16 @@ e2_ee_brm_ae <- brm(data=pdl2,
   file = paste0(here("data/model_cache/e2_ae_modelCond_RFint.rds")),
   chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
 
-
-bct_e2 <- as.data.frame(bayestestR::describe_posterior(e2_ee_brm_ae, centrality = "Mean")) %>%
-  select(1,2,4,5,6) %>%
-  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
-  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
-  tibble::remove_rownames() %>%
-  mutate(Term = stringr::str_remove(Term, "b_")) %>%
-  kable(booktabs = TRUE)
-
-
-
+bm1 <- get_coef_details(e2_ee_brm_ae, "conditVaried")
+bm2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM")
+bm3 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM:conditVaried")
+# bct_e2 <- as.data.frame(bayestestR::describe_posterior(e2_ee_brm_ae, centrality = "Mean")) %>%
+#   select(1,2,4,5,6) %>%
+#   setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
+#   mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
+#   tibble::remove_rownames() %>%
+#   mutate(Term = stringr::str_remove(Term, "b_")) %>%
+#   kable(booktabs = TRUE)
 
 e3_model <- load_e3()
 post_tabs3 <- abc_tables(e3_model$post_dat,e3_model$post_dat_l)
@@ -518,42 +624,71 @@ e3_tab <- rbind(post_tabs3$agg_pred_full |>
   #                      `ME` = as_paragraph(mean_error)) |> as_flextable()
 
 
+# e3_ee_brm_ae <- brm(data=pdl3,
+#   aerror ~  Model * condit+ (1+bandInt|id) + (1+condit|bandOrder), 
+#   file = paste0(here("data/model_cache/e3_ae_modelCondBo_RFint.rds")),
+#   chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
+
+e3_ee_brm_ae <- brm(data=pdl3,
+  aerror ~  Model * condit*bandOrder + (1+bandInt|id), 
+  file = paste0(here("data/model_cache/e3_ae_modelCondBo_RFint2.rds")),
+  chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
+
+bm1 <- get_coef_details(e3_ee_brm_ae, "conditVaried")
+bm2 <- get_coef_details(e3_ee_brm_ae, "ModelEXAM")
+bm3 <- get_coef_details(e3_ee_brm_ae, "ModelEXAM:conditVaried")
+
+# bct_e3  <- as.data.frame(bayestestR::describe_posterior(e3_ee_brm_ae, centrality = "Mean")) %>%
+#   select(1,2,4,5,6) %>%
+#   setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
+#   mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
+#   tibble::remove_rownames() %>%
+#   mutate(Term = stringr::str_remove(Term, "b_")) %>%
+#   kable(booktabs = TRUE)
+
+
+msa <- modelsummary::modelsummary(list("Exp 1."=e1_ee_brm_ae,"Exp 2."=e2_ee_brm_ae,"Exp 3. "=e3_ee_brm_ae), 
+    gof_map = NA,
+    fmt=1,
+    estimate = "{estimate}",
+    statistic="[{conf.low}, {conf.high}]", 
+    coef_omit = "^sigma|^sd|^cor",
+    coef_rename=function(x) stringr::str_remove(x, "b_"), output="gt")
+
+msa
+
+#library(modelsummary)
+# modelsummary::modelsummary(get_estimates(e1_ee_brm_ae, test = c("pd")),gof_map = NA)
+#modelsummary::get_estimates(e1_ee_brm_ae,test="pd")
+```
+
+
+
+```{r}
+
 e23_tab <- rbind(e2_tab |> mutate(Exp="E2"), e3_tab |> mutate(Exp="E3")) 
-# |> 
-#   flextable::tabulator(rows=c("Task Stage","Fit_Method","Model"), columns=c("Exp", "condit"),
-#                        `ME` = as_paragraph(mean_error)) |> flextable::as_flextable()
 
-
-wide_data <- e23_tab %>%
+gt_table <- e23_tab %>%
   pivot_wider(
     names_from = c(Exp, Model, condit),
     values_from = mean_error,
     names_glue = "{Exp}_{Model}_{condit}"
   ) %>%
-  arrange(Fit_Method, `Task Stage`)  # Sort for clarity
-
-# Create a gt table with the wider data
-gt_table <- wide_data %>%
+  arrange(Fit_Method, `Task Stage`) %>%
   gt() %>%
   tab_header(
     title = "Mean Error by Fit Method, Task Stage, and Experiment",
     subtitle = "Comparison across Conditions and Models"
   ) %>%
-  cols_move_to_start(columns = c(`Task Stage`)) %>% # Move Task Stage column to the start
-  cols_label(
-    `Task Stage` = "Task Stage"
-  ) %>%
-  fmt_number(
-    columns = matches("E2|E3"),
-    decimals = 1  # Adjust the number of decimal places as needed
-  ) %>%
+  cols_move_to_start(columns = `Task Stage`) %>%
+  cols_label(`Task Stage` = "Task Stage") %>%
+  fmt_number(columns = matches("E2|E3"), decimals = 1) %>%
   tab_spanner_delim(delim = "_") %>%
   tab_style(
-    style = cell_fill(color = "white"), # Ensure readability in grayscale
-    locations = cells_body(columns = everything(), rows = everything())
-  ) %>%
-  tab_style(
-    style = cell_borders(sides = "top", color = "black", weight = px(1)),
+    style = list(
+      cell_fill(color = "white"),
+      cell_borders(sides = "top", color = "black", weight = px(1))
+    ),
     locations = cells_body(columns = everything(), rows = everything())
   ) %>%
   tab_options(
@@ -569,41 +704,17 @@ gt_table <- wide_data %>%
   )
 
 gt_table
-
-
-# e3_ee_brm_ae <- brm(data=pdl3,
-#   aerror ~  Model * condit+ (1+bandInt|id) + (1+condit|bandOrder), 
-#   file = paste0(here("data/model_cache/e3_ae_modelCondBo_RFint.rds")),
-#   chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
-
-e3_ee_brm_ae <- brm(data=pdl3,
-  aerror ~  Model * condit*bandOrder + (1+bandInt|id), 
-  file = paste0(here("data/model_cache/e3_ae_modelCondBo_RFint2.rds")),
-  chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
-
-bct_e3  <- as.data.frame(bayestestR::describe_posterior(e3_ee_brm_ae, centrality = "Mean")) %>%
-  select(1,2,4,5,6) %>%
-  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
-  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
-  tibble::remove_rownames() %>%
-  mutate(Term = stringr::str_remove(Term, "b_")) %>%
-  kable(booktabs = TRUE)
-
 ```
-
-
-
 
 
 ```{r}
 #| label: fig-e2_e3_ae
 #| fig-cap: "Conditional effects of Model and Condition on Model Error for Experiment 2 and 3 data."
-#| fig-height: 11
-#| fig-width: 11
-
+#| 
+#| fig-height: 5
+#| fig-width: 9
 
 #wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))
-
 p1 <- plot(conditional_effects(e2_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + 
   ggplot2::xlab("Condition") +ylab("Model Error") + labs(title="E2. Model Error")
 p2 <- plot(conditional_effects(e2_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + 
@@ -613,11 +724,6 @@ p3 <- plot(conditional_effects(e2_ee_brm_ae, effects="Model:condit"),points=FALS
   labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
   
  p_e2 <- (p1 + p2+ p3) 
-
-bm1 <- get_coef_details(e2_ee_brm_ae, "conditVaried")
-bm2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM")
-bm3 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM:conditVaried")
-
 
 #wrap_plots(plot(conditional_effects(e3_ee_brm_ae),points=FALSE,plot=FALSE))
 
@@ -638,15 +744,7 @@ p3 <- plot(conditional_effects(e3_ee_brm_ae, effects="Model:condit"),points=FALS
   labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
   
  #p2 <- (p1 + p2+ p3)
-
-bm1 <- get_coef_details(e3_ee_brm_ae, "conditVaried")
-bm2 <- get_coef_details(e3_ee_brm_ae, "ModelEXAM")
-bm3 <- get_coef_details(e3_ee_brm_ae, "ModelEXAM:conditVaried")
-
-#modelsummary::modelsummary(list("e1"=e1_ee_brm_ae,"e2"=e2_ee_brm_ae,"e3"=e3_ee_brm_ae), gof_map = tribble())
-
  (p_e2 / p_e3) + plot_annotation(tag_levels = c('A'), tag_suffix=".")
-
 
 ```
 
@@ -656,8 +754,8 @@ bm3 <- get_coef_details(e3_ee_brm_ae, "ModelEXAM:conditVaried")
 
 
 ```{r}
-#| fig-height: 10
-#| fig-width: 11
+#| fig-height: 8
+#| fig-width: 10
 #| fig-cap: "Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right. "
 
 

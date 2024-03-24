@@ -491,12 +491,137 @@ post_dat_l |> group_by(id,condit, Fit_Method,Resp) |>mutate(x=as.factor(x)) |>
 ```{r}
 #| eval: false 
 
-pdl <- post_dat_l |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt")) 
-pd <- post_dat |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt"))
+# pdl <- post_dat_l |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt")) 
+# pd <- post_dat |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt"))
+
+# pdl |> group_by(id,condit, bandType,Resp) |>
+#  summarize(dist=mean(dist)) |> ggplot(aes(x=Resp,y=dist, fill=condit)) + stat_bar + facet_wrap(~bandType)
+
+library(emmeans)
+library(brms)
+library(tidybayes)
+options(brms.backend="cmdstanr",mc.cores=1)
 
 
-pdl |> group_by(id,condit, bandType,Resp) |>
- summarize(dist=mean(dist)) |> ggplot(aes(x=Resp,y=dist, fill=condit)) + stat_bar + facet_wrap(~bandType)
+invisible(list2env(load_sbj_data(), envir = .GlobalEnv))
+invisible(list2env(load_e1(), envir = .GlobalEnv))
+
+e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
+
+pdl <- post_dat_l |> rename("bandInt"=x) |> #left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
+    filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
+
+pdl_all <- post_dat_l |> rename("bandInt"=x) |> #left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
+    filter(rank<=1, !(Resp=="Observed")) |> mutate(aerror = abs(error))
+
+
+pd <- post_dat_avg |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
+    filter(rank<=1,Fit_Method=="Test_Train")  |> mutate(aerror = abs(error))
+
+
+d1 <- pdl |> group_by(id,condit,bandInt) |> slice_head(n=1)
+
+d1 |> group_by(condit) |> summarize(c=median(c),lr=median(lr))
+
+
+
+
+pdl |> group_by(condit,Model) |> summarize(me=mean(error),ae=mean(aerror))
+pdls_sum <- pdl |> group_by(id, condit,Model,bandInt) |> summarize(me=mean(error),ae=mean(aerror)) |> 
+  group_by(id,condit, Model) |> summarize(me=mean(me),ae=mean(ae))
+pdls_sum_b <- pdl |> group_by(id, condit,Model,bandInt) |> summarize(me=mean(error),ae=mean(aerror))
+# id    condit   Model    me    ae
+#    <fct> <fct>    <chr> <dbl> <dbl>
+#  1 1     Varied   ALM    72.7 108. 
+#  2 1     Varied   EXAM   34.5  63.3
+#  3 2     Varied   ALM   135.  138. 
+#  4 2     Varied   EXAM   75.5  84.0
+
+# for each id and condit - add a column indicating which model had the lower error
+pdls_sum |> group_by(id,condit) |> 
+  mutate(ModelEXAM = ifelse(me[Model=="EXAM"] < me[Model=="ALM"],"EXAM","ALM")) |> 
+  group_by(condit,ModelEXAM) |> 
+  summarize(n=n(),me=mean(me),ae=mean(ae)) |> 
+  ggplot(aes(x=ModelEXAM,y=me,fill=condit)) + geom_col() + facet_wrap(~condit)
+
+
+
+pdls_sum_b |> group_by(id,condit,bandInt) |> 
+  mutate(ModelEXAM = ifelse(me[Model=="EXAM"] < me[Model=="ALM"],"EXAM","ALM")) |> 
+  group_by(condit,ModelEXAM,bandInt) |> 
+  summarize(n=n(),me=mean(me),ae=mean(ae)) |> 
+  ggplot(aes(x=ModelEXAM,y=me,fill=condit)) + geom_col() + facet_wrap(~bandInt)
+
+
+formula <- bf(aerror ~ condit + (1 + condit | id) + (1 + condit | Model))
+model <- brm(formula, data=pdl, chains=1,iter=500)
+
+formula <- bf(error ~ condit * Model + c + lr + (1 + condit * Model + c + lr | id))
+modelp <- brm(formula, data=pdl, chains=1,iter=900)
+summary(modelp)
+wrap_plots(plot(conditional_effects(modelp),points=FALSE,plot=FALSE))
+plot(emmeans(modelp, ~ c | Model), type = "response")
+plot(emmeans(modelp, ~ lr | Model), type = "response")
+
+formula <- bf(error ~ condit * Model + c + lr + (1 + condit * Model + c + lr | id))
+modelp <- brm(formula, data=pdl, chains=1,iter=900)
+
+
+formula <- bf(dist ~ condit*vb + c + lr + (1 + condit*vb| id)) 
+d1 <- pdl |> group_by(id,condit,bandInt, Model) |> slice_head(n=1)
+
+m_dist <- brm(formula=formula,chains=1,
+      data = d1 ,
+      iter=900) 
+
+summary(m_dist)
+wrap_plots(plot(conditional_effects(m_dist),points=FALSE,plot=FALSE))
+emmeans(m_dist, ~ condit+lr)
+emmeans(m_dist, ~ condit+c)
+individual_preds <- fitted(m_dist, re_formula = NULL) %>% data.frame() %>% bind_cols(d1)
+
+formula_dist <- bf(dist ~ condit * Model* c + lr + (1 + c * lr || id))
+model_dist <- brm(formula_dist,data=d1, iter=2100, chains=2) 
+summary(model_dist)
+ bayestestR::describe_posterior(model_dist)
+wrap_plots(plot(conditional_effects(model_dist),points=FALSE,plot=FALSE))
+
+
+testAvgE1 |> group_by(vb) |> 
+ggplot(aes(x=vb,y=distAvg)) + 
+  #stat_pointinterval(position=position_dodge(.5), alpha=.9) 
+  geom_col()
+
+
+
+
+model_dist_std <- d1 %>%
+  mutate(c_std = scale(c),
+         lr_std = scale(lr)) %>%
+  brm(
+    bf(dist ~ bandType * condit * c_std * lr_std + (1 + bandType * condit * c_std * lr_std | id)),
+    family = gaussian(),
+    prior = c(
+      prior(normal(0, 10), class = Intercept),
+      prior(normal(0, 10), class = b),
+      prior(cauchy(0, 5), class = sd),
+      prior(lkj(2), class = cor)
+    ),
+    iter = 4000,
+    warmup = 2000,
+    chains = 4,
+    cores = 4
+  )
+
+
+
+
+# fit brms model to determine which model is the better fit for each id and condit
+b4 <- brm(data=pdl |> filter(rank==1),aerror ~ Model + (1+Model|id), chains=1, iter=500, control=list(adapt_delta=0.92, max_treedepth=11))
+
+# visualize the strength of the evidence for each model, for each id
+coef(b4)$id[,, 'ModelEXAM']  %>% tibble::as_tibble(rownames="id") |> ggplot(aes(x=Estimate)) + geom_histogram()
+
 
 
 # mixed effects model of post_dat, predicting mean_error from Model
@@ -527,11 +652,123 @@ b2 <- brm(data=pd |> filter(rank==1),mean_error ~ Model*bandInt*condit, chains=2
 summary(b2)
 
 
-b3 <- brm(data=pd |> filter(rank==1),
-  mean_error ~ Model*id, 
-  file = paste0(here("data/model_cache/e1_brms_examEst_ModelxID.rds")),
-  chains=2, iter=500, control=list(adapt_delta=0.92, max_treedepth=11))
+
+b_id <- brm(data=pdl |> filter(rank==1),
+  aerror ~ Model + (1+Model|id), 
+  file = paste0(here("data/model_cache/e1_brms_e_rf_id1.rds")),
+  chains=1, iter=500, control=list(adapt_delta=0.92, max_treedepth=11))
+summary(b5); bayestestR::describe_posterior(b5)
+wrap_plots(plot(conditional_effects(b_id),points=FALSE,plot=FALSE))
+coef(b_id)$id[,, 'ModelEXAM']  %>% tibble::as_tibble(rownames="id") |> ggplot(aes(x=Estimate)) + geom_histogram()
+
+
+
+b_vb <- brm(data=pdl, aerror ~ Model*condit*vb + (1+vb*Model|id), chains=1, iter=900)
+wrap_plots(plot(conditional_effects(b_vb),points=FALSE,plot=FALSE))
+individual_preds <- fitted(b_vb, re_formula = NULL) %>% data.frame() %>% bind_cols(pdl)
+emmeans(b_vb, ~ condit * Model)
+plot(emmeans(b_vb, ~ condit * Model))
+b_vb %>% emmeans(specs = ~ Model * condit) %>% pairs()
+
+
+
+
+
+
+b5 <- brm(data=pdl |> filter(rank==1),
+  error ~ Model + (1+Model|condit:id), 
+  file = paste0(here("data/model_cache/e1_brms_e_rfX_id1.rds")),
+  chains=1, iter=500, control=list(adapt_delta=0.92, max_treedepth=11))
+summary(b5); bayestestR::describe_posterior(b5)
+
+
+id_ee1 <- coef(b5)$id[,, 'ModelEXAM']  %>% tibble::as_tibble(rownames="id") |> 
+  left_join(ranef(b4)$id[,, 'ModelEXAM']  %>% tibble::as_tibble(rownames="id") |> transmute(id=id,ranef=Estimate),by="id") 
+
+
+left_join(e1Sbjs,by="id")
+ranef(b4)$id[,, 'ModelEXAM']  %>% tibble::as_tibble(rownames="term")
+
+
+hypothesis(b4, "ModelALM:conditVaried < ModelEXAM:conditVaried")
+
+id_ee1 <- coef(b5)$`condit:id`[,, 'ModelEXAM']  %>% tibble::as_tibble(rownames="id")
+# id           Estimate Est.Error  Q2.5 Q97.5
+#    <chr>           <dbl>     <dbl> <dbl> <dbl>
+#  1 Constant_10     -21.0      18.2 -64.4  9.43
+#  2 Constant_101    -11.6      14.6 -34.0 21.2 
+#  3 Constant_102    -16.5      16.5 -51.7 16.3 
+
+# split id into condit (Constant or Varied) and id (number between 1-250 - occurs after the _)
+id_ee1 |> mutate(condit=word(id,1,sep="_"),id=word(id,2,sep="_")) |> 
+    left_join(e1Sbjs,by=c("id","condit")) |> 
+    ggplot(aes(x=id,y=Estimate,fill=condit)) + 
+    geom_col() + facet_wrap(~condit, scales="free_y")
+
+
+individual_preds <- fitted(b4, re_formula = NA) %>% data.frame() %>% bind_cols(pdl)
+
+#coef(b4)$id[,, 'ModelEXAM']  %>% tibble::as_tibble(rownames="term")
+# A tibble: 156 × 5
+   term  Estimate Est.Error   Q2.5   Q97.5
+   <chr>    <dbl>     <dbl>  <dbl>   <dbl>
+ 1 1        -37.7      20.9  -74.1   8.80 
+ 2 2        -46.2      21.0  -87.8   1.09 
+ 3 3        -95.5      21.1 -145.  -61.2  
+ 4 4        -42.8      20.8  -80.6  -0.263
+ 5 5        -88.3      20.0 -128.  -54.9  
+
+# ranef(b4)$id[,, 'ModelEXAM']
+#     Estimate Est.Error      Q2.5    Q97.5
+# 1    21.8534      20.8  -14.9709  65.8017
+# 2    13.3688      20.2  -24.7168  60.5872
+# 3   -35.9294      20.4  -85.8305  -1.0799
+
+
+fixef(b4)
+#    fixef(b4)
+#           Estimate Est.Error  Q2.5 Q97.5
+# Intercept    193.1      7.18 177.6   205
+# ModelEXAM    -59.5      6.83 -71.8   -45
+
+fe <- fixef(b4)[,1]
+id_ee1 |> mutate(id=reorder(id,Estimate)) |> 
+ left_join(e1Sbjs,by="id") |>
+  ggplot(aes(x=id,y=Estimate,fill=condit)) + 
+  geom_col() +  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y") + coord_flip()
+
+
+ data.frame(ranef(b4, pars = "ModelEXAM")$id[, ,'ModelEXAM']) %>% 
+  tibble::rownames_to_column("id") %>% 
+  left_join(e1Sbjs, by = "id") |> 
+  mutate(intercept = fixef(b4)[,1]["Intercept"], 
+          #cond= fe["conditVaried"]*(condit=="Varied"),
+           int= fe["ModelEXAM:conditVaried"]*(condit=="Varied" & Model=="EXAM"), 
+         slope = Estimate + adjust)
+
+
+
+ data.frame(coef(b4, pars = "ModelEXAM")$id[, ,'ModelEXAM']) %>% 
+  tibble::rownames_to_column("id") %>% 
+  left_join(e1Sbjs, by = "id") 
+
+
+
+b3 <- brm(data=pdl |> filter(rank==1),
+  aerror ~ Model*id, 
+  file = paste0(here("data/model_cache/e1_brms_ee_ModelxID.rds")),
+  chains=1, iter=500, control=list(adapt_delta=0.92, max_treedepth=11))
 summary(b3)
+
+
+
+wrap_plots(plot(conditional_effects(b5),points=FALSE,plot=FALSE))
+
+plot(conditional_effects(b5, 
+                         effects = "Model:condit", 
+                         conditions=make_conditions(b5,"bandType" )),
+     points=FALSE,plot=TRUE)
+
 
 
 b3_coef <- fixef(b3) |> as_tibble() %>% mutate(term=rownames(fixef(b3))) 
@@ -556,14 +793,17 @@ k <- k |> mutate(parType=case_when(
   TRUE ~ "id"
 ))
 
-
 k |> ggplot(aes(x=parType,y=Estimate,fill=condit)) + geom_boxplot()
-
 # plot Model coefficients for each individual
 
 k |> filter(parType=="Model") |> mutate(id=reorder(id,Estimate), Estimate=Estimate+exam_coef) |> 
   ggplot(aes(x=id,y=Estimate,fill=condit)) + 
   geom_col() +  ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y") + coord_flip()
+
+
+mcmc_plot(b3,variable=c("b_ModelExam"),regex=T)
+
+
 
 # t test for Model coefficients between conditions
 t.test(Estimate ~ condit, data=k |> filter(parType=="Model"))

@@ -29,6 +29,27 @@ pd <- post_dat_avg |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","cond
     filter(rank<=1,Fit_Method=="Test_Train")  |> mutate(aerror = abs(error))
 
 
+full_e1_id_emmeans <- readRDS("~/Library/CloudStorage/GoogleDrive-tegorman13@gmail.com/My Drive/HTW/gl/full_e1_id_emmeans.rds") |> 
+  pluck(contrast) |> as_tibble() 
+
+k=full_e1_id_emmeans |> mutate(Model = str_extract(contrast, "^\\w+"), bandInt = as.numeric(str_extract(contrast, "(?<=bandInt)\\d+"))) |> 
+  ggplot(aes(x=condit,y=estimate,fill=Model)) + stat_halfeye() + 
+  #ggh4x::facet_grid2(~bandInt,axes="all",scales="free_y", independent = "y")
+  facet_wrap(~bandInt)
+
+
+full_e1_id_emmeans |> filter(id %in% levels(e1$id)[1:10]) |> 
+  mutate(Model = str_extract(contrast, "^\\w+"), bandInt = as.numeric(str_extract(contrast, "(?<=bandInt)\\d+"))) |> 
+  ggplot(aes(x=bandInt,y=estimate,col=Model)) + stat_halfeye() + 
+  facet_wrap(~id)
+
+testAvgE1 |> filter(id %in% levels(e1$id)[1:10]) |> ggplot(aes(x=bandInt,y=vxAvg,col=condit)) + 
+  geom_point() + facet_wrap(~id)
+
+post_dat_avg |> filter(id %in% levels(e1$id)[1:10], rank==1,Fit_Method=="Test_Train") |>
+  ggplot(aes(x=x,y=pred,col=Model)) + 
+  geom_point() + facet_wrap(~id)  + geom_point(aes(x=x,y=y),col="black",alpha=.2)
+
 
 e1_ee_brm_ae <- brm(data=pdl,
                     aerror ~  Model * condit *dist+ (1+bandInt|id), 
@@ -37,6 +58,31 @@ e1_ee_brm_ae <- brm(data=pdl,
 
 bayestestR::describe_posterior(e1_ee_brm_ae)
 wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))
+
+
+e1_ee_brm_ae_vb <- brm(data=pdl,
+                    aerror ~ Model * condit *vb + (1+vb+model|id), 
+                    file = paste0(here("data/model_cache/e1_ee_brm_ae_vb2.rds")),
+                    chains=2,silent=1, iter=1000, control=list(adapt_delta=0.92, max_treedepth=11))
+
+bayestestR::describe_posterior(e1_ee_brm_ae_vb)
+wrap_plots(plot(conditional_effects(e1_ee_brm_ae_vb),points=FALSE,plot=FALSE))
+
+
+con8vb <- e1_ee_brm_ae_vb |>   emmeans(pairwise ~ Model | vb, by = "id",at=list(vb=levels(pdl$vb)[1:3]), re_formula = NULL)
+
+
+# condit   id    contrast   estimate lower.HPD upper.HPD     n
+# <chr>    <chr> <chr>         <dbl>     <dbl>     <dbl> <int>
+#   1 Constant 3     ALM - EXAM    134.       85.0     188.     58
+
+con8vb$contrasts |>  as_tibble() |>  left_join(e1Sbjs, by=c("id","condit")) |> 
+  mutate(id=reorder(id,estimate)) |> 
+  ggplot(aes(x=estimate,y=id)) + stat_halfeye() + 
+  geom_vline(xintercept=0,linetype="dashed") + facet_wrap(~vb)
+
+
+
 
 
 
