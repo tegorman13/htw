@@ -1071,6 +1071,38 @@ p1/p2
   ggh4x::facet_nested_wrap(~vbLab, axes = "all",ncol=2,scale="free")
 
 
+
+
+ post_dat_l |> filter(Fit_Method=="Test_Train") |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvgE1$vb))) |>
+  ggplot(aes(x=vbLab,y=dist,fill=Resp)) + 
+  stat_bar + 
+  #facet_wrap(~Resp)
+  ggh4x::facet_nested_wrap(~condit, axes = "all",ncol=2,scale="free")
+
+
+ post_dat_l |> filter(Fit_Method=="Test_Train") |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvgE1$vb))) |>
+  ggplot(aes(x=bandType,y=dist,fill=Resp)) + 
+  stat_bar + 
+  #facet_wrap(~Resp)
+  ggh4x::facet_nested_wrap(~condit, axes = "all",ncol=2,scale="free")
+
+ post_dat_l |> filter(Fit_Method=="Test_Train") |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvgE1$vb))) |>
+  ggplot(aes(x=Resp,y=dist,fill=bandType)) + 
+  stat_bar + 
+  #facet_wrap(~Resp)
+  ggh4x::facet_nested_wrap(~condit, axes = "all",ncol=2,scale="free")
+
+
+ post_dat_l |> filter(Fit_Method=="Test_Train") |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200),levels=levels(testAvgE1$vb))) |>
+  ggplot(aes(x=bandType,y=dist,fill=condit)) + 
+  stat_bar + 
+  #facet_wrap(~Resp)
+  ggh4x::facet_nested_wrap(~Resp, axes = "all",ncol=3,scale="free")
+
 ```
 
 
