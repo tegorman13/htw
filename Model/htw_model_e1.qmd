@@ -323,6 +323,64 @@ post_tabs$agg_pred_full |>
 ```
 
 
+
+## Model predictions of deviation
+
+
+
+```{r}
+#| label: fig-cm-dev-pat
+#| fig-cap: "Empirical data and Model predictions for absolute deviation from target (accuracy). Observed data is shown on top, and predictions from each combination of model and fitting method are shown below. "
+#| fig-height: 11
+#| fig-width: 11
+#| eval: false
+
+
+pemp1 <- e1 |> filter(expMode2=="Test") |> 
+  group_by(id,condit,vb,bandType) |> 
+  ggplot(aes(x=condit,y=dist, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+  stat_summary(fun=mean, geom="bar", position=position_dodge()) + 
+  stat_summary(fun.data=mean_se, geom="errorbar", color="black", position=position_dodge(), size=.5) + 
+  scale_color_manual(values = c("black" = "black"), guide = FALSE) +
+  scale_size_manual(values = c("black" = .5), guide = FALSE) + 
+  scale_y_continuous( breaks=seq(0,600,by=200),labels=as.character(seq(0,600,by=200))) +
+  expand_limits(y=600) +
+  theme(legend.position="right", axis.title.x = element_blank(),plot.title = element_text(hjust=.40)) +
+  labs(title="Empirical Data", y="Deviation from target band", fill="Band") 
+
+# layout <- "#A#
+# #B#
+# CCC"
+
+layout <- "#A#
+CCC"
+
+pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |> 
+  #left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
+  group_by(id,condit, Fit_Method,Resp,vb,bandType) |> 
+ summarize(dist=median(dist)) |> 
+ ggplot( aes(x=condit,y=dist, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+  stat_bar + 
+    facet_wrap(~Resp+rename_fm(Fit_Method), strip.position = "top", scales = "free_x") +
+        scale_color_manual(values = c("black" = "black"), guide = FALSE) +
+  scale_size_manual(values = c("black" = .5), guide = FALSE) +
+    theme(panel.spacing = unit(0, "lines"), 
+         strip.background = element_blank(),
+         strip.placement = "outside",
+         legend.position = "none",
+         plot.title = element_text(hjust=.50),
+         plot.margin = unit(c(20,0,0,0), "pt"),
+         axis.title.x = element_blank()) + 
+         labs(title="Model Predictions - Experiment 1 Data", y="Deviation from target band")
+
+(pemp1 / pmod1) + plot_layout(design = layout) #heights = unit(c(5,-5, 8), c('cm','null'))
+
+```
+
+
+
+
+
 ```{r}
 #| eval: false
 

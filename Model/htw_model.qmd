@@ -272,21 +272,35 @@ The posterior distributions of the $c$ and $lr$ parameters are shown @fig-htw-po
 We used the posterior distribution of $c$ and $lr$ parameters to generate a posterior predictive distribution of the observed data for each participant, which then allows us to compare the empirical data to the full range of predictions from each model. Aggregated residuals are displayed in @fig-htw-resid-pred. The pattern of training stage residual errors are unsurprising across the combinations of models and fitting method . Differences in training performance between ALM and EXAM  are generally minor (the two models have identical learning mechanisms). The differences in the magnitude of residuals across the three fitting methods are also straightforward, with massive errors for the 'fit to Test Only' model, and the smallest errors for the 'fit to train only' models. It is also noteworthy that the residual errors are generally larger for the first block of training, which is likely due to the initial values of the ALM weights being unconstrained by whatever initial biases participants tend to bring to the task. Future work may explore the ability of the models to capture more fine grained aspects of the learning trajectories. However for the present purposes, our primary interest is in the ability of ALM and EXAM to account for the testing patterns while being constrained, or not constrained, by the training data. All subsequent analyses and discussion will thus focus on the testing stage.
 
 
-The residuals of the model predictions for the testing stage (@fig-htw-resid-pred) also show an unsurprising pattern across fitting methods - with models fit only to the test data showing the best performance, followed by models fit to both training and test data, and with models fit only to the training data showing the worst performance (note that y axes are scaled different between plots). Unsurprisingly, the advantage of EXAM is strongest for extrapolation positions (the three smallest bands for both groups - as well as the two highest bands for the Constant group). Although EXAM tends to perform better for both Constant and Varied participants (see also @fig-ee-e1), the relative advantage of EXAM is generally larger for the Constant group - a pattern consistent across all three fitting methods.
-
-@fig-cm-vx-pat directly compares the aggregated observed data to the posterior predictive distributions for the testing stage. Of interest are a) the extent to which the median estimates of the ALM and EXAM posteriors deviate from the observed medians for each velocity band; b) the ability of ALM and EXAM to discriminate between velocity bands; c) the relative performance of models that are constrained by the training data (i.e. the 'fit to train only' and 'fit to both' models) compared to the 'fit to test only' models; 
-
-Considering first the models fit to only the testing data, which reflect the best possible performance of ALM and EXAM at capturing the group-aggregated testing patterns. For the varied group, both ALM and EXAM are able to capture the median values of the observed data within the 66% credible intervals, and the spread of model predictions generally matches that of the observed data. For the constant group, only EXAM is able to capture the median range of values across the velocity bands, with ALM generally underestimating human velocoties in the upper bands, and overestimating in the lower bands. In the case of band 100, the median ALM prediction appears to match that of our participants - however this is due to a large subset of participants have ALM predictions near 0 for band 100, a pattern we will explore further in our considertation of individual patterns below. Models fit to both training and testing data show a similar pattern to only the testing data display the same basic pattern as those fit to only the testing data, albeit with slightly larger residuals. However models fit to only the training data display markedly worse performance at accounting for the key testing patterns. 
-
--   \*\* explain how the constant group ALM predictions for band 100 look deceptively good due to aggregation of a large subset of subjects having ALM predictions of 0 for vb100, and a large subset with ALM predictions close to their position 800 value. This is relected by much greater variance of the ALM esimates in the posterior predictive plot
-
--   \*\* comment on how much constrained by the training data has a worse impact on the EXAM predictions for varied than for constant - perhaps due to the varied training data being much noisier than the constant training data.
-
--   \*\* comment on EXAM doing a better job mimicing the within-condition variance of the observed data
-
--   \*\* comment on the % of Constant subjects being best accounted for by EXAM being higher.
+The residuals of the model predictions for the testing stage (@fig-htw-resid-pred) also show an unsurprising pattern across fitting methods - with models fit only to the test data showing the best performance, followed by models fit to both training and test data, and with models fit only to the training data showing the worst performance (note that y axes are scaled different between plots). Although EXAM tends to perform better for both Constant and Varied participants (see also @fig-ee-e1), the relative advantage of EXAM is generally larger for the Constant group - a pattern consistent across all three fitting methods. The primary predictive difference between ALM and EXAM is made clear in @fig-cm-vx-pat, which directly compares the observed data against the posterior predictive distributions for both models. Regardless of how the models are fit, only EXAM can capture the pattern where participants are able to discriminate all 6 target bands. 
 
 -   \*\* does EXAM do better for the Constant group because the constant group performs better? Or does training with a single example encourage an exam sort of strategy?
+
+```{r}
+#| label: fig-cm-vx-pat
+#| fig-cap: "Empirical data and Model predictions for mean velocity across target bands. Fitting methods (Test Only, Test & Train, Train Only) - are separated across rows, and Training Condition (Constant vs. Varied) are separated by columns. Each facet contains the predictions of ALM and EXAM, alongside the observed data."
+#| fig-height: 10
+#| fig-width: 10
+
+
+post_dat_l |> 
+  group_by(id,condit, Fit_Method,Resp,bandType,x,vb) |> 
+ summarize(vx=median(val)) |> 
+ #left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
+ ggplot( aes(x=Resp,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+  stat_bar + 
+    facet_wrap(~rename_fm(Fit_Method)+condit, ncol=2,strip.position = "top", scales = "free_x") +
+        scale_color_manual(values = c("black" = "black"), guide = "none") +
+  scale_size_manual(values = c("black" = .5), guide = "none") +
+    theme(panel.spacing = unit(0, "lines"), 
+         strip.background = element_blank(),
+         strip.placement = "outside",
+         legend.position = "none",plot.title = element_text(hjust=.50),
+         axis.title.x = element_blank(),
+         plot.margin = unit(c(10,0,0,0), "pt")) + 
+         labs(title="Model Predictions - Experiment 1 Data", y="Vx")
+```
+
 
 
 
@@ -381,157 +395,17 @@ p_em_1<- e1_ee_brm_ae |> emmeans(pairwise~ Model*condit, re_formula=NA)  |>
 p_ce_1 / p_em_1
 
 
-
-# {btw_con |> ggplot(aes(x=value,y=Model,fill=Model)) +stat_halfeye()} +
-# {btw_model |> ggplot(aes(x=value,y=contrast,fill=condit)) +stat_halfeye()}
-
-
-# emm_models_bandint_specific <- e1_ee_brm_ae |>
-#   emmeans(~ Model | condit, at = list(bandInt = c(100,350,600,800,1000,1200)),
-#           re_formula = NA)
-# 
-# 
-# emm_models_bandint_by_levels <- e1_ee_brm_ae |>
-#   emmeans(~ Model | condit | bandInt, 
-#           at = list(bandInt = c(100,350,600,800,1000,1200)),
-#           re_formula = NULL, by = "bandInt")
-
-# within_condition_bandint_by_levels_contrasts <- emm_models_bandint_by_levels |>
-#   pairs()
-# 
-# emm_models_bandint_by_levels |> as_tibble() 
-
-# emm_models_bandint_by_levels |> pairs() |> gather_emmeans_draws() |> 
-#   as_tibble() |> group_by(bandInt,condit) |> tidybayes::median_hdi(.value) |>
-#   ggplot(aes(x=.value,y=condit,fill=condit)) + stat_halfeye() +facet_wrap(~bandInt,ncol=1)
-
-  
-#print(summary_EXAM)
-
-# alternative emmeans approach to assess constant vs. varied difference in EXAM
-#emmeans(e1_ee_brm_ae, specs = "condit", by = "Model") |> summary()
-# is the difference significant for EXAM in particular
-
-
-# and errors for the Varied condition than the Constant condition ($\beta$ = `r bm2$estimate`, 95% CrI \[`r bm2$conf.low`, `r bm2$conf.high`\], pd = `r bm2$pd`).
-
 ```
 
-To quantitatively assess whether the differences in performance betwen ALM,  we fit a bayesian regressions predicting the errors of the posterior predictions of each models as a function of the Model (ALM vs. EXAM) and training condition (Constant vs. Varied).
+To quantitatively assess whether the differences in performance between models,  we fit a bayesian regressions predicting the errors of the posterior predictions of each models as a function of the Model (ALM vs. EXAM) and training condition (Constant vs. Varied).
 
- Model errors were significantly lower for EXAM  ($\beta$ = `r bm1$estimate`, 95% CrI \[`r bm1$conf.low`, `r bm1$conf.high`\], pd = `r bm1$pd`)  than ALM.  There was also a significant interaction between Model and Condition ($\beta$ = `r bm3$estimate`, 95% CrI \[`r bm3$conf.low`, `r bm3$conf.high`\], pd = `r bm3$pd`), indicating that the advantage of EXAM over ALM was significantly greater for the constant group. To assess whether EXAM predicts constant performance significantly better for Constant than for Varied subjects, we calculated the difference in model error between the Constant and Varied conditions specifically for EXAM. The results indicated that the model error for EXAM was significantly lower in the Constant condition compared to the Varied condition, with a mean difference of `r summary_EXAM$Mean` (95% CrI \[`r summary_EXAM$CI_low`, `r summary_EXAM$CI_high`\], pd = `r summary_EXAM$pd`). 
-
-
+Model errors were significantly lower for EXAM  ($\beta$ = `r bm1$estimate`, 95% CrI \[`r bm1$conf.low`, `r bm1$conf.high`\], pd = `r bm1$pd`)  than ALM.  There was also a significant interaction between Model and Condition ($\beta$ = `r bm3$estimate`, 95% CrI \[`r bm3$conf.low`, `r bm3$conf.high`\], pd = `r bm3$pd`), indicating that the advantage of EXAM over ALM was significantly greater for the constant group. To assess whether EXAM predicts constant performance significantly better for Constant than for Varied subjects, we calculated the difference in model error between the Constant and Varied conditions specifically for EXAM. The results indicated that the model error for EXAM was significantly lower in the Constant condition compared to the Varied condition, with a mean difference of `r summary_EXAM$Mean` (95% CrI \[`r summary_EXAM$CI_low`, `r summary_EXAM$CI_high`\], pd = `r summary_EXAM$pd`). 
 
 
 ```{r}
-#| label: fig-cm-vx-pat
-#| fig-cap: "Empirical data and Model predictions for mean velocity. Observed data is shown on top, and predictions from each combination of model and fitting method are shown below. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands. "
-#| fig-height: 10
-#| fig-width: 10
+#| label: tbl-htw-modelError-e23
+#| tbl-cap: "Models errors predicting empirical data -  aggregated over all participants, posterior parameter values,  and velocity bands. Note that Fit Method refers to the subset of the data that the model was trained on, while Task Stage refers to the subset of the data that the model was evaluated on."
 
-#post_dat_l |> group_by(id,condit,x) |> filter(Resp=="Observed") |> slice_head(n=1)
-
-pemp1 <- e1 |> filter(expMode2=="Test") |> mutate(Resp="Observed") |> 
-  ggplot(aes(x=condit,y=vx, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
-  stat_bar+ 
-  scale_color_manual(values = c("black" = "black"), guide = FALSE) +
-  scale_size_manual(values = c("black" = .5), guide = FALSE) + 
-  theme(legend.position="right", 
-  axis.title.x = element_blank(), 
-  plot.margin = unit(c(0,0,0,0), "pt"),
-  plot.title = element_text(hjust=.50)) +
-  labs(title="Empirical Data - Experiment 1",y="vx", x="Condition",fill="Band") 
-
-layout <- "
-#A#
-CCC
-"
-
-pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |> 
-  group_by(id,condit, Fit_Method,Resp,bandType,x,vb) |> 
- summarize(vx=median(val)) |> 
- #left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
- ggplot( aes(x=condit,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
-  stat_bar + 
-    facet_wrap(~Resp+rename_fm(Fit_Method), strip.position = "top", scales = "free_x") +
-        scale_color_manual(values = c("black" = "black"), guide = "none") +
-  scale_size_manual(values = c("black" = .5), guide = "none") +
-    theme(panel.spacing = unit(0, "lines"), 
-         strip.background = element_blank(),
-         strip.placement = "outside",
-         legend.position = "none",plot.title = element_text(hjust=.50),
-         axis.title.x = element_blank(),
-         plot.margin = unit(c(10,0,0,0), "pt")) + 
-         labs(title="Model Predictions - Experiment 1 Data", y="vx")
-
-# (pemp1  / pmod1 ) + 
-#   plot_layout(design = layout, heights = unit(c(6,6),c('cm','cm'))) #heights = unit(c(5,-5, 8), c('cm','null'))
-
-
-pemp1/pmod1 + 
-  plot_layout(design = layout, 
-  heights = c(3,6),
-  widths = c(5,5))
-
-```
-
-
-
-```{r}
-#| label: fig-cm-dev-pat
-#| fig-cap: "Empirical data and Model predictions for absolute deviation from target (accuracy). Observed data is shown on top, and predictions from each combination of model and fitting method are shown below. "
-#| fig-height: 11
-#| fig-width: 11
-#| eval: false
-
-
-pemp1 <- e1 |> filter(expMode2=="Test") |> 
-  group_by(id,condit,vb,bandType) |> 
-  ggplot(aes(x=condit,y=dist, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
-  stat_summary(fun=mean, geom="bar", position=position_dodge()) + 
-  stat_summary(fun.data=mean_se, geom="errorbar", color="black", position=position_dodge(), size=.5) + 
-  scale_color_manual(values = c("black" = "black"), guide = FALSE) +
-  scale_size_manual(values = c("black" = .5), guide = FALSE) + 
-  scale_y_continuous( breaks=seq(0,600,by=200),labels=as.character(seq(0,600,by=200))) +
-  expand_limits(y=600) +
-  theme(legend.position="right", axis.title.x = element_blank(),plot.title = element_text(hjust=.40)) +
-  labs(title="Empirical Data", y="Deviation from target band", fill="Band") 
-
-# layout <- "#A#
-# #B#
-# CCC"
-
-layout <- "#A#
-CCC"
-
-pmod1 <- post_dat_l |> filter(!(Resp=="Observed")) |> 
-  #left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
-  group_by(id,condit, Fit_Method,Resp,vb,bandType) |> 
- summarize(dist=median(dist)) |> 
- ggplot( aes(x=condit,y=dist, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
-  stat_bar + 
-    facet_wrap(~Resp+rename_fm(Fit_Method), strip.position = "top", scales = "free_x") +
-        scale_color_manual(values = c("black" = "black"), guide = FALSE) +
-  scale_size_manual(values = c("black" = .5), guide = FALSE) +
-    theme(panel.spacing = unit(0, "lines"), 
-         strip.background = element_blank(),
-         strip.placement = "outside",
-         legend.position = "none",
-         plot.title = element_text(hjust=.50),
-         plot.margin = unit(c(20,0,0,0), "pt"),
-         axis.title.x = element_blank()) + 
-         labs(title="Model Predictions - Experiment 1 Data", y="Deviation from target band")
-
-(pemp1 / pmod1) + plot_layout(design = layout) #heights = unit(c(5,-5, 8), c('cm','null'))
-
-```
-
-
-
-```{r}
-#| label: tbl-htw-modelError-e123
-#| tbl-cap: "Results of Bayesian Regression models predictin model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and the interaction between Model and Condition. The values represent the estimate coefficient for each term, with 95% credible intervals in brackets.  The intercept reflects the baseline of ALM and Constant. The other estimates indicate deviations from the baseline for the EXAM mode and varied condition. Lower values indicate better model fit."
 
 e2_model <- load_e2()
 post_tabs2 <- abc_tables(e2_model$post_dat,e2_model$post_dat_l)
@@ -539,36 +413,18 @@ train_tab2 <- abc_train_tables(e2_model$pd_train,e2_model$pd_train_l)
 
 pdl2 <- e2_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
 
-e2_tab <- rbind(post_tabs2$agg_pred_full |> mutate("Task Stage"="Test"), train_tab2$agg_pred_full |> mutate("Task Stage"="Train")) |> 
+e2_tab <- rbind(post_tabs2$agg_pred_full |>
+ mutate("Task Stage"="Test"), train_tab2$agg_pred_full |> 
+ mutate("Task Stage"="Train")) |> 
   mutate(Fit_Method=rename_fm(Fit_Method)) 
   # |>
   # flextable::tabulator(rows=c("Task Stage","Fit_Method","Model"), columns=c("condit"),
   #                      `ME` = as_paragraph(mean_error)) |> as_flextable()
-
-
-e2_ee_brm_ae <- brm(data=pdl2,
-  aerror ~  Model * condit + (1+bandInt|id), 
-  file = paste0(here("data/model_cache/e2_ae_modelCond_RFint.rds")),
-  chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
-
-bm1 <- get_coef_details(e2_ee_brm_ae, "conditVaried")
-bm2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM")
-bm3 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM:conditVaried")
-# bct_e2 <- as.data.frame(bayestestR::describe_posterior(e2_ee_brm_ae, centrality = "Mean")) %>%
-#   select(1,2,4,5,6) %>%
-#   setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
-#   mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
-#   tibble::remove_rownames() %>%
-#   mutate(Term = stringr::str_remove(Term, "b_")) %>%
-#   kable(booktabs = TRUE)
-
 e3_model <- load_e3()
 post_tabs3 <- abc_tables(e3_model$post_dat,e3_model$post_dat_l)
 train_tab3 <- abc_train_tables(e3_model$pd_train,e3_model$pd_train_l)
 
-
 pdl3 <- e3_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
-
 
 e3_tab <- rbind(post_tabs3$agg_pred_full |> 
   mutate("Task Stage"="Test"), train_tab3$agg_pred_full |> mutate("Task Stage"="Train")) |> 
@@ -578,49 +434,8 @@ e3_tab <- rbind(post_tabs3$agg_pred_full |>
   #                      `ME` = as_paragraph(mean_error)) |> as_flextable()
 
 
-# e3_ee_brm_ae <- brm(data=pdl3,
-#   aerror ~  Model * condit+ (1+bandInt|id) + (1+condit|bandOrder), 
-#   file = paste0(here("data/model_cache/e3_ae_modelCondBo_RFint.rds")),
-#   chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
-
-e3_ee_brm_ae <- brm(data=pdl3,
-  aerror ~  Model * condit*bandOrder + (1+bandInt|id), 
-  file = paste0(here("data/model_cache/e3_ae_modelCondBo_RFint2.rds")),
-  chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
-
-bm1 <- get_coef_details(e3_ee_brm_ae, "conditVaried")
-bm2 <- get_coef_details(e3_ee_brm_ae, "ModelEXAM")
-bm3 <- get_coef_details(e3_ee_brm_ae, "ModelEXAM:conditVaried")
-
-# bct_e3  <- as.data.frame(bayestestR::describe_posterior(e3_ee_brm_ae, centrality = "Mean")) %>%
-#   select(1,2,4,5,6) %>%
-#   setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
-#   mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
-#   tibble::remove_rownames() %>%
-#   mutate(Term = stringr::str_remove(Term, "b_")) %>%
-#   kable(booktabs = TRUE)
 
 
-msa <- modelsummary::modelsummary(list("Exp 1."=e1_ee_brm_ae,"Exp 2."=e2_ee_brm_ae,"Exp 3. "=e3_ee_brm_ae), 
-    gof_map = NA,
-    fmt=1,
-    estimate = "{estimate}",
-    statistic="[{conf.low}, {conf.high}]", 
-    coef_omit = "^sigma|^sd|^cor",
-    coef_rename=function(x) stringr::str_remove(x, "b_"), output="gt")
-
-msa
-
-#library(modelsummary)
-# modelsummary::modelsummary(get_estimates(e1_ee_brm_ae, test = c("pd")),gof_map = NA)
-#modelsummary::get_estimates(e1_ee_brm_ae,test="pd")
-```
-
-
-
-```{r}
-#| label: tbl-htw-modelError-e23
-#| tbl-cap: "Models errors predicting empirical data -  aggregated over all participants, posterior parameter values,  and velocity bands. Note that Fit Method refers to the subset of the data that the model was trained on, while Task Stage refers to the subset of the data that the model was evaluated on."
 
 e23_tab <- rbind(e2_tab |> mutate(Exp="E2"), e3_tab |> mutate(Exp="E3")) 
 gt_table <- e23_tab %>%
@@ -659,6 +474,68 @@ gt_table <- e23_tab %>%
   # )
 gt_table
 ```
+
+
+
+
+```{r}
+#| label: tbl-htw-ee-e23
+#| tbl-cap: "Results of Bayesian Regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and the interaction between Model and Condition. The values represent the estimate coefficient for each term, with 95% credible intervals in brackets.  The intercept reflects the baseline of ALM and Constant. The other estimates indicate deviations from the baseline for the EXAM mode and varied condition. Lower values indicate better model fit."
+
+
+
+e2_ee_brm_ae <- brm(data=pdl2,
+  aerror ~  Model * condit + (1+bandInt|id), 
+  file = paste0(here("data/model_cache/e2_ae_modelCond_RFint.rds")),
+  chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
+
+bm1_e2 <- get_coef_details(e2_ee_brm_ae, "conditVaried")
+bm2_e2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM")
+bm3_e2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM:conditVaried")
+# bct_e2 <- as.data.frame(bayestestR::describe_posterior(e2_ee_brm_ae, centrality = "Mean")) %>%
+#   select(1,2,4,5,6) %>%
+#   setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
+#   mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
+#   tibble::remove_rownames() %>%
+#   mutate(Term = stringr::str_remove(Term, "b_")) %>%
+#   kable(booktabs = TRUE)
+
+
+
+e3_ee_brm_ae <- brm(data=pdl3,
+  aerror ~  Model * condit*bandOrder + (1+bandInt|id), 
+  file = paste0(here("data/model_cache/e3_ae_modelCondBo_RFint2.rds")),
+  chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
+
+bm1_e3 <- get_coef_details(e3_ee_brm_ae, "conditVaried")
+bm2_e3  <- get_coef_details(e3_ee_brm_ae, "ModelEXAM")
+bm3_e3  <- get_coef_details(e3_ee_brm_ae, "ModelEXAM:conditVaried")
+
+# bct_e3  <- as.data.frame(bayestestR::describe_posterior(e3_ee_brm_ae, centrality = "Mean")) %>%
+#   select(1,2,4,5,6) %>%
+#   setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
+#   mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
+#   tibble::remove_rownames() %>%
+#   mutate(Term = stringr::str_remove(Term, "b_")) %>%
+#   kable(booktabs = TRUE)
+
+msa <- modelsummary::modelsummary(list("Exp 1."=e1_ee_brm_ae,"Exp 2."=e2_ee_brm_ae,"Exp 3. "=e3_ee_brm_ae), 
+    gof_map = NA,
+    fmt=1,
+    estimate = "{estimate}",
+    statistic="[{conf.low}, {conf.high}]", 
+    coef_omit = "^sigma|^sd|^cor",
+    coef_rename=function(x) stringr::str_remove(x, "b_"), output="gt")
+
+msa
+
+#library(modelsummary)
+# modelsummary::modelsummary(get_estimates(e1_ee_brm_ae, test = c("pd")),gof_map = NA)
+#modelsummary::get_estimates(e1_ee_brm_ae,test="pd")
+```
+
+
+
 
 
 ```{r}
@@ -738,6 +615,64 @@ rbind(e2_model$post_dat_l |> filter( Fit_Method=="Test_Train") |>
 
 
 
+
+```{r}
+#| label: fig-htw-best-model
+#| fig-cap: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM. 
+#| fig-height: 12
+#| fig-width: 11
+
+tid1 <- post_dat  |> mutate(Exp="E1",bandOrder="Original") |> select(-pred_dist, -dist) |>
+  rbind(e2_model$post_dat |> mutate(Exp="E2",bandOrder="Reverse")) |>
+  rbind(e3_model$post_dat |> mutate(Exp="E3")) |>
+  filter(Fit_Method=="Test_Train") |>
+  group_by(id,condit,Model,Fit_Method,x, Exp) |> 
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y1=median(y), pred1=median(pred),mean_error=abs(y1-pred1)) |>
+    group_by(id,condit,Model,Fit_Method,Exp) |> 
+    summarise(mean_error=mean(mean_error)) |> 
+    arrange(id,condit,Fit_Method) |>
+    round_tibble(1) 
+
+best_id <- tid1 |> 
+  group_by(id,condit,Fit_Method) |> 
+  mutate(best=ifelse(mean_error==min(mean_error),1,0)) 
+
+lowest_error_model <- best_id %>%
+  group_by(id, condit,Fit_Method, Exp) %>%
+  summarise(Best_Model = Model[which.min(mean_error)],
+            Lowest_error = min(mean_error),
+            differential = min(mean_error) - max(mean_error)) %>%
+  ungroup()
+
+
+error_difference<- best_id %>%
+  select(id, condit, Model,Fit_Method, mean_error) %>%
+  pivot_wider(names_from = Model, values_from = c(mean_error)) %>%
+  mutate(Error_difference = (ALM - EXAM))
+
+full_comparison <- lowest_error_model |> 
+  left_join(error_difference, by=c("id","condit","Fit_Method"))  |> 
+  group_by(condit,Fit_Method,Best_Model) |> 
+  mutate(nGrp=n(), model_rank = nGrp - rank(Error_difference) ) |> 
+  arrange(Fit_Method,-Error_difference)
+
+full_comparison |> 
+  filter(Fit_Method=="Test_Train") |> 
+  ungroup() |>
+  mutate(id = reorder(id, Error_difference)) %>%
+  ggplot(aes(y=id,x=Error_difference,fill=Best_Model))+
+  geom_col() +
+  #ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+
+  ggh4x::facet_nested_wrap(~condit+Exp,scales="free") + 
+  labs(fill="Best Model",
+  x="Mean Model Error Difference (ALM - EXAM)",
+  y="Participant")
+
+```
+
+
+
 ### Accounting for individual patterns
 
 To more accurately assess the relative abilities of ALM and EXAM to capture important empirical patterns - we will now examine the predictions of both models for the subset of individual participants shown in @fig-htw-indv-pred. Panel A presents three varied and constant participants who demonstrated a reasonable degree of discrimination between the 6 velocity bands during testing.
@@ -784,3 +719,5 @@ testIndv <- post_dat_l |> filter(id %in% c(cId_tt,vId_tt,cId_new), Fit_Method=="
 testIndv 
 
 ```
+
+
