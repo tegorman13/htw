@@ -6,18 +6,19 @@ page-layout: full
 categories: [Modeling, ALM, EXAM, R]
 lightbox: true
 toc: false
+cache: false
 format-links: false
 code-fold: true
 code-tools: true
 execute: 
   warning: false
   eval: true
-# format:
-#   html: default
-#   hugo-md:
-#     echo: false
-#     html-math-method: mathjax
-#     output-file: e1-hugo.md
+format:
+  html: default
+  hugo-md:
+    echo: false
+    html-math-method: mathjax
+    output-file: e1-hugo.md
   # gfm:
   #   echo: true
   #   output-file: e1-gfm.md
@@ -26,6 +27,7 @@ prefer-html: true
 
 
 ```{r}
+#| cache: false
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
                stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools,ggdist,ggh4x,brms,tidybayes,bayestestR, gt)
 #conflict_prefer_all("dplyr", quiet = TRUE)
@@ -38,7 +40,7 @@ walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model", "prep_model_dat
 
 
 ```{r}
-#| cache: false
+#| cache: true
 
 invisible(list2env(load_sbj_data(), envir = .GlobalEnv))
 invisible(list2env(load_e1(), envir = .GlobalEnv))
@@ -49,7 +51,7 @@ e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
 
 # Modeling Approach
 
-In project 1, I applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for the difference between varied and constant training via an extended version of a similarity based generalization model. In project 2, I will go a step further, implementing a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning [@deloshExtrapolationSineQua1997]. ALM is a simple connectionist learning model which closely resembles Kruschke's ALCOVE model [@kruschkeALCOVEExemplarbasedConnectionist1992], with modifications to allow for the generation of continuous responses.
+The modeling goal is to implement a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning [@deloshExtrapolationSineQua1997]. ALM is a simple connectionist learning model which closely resembles Kruschke's ALCOVE model [@kruschkeALCOVEExemplarbasedConnectionist1992], with modifications to allow for the generation of continuous responses.
 
 ## ALM & Exam Description
 
@@ -82,6 +84,7 @@ To fit ALM and EXAM to our participant data, we employ a similar method to @mcda
 
 
 ::: {.callout}
+
 **{{< fa regular lightbulb >}} Approximate Bayesian Computation**
 
 
@@ -327,8 +330,7 @@ bct_e1 <- as.data.frame(bayestestR::describe_posterior(e1_ee_brm_ae, centrality 
   setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
   mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
   tibble::remove_rownames() %>%
-  mutate(Term = stringr::str_remove(Term, "b_")) %>%
-  kable(booktabs = TRUE)
+  mutate(Term = stringr::str_remove(Term, "b_")) #%>% kable(booktabs = TRUE)
 
 #wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))
 
@@ -482,8 +484,6 @@ gt_table
 #| label: tbl-htw-ee-e23
 #| tbl-cap: "Results of Bayesian Regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and the interaction between Model and Condition. The values represent the estimate coefficient for each term, with 95% credible intervals in brackets.  The intercept reflects the baseline of ALM and Constant. The other estimates indicate deviations from the baseline for the EXAM mode and varied condition. Lower values indicate better model fit."
 
-
-
 e2_ee_brm_ae <- brm(data=pdl2,
   aerror ~  Model * condit + (1+bandInt|id), 
   file = paste0(here("data/model_cache/e2_ae_modelCond_RFint.rds")),
@@ -492,15 +492,12 @@ e2_ee_brm_ae <- brm(data=pdl2,
 bm1_e2 <- get_coef_details(e2_ee_brm_ae, "conditVaried")
 bm2_e2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM")
 bm3_e2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM:conditVaried")
-# bct_e2 <- as.data.frame(bayestestR::describe_posterior(e2_ee_brm_ae, centrality = "Mean")) %>%
-#   select(1,2,4,5,6) %>%
-#   setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
-#   mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
-#   tibble::remove_rownames() %>%
-#   mutate(Term = stringr::str_remove(Term, "b_")) %>%
-#   kable(booktabs = TRUE)
-
-
+bct_e2 <- as.data.frame(bayestestR::describe_posterior(e2_ee_brm_ae, centrality = "Mean")) %>%
+  select(1,2,4,5,6) %>%
+  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
+  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
+  tibble::remove_rownames() %>%
+  mutate(Term = stringr::str_remove(Term, "b_")) # %>% kable(booktabs = TRUE)
 
 e3_ee_brm_ae <- brm(data=pdl3,
   aerror ~  Model * condit*bandOrder + (1+bandInt|id), 
@@ -511,29 +508,111 @@ bm1_e3 <- get_coef_details(e3_ee_brm_ae, "conditVaried")
 bm2_e3  <- get_coef_details(e3_ee_brm_ae, "ModelEXAM")
 bm3_e3  <- get_coef_details(e3_ee_brm_ae, "ModelEXAM:conditVaried")
 
-# bct_e3  <- as.data.frame(bayestestR::describe_posterior(e3_ee_brm_ae, centrality = "Mean")) %>%
-#   select(1,2,4,5,6) %>%
-#   setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
-#   mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
-#   tibble::remove_rownames() %>%
-#   mutate(Term = stringr::str_remove(Term, "b_")) %>%
-#   kable(booktabs = TRUE)
+bct_e3  <- as.data.frame(bayestestR::describe_posterior(e3_ee_brm_ae, centrality = "Mean")) %>%
+  select(1,2,4,5,6) %>%
+  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
+  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
+  tibble::remove_rownames() %>%
+  mutate(Term = stringr::str_remove(Term, "b_")) #%>% kable(booktabs = TRUE)
 
-msa <- modelsummary::modelsummary(list("Exp 1."=e1_ee_brm_ae,"Exp 2."=e2_ee_brm_ae,"Exp 3. "=e3_ee_brm_ae), 
-    gof_map = NA,
-    fmt=1,
-    estimate = "{estimate}",
-    statistic="[{conf.low}, {conf.high}]", 
-    coef_omit = "^sigma|^sd|^cor",
-    coef_rename=function(x) stringr::str_remove(x, "b_"), output="gt")
+# msa <- modelsummary::modelsummary(list("Exp 1."=e1_ee_brm_ae,"Exp 2."=e2_ee_brm_ae,"Exp 3. "=e3_ee_brm_ae), 
+#     gof_map = NA,
+#     fmt=1,
+#     estimate = "{estimate}",
+#     statistic="[{conf.low}, {conf.high}]", 
+#     coef_omit = "^sigma|^sd|^cor",
+#     coef_rename=function(x) stringr::str_remove(x, "b_"), output="gt")
+#msa
 
-msa
+bct <- rbind(bct_e1 |> mutate(exp="Exp 1"),bct_e2 |> mutate(exp= "Exp 2"),bct_e3 |> mutate(exp="Exp 3")) |> relocate(exp, .before=Term)
 
-#library(modelsummary)
-# modelsummary::modelsummary(get_estimates(e1_ee_brm_ae, test = c("pd")),gof_map = NA)
-#modelsummary::get_estimates(e1_ee_brm_ae,test="pd")
+bct_table <- bct %>%
+  mutate(
+    across(c(Estimate, `95% CrI Lower`, `95% CrI Upper`), ~ round(., 2)),
+    pd = round(pd, 2)
+  ) %>%
+  gt() %>%
+  # tab_header(
+  #   title = "Bayesian Model Results",
+  #   subtitle = "Estimates and Credible Intervals for Each Term Across Experiments"
+  # ) %>%
+  cols_label(
+    exp = "Experiment",
+    Term = "Term",
+    Estimate = "Estimate",
+    `95% CrI Lower` = "95% CrI Lower",
+    `95% CrI Upper` = "95% CrI Upper",
+    pd = "pd"
+  ) %>%
+  fmt_number(
+    columns = c(Estimate, `95% CrI Lower`, `95% CrI Upper`),
+    decimals = 2
+  ) %>%
+  fmt_number(
+    columns = pd,
+    decimals = 2
+  ) %>%
+  tab_spanner(
+    label = "Credible Interval",
+    columns = c(`95% CrI Lower`, `95% CrI Upper`)
+  ) %>%
+  tab_style(
+    style = list(
+      #cell_fill(color = "lightgray"),
+      cell_text(weight = "bold"), 
+      cell_fill(color = "white"),
+      cell_borders(sides = "top", color = "black", weight = px(1))
+    ),
+    locations = cells_body(
+      columns = c(Estimate, pd),
+      rows = Term=="ModelEXAM:conditVaried"
+    )
+  ) %>%
+  # tab_style(
+  #   style = list(
+  #     cell_fill(color = "lightblue"),
+  #     cell_text(style = "italic")
+  #   ),
+  #   locations = cells_body(
+  #     columns = exp,
+  #     rows = Term == "Intercept"
+  #   )
+  # ) %>%
+   tab_row_group(
+    label = "Experiment 3",
+    rows = exp == "Exp 3"
+  ) %>%
+  tab_row_group(
+    label = "Experiment 2",
+    rows = exp == "Exp 2"
+  ) %>%
+  tab_row_group(
+    label = "Experiment 1",
+    rows = exp == "Exp 1"
+  ) %>%
+  tab_options(
+    table.font.size = 10,
+    heading.title.font.size = 16,
+    heading.subtitle.font.size = 14,
+    quarto.disable_processing = TRUE
+    #row_group.background.color = "gray95"
+  )
+bct_table
+
 ```
 
+*Model Fits to Experiment 2 and 3.*  The model fitting results for Experiments 2 and 3 closely mirrored those observed in Experiment 1. The Bayesian regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and their interaction (see @tbl-htw-ee-e23) revealed a consistent main effect of Model across all three experiments. The negative coefficients for the ModelEXAM term (Exp 2: $\beta$ = `r bm1_e2$estimate`, 95% CrI `r bm1_e2$conf.low`, `r bm1_e2$conf.high`, pd = `r bm1_e2$pd`; Exp 3: $\beta$ = `r bm1_e3$estimate`, 95% CrI `r bm1_e3$conf.low`, `r bm1_e3$conf.high`, pd = `r bm1_e3$pd`) indicate that EXAM outperformed ALM in both experiments. Furthermore, the interaction between Model and Condition was significant in both Experiment 2 ($\beta$ = `r bm3_e2$estimate`, 95% CrI `r bm3_e2$conf.low`, `r bm3_e2$conf.high`, pd = `r bm3_e2$pd`) and Experiment 3 ($\beta$ = `r bm3_e3$estimate`, 95% CrI `r bm3_e3$conf.low`, `r bm3_e3$conf.high`, pd = `r bm3_e3$pd`), suggesting that the superiority of EXAM over ALM was more pronounced for the Constant group compared to the Varied group, as was the case in Experiment 1. One notable difference in Experiment 3 was the inclusion of the bandOrder term and its interactions, which accounted for the effect of the order in which the velocity bands were presented during training and testing. Despite this additional factor, the overall pattern of results remained consistent with the previous experiments, providing strong support for the robustness of EXAM's performance, particularly in the Constant condition, across all three studies.
+
+
+
+
+
+
+```{r}
+
+
+
+```
 
 
 
@@ -585,10 +664,10 @@ p3 <- plot(conditional_effects(e3_ee_brm_ae, effects="Model:condit"),points=FALS
 
 
 ```{r}
+#| label: fig-cm-vx-pat-e2-e3
 #| fig-height: 8
 #| fig-width: 10
-#| fig-cap: "Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands.  "
-
+#| fig-cap: "Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands."
 
 rbind(e2_model$post_dat_l |> filter( Fit_Method=="Test_Train") |> 
   group_by(id,condit, Fit_Method,Resp,bandType,x,vb) |> 
@@ -608,9 +687,6 @@ rbind(e2_model$post_dat_l |> filter( Fit_Method=="Test_Train") |>
          axis.title.x = element_blank(),
          plot.margin = unit(c(20,0,0,0), "pt")) + 
          labs(title="Model Predictions Experiment 2 & 3", y="vx")
-
-
-
 ```
 
 
@@ -618,7 +694,7 @@ rbind(e2_model$post_dat_l |> filter( Fit_Method=="Test_Train") |>
 
 ```{r}
 #| label: fig-htw-best-model
-#| fig-cap: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM. 
+#| fig-cap: "Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM." 
 #| fig-height: 12
 #| fig-width: 11
 
@@ -690,25 +766,33 @@ To more accurately assess the relative abilities of ALM and EXAM to capture impo
 ```{r  fig.width=11, fig.height=10}
 #| label: fig-htw-indv-pred
 #| fig-cap: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands. 
-#| fig-height: 11
+#| fig-height: 12
 #| fig-width: 12
 
 cId_tr <- c(137, 181, 11)
 vId_tr <- c(14, 193, 47)
 cId_tt <- c(11, 93, 35)
 vId_tt <- c(1,14,74)
-cId_new <- c(175, 185, 134, 155, 68, 93, 74, 134)
+cId_new <- c(175, 134, 155, 68, 93, 74, 134)
 # filter(id %in% (filter(bestTestEXAM,group_rank<=9, Fit_Method=="Test")
 
-# e3 sbjs - 245, 219, 264, 280, 249, 274
+ e3_sbjs <-  c(245, 219, 264, 280, 249, 274)
+e2_sbjs <- c(197, 157, 312, 334)
+
+indv_post_l <- post_dat_l  |> mutate(Exp="E1",bandOrder="Original") |> select(-signed_dist) |>
+  rbind(e2_model$post_dat_l |> mutate(Exp="E2",bandOrder="Reverse")) |>
+  rbind(e3_model$post_dat_l |> mutate(Exp="E3") |> select(-fb)) |>
+  filter(Fit_Method=="Test_Train", id %in% c(cId_tt,vId_tt,cId_new, e3_sbjs, e2_sbjs))
 
 
-testIndv <- post_dat_l |> filter(id %in% c(cId_tt,vId_tt,cId_new), Fit_Method=="Test_Train") |> 
+testIndv <- indv_post_l |> 
+#filter(id %in% c(cId_tt,vId_tt,cId_new), Fit_Method=="Test_Train") |> 
    mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
   group_by(id,condit,Fit_Method,Model,Resp) |>
    mutate(flab=paste0("Subject: ",id)) |>
   ggplot(aes(x = Resp, y = val, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
-  stat_bar_sd + ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
+  stat_bar_sd + 
+  ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
   scale_color_manual(values = c("black" = "black"), guide = FALSE) +
   scale_size_manual(values = c("black" = .5), guide = FALSE) + 
   labs(title="Individual Participant fits from Test & Train Fitting Method",

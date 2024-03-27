@@ -9,6 +9,7 @@ categories:
   - R
 lightbox: true
 toc: false
+cache: false
 format-links: false
 code-fold: true
 code-tools: true
@@ -27,7 +28,7 @@ prefer-html: true
 
 # Modeling Approach
 
-In project 1, I applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for the difference between varied and constant training via an extended version of a similarity based generalization model. In project 2, I will go a step further, implementing a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning (DeLosh et al., 1997). ALM is a simple connectionist learning model which closely resembles Kruschke's ALCOVE model (Kruschke, 1992), with modifications to allow for the generation of continuous responses.
+The modeling goal is to implement a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning (DeLosh et al., 1997). ALM is a simple connectionist learning model which closely resembles Kruschke's ALCOVE model (Kruschke, 1992), with modifications to allow for the generation of continuous responses.
 
 ## ALM & Exam Description
 
@@ -82,7 +83,7 @@ To fit ALM and EXAM to our participant data, we employ a similar method to Mcdan
 >
 > The final component of our ABC implementation is the determination of an appropriate value of $\epsilon$. The setting of $\epsilon$ exerts strong influence on the approximated posterior distribution. Smaller values of $\epsilon$ increase the rejection rate, and improve the fidelity of the approximated posterior, while larger values result in an ABC sampler that simply reproduces the prior distribution. Because the individual participants in our dataset differed substantially in terms of the noisiness of their data, we employed an adaptive tolerance setting strategy to tailor $\epsilon$ to each individual. The initial value of $\epsilon$ was set to the overall standard deviation of each individuals velocity values. Thus, sampled parameter values that generated simulated data within a standard deviation of the observed data were accepted, while worse performing parameters were rejected. After every 300 samples the tolerance was allowed to increase only if the current acceptance rate of the algorithm was less than 1%. In such cases, the tolerance was shifted towards the average discrepancy of the 5 best samples obtained thus far. To ensure the acceptance rate did not become overly permissive, $\epsilon$ was also allowed to decrease every time a sample was accepted into the posterior.
 
-For each of the 156 participants from Experiment 1, the ABC algorithm was run until 200 samples of parameters were accepted into the posterior distribution. Obtaining this number of posterior samples required an average of 205,000 simulation runs per participant. Fitting each combination of participant, Model (EXAM & ALM), and fitting method (Test only, Train only, Test & Train) required a total of 192 million simulation runs. To facilitate these intensive computational demands, we used the Future Package in R (Bengtsson, 2021), allowing us to parallelize computations across a cluster of ten M1 iMacs, each with 8 cores.a
+For each of the 156 participants from Experiment 1, the ABC algorithm was run until 200 samples of parameters were accepted into the posterior distribution. Obtaining this number of posterior samples required an average of 205,000 simulation runs per participant. Fitting each combination of participant, Model (EXAM & ALM), and fitting method (Test only, Train only, Test & Train) required a total of 192 million simulation runs. To facilitate these intensive computational demands, we used the Future Package in R (Bengtsson, 2021), allowing us to parallelize computations across a cluster of ten M1 iMacs, each with 8 cores.
 
 ### Modelling Results
 
@@ -90,23 +91,23 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
 
 <div id="tbl-htw-modelError-e1">
 
-<div id="ohayaerbtq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ohayaerbtq table {
+<div id="swzyzrvaqu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#swzyzrvaqu table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ohayaerbtq thead, #ohayaerbtq tbody, #ohayaerbtq tfoot, #ohayaerbtq tr, #ohayaerbtq td, #ohayaerbtq th {
+#swzyzrvaqu thead, #swzyzrvaqu tbody, #swzyzrvaqu tfoot, #swzyzrvaqu tr, #swzyzrvaqu td, #swzyzrvaqu th {
   border-style: none;
 }
 
-#ohayaerbtq p {
+#swzyzrvaqu p {
   margin: 0;
   padding: 0;
 }
 
-#ohayaerbtq .gt_table {
+#swzyzrvaqu .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -132,12 +133,12 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-left-color: #D3D3D3;
 }
 
-#ohayaerbtq .gt_caption {
+#swzyzrvaqu .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ohayaerbtq .gt_title {
+#swzyzrvaqu .gt_title {
   color: #333333;
   font-size: 14px;
   font-weight: initial;
@@ -149,7 +150,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-bottom-width: 0;
 }
 
-#ohayaerbtq .gt_subtitle {
+#swzyzrvaqu .gt_subtitle {
   color: #333333;
   font-size: 12px;
   font-weight: initial;
@@ -161,7 +162,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-top-width: 0;
 }
 
-#ohayaerbtq .gt_heading {
+#swzyzrvaqu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -173,13 +174,13 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-right-color: #D3D3D3;
 }
 
-#ohayaerbtq .gt_bottom_border {
+#swzyzrvaqu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ohayaerbtq .gt_col_headings {
+#swzyzrvaqu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -194,7 +195,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-right-color: #D3D3D3;
 }
 
-#ohayaerbtq .gt_col_heading {
+#swzyzrvaqu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -214,7 +215,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   overflow-x: hidden;
 }
 
-#ohayaerbtq .gt_column_spanner_outer {
+#swzyzrvaqu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -226,15 +227,15 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 4px;
 }
 
-#ohayaerbtq .gt_column_spanner_outer:first-child {
+#swzyzrvaqu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ohayaerbtq .gt_column_spanner_outer:last-child {
+#swzyzrvaqu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ohayaerbtq .gt_column_spanner {
+#swzyzrvaqu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -246,11 +247,11 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   width: 100%;
 }
 
-#ohayaerbtq .gt_spanner_row {
+#swzyzrvaqu .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ohayaerbtq .gt_group_heading {
+#swzyzrvaqu .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -276,7 +277,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   text-align: left;
 }
 
-#ohayaerbtq .gt_empty_group_heading {
+#swzyzrvaqu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -291,15 +292,15 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   vertical-align: middle;
 }
 
-#ohayaerbtq .gt_from_md > :first-child {
+#swzyzrvaqu .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ohayaerbtq .gt_from_md > :last-child {
+#swzyzrvaqu .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ohayaerbtq .gt_row {
+#swzyzrvaqu .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -318,7 +319,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   overflow-x: hidden;
 }
 
-#ohayaerbtq .gt_stub {
+#swzyzrvaqu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -331,7 +332,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#ohayaerbtq .gt_stub_row_group {
+#swzyzrvaqu .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -345,15 +346,15 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   vertical-align: top;
 }
 
-#ohayaerbtq .gt_row_group_first td {
+#swzyzrvaqu .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ohayaerbtq .gt_row_group_first th {
+#swzyzrvaqu .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ohayaerbtq .gt_summary_row {
+#swzyzrvaqu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -363,16 +364,16 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#ohayaerbtq .gt_first_summary_row {
+#swzyzrvaqu .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ohayaerbtq .gt_first_summary_row.thick {
+#swzyzrvaqu .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ohayaerbtq .gt_last_summary_row {
+#swzyzrvaqu .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -382,7 +383,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-bottom-color: #D3D3D3;
 }
 
-#ohayaerbtq .gt_grand_summary_row {
+#swzyzrvaqu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -392,7 +393,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#ohayaerbtq .gt_first_grand_summary_row {
+#swzyzrvaqu .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -402,7 +403,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-top-color: #D3D3D3;
 }
 
-#ohayaerbtq .gt_last_grand_summary_row_top {
+#swzyzrvaqu .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -412,11 +413,11 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-bottom-color: #D3D3D3;
 }
 
-#ohayaerbtq .gt_striped {
+#swzyzrvaqu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ohayaerbtq .gt_table_body {
+#swzyzrvaqu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -425,7 +426,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-bottom-color: #D3D3D3;
 }
 
-#ohayaerbtq .gt_footnotes {
+#swzyzrvaqu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -439,7 +440,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-right-color: #D3D3D3;
 }
 
-#ohayaerbtq .gt_footnote {
+#swzyzrvaqu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -448,7 +449,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#ohayaerbtq .gt_sourcenotes {
+#swzyzrvaqu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -462,7 +463,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-right-color: #D3D3D3;
 }
 
-#ohayaerbtq .gt_sourcenote {
+#swzyzrvaqu .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -470,63 +471,63 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#ohayaerbtq .gt_left {
+#swzyzrvaqu .gt_left {
   text-align: left;
 }
 
-#ohayaerbtq .gt_center {
+#swzyzrvaqu .gt_center {
   text-align: center;
 }
 
-#ohayaerbtq .gt_right {
+#swzyzrvaqu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ohayaerbtq .gt_font_normal {
+#swzyzrvaqu .gt_font_normal {
   font-weight: normal;
 }
 
-#ohayaerbtq .gt_font_bold {
+#swzyzrvaqu .gt_font_bold {
   font-weight: bold;
 }
 
-#ohayaerbtq .gt_font_italic {
+#swzyzrvaqu .gt_font_italic {
   font-style: italic;
 }
 
-#ohayaerbtq .gt_super {
+#swzyzrvaqu .gt_super {
   font-size: 65%;
 }
 
-#ohayaerbtq .gt_footnote_marks {
+#swzyzrvaqu .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ohayaerbtq .gt_asterisk {
+#swzyzrvaqu .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ohayaerbtq .gt_indent_1 {
+#swzyzrvaqu .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ohayaerbtq .gt_indent_2 {
+#swzyzrvaqu .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ohayaerbtq .gt_indent_3 {
+#swzyzrvaqu .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ohayaerbtq .gt_indent_4 {
+#swzyzrvaqu .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ohayaerbtq .gt_indent_5 {
+#swzyzrvaqu .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -602,550 +603,48 @@ alt="Figure 1: Posterior Distributions of c and lr parameters. Points represent
 <img
 src="htw_model.markdown_strict_files/figure-markdown_strict/fig-htw-resid-pred-1.png"
 id="fig-htw-resid-pred"
-alt="Figure 2: Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y axes are scaled differently between facets." />
+alt="Figure 2: Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y axes are scaled differently between facets. A) Residuals predicting each block of the training data. B) Residuals predicting each band during the testing stage. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands." />
 
-The posterior distributions of the $c$ and $lr$ parameters are shown <a href="#fig-htw-post-dist" class="quarto-xref">Figure 1</a>, and model predictions are shown alongside the empirical data in <a href="#fig-cm-vx-pat" class="quarto-xref">Figure 3</a> and **?@fig-cm-dev-pat** (i.e. these plots combine all the posterior samples from all of the subjects). There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamped any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.
+The posterior distributions of the $c$ and $lr$ parameters are shown <a href="#fig-htw-post-dist" class="quarto-xref">Figure 1</a>, and model predictions are shown alongside the empirical data in <a href="#fig-cm-vx-pat" class="quarto-xref">Figure 3</a>. There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamped any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.
 
-We used the posterior distribution of $c$ and $lr$ parameters to generate a posterior predictive distribution of the observed data for each participant, which then allows us to compare the empirical data to the full range of predictions from each model. Aggregated residuals are displayed in **?@tbl-htw-modelError**. The pattern of training stage residual errors are unsurprising across the combinations of models and fitting method . Differences in training performance between ALM and EXAM are generally minor (the two models have identical learning mechanisms). The differences in the magnitude of residuals across the three fitting methods are also straightforward, with massive errors for the 'fit to Test Only' model, and the smallest errors for the 'fit to train only' models. It is also noteworthy that the residual errors are generally larger for the first block of training, which is likely due to the initial values of the ALM weights being unconstrained by whatever initial biases participants tend to bring to the task. Future work may explore the ability of the models to capture more fine grained aspects of the learning trajectories. However for the present purposes, our primary interest is in the ability of ALM and EXAM to account for the testing patterns while being constrained, or not constrained, by the training data. All subsequent analyses and discussion will thus focus on the testing stage.
+We used the posterior distribution of $c$ and $lr$ parameters to generate a posterior predictive distribution of the observed data for each participant, which then allows us to compare the empirical data to the full range of predictions from each model. Aggregated residuals are displayed in <a href="#fig-htw-resid-pred" class="quarto-xref">Figure 2</a>. The pattern of training stage residual errors are unsurprising across the combinations of models and fitting method . Differences in training performance between ALM and EXAM are generally minor (the two models have identical learning mechanisms). The differences in the magnitude of residuals across the three fitting methods are also straightforward, with massive errors for the 'fit to Test Only' model, and the smallest errors for the 'fit to train only' models. It is also noteworthy that the residual errors are generally larger for the first block of training, which is likely due to the initial values of the ALM weights being unconstrained by whatever initial biases participants tend to bring to the task. Future work may explore the ability of the models to capture more fine grained aspects of the learning trajectories. However for the present purposes, our primary interest is in the ability of ALM and EXAM to account for the testing patterns while being constrained, or not constrained, by the training data. All subsequent analyses and discussion will thus focus on the testing stage.
 
-The residuals of the model predictions for the testing stage (<a href="#fig-htw-resid-pred" class="quarto-xref">Figure 2</a>) also show an unsurprising pattern across fitting methods - with models fit only to the test data showing the best performance, followed by models fit to both training and test data, and with models fit only to the training data showing the worst performance (note that y axes are scaled different between plots). Unsurprisingly, the advantage of EXAM is strongest for extrapolation positions (the three smallest bands for both groups - as well as the two highest bands for the Constant group). Although EXAM tends to perform better for both Constant and Varied participants (see also **?@tbl-htw-modelError**), the relative advantage of EXAM is generally larger for the Constant group - a pattern consistent across all three fitting methods.
-
-Panel B of <a href="#fig-htw-resid-pred" class="quarto-xref">Figure 2</a> directly compares the aggregated observed data to the posterior predictive distributions for the testing stage. Of interest are a) the extent to which the median estimates of the ALM and EXAM posteriors deviate from the observed medians for each velocity band; b) the ability of ALM and EXAM to discriminate between velocity bands; c) the relative performance of models that are constrained by the training data (i.e. the 'fit to train only' and 'fit to both' models) compared to the 'fit to test only' models;
-
-Considering first the models fit to only the testing data, which reflect the best possible performance of ALM and EXAM at capturing the group-aggregated testing patterns. For the varied group, both ALM and EXAM are able to capture the median values of the observed data within the 66% credible intervals, and the spread of model predictions generally matches that of the observed data. For the constant group, only EXAM is able to capture the median range of values across the velocity bands, with ALM generally underestimating human velocoties in the upper bands, and overestimating in the lower bands. In the case of band 100, the median ALM prediction appears to match that of our participants - however this is due to a large subset of participants have ALM predictions near 0 for band 100, a pattern we will explore further in our considertation of individual patterns below. Models fit to both training and testing data show a similar pattern to only the testing data display the same basic pattern as those fit to only the testing data, albeit with slightly larger residuals. However models fit to only the training data display markedly worse performance at accounting for the key testing patterns.
-
--   \*\* explain how the constant group ALM predictions for band 100 look deceptively good due to aggregation of a large subset of subjects having ALM predictions of 0 for vb100, and a large subset with ALM predictions close to their position 800 value. This is relected by much greater variance of the ALM esimates in the posterior predictive plot
-
--   \*\* comment on how much constrained by the training data has a worse impact on the EXAM predictions for varied than for constant - perhaps due to the varied training data being much noisier than the constant training data.
-
--   \*\* comment on EXAM doing a better job mimicing the within-condition variance of the observed data
-
--   \*\* comment on the % of Constant subjects being best accounted for by EXAM being higher.
+The residuals of the model predictions for the testing stage (<a href="#fig-htw-resid-pred" class="quarto-xref">Figure 2</a>) also show an unsurprising pattern across fitting methods - with models fit only to the test data showing the best performance, followed by models fit to both training and test data, and with models fit only to the training data showing the worst performance (note that y axes are scaled different between plots). Although EXAM tends to perform better for both Constant and Varied participants (see also <a href="#fig-ee-e1" class="quarto-xref">Figure 4</a>), the relative advantage of EXAM is generally larger for the Constant group - a pattern consistent across all three fitting methods. The primary predictive difference between ALM and EXAM is made clear in <a href="#fig-cm-vx-pat" class="quarto-xref">Figure 3</a>, which directly compares the observed data against the posterior predictive distributions for both models. Regardless of how the models are fit, only EXAM can capture the pattern where participants are able to discriminate all 6 target bands.
 
 -   \*\* does EXAM do better for the Constant group because the constant group performs better? Or does training with a single example encourage an exam sort of strategy?
 
-<img src="htw_model.markdown_strict_files/figure-markdown_strict/unnamed-chunk-6-1.png" width="576" />
-
-<img src="htw_model.markdown_strict_files/figure-markdown_strict/unnamed-chunk-6-2.png" width="576" />
-
-To quantitatively assess whether ALM or EXAM did significantly better, and to see whether if the fits of the two models varied between Constant and Varied subjects, we fit a bayesian regressions predicting the error of the model predictions as a function of the Model (ALM vs. EXAM) and training condition (Constant vs. Varied). As is shown in <a href="#tbl-ee-brms1" class="quarto-xref">Table 3</a>, the model error was significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.4, -14.17\], pd = 99.85%) than ALM, and for the Varied condition than the Constant condition ($\beta$ = -88.44, 95% CrI \[-104.51, -71.81\], pd = 100%). There was also a significant interaction between Model and Condition ($\beta$ = 60.42, 95% CrI \[36.17, 83.85\], pd = 100%), indicating that the difference in model error between ALM and EXAM was significantly greater for the constant condition. To assess whether EXAM predicts constant performance significantly better for Constant than for Varied subjects, we calculated the difference in model error between the Constant and Varied conditions specifically for EXAM. The results indicated that the model error for EXAM was significantly lower in the Constant condition compared to the Varied condition, with a mean difference of -22.879 (95% CrI \[-46.016, -0.968\], pd = 0.981).
-
-<div id="tbl-ee-brms1">
-
-| Term                   | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
-|:-----------------------|---------:|--------------:|--------------:|----:|
-| Intercept              |    176.3 |         156.9 |         194.6 |   1 |
-| ModelEXAM              |    -88.4 |        -104.5 |         -71.8 |   1 |
-| conditVaried           |    -37.5 |         -60.4 |         -14.2 |   1 |
-| ModelEXAM:conditVaried |     60.4 |          36.2 |          83.8 |   1 |
-
-Table 3: Comparison of model errors - experiment 1 - assessed bayesian regression in the form of Model Error ~ Model \* Condition. The intercept reflects the baseline of ALM and Constant. The other estimates indicate deviations from the baseline for the EXAM mode and varied condition.
-</div>
 <img
 src="htw_model.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-1.png"
-id="fig-cm-vx-pat" alt="Figure 3" />
-<div id="tbl-model-pred1">
+id="fig-cm-vx-pat"
+alt="Figure 3: Empirical data and Model predictions for mean velocity across target bands. Fitting methods (Test Only, Test &amp; Train, Train Only) - are separated across rows, and Training Condition (Constant vs. Varied) are separated by columns. Each facet contains the predictions of ALM and EXAM, alongside the observed data." />
 
-|  condit  | Fit_Method |  x   |   bandType    |  ALM  | EXAM  | Observed |
-|:--------:|:----------:|:----:|:-------------:|:-----:|:-----:|:--------:|
-| Constant | Test_Train | 100  | Extrapolation | 462.6 |  400  |  491.8   |
-| Constant | Test_Train | 350  | Extrapolation | 883.9 | 581.8 |  644.7   |
-| Constant | Test_Train | 600  | Extrapolation | 903.7 | 774.7 |  759.7   |
-| Constant | Test_Train | 800  |    Trained    | 903.7 | 924.4 |  967.2   |
-| Constant | Test_Train | 1000 | Extrapolation | 903.7 | 1064  |   1164   |
-| Constant | Test_Train | 1200 | Extrapolation | 898.9 | 1197  |   1241   |
-|  Varied  | Test_Train | 100  | Extrapolation | 592.3 | 569.5 |  544.4   |
-|  Varied  | Test_Train | 350  | Extrapolation | 861.9 | 703.5 |  696.6   |
-|  Varied  | Test_Train | 600  | Extrapolation | 918.1 | 843.8 |  830.2   |
-|  Varied  | Test_Train | 800  |    Trained    | 940.9 | 945.3 |   1075   |
-|  Varied  | Test_Train | 1000 |    Trained    | 1014  | 1044  |   1166   |
-|  Varied  | Test_Train | 1200 |    Trained    | 1031  | 1042  |   1295   |
+<img
+src="htw_model.markdown_strict_files/figure-markdown_strict/fig-ee-e1-1.png"
+id="fig-ee-e1" alt="Figure 4" />
 
-Table 4: Model predictions experiment 1 - empirically observed values and predictions of ALM and EXAM for each band (x) and bandType (Trained vs. Extrapolation)
-</div>
-<div id="tbl-htw-modelError-e123">
+To quantitatively assess whether the differences in performance between models, we fit a bayesian regressions predicting the errors of the posterior predictions of each models as a function of the Model (ALM vs. EXAM) and training condition (Constant vs. Varied).
 
-<div id="huogbxzqmm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#huogbxzqmm table {
+Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.4, -14.17\], pd = 99.85%) than ALM. There was also a significant interaction between Model and Condition ($\beta$ = 60.42, 95% CrI \[36.17, 83.85\], pd = 100%), indicating that the advantage of EXAM over ALM was significantly greater for the constant group. To assess whether EXAM predicts constant performance significantly better for Constant than for Varied subjects, we calculated the difference in model error between the Constant and Varied conditions specifically for EXAM. The results indicated that the model error for EXAM was significantly lower in the Constant condition compared to the Varied condition, with a mean difference of -22.879 (95% CrI \[-46.016, -0.968\], pd = 0.981).
+
+<div id="tbl-htw-modelError-e23">
+
+<div id="kgddlalmjz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kgddlalmjz table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#huogbxzqmm thead, #huogbxzqmm tbody, #huogbxzqmm tfoot, #huogbxzqmm tr, #huogbxzqmm td, #huogbxzqmm th {
+#kgddlalmjz thead, #kgddlalmjz tbody, #kgddlalmjz tfoot, #kgddlalmjz tr, #kgddlalmjz td, #kgddlalmjz th {
   border-style: none;
 }
 
-#huogbxzqmm p {
+#kgddlalmjz p {
   margin: 0;
   padding: 0;
 }
 
-#huogbxzqmm .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#huogbxzqmm .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#huogbxzqmm .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#huogbxzqmm .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#huogbxzqmm .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#huogbxzqmm .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#huogbxzqmm .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#huogbxzqmm .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#huogbxzqmm .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#huogbxzqmm .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#huogbxzqmm .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#huogbxzqmm .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#huogbxzqmm .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#huogbxzqmm .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#huogbxzqmm .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#huogbxzqmm .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#huogbxzqmm .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#huogbxzqmm .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#huogbxzqmm .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#huogbxzqmm .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#huogbxzqmm .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#huogbxzqmm .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#huogbxzqmm .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#huogbxzqmm .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#huogbxzqmm .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#huogbxzqmm .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#huogbxzqmm .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#huogbxzqmm .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#huogbxzqmm .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#huogbxzqmm .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#huogbxzqmm .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#huogbxzqmm .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#huogbxzqmm .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#huogbxzqmm .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#huogbxzqmm .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#huogbxzqmm .gt_left {
-  text-align: left;
-}
-
-#huogbxzqmm .gt_center {
-  text-align: center;
-}
-
-#huogbxzqmm .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#huogbxzqmm .gt_font_normal {
-  font-weight: normal;
-}
-
-#huogbxzqmm .gt_font_bold {
-  font-weight: bold;
-}
-
-#huogbxzqmm .gt_font_italic {
-  font-style: italic;
-}
-
-#huogbxzqmm .gt_super {
-  font-size: 65%;
-}
-
-#huogbxzqmm .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#huogbxzqmm .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#huogbxzqmm .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#huogbxzqmm .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#huogbxzqmm .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#huogbxzqmm .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#huogbxzqmm .gt_indent_5 {
-  text-indent: 25px;
-}
-</style>
-
-|                                         | Exp 1.            | Exp 2.             | Exp 3.            |
-|-----------------------------------------|-------------------|--------------------|-------------------|
-| Intercept                               | 176.3             | 246.0              | 164.7             |
-|                                         | \[156.9, 194.6\]  | \[226.2, 264.5\]   | \[140.1, 189.4\]  |
-| ModelEXAM                               | -88.5             | -137.7             | -65.6             |
-|                                         | \[-104.5, -71.8\] | \[-160.2, -115.5\] | \[-86.0, -46.0\]  |
-| conditVaried                            | -37.9             | -86.0              | -40.8             |
-|                                         | \[-60.4, -14.2\]  | \[-113.5, -59.3\]  | \[-75.9, -3.0\]   |
-| ModelEXAM:conditVaried                  | 60.6              | 56.9               | 42.3              |
-|                                         | \[36.2, 83.9\]    | \[25.3, 88.0\]     | \[11.2, 72.5\]    |
-| bandOrderReverse                        |                   |                    | 26.0              |
-|                                         |                   |                    | \[-9.3, 58.7\]    |
-| ModelEXAM:bandOrderReverse              |                   |                    | -7.6              |
-|                                         |                   |                    | \[-34.5, 21.1\]   |
-| conditVaried:bandOrderReverse           |                   |                    | 30.8              |
-|                                         |                   |                    | \[-19.6, 83.6\]   |
-| ModelEXAM:conditVaried:bandOrderReverse |                   |                    | -60.8             |
-|                                         |                   |                    | \[-101.8, -18.7\] |
-
-</div>
-
-Table 5: Results of Bayesian Regression models predictin model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and the interaction between Model and Condition. The values represent the estimate coefficient for each term, with 95% credible intervals in brackets. The intercept reflects the baseline of ALM and Constant. The other estimates indicate deviations from the baseline for the EXAM mode and varied condition. Lower values indicate better model fit.
-</div>
-<div id="rbjutfweod" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#rbjutfweod table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#rbjutfweod thead, #rbjutfweod tbody, #rbjutfweod tfoot, #rbjutfweod tr, #rbjutfweod td, #rbjutfweod th {
-  border-style: none;
-}
-
-#rbjutfweod p {
-  margin: 0;
-  padding: 0;
-}
-
-#rbjutfweod .gt_table {
+#kgddlalmjz .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1171,12 +670,12 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   border-left-color: #D3D3D3;
 }
 
-#rbjutfweod .gt_caption {
+#kgddlalmjz .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#rbjutfweod .gt_title {
+#kgddlalmjz .gt_title {
   color: #333333;
   font-size: 14px;
   font-weight: initial;
@@ -1188,7 +687,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   border-bottom-width: 0;
 }
 
-#rbjutfweod .gt_subtitle {
+#kgddlalmjz .gt_subtitle {
   color: #333333;
   font-size: 12px;
   font-weight: initial;
@@ -1200,7 +699,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   border-top-width: 0;
 }
 
-#rbjutfweod .gt_heading {
+#kgddlalmjz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1212,13 +711,13 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   border-right-color: #D3D3D3;
 }
 
-#rbjutfweod .gt_bottom_border {
+#kgddlalmjz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rbjutfweod .gt_col_headings {
+#kgddlalmjz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1233,7 +732,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   border-right-color: #D3D3D3;
 }
 
-#rbjutfweod .gt_col_heading {
+#kgddlalmjz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -1253,7 +752,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   overflow-x: hidden;
 }
 
-#rbjutfweod .gt_column_spanner_outer {
+#kgddlalmjz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -1265,15 +764,15 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   padding-right: 4px;
 }
 
-#rbjutfweod .gt_column_spanner_outer:first-child {
+#kgddlalmjz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rbjutfweod .gt_column_spanner_outer:last-child {
+#kgddlalmjz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rbjutfweod .gt_column_spanner {
+#kgddlalmjz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1285,11 +784,11 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   width: 100%;
 }
 
-#rbjutfweod .gt_spanner_row {
+#kgddlalmjz .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#rbjutfweod .gt_group_heading {
+#kgddlalmjz .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1315,7 +814,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   text-align: left;
 }
 
-#rbjutfweod .gt_empty_group_heading {
+#kgddlalmjz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1330,15 +829,15 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   vertical-align: middle;
 }
 
-#rbjutfweod .gt_from_md > :first-child {
+#kgddlalmjz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rbjutfweod .gt_from_md > :last-child {
+#kgddlalmjz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rbjutfweod .gt_row {
+#kgddlalmjz .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1357,7 +856,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   overflow-x: hidden;
 }
 
-#rbjutfweod .gt_stub {
+#kgddlalmjz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1370,7 +869,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   padding-right: 5px;
 }
 
-#rbjutfweod .gt_stub_row_group {
+#kgddlalmjz .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1384,15 +883,15 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   vertical-align: top;
 }
 
-#rbjutfweod .gt_row_group_first td {
+#kgddlalmjz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rbjutfweod .gt_row_group_first th {
+#kgddlalmjz .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#rbjutfweod .gt_summary_row {
+#kgddlalmjz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1402,16 +901,16 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   padding-right: 5px;
 }
 
-#rbjutfweod .gt_first_summary_row {
+#kgddlalmjz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rbjutfweod .gt_first_summary_row.thick {
+#kgddlalmjz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rbjutfweod .gt_last_summary_row {
+#kgddlalmjz .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1421,7 +920,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   border-bottom-color: #D3D3D3;
 }
 
-#rbjutfweod .gt_grand_summary_row {
+#kgddlalmjz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1431,7 +930,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   padding-right: 5px;
 }
 
-#rbjutfweod .gt_first_grand_summary_row {
+#kgddlalmjz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1441,7 +940,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   border-top-color: #D3D3D3;
 }
 
-#rbjutfweod .gt_last_grand_summary_row_top {
+#kgddlalmjz .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1451,11 +950,11 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   border-bottom-color: #D3D3D3;
 }
 
-#rbjutfweod .gt_striped {
+#kgddlalmjz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rbjutfweod .gt_table_body {
+#kgddlalmjz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1464,7 +963,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   border-bottom-color: #D3D3D3;
 }
 
-#rbjutfweod .gt_footnotes {
+#kgddlalmjz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1478,7 +977,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   border-right-color: #D3D3D3;
 }
 
-#rbjutfweod .gt_footnote {
+#kgddlalmjz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1487,7 +986,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   padding-right: 5px;
 }
 
-#rbjutfweod .gt_sourcenotes {
+#kgddlalmjz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1501,7 +1000,7 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   border-right-color: #D3D3D3;
 }
 
-#rbjutfweod .gt_sourcenote {
+#kgddlalmjz .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1509,74 +1008,68 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
   padding-right: 5px;
 }
 
-#rbjutfweod .gt_left {
+#kgddlalmjz .gt_left {
   text-align: left;
 }
 
-#rbjutfweod .gt_center {
+#kgddlalmjz .gt_center {
   text-align: center;
 }
 
-#rbjutfweod .gt_right {
+#kgddlalmjz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rbjutfweod .gt_font_normal {
+#kgddlalmjz .gt_font_normal {
   font-weight: normal;
 }
 
-#rbjutfweod .gt_font_bold {
+#kgddlalmjz .gt_font_bold {
   font-weight: bold;
 }
 
-#rbjutfweod .gt_font_italic {
+#kgddlalmjz .gt_font_italic {
   font-style: italic;
 }
 
-#rbjutfweod .gt_super {
+#kgddlalmjz .gt_super {
   font-size: 65%;
 }
 
-#rbjutfweod .gt_footnote_marks {
+#kgddlalmjz .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#rbjutfweod .gt_asterisk {
+#kgddlalmjz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rbjutfweod .gt_indent_1 {
+#kgddlalmjz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rbjutfweod .gt_indent_2 {
+#kgddlalmjz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rbjutfweod .gt_indent_3 {
+#kgddlalmjz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rbjutfweod .gt_indent_4 {
+#kgddlalmjz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rbjutfweod .gt_indent_5 {
+#kgddlalmjz .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table" data-quarto-disable-processing="true" data-quarto-bootstrap="false">
   <thead>
-    <tr class="gt_heading">
-      <td colspan="9" class="gt_heading gt_title gt_font_normal" style>Mean Error by Fit Method, Task Stage, and Experiment</td>
-    </tr>
-    <tr class="gt_heading">
-      <td colspan="9" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>Comparison across Conditions and Models<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></td>
-    </tr>
     <tr class="gt_col_headings gt_spanner_row">
       <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="1" scope="col" id></th>
       <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="4" scope="colgroup" id="E2">
@@ -1678,26 +1171,503 @@ Table 5: Results of Bayesian Regression models predictin model error as a funct
 <td headers="Fit to Training Data  E3_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">65.3</td></tr>
   </tbody>
   
-  <tfoot class="gt_footnotes">
-    <tr>
-      <td class="gt_footnote" colspan="9"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> Note: Mean errors are calculated as the absolute difference between the predicted and actual values.</td>
-    </tr>
-  </tfoot>
+  
 </table>
+</div>
+
+Table 3: Models errors predicting empirical data - aggregated over all participants, posterior parameter values, and velocity bands. Note that Fit Method refers to the subset of the data that the model was trained on, while Task Stage refers to the subset of the data that the model was evaluated on.
+</div>
+
+*Model Fits to Experiment 2 and 3.*
+
+<div id="tbl-htw-ee-e23">
+
+<div id="ayuiumugfj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ayuiumugfj table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ayuiumugfj thead, #ayuiumugfj tbody, #ayuiumugfj tfoot, #ayuiumugfj tr, #ayuiumugfj td, #ayuiumugfj th {
+  border-style: none;
+}
+
+#ayuiumugfj p {
+  margin: 0;
+  padding: 0;
+}
+
+#ayuiumugfj .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ayuiumugfj .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ayuiumugfj .gt_title {
+  color: #333333;
+  font-size: 16px;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ayuiumugfj .gt_subtitle {
+  color: #333333;
+  font-size: 14px;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ayuiumugfj .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ayuiumugfj .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ayuiumugfj .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ayuiumugfj .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ayuiumugfj .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ayuiumugfj .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ayuiumugfj .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ayuiumugfj .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ayuiumugfj .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ayuiumugfj .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ayuiumugfj .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ayuiumugfj .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ayuiumugfj .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ayuiumugfj .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ayuiumugfj .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ayuiumugfj .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ayuiumugfj .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ayuiumugfj .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ayuiumugfj .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ayuiumugfj .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ayuiumugfj .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ayuiumugfj .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ayuiumugfj .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ayuiumugfj .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ayuiumugfj .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ayuiumugfj .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ayuiumugfj .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ayuiumugfj .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ayuiumugfj .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ayuiumugfj .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ayuiumugfj .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ayuiumugfj .gt_left {
+  text-align: left;
+}
+
+#ayuiumugfj .gt_center {
+  text-align: center;
+}
+
+#ayuiumugfj .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ayuiumugfj .gt_font_normal {
+  font-weight: normal;
+}
+
+#ayuiumugfj .gt_font_bold {
+  font-weight: bold;
+}
+
+#ayuiumugfj .gt_font_italic {
+  font-style: italic;
+}
+
+#ayuiumugfj .gt_super {
+  font-size: 65%;
+}
+
+#ayuiumugfj .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ayuiumugfj .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ayuiumugfj .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ayuiumugfj .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ayuiumugfj .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ayuiumugfj .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ayuiumugfj .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+| Experiment   | Term                                    | Estimate | <span class="gt_column_spanner">Credible Interval</span> |               | pd   |
+|--------------|-----------------------------------------|----------|----------------------------------------------------------|---------------|------|
+|              |                                         |          | 95% CrI Lower                                            | 95% CrI Upper |      |
+| Experiment 1 |                                         |          |                                                          |               |      |
+| Exp 1        | Intercept                               | 176.30   | 156.86                                                   | 194.59        | 1.00 |
+| Exp 1        | ModelEXAM                               | −88.44   | −104.51                                                  | −71.81        | 1.00 |
+| Exp 1        | conditVaried                            | −37.54   | −60.40                                                   | −14.17        | 1.00 |
+| Exp 1        | ModelEXAM:conditVaried                  | 60.42    | 36.17                                                    | 83.85         | 1.00 |
+| Experiment 2 |                                         |          |                                                          |               |      |
+| Exp 2        | Intercept                               | 245.87   | 226.18                                                   | 264.52        | 1.00 |
+| Exp 2        | ModelEXAM                               | −137.73  | −160.20                                                  | −115.48       | 1.00 |
+| Exp 2        | conditVaried                            | −86.39   | −113.52                                                  | −59.31        | 1.00 |
+| Exp 2        | ModelEXAM:conditVaried                  | 56.87    | 25.26                                                    | 88.04         | 1.00 |
+| Experiment 3 |                                         |          |                                                          |               |      |
+| Exp 3        | Intercept                               | 164.83   | 140.05                                                   | 189.44        | 1.00 |
+| Exp 3        | ModelEXAM                               | −65.66   | −85.97                                                   | −46.02        | 1.00 |
+| Exp 3        | conditVaried                            | −40.61   | −75.90                                                   | −3.02         | 0.98 |
+| Exp 3        | bandOrderReverse                        | 25.47    | −9.34                                                    | 58.68         | 0.93 |
+| Exp 3        | ModelEXAM:conditVaried                  | 41.90    | 11.20                                                    | 72.54         | 0.99 |
+| Exp 3        | ModelEXAM:bandOrderReverse              | −7.32    | −34.53                                                   | 21.05         | 0.70 |
+| Exp 3        | conditVaried:bandOrderReverse           | 30.82    | −19.57                                                   | 83.56         | 0.88 |
+| Exp 3        | ModelEXAM:conditVaried:bandOrderReverse | −60.60   | −101.80                                                  | −18.66        | 1.00 |
+
+</div>
+
+Table 4: Results of Bayesian Regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and the interaction between Model and Condition. The values represent the estimate coefficient for each term, with 95% credible intervals in brackets. The intercept reflects the baseline of ALM and Constant. The other estimates indicate deviations from the baseline for the EXAM mode and varied condition. Lower values indicate better model fit.
 </div>
 <img
 src="htw_model.markdown_strict_files/figure-markdown_strict/fig-e2_e3_ae-1.png"
 id="fig-e2_e3_ae"
-alt="Figure 4: Conditional effects of Model and Condition on Model Error for Experiment 2 and 3 data." />
+alt="Figure 5: Conditional effects of Model and Condition on Model Error for Experiment 2 and 3 data." />
 
-<figure>
-<img src="htw_model.markdown_strict_files/figure-markdown_strict/unnamed-chunk-12-1.png" width="960" alt="Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right." />
-<figcaption aria-hidden="true">Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right.</figcaption>
-</figure>
+<img
+src="htw_model.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-e2-e3-1.png"
+id="fig-cm-vx-pat-e2-e3"
+alt="Figure 6: Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands." />
+
+<img
+src="htw_model.markdown_strict_files/figure-markdown_strict/fig-htw-best-model-1.png"
+id="fig-htw-best-model"
+alt="Figure 7: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM." />
 
 ### Accounting for individual patterns
 
-To more accurately assess the relative abilities of ALM and EXAM to capture important empirical patterns - we will now examine the predictions of both models for the subset of individual participants shown in <a href="#fig-htw-indv-pred" class="quarto-xref">Figure 5</a>. Panel A presents three varied and constant participants who demonstrated a reasonable degree of discrimination between the 6 velocity bands during testing.
+To more accurately assess the relative abilities of ALM and EXAM to capture important empirical patterns - we will now examine the predictions of both models for the subset of individual participants shown in <a href="#fig-htw-indv-pred" class="quarto-xref">Figure 8</a>. Panel A presents three varied and constant participants who demonstrated a reasonable degree of discrimination between the 6 velocity bands during testing.
 
 -   \*\* comment on the different ways ALM can completely fail to mimic discrimination patterns (sbj. 35; sbj. 137),and on how it can sometimes partially succeed (sbj. 11; 14,74)
 
@@ -1708,7 +1678,7 @@ To more accurately assess the relative abilities of ALM and EXAM to capture impo
 <img
 src="htw_model.markdown_strict_files/figure-markdown_strict/fig-htw-indv-pred-1.png"
 id="fig-htw-indv-pred"
-alt="Figure 5: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data." />
+alt="Figure 8: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands." />
 
 Bengtsson, H. (2021). A Unifying Framework for Parallel and Distributed Processing in R using Futures. *The R Journal*, *13*(2), 208. <https://doi.org/10.32614/RJ-2021-048>
 
