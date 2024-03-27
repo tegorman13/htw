@@ -18,7 +18,7 @@ format:
   hugo-md:
     echo: false
     html-math-method: mathjax
-    output-file: e1-hugo.md
+    output-file: combo-hugo.md
   # gfm:
   #   echo: true
   #   output-file: e1-gfm.md
@@ -773,16 +773,18 @@ cId_tr <- c(137, 181, 11)
 vId_tr <- c(14, 193, 47)
 cId_tt <- c(11, 93, 35)
 vId_tt <- c(1,14,74)
-cId_new <- c(175, 134, 155, 68, 93, 74, 134)
+cId_new <- c(175, 68, 93, 74)
 # filter(id %in% (filter(bestTestEXAM,group_rank<=9, Fit_Method=="Test")
 
- e3_sbjs <-  c(245, 219, 264, 280, 249, 274)
+e1_sbjs <- c(49,68,155, 175,74)
+e3_sbjs <-  c(245, 280, 249)
 e2_sbjs <- c(197, 157, 312, 334)
 
 indv_post_l <- post_dat_l  |> mutate(Exp="E1",bandOrder="Original") |> select(-signed_dist) |>
   rbind(e2_model$post_dat_l |> mutate(Exp="E2",bandOrder="Reverse")) |>
   rbind(e3_model$post_dat_l |> mutate(Exp="E3") |> select(-fb)) |>
   filter(Fit_Method=="Test_Train", id %in% c(cId_tt,vId_tt,cId_new, e3_sbjs, e2_sbjs))
+
 
 
 testIndv <- indv_post_l |> 
