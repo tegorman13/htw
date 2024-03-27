@@ -9,7 +9,6 @@ categories:
   - R
 lightbox: true
 toc: false
-cache: false
 format-links: false
 code-fold: true
 code-tools: true
@@ -91,23 +90,23 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
 
 <div id="tbl-htw-modelError-e1">
 
-<div id="winwkmqbpf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#winwkmqbpf table {
+<div id="ymfsptpwlm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ymfsptpwlm table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#winwkmqbpf thead, #winwkmqbpf tbody, #winwkmqbpf tfoot, #winwkmqbpf tr, #winwkmqbpf td, #winwkmqbpf th {
+#ymfsptpwlm thead, #ymfsptpwlm tbody, #ymfsptpwlm tfoot, #ymfsptpwlm tr, #ymfsptpwlm td, #ymfsptpwlm th {
   border-style: none;
 }
 
-#winwkmqbpf p {
+#ymfsptpwlm p {
   margin: 0;
   padding: 0;
 }
 
-#winwkmqbpf .gt_table {
+#ymfsptpwlm .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -133,12 +132,12 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-left-color: #D3D3D3;
 }
 
-#winwkmqbpf .gt_caption {
+#ymfsptpwlm .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#winwkmqbpf .gt_title {
+#ymfsptpwlm .gt_title {
   color: #333333;
   font-size: 14px;
   font-weight: initial;
@@ -150,7 +149,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-bottom-width: 0;
 }
 
-#winwkmqbpf .gt_subtitle {
+#ymfsptpwlm .gt_subtitle {
   color: #333333;
   font-size: 12px;
   font-weight: initial;
@@ -162,7 +161,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-top-width: 0;
 }
 
-#winwkmqbpf .gt_heading {
+#ymfsptpwlm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -174,13 +173,13 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-right-color: #D3D3D3;
 }
 
-#winwkmqbpf .gt_bottom_border {
+#ymfsptpwlm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#winwkmqbpf .gt_col_headings {
+#ymfsptpwlm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -195,7 +194,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-right-color: #D3D3D3;
 }
 
-#winwkmqbpf .gt_col_heading {
+#ymfsptpwlm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -215,7 +214,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   overflow-x: hidden;
 }
 
-#winwkmqbpf .gt_column_spanner_outer {
+#ymfsptpwlm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -227,15 +226,15 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 4px;
 }
 
-#winwkmqbpf .gt_column_spanner_outer:first-child {
+#ymfsptpwlm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#winwkmqbpf .gt_column_spanner_outer:last-child {
+#ymfsptpwlm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#winwkmqbpf .gt_column_spanner {
+#ymfsptpwlm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -247,11 +246,11 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   width: 100%;
 }
 
-#winwkmqbpf .gt_spanner_row {
+#ymfsptpwlm .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#winwkmqbpf .gt_group_heading {
+#ymfsptpwlm .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -277,7 +276,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   text-align: left;
 }
 
-#winwkmqbpf .gt_empty_group_heading {
+#ymfsptpwlm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -292,15 +291,15 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   vertical-align: middle;
 }
 
-#winwkmqbpf .gt_from_md > :first-child {
+#ymfsptpwlm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#winwkmqbpf .gt_from_md > :last-child {
+#ymfsptpwlm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#winwkmqbpf .gt_row {
+#ymfsptpwlm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -319,7 +318,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   overflow-x: hidden;
 }
 
-#winwkmqbpf .gt_stub {
+#ymfsptpwlm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -332,7 +331,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#winwkmqbpf .gt_stub_row_group {
+#ymfsptpwlm .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -346,15 +345,15 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   vertical-align: top;
 }
 
-#winwkmqbpf .gt_row_group_first td {
+#ymfsptpwlm .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#winwkmqbpf .gt_row_group_first th {
+#ymfsptpwlm .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#winwkmqbpf .gt_summary_row {
+#ymfsptpwlm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -364,16 +363,16 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#winwkmqbpf .gt_first_summary_row {
+#ymfsptpwlm .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#winwkmqbpf .gt_first_summary_row.thick {
+#ymfsptpwlm .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#winwkmqbpf .gt_last_summary_row {
+#ymfsptpwlm .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -383,7 +382,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-bottom-color: #D3D3D3;
 }
 
-#winwkmqbpf .gt_grand_summary_row {
+#ymfsptpwlm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -393,7 +392,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#winwkmqbpf .gt_first_grand_summary_row {
+#ymfsptpwlm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -403,7 +402,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-top-color: #D3D3D3;
 }
 
-#winwkmqbpf .gt_last_grand_summary_row_top {
+#ymfsptpwlm .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -413,11 +412,11 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-bottom-color: #D3D3D3;
 }
 
-#winwkmqbpf .gt_striped {
+#ymfsptpwlm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#winwkmqbpf .gt_table_body {
+#ymfsptpwlm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -426,7 +425,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-bottom-color: #D3D3D3;
 }
 
-#winwkmqbpf .gt_footnotes {
+#ymfsptpwlm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -440,7 +439,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-right-color: #D3D3D3;
 }
 
-#winwkmqbpf .gt_footnote {
+#ymfsptpwlm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -449,7 +448,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#winwkmqbpf .gt_sourcenotes {
+#ymfsptpwlm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -463,7 +462,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-right-color: #D3D3D3;
 }
 
-#winwkmqbpf .gt_sourcenote {
+#ymfsptpwlm .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -471,63 +470,63 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#winwkmqbpf .gt_left {
+#ymfsptpwlm .gt_left {
   text-align: left;
 }
 
-#winwkmqbpf .gt_center {
+#ymfsptpwlm .gt_center {
   text-align: center;
 }
 
-#winwkmqbpf .gt_right {
+#ymfsptpwlm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#winwkmqbpf .gt_font_normal {
+#ymfsptpwlm .gt_font_normal {
   font-weight: normal;
 }
 
-#winwkmqbpf .gt_font_bold {
+#ymfsptpwlm .gt_font_bold {
   font-weight: bold;
 }
 
-#winwkmqbpf .gt_font_italic {
+#ymfsptpwlm .gt_font_italic {
   font-style: italic;
 }
 
-#winwkmqbpf .gt_super {
+#ymfsptpwlm .gt_super {
   font-size: 65%;
 }
 
-#winwkmqbpf .gt_footnote_marks {
+#ymfsptpwlm .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#winwkmqbpf .gt_asterisk {
+#ymfsptpwlm .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#winwkmqbpf .gt_indent_1 {
+#ymfsptpwlm .gt_indent_1 {
   text-indent: 5px;
 }
 
-#winwkmqbpf .gt_indent_2 {
+#ymfsptpwlm .gt_indent_2 {
   text-indent: 10px;
 }
 
-#winwkmqbpf .gt_indent_3 {
+#ymfsptpwlm .gt_indent_3 {
   text-indent: 15px;
 }
 
-#winwkmqbpf .gt_indent_4 {
+#ymfsptpwlm .gt_indent_4 {
   text-indent: 20px;
 }
 
-#winwkmqbpf .gt_indent_5 {
+#ymfsptpwlm .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -611,8 +610,6 @@ We used the posterior distribution of $c$ and $lr$ parameters to generate a post
 
 The residuals of the model predictions for the testing stage (<a href="#fig-htw-resid-pred" class="quarto-xref">Figure 2</a>) also show an unsurprising pattern across fitting methods - with models fit only to the test data showing the best performance, followed by models fit to both training and test data, and with models fit only to the training data showing the worst performance (note that y axes are scaled different between plots). Although EXAM tends to perform better for both Constant and Varied participants (see also <a href="#fig-ee-e1" class="quarto-xref">Figure 4</a>), the relative advantage of EXAM is generally larger for the Constant group - a pattern consistent across all three fitting methods. The primary predictive difference between ALM and EXAM is made clear in <a href="#fig-cm-vx-pat" class="quarto-xref">Figure 3</a>, which directly compares the observed data against the posterior predictive distributions for both models. Regardless of how the models are fit, only EXAM can capture the pattern where participants are able to discriminate all 6 target bands.
 
--   \*\* does EXAM do better for the Constant group because the constant group performs better? Or does training with a single example encourage an exam sort of strategy?
-
 <img
 src="htw_model.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-1.png"
 id="fig-cm-vx-pat"
@@ -628,23 +625,23 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
 
 <div id="tbl-htw-modelError-e23">
 
-<div id="rymgwnzsvy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#rymgwnzsvy table {
+<div id="zscrygkwwj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zscrygkwwj table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#rymgwnzsvy thead, #rymgwnzsvy tbody, #rymgwnzsvy tfoot, #rymgwnzsvy tr, #rymgwnzsvy td, #rymgwnzsvy th {
+#zscrygkwwj thead, #zscrygkwwj tbody, #zscrygkwwj tfoot, #zscrygkwwj tr, #zscrygkwwj td, #zscrygkwwj th {
   border-style: none;
 }
 
-#rymgwnzsvy p {
+#zscrygkwwj p {
   margin: 0;
   padding: 0;
 }
 
-#rymgwnzsvy .gt_table {
+#zscrygkwwj .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -670,12 +667,12 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-left-color: #D3D3D3;
 }
 
-#rymgwnzsvy .gt_caption {
+#zscrygkwwj .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#rymgwnzsvy .gt_title {
+#zscrygkwwj .gt_title {
   color: #333333;
   font-size: 14px;
   font-weight: initial;
@@ -687,7 +684,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-bottom-width: 0;
 }
 
-#rymgwnzsvy .gt_subtitle {
+#zscrygkwwj .gt_subtitle {
   color: #333333;
   font-size: 12px;
   font-weight: initial;
@@ -699,7 +696,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-top-width: 0;
 }
 
-#rymgwnzsvy .gt_heading {
+#zscrygkwwj .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -711,13 +708,13 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-right-color: #D3D3D3;
 }
 
-#rymgwnzsvy .gt_bottom_border {
+#zscrygkwwj .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rymgwnzsvy .gt_col_headings {
+#zscrygkwwj .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -732,7 +729,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-right-color: #D3D3D3;
 }
 
-#rymgwnzsvy .gt_col_heading {
+#zscrygkwwj .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -752,7 +749,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   overflow-x: hidden;
 }
 
-#rymgwnzsvy .gt_column_spanner_outer {
+#zscrygkwwj .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -764,15 +761,15 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   padding-right: 4px;
 }
 
-#rymgwnzsvy .gt_column_spanner_outer:first-child {
+#zscrygkwwj .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rymgwnzsvy .gt_column_spanner_outer:last-child {
+#zscrygkwwj .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rymgwnzsvy .gt_column_spanner {
+#zscrygkwwj .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -784,11 +781,11 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   width: 100%;
 }
 
-#rymgwnzsvy .gt_spanner_row {
+#zscrygkwwj .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#rymgwnzsvy .gt_group_heading {
+#zscrygkwwj .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -814,7 +811,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   text-align: left;
 }
 
-#rymgwnzsvy .gt_empty_group_heading {
+#zscrygkwwj .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -829,15 +826,15 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   vertical-align: middle;
 }
 
-#rymgwnzsvy .gt_from_md > :first-child {
+#zscrygkwwj .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rymgwnzsvy .gt_from_md > :last-child {
+#zscrygkwwj .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rymgwnzsvy .gt_row {
+#zscrygkwwj .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -856,7 +853,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   overflow-x: hidden;
 }
 
-#rymgwnzsvy .gt_stub {
+#zscrygkwwj .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -869,7 +866,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   padding-right: 5px;
 }
 
-#rymgwnzsvy .gt_stub_row_group {
+#zscrygkwwj .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -883,15 +880,15 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   vertical-align: top;
 }
 
-#rymgwnzsvy .gt_row_group_first td {
+#zscrygkwwj .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rymgwnzsvy .gt_row_group_first th {
+#zscrygkwwj .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#rymgwnzsvy .gt_summary_row {
+#zscrygkwwj .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -901,16 +898,16 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   padding-right: 5px;
 }
 
-#rymgwnzsvy .gt_first_summary_row {
+#zscrygkwwj .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rymgwnzsvy .gt_first_summary_row.thick {
+#zscrygkwwj .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rymgwnzsvy .gt_last_summary_row {
+#zscrygkwwj .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -920,7 +917,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-bottom-color: #D3D3D3;
 }
 
-#rymgwnzsvy .gt_grand_summary_row {
+#zscrygkwwj .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -930,7 +927,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   padding-right: 5px;
 }
 
-#rymgwnzsvy .gt_first_grand_summary_row {
+#zscrygkwwj .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -940,7 +937,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-top-color: #D3D3D3;
 }
 
-#rymgwnzsvy .gt_last_grand_summary_row_top {
+#zscrygkwwj .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -950,11 +947,11 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-bottom-color: #D3D3D3;
 }
 
-#rymgwnzsvy .gt_striped {
+#zscrygkwwj .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rymgwnzsvy .gt_table_body {
+#zscrygkwwj .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -963,7 +960,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-bottom-color: #D3D3D3;
 }
 
-#rymgwnzsvy .gt_footnotes {
+#zscrygkwwj .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -977,7 +974,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-right-color: #D3D3D3;
 }
 
-#rymgwnzsvy .gt_footnote {
+#zscrygkwwj .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -986,7 +983,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   padding-right: 5px;
 }
 
-#rymgwnzsvy .gt_sourcenotes {
+#zscrygkwwj .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1000,7 +997,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-right-color: #D3D3D3;
 }
 
-#rymgwnzsvy .gt_sourcenote {
+#zscrygkwwj .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1008,63 +1005,63 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   padding-right: 5px;
 }
 
-#rymgwnzsvy .gt_left {
+#zscrygkwwj .gt_left {
   text-align: left;
 }
 
-#rymgwnzsvy .gt_center {
+#zscrygkwwj .gt_center {
   text-align: center;
 }
 
-#rymgwnzsvy .gt_right {
+#zscrygkwwj .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rymgwnzsvy .gt_font_normal {
+#zscrygkwwj .gt_font_normal {
   font-weight: normal;
 }
 
-#rymgwnzsvy .gt_font_bold {
+#zscrygkwwj .gt_font_bold {
   font-weight: bold;
 }
 
-#rymgwnzsvy .gt_font_italic {
+#zscrygkwwj .gt_font_italic {
   font-style: italic;
 }
 
-#rymgwnzsvy .gt_super {
+#zscrygkwwj .gt_super {
   font-size: 65%;
 }
 
-#rymgwnzsvy .gt_footnote_marks {
+#zscrygkwwj .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#rymgwnzsvy .gt_asterisk {
+#zscrygkwwj .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rymgwnzsvy .gt_indent_1 {
+#zscrygkwwj .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rymgwnzsvy .gt_indent_2 {
+#zscrygkwwj .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rymgwnzsvy .gt_indent_3 {
+#zscrygkwwj .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rymgwnzsvy .gt_indent_4 {
+#zscrygkwwj .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rymgwnzsvy .gt_indent_5 {
+#zscrygkwwj .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1177,25 +1174,29 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
 
 Table 3: Models errors predicting empirical data - aggregated over all participants, posterior parameter values, and velocity bands. Note that Fit Method refers to the subset of the data that the model was trained on, while Task Stage refers to the subset of the data that the model was evaluated on.
 </div>
+<img
+src="htw_model.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-e2-e3-1.png"
+id="fig-cm-vx-pat-e2-e3"
+alt="Figure 5: Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands." />
 <div id="tbl-htw-ee-e23">
 
-<div id="idyvffhbnh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#idyvffhbnh table {
+<div id="iubvnbbvgb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#iubvnbbvgb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#idyvffhbnh thead, #idyvffhbnh tbody, #idyvffhbnh tfoot, #idyvffhbnh tr, #idyvffhbnh td, #idyvffhbnh th {
+#iubvnbbvgb thead, #iubvnbbvgb tbody, #iubvnbbvgb tfoot, #iubvnbbvgb tr, #iubvnbbvgb td, #iubvnbbvgb th {
   border-style: none;
 }
 
-#idyvffhbnh p {
+#iubvnbbvgb p {
   margin: 0;
   padding: 0;
 }
 
-#idyvffhbnh .gt_table {
+#iubvnbbvgb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1221,12 +1222,12 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   border-left-color: #D3D3D3;
 }
 
-#idyvffhbnh .gt_caption {
+#iubvnbbvgb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#idyvffhbnh .gt_title {
+#iubvnbbvgb .gt_title {
   color: #333333;
   font-size: 16px;
   font-weight: initial;
@@ -1238,7 +1239,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   border-bottom-width: 0;
 }
 
-#idyvffhbnh .gt_subtitle {
+#iubvnbbvgb .gt_subtitle {
   color: #333333;
   font-size: 14px;
   font-weight: initial;
@@ -1250,7 +1251,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   border-top-width: 0;
 }
 
-#idyvffhbnh .gt_heading {
+#iubvnbbvgb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1262,13 +1263,13 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   border-right-color: #D3D3D3;
 }
 
-#idyvffhbnh .gt_bottom_border {
+#iubvnbbvgb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#idyvffhbnh .gt_col_headings {
+#iubvnbbvgb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1283,7 +1284,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   border-right-color: #D3D3D3;
 }
 
-#idyvffhbnh .gt_col_heading {
+#iubvnbbvgb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1303,7 +1304,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   overflow-x: hidden;
 }
 
-#idyvffhbnh .gt_column_spanner_outer {
+#iubvnbbvgb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1315,15 +1316,15 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   padding-right: 4px;
 }
 
-#idyvffhbnh .gt_column_spanner_outer:first-child {
+#iubvnbbvgb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#idyvffhbnh .gt_column_spanner_outer:last-child {
+#iubvnbbvgb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#idyvffhbnh .gt_column_spanner {
+#iubvnbbvgb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1335,11 +1336,11 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   width: 100%;
 }
 
-#idyvffhbnh .gt_spanner_row {
+#iubvnbbvgb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#idyvffhbnh .gt_group_heading {
+#iubvnbbvgb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1365,7 +1366,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   text-align: left;
 }
 
-#idyvffhbnh .gt_empty_group_heading {
+#iubvnbbvgb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1380,15 +1381,15 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   vertical-align: middle;
 }
 
-#idyvffhbnh .gt_from_md > :first-child {
+#iubvnbbvgb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#idyvffhbnh .gt_from_md > :last-child {
+#iubvnbbvgb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#idyvffhbnh .gt_row {
+#iubvnbbvgb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1407,7 +1408,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   overflow-x: hidden;
 }
 
-#idyvffhbnh .gt_stub {
+#iubvnbbvgb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1420,7 +1421,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   padding-right: 5px;
 }
 
-#idyvffhbnh .gt_stub_row_group {
+#iubvnbbvgb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1434,15 +1435,15 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   vertical-align: top;
 }
 
-#idyvffhbnh .gt_row_group_first td {
+#iubvnbbvgb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#idyvffhbnh .gt_row_group_first th {
+#iubvnbbvgb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#idyvffhbnh .gt_summary_row {
+#iubvnbbvgb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1452,16 +1453,16 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   padding-right: 5px;
 }
 
-#idyvffhbnh .gt_first_summary_row {
+#iubvnbbvgb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#idyvffhbnh .gt_first_summary_row.thick {
+#iubvnbbvgb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#idyvffhbnh .gt_last_summary_row {
+#iubvnbbvgb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1471,7 +1472,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   border-bottom-color: #D3D3D3;
 }
 
-#idyvffhbnh .gt_grand_summary_row {
+#iubvnbbvgb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1481,7 +1482,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   padding-right: 5px;
 }
 
-#idyvffhbnh .gt_first_grand_summary_row {
+#iubvnbbvgb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1491,7 +1492,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   border-top-color: #D3D3D3;
 }
 
-#idyvffhbnh .gt_last_grand_summary_row_top {
+#iubvnbbvgb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1501,11 +1502,11 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   border-bottom-color: #D3D3D3;
 }
 
-#idyvffhbnh .gt_striped {
+#iubvnbbvgb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#idyvffhbnh .gt_table_body {
+#iubvnbbvgb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1514,7 +1515,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   border-bottom-color: #D3D3D3;
 }
 
-#idyvffhbnh .gt_footnotes {
+#iubvnbbvgb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1528,7 +1529,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   border-right-color: #D3D3D3;
 }
 
-#idyvffhbnh .gt_footnote {
+#iubvnbbvgb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1537,7 +1538,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   padding-right: 5px;
 }
 
-#idyvffhbnh .gt_sourcenotes {
+#iubvnbbvgb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1551,7 +1552,7 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   border-right-color: #D3D3D3;
 }
 
-#idyvffhbnh .gt_sourcenote {
+#iubvnbbvgb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1559,63 +1560,63 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
   padding-right: 5px;
 }
 
-#idyvffhbnh .gt_left {
+#iubvnbbvgb .gt_left {
   text-align: left;
 }
 
-#idyvffhbnh .gt_center {
+#iubvnbbvgb .gt_center {
   text-align: center;
 }
 
-#idyvffhbnh .gt_right {
+#iubvnbbvgb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#idyvffhbnh .gt_font_normal {
+#iubvnbbvgb .gt_font_normal {
   font-weight: normal;
 }
 
-#idyvffhbnh .gt_font_bold {
+#iubvnbbvgb .gt_font_bold {
   font-weight: bold;
 }
 
-#idyvffhbnh .gt_font_italic {
+#iubvnbbvgb .gt_font_italic {
   font-style: italic;
 }
 
-#idyvffhbnh .gt_super {
+#iubvnbbvgb .gt_super {
   font-size: 65%;
 }
 
-#idyvffhbnh .gt_footnote_marks {
+#iubvnbbvgb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#idyvffhbnh .gt_asterisk {
+#iubvnbbvgb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#idyvffhbnh .gt_indent_1 {
+#iubvnbbvgb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#idyvffhbnh .gt_indent_2 {
+#iubvnbbvgb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#idyvffhbnh .gt_indent_3 {
+#iubvnbbvgb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#idyvffhbnh .gt_indent_4 {
+#iubvnbbvgb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#idyvffhbnh .gt_indent_5 {
+#iubvnbbvgb .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1750,32 +1751,19 @@ Table 3: Models errors predicting empirical data - aggregated over all particip
 Table 4: Results of Bayesian Regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and the interaction between Model and Condition. The values represent the estimate coefficient for each term, with 95% credible intervals in brackets. The intercept reflects the baseline of ALM and Constant. The other estimates indicate deviations from the baseline for the EXAM mode and varied condition. Lower values indicate better model fit.
 </div>
 
-*Model Fits to Experiment 2 and 3.* The model fitting results for Experiments 2 and 3 closely mirrored those observed in Experiment 1. The Bayesian regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and their interaction (see <a href="#tbl-htw-ee-e23" class="quarto-xref">Table 4</a>) revealed a consistent main effect of Model across all three experiments. The negative coefficients for the ModelEXAM term (Exp 2: $\beta$ = -86.39, 95% CrI -113.52, -59.31, pd = 100%; Exp 3: $\beta$ = -40.61, 95% CrI -75.9, -3.02, pd = 98.17%) indicate that EXAM outperformed ALM in both experiments. Furthermore, the interaction between Model and Condition was significant in both Experiment 2 ($\beta$ = 56.87, 95% CrI 25.26, 88.04, pd = 99.98%) and Experiment 3 ($\beta$ = 41.9, 95% CrI 11.2, 72.54, pd = 99.35%), suggesting that the superiority of EXAM over ALM was more pronounced for the Constant group compared to the Varied group, as was the case in Experiment 1. One notable difference in Experiment 3 was the inclusion of the bandOrder term and its interactions, which accounted for the effect of the order in which the velocity bands were presented during training and testing. Despite this additional factor, the overall pattern of results remained consistent with the previous experiments, providing strong support for the robustness of EXAM's performance, particularly in the Constant condition, across all three studies.
+*Model Fits to Experiment 2 and 3.* Data from Experiments 2 and 3 were fit to ALM and EXAM in the same manner as Experiment1 . For brevity, we only plot and discuss the results of the "fit to training and testing data" models - results from the other fitting methods can be found in the appendix. The model fitting results for Experiments 2 and 3 closely mirrored those observed in Experiment 1. The Bayesian regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and their interaction (see <a href="#tbl-htw-ee-e23" class="quarto-xref">Table 4</a>) revealed a consistent main effect of Model across all three experiments. The negative coefficients for the ModelEXAM term (Exp 2: $\beta$ = -86.39, 95% CrI -113.52, -59.31, pd = 100%; Exp 3: $\beta$ = -40.61, 95% CrI -75.9, -3.02, pd = 98.17%) indicate that EXAM outperformed ALM in both experiments. Furthermore, the interaction between Model and Condition was significant in both Experiment 2 ($\beta$ = 56.87, 95% CrI 25.26, 88.04, pd = 99.98%) and Experiment 3 ($\beta$ = 41.9, 95% CrI 11.2, 72.54, pd = 99.35%), suggesting that the superiority of EXAM over ALM was more pronounced for the Constant group compared to the Varied group, as was the case in Experiment 1. Recall that Experiment 3 included participants in both the original and reverse order conditions - and that this manipulation interacted with the effect of training condition. We thus also controleld for band order in our Bayesian Regression assessing the relative performance of EXAM and ALM in Experiment 3. There was a significant three way interaction between Model, Training Condition, and Band Order ($\beta$ = -60.6, 95% CrI -101.8, -18.66, pd = 99.83%), indicating that the relative advantage of EXAM over ALM was only more pronounced in the original order condition, and not the reverse order condition (see <a href="#fig-e2_e3_ae" class="quarto-xref">Figure 6</a>).
 
 <img
 src="htw_model.markdown_strict_files/figure-markdown_strict/fig-e2_e3_ae-1.png"
 id="fig-e2_e3_ae"
-alt="Figure 5: Conditional effects of Model and Condition on Model Error for Experiment 2 and 3 data." />
+alt="Figure 6: Conditional effects of Model (ALM vs EXAM) and Condition (Constant vs. Varied) on Model Error for Experiment 2 and 3 data. Experiment 3 also includes a control for the order of training vs. testing bands (original order vs. reverse order)." />
 
-<img
-src="htw_model.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-e2-e3-1.png"
-id="fig-cm-vx-pat-e2-e3"
-alt="Figure 6: Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands." />
+*Computational Model Summary*. Across the model fits to all three experiments, we found greater support for EXAM over ALM (negative coefficients on the ModelEXAM term in <a href="#tbl-htw-ee-e23" class="quarto-xref">Table 4</a>), and moreover that the constant participants were disproportionately well described by EXAM in comparison to ALM (positive coefficients on ModelEXAM:conditVaried terms in <a href="#tbl-htw-ee-e23" class="quarto-xref">Table 4</a>). This pattern is also clearly depicted in <a href="#fig-htw-best-model" class="quarto-xref">Figure 7</a>, which plots the difference in model errors between ALM and EXAM for each individual participant. Both varied and constant conditions have a greater proportion of subjects better fit by EXAM (positive error differences), with the magnitude of EXAM's advantage visibly greater for the constant group. It also bears mention that numerous participants were better fit by ALM, or did not show a clear preference for either model. A subset of these participants are shown in <a href="#fig-htw-indv-pred" class="quarto-xref">Figure 8</a>.
 
 <img
 src="htw_model.markdown_strict_files/figure-markdown_strict/fig-htw-best-model-1.png"
 id="fig-htw-best-model"
 alt="Figure 7: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM." />
-
-### Accounting for individual patterns
-
-To more accurately assess the relative abilities of ALM and EXAM to capture important empirical patterns - we will now examine the predictions of both models for the subset of individual participants shown in <a href="#fig-htw-indv-pred" class="quarto-xref">Figure 8</a>. Panel A presents three varied and constant participants who demonstrated a reasonable degree of discrimination between the 6 velocity bands during testing.
-
--   \*\* comment on the different ways ALM can completely fail to mimic discrimination patterns (sbj. 35; sbj. 137),and on how it can sometimes partially succeed (sbj. 11; 14,74)
-
--   \*\* comment on how EXAM can somtimes mimic non-monotonic spacing between bands due to associative stregth from training (i.e. subject 47)
-
--   \*\* compare c values to slope parameters from the statistical models earlier in paper
 
 <img
 src="htw_model.markdown_strict_files/figure-markdown_strict/fig-htw-indv-pred-1.png"
