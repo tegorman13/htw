@@ -29,22 +29,18 @@ prefer-html: true
 ```{r}
 #| cache: false
 pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
-               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools,ggdist,ggh4x,brms,tidybayes,bayestestR, gt)
-#conflict_prefer_all("dplyr", quiet = TRUE)
-walk(c("flextable","dplyr"), conflict_prefer_all, quiet = TRUE)
+               stringr,future,furrr, knitr, reactable, flextable,ggstance, htmltools,
+               ggdist,ggh4x,brms,tidybayes,emmeans,bayestestR, gt)
+walk(c("dplyr"), conflict_prefer_all, quiet = TRUE)
 #options(brms.backend="cmdstanr",mc.cores=4)
 options(digits=3, scipen=999, dplyr.summarise.inform=FALSE)
 walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model", "prep_model_data","org_functions"), ~source(here::here(paste0("Functions/", .x, ".R"))))
-
 ```
-
 
 ```{r}
 #| cache: true
-
 invisible(list2env(load_sbj_data(), envir = .GlobalEnv))
 invisible(list2env(load_e1(), envir = .GlobalEnv))
-
 e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
 ```
 
@@ -123,11 +119,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
 post_tabs <- abc_tables(post_dat,post_dat_l)
 train_tab <- abc_train_tables(pd_train,pd_train_l)
 
-e1_tab <- rbind(post_tabs$agg_pred_full |> mutate("Task Stage"="Test"), train_tab$agg_pred_full |> mutate("Task Stage"="Train")) |> 
-  mutate(Fit_Method=rename_fm(Fit_Method)) 
-  # |>
-  # flextable::tabulator(rows=c("stage","Fit_Method","Model"), columns=c("condit"),
-  #                      `ME` = as_paragraph(mean_error)) |> as_flextable()
+e1_tab <- rbind(post_tabs$agg_pred_full |> mutate("Task Stage"="Test"), train_tab$agg_pred_full |> mutate("Task Stage"="Train")) |> mutate(Fit_Method=rename_fm(Fit_Method)) 
 
 e1_tab %>%
   group_by(`Task Stage`, Fit_Method, Model, condit) %>%
@@ -139,10 +131,6 @@ e1_tab %>%
   ) %>%
   rename("Fit Method" = Fit_Method) %>%
   gt() %>%
-  # tab_header(
-  #   title = "Mean Error by Fit Method, Task Stage, and Condition",
-  #   subtitle = "Comparison across Models"
-  # ) %>%
   cols_move_to_start(columns = c(`Task Stage`)) %>%
   cols_label(
     `Task Stage` = "Task Stage"
@@ -166,12 +154,7 @@ e1_tab %>%
     heading.subtitle.font.size = 12,
     table.font.size = 10, 
     quarto.disable_processing = TRUE
-  ) #%>%
-  # tab_footnote(
-  #   footnote = "Note: Mean errors are calculated as the absolute difference between the predicted and actual values.",
-  #   locations = cells_title(groups = "subtitle")
-  # ) %>%
-  # sub_missing(missing_text = "")
+  ) 
 
 #  post_dat  |> group_by(condit,Model,Fit_Method,x) |> 
 #     mutate(e2=abs(dist-pred_dist)) |> 
@@ -187,26 +170,12 @@ e1_tab %>%
 # post_tabs$agg_pred_full_bt |> 
 #    pander::pandoc.table(style="rmarkdown", split.table=Inf)
 #   
-# post_tabs$agg_pred_full |> 
-#    pander::pandoc.table(style="rmarkdown", split.table=Inf)
-# 
-# post_tabs$agg_x_full_bt |> filter((Fit_Method=="Test_Train")) |>
-#   mutate(Fit_Method=(Fit_Method)) |>
-#   rename("Band"=x, "Condition"=condit, "Model Error"=mean_error) |>
-#   pander::pandoc.table(style="rmarkdown", split.table=Inf)
-
-#  post_dat |> group_by(id,condit,Model,Fit_Method) |> summarise(y=mean(y), pred=mean(pred), ae=abs(y-pred)) |>
-#     group_by(id,condit,Model,Fit_Method) |> 
-#     summarise(mean_error=mean(ae)) |> 
-# ggplot(aes(x=mean_error,fill=condit,y=interaction(Model,Fit_Method))) + stat_halfeye()
-# 
 #  post_dat |> group_by(id,condit,Model,Fit_Method,x) |> summarise(y=mean(y), pred=mean(pred), ae=abs(y-pred)) |>
 #     group_by(id,condit,Model,Fit_Method,x) |> 
 #     summarise(mean_error=mean(ae)) |> 
 #   ggplot(aes(x=mean_error,fill=condit,y=interaction(Model,Fit_Method))) + 
 #   stat_halfeye() +
 #   facet_wrap(~x)
-
 ```
 
 
@@ -264,7 +233,6 @@ test_resid <-  post_dat |>
   ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, axes = "all",ncol=2,scale="free") +
   labs(title="Model Residual Errors - Testing Stage",y="RMSE", x="Velocity Band") 
 
-
 (train_resid / test_resid) +
   #plot_layout(heights=c(1,1.5)) & 
   plot_annotation(tag_levels = list(c('A','B')),tag_suffix = ') ') 
@@ -285,12 +253,11 @@ The residuals of the model predictions for the testing stage (@fig-htw-resid-pre
 #| fig-height: 10
 #| fig-width: 10
 
-
 post_dat_l |> 
   group_by(id,condit, Fit_Method,Resp,bandType,x,vb) |> 
  summarize(vx=median(val)) |> 
  #left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
- ggplot( aes(x=Resp,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+ ggplot(aes(x=Resp,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
   stat_bar + 
     facet_wrap(~rename_fm(Fit_Method)+condit, ncol=2,strip.position = "top", scales = "free_x") +
         scale_color_manual(values = c("black" = "black"), guide = "none") +
@@ -312,9 +279,6 @@ post_dat_l |>
 #| fig-caption: conditional and marginal effects
 #| fig-height: 9
 #| fig-width: 10
-
-# library(brms)
-# options(brms.backend="cmdstanr",mc.cores=4)
 
 pdl <- post_dat_l |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
   filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
@@ -352,10 +316,6 @@ posterior_estimates <- as.data.frame(e1_ee_brm_ae) %>%
   select(starts_with("b_")) %>%
   setNames(c("Intercept", "ModelEXAM", "conditVaried", "ModelEXAM_conditVaried"))
 
-
-library(tidybayes)
-library(emmeans)
-
 constant_EXAM <- posterior_estimates$Intercept + posterior_estimates$ModelEXAM
 varied_EXAM <- posterior_estimates$Intercept + posterior_estimates$ModelEXAM + posterior_estimates$conditVaried + posterior_estimates$ModelEXAM_conditVaried
 comparison_EXAM <- constant_EXAM - varied_EXAM
@@ -364,11 +324,7 @@ summary_EXAM <- bayestestR::describe_posterior(comparison_EXAM, centrality = "Me
 # e1_ee_brm_ae |> emmeans(pairwise ~ Model * condit, re_formula=NULL)
 # e1_ee_brm_ae |> emmeans(pairwise ~ Model * condit, re_formula=NA)
 
-
   # full set of Model x condit contrasts
-
-
-
 # ALM - EXAM
 btw_model <- e1_ee_brm_ae |> emmeans(pairwise~ Model | condit, re_formula=NULL)  |> 
   pluck("contrasts") |> 
@@ -377,14 +333,11 @@ btw_model <- e1_ee_brm_ae |> emmeans(pairwise~ Model | condit, re_formula=NULL) 
 
 # btw_model |> ggplot(aes(x=value,y=contrast,fill=condit)) +stat_halfeye()
 
-
 # Constant - Varied
 emm_condit <- e1_ee_brm_ae |> emmeans(~ condit | Model, re_formula = NULL)
 btw_con <- emm_condit |>  pairs() |> gather_emmeans_draws() |> 
   group_by(contrast,.draw, Model) |> summarise(value=mean(.value), n=n()) 
 # btw_con |> ggplot(aes(x=value,y=Model,fill=Model)) +stat_halfeye()                              
-
-
 
 p_em_1<- e1_ee_brm_ae |> emmeans(pairwise~ Model*condit, re_formula=NA)  |> 
   pluck("contrasts") |>
@@ -393,21 +346,16 @@ p_em_1<- e1_ee_brm_ae |> emmeans(pairwise~ Model*condit, re_formula=NA)  |>
   filter(!(contrast %in% c("ALM Constant - EXAM Constant","ALM Constant - EXAM Varied","ALM Varied - EXAM Varied ", "EXAM Constant - ALM Varied" ))) |> 
   ggplot(aes(x=value,y=contrast,fill=contrast)) +stat_halfeye() + labs(x="Model Error Difference",y="Contrast") + theme(legend.position="none") 
 
-
 p_ce_1 / p_em_1
-
-
 ```
 
 To quantitatively assess whether the differences in performance between models,  we fit a bayesian regressions predicting the errors of the posterior predictions of each models as a function of the Model (ALM vs. EXAM) and training condition (Constant vs. Varied).
 
 Model errors were significantly lower for EXAM  ($\beta$ = `r bm1$estimate`, 95% CrI \[`r bm1$conf.low`, `r bm1$conf.high`\], pd = `r bm1$pd`)  than ALM.  There was also a significant interaction between Model and Condition ($\beta$ = `r bm3$estimate`, 95% CrI \[`r bm3$conf.low`, `r bm3$conf.high`\], pd = `r bm3$pd`), indicating that the advantage of EXAM over ALM was significantly greater for the constant group. To assess whether EXAM predicts constant performance significantly better for Constant than for Varied subjects, we calculated the difference in model error between the Constant and Varied conditions specifically for EXAM. The results indicated that the model error for EXAM was significantly lower in the Constant condition compared to the Varied condition, with a mean difference of `r summary_EXAM$Mean` (95% CrI \[`r summary_EXAM$CI_low`, `r summary_EXAM$CI_high`\], pd = `r summary_EXAM$pd`). 
 
-
 ```{r}
 #| label: tbl-htw-modelError-e23
 #| tbl-cap: "Models errors predicting empirical data -  aggregated over all participants, posterior parameter values,  and velocity bands. Note that Fit Method refers to the subset of the data that the model was trained on, while Task Stage refers to the subset of the data that the model was evaluated on."
-
 
 e2_model <- load_e2()
 post_tabs2 <- abc_tables(e2_model$post_dat,e2_model$post_dat_l)
@@ -419,9 +367,7 @@ e2_tab <- rbind(post_tabs2$agg_pred_full |>
  mutate("Task Stage"="Test"), train_tab2$agg_pred_full |> 
  mutate("Task Stage"="Train")) |> 
   mutate(Fit_Method=rename_fm(Fit_Method)) 
-  # |>
-  # flextable::tabulator(rows=c("Task Stage","Fit_Method","Model"), columns=c("condit"),
-  #                      `ME` = as_paragraph(mean_error)) |> as_flextable()
+
 e3_model <- load_e3()
 post_tabs3 <- abc_tables(e3_model$post_dat,e3_model$post_dat_l)
 train_tab3 <- abc_train_tables(e3_model$pd_train,e3_model$pd_train_l)
@@ -431,13 +377,6 @@ pdl3 <- e3_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=
 e3_tab <- rbind(post_tabs3$agg_pred_full |> 
   mutate("Task Stage"="Test"), train_tab3$agg_pred_full |> mutate("Task Stage"="Train")) |> 
   mutate(Fit_Method=rename_fm(Fit_Method)) 
-  # |>
-  # flextable::tabulator(rows=c("Task Stage","Fit_Method","Model"), columns=c("condit"),
-  #                      `ME` = as_paragraph(mean_error)) |> as_flextable()
-
-
-
-
 
 e23_tab <- rbind(e2_tab |> mutate(Exp="E2"), e3_tab |> mutate(Exp="E3")) 
 gt_table <- e23_tab %>%
@@ -448,10 +387,6 @@ gt_table <- e23_tab %>%
   ) %>%
   arrange(Fit_Method, `Task Stage`) %>%
   gt() %>%
-  # tab_header(
-  #   title = "Mean Error by Fit Method, Task Stage, and Experiment",
-  #   subtitle = "Comparison across Conditions and Models"
-  # ) %>%
   cols_move_to_start(columns = `Task Stage`) %>%
   cols_label(`Task Stage` = "Task Stage") %>%
   fmt_number(columns = matches("E2|E3"), decimals = 1) %>%
@@ -469,11 +404,7 @@ gt_table <- e23_tab %>%
     heading.subtitle.font.size = 12,
     table.font.size = 10,
     quarto.disable_processing = TRUE
-  ) #%>%
-  # tab_footnote(
-  #   footnote = "Note: Mean errors are calculated as the absolute difference between the predicted and actual values.",
-  #   locations = cells_title(groups = "subtitle")
-  # )
+  ) 
 gt_table
 ```
 
@@ -514,15 +445,6 @@ bct_e3  <- as.data.frame(bayestestR::describe_posterior(e3_ee_brm_ae, centrality
   mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
   tibble::remove_rownames() %>%
   mutate(Term = stringr::str_remove(Term, "b_")) #%>% kable(booktabs = TRUE)
-
-# msa <- modelsummary::modelsummary(list("Exp 1."=e1_ee_brm_ae,"Exp 2."=e2_ee_brm_ae,"Exp 3. "=e3_ee_brm_ae), 
-#     gof_map = NA,
-#     fmt=1,
-#     estimate = "{estimate}",
-#     statistic="[{conf.low}, {conf.high}]", 
-#     coef_omit = "^sigma|^sd|^cor",
-#     coef_rename=function(x) stringr::str_remove(x, "b_"), output="gt")
-#msa
 
 bct <- rbind(bct_e1 |> mutate(exp="Exp 1"),bct_e2 |> mutate(exp= "Exp 2"),bct_e3 |> mutate(exp="Exp 3")) |> relocate(exp, .before=Term)
 
@@ -568,16 +490,6 @@ bct_table <- bct %>%
       rows = Term=="ModelEXAM:conditVaried"
     )
   ) %>%
-  # tab_style(
-  #   style = list(
-  #     cell_fill(color = "lightblue"),
-  #     cell_text(style = "italic")
-  #   ),
-  #   locations = cells_body(
-  #     columns = exp,
-  #     rows = Term == "Intercept"
-  #   )
-  # ) %>%
    tab_row_group(
     label = "Experiment 3",
     rows = exp == "Exp 3"
@@ -604,24 +516,10 @@ bct_table
 *Model Fits to Experiment 2 and 3.*  The model fitting results for Experiments 2 and 3 closely mirrored those observed in Experiment 1. The Bayesian regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and their interaction (see @tbl-htw-ee-e23) revealed a consistent main effect of Model across all three experiments. The negative coefficients for the ModelEXAM term (Exp 2: $\beta$ = `r bm1_e2$estimate`, 95% CrI `r bm1_e2$conf.low`, `r bm1_e2$conf.high`, pd = `r bm1_e2$pd`; Exp 3: $\beta$ = `r bm1_e3$estimate`, 95% CrI `r bm1_e3$conf.low`, `r bm1_e3$conf.high`, pd = `r bm1_e3$pd`) indicate that EXAM outperformed ALM in both experiments. Furthermore, the interaction between Model and Condition was significant in both Experiment 2 ($\beta$ = `r bm3_e2$estimate`, 95% CrI `r bm3_e2$conf.low`, `r bm3_e2$conf.high`, pd = `r bm3_e2$pd`) and Experiment 3 ($\beta$ = `r bm3_e3$estimate`, 95% CrI `r bm3_e3$conf.low`, `r bm3_e3$conf.high`, pd = `r bm3_e3$pd`), suggesting that the superiority of EXAM over ALM was more pronounced for the Constant group compared to the Varied group, as was the case in Experiment 1. One notable difference in Experiment 3 was the inclusion of the bandOrder term and its interactions, which accounted for the effect of the order in which the velocity bands were presented during training and testing. Despite this additional factor, the overall pattern of results remained consistent with the previous experiments, providing strong support for the robustness of EXAM's performance, particularly in the Constant condition, across all three studies.
 
 
-
-
-
-
-```{r}
-
-
-
-```
-
-
-
-
 ```{r}
 #| label: fig-e2_e3_ae
 #| fig-cap: "Conditional effects of Model and Condition on Model Error for Experiment 2 and 3 data."
-#| 
-#| fig-height: 5
+#| fig-height: 6
 #| fig-width: 9
 
 #wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))
@@ -634,7 +532,6 @@ p3 <- plot(conditional_effects(e2_ee_brm_ae, effects="Model:condit"),points=FALS
   labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
   
  p_e2 <- (p1 + p2+ p3) 
-
 #wrap_plots(plot(conditional_effects(e3_ee_brm_ae),points=FALSE,plot=FALSE))
 
 p_e3 <- plot(conditional_effects(e3_ee_brm_ae, 
@@ -645,13 +542,13 @@ p_e3 <- plot(conditional_effects(e3_ee_brm_ae,
      theme(legend.position="right") + 
      scale_color_manual(values=wes_palette("Darjeeling1")) 
 
-p1 <- plot(conditional_effects(e3_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + 
-  ggplot2::xlab("Condition") +ylab("Model Error")
-p2 <- plot(conditional_effects(e3_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + 
-  labs(x="Model",y=NULL)
-p3 <- plot(conditional_effects(e3_ee_brm_ae, effects="Model:condit"),points=FALSE, plot=FALSE)$`Model:condit` + 
-  scale_color_manual(values=wes_palette("Darjeeling1")) +
-  labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
+# p1 <- plot(conditional_effects(e3_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + 
+#   ggplot2::xlab("Condition") +ylab("Model Error")
+# p2 <- plot(conditional_effects(e3_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + 
+#   labs(x="Model",y=NULL)
+# p3 <- plot(conditional_effects(e3_ee_brm_ae, effects="Model:condit"),points=FALSE, plot=FALSE)$`Model:condit` + 
+#   scale_color_manual(values=wes_palette("Darjeeling1")) +
+#   labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
   
  #p2 <- (p1 + p2+ p3)
  (p_e2 / p_e3) + plot_annotation(tag_levels = c('A'), tag_suffix=".")
@@ -721,7 +618,6 @@ lowest_error_model <- best_id %>%
             differential = min(mean_error) - max(mean_error)) %>%
   ungroup()
 
-
 error_difference<- best_id %>%
   select(id, condit, Model,Fit_Method, mean_error) %>%
   pivot_wider(names_from = Model, values_from = c(mean_error)) %>%
@@ -748,7 +644,6 @@ full_comparison |>
 ```
 
 
-
 ### Accounting for individual patterns
 
 To more accurately assess the relative abilities of ALM and EXAM to capture important empirical patterns - we will now examine the predictions of both models for the subset of individual participants shown in @fig-htw-indv-pred. Panel A presents three varied and constant participants who demonstrated a reasonable degree of discrimination between the 6 velocity bands during testing.
@@ -758,9 +653,6 @@ To more accurately assess the relative abilities of ALM and EXAM to capture impo
 -   \*\* comment on how EXAM can somtimes mimic non-monotonic spacing between bands due to associative stregth from training (i.e. subject 47)
 
 -   \*\* compare c values to slope parameters from the statistical models earlier in paper
-
-
-
 
 
 ```{r  fig.width=11, fig.height=10}
@@ -785,8 +677,6 @@ indv_post_l <- post_dat_l  |> mutate(Exp="E1",bandOrder="Original") |> select(-s
   rbind(e3_model$post_dat_l |> mutate(Exp="E3") |> select(-fb)) |>
   filter(Fit_Method=="Test_Train", id %in% c(cId_tt,vId_tt,cId_new, e3_sbjs, e2_sbjs))
 
-
-
 testIndv <- indv_post_l |> 
 #filter(id %in% c(cId_tt,vId_tt,cId_new), Fit_Method=="Test_Train") |> 
    mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
@@ -803,7 +693,4 @@ testIndv <- indv_post_l |>
   theme(legend.position = "bottom",axis.title.x = element_blank())
 
 testIndv 
-
 ```
-
-

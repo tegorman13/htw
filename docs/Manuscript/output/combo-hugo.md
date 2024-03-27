@@ -382,8 +382,8 @@ Figure 5: Conditional effect of training condition and Band. Ribbons indicate 9
 
 | Condition | Q_0%\_mean | Q_25%\_mean | Q_50%\_mean | Q_75%\_mean | Q_100%\_mean |
 |:----------|-----------:|------------:|------------:|------------:|-------------:|
-| Constant  |     -0.106 |       0.477 |       0.692 |       0.935 |          1.4 |
-| Varied    |     -0.201 |       0.268 |       0.588 |       0.900 |          1.3 |
+| Constant  |     -0.108 |       0.478 |       0.690 |       0.934 |         1.39 |
+| Varied    |     -0.205 |       0.274 |       0.587 |       0.898 |         1.30 |
 
 Table 5: Slope coefficients by quartile, per condition
 </div>
@@ -872,23 +872,23 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
 
 <div id="tbl-htw-modelError-e1">
 
-<div id="sdgsvrfqrp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#sdgsvrfqrp table {
+<div id="pfqdtgvtme" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#pfqdtgvtme table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#sdgsvrfqrp thead, #sdgsvrfqrp tbody, #sdgsvrfqrp tfoot, #sdgsvrfqrp tr, #sdgsvrfqrp td, #sdgsvrfqrp th {
+#pfqdtgvtme thead, #pfqdtgvtme tbody, #pfqdtgvtme tfoot, #pfqdtgvtme tr, #pfqdtgvtme td, #pfqdtgvtme th {
   border-style: none;
 }
 
-#sdgsvrfqrp p {
+#pfqdtgvtme p {
   margin: 0;
   padding: 0;
 }
 
-#sdgsvrfqrp .gt_table {
+#pfqdtgvtme .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -914,12 +914,12 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-left-color: #D3D3D3;
 }
 
-#sdgsvrfqrp .gt_caption {
+#pfqdtgvtme .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#sdgsvrfqrp .gt_title {
+#pfqdtgvtme .gt_title {
   color: #333333;
   font-size: 14px;
   font-weight: initial;
@@ -931,7 +931,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-bottom-width: 0;
 }
 
-#sdgsvrfqrp .gt_subtitle {
+#pfqdtgvtme .gt_subtitle {
   color: #333333;
   font-size: 12px;
   font-weight: initial;
@@ -943,7 +943,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-top-width: 0;
 }
 
-#sdgsvrfqrp .gt_heading {
+#pfqdtgvtme .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -955,13 +955,13 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-right-color: #D3D3D3;
 }
 
-#sdgsvrfqrp .gt_bottom_border {
+#pfqdtgvtme .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#sdgsvrfqrp .gt_col_headings {
+#pfqdtgvtme .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -976,7 +976,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-right-color: #D3D3D3;
 }
 
-#sdgsvrfqrp .gt_col_heading {
+#pfqdtgvtme .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -996,7 +996,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   overflow-x: hidden;
 }
 
-#sdgsvrfqrp .gt_column_spanner_outer {
+#pfqdtgvtme .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -1008,15 +1008,15 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 4px;
 }
 
-#sdgsvrfqrp .gt_column_spanner_outer:first-child {
+#pfqdtgvtme .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#sdgsvrfqrp .gt_column_spanner_outer:last-child {
+#pfqdtgvtme .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#sdgsvrfqrp .gt_column_spanner {
+#pfqdtgvtme .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1028,11 +1028,11 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   width: 100%;
 }
 
-#sdgsvrfqrp .gt_spanner_row {
+#pfqdtgvtme .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#sdgsvrfqrp .gt_group_heading {
+#pfqdtgvtme .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1058,7 +1058,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   text-align: left;
 }
 
-#sdgsvrfqrp .gt_empty_group_heading {
+#pfqdtgvtme .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1073,15 +1073,15 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   vertical-align: middle;
 }
 
-#sdgsvrfqrp .gt_from_md > :first-child {
+#pfqdtgvtme .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#sdgsvrfqrp .gt_from_md > :last-child {
+#pfqdtgvtme .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#sdgsvrfqrp .gt_row {
+#pfqdtgvtme .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1100,7 +1100,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   overflow-x: hidden;
 }
 
-#sdgsvrfqrp .gt_stub {
+#pfqdtgvtme .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1113,7 +1113,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#sdgsvrfqrp .gt_stub_row_group {
+#pfqdtgvtme .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1127,15 +1127,15 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   vertical-align: top;
 }
 
-#sdgsvrfqrp .gt_row_group_first td {
+#pfqdtgvtme .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#sdgsvrfqrp .gt_row_group_first th {
+#pfqdtgvtme .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#sdgsvrfqrp .gt_summary_row {
+#pfqdtgvtme .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1145,16 +1145,16 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#sdgsvrfqrp .gt_first_summary_row {
+#pfqdtgvtme .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#sdgsvrfqrp .gt_first_summary_row.thick {
+#pfqdtgvtme .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#sdgsvrfqrp .gt_last_summary_row {
+#pfqdtgvtme .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1164,7 +1164,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-bottom-color: #D3D3D3;
 }
 
-#sdgsvrfqrp .gt_grand_summary_row {
+#pfqdtgvtme .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1174,7 +1174,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#sdgsvrfqrp .gt_first_grand_summary_row {
+#pfqdtgvtme .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1184,7 +1184,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-top-color: #D3D3D3;
 }
 
-#sdgsvrfqrp .gt_last_grand_summary_row_top {
+#pfqdtgvtme .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1194,11 +1194,11 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-bottom-color: #D3D3D3;
 }
 
-#sdgsvrfqrp .gt_striped {
+#pfqdtgvtme .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#sdgsvrfqrp .gt_table_body {
+#pfqdtgvtme .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1207,7 +1207,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-bottom-color: #D3D3D3;
 }
 
-#sdgsvrfqrp .gt_footnotes {
+#pfqdtgvtme .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1221,7 +1221,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-right-color: #D3D3D3;
 }
 
-#sdgsvrfqrp .gt_footnote {
+#pfqdtgvtme .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1230,7 +1230,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#sdgsvrfqrp .gt_sourcenotes {
+#pfqdtgvtme .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1244,7 +1244,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   border-right-color: #D3D3D3;
 }
 
-#sdgsvrfqrp .gt_sourcenote {
+#pfqdtgvtme .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1252,63 +1252,63 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
   padding-right: 5px;
 }
 
-#sdgsvrfqrp .gt_left {
+#pfqdtgvtme .gt_left {
   text-align: left;
 }
 
-#sdgsvrfqrp .gt_center {
+#pfqdtgvtme .gt_center {
   text-align: center;
 }
 
-#sdgsvrfqrp .gt_right {
+#pfqdtgvtme .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#sdgsvrfqrp .gt_font_normal {
+#pfqdtgvtme .gt_font_normal {
   font-weight: normal;
 }
 
-#sdgsvrfqrp .gt_font_bold {
+#pfqdtgvtme .gt_font_bold {
   font-weight: bold;
 }
 
-#sdgsvrfqrp .gt_font_italic {
+#pfqdtgvtme .gt_font_italic {
   font-style: italic;
 }
 
-#sdgsvrfqrp .gt_super {
+#pfqdtgvtme .gt_super {
   font-size: 65%;
 }
 
-#sdgsvrfqrp .gt_footnote_marks {
+#pfqdtgvtme .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#sdgsvrfqrp .gt_asterisk {
+#pfqdtgvtme .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#sdgsvrfqrp .gt_indent_1 {
+#pfqdtgvtme .gt_indent_1 {
   text-indent: 5px;
 }
 
-#sdgsvrfqrp .gt_indent_2 {
+#pfqdtgvtme .gt_indent_2 {
   text-indent: 10px;
 }
 
-#sdgsvrfqrp .gt_indent_3 {
+#pfqdtgvtme .gt_indent_3 {
   text-indent: 15px;
 }
 
-#sdgsvrfqrp .gt_indent_4 {
+#pfqdtgvtme .gt_indent_4 {
   text-indent: 20px;
 }
 
-#sdgsvrfqrp .gt_indent_5 {
+#pfqdtgvtme .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1409,23 +1409,23 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
 
 <div id="tbl-htw-modelError-e23">
 
-<div id="ueuvkxlicc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ueuvkxlicc table {
+<div id="jmgrkivmxo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jmgrkivmxo table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ueuvkxlicc thead, #ueuvkxlicc tbody, #ueuvkxlicc tfoot, #ueuvkxlicc tr, #ueuvkxlicc td, #ueuvkxlicc th {
+#jmgrkivmxo thead, #jmgrkivmxo tbody, #jmgrkivmxo tfoot, #jmgrkivmxo tr, #jmgrkivmxo td, #jmgrkivmxo th {
   border-style: none;
 }
 
-#ueuvkxlicc p {
+#jmgrkivmxo p {
   margin: 0;
   padding: 0;
 }
 
-#ueuvkxlicc .gt_table {
+#jmgrkivmxo .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1451,12 +1451,12 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-left-color: #D3D3D3;
 }
 
-#ueuvkxlicc .gt_caption {
+#jmgrkivmxo .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ueuvkxlicc .gt_title {
+#jmgrkivmxo .gt_title {
   color: #333333;
   font-size: 14px;
   font-weight: initial;
@@ -1468,7 +1468,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-bottom-width: 0;
 }
 
-#ueuvkxlicc .gt_subtitle {
+#jmgrkivmxo .gt_subtitle {
   color: #333333;
   font-size: 12px;
   font-weight: initial;
@@ -1480,7 +1480,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-top-width: 0;
 }
 
-#ueuvkxlicc .gt_heading {
+#jmgrkivmxo .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1492,13 +1492,13 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-right-color: #D3D3D3;
 }
 
-#ueuvkxlicc .gt_bottom_border {
+#jmgrkivmxo .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ueuvkxlicc .gt_col_headings {
+#jmgrkivmxo .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1513,7 +1513,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-right-color: #D3D3D3;
 }
 
-#ueuvkxlicc .gt_col_heading {
+#jmgrkivmxo .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -1533,7 +1533,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   overflow-x: hidden;
 }
 
-#ueuvkxlicc .gt_column_spanner_outer {
+#jmgrkivmxo .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -1545,15 +1545,15 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   padding-right: 4px;
 }
 
-#ueuvkxlicc .gt_column_spanner_outer:first-child {
+#jmgrkivmxo .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ueuvkxlicc .gt_column_spanner_outer:last-child {
+#jmgrkivmxo .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ueuvkxlicc .gt_column_spanner {
+#jmgrkivmxo .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1565,11 +1565,11 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   width: 100%;
 }
 
-#ueuvkxlicc .gt_spanner_row {
+#jmgrkivmxo .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ueuvkxlicc .gt_group_heading {
+#jmgrkivmxo .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1595,7 +1595,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   text-align: left;
 }
 
-#ueuvkxlicc .gt_empty_group_heading {
+#jmgrkivmxo .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1610,15 +1610,15 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   vertical-align: middle;
 }
 
-#ueuvkxlicc .gt_from_md > :first-child {
+#jmgrkivmxo .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ueuvkxlicc .gt_from_md > :last-child {
+#jmgrkivmxo .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ueuvkxlicc .gt_row {
+#jmgrkivmxo .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1637,7 +1637,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   overflow-x: hidden;
 }
 
-#ueuvkxlicc .gt_stub {
+#jmgrkivmxo .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1650,7 +1650,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   padding-right: 5px;
 }
 
-#ueuvkxlicc .gt_stub_row_group {
+#jmgrkivmxo .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1664,15 +1664,15 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   vertical-align: top;
 }
 
-#ueuvkxlicc .gt_row_group_first td {
+#jmgrkivmxo .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ueuvkxlicc .gt_row_group_first th {
+#jmgrkivmxo .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ueuvkxlicc .gt_summary_row {
+#jmgrkivmxo .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1682,16 +1682,16 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   padding-right: 5px;
 }
 
-#ueuvkxlicc .gt_first_summary_row {
+#jmgrkivmxo .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ueuvkxlicc .gt_first_summary_row.thick {
+#jmgrkivmxo .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ueuvkxlicc .gt_last_summary_row {
+#jmgrkivmxo .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1701,7 +1701,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-bottom-color: #D3D3D3;
 }
 
-#ueuvkxlicc .gt_grand_summary_row {
+#jmgrkivmxo .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1711,7 +1711,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   padding-right: 5px;
 }
 
-#ueuvkxlicc .gt_first_grand_summary_row {
+#jmgrkivmxo .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1721,7 +1721,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-top-color: #D3D3D3;
 }
 
-#ueuvkxlicc .gt_last_grand_summary_row_top {
+#jmgrkivmxo .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1731,11 +1731,11 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-bottom-color: #D3D3D3;
 }
 
-#ueuvkxlicc .gt_striped {
+#jmgrkivmxo .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ueuvkxlicc .gt_table_body {
+#jmgrkivmxo .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1744,7 +1744,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-bottom-color: #D3D3D3;
 }
 
-#ueuvkxlicc .gt_footnotes {
+#jmgrkivmxo .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1758,7 +1758,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-right-color: #D3D3D3;
 }
 
-#ueuvkxlicc .gt_footnote {
+#jmgrkivmxo .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1767,7 +1767,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   padding-right: 5px;
 }
 
-#ueuvkxlicc .gt_sourcenotes {
+#jmgrkivmxo .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1781,7 +1781,7 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   border-right-color: #D3D3D3;
 }
 
-#ueuvkxlicc .gt_sourcenote {
+#jmgrkivmxo .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1789,63 +1789,63 @@ Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.
   padding-right: 5px;
 }
 
-#ueuvkxlicc .gt_left {
+#jmgrkivmxo .gt_left {
   text-align: left;
 }
 
-#ueuvkxlicc .gt_center {
+#jmgrkivmxo .gt_center {
   text-align: center;
 }
 
-#ueuvkxlicc .gt_right {
+#jmgrkivmxo .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ueuvkxlicc .gt_font_normal {
+#jmgrkivmxo .gt_font_normal {
   font-weight: normal;
 }
 
-#ueuvkxlicc .gt_font_bold {
+#jmgrkivmxo .gt_font_bold {
   font-weight: bold;
 }
 
-#ueuvkxlicc .gt_font_italic {
+#jmgrkivmxo .gt_font_italic {
   font-style: italic;
 }
 
-#ueuvkxlicc .gt_super {
+#jmgrkivmxo .gt_super {
   font-size: 65%;
 }
 
-#ueuvkxlicc .gt_footnote_marks {
+#jmgrkivmxo .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ueuvkxlicc .gt_asterisk {
+#jmgrkivmxo .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ueuvkxlicc .gt_indent_1 {
+#jmgrkivmxo .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ueuvkxlicc .gt_indent_2 {
+#jmgrkivmxo .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ueuvkxlicc .gt_indent_3 {
+#jmgrkivmxo .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ueuvkxlicc .gt_indent_4 {
+#jmgrkivmxo .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ueuvkxlicc .gt_indent_5 {
+#jmgrkivmxo .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1960,23 +1960,23 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
 </div>
 <div id="tbl-htw-ee-e23">
 
-<div id="fomuprxejr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#fomuprxejr table {
+<div id="chqrrvdvny" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#chqrrvdvny table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#fomuprxejr thead, #fomuprxejr tbody, #fomuprxejr tfoot, #fomuprxejr tr, #fomuprxejr td, #fomuprxejr th {
+#chqrrvdvny thead, #chqrrvdvny tbody, #chqrrvdvny tfoot, #chqrrvdvny tr, #chqrrvdvny td, #chqrrvdvny th {
   border-style: none;
 }
 
-#fomuprxejr p {
+#chqrrvdvny p {
   margin: 0;
   padding: 0;
 }
 
-#fomuprxejr .gt_table {
+#chqrrvdvny .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2002,12 +2002,12 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   border-left-color: #D3D3D3;
 }
 
-#fomuprxejr .gt_caption {
+#chqrrvdvny .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#fomuprxejr .gt_title {
+#chqrrvdvny .gt_title {
   color: #333333;
   font-size: 16px;
   font-weight: initial;
@@ -2019,7 +2019,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   border-bottom-width: 0;
 }
 
-#fomuprxejr .gt_subtitle {
+#chqrrvdvny .gt_subtitle {
   color: #333333;
   font-size: 14px;
   font-weight: initial;
@@ -2031,7 +2031,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   border-top-width: 0;
 }
 
-#fomuprxejr .gt_heading {
+#chqrrvdvny .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2043,13 +2043,13 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   border-right-color: #D3D3D3;
 }
 
-#fomuprxejr .gt_bottom_border {
+#chqrrvdvny .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#fomuprxejr .gt_col_headings {
+#chqrrvdvny .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2064,7 +2064,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   border-right-color: #D3D3D3;
 }
 
-#fomuprxejr .gt_col_heading {
+#chqrrvdvny .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2084,7 +2084,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   overflow-x: hidden;
 }
 
-#fomuprxejr .gt_column_spanner_outer {
+#chqrrvdvny .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2096,15 +2096,15 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   padding-right: 4px;
 }
 
-#fomuprxejr .gt_column_spanner_outer:first-child {
+#chqrrvdvny .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#fomuprxejr .gt_column_spanner_outer:last-child {
+#chqrrvdvny .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#fomuprxejr .gt_column_spanner {
+#chqrrvdvny .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2116,11 +2116,11 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   width: 100%;
 }
 
-#fomuprxejr .gt_spanner_row {
+#chqrrvdvny .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#fomuprxejr .gt_group_heading {
+#chqrrvdvny .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2146,7 +2146,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   text-align: left;
 }
 
-#fomuprxejr .gt_empty_group_heading {
+#chqrrvdvny .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2161,15 +2161,15 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   vertical-align: middle;
 }
 
-#fomuprxejr .gt_from_md > :first-child {
+#chqrrvdvny .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#fomuprxejr .gt_from_md > :last-child {
+#chqrrvdvny .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#fomuprxejr .gt_row {
+#chqrrvdvny .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2188,7 +2188,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   overflow-x: hidden;
 }
 
-#fomuprxejr .gt_stub {
+#chqrrvdvny .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2201,7 +2201,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   padding-right: 5px;
 }
 
-#fomuprxejr .gt_stub_row_group {
+#chqrrvdvny .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2215,15 +2215,15 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   vertical-align: top;
 }
 
-#fomuprxejr .gt_row_group_first td {
+#chqrrvdvny .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#fomuprxejr .gt_row_group_first th {
+#chqrrvdvny .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#fomuprxejr .gt_summary_row {
+#chqrrvdvny .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2233,16 +2233,16 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   padding-right: 5px;
 }
 
-#fomuprxejr .gt_first_summary_row {
+#chqrrvdvny .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#fomuprxejr .gt_first_summary_row.thick {
+#chqrrvdvny .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#fomuprxejr .gt_last_summary_row {
+#chqrrvdvny .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2252,7 +2252,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   border-bottom-color: #D3D3D3;
 }
 
-#fomuprxejr .gt_grand_summary_row {
+#chqrrvdvny .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2262,7 +2262,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   padding-right: 5px;
 }
 
-#fomuprxejr .gt_first_grand_summary_row {
+#chqrrvdvny .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2272,7 +2272,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   border-top-color: #D3D3D3;
 }
 
-#fomuprxejr .gt_last_grand_summary_row_top {
+#chqrrvdvny .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2282,11 +2282,11 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   border-bottom-color: #D3D3D3;
 }
 
-#fomuprxejr .gt_striped {
+#chqrrvdvny .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#fomuprxejr .gt_table_body {
+#chqrrvdvny .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2295,7 +2295,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   border-bottom-color: #D3D3D3;
 }
 
-#fomuprxejr .gt_footnotes {
+#chqrrvdvny .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2309,7 +2309,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   border-right-color: #D3D3D3;
 }
 
-#fomuprxejr .gt_footnote {
+#chqrrvdvny .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2318,7 +2318,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   padding-right: 5px;
 }
 
-#fomuprxejr .gt_sourcenotes {
+#chqrrvdvny .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2332,7 +2332,7 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   border-right-color: #D3D3D3;
 }
 
-#fomuprxejr .gt_sourcenote {
+#chqrrvdvny .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2340,63 +2340,63 @@ Table 12: Models errors predicting empirical data - aggregated over all partici
   padding-right: 5px;
 }
 
-#fomuprxejr .gt_left {
+#chqrrvdvny .gt_left {
   text-align: left;
 }
 
-#fomuprxejr .gt_center {
+#chqrrvdvny .gt_center {
   text-align: center;
 }
 
-#fomuprxejr .gt_right {
+#chqrrvdvny .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#fomuprxejr .gt_font_normal {
+#chqrrvdvny .gt_font_normal {
   font-weight: normal;
 }
 
-#fomuprxejr .gt_font_bold {
+#chqrrvdvny .gt_font_bold {
   font-weight: bold;
 }
 
-#fomuprxejr .gt_font_italic {
+#chqrrvdvny .gt_font_italic {
   font-style: italic;
 }
 
-#fomuprxejr .gt_super {
+#chqrrvdvny .gt_super {
   font-size: 65%;
 }
 
-#fomuprxejr .gt_footnote_marks {
+#chqrrvdvny .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#fomuprxejr .gt_asterisk {
+#chqrrvdvny .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#fomuprxejr .gt_indent_1 {
+#chqrrvdvny .gt_indent_1 {
   text-indent: 5px;
 }
 
-#fomuprxejr .gt_indent_2 {
+#chqrrvdvny .gt_indent_2 {
   text-indent: 10px;
 }
 
-#fomuprxejr .gt_indent_3 {
+#chqrrvdvny .gt_indent_3 {
   text-indent: 15px;
 }
 
-#fomuprxejr .gt_indent_4 {
+#chqrrvdvny .gt_indent_4 {
   text-indent: 20px;
 }
 
-#fomuprxejr .gt_indent_5 {
+#chqrrvdvny .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
