@@ -1299,21 +1299,27 @@ Figure&nbsp;14: Conditional effect of training condition and Band. Ribbons indic
 <span class="header-section-number">1.8.3</span> Experiment 3 Summary</h3>
 </section></section><section id="results-summary" class="level2" data-number="1.9"><h2 data-number="1.9" class="anchored" data-anchor-id="results-summary">
 <span class="header-section-number">1.9</span> Results Summary</h2>
-</section><section id="overall-summary-of-experiments-1-3" class="level2" data-number="1.10"><h2 data-number="1.10" class="anchored" data-anchor-id="overall-summary-of-experiments-1-3">
-<span class="header-section-number">1.10</span> Overall Summary of Experiments 1-3</h2>
-<p>Across three experiments, we investigated the impact of training variability on learning, transfer, and extrapolation in a visuomotor function learning task. In Experiment 1, participants in the varied training condition, who experienced a wider range of velocity bands during training, showed lower accuracy at the end of training compared to those in the constant training condition. Crucially, during the testing phase, the varied group exhibited significantly larger deviations from the target velocity bands, particularly for the extrapolation bands that were not encountered during training. The varied group also showed less discrimination between velocity bands, as evidenced by shallower slopes when predicting response velocity from target velocity band.</p>
-<p>Experiment 2 extended these findings by reversing the order of the training and testing bands. Similar to Experiment 1, the varied group demonstrated poorer performance during both training and testing phases. However, unlike Experiment 1, the varied group did not show a significant difference in discrimination between bands compared to the constant group.</p>
-<p>In Experiment 3, we introduced an ordinal feedback system during training, in contrast to the continuous feedback provided in the previous experiments. Participants were assigned to both an order condition (original or reverse) and a training condition (constant or varied). The varied condition showed larger deviations at the end of training, consistent with the previous experiments. Interestingly, there was a significant interaction between training condition and band order, with the varied condition showing greater accuracy in the reverse order condition. During testing, the varied group once again exhibited larger deviations, particularly for the extrapolation bands. The reverse order conditions showed smaller deviations compared to the original order conditions. Discrimination between velocity bands was poorer for the varied group in the original order condition, but not in the reverse order condition.</p>
-<p>In summary, these experiments consistently demonstrated that training with greater variability led to lower accuracy during both training and testing phases, with the detrimental effect being more pronounced for extrapolation items. The varied training condition also tended to show less discrimination between velocity bands, although this effect was modulated by the order of the training and testing bands. These findings suggest that while variable training can hinder initial learning, it may have differential effects on transfer and extrapolation depending on the specific task structure and the range of stimuli encountered during training and testing.</p>
-</section><section id="computational-model" class="level2" data-number="1.11"><h2 data-number="1.11" class="anchored" data-anchor-id="computational-model">
-<span class="header-section-number">1.11</span> Computational Model</h2>
+</section><section id="computational-model" class="level2" data-number="1.10"><h2 data-number="1.10" class="anchored" data-anchor-id="computational-model">
+<span class="header-section-number">1.10</span> Computational Model</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-alm-diagram" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-alm-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="combo1_files/figure-html/fig-alm-diagram-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="Figure&nbsp;15: The Associative Learning Model (ALM). The diagram illustrates the basic structure of the ALM model as used in the present work. Input nodes are activated as a function of their similarity to the lower-boundary of the target band. The generalization parameter, c, determines the degree to which nearby input nodes are activated. The output nodes are activated as a function of the weighted sum of the input nodes - weights are updated via the delta rule."><img src="combo1_files/figure-html/fig-alm-diagram-1.png" class="img-fluid figure-img" width="672"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-alm-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: The Associative Learning Model (ALM). The diagram illustrates the basic structure of the ALM model as used in the present work. Input nodes are activated as a function of their similarity to the lower-boundary of the target band. The generalization parameter, <span class="math inline">\(c\)</span>, determines the degree to which nearby input nodes are activated. The output nodes are activated as a function of the weighted sum of the input nodes - weights are updated via the delta rule.
+</figcaption></figure>
+</div>
+</div>
+</div>
 </section></section><section id="modeling-approach" class="level1 page-columns page-full" data-number="2"><h1 data-number="2">
 <span class="header-section-number">2</span> Modeling Approach</h1>
 <p>The modeling goal is to implement a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning <span class="citation" data-cites="deloshExtrapolationSineQua1997">(<a href="#ref-deloshExtrapolationSineQua1997" role="doc-biblioref">DeLosh et al., 1997</a>)</span>. ALM is a simple connectionist learning model which closely resembles Kruschke’s ALCOVE model <span class="citation" data-cites="kruschkeALCOVEExemplarbasedConnectionist1992">(<a href="#ref-kruschkeALCOVEExemplarbasedConnectionist1992" role="doc-biblioref">Kruschke, 1992</a>)</span>, with modifications to allow for the generation of continuous responses.</p>
 <section id="alm-exam-description" class="level2 page-columns page-full" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="alm-exam-description">
 <span class="header-section-number">2.1</span> ALM &amp; Exam Description</h2>
-<p>ALM is a localist neural network model <span class="citation" data-cites="pageConnectionistModellingPsychology2000a">(<a href="#ref-pageConnectionistModellingPsychology2000a" role="doc-biblioref">Page, 2000</a>)</span>, with each input node corresponding to a particular stimulus, and each output node corresponding to a particular response value. The units in the input layer activate as a function of their Gaussian similarity to the input stimulus. So, for example, an input stimulus of value 55 would induce maximal activation of the input unit tuned to 55. Depending on the value of the generalization parameter, the nearby units (e.g.&nbsp;54 and 56; 53 and 57) may also activate to some degree. ALM is structured with input and output nodes that correspond to regions of the stimulus space, and response space, respectively. The units in the input layer activate as a function of their similarity to a presented stimulus. As was the case with the exemplar-based models, similarity in ALM is exponentially decaying function of distance. The input layer is fully connected to the output layer, and the activation for any particular output node is simply the weighted sum of the connection weights between that node and the input activations. The network then produces a response by taking the weighted average of the output units (recall that each output unit has a value corresponding to a particular response). During training, the network receives feedback which activates each output unit as a function of its distance from the ideal level of activation necessary to produce the correct response. The connection weights between input and output units are then updated via the standard delta learning rule, where the magnitude of weight changes are controlled by a learning rate parameter. The EXAM model is an extension of ALM, with the same learning rule and representational scheme for input and output units. The primary difference is that EXAM includes a linear extrapolation mechanism for generating novel responses during testing, a modification necessary to account for human extrapolation patterns in past research <span class="citation" data-cites="deloshExtrapolationSineQua1997">Brown &amp; Lacroix (<a href="#ref-brownUnderestimationLinearFunction2017" role="doc-biblioref">2017</a>)</span>. Although this extrapolation rule departs from a strictly similarity-based generalization mechanism, EXAM is distinct from pure rule-based models in that it remains constrained by the weights learned during training.</p>
-<p>See <a href="#tbl-alm-exam" class="quarto-xref">Table&nbsp;12</a> for a full specification of the equations that define ALM and EXAM.</p>
+<p>ALM is a localist neural network model <span class="citation" data-cites="pageConnectionistModellingPsychology2000a">(<a href="#ref-pageConnectionistModellingPsychology2000a" role="doc-biblioref">Page, 2000</a>)</span>, with each input node corresponding to a particular stimulus, and each output node corresponding to a particular response value. The units in the input layer activate as a function of their Gaussian similarity to the input stimulus. So, for example, an input stimulus of value 55 would induce maximal activation of the input unit tuned to 55. Depending on the value of the generalization parameter, the nearby units (e.g.&nbsp;54 and 56; 53 and 57) may also activate to some degree. ALM is structured with input and output nodes that correspond to regions of the stimulus space, and response space, respectively. The units in the input layer activate as a function of their similarity to a presented stimulus. As was the case with the exemplar-based models, similarity in ALM is exponentially decaying function of distance. The input layer is fully connected to the output layer, and the activation for any particular output node is simply the weighted sum of the connection weights between that node and the input activations. The network then produces a response by taking the weighted average of the output units (recall that each output unit has a value corresponding to a particular response). During training, the network receives feedback which activates each output unit as a function of its distance from the ideal level of activation necessary to produce the correct response. The connection weights between input and output units are then updated via the standard delta learning rule, where the magnitude of weight changes are controlled by a learning rate parameter. The EXAM model is an extension of ALM, with the same learning rule and representational scheme for input and output units. EXAM differs from ALM only in its response rule, as it includes a linear extrapolation mechanism for generating novel responses. Although this extrapolation rule departs from a strictly similarity-based generalization mechanism, EXAM is distinct from pure rule-based models in that it remains constrained by the weights learned during training. EXAM retrieves the two nearest training inputs, and the ALM responses associated with those inputs, and computes the slope between these two points. The slope is then used to extrapolate the response to the novel test stimulus. Because EXAM requires at least two input-output pairs to generate a response, additional assumptions were required in order for it to generate resposnes for the constant group. We assumed that participants come to the task with prior knowledge of the origin point (0,0), which can serve as a reference point necessary for the model to generate responses for the constant group. This assumption is motivated by previous function learning research (<span class="citation" data-cites="brownUnderestimationLinearFunction2017">Brown &amp; Lacroix (<a href="#ref-brownUnderestimationLinearFunction2017" role="doc-biblioref">2017</a>)</span>), which through a series of manipulations of the y intercept of the underlying function, found that participants consistently demonstrated knowledge of, or a bias towards, the origin point (see <span class="citation" data-cites="kwantesWhyPeopleUnderestimate2006">Kwantes &amp; Neal (<a href="#ref-kwantesWhyPeopleUnderestimate2006" role="doc-biblioref">2006</a>)</span> for additional evidence of such a bias in function learning tasks).</p>
+<p>See <a href="#tbl-alm-exam" class="quarto-xref">Table&nbsp;12</a> for a full specification of the equations that define ALM and EXAM, and <a href="#fig-alm-diagram" class="quarto-xref">Figure&nbsp;15</a> for a visual representation of the ALM model.</p>
 <div class="column-page-inset-right">
 <div id="tbl-alm-exam" class="quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-alm-exam-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1410,7 +1416,7 @@ Table&nbsp;12: ALM &amp; EXAM Equations
 </div>
 <div class="callout-body-container page-columns page-full">
 <p><strong><i class="fa-regular fa-lightbulb" aria-label="lightbulb"></i> Approximate Bayesian Computation</strong></p>
-<p>To estimate parameters, we used approximate bayesian computation (ABC), enabling us to obtain an estimate of the posterior distribution of the generalization and learning rate parameters for each individual. ABC belongs to the class of simulation-based inference methods <span class="citation" data-cites="cranmerFrontierSimulationbasedInference2020">(<a href="#ref-cranmerFrontierSimulationbasedInference2020" role="doc-biblioref">Cranmer et al., 2020</a>)</span>, which have begun being used for parameter estimation in cognitive modeling relatively recently <span class="citation" data-cites="turnerTutorialApproximateBayesian2012 turnerBayesianAnalysisSimulationbased2016 kangasraasioParameterInferenceComputational2019">(<a href="#ref-kangasraasioParameterInferenceComputational2019" role="doc-biblioref">Kangasrääsiö et al., 2019</a>; <a href="#ref-turnerBayesianAnalysisSimulationbased2016" role="doc-biblioref">Turner et al., 2016</a>; <a href="#ref-turnerTutorialApproximateBayesian2012" role="doc-biblioref">Turner &amp; Van Zandt, 2012</a>)</span>. Although they can be applied to any model from which data can be simulated, ABC methods are most useful for complex models that lack an explicit likelihood function (e.g.&nbsp;many neural network and evidence accumulation models).</p>
+<p>To estimate the parameters of ALM and EXAM, we used approximate bayesian computation (ABC), enabling us to obtain an estimate of the posterior distribution of the generalization and learning rate parameters for each individual. ABC belongs to the class of simulation-based inference methods <span class="citation" data-cites="cranmerFrontierSimulationbasedInference2020">(<a href="#ref-cranmerFrontierSimulationbasedInference2020" role="doc-biblioref">Cranmer et al., 2020</a>)</span>, which have begun being used for parameter estimation in cognitive modeling relatively recently <span class="citation" data-cites="turnerTutorialApproximateBayesian2012 turnerBayesianAnalysisSimulationbased2016 kangasraasioParameterInferenceComputational2019">(<a href="#ref-kangasraasioParameterInferenceComputational2019" role="doc-biblioref">Kangasrääsiö et al., 2019</a>; <a href="#ref-turnerBayesianAnalysisSimulationbased2016" role="doc-biblioref">Turner et al., 2016</a>; <a href="#ref-turnerTutorialApproximateBayesian2012" role="doc-biblioref">Turner &amp; Van Zandt, 2012</a>)</span>. Although they can be applied to any model from which data can be simulated, ABC methods are most useful for complex models that lack an explicit likelihood function (e.g.&nbsp;many neural network models).</p>
 <p>The general ABC procedure is to 1) define a prior distribution over model parameters. 2) sample candidate parameter values, <span class="math inline">\(\theta^*\)</span>, from the prior. 3) Use <span class="math inline">\(\theta^*\)</span> to generate a simulated dataset, <span class="math inline">\(Data_{sim}\)</span>. 4) Compute a measure of discrepancy between the simulated and observed datasets, <span class="math inline">\(discrep\)</span>(<span class="math inline">\(Data_{sim}\)</span>, <span class="math inline">\(Data_{obs}\)</span>). 5) Accept <span class="math inline">\(\theta^*\)</span> if the discrepancy is less than the tolerance threshold, <span class="math inline">\(\epsilon\)</span>, otherwise reject <span class="math inline">\(\theta^*\)</span>. 6) Repeat until desired number of posterior samples are obtained.</p>
 <p>Although simple in the abstract, implementations of ABC require researchers to make a number of non-trivial decisions as to i) the discrepancy function between observed and simulated data, ii) whether to compute the discrepancy between trial level data, or a summary statistic of the datasets, iii) the value of the minimum tolerance <span class="math inline">\(\epsilon\)</span> between simulated and observed data. For the present work, we follow the guidelines from previously published ABC tutorials <span class="citation" data-cites="turnerTutorialApproximateBayesian2012 farrellComputationalModelingCognition2018">(<a href="#ref-farrellComputationalModelingCognition2018" role="doc-biblioref">Farrell &amp; Lewandowsky, 2018</a>; <a href="#ref-turnerTutorialApproximateBayesian2012" role="doc-biblioref">Turner &amp; Van Zandt, 2012</a>)</span>. For the test stage, we summarized datasets with mean velocity of each band in the observed dataset as <span class="math inline">\(V_{obs}^{(k)}\)</span> and in the simulated dataset as <span class="math inline">\(V_{sim}^{(k)}\)</span>, where <span class="math inline">\(k\)</span> represents each of the six velocity bands. For computing the discrepancy between datasets in the training stage, we aggregated training trials into three equally sized blocks (separately for each velocity band in the case of the varied group). After obtaining the summary statistics of the simulated and observed datasets, the discrepancy was computed as the mean of the absolute difference between simulated and observed datasets (<a href="#eq-discrep-test" class="quarto-xref">Equation&nbsp;1</a> and <a href="#eq-discrep-train" class="quarto-xref">Equation&nbsp;2</a>). For the models fit to both training and testing data, discrepancies were computed for both stages, and then averaged together.</p>
 <div class="column-page-inset-left">
@@ -1439,23 +1445,23 @@ discrep_{Train,varied}(Data_{sim}, Data_{obs}) = \frac{1}{N_{blocks} \times 3} \
 Table&nbsp;13: Models errors predicting empirical data - aggregated over all participants, posterior parameter values, and velocity bands. Note that Fit Method refers to the subset of the data that the model was trained on, while Task Stage refers to the subset of the data that the model was evaluated on.
 </figcaption><div aria-describedby="tbl-htw-modelError-e1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="qpmnhqedfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qpmnhqedfi table {
+<div id="yjywqundob" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yjywqundob table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qpmnhqedfi thead, #qpmnhqedfi tbody, #qpmnhqedfi tfoot, #qpmnhqedfi tr, #qpmnhqedfi td, #qpmnhqedfi th {
+#yjywqundob thead, #yjywqundob tbody, #yjywqundob tfoot, #yjywqundob tr, #yjywqundob td, #yjywqundob th {
   border-style: none;
 }
 
-#qpmnhqedfi p {
+#yjywqundob p {
   margin: 0;
   padding: 0;
 }
 
-#qpmnhqedfi .gt_table {
+#yjywqundob .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1481,12 +1487,12 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   border-left-color: #D3D3D3;
 }
 
-#qpmnhqedfi .gt_caption {
+#yjywqundob .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qpmnhqedfi .gt_title {
+#yjywqundob .gt_title {
   color: #333333;
   font-size: 14px;
   font-weight: initial;
@@ -1498,7 +1504,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   border-bottom-width: 0;
 }
 
-#qpmnhqedfi .gt_subtitle {
+#yjywqundob .gt_subtitle {
   color: #333333;
   font-size: 12px;
   font-weight: initial;
@@ -1510,7 +1516,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   border-top-width: 0;
 }
 
-#qpmnhqedfi .gt_heading {
+#yjywqundob .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1522,13 +1528,13 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   border-right-color: #D3D3D3;
 }
 
-#qpmnhqedfi .gt_bottom_border {
+#yjywqundob .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qpmnhqedfi .gt_col_headings {
+#yjywqundob .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1543,7 +1549,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   border-right-color: #D3D3D3;
 }
 
-#qpmnhqedfi .gt_col_heading {
+#yjywqundob .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -1563,7 +1569,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   overflow-x: hidden;
 }
 
-#qpmnhqedfi .gt_column_spanner_outer {
+#yjywqundob .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -1575,15 +1581,15 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   padding-right: 4px;
 }
 
-#qpmnhqedfi .gt_column_spanner_outer:first-child {
+#yjywqundob .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qpmnhqedfi .gt_column_spanner_outer:last-child {
+#yjywqundob .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qpmnhqedfi .gt_column_spanner {
+#yjywqundob .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1595,11 +1601,11 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   width: 100%;
 }
 
-#qpmnhqedfi .gt_spanner_row {
+#yjywqundob .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qpmnhqedfi .gt_group_heading {
+#yjywqundob .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1625,7 +1631,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   text-align: left;
 }
 
-#qpmnhqedfi .gt_empty_group_heading {
+#yjywqundob .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1640,15 +1646,15 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   vertical-align: middle;
 }
 
-#qpmnhqedfi .gt_from_md > :first-child {
+#yjywqundob .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qpmnhqedfi .gt_from_md > :last-child {
+#yjywqundob .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qpmnhqedfi .gt_row {
+#yjywqundob .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1667,7 +1673,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   overflow-x: hidden;
 }
 
-#qpmnhqedfi .gt_stub {
+#yjywqundob .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1680,7 +1686,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   padding-right: 5px;
 }
 
-#qpmnhqedfi .gt_stub_row_group {
+#yjywqundob .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1694,15 +1700,15 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   vertical-align: top;
 }
 
-#qpmnhqedfi .gt_row_group_first td {
+#yjywqundob .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qpmnhqedfi .gt_row_group_first th {
+#yjywqundob .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qpmnhqedfi .gt_summary_row {
+#yjywqundob .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1712,16 +1718,16 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   padding-right: 5px;
 }
 
-#qpmnhqedfi .gt_first_summary_row {
+#yjywqundob .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qpmnhqedfi .gt_first_summary_row.thick {
+#yjywqundob .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qpmnhqedfi .gt_last_summary_row {
+#yjywqundob .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1731,7 +1737,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   border-bottom-color: #D3D3D3;
 }
 
-#qpmnhqedfi .gt_grand_summary_row {
+#yjywqundob .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1741,7 +1747,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   padding-right: 5px;
 }
 
-#qpmnhqedfi .gt_first_grand_summary_row {
+#yjywqundob .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1751,7 +1757,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   border-top-color: #D3D3D3;
 }
 
-#qpmnhqedfi .gt_last_grand_summary_row_top {
+#yjywqundob .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1761,11 +1767,11 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   border-bottom-color: #D3D3D3;
 }
 
-#qpmnhqedfi .gt_striped {
+#yjywqundob .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qpmnhqedfi .gt_table_body {
+#yjywqundob .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1774,7 +1780,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   border-bottom-color: #D3D3D3;
 }
 
-#qpmnhqedfi .gt_footnotes {
+#yjywqundob .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1788,7 +1794,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   border-right-color: #D3D3D3;
 }
 
-#qpmnhqedfi .gt_footnote {
+#yjywqundob .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1797,7 +1803,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   padding-right: 5px;
 }
 
-#qpmnhqedfi .gt_sourcenotes {
+#yjywqundob .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1811,7 +1817,7 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   border-right-color: #D3D3D3;
 }
 
-#qpmnhqedfi .gt_sourcenote {
+#yjywqundob .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1819,63 +1825,63 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
   padding-right: 5px;
 }
 
-#qpmnhqedfi .gt_left {
+#yjywqundob .gt_left {
   text-align: left;
 }
 
-#qpmnhqedfi .gt_center {
+#yjywqundob .gt_center {
   text-align: center;
 }
 
-#qpmnhqedfi .gt_right {
+#yjywqundob .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qpmnhqedfi .gt_font_normal {
+#yjywqundob .gt_font_normal {
   font-weight: normal;
 }
 
-#qpmnhqedfi .gt_font_bold {
+#yjywqundob .gt_font_bold {
   font-weight: bold;
 }
 
-#qpmnhqedfi .gt_font_italic {
+#yjywqundob .gt_font_italic {
   font-style: italic;
 }
 
-#qpmnhqedfi .gt_super {
+#yjywqundob .gt_super {
   font-size: 65%;
 }
 
-#qpmnhqedfi .gt_footnote_marks {
+#yjywqundob .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qpmnhqedfi .gt_asterisk {
+#yjywqundob .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qpmnhqedfi .gt_indent_1 {
+#yjywqundob .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qpmnhqedfi .gt_indent_2 {
+#yjywqundob .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qpmnhqedfi .gt_indent_3 {
+#yjywqundob .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qpmnhqedfi .gt_indent_4 {
+#yjywqundob .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qpmnhqedfi .gt_indent_5 {
+#yjywqundob .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1959,10 +1965,10 @@ Table&nbsp;13: Models errors predicting empirical data - aggregated over all par
 <div class="cell-output-display">
 <div id="fig-htw-post-dist" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-htw-post-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="combo1_files/figure-html/fig-htw-post-dist-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="Figure&nbsp;15: Posterior Distributions of c and lr parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically."><img src="combo1_files/figure-html/fig-htw-post-dist-1.png" class="img-fluid figure-img" width="960"></a>
+<a href="combo1_files/figure-html/fig-htw-post-dist-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16" title="Figure&nbsp;16: Posterior Distributions of c and lr parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically."><img src="combo1_files/figure-html/fig-htw-post-dist-1.png" class="img-fluid figure-img" width="960"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-htw-post-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15: Posterior Distributions of <span class="math inline">\(c\)</span> and <span class="math inline">\(lr\)</span> parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically.
+Figure&nbsp;16: Posterior Distributions of <span class="math inline">\(c\)</span> and <span class="math inline">\(lr\)</span> parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y axes of the plots for the c parameter are scaled logarithmically.
 </figcaption></figure>
 </div>
 </div>
@@ -1971,25 +1977,25 @@ Figure&nbsp;15: Posterior Distributions of <span class="math inline">\(c\)</span
 <div class="cell-output-display">
 <div id="fig-htw-resid-pred" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-htw-resid-pred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="combo1_files/figure-html/fig-htw-resid-pred-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16" title="Figure&nbsp;16: Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y axes are scaled differently between facets. A) Residuals predicting each block of the training data. B) Residuals predicting each band during the testing stage. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands."><img src="combo1_files/figure-html/fig-htw-resid-pred-1.png" class="img-fluid figure-img" width="1056"></a>
+<a href="combo1_files/figure-html/fig-htw-resid-pred-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17" title="Figure&nbsp;17: Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y axes are scaled differently between facets. A) Residuals predicting each block of the training data. B) Residuals predicting each band during the testing stage. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands."><img src="combo1_files/figure-html/fig-htw-resid-pred-1.png" class="img-fluid figure-img" width="1056"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-htw-resid-pred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;16: Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y axes are scaled differently between facets. A) Residuals predicting each block of the training data. B) Residuals predicting each band during the testing stage. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands.
+Figure&nbsp;17: Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y axes are scaled differently between facets. A) Residuals predicting each block of the training data. B) Residuals predicting each band during the testing stage. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands.
 </figcaption></figure>
 </div>
 </div>
 </div>
-<p>The posterior distributions of the <span class="math inline">\(c\)</span> and <span class="math inline">\(lr\)</span> parameters are shown <a href="#fig-htw-post-dist" class="quarto-xref">Figure&nbsp;15</a>, and model predictions are shown alongside the empirical data in <a href="#fig-cm-vx-pat" class="quarto-xref">Figure&nbsp;17</a>. There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamped any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.</p>
-<p>We used the posterior distribution of <span class="math inline">\(c\)</span> and <span class="math inline">\(lr\)</span> parameters to generate a posterior predictive distribution of the observed data for each participant, which then allows us to compare the empirical data to the full range of predictions from each model. Aggregated residuals are displayed in <a href="#fig-htw-resid-pred" class="quarto-xref">Figure&nbsp;16</a>. The pattern of training stage residual errors are unsurprising across the combinations of models and fitting method . Differences in training performance between ALM and EXAM are generally minor (the two models have identical learning mechanisms). The differences in the magnitude of residuals across the three fitting methods are also straightforward, with massive errors for the ‘fit to Test Only’ model, and the smallest errors for the ‘fit to train only’ models. It is also noteworthy that the residual errors are generally larger for the first block of training, which is likely due to the initial values of the ALM weights being unconstrained by whatever initial biases participants tend to bring to the task. Future work may explore the ability of the models to capture more fine grained aspects of the learning trajectories. However for the present purposes, our primary interest is in the ability of ALM and EXAM to account for the testing patterns while being constrained, or not constrained, by the training data. All subsequent analyses and discussion will thus focus on the testing stage.</p>
-<p>The residuals of the model predictions for the testing stage (<a href="#fig-htw-resid-pred" class="quarto-xref">Figure&nbsp;16</a>) also show an unsurprising pattern across fitting methods - with models fit only to the test data showing the best performance, followed by models fit to both training and test data, and with models fit only to the training data showing the worst performance (note that y axes are scaled different between plots). Although EXAM tends to perform better for both Constant and Varied participants (see also <a href="#fig-ee-e1" class="quarto-xref">Figure&nbsp;18</a>), the relative advantage of EXAM is generally larger for the Constant group - a pattern consistent across all three fitting methods. The primary predictive difference between ALM and EXAM is made clear in <a href="#fig-cm-vx-pat" class="quarto-xref">Figure&nbsp;17</a>, which directly compares the observed data against the posterior predictive distributions for both models. Regardless of how the models are fit, only EXAM can capture the pattern where participants are able to discriminate all 6 target bands.</p>
+<p>The posterior distributions of the <span class="math inline">\(c\)</span> and <span class="math inline">\(lr\)</span> parameters are shown <a href="#fig-htw-post-dist" class="quarto-xref">Figure&nbsp;16</a>, and model predictions are shown alongside the empirical data in <a href="#fig-cm-vx-pat" class="quarto-xref">Figure&nbsp;18</a>. There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamped any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.</p>
+<p>We used the posterior distribution of <span class="math inline">\(c\)</span> and <span class="math inline">\(lr\)</span> parameters to generate a posterior predictive distribution of the observed data for each participant, which then allows us to compare the empirical data to the full range of predictions from each model. Aggregated residuals are displayed in <a href="#fig-htw-resid-pred" class="quarto-xref">Figure&nbsp;17</a>. The pattern of training stage residual errors are unsurprising across the combinations of models and fitting method . Differences in training performance between ALM and EXAM are generally minor (the two models have identical learning mechanisms). The differences in the magnitude of residuals across the three fitting methods are also straightforward, with massive errors for the ‘fit to Test Only’ model, and the smallest errors for the ‘fit to train only’ models. It is also noteworthy that the residual errors are generally larger for the first block of training, which is likely due to the initial values of the ALM weights being unconstrained by whatever initial biases participants tend to bring to the task. Future work may explore the ability of the models to capture more fine grained aspects of the learning trajectories. However for the present purposes, our primary interest is in the ability of ALM and EXAM to account for the testing patterns while being constrained, or not constrained, by the training data. All subsequent analyses and discussion will thus focus on the testing stage.</p>
+<p>The residuals of the model predictions for the testing stage (<a href="#fig-htw-resid-pred" class="quarto-xref">Figure&nbsp;17</a>) also show an unsurprising pattern across fitting methods - with models fit only to the test data showing the best performance, followed by models fit to both training and test data, and with models fit only to the training data showing the worst performance (note that y axes are scaled different between plots). Although EXAM tends to perform better for both Constant and Varied participants (see also <a href="#fig-ee-e1" class="quarto-xref">Figure&nbsp;19</a>), the relative advantage of EXAM is generally larger for the Constant group - a pattern consistent across all three fitting methods. The primary predictive difference between ALM and EXAM is made clear in <a href="#fig-cm-vx-pat" class="quarto-xref">Figure&nbsp;18</a>, which directly compares the observed data against the posterior predictive distributions for both models. Regardless of how the models are fit, only EXAM can capture the pattern where participants are able to discriminate all 6 target bands.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-cm-vx-pat" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-cm-vx-pat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="combo1_files/figure-html/fig-cm-vx-pat-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17" title="Figure&nbsp;17: Empirical data and Model predictions for mean velocity across target bands. Fitting methods (Test Only, Test &amp; Train, Train Only) - are separated across rows, and Training Condition (Constant vs.&nbsp;Varied) are separated by columns. Each facet contains the predictions of ALM and EXAM, alongside the observed data."><img src="combo1_files/figure-html/fig-cm-vx-pat-1.png" class="img-fluid figure-img" width="960"></a>
+<a href="combo1_files/figure-html/fig-cm-vx-pat-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-18" title="Figure&nbsp;18: Empirical data and Model predictions for mean velocity across target bands. Fitting methods (Test Only, Test &amp; Train, Train Only) - are separated across rows, and Training Condition (Constant vs.&nbsp;Varied) are separated by columns. Each facet contains the predictions of ALM and EXAM, alongside the observed data."><img src="combo1_files/figure-html/fig-cm-vx-pat-1.png" class="img-fluid figure-img" width="960"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cm-vx-pat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;17: Empirical data and Model predictions for mean velocity across target bands. Fitting methods (Test Only, Test &amp; Train, Train Only) - are separated across rows, and Training Condition (Constant vs.&nbsp;Varied) are separated by columns. Each facet contains the predictions of ALM and EXAM, alongside the observed data.
+Figure&nbsp;18: Empirical data and Model predictions for mean velocity across target bands. Fitting methods (Test Only, Test &amp; Train, Train Only) - are separated across rows, and Training Condition (Constant vs.&nbsp;Varied) are separated by columns. Each facet contains the predictions of ALM and EXAM, alongside the observed data.
 </figcaption></figure>
 </div>
 </div>
@@ -1998,10 +2004,10 @@ Figure&nbsp;17: Empirical data and Model predictions for mean velocity across ta
 <div class="cell-output-display">
 <div id="fig-ee-e1" class="quarto-figure quarto-figure-center quarto-float anchored" width="960">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ee-e1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="combo1_files/figure-html/fig-ee-e1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-18" title="Figure&nbsp;18: "><img src="combo1_files/figure-html/fig-ee-e1-1.png" id="fig-ee-e1" class="img-fluid figure-img" width="960"></a>
+<a href="combo1_files/figure-html/fig-ee-e1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-19" title="Figure&nbsp;19: "><img src="combo1_files/figure-html/fig-ee-e1-1.png" id="fig-ee-e1" class="img-fluid figure-img" width="960"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-ee-e1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;18
+Figure&nbsp;19
 </figcaption></figure>
 </div>
 </div>
@@ -2014,23 +2020,23 @@ Figure&nbsp;18
 Table&nbsp;14: Models errors predicting empirical data - aggregated over all participants, posterior parameter values, and velocity bands. Note that Fit Method refers to the subset of the data that the model was trained on, while Task Stage refers to the subset of the data that the model was evaluated on.
 </figcaption><div aria-describedby="tbl-htw-modelError-e23-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="yknofloxvj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#yknofloxvj table {
+<div id="itwgkamhtv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#itwgkamhtv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#yknofloxvj thead, #yknofloxvj tbody, #yknofloxvj tfoot, #yknofloxvj tr, #yknofloxvj td, #yknofloxvj th {
+#itwgkamhtv thead, #itwgkamhtv tbody, #itwgkamhtv tfoot, #itwgkamhtv tr, #itwgkamhtv td, #itwgkamhtv th {
   border-style: none;
 }
 
-#yknofloxvj p {
+#itwgkamhtv p {
   margin: 0;
   padding: 0;
 }
 
-#yknofloxvj .gt_table {
+#itwgkamhtv .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2056,12 +2062,12 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   border-left-color: #D3D3D3;
 }
 
-#yknofloxvj .gt_caption {
+#itwgkamhtv .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#yknofloxvj .gt_title {
+#itwgkamhtv .gt_title {
   color: #333333;
   font-size: 14px;
   font-weight: initial;
@@ -2073,7 +2079,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   border-bottom-width: 0;
 }
 
-#yknofloxvj .gt_subtitle {
+#itwgkamhtv .gt_subtitle {
   color: #333333;
   font-size: 12px;
   font-weight: initial;
@@ -2085,7 +2091,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   border-top-width: 0;
 }
 
-#yknofloxvj .gt_heading {
+#itwgkamhtv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2097,13 +2103,13 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   border-right-color: #D3D3D3;
 }
 
-#yknofloxvj .gt_bottom_border {
+#itwgkamhtv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yknofloxvj .gt_col_headings {
+#itwgkamhtv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2118,7 +2124,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   border-right-color: #D3D3D3;
 }
 
-#yknofloxvj .gt_col_heading {
+#itwgkamhtv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -2138,7 +2144,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   overflow-x: hidden;
 }
 
-#yknofloxvj .gt_column_spanner_outer {
+#itwgkamhtv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 10px;
@@ -2150,15 +2156,15 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   padding-right: 4px;
 }
 
-#yknofloxvj .gt_column_spanner_outer:first-child {
+#itwgkamhtv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yknofloxvj .gt_column_spanner_outer:last-child {
+#itwgkamhtv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yknofloxvj .gt_column_spanner {
+#itwgkamhtv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2170,11 +2176,11 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   width: 100%;
 }
 
-#yknofloxvj .gt_spanner_row {
+#itwgkamhtv .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#yknofloxvj .gt_group_heading {
+#itwgkamhtv .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2200,7 +2206,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   text-align: left;
 }
 
-#yknofloxvj .gt_empty_group_heading {
+#itwgkamhtv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2215,15 +2221,15 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   vertical-align: middle;
 }
 
-#yknofloxvj .gt_from_md > :first-child {
+#itwgkamhtv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yknofloxvj .gt_from_md > :last-child {
+#itwgkamhtv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yknofloxvj .gt_row {
+#itwgkamhtv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2242,7 +2248,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   overflow-x: hidden;
 }
 
-#yknofloxvj .gt_stub {
+#itwgkamhtv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2255,7 +2261,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   padding-right: 5px;
 }
 
-#yknofloxvj .gt_stub_row_group {
+#itwgkamhtv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2269,15 +2275,15 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   vertical-align: top;
 }
 
-#yknofloxvj .gt_row_group_first td {
+#itwgkamhtv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yknofloxvj .gt_row_group_first th {
+#itwgkamhtv .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#yknofloxvj .gt_summary_row {
+#itwgkamhtv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2287,16 +2293,16 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   padding-right: 5px;
 }
 
-#yknofloxvj .gt_first_summary_row {
+#itwgkamhtv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yknofloxvj .gt_first_summary_row.thick {
+#itwgkamhtv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yknofloxvj .gt_last_summary_row {
+#itwgkamhtv .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2306,7 +2312,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   border-bottom-color: #D3D3D3;
 }
 
-#yknofloxvj .gt_grand_summary_row {
+#itwgkamhtv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2316,7 +2322,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   padding-right: 5px;
 }
 
-#yknofloxvj .gt_first_grand_summary_row {
+#itwgkamhtv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2326,7 +2332,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   border-top-color: #D3D3D3;
 }
 
-#yknofloxvj .gt_last_grand_summary_row_top {
+#itwgkamhtv .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2336,11 +2342,11 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   border-bottom-color: #D3D3D3;
 }
 
-#yknofloxvj .gt_striped {
+#itwgkamhtv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yknofloxvj .gt_table_body {
+#itwgkamhtv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2349,7 +2355,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   border-bottom-color: #D3D3D3;
 }
 
-#yknofloxvj .gt_footnotes {
+#itwgkamhtv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2363,7 +2369,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   border-right-color: #D3D3D3;
 }
 
-#yknofloxvj .gt_footnote {
+#itwgkamhtv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2372,7 +2378,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   padding-right: 5px;
 }
 
-#yknofloxvj .gt_sourcenotes {
+#itwgkamhtv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2386,7 +2392,7 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   border-right-color: #D3D3D3;
 }
 
-#yknofloxvj .gt_sourcenote {
+#itwgkamhtv .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2394,63 +2400,63 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
   padding-right: 5px;
 }
 
-#yknofloxvj .gt_left {
+#itwgkamhtv .gt_left {
   text-align: left;
 }
 
-#yknofloxvj .gt_center {
+#itwgkamhtv .gt_center {
   text-align: center;
 }
 
-#yknofloxvj .gt_right {
+#itwgkamhtv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yknofloxvj .gt_font_normal {
+#itwgkamhtv .gt_font_normal {
   font-weight: normal;
 }
 
-#yknofloxvj .gt_font_bold {
+#itwgkamhtv .gt_font_bold {
   font-weight: bold;
 }
 
-#yknofloxvj .gt_font_italic {
+#itwgkamhtv .gt_font_italic {
   font-style: italic;
 }
 
-#yknofloxvj .gt_super {
+#itwgkamhtv .gt_super {
   font-size: 65%;
 }
 
-#yknofloxvj .gt_footnote_marks {
+#itwgkamhtv .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#yknofloxvj .gt_asterisk {
+#itwgkamhtv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yknofloxvj .gt_indent_1 {
+#itwgkamhtv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#yknofloxvj .gt_indent_2 {
+#itwgkamhtv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#yknofloxvj .gt_indent_3 {
+#itwgkamhtv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#yknofloxvj .gt_indent_4 {
+#itwgkamhtv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#yknofloxvj .gt_indent_5 {
+#itwgkamhtv .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2579,10 +2585,10 @@ Table&nbsp;14: Models errors predicting empirical data - aggregated over all par
 <div class="cell-output-display">
 <div id="fig-cm-vx-pat-e2-e3" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-cm-vx-pat-e2-e3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="combo1_files/figure-html/fig-cm-vx-pat-e2-e3-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-19" title="Figure&nbsp;19: Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands."><img src="combo1_files/figure-html/fig-cm-vx-pat-e2-e3-1.png" class="img-fluid figure-img" width="960"></a>
+<a href="combo1_files/figure-html/fig-cm-vx-pat-e2-e3-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-20" title="Figure&nbsp;20: Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands."><img src="combo1_files/figure-html/fig-cm-vx-pat-e2-e3-1.png" class="img-fluid figure-img" width="960"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cm-vx-pat-e2-e3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;19: Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands.
+Figure&nbsp;20: Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands.
 </figcaption></figure>
 </div>
 </div>
@@ -2593,23 +2599,23 @@ Figure&nbsp;19: Empirical data and Model predictions from Experiment 2 and 3 for
 Table&nbsp;15: Results of Bayesian Regression models predicting model error as a function of Model (ALM vs.&nbsp;EXAM), Condition (Constant vs.&nbsp;Varied), and the interaction between Model and Condition. The values represent the estimate coefficient for each term, with 95% credible intervals in brackets. The intercept reflects the baseline of ALM and Constant. The other estimates indicate deviations from the baseline for the EXAM mode and varied condition. Lower values indicate better model fit.
 </figcaption><div aria-describedby="tbl-htw-ee-e23-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="erxhguipel" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#erxhguipel table {
+<div id="hbaztsboza" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hbaztsboza table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#erxhguipel thead, #erxhguipel tbody, #erxhguipel tfoot, #erxhguipel tr, #erxhguipel td, #erxhguipel th {
+#hbaztsboza thead, #hbaztsboza tbody, #hbaztsboza tfoot, #hbaztsboza tr, #hbaztsboza td, #hbaztsboza th {
   border-style: none;
 }
 
-#erxhguipel p {
+#hbaztsboza p {
   margin: 0;
   padding: 0;
 }
 
-#erxhguipel .gt_table {
+#hbaztsboza .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2635,12 +2641,12 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   border-left-color: #D3D3D3;
 }
 
-#erxhguipel .gt_caption {
+#hbaztsboza .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#erxhguipel .gt_title {
+#hbaztsboza .gt_title {
   color: #333333;
   font-size: 16px;
   font-weight: initial;
@@ -2652,7 +2658,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   border-bottom-width: 0;
 }
 
-#erxhguipel .gt_subtitle {
+#hbaztsboza .gt_subtitle {
   color: #333333;
   font-size: 14px;
   font-weight: initial;
@@ -2664,7 +2670,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   border-top-width: 0;
 }
 
-#erxhguipel .gt_heading {
+#hbaztsboza .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2676,13 +2682,13 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   border-right-color: #D3D3D3;
 }
 
-#erxhguipel .gt_bottom_border {
+#hbaztsboza .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#erxhguipel .gt_col_headings {
+#hbaztsboza .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2697,7 +2703,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   border-right-color: #D3D3D3;
 }
 
-#erxhguipel .gt_col_heading {
+#hbaztsboza .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2717,7 +2723,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   overflow-x: hidden;
 }
 
-#erxhguipel .gt_column_spanner_outer {
+#hbaztsboza .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2729,15 +2735,15 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   padding-right: 4px;
 }
 
-#erxhguipel .gt_column_spanner_outer:first-child {
+#hbaztsboza .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#erxhguipel .gt_column_spanner_outer:last-child {
+#hbaztsboza .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#erxhguipel .gt_column_spanner {
+#hbaztsboza .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2749,11 +2755,11 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   width: 100%;
 }
 
-#erxhguipel .gt_spanner_row {
+#hbaztsboza .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#erxhguipel .gt_group_heading {
+#hbaztsboza .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2779,7 +2785,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   text-align: left;
 }
 
-#erxhguipel .gt_empty_group_heading {
+#hbaztsboza .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2794,15 +2800,15 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   vertical-align: middle;
 }
 
-#erxhguipel .gt_from_md > :first-child {
+#hbaztsboza .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#erxhguipel .gt_from_md > :last-child {
+#hbaztsboza .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#erxhguipel .gt_row {
+#hbaztsboza .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2821,7 +2827,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   overflow-x: hidden;
 }
 
-#erxhguipel .gt_stub {
+#hbaztsboza .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2834,7 +2840,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   padding-right: 5px;
 }
 
-#erxhguipel .gt_stub_row_group {
+#hbaztsboza .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2848,15 +2854,15 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   vertical-align: top;
 }
 
-#erxhguipel .gt_row_group_first td {
+#hbaztsboza .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#erxhguipel .gt_row_group_first th {
+#hbaztsboza .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#erxhguipel .gt_summary_row {
+#hbaztsboza .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2866,16 +2872,16 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   padding-right: 5px;
 }
 
-#erxhguipel .gt_first_summary_row {
+#hbaztsboza .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#erxhguipel .gt_first_summary_row.thick {
+#hbaztsboza .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#erxhguipel .gt_last_summary_row {
+#hbaztsboza .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2885,7 +2891,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   border-bottom-color: #D3D3D3;
 }
 
-#erxhguipel .gt_grand_summary_row {
+#hbaztsboza .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2895,7 +2901,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   padding-right: 5px;
 }
 
-#erxhguipel .gt_first_grand_summary_row {
+#hbaztsboza .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2905,7 +2911,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   border-top-color: #D3D3D3;
 }
 
-#erxhguipel .gt_last_grand_summary_row_top {
+#hbaztsboza .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2915,11 +2921,11 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   border-bottom-color: #D3D3D3;
 }
 
-#erxhguipel .gt_striped {
+#hbaztsboza .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#erxhguipel .gt_table_body {
+#hbaztsboza .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2928,7 +2934,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   border-bottom-color: #D3D3D3;
 }
 
-#erxhguipel .gt_footnotes {
+#hbaztsboza .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2942,7 +2948,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   border-right-color: #D3D3D3;
 }
 
-#erxhguipel .gt_footnote {
+#hbaztsboza .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2951,7 +2957,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   padding-right: 5px;
 }
 
-#erxhguipel .gt_sourcenotes {
+#hbaztsboza .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2965,7 +2971,7 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   border-right-color: #D3D3D3;
 }
 
-#erxhguipel .gt_sourcenote {
+#hbaztsboza .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2973,63 +2979,63 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
   padding-right: 5px;
 }
 
-#erxhguipel .gt_left {
+#hbaztsboza .gt_left {
   text-align: left;
 }
 
-#erxhguipel .gt_center {
+#hbaztsboza .gt_center {
   text-align: center;
 }
 
-#erxhguipel .gt_right {
+#hbaztsboza .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#erxhguipel .gt_font_normal {
+#hbaztsboza .gt_font_normal {
   font-weight: normal;
 }
 
-#erxhguipel .gt_font_bold {
+#hbaztsboza .gt_font_bold {
   font-weight: bold;
 }
 
-#erxhguipel .gt_font_italic {
+#hbaztsboza .gt_font_italic {
   font-style: italic;
 }
 
-#erxhguipel .gt_super {
+#hbaztsboza .gt_super {
   font-size: 65%;
 }
 
-#erxhguipel .gt_footnote_marks {
+#hbaztsboza .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#erxhguipel .gt_asterisk {
+#hbaztsboza .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#erxhguipel .gt_indent_1 {
+#hbaztsboza .gt_indent_1 {
   text-indent: 5px;
 }
 
-#erxhguipel .gt_indent_2 {
+#hbaztsboza .gt_indent_2 {
   text-indent: 10px;
 }
 
-#erxhguipel .gt_indent_3 {
+#hbaztsboza .gt_indent_3 {
   text-indent: 15px;
 }
 
-#erxhguipel .gt_indent_4 {
+#hbaztsboza .gt_indent_4 {
   text-indent: 20px;
 }
 
-#erxhguipel .gt_indent_5 {
+#hbaztsboza .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -3195,28 +3201,28 @@ Table&nbsp;15: Results of Bayesian Regression models predicting model error as a
 </figure>
 </div>
 </div>
-<p><em>Model Fits to Experiment 2 and 3.</em> Data from Experiments 2 and 3 were fit to ALM and EXAM in the same manner as Experiment1 . For brevity, we only plot and discuss the results of the “fit to training and testing data” models - results from the other fitting methods can be found in the appendix. The model fitting results for Experiments 2 and 3 closely mirrored those observed in Experiment 1. The Bayesian regression models predicting model error as a function of Model (ALM vs.&nbsp;EXAM), Condition (Constant vs.&nbsp;Varied), and their interaction (see <a href="#tbl-htw-ee-e23" class="quarto-xref">Table&nbsp;15</a>) revealed a consistent main effect of Model across all three experiments. The negative coefficients for the ModelEXAM term (Exp 2: <span class="math inline">\(\beta\)</span> = -86.39, 95% CrI -113.52, -59.31, pd = 100%; Exp 3: <span class="math inline">\(\beta\)</span> = -40.61, 95% CrI -75.9, -3.02, pd = 98.17%) indicate that EXAM outperformed ALM in both experiments. Furthermore, the interaction between Model and Condition was significant in both Experiment 2 (<span class="math inline">\(\beta\)</span> = 56.87, 95% CrI 25.26, 88.04, pd = 99.98%) and Experiment 3 (<span class="math inline">\(\beta\)</span> = 41.9, 95% CrI 11.2, 72.54, pd = 99.35%), suggesting that the superiority of EXAM over ALM was more pronounced for the Constant group compared to the Varied group, as was the case in Experiment 1. Recall that Experiment 3 included participants in both the original and reverse order conditions - and that this manipulation interacted with the effect of training condition. We thus also controleld for band order in our Bayesian Regression assessing the relative performance of EXAM and ALM in Experiment 3. There was a significant three way interaction between Model, Training Condition, and Band Order (<span class="math inline">\(\beta\)</span> = -60.6, 95% CrI -101.8, -18.66, pd = 99.83%), indicating that the relative advantage of EXAM over ALM was only more pronounced in the original order condition, and not the reverse order condition (see <a href="#fig-e2_e3_ae" class="quarto-xref">Figure&nbsp;20</a>).</p>
+<p><em>Model Fits to Experiment 2 and 3.</em> Data from Experiments 2 and 3 were fit to ALM and EXAM in the same manner as Experiment1 . For brevity, we only plot and discuss the results of the “fit to training and testing data” models - results from the other fitting methods can be found in the appendix. The model fitting results for Experiments 2 and 3 closely mirrored those observed in Experiment 1. The Bayesian regression models predicting model error as a function of Model (ALM vs.&nbsp;EXAM), Condition (Constant vs.&nbsp;Varied), and their interaction (see <a href="#tbl-htw-ee-e23" class="quarto-xref">Table&nbsp;15</a>) revealed a consistent main effect of Model across all three experiments. The negative coefficients for the ModelEXAM term (Exp 2: <span class="math inline">\(\beta\)</span> = -86.39, 95% CrI -113.52, -59.31, pd = 100%; Exp 3: <span class="math inline">\(\beta\)</span> = -40.61, 95% CrI -75.9, -3.02, pd = 98.17%) indicate that EXAM outperformed ALM in both experiments. Furthermore, the interaction between Model and Condition was significant in both Experiment 2 (<span class="math inline">\(\beta\)</span> = 56.87, 95% CrI 25.26, 88.04, pd = 99.98%) and Experiment 3 (<span class="math inline">\(\beta\)</span> = 41.9, 95% CrI 11.2, 72.54, pd = 99.35%), suggesting that the superiority of EXAM over ALM was more pronounced for the Constant group compared to the Varied group, as was the case in Experiment 1. Recall that Experiment 3 included participants in both the original and reverse order conditions - and that this manipulation interacted with the effect of training condition. We thus also controleld for band order in our Bayesian Regression assessing the relative performance of EXAM and ALM in Experiment 3. There was a significant three way interaction between Model, Training Condition, and Band Order (<span class="math inline">\(\beta\)</span> = -60.6, 95% CrI -101.8, -18.66, pd = 99.83%), indicating that the relative advantage of EXAM over ALM was only more pronounced in the original order condition, and not the reverse order condition (see <a href="#fig-e2_e3_ae" class="quarto-xref">Figure&nbsp;21</a>).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-e2_e3_ae" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e2_e3_ae-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="combo1_files/figure-html/fig-e2_e3_ae-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-20" title="Figure&nbsp;20: Conditional effects of Model (ALM vs EXAM) and Condition (Constant vs.&nbsp;Varied) on Model Error for Experiment 2 and 3 data. Experiment 3 also includes a control for the order of training vs.&nbsp;testing bands (original order vs.&nbsp;reverse order)."><img src="combo1_files/figure-html/fig-e2_e3_ae-1.png" class="img-fluid figure-img" width="864"></a>
+<a href="combo1_files/figure-html/fig-e2_e3_ae-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-21" title="Figure&nbsp;21: Conditional effects of Model (ALM vs EXAM) and Condition (Constant vs.&nbsp;Varied) on Model Error for Experiment 2 and 3 data. Experiment 3 also includes a control for the order of training vs.&nbsp;testing bands (original order vs.&nbsp;reverse order)."><img src="combo1_files/figure-html/fig-e2_e3_ae-1.png" class="img-fluid figure-img" width="864"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e2_e3_ae-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;20: Conditional effects of Model (ALM vs EXAM) and Condition (Constant vs.&nbsp;Varied) on Model Error for Experiment 2 and 3 data. Experiment 3 also includes a control for the order of training vs.&nbsp;testing bands (original order vs.&nbsp;reverse order).
+Figure&nbsp;21: Conditional effects of Model (ALM vs EXAM) and Condition (Constant vs.&nbsp;Varied) on Model Error for Experiment 2 and 3 data. Experiment 3 also includes a control for the order of training vs.&nbsp;testing bands (original order vs.&nbsp;reverse order).
 </figcaption></figure>
 </div>
 </div>
 </div>
-<p><em>Computational Model Summary</em>. Across the model fits to all three experiments, we found greater support for EXAM over ALM (negative coefficients on the ModelEXAM term in <a href="#tbl-htw-ee-e23" class="quarto-xref">Table&nbsp;15</a>), and moreover that the constant participants were disproportionately well described by EXAM in comparison to ALM (positive coefficients on ModelEXAM:conditVaried terms in <a href="#tbl-htw-ee-e23" class="quarto-xref">Table&nbsp;15</a>). This pattern is also clearly depicted in <a href="#fig-htw-best-model" class="quarto-xref">Figure&nbsp;21</a>, which plots the difference in model errors between ALM and EXAM for each individual participant. Both varied and constant conditions have a greater proportion of subjects better fit by EXAM (positive error differences), with the magnitude of EXAM’s advantage visibly greater for the constant group. It also bears mention that numerous participants were better fit by ALM, or did not show a clear preference for either model. A subset of these participants are shown in <a href="#fig-htw-indv-pred" class="quarto-xref">Figure&nbsp;22</a>.</p>
+<p><em>Computational Model Summary</em>. Across the model fits to all three experiments, we found greater support for EXAM over ALM (negative coefficients on the ModelEXAM term in <a href="#tbl-htw-ee-e23" class="quarto-xref">Table&nbsp;15</a>), and moreover that the constant participants were disproportionately well described by EXAM in comparison to ALM (positive coefficients on ModelEXAM:conditVaried terms in <a href="#tbl-htw-ee-e23" class="quarto-xref">Table&nbsp;15</a>). This pattern is also clearly depicted in <a href="#fig-htw-best-model" class="quarto-xref">Figure&nbsp;22</a>, which plots the difference in model errors between ALM and EXAM for each individual participant. Both varied and constant conditions have a greater proportion of subjects better fit by EXAM (positive error differences), with the magnitude of EXAM’s advantage visibly greater for the constant group. It also bears mention that numerous participants were better fit by ALM, or did not show a clear preference for either model. A subset of these participants are shown in <a href="#fig-htw-indv-pred" class="quarto-xref">Figure&nbsp;23</a>.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-htw-best-model" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-htw-best-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="combo1_files/figure-html/fig-htw-best-model-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-21" title="Figure&nbsp;21: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM."><img src="combo1_files/figure-html/fig-htw-best-model-1.png" class="img-fluid figure-img" width="1056"></a>
+<a href="combo1_files/figure-html/fig-htw-best-model-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-22" title="Figure&nbsp;22: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM."><img src="combo1_files/figure-html/fig-htw-best-model-1.png" class="img-fluid figure-img" width="1056"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-htw-best-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;21: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM.
+Figure&nbsp;22: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM.
 </figcaption></figure>
 </div>
 </div>
@@ -3225,16 +3231,91 @@ Figure&nbsp;21: Difference in model errors for each participant, with models fit
 <div class="cell-output-display">
 <div id="fig-htw-indv-pred" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-htw-indv-pred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="combo1_files/figure-html/fig-htw-indv-pred-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-22" title="Figure&nbsp;22: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands."><img src="combo1_files/figure-html/fig-htw-indv-pred-1.png" class="img-fluid figure-img" width="960"></a>
+<a href="combo1_files/figure-html/fig-htw-indv-pred-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-23" title="Figure&nbsp;23: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands."><img src="combo1_files/figure-html/fig-htw-indv-pred-1.png" class="img-fluid figure-img" width="960"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-htw-indv-pred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;22: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands.
+Figure&nbsp;23: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands.
 </figcaption></figure>
 </div>
 </div>
 </div>
-</section></section></section><section id="references" class="level2" data-number="2.3"><h2 data-number="2.3" class="anchored" data-anchor-id="references">
-<span class="header-section-number">2.3</span> References</h2>
+</section></section></section><section id="general-discussion" class="level2" data-number="2.3"><h2 data-number="2.3" class="anchored" data-anchor-id="general-discussion">
+<span class="header-section-number">2.3</span> General Discussion</h2>
+</section></section><section id="general-discussion-1" class="level1" data-number="3"><h1 data-number="3">
+<span class="header-section-number">3</span> General Discussion</h1>
+<p>Here is a proposed outline for the Discussion section of the manuscript, based on the information provided:</p>
+<p>Discussion I. Overview of the study’s aims and main findings A. Investigating the influence of training variability on learning, generalization, and extrapolation in a visuomotor function learning task B. Summary of the main results from Experiments 1 and 2</p>
+<ol start="2" type="I">
+<li>Interpretation of the results A. Lower training performance in the varied conditions
+<ol type="1">
+<li>Consistency with prior research on the influence of training variability</li>
+<li>Explanation of the effect in the context of the current study design B. Impaired extrapolation accuracy in the varied conditions</li>
+<li>Significance of the interaction between training condition and band type</li>
+<li>Implications for the role of variability in promoting generalization and extrapolation C. Reduced discrimination between velocity bands in the varied conditions</li>
+<li>Interpretation of the slopes in the velocity band analysis</li>
+<li>Potential mechanisms underlying the reduced discrimination in varied training</li>
+</ol>
+</li>
+<li>Integration with existing literature A. Comparison of findings with previous research on variability in function learning tasks
+<ol type="1">
+<li>DeLosh et al.&nbsp;(1997) study on the influence of variability (density) on function learning</li>
+<li>van Dam &amp; Ernst (2015) study on variability in a visuomotor learning task B. Implications for theories and models of function learning and extrapolation</li>
+<li>Rule-based models (e.g., polynomial hypothesis testing, log-polynomial adaptive regression)</li>
+<li>Similarity-based models (e.g., Associative Learning Model, Extrapolation-Association Model)</li>
+</ol>
+</li>
+<li>Limitations and future directions A. Potential limitations of the study design and methodology B. Suggestions for future research to address these limitations and extend the findings
+<ol type="1">
+<li>Investigating the influence of variability across different function types and task domains</li>
+<li>Examining the role of feedback and training duration on the effects of variability</li>
+</ol>
+</li>
+</ol>
+<p>V. Conclusion A. Recap of the main findings and their implications for understanding the role of variability in function learning and extrapolation B. Emphasis on the need for further research to develop a comprehensive framework for optimizing training variability in educational and instructional settings</p>
+<section id="overall-summary-of-experiments-1-3" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="overall-summary-of-experiments-1-3">
+<span class="header-section-number">3.1</span> Overall Summary of Experiments 1-3</h2>
+<p>Across three experiments, we investigated the impact of training variability on learning, transfer, and extrapolation in a visuomotor function learning task. In Experiment 1, participants in the varied training condition, who experienced a wider range of velocity bands during training, showed lower accuracy at the end of training compared to those in the constant training condition. Crucially, during the testing phase, the varied group exhibited significantly larger deviations from the target velocity bands, particularly for the extrapolation bands that were not encountered during training. The varied group also showed less discrimination between velocity bands, as evidenced by shallower slopes when predicting response velocity from target velocity band.</p>
+<p>Experiment 2 extended these findings by reversing the order of the training and testing bands. Similar to Experiment 1, the varied group demonstrated poorer performance during both training and testing phases. However, unlike Experiment 1, the varied group did not show a significant difference in discrimination between bands compared to the constant group.</p>
+<p>In Experiment 3, we introduced an ordinal feedback system during training, in contrast to the continuous feedback provided in the previous experiments. Participants were assigned to both an order condition (original or reverse) and a training condition (constant or varied). The varied condition showed larger deviations at the end of training, consistent with the previous experiments. Interestingly, there was a significant interaction between training condition and band order, with the varied condition showing greater accuracy in the reverse order condition. During testing, the varied group once again exhibited larger deviations, particularly for the extrapolation bands. The reverse order conditions showed smaller deviations compared to the original order conditions. Discrimination between velocity bands was poorer for the varied group in the original order condition, but not in the reverse order condition.</p>
+<p>In summary, these experiments consistently demonstrated that training with greater variability led to lower accuracy during both training and testing phases, with the detrimental effect being more pronounced for extrapolation items. The varied training condition also tended to show less discrimination between velocity bands, although this effect was modulated by the order of the training and testing bands. These findings suggest that while variable training can hinder initial learning, it may have differential effects on transfer and extrapolation depending on the specific task structure and the range of stimuli encountered during training and testing.</p>
+</section><section id="modelling-interpretation" class="level2" data-number="3.2"><h2 data-number="3.2" class="anchored" data-anchor-id="modelling-interpretation">
+<span class="header-section-number">3.2</span> Modelling Interpretation</h2>
+<ul>
+<li>why does Constant do better
+<ul>
+<li>kind of task that permits for prior knowledge about 0</li>
+<li>learning - end of training</li>
+</ul>
+</li>
+<li>what does it suggest that the constant group was disproportionately well explained by the EXAM model?</li>
+<li>
+</li></ul>
+<section id="comparison-to-delosh-1997-van-dam-ernst-2015" class="level3" data-number="3.2.1"><h3 data-number="3.2.1" class="anchored" data-anchor-id="comparison-to-delosh-1997-van-dam-ernst-2015">
+<span class="header-section-number">3.2.1</span> Comparison to DeLosh 1997 &amp; van Dam &amp; Ernst 2015</h3>
+<ul>
+<li>DeLosh used way larger numbers of unique stimuli.</li>
+<li>van Dam had more complex input dimension (spikiness). Which lacks any sense of 0 point.</li>
+</ul></section><section id="comparison-to-general-benefits-of-variability-literature" class="level3" data-number="3.2.2"><h3 data-number="3.2.2" class="anchored" data-anchor-id="comparison-to-general-benefits-of-variability-literature">
+<span class="header-section-number">3.2.2</span> Comparison to General Benefits of Variability Literature</h3>
+</section><section id="limitations" class="level3" data-number="3.2.3"><h3 data-number="3.2.3" class="anchored" data-anchor-id="limitations">
+<span class="header-section-number">3.2.3</span> Limitations</h3>
+<ul>
+<li>amount of training</li>
+<li>no mechanism to account for sequence effects in models</li>
+<li>more rigorous model comparison to account for exams greater complexity</li>
+<li>knowledge of function</li>
+</ul></section></section><section id="comparison-to-project-1" class="level2" data-number="3.3"><h2 data-number="3.3" class="anchored" data-anchor-id="comparison-to-project-1">
+<span class="header-section-number">3.3</span> Comparison to Project 1</h2>
+<section id="differences-between-the-tasks" class="level3" data-number="3.3.1"><h3 data-number="3.3.1" class="anchored" data-anchor-id="differences-between-the-tasks">
+<span class="header-section-number">3.3.1</span> Differences between the tasks</h3>
+<p>There are a number of differences between Project 1’s Hit The Target (HTT), and Project 2’s Hit The Wall (HTW) tasks.</p>
+<ul>
+<li><p>Task Space Complexity: In&nbsp;HTW,&nbsp;the task space is also almost perfectly smooth, at least for the continuous feedback subjects, if they throw 100 units too hard, they’ll be told that they were 100 units too hard. Whereas in HTT, &nbsp;it was possible to produce xy velocity combinations that were technically closer to the empirical solution space than other throws, but which resulted in worse feedback due to striking the barrier.</p></li>
+<li><p>Perceptual Distinctiveness: HTT offers perceptually distinct varied conditions that directly relate to the task’s demands, which may increase the sallience between training positions encounted by the varied group. In contrast, HTW’s varied conditions differ only in the numerical values displayed, lacking the same level of perceptual differentiation. Conversely in&nbsp;HTW, the only difference between conditions for the varied group are the numbers displayed at the top of the screen which indicate the current target band(e.g.&nbsp;800-1000, or 1000-1200)</p></li>
+<li><p>In&nbsp;HTW, our primary testing stage of interest has no feedback, whereas in HTT testing always included feedback (the intermittent testing in HTT expt 1 being the only exception). Of course, we do collect testing with feedback data at the end of&nbsp;HTW, but we haven’t focused on that data at all in our modelling work thus far. It’s also interesting to recall that the gap between varied and constant in&nbsp;HTW&nbsp;does seem to close substantially in the testing-with-feedback stage. The difference between no-feedback and feedback testing might be relevant if the benefits of variation have anything to do with improving subsequent learning (as opposed to subsequent immediate performance), OR if the benefits of constant training rely on having the most useful anchor, having the most useful anchor might be a lot less helpful if you’re getting feedback from novel positions and can thus immediately begin to form position-specific anchors for the novelties, rather than relying on a training anchor.&nbsp;</p></li>
+<li><p>HTW&nbsp;and HTT both have a similar amount of training trials (~200), and thus the constant groups acquire a similar amount of experience with their single position/velocity in both experiments. However, the varied conditions in both HTT experiments&nbsp;train on 2 positions, whereas the varied group in&nbsp;HTW&nbsp;trains on 3 velocity bands. This means that in HTT the varied group gets half as much experience on any one position as the constant group, and in&nbsp;HTW&nbsp;they only get 1/3 as much experience in any one position. There are likely myriad ways in which this might impact the success of the varied group regardless of how you think the benefits of variation might be occurring, e.g.&nbsp;maybe they also need to develop a coherent anchor, maybe they need more experience in order to extract a function, or more experience in order to properly learn to tune their c parameter.&nbsp;</p></li>
+</ul></section></section><section id="references" class="level2" data-number="3.4"><h2 data-number="3.4" class="anchored" data-anchor-id="references">
+<span class="header-section-number">3.4</span> References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-bengtssonUnifyingFrameworkParallel2021" class="csl-entry" role="listitem">
 Bengtsson, H. (2021). A <span>Unifying Framework</span> for <span>Parallel</span> and <span>Distributed Processing</span> in <span>R</span> using <span>Futures</span>. <em>The R Journal</em>, <em>13</em>(2), 208. <a href="https://doi.org/10.32614/RJ-2021-048">https://doi.org/10.32614/RJ-2021-048</a>
@@ -3304,6 +3385,9 @@ Koh, K., &amp; Meyer, D. E. (1991). Function learning: <span>Induction</span> of
 </div>
 <div id="ref-kruschkeALCOVEExemplarbasedConnectionist1992" class="csl-entry" role="listitem">
 Kruschke, J. K. (1992). <span>ALCOVE</span>: <span>An</span> exemplar-based connectionist model of <span>Category Learning</span>. <em>Psychological Review</em>, <em>99</em>(1). <a href="https://doi.org/10.1037/0033-295X.99.1.22">https://doi.org/10.1037/0033-295X.99.1.22</a>
+</div>
+<div id="ref-kwantesWhyPeopleUnderestimate2006" class="csl-entry" role="listitem">
+Kwantes, P. J., &amp; Neal, A. (2006). Why people underestimate y when extrapolating in linear functions. <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, <em>32</em>(5), 1019–1030. <a href="https://doi.org/10.1037/0278-7393.32.5.1019">https://doi.org/10.1037/0278-7393.32.5.1019</a>
 </div>
 <div id="ref-makowskiBayestestRDescribingEffects2019" class="csl-entry" role="listitem">
 Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). <span class="nocase">bayestestR</span>: <span>Describing Effects</span> and their <span>Uncertainty</span>, <span>Existence</span> and <span>Significance</span> within the <span>Bayesian Framework</span>. <em>Journal of Open Source Software</em>, <em>4</em>(40), 1541. <a href="https://doi.org/10.21105/joss.01541">https://doi.org/10.21105/joss.01541</a>
@@ -3932,31 +4016,25 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results Summary</span></span>
 <span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overall Summary of Experiments 1-3</span></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>Across three experiments, we investigated the impact of training variability on learning, transfer, and extrapolation in a visuomotor function learning task. In Experiment 1, participants in the varied training condition, who experienced a wider range of velocity bands during training, showed lower accuracy at the end of training compared to those in the constant training condition. Crucially, during the testing phase, the varied group exhibited significantly larger deviations from the target velocity bands, particularly for the extrapolation bands that were not encountered during training. The varied group also showed less discrimination between velocity bands, as evidenced by shallower slopes when predicting response velocity from target velocity band.</span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>Experiment 2 extended these findings by reversing the order of the training and testing bands. Similar to Experiment 1, the varied group demonstrated poorer performance during both training and testing phases. However, unlike Experiment 1, the varied group did not show a significant difference in discrimination between bands compared to the constant group.</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="fu">## Computational Model</span></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>{{&lt; include ../Model/htw_model.qmd &gt;}}</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>In Experiment 3, we introduced an ordinal feedback system during training, in contrast to the continuous feedback provided in the previous experiments. Participants were assigned to both an order condition (original or reverse) and a training condition (constant or varied). The varied condition showed larger deviations at the end of training, consistent with the previous experiments. Interestingly, there was a significant interaction between training condition and band order, with the varied condition showing greater accuracy in the reverse order condition. During testing, the varied group once again exhibited larger deviations, particularly for the extrapolation bands. The reverse order conditions showed smaller deviations compared to the original order conditions. Discrimination between velocity bands was poorer for the varied group in the original order condition, but not in the reverse order condition.</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="fu">## General Discussion</span></span>
 <span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>In summary, these experiments consistently demonstrated that training with greater variability led to lower accuracy during both training and testing phases, with the detrimental effect being more pronounced for extrapolation items. The varied training condition also tended to show less discrimination between velocity bands, although this effect was modulated by the order of the training and testing bands. These findings suggest that while variable training can hinder initial learning, it may have differential effects on transfer and extrapolation depending on the specific task structure and the range of stimuli encountered during training and testing.</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>{{&lt; include ../Sections/Discussion.qmd &gt;}}</span>
 <span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## Computational Model</span></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
 <span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>{{&lt; include ../Model/htw_model.qmd &gt;}}</span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Sections/combo1.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Sections/combo1.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom"});
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Sections/combo1.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Sections/combo1.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","loop":false,"descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
