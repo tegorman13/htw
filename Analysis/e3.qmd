@@ -8,20 +8,11 @@ lightbox: true
 code-fold: true
 cold-tools: true
 execute:
-  #cache: true
   warning: false
-#keep-md: true
 format: 
   html:
     column: 
       - screen-inset-right
-  # hugo-md:
-  #   echo: false
-  #   html-math-method: mathjax
-  #   output-file: e3-hugo.md
-  # gfm:
-  #   echo: true
-  #   output-file: e3-gfm.md
 ---
 
 ```{r}
@@ -38,14 +29,10 @@ e3 <- readRDS(here("data/e3_08-04-23.rds")) |>
     ), trainCon=as.numeric(trainCon)) 
 e3Sbjs <- e3 |> group_by(id,condit,bandOrder) |> summarise(n=n())
 testE3 <- e3 |> filter(expMode2 == "Test")
-
 nbins=5
 trainE3 <-  e3 |> filter(expMode2=="Train") |> group_by(id,condit,bandOrder, vb) |> 
     mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
-# bayesian comparison of condits in training
 trainE3_max <- trainE3 |> filter(Trial_Bin == nbins, bandInt==trainCon)
-
-# e3 |> group_by(condit, bandOrder) |> summarise(n_distinct(id))
 
 ```
 
@@ -159,7 +146,7 @@ cd3ted7 <-get_coef_details(bmtd3, "conditVaried:bandTypeExtrapolation:bandOrderR
 | conditVaried:bandTypeExtrapolation:bandOrderReverse |    30.42 |        -21.00 |         81.65 | 0.87 |
 
 
-: **Experiment 3 testing accuracy**. Main effects of condition and band type (training vs. extrapolation), and the interaction between the two factors. Larger coefficient estimates indicate larger deviations from the baselines (constant & trained bands) - and a positive interaction coefficient indicates disproporionate deviation for the varied condition on the extrapolation bands {.striped .hover .sm}
+: **Experiment 3 testing accuracy**. Main effects of condition and band type (training vs. extrapolation), and the interaction between the two factors. Larger coefficient estimates indicate larger deviations from the baselines (constant training;  trained bands & original order) - and a positive interaction coefficient indicates disproportionate deviation for the varied condition on the extrapolation bands {.striped .hover .sm}
 :::
 
 
@@ -178,7 +165,7 @@ E3. A) Deviations from target band during testing without feedback stage. B) Est
 
 ```{r}
 #| label: fig-e3-test-dev
-#| fig-cap: E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
+#| fig-cap: E3. A) Deviations from target band during testing without feedback stage. B) Conditional effect of condition (Constant vs. Varied) and testing band type (training vs. extrapolation) on testing accuracy. Error bars represent 95% confidence intervals.
 #| eval: true
 
 

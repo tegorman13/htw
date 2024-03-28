@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.5.26">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>HTW Project - Experiment 1</title>
+<title>HTW Project – Experiment 1</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -119,7 +119,7 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script><style>html{ scroll-behavior: smooth; }</style>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -220,7 +220,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Sections/Results.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Results</span></a>
+ <span class="menu-text">Experiment 3</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -232,7 +232,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Sections/combo1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">combo1</span></a>
+ <span class="menu-text">HTW Modeling</span></a>
   </div>
 </li>
       </ul>
@@ -530,9 +530,6 @@ window.Quarto = {
 </table>
 <p><br></p>
 <p>In each experiment we compare varied and constant conditions in terms of 1) accuracy in the final training block; 2) testing accuracy as a function of band type (trained vs.&nbsp;extrapolation bands); 3) extent of discrimination between all six testing bands. We quantified accuracy as the absolute deviation between the response velocity and the nearest boundary of the target band. Thus, when the target band was velocity 600-800, throws of 400, 650, and 900 would result in deviation values of 200, 0, and 100, respectively. The degree of discrimination between bands was index by fitting a linear model predicting the response velocity as a function of the target velocity. Participants who reliably discriminated between velocity bands tended to haves slope values ~1, while participants who made throws irrespective of the current target band would have slopes ~0.</p>
-<span class="math display">\[\begin{equation}
-dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \beta_3 \cdot condit_{ij} \cdot band_{ij} + b_{0i} + b_{1i} \cdot band_{ij} + \epsilon_{ij}
-\end{equation}\]</span>
 </section><section id="results" class="level3"><h3 class="anchored" data-anchor-id="results">Results</h3>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="va">trainE1</span> <span class="op">|&gt;</span> <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Trial_Bin</span>, y <span class="op">=</span> <span class="va">dist</span>, color <span class="op">=</span> <span class="va">condit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -547,10 +544,10 @@ dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \bet
 </details><div class="cell-output-display">
 <div id="fig-e1-train-dev" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="e1_files/figure-html/fig-e1-train-dev-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="e1_files/figure-html/fig-e1-train-dev-1.png" class="img-fluid figure-img" width="672"></a>
+<a href="e1_files/figure-html/fig-e1-train-dev-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Experiment 1 Training Stage. Deviations from target band across training blocks. Lower values represent greater accuracy."><img src="e1_files/figure-html/fig-e1-train-dev-1.png" class="img-fluid figure-img" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e1-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: E1. Deviations from target band across training blocks.
+Figure&nbsp;1: Experiment 1 Training Stage. Deviations from target band across training blocks. Lower values represent greater accuracy.
 </figcaption></figure>
 </div>
 </div>
@@ -640,7 +637,7 @@ Table&nbsp;1: <strong>Experiment 1 - End of training performance</strong>. The I
 </div>
 <div id="tbl-e1-bmm-dist" class="striped hover sm quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e1-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: <strong>Experiment 1 testing accuracy</strong>. Main effects of condition and band type (training vs.&nbsp;extrapolation), and the interaction between the two factors. Larger coefficient estimates indicate larger deviations from the baselines (constant &amp; trained bands) - and a positive interaction coefficient indicates disproporionate deviation for the varied condition on the extrapolation bands
+Table&nbsp;2: <strong>Experiment 1 testing accuracy</strong>. Main effects of condition and band type (training vs.&nbsp;extrapolation), and the interaction between the two factors. Larger coefficients indicate larger deviations from the baselines (Condition=constant &amp; bandType=Trained) - and a positive interaction coefficient indicates disproporionate deviation for the varied condition on the extrapolation bands
 </figcaption><div aria-describedby="tbl-e1-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table-striped table-hover table-sm small table">
 <colgroup>
@@ -717,10 +714,10 @@ Table&nbsp;2: <strong>Experiment 1 testing accuracy</strong>. Main effects of co
 </details><div class="cell-output-display">
 <div id="fig-e1-test-dev" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="e1_files/figure-html/fig-e1-test-dev-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="e1_files/figure-html/fig-e1-test-dev-1.png" class="img-fluid figure-img" width="672"></a>
+<a href="e1_files/figure-html/fig-e1-test-dev-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: A) Deviations from target band during testing without feedback stage. B) Conditional effect of condition (Constant vs.&nbsp;Varied) and testing band type (training vs.&nbsp;extrapolation) on testing accuracy. Error bars represent 95% credible intervals."><img src="e1_files/figure-html/fig-e1-test-dev-1.png" class="img-fluid figure-img" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e1-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: E1. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% credible intervals.
+Figure&nbsp;2: A) Deviations from target band during testing without feedback stage. B) Conditional effect of condition (Constant vs.&nbsp;Varied) and testing band type (training vs.&nbsp;extrapolation) on testing accuracy. Error bars represent 95% credible intervals.
 </figcaption></figure>
 </div>
 </div>
@@ -743,7 +740,7 @@ Figure&nbsp;2: E1. A) Deviations from target band during testing without feedbac
 <p><br></p>
 <div id="tbl-e1-bmm-vx" class="striped hover sm quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e1-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs.&nbsp;Varied) and Velocity Band
+Table&nbsp;3: Experiment 1. Bayesian Mixed Model Predicting velocity as a function of condition (Constant vs.&nbsp;Varied) and Velocity Band. Larger coefficients on Band represent greater sensitivity/discrimination.
 </figcaption><div aria-describedby="tbl-e1-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table-striped table-hover table-sm small table">
 <thead><tr class="header">
@@ -793,10 +790,10 @@ Table&nbsp;3: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of 
 </details><div class="cell-output-display">
 <div id="fig-e1-test-vx" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="e1_files/figure-html/fig-e1-test-vx-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="e1_files/figure-html/fig-e1-test-vx-1.png" class="img-fluid figure-img" width="1056"></a>
+<a href="e1_files/figure-html/fig-e1-test-vx-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: Empirical distribution of velocities producing in testing stage. Translucent bands with dash lines indicate the correct range for each velocity band."><img src="e1_files/figure-html/fig-e1-test-vx-1.png" class="img-fluid figure-img" width="1056"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e1-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: E1 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band.
+Figure&nbsp;3: Empirical distribution of velocities producing in testing stage. Translucent bands with dash lines indicate the correct range for each velocity band.
 </figcaption></figure>
 </div>
 </div>
@@ -850,7 +847,7 @@ Table&nbsp;4
 </figcaption><div aria-describedby="tbl-e1-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="e1_files/figure-html/tbl-e1-bmm-vx-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4" title="Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands."><img src="e1_files/figure-html/tbl-e1-bmm-vx-1.png" class="img-fluid figure-img" width="1056"></a></p>
+<figure class="figure"><p><a href="e1_files/figure-html/tbl-e1-bmm-vx-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands."><img src="e1_files/figure-html/tbl-e1-bmm-vx-1.png" class="img-fluid figure-img" width="1056"></a></p>
 <figcaption>Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.</figcaption></figure>
 </div>
 </div>
@@ -858,17 +855,11 @@ Table&nbsp;4
 </figure>
 </div>
 </div>
-</section><section id="e1-discussion" class="level2"><h2 class="anchored" data-anchor-id="e1-discussion">E1 Discussion</h2>
+</section><section id="e1-summary" class="level2"><h2 class="anchored" data-anchor-id="e1-summary">E1 Summary</h2>
 <p>In Experiment 1, we investigated how variability in training influenced participants’ ability learn and extrapolate in a visuomotor task. Our findings that training with variable conditions rresulted in lower final training performance is consistent with much of the prior researchon the influence of training variability <span class="citation" data-cites="ravivHowVariabilityShapes2022 soderstromLearningPerformanceIntegrative2015">(<a href="#ref-ravivHowVariabilityShapes2022" role="doc-biblioref">Raviv et al., 2022</a>; <a href="#ref-soderstromLearningPerformanceIntegrative2015" role="doc-biblioref">Soderstrom &amp; Bjork, 2015</a>)</span>, and is particularly unsurprising in the present work, given that the constant group received three times the amount of training on the velocity band common to the two conditions.</p>
 <p>More importantly, the varied training group exhibited significantly larger deviations from the target velocity bands during the testing phase, particularly for the extrapolation bands that were not encountered by either condition during training.</p>
 
 
-<div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">Figure&nbsp;1: E1. Deviations from target band across training blocks.</span>
-<span class="glightbox-desc lightbox-desc-2">Figure&nbsp;2: E1. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% credible intervals.</span>
-<span class="glightbox-desc lightbox-desc-3">Figure&nbsp;3: E1 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band.</span>
-<span class="glightbox-desc lightbox-desc-4">Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.</span>
-</div>
 
 </section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-burknerBrmsPackageBayesian2017" class="csl-entry" role="listitem">
@@ -921,18 +912,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -964,7 +944,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.tegorman13.github.io/htw\/custom");
@@ -972,10 +974,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
           // target, if specified
           link.setAttribute("target", "_blank");
           if (link.getAttribute("rel") === null) {
@@ -1017,7 +1024,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -1299,7 +1310,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e1.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e1.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"loop":false,"closeEffect":"zoom","openEffect":"zoom","selector":".lightbox","descPosition":"bottom"});
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e1.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e1.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"openEffect":"zoom","selector":".lightbox","descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

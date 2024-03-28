@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.5.26">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>HTW Project - Experiment 3</title>
+<title>HTW Project – Experiment 3</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script><style>html{ scroll-behavior: smooth; }</style>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -201,7 +201,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Sections/Results.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Results</span></a>
+ <span class="menu-text">Experiment 3</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -213,7 +213,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Sections/combo1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">combo1</span></a>
+ <span class="menu-text">HTW Modeling</span></a>
   </div>
 </li>
       </ul>
@@ -473,14 +473,10 @@ window.Quarto = {
 <span>    <span class="op">)</span>, trainCon<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">trainCon</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">e3Sbjs</span> <span class="op">&lt;-</span> <span class="va">e3</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>,<span class="va">bandOrder</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">summarise</span><span class="op">(</span>n<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">testE3</span> <span class="op">&lt;-</span> <span class="va">e3</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode2</span> <span class="op">==</span> <span class="st">"Test"</span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">nbins</span><span class="op">=</span><span class="fl">5</span></span>
 <span><span class="va">trainE3</span> <span class="op">&lt;-</span>  <span class="va">e3</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">expMode2</span><span class="op">==</span><span class="st">"Train"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">condit</span>,<span class="va">bandOrder</span>, <span class="va">vb</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">mutate</span><span class="op">(</span>Trial_Bin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span> <span class="va">gt.train</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">gt.train</span><span class="op">)</span>,length.out<span class="op">=</span><span class="va">nbins</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span>,include.lowest <span class="op">=</span> <span class="cn">TRUE</span>, labels<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="co"># bayesian comparison of condits in training</span></span>
-<span><span class="va">trainE3_max</span> <span class="op">&lt;-</span> <span class="va">trainE3</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">Trial_Bin</span> <span class="op">==</span> <span class="va">nbins</span>, <span class="va">bandInt</span><span class="op">==</span><span class="va">trainCon</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># e3 |&gt; group_by(condit, bandOrder) |&gt; summarise(n_distinct(id))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">trainE3_max</span> <span class="op">&lt;-</span> <span class="va">trainE3</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">Trial_Bin</span> <span class="op">==</span> <span class="va">nbins</span>, <span class="va">bandInt</span><span class="op">==</span><span class="va">trainCon</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="methods-procedure" class="level3"><h3 class="anchored" data-anchor-id="methods-procedure">Methods &amp; Procedure</h3>
@@ -574,7 +570,7 @@ Table&nbsp;1: <strong>Experiment 3 - End of training performance</strong>. The I
 </details><div class="cell-output-display page-columns page-full">
 <div id="fig-e3-train-dev" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full"><div aria-describedby="fig-e3-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
-<a href="e3_files/figure-html/fig-e3-train-dev-1.png" class="lightbox page-columns page-full" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="e3_files/figure-html/fig-e3-train-dev-1.png" class="img-fluid figure-img column-screen-inset-right" width="672"></a>
+<a href="e3_files/figure-html/fig-e3-train-dev-1.png" class="lightbox page-columns page-full" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: E3. Deviations from target band during testing without feedback stage."><img src="e3_files/figure-html/fig-e3-train-dev-1.png" class="img-fluid figure-img column-screen-inset-right" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-train-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: E3. Deviations from target band during testing without feedback stage.
@@ -612,7 +608,7 @@ Figure&nbsp;1: E3. Deviations from target band during testing without feedback s
 </div>
 <div id="tbl-e3-bmm-dist" class="striped hover sm quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e3-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: <strong>Experiment 3 testing accuracy</strong>. Main effects of condition and band type (training vs.&nbsp;extrapolation), and the interaction between the two factors. Larger coefficient estimates indicate larger deviations from the baselines (constant &amp; trained bands) - and a positive interaction coefficient indicates disproporionate deviation for the varied condition on the extrapolation bands
+Table&nbsp;2: <strong>Experiment 3 testing accuracy</strong>. Main effects of condition and band type (training vs.&nbsp;extrapolation), and the interaction between the two factors. Larger coefficient estimates indicate larger deviations from the baselines (constant training; trained bands &amp; original order) - and a positive interaction coefficient indicates disproportionate deviation for the varied condition on the extrapolation bands
 </figcaption><div aria-describedby="tbl-e3-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table-striped table-hover table-sm small table">
 <colgroup>
@@ -726,10 +722,10 @@ E3. A) Deviations from target band during testing without feedback stage. B) Est
 </details><div class="cell-output-display page-columns page-full">
 <div id="fig-e3-test-dev" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full"><div aria-describedby="fig-e3-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
-<a href="e3_files/figure-html/fig-e3-test-dev-1.png" class="lightbox page-columns page-full" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="e3_files/figure-html/fig-e3-test-dev-1.png" class="img-fluid figure-img column-screen-inset-right" width="672"></a>
+<a href="e3_files/figure-html/fig-e3-test-dev-1.png" class="lightbox page-columns page-full" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: E3. A) Deviations from target band during testing without feedback stage. B) Conditional effect of condition (Constant vs.&nbsp;Varied) and testing band type (training vs.&nbsp;extrapolation) on testing accuracy. Error bars represent 95% confidence intervals."><img src="e3_files/figure-html/fig-e3-test-dev-1.png" class="img-fluid figure-img column-screen-inset-right" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
+Figure&nbsp;2: E3. A) Deviations from target band during testing without feedback stage. B) Conditional effect of condition (Constant vs.&nbsp;Varied) and testing band type (training vs.&nbsp;extrapolation) on testing accuracy. Error bars represent 95% confidence intervals.
 </figcaption></figure>
 </div>
 </div>
@@ -856,7 +852,7 @@ Table&nbsp;3: Experiment 3. Bayesian Mixed Model Predicting Vx as a function of 
 </details><div class="cell-output-display page-columns page-full">
 <div id="fig-e3-test-vx" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full"><div aria-describedby="fig-e3-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
-<a href="e3_files/figure-html/fig-e3-test-vx-1.png" class="lightbox page-columns page-full" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="e3_files/figure-html/fig-e3-test-vx-1.png" class="img-fluid figure-img column-screen-inset-right" width="1056"></a>
+<a href="e3_files/figure-html/fig-e3-test-vx-1.png" class="lightbox page-columns page-full" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band."><img src="e3_files/figure-html/fig-e3-test-vx-1.png" class="img-fluid figure-img column-screen-inset-right" width="1056"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band.
@@ -929,7 +925,7 @@ Figure&nbsp;3: e3 testing x velocities. Translucent bands with dash lines indica
 </details><div class="cell-output-display page-columns page-full">
 <div id="fig-e3-bmm-vx" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full"><div aria-describedby="fig-e3-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
-<a href="e3_files/figure-html/fig-e3-bmm-vx-1.png" class="lightbox page-columns page-full" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="e3_files/figure-html/fig-e3-bmm-vx-1.png" class="img-fluid figure-img column-screen-inset-right" width="1056"></a>
+<a href="e3_files/figure-html/fig-e3-bmm-vx-1.png" class="lightbox page-columns page-full" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands."><img src="e3_files/figure-html/fig-e3-bmm-vx-1.png" class="img-fluid figure-img column-screen-inset-right" width="1056"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-e3-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.
@@ -939,12 +935,6 @@ Figure&nbsp;4: Conditional effect of training condition and Band. Ribbons indica
 </div>
 
 
-<div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">Figure&nbsp;1: E3. Deviations from target band during testing without feedback stage.</span>
-<span class="glightbox-desc lightbox-desc-2">Figure&nbsp;2: E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.</span>
-<span class="glightbox-desc lightbox-desc-3">Figure&nbsp;3: e3 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band.</span>
-<span class="glightbox-desc lightbox-desc-4">Figure&nbsp;4: Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.</span>
-</div>
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -980,18 +970,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1023,7 +1002,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.tegorman13.github.io/htw\/custom");
@@ -1031,10 +1032,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
           // target, if specified
           link.setAttribute("target", "_blank");
           if (link.getAttribute("rel") === null) {
@@ -1076,7 +1082,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -1361,7 +1371,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e3.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e3.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom"});
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Analysis/e3.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Analysis/e3.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"descPosition":"bottom","closeEffect":"zoom","selector":".lightbox","loop":false,"openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -9,51 +9,44 @@ execute:
   eval: true
 ---
 
-
 ```{r}
+#| eval: false
 pacman::p_load(dplyr, here)
 #source(here::here("Functions", "packages.R"))
-e1 <- readRDS(here("data/e1_08-04-23.rds")) 
+e1 <- readRDS(here("data/e1_08-21-23.rds")) 
 e2 <- readRDS(here("data/e2_08-04-23.rds")) 
 e3 <- readRDS(here("data/e3_08-04-23.rds")) 
-
 ```
-
 
 
 ## Methods
 
-Participants
-A total of `r length(unique(e1$id))` participants (XXX% female, XXX% male) were recruited from the Indiana University Introductory Psychology Course. The average age of participants was XXX years (SD = XXX). Participants were randomly assigned to one of two training conditions: varied training or constant training. 
+*Participants* A total of 156 participants were recruited from the Indiana University Introductory Psychology Course. Participants were randomly assigned to one of two training conditions: varied training or constant training. 
 
-Design
-The experiment employed a 2 (Training Condition: varied vs. constant). 
 
-Procedure
-Upon arrival at the laboratory, participants were provided with a description of the experiment and signed informed consent forms. They were then seated in front of a computer equipped with a mouse and were given instructions on how to perform the "Hit The Wall" (HTW) visuomotor extrapolation task.
+*Task.* The "Hit The Wall" (HTW) visuomotor extrapolation task task was programmed in Javascript, making heavy use of the [phaser.io](https://phaser.io/) game library. The HTW task involved launching a projectile such that it would strike the "wall" at target speed indicated at the top of the screen (see @fig-htw-task). The target velocities were given as a range, or band, of acceptable velocity values  (e.g. band 800-1000). During the training stage, participants received feedback indicating whether they had hit the wall within the target velocity band, or how many units their throw was above or below from the target band. Participants were instructed that only the x velocity component of the ball was relevant to the task. The y velocity, or the location at which the ball struck the wall, had no influence on the task feedback.
 
-The HTW task involved launching projectiles to hit a target displayed on the computer screen. Participants completed a total of 90 trials during the training stage. In the varied training condition, participants encountered three velocity bands (800-1000, 1000-1200, and 1200-1400). In contrast, participants in the constant training condition encountered only one velocity band (800-1000).
+/
+```{r out.width = "60%", echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+#| label: fig-htw-task
+#| eval: true
+#knitr::include_graphics(here::here("images/2023-04-19-16-20-55.png"))
+knitr::include_graphics(here::here("Assets/figs/htw_task_fig.png"))
 
-During the training stage, participants in both conditions also completed "no feedback" trials, where they received no information about their performance. These trials were randomly interleaved with the regular training trials.
+```
 
-Following the training stage, participants proceeded to the testing stage, which consisted of three phases. In the first phase, participants completed "no-feedback" testing from three novel extrapolation bands (100-300, 350-550, and 600-800), with each band consisting of 15 trials.
+*Procedure.* All participants completed the task online. Participants were provided with a description of the experiment and indicated informed consent. @fig-design-e1 illustrates the general procedure. Participants completed a total of 90 trials during the training stage. In the varied training condition, participants encountered three velocity bands (800-1000, 1000-1200, and 1200-1400). Participants in the constant training condition trained on only one velocity band (800-1000) - the closest band to what would be the novel extrapolation bands in the testing stage. 
 
-In the second phase of testing, participants completed "no-feedback" testing from the three velocity bands used during the training stage (800-1000, 1000-1200, and 1200-1400). In the constant training condition, two of these bands were novel, while in the varied training condition, all three bands were encountered during training.
-
-The third and final phase of testing involved "feedback" testing for each of the three extrapolation bands (100-300, 350-550, and 600-800), with each band consisting of 10 trials. Participants received feedback on their performance during this phase.
-
-Throughout the experiment, participants' performance was measured by calculating the distance between the produced x-velocity of the projectiles and the closest edge of the current velocity band. Lower distances indicated better performance.
-
-After completing the experiment, participants were debriefed and provided with an opportunity to ask questions about the study.
-
+Following the training stage, participants proceeded immediately to the testing stage. Participants were tested from all six velocity bands, in two separate stages.  In the novel extrapolation testing stage, participants completed "no-feedback" testing from three novel extrapolation bands (100-300, 350-550, and 600-800), with each band consisting of 15 trials. Participants were also tested from the three velocity bands that were trained by the varied condition (800-1000, 1000-1200, and 1200-1400). In the constant training condition, two of these bands were novel, while in the varied training condition, all three bands were encountered during training. The order in which participants completed the novel-extrapolation and testing-from-3-varied bands was counterbalanced across participants.
+A final training stage presented participants with "feedback" testing for each of the three extrapolation bands (100-300, 350-550, and 600-800). 
 
 ```{dot}
 //| label: fig-design-e1
 //| fig-cap: "Experiment 1 Design. Constant and Varied participants complete different training conditions."
-//| fig-width: 8.0
+//| fig-width: 7.0
 //| fig-height: 2.5
 //| fig-responsive: false
-//| column: screen-inset-right
+/////| column: screen-inset-right
 digraph {
   graph [layout = dot, rankdir = LR]
 
@@ -77,8 +70,7 @@ digraph {
 
   Test2 -> Test3
 }
-#https://renenyffenegger.ch/notes/tools/Graphviz/examples/index
-#https://edotor.net/
+
 ```
 
 
@@ -86,16 +78,6 @@ digraph {
 
 
 
-
-## HTW Task
-* need to create a demo version without consent form. And maybe separate windows for the different versions. 
-
-Experimental Task for the HTW Project. Programmed in Javascript, and making use of phaser.js.
-
-
-```{r out.width = "70%", echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
-knitr::include_graphics(here::here("images/2023-04-19-16-20-55.png"))
-```
 
 <!-- ![](images/2023-04-19-16-20-55.png) -->
 <!-- `r knitr::include_graphics(here::here("images/2023-04-19-16-20-55.png"))` -->

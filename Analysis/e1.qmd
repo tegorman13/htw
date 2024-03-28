@@ -58,19 +58,12 @@ Each model was set to run with 4 chains, 5000 iterations per chain, with the fir
 
 In each experiment we compare varied and constant conditions in terms of 1) accuracy in the final training block; 2) testing accuracy as a function of  band type (trained vs. extrapolation bands); 3) extent of discrimination between all six testing bands. We quantified accuracy as the absolute deviation between the response velocity and the nearest boundary of the target  band. Thus, when the target band was velocity 600-800, throws of 400, 650, and 900 would result in deviation values of 200, 0, and 100, respectively. The degree of discrimination between bands was index by fitting a linear model predicting the response velocity as a function of the target velocity. Participants who reliably discriminated between velocity bands tended to haves slope values \~1, while participants who made throws irrespective of the current target band would have slopes \~0.
 
-```{=tex}
-\begin{equation}
-dist_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot band_{ij} + \beta_3 \cdot condit_{ij} \cdot band_{ij} + b_{0i} + b_{1i} \cdot band_{ij} + \epsilon_{ij}
-\end{equation}
-```
-
 
 ### Results
 
 ```{r}
 #| label: fig-e1-train-dev
-#| fig-cap: E1. Deviations from target band across training blocks. 
-#| eval: true
+#| fig-cap: Experiment 1 Training Stage. Deviations from target band across training blocks. Lower values represent greater accuracy. 
 p1 <- trainE1 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
     stat_summary(geom = "line", fun = mean) +
     stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
@@ -166,7 +159,7 @@ cdted3 <-get_coef_details(bmtd, "conditVaried:bandTypeExtrapolation")
 | conditVaried:bandTypeExtrapolation |    66.46 |         32.76 |         99.36 | 1.0 |
 
 
-: **Experiment 1 testing accuracy**. Main effects of condition and band type (training vs. extrapolation), and the interaction between the two factors. Larger coefficient estimates indicate larger deviations from the baselines (constant & trained bands) - and a positive interaction coefficient indicates disproporionate deviation for the varied condition on the extrapolation bands {.striped .hover .sm}
+: **Experiment 1 testing accuracy**. Main effects of condition and band type (training vs. extrapolation), and the interaction between the two factors. Larger coefficients  indicate larger deviations from the baselines (Condition=constant & bandType=Trained) - and a positive interaction coefficient indicates disproporionate deviation for the varied condition on the extrapolation bands {.striped .hover .sm}
 :::
 
 
@@ -176,9 +169,7 @@ cdted3 <-get_coef_details(bmtd, "conditVaried:bandTypeExtrapolation")
 
 ```{r}
 #| label: fig-e1-test-dev
-#| fig-cap: E1. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% credible intervals.
-#| eval: TRUE
-
+#| fig-cap:  A) Deviations from target band during testing without feedback stage. B) Conditional effect of condition (Constant vs. Varied) and testing band type (training vs. extrapolation) on testing accuracy. Error bars represent 95% credible intervals.
 
 pe1td <- testE1 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
     stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
@@ -233,7 +224,7 @@ intCoef1 <- get_coef_details(e1_vxBMM, "conditVaried:bandInt")
 | Band         |     0.71 |          0.62 |          0.80 | 1.00 |
 | condit\*Band |    -0.14 |         -0.26 |         -0.01 | 0.98 |
 
-Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band {.striped .hover .sm}
+Experiment 1. Bayesian Mixed Model Predicting velocity as a function of condition (Constant vs. Varied) and Velocity Band. Larger coefficients on Band represent greater sensitivity/discrimination.  {.striped .hover .sm}
 :::
 
 
@@ -243,7 +234,7 @@ Finally, to assess the ability of both conditions to discriminate between veloci
 
 ```{r}
 #| label: fig-e1-test-vx
-#| fig-cap: E1 testing x velocities. Translucent bands with dash lines indicate the correct range for each velocity band. 
+#| fig-cap: Empirical distribution of velocities producing in testing stage. Translucent bands with dash lines indicate the correct range for each velocity band. 
 #| fig-width: 11
 #| fig-height: 9
  
@@ -258,11 +249,8 @@ testE1 %>% group_by(id,vb,condit) |> plot_distByCondit()
 ```{r}
 #| label: tbl-e1-bmm-vx
 #| fig-cap: Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. 
-#| fig-height: 12
+#| fig-height: 9
 #| fig-width: 11
-#| eval: TRUE
-
-
 
 
 pe1vce <- e1_vxBMM |> emmeans( ~condit + bandInt,re_formula=NA, 
@@ -311,7 +299,7 @@ p3
 
 
 
-## E1 Discussion  
+## E1 Summary
 
 In Experiment 1, we investigated how variability in training influenced participants' ability learn and extrapolate in a visuomotor task. Our findings that training with variable conditions  rresulted in lower final training performance is consistent with much of the prior researchon the influence of training variability [@ravivHowVariabilityShapes2022; @soderstromLearningPerformanceIntegrative2015], and is particularly unsurprising in the present work, given that the constant group received three times the amount of training on the velocity band common to the two conditions. 
 
