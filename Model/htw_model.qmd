@@ -456,7 +456,9 @@ bct_e3  <- as.data.frame(bayestestR::describe_posterior(e3_ee_brm_ae, centrality
   tibble::remove_rownames() %>%
   mutate(Term = stringr::str_remove(Term, "b_")) #%>% kable(booktabs = TRUE)
 
-bct <- rbind(bct_e1 |> mutate(exp="Exp 1"),bct_e2 |> mutate(exp= "Exp 2"),bct_e3 |> mutate(exp="Exp 3")) |> relocate(exp, .before=Term)
+bct <- rbind(bct_e1 |> mutate(exp="Exp 1"),bct_e2 |> 
+               mutate(exp= "Exp 2"),bct_e3 |> mutate(exp="Exp 3")) |> 
+  relocate(exp, .before=Term)
 
 bct_table <- bct %>%
   mutate(
@@ -547,7 +549,7 @@ p_e3 <- plot(conditional_effects(e3_ee_brm_ae,
                          effects = "Model:condit", 
                          conditions=make_conditions(e3_ee_brm_ae,vars=c("bandOrder"))),
      points=FALSE,plot=FALSE)$`Model:condit` + 
-     labs(x="Model",y="Model Error", title="E3. Model Error") + 
+     labs(x="Model",y="Model Error", title="E3. Model Error", fill=NULL, col=NULL) + 
      theme(legend.position="right") + 
      scale_color_manual(values=wes_palette("Darjeeling1")) 
 

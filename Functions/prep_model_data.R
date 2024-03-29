@@ -341,15 +341,15 @@ post_dat_l <- post_dat_l |>
 
 
 # organize training data predictions
- pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
-   generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="train_data")
-    })) |>
-   select(Fit_Method,pp,-data) |>
-  unnest(pp) |> as.data.table() |> filter(expMode2=="Train")
+#  pd_train <- nestSbjModelFit |> mutate(pp=furrr::future_pmap(list(id,Model,Fit_Method,data), ~{
+#    generate_data(..2, ..4 |> mutate(id=..1), ds, num_samples = 20, return_dat="train_data")
+#     })) |>
+#    select(Fit_Method,pp,-data) |>
+#   unnest(pp) |> as.data.table() |> filter(expMode2=="Train")
+# 
+# saveRDS(pd_train, here("data/model_cache/pd_train2.rds"))
 
-#saveRDS(pd_train, here("data/model_cache/pd_train2.rds"))
-
-#pd_train <- readRDS(here("data/model_cache/pd_train2.rds"))
+pd_train <- readRDS(here("data/model_cache/pd_train2.rds"))
 
 nbins <- 3
 pd_train <- pd_train |> group_by(id,condit,Model,Fit_Method) |>

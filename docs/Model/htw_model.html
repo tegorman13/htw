@@ -2058,7 +2058,9 @@ Figure&nbsp;6: Empirical data and Model predictions from Experiment 2 and 3 for 
 <span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">remove_rownames</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>Term <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">Term</span>, <span class="st">"b_"</span><span class="op">)</span><span class="op">)</span> <span class="co">#%&gt;% kable(booktabs = TRUE)</span></span>
 <span></span>
-<span><span class="va">bct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">bct_e1</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>exp<span class="op">=</span><span class="st">"Exp 1"</span><span class="op">)</span>,<span class="va">bct_e2</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>exp<span class="op">=</span> <span class="st">"Exp 2"</span><span class="op">)</span>,<span class="va">bct_e3</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>exp<span class="op">=</span><span class="st">"Exp 3"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">relocate</span><span class="op">(</span><span class="va">exp</span>, .before<span class="op">=</span><span class="va">Term</span><span class="op">)</span></span>
+<span><span class="va">bct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">bct_e1</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>exp<span class="op">=</span><span class="st">"Exp 1"</span><span class="op">)</span>,<span class="va">bct_e2</span> <span class="op">|&gt;</span> </span>
+<span>               <span class="fu">mutate</span><span class="op">(</span>exp<span class="op">=</span> <span class="st">"Exp 2"</span><span class="op">)</span>,<span class="va">bct_e3</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>exp<span class="op">=</span><span class="st">"Exp 3"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">relocate</span><span class="op">(</span><span class="va">exp</span>, .before<span class="op">=</span><span class="va">Term</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">bct_table</span> <span class="op">&lt;-</span> <span class="va">bct</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
@@ -2747,7 +2749,7 @@ Table&nbsp;4: Results of Bayesian Regression models predicting model error as a 
 <span>                         effects <span class="op">=</span> <span class="st">"Model:condit"</span>, </span>
 <span>                         conditions<span class="op">=</span><span class="fu">make_conditions</span><span class="op">(</span><span class="va">e3_ee_brm_ae</span>,vars<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bandOrder"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>     points<span class="op">=</span><span class="cn">FALSE</span>,plot<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">`Model:condit`</span> <span class="op">+</span> </span>
-<span>     <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Model"</span>,y<span class="op">=</span><span class="st">"Model Error"</span>, title<span class="op">=</span><span class="st">"E3. Model Error"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>     <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Model"</span>,y<span class="op">=</span><span class="st">"Model Error"</span>, title<span class="op">=</span><span class="st">"E3. Model Error"</span>, fill<span class="op">=</span><span class="cn">NULL</span>, col<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>     <span class="fu">theme</span><span class="op">(</span>legend.position<span class="op">=</span><span class="st">"right"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>     <span class="fu">scale_color_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu">wes_palette</span><span class="op">(</span><span class="st">"Darjeeling1"</span><span class="op">)</span><span class="op">)</span> </span>
 <span></span>
@@ -3864,226 +3866,228 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-478"><a href="#cb15-478" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">remove_rownames</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb15-479"><a href="#cb15-479" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Term =</span> stringr<span class="sc">::</span><span class="fu">str_remove</span>(Term, <span class="st">"b_"</span>)) <span class="co">#%&gt;% kable(booktabs = TRUE)</span></span>
 <span id="cb15-480"><a href="#cb15-480" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-481"><a href="#cb15-481" aria-hidden="true" tabindex="-1"></a>bct <span class="ot">&lt;-</span> <span class="fu">rbind</span>(bct_e1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">exp=</span><span class="st">"Exp 1"</span>),bct_e2 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">exp=</span> <span class="st">"Exp 2"</span>),bct_e3 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">exp=</span><span class="st">"Exp 3"</span>)) <span class="sc">|&gt;</span> <span class="fu">relocate</span>(exp, <span class="at">.before=</span>Term)</span>
-<span id="cb15-482"><a href="#cb15-482" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-483"><a href="#cb15-483" aria-hidden="true" tabindex="-1"></a>bct_table <span class="ot">&lt;-</span> bct <span class="sc">%&gt;%</span></span>
-<span id="cb15-484"><a href="#cb15-484" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb15-485"><a href="#cb15-485" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(Estimate, <span class="st">`</span><span class="at">95% CrI Lower</span><span class="st">`</span>, <span class="st">`</span><span class="at">95% CrI Upper</span><span class="st">`</span>), <span class="sc">~</span> <span class="fu">round</span>(., <span class="dv">2</span>)),</span>
-<span id="cb15-486"><a href="#cb15-486" aria-hidden="true" tabindex="-1"></a>    <span class="at">pd =</span> <span class="fu">round</span>(pd, <span class="dv">2</span>)</span>
-<span id="cb15-487"><a href="#cb15-487" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb15-488"><a href="#cb15-488" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb15-489"><a href="#cb15-489" aria-hidden="true" tabindex="-1"></a>  <span class="co"># tab_header(</span></span>
-<span id="cb15-490"><a href="#cb15-490" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   title = "Bayesian Model Results",</span></span>
-<span id="cb15-491"><a href="#cb15-491" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   subtitle = "Estimates and Credible Intervals for Each Term Across Experiments"</span></span>
-<span id="cb15-492"><a href="#cb15-492" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ) %&gt;%</span></span>
-<span id="cb15-493"><a href="#cb15-493" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb15-494"><a href="#cb15-494" aria-hidden="true" tabindex="-1"></a>    <span class="at">exp =</span> <span class="st">"Experiment"</span>,</span>
-<span id="cb15-495"><a href="#cb15-495" aria-hidden="true" tabindex="-1"></a>    <span class="at">Term =</span> <span class="st">"Term"</span>,</span>
-<span id="cb15-496"><a href="#cb15-496" aria-hidden="true" tabindex="-1"></a>    <span class="at">Estimate =</span> <span class="st">"Estimate"</span>,</span>
-<span id="cb15-497"><a href="#cb15-497" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">95% CrI Lower</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"95% CrI Lower"</span>,</span>
-<span id="cb15-498"><a href="#cb15-498" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">95% CrI Upper</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"95% CrI Upper"</span>,</span>
-<span id="cb15-499"><a href="#cb15-499" aria-hidden="true" tabindex="-1"></a>    <span class="at">pd =</span> <span class="st">"pd"</span></span>
-<span id="cb15-500"><a href="#cb15-500" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb15-501"><a href="#cb15-501" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(</span>
-<span id="cb15-502"><a href="#cb15-502" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(Estimate, <span class="st">`</span><span class="at">95% CrI Lower</span><span class="st">`</span>, <span class="st">`</span><span class="at">95% CrI Upper</span><span class="st">`</span>),</span>
-<span id="cb15-503"><a href="#cb15-503" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">2</span></span>
-<span id="cb15-504"><a href="#cb15-504" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb15-505"><a href="#cb15-505" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(</span>
-<span id="cb15-506"><a href="#cb15-506" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> pd,</span>
-<span id="cb15-507"><a href="#cb15-507" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">2</span></span>
-<span id="cb15-508"><a href="#cb15-508" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb15-509"><a href="#cb15-509" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(</span>
-<span id="cb15-510"><a href="#cb15-510" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Credible Interval"</span>,</span>
-<span id="cb15-511"><a href="#cb15-511" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">95% CrI Lower</span><span class="st">`</span>, <span class="st">`</span><span class="at">95% CrI Upper</span><span class="st">`</span>)</span>
-<span id="cb15-512"><a href="#cb15-512" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb15-513"><a href="#cb15-513" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
-<span id="cb15-514"><a href="#cb15-514" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(</span>
-<span id="cb15-515"><a href="#cb15-515" aria-hidden="true" tabindex="-1"></a>      <span class="co">#cell_fill(color = "lightgray"),</span></span>
-<span id="cb15-516"><a href="#cb15-516" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>), </span>
-<span id="cb15-517"><a href="#cb15-517" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"white"</span>),</span>
-<span id="cb15-518"><a href="#cb15-518" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_borders</span>(<span class="at">sides =</span> <span class="st">"top"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">weight =</span> <span class="fu">px</span>(<span class="dv">1</span>))</span>
-<span id="cb15-519"><a href="#cb15-519" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb15-520"><a href="#cb15-520" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(</span>
-<span id="cb15-521"><a href="#cb15-521" aria-hidden="true" tabindex="-1"></a>      <span class="at">columns =</span> <span class="fu">c</span>(Estimate, pd),</span>
-<span id="cb15-522"><a href="#cb15-522" aria-hidden="true" tabindex="-1"></a>      <span class="at">rows =</span> Term<span class="sc">==</span><span class="st">"ModelEXAM:conditVaried"</span></span>
-<span id="cb15-523"><a href="#cb15-523" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb15-524"><a href="#cb15-524" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb15-525"><a href="#cb15-525" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tab_row_group</span>(</span>
-<span id="cb15-526"><a href="#cb15-526" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Experiment 3"</span>,</span>
-<span id="cb15-527"><a href="#cb15-527" aria-hidden="true" tabindex="-1"></a>    <span class="at">rows =</span> exp <span class="sc">==</span> <span class="st">"Exp 3"</span></span>
-<span id="cb15-528"><a href="#cb15-528" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb15-529"><a href="#cb15-529" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_row_group</span>(</span>
-<span id="cb15-530"><a href="#cb15-530" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Experiment 2"</span>,</span>
-<span id="cb15-531"><a href="#cb15-531" aria-hidden="true" tabindex="-1"></a>    <span class="at">rows =</span> exp <span class="sc">==</span> <span class="st">"Exp 2"</span></span>
-<span id="cb15-532"><a href="#cb15-532" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb15-533"><a href="#cb15-533" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_row_group</span>(</span>
-<span id="cb15-534"><a href="#cb15-534" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Experiment 1"</span>,</span>
-<span id="cb15-535"><a href="#cb15-535" aria-hidden="true" tabindex="-1"></a>    <span class="at">rows =</span> exp <span class="sc">==</span> <span class="st">"Exp 1"</span></span>
-<span id="cb15-536"><a href="#cb15-536" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb15-537"><a href="#cb15-537" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(</span>
-<span id="cb15-538"><a href="#cb15-538" aria-hidden="true" tabindex="-1"></a>    <span class="at">table.font.size =</span> <span class="dv">10</span>,</span>
-<span id="cb15-539"><a href="#cb15-539" aria-hidden="true" tabindex="-1"></a>    <span class="at">heading.title.font.size =</span> <span class="dv">16</span>,</span>
-<span id="cb15-540"><a href="#cb15-540" aria-hidden="true" tabindex="-1"></a>    <span class="at">heading.subtitle.font.size =</span> <span class="dv">14</span>,</span>
-<span id="cb15-541"><a href="#cb15-541" aria-hidden="true" tabindex="-1"></a>    <span class="at">quarto.disable_processing =</span> <span class="cn">TRUE</span></span>
-<span id="cb15-542"><a href="#cb15-542" aria-hidden="true" tabindex="-1"></a>    <span class="co">#row_group.background.color = "gray95"</span></span>
-<span id="cb15-543"><a href="#cb15-543" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb15-544"><a href="#cb15-544" aria-hidden="true" tabindex="-1"></a>bct_table</span>
-<span id="cb15-545"><a href="#cb15-545" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-546"><a href="#cb15-546" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-481"><a href="#cb15-481" aria-hidden="true" tabindex="-1"></a>bct <span class="ot">&lt;-</span> <span class="fu">rbind</span>(bct_e1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">exp=</span><span class="st">"Exp 1"</span>),bct_e2 <span class="sc">|&gt;</span> </span>
+<span id="cb15-482"><a href="#cb15-482" aria-hidden="true" tabindex="-1"></a>               <span class="fu">mutate</span>(<span class="at">exp=</span> <span class="st">"Exp 2"</span>),bct_e3 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">exp=</span><span class="st">"Exp 3"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb15-483"><a href="#cb15-483" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(exp, <span class="at">.before=</span>Term)</span>
+<span id="cb15-484"><a href="#cb15-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-485"><a href="#cb15-485" aria-hidden="true" tabindex="-1"></a>bct_table <span class="ot">&lt;-</span> bct <span class="sc">%&gt;%</span></span>
+<span id="cb15-486"><a href="#cb15-486" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb15-487"><a href="#cb15-487" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(Estimate, <span class="st">`</span><span class="at">95% CrI Lower</span><span class="st">`</span>, <span class="st">`</span><span class="at">95% CrI Upper</span><span class="st">`</span>), <span class="sc">~</span> <span class="fu">round</span>(., <span class="dv">2</span>)),</span>
+<span id="cb15-488"><a href="#cb15-488" aria-hidden="true" tabindex="-1"></a>    <span class="at">pd =</span> <span class="fu">round</span>(pd, <span class="dv">2</span>)</span>
+<span id="cb15-489"><a href="#cb15-489" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb15-490"><a href="#cb15-490" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb15-491"><a href="#cb15-491" aria-hidden="true" tabindex="-1"></a>  <span class="co"># tab_header(</span></span>
+<span id="cb15-492"><a href="#cb15-492" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   title = "Bayesian Model Results",</span></span>
+<span id="cb15-493"><a href="#cb15-493" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   subtitle = "Estimates and Credible Intervals for Each Term Across Experiments"</span></span>
+<span id="cb15-494"><a href="#cb15-494" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ) %&gt;%</span></span>
+<span id="cb15-495"><a href="#cb15-495" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb15-496"><a href="#cb15-496" aria-hidden="true" tabindex="-1"></a>    <span class="at">exp =</span> <span class="st">"Experiment"</span>,</span>
+<span id="cb15-497"><a href="#cb15-497" aria-hidden="true" tabindex="-1"></a>    <span class="at">Term =</span> <span class="st">"Term"</span>,</span>
+<span id="cb15-498"><a href="#cb15-498" aria-hidden="true" tabindex="-1"></a>    <span class="at">Estimate =</span> <span class="st">"Estimate"</span>,</span>
+<span id="cb15-499"><a href="#cb15-499" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">95% CrI Lower</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"95% CrI Lower"</span>,</span>
+<span id="cb15-500"><a href="#cb15-500" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">95% CrI Upper</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"95% CrI Upper"</span>,</span>
+<span id="cb15-501"><a href="#cb15-501" aria-hidden="true" tabindex="-1"></a>    <span class="at">pd =</span> <span class="st">"pd"</span></span>
+<span id="cb15-502"><a href="#cb15-502" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb15-503"><a href="#cb15-503" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(</span>
+<span id="cb15-504"><a href="#cb15-504" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(Estimate, <span class="st">`</span><span class="at">95% CrI Lower</span><span class="st">`</span>, <span class="st">`</span><span class="at">95% CrI Upper</span><span class="st">`</span>),</span>
+<span id="cb15-505"><a href="#cb15-505" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">2</span></span>
+<span id="cb15-506"><a href="#cb15-506" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb15-507"><a href="#cb15-507" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(</span>
+<span id="cb15-508"><a href="#cb15-508" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> pd,</span>
+<span id="cb15-509"><a href="#cb15-509" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">2</span></span>
+<span id="cb15-510"><a href="#cb15-510" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb15-511"><a href="#cb15-511" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(</span>
+<span id="cb15-512"><a href="#cb15-512" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Credible Interval"</span>,</span>
+<span id="cb15-513"><a href="#cb15-513" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">95% CrI Lower</span><span class="st">`</span>, <span class="st">`</span><span class="at">95% CrI Upper</span><span class="st">`</span>)</span>
+<span id="cb15-514"><a href="#cb15-514" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb15-515"><a href="#cb15-515" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb15-516"><a href="#cb15-516" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(</span>
+<span id="cb15-517"><a href="#cb15-517" aria-hidden="true" tabindex="-1"></a>      <span class="co">#cell_fill(color = "lightgray"),</span></span>
+<span id="cb15-518"><a href="#cb15-518" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>), </span>
+<span id="cb15-519"><a href="#cb15-519" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"white"</span>),</span>
+<span id="cb15-520"><a href="#cb15-520" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_borders</span>(<span class="at">sides =</span> <span class="st">"top"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">weight =</span> <span class="fu">px</span>(<span class="dv">1</span>))</span>
+<span id="cb15-521"><a href="#cb15-521" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb15-522"><a href="#cb15-522" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(</span>
+<span id="cb15-523"><a href="#cb15-523" aria-hidden="true" tabindex="-1"></a>      <span class="at">columns =</span> <span class="fu">c</span>(Estimate, pd),</span>
+<span id="cb15-524"><a href="#cb15-524" aria-hidden="true" tabindex="-1"></a>      <span class="at">rows =</span> Term<span class="sc">==</span><span class="st">"ModelEXAM:conditVaried"</span></span>
+<span id="cb15-525"><a href="#cb15-525" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-526"><a href="#cb15-526" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb15-527"><a href="#cb15-527" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tab_row_group</span>(</span>
+<span id="cb15-528"><a href="#cb15-528" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Experiment 3"</span>,</span>
+<span id="cb15-529"><a href="#cb15-529" aria-hidden="true" tabindex="-1"></a>    <span class="at">rows =</span> exp <span class="sc">==</span> <span class="st">"Exp 3"</span></span>
+<span id="cb15-530"><a href="#cb15-530" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb15-531"><a href="#cb15-531" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_row_group</span>(</span>
+<span id="cb15-532"><a href="#cb15-532" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Experiment 2"</span>,</span>
+<span id="cb15-533"><a href="#cb15-533" aria-hidden="true" tabindex="-1"></a>    <span class="at">rows =</span> exp <span class="sc">==</span> <span class="st">"Exp 2"</span></span>
+<span id="cb15-534"><a href="#cb15-534" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb15-535"><a href="#cb15-535" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_row_group</span>(</span>
+<span id="cb15-536"><a href="#cb15-536" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Experiment 1"</span>,</span>
+<span id="cb15-537"><a href="#cb15-537" aria-hidden="true" tabindex="-1"></a>    <span class="at">rows =</span> exp <span class="sc">==</span> <span class="st">"Exp 1"</span></span>
+<span id="cb15-538"><a href="#cb15-538" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb15-539"><a href="#cb15-539" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(</span>
+<span id="cb15-540"><a href="#cb15-540" aria-hidden="true" tabindex="-1"></a>    <span class="at">table.font.size =</span> <span class="dv">10</span>,</span>
+<span id="cb15-541"><a href="#cb15-541" aria-hidden="true" tabindex="-1"></a>    <span class="at">heading.title.font.size =</span> <span class="dv">16</span>,</span>
+<span id="cb15-542"><a href="#cb15-542" aria-hidden="true" tabindex="-1"></a>    <span class="at">heading.subtitle.font.size =</span> <span class="dv">14</span>,</span>
+<span id="cb15-543"><a href="#cb15-543" aria-hidden="true" tabindex="-1"></a>    <span class="at">quarto.disable_processing =</span> <span class="cn">TRUE</span></span>
+<span id="cb15-544"><a href="#cb15-544" aria-hidden="true" tabindex="-1"></a>    <span class="co">#row_group.background.color = "gray95"</span></span>
+<span id="cb15-545"><a href="#cb15-545" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-546"><a href="#cb15-546" aria-hidden="true" tabindex="-1"></a>bct_table</span>
 <span id="cb15-547"><a href="#cb15-547" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-548"><a href="#cb15-548" aria-hidden="true" tabindex="-1"></a>*Model Fits to Experiment 2 and 3.* Data from Experiments 2 and 3 were fit to ALM and EXAM in the same manner as Experiment1 . For brevity, we only plot and discuss the results of the "fit to training and testing data" models - results from the other fitting methods can be found in the appendix. The model fitting results for Experiments 2 and 3 closely mirrored those observed in Experiment 1. The Bayesian regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and their interaction (see @tbl-htw-ee-e23) revealed a consistent main effect of Model across all three experiments. The negative coefficients for the ModelEXAM term (Exp 2: $\beta$ = <span class="in">`r bm1_e2$estimate`</span>, 95% CrI <span class="in">`r bm1_e2$conf.low`</span>, <span class="in">`r bm1_e2$conf.high`</span>, pd = <span class="in">`r bm1_e2$pd`</span>; Exp 3: $\beta$ = <span class="in">`r bm1_e3$estimate`</span>, 95% CrI <span class="in">`r bm1_e3$conf.low`</span>, <span class="in">`r bm1_e3$conf.high`</span>, pd = <span class="in">`r bm1_e3$pd`</span>) indicate that EXAM outperformed ALM in both experiments. Furthermore, the interaction between Model and Condition was significant in both Experiment 2 ($\beta$ = <span class="in">`r bm3_e2$estimate`</span>, 95% CrI <span class="in">`r bm3_e2$conf.low`</span>, <span class="in">`r bm3_e2$conf.high`</span>, pd = <span class="in">`r bm3_e2$pd`</span>) and Experiment 3 ($\beta$ = <span class="in">`r bm3_e3$estimate`</span>, 95% CrI <span class="in">`r bm3_e3$conf.low`</span>, <span class="in">`r bm3_e3$conf.high`</span>, pd = <span class="in">`r bm3_e3$pd`</span>), suggesting that the superiority of EXAM over ALM was more pronounced for the Constant group compared to the Varied group, as was the case in Experiment 1. Recall that Experiment 3 included participants in both the original and reverse order conditions - and that this manipulation interacted with the effect of training condition. We thus also controleld for band order in our Bayesian Regression assessing the relative performance of EXAM and ALM in Experiment 3. There was a significant three way interaction between Model, Training Condition, and Band Order ($\beta$ = <span class="in">`r bm4_e3$estimate`</span>, 95% CrI <span class="in">`r bm4_e3$conf.low`</span>, <span class="in">`r bm4_e3$conf.high`</span>, pd = <span class="in">`r bm4_e3$pd`</span>), indicating that the relative advantage of EXAM over ALM was only more pronounced in the original order condition, and not the reverse order condition (see @fig-e2_e3_ae).</span>
+<span id="cb15-548"><a href="#cb15-548" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-549"><a href="#cb15-549" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-552"><a href="#cb15-552" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-553"><a href="#cb15-553" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2_e3_ae</span></span>
-<span id="cb15-554"><a href="#cb15-554" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Conditional effects of Model (ALM vs EXAM) and Condition (Constant vs. Varied) on Model Error for Experiment 2 and 3 data. Experiment 3 also includes a control for the order of training vs. testing bands (original order vs. reverse order)."</span></span>
-<span id="cb15-555"><a href="#cb15-555" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
-<span id="cb15-556"><a href="#cb15-556" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
-<span id="cb15-557"><a href="#cb15-557" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-558"><a href="#cb15-558" aria-hidden="true" tabindex="-1"></a><span class="co">#wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))</span></span>
-<span id="cb15-559"><a href="#cb15-559" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plot</span>(<span class="fu">conditional_effects</span>(e2_ee_brm_ae, <span class="at">effects=</span><span class="st">"condit"</span>),<span class="at">points=</span><span class="cn">FALSE</span>, <span class="at">plot=</span><span class="cn">FALSE</span>)<span class="sc">$</span>condit <span class="sc">+</span> </span>
-<span id="cb15-560"><a href="#cb15-560" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">xlab</span>(<span class="st">"Condition"</span>) <span class="sc">+</span><span class="fu">ylab</span>(<span class="st">"Model Error"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"E2. Model Error"</span>)</span>
-<span id="cb15-561"><a href="#cb15-561" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">plot</span>(<span class="fu">conditional_effects</span>(e2_ee_brm_ae, <span class="at">effects=</span><span class="st">"Model"</span>),<span class="at">points=</span><span class="cn">FALSE</span>, <span class="at">plot=</span><span class="cn">FALSE</span>)<span class="sc">$</span>Model <span class="sc">+</span> </span>
-<span id="cb15-562"><a href="#cb15-562" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Model"</span>,<span class="at">y=</span><span class="cn">NULL</span>)</span>
-<span id="cb15-563"><a href="#cb15-563" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">plot</span>(<span class="fu">conditional_effects</span>(e2_ee_brm_ae, <span class="at">effects=</span><span class="st">"Model:condit"</span>),<span class="at">points=</span><span class="cn">FALSE</span>, <span class="at">plot=</span><span class="cn">FALSE</span>)<span class="sc">$</span><span class="st">`</span><span class="at">Model:condit</span><span class="st">`</span> <span class="sc">+</span> </span>
-<span id="cb15-564"><a href="#cb15-564" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">wes_palette</span>(<span class="st">"Darjeeling1"</span>)) <span class="sc">+</span></span>
-<span id="cb15-565"><a href="#cb15-565" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Model"</span>,<span class="at">y=</span><span class="cn">NULL</span>,<span class="at">fill=</span><span class="cn">NULL</span>,<span class="at">col=</span><span class="cn">NULL</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"right"</span>) </span>
-<span id="cb15-566"><a href="#cb15-566" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-567"><a href="#cb15-567" aria-hidden="true" tabindex="-1"></a> p_e2 <span class="ot">&lt;-</span> (p1 <span class="sc">+</span> p2<span class="sc">+</span> p3) </span>
-<span id="cb15-568"><a href="#cb15-568" aria-hidden="true" tabindex="-1"></a><span class="co">#wrap_plots(plot(conditional_effects(e3_ee_brm_ae),points=FALSE,plot=FALSE))</span></span>
-<span id="cb15-569"><a href="#cb15-569" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-570"><a href="#cb15-570" aria-hidden="true" tabindex="-1"></a>p_e3 <span class="ot">&lt;-</span> <span class="fu">plot</span>(<span class="fu">conditional_effects</span>(e3_ee_brm_ae, </span>
-<span id="cb15-571"><a href="#cb15-571" aria-hidden="true" tabindex="-1"></a>                         <span class="at">effects =</span> <span class="st">"Model:condit"</span>, </span>
-<span id="cb15-572"><a href="#cb15-572" aria-hidden="true" tabindex="-1"></a>                         <span class="at">conditions=</span><span class="fu">make_conditions</span>(e3_ee_brm_ae,<span class="at">vars=</span><span class="fu">c</span>(<span class="st">"bandOrder"</span>))),</span>
-<span id="cb15-573"><a href="#cb15-573" aria-hidden="true" tabindex="-1"></a>     <span class="at">points=</span><span class="cn">FALSE</span>,<span class="at">plot=</span><span class="cn">FALSE</span>)<span class="sc">$</span><span class="st">`</span><span class="at">Model:condit</span><span class="st">`</span> <span class="sc">+</span> </span>
-<span id="cb15-574"><a href="#cb15-574" aria-hidden="true" tabindex="-1"></a>     <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Model"</span>,<span class="at">y=</span><span class="st">"Model Error"</span>, <span class="at">title=</span><span class="st">"E3. Model Error"</span>) <span class="sc">+</span> </span>
-<span id="cb15-575"><a href="#cb15-575" aria-hidden="true" tabindex="-1"></a>     <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"right"</span>) <span class="sc">+</span> </span>
-<span id="cb15-576"><a href="#cb15-576" aria-hidden="true" tabindex="-1"></a>     <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">wes_palette</span>(<span class="st">"Darjeeling1"</span>)) </span>
-<span id="cb15-577"><a href="#cb15-577" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-578"><a href="#cb15-578" aria-hidden="true" tabindex="-1"></a><span class="co"># p1 &lt;- plot(conditional_effects(e3_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + </span></span>
-<span id="cb15-579"><a href="#cb15-579" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot2::xlab("Condition") +ylab("Model Error")</span></span>
-<span id="cb15-580"><a href="#cb15-580" aria-hidden="true" tabindex="-1"></a><span class="co"># p2 &lt;- plot(conditional_effects(e3_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + </span></span>
-<span id="cb15-581"><a href="#cb15-581" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Model",y=NULL)</span></span>
-<span id="cb15-582"><a href="#cb15-582" aria-hidden="true" tabindex="-1"></a><span class="co"># p3 &lt;- plot(conditional_effects(e3_ee_brm_ae, effects="Model:condit"),points=FALSE, plot=FALSE)$`Model:condit` + </span></span>
-<span id="cb15-583"><a href="#cb15-583" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_manual(values=wes_palette("Darjeeling1")) +</span></span>
-<span id="cb15-584"><a href="#cb15-584" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") </span></span>
-<span id="cb15-585"><a href="#cb15-585" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-586"><a href="#cb15-586" aria-hidden="true" tabindex="-1"></a> <span class="co">#p2 &lt;- (p1 + p2+ p3)</span></span>
-<span id="cb15-587"><a href="#cb15-587" aria-hidden="true" tabindex="-1"></a> (p_e2 <span class="sc">/</span> p_e3) <span class="sc">+</span> <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="fu">c</span>(<span class="st">'A'</span>), <span class="at">tag_suffix=</span><span class="st">"."</span>)</span>
-<span id="cb15-588"><a href="#cb15-588" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-589"><a href="#cb15-589" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-590"><a href="#cb15-590" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-591"><a href="#cb15-591" aria-hidden="true" tabindex="-1"></a>*Computational Model Summary*. Across the model fits to all three experiments, we found greater support for EXAM over ALM (negative coefficients on the ModelEXAM term in @tbl-htw-ee-e23), and moreover that the constant participants were disproportionately well described by EXAM in comparison to ALM (positive coefficients on ModelEXAM:conditVaried terms in @tbl-htw-ee-e23). This pattern is also clearly depicted in  @fig-htw-best-model, which plots the difference in model errors between ALM and EXAM for each individual participant. Both varied and constant conditions have a  greater proportion of  subjects better fit by EXAM (positive error differences), with the magnitude of EXAM's advantage visibly greater for the constant group. It also bears mention that numerous participants were better fit by ALM, or did not show a clear preference for either model. A subset of these participants are shown in @fig-htw-indv-pred. </span>
+<span id="cb15-550"><a href="#cb15-550" aria-hidden="true" tabindex="-1"></a>*Model Fits to Experiment 2 and 3.* Data from Experiments 2 and 3 were fit to ALM and EXAM in the same manner as Experiment1 . For brevity, we only plot and discuss the results of the "fit to training and testing data" models - results from the other fitting methods can be found in the appendix. The model fitting results for Experiments 2 and 3 closely mirrored those observed in Experiment 1. The Bayesian regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and their interaction (see @tbl-htw-ee-e23) revealed a consistent main effect of Model across all three experiments. The negative coefficients for the ModelEXAM term (Exp 2: $\beta$ = <span class="in">`r bm1_e2$estimate`</span>, 95% CrI <span class="in">`r bm1_e2$conf.low`</span>, <span class="in">`r bm1_e2$conf.high`</span>, pd = <span class="in">`r bm1_e2$pd`</span>; Exp 3: $\beta$ = <span class="in">`r bm1_e3$estimate`</span>, 95% CrI <span class="in">`r bm1_e3$conf.low`</span>, <span class="in">`r bm1_e3$conf.high`</span>, pd = <span class="in">`r bm1_e3$pd`</span>) indicate that EXAM outperformed ALM in both experiments. Furthermore, the interaction between Model and Condition was significant in both Experiment 2 ($\beta$ = <span class="in">`r bm3_e2$estimate`</span>, 95% CrI <span class="in">`r bm3_e2$conf.low`</span>, <span class="in">`r bm3_e2$conf.high`</span>, pd = <span class="in">`r bm3_e2$pd`</span>) and Experiment 3 ($\beta$ = <span class="in">`r bm3_e3$estimate`</span>, 95% CrI <span class="in">`r bm3_e3$conf.low`</span>, <span class="in">`r bm3_e3$conf.high`</span>, pd = <span class="in">`r bm3_e3$pd`</span>), suggesting that the superiority of EXAM over ALM was more pronounced for the Constant group compared to the Varied group, as was the case in Experiment 1. Recall that Experiment 3 included participants in both the original and reverse order conditions - and that this manipulation interacted with the effect of training condition. We thus also controleld for band order in our Bayesian Regression assessing the relative performance of EXAM and ALM in Experiment 3. There was a significant three way interaction between Model, Training Condition, and Band Order ($\beta$ = <span class="in">`r bm4_e3$estimate`</span>, 95% CrI <span class="in">`r bm4_e3$conf.low`</span>, <span class="in">`r bm4_e3$conf.high`</span>, pd = <span class="in">`r bm4_e3$pd`</span>), indicating that the relative advantage of EXAM over ALM was only more pronounced in the original order condition, and not the reverse order condition (see @fig-e2_e3_ae).</span>
+<span id="cb15-551"><a href="#cb15-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-554"><a href="#cb15-554" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-555"><a href="#cb15-555" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-e2_e3_ae</span></span>
+<span id="cb15-556"><a href="#cb15-556" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Conditional effects of Model (ALM vs EXAM) and Condition (Constant vs. Varied) on Model Error for Experiment 2 and 3 data. Experiment 3 also includes a control for the order of training vs. testing bands (original order vs. reverse order)."</span></span>
+<span id="cb15-557"><a href="#cb15-557" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 6</span></span>
+<span id="cb15-558"><a href="#cb15-558" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 9</span></span>
+<span id="cb15-559"><a href="#cb15-559" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-560"><a href="#cb15-560" aria-hidden="true" tabindex="-1"></a><span class="co">#wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))</span></span>
+<span id="cb15-561"><a href="#cb15-561" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plot</span>(<span class="fu">conditional_effects</span>(e2_ee_brm_ae, <span class="at">effects=</span><span class="st">"condit"</span>),<span class="at">points=</span><span class="cn">FALSE</span>, <span class="at">plot=</span><span class="cn">FALSE</span>)<span class="sc">$</span>condit <span class="sc">+</span> </span>
+<span id="cb15-562"><a href="#cb15-562" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">xlab</span>(<span class="st">"Condition"</span>) <span class="sc">+</span><span class="fu">ylab</span>(<span class="st">"Model Error"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"E2. Model Error"</span>)</span>
+<span id="cb15-563"><a href="#cb15-563" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">plot</span>(<span class="fu">conditional_effects</span>(e2_ee_brm_ae, <span class="at">effects=</span><span class="st">"Model"</span>),<span class="at">points=</span><span class="cn">FALSE</span>, <span class="at">plot=</span><span class="cn">FALSE</span>)<span class="sc">$</span>Model <span class="sc">+</span> </span>
+<span id="cb15-564"><a href="#cb15-564" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Model"</span>,<span class="at">y=</span><span class="cn">NULL</span>)</span>
+<span id="cb15-565"><a href="#cb15-565" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">plot</span>(<span class="fu">conditional_effects</span>(e2_ee_brm_ae, <span class="at">effects=</span><span class="st">"Model:condit"</span>),<span class="at">points=</span><span class="cn">FALSE</span>, <span class="at">plot=</span><span class="cn">FALSE</span>)<span class="sc">$</span><span class="st">`</span><span class="at">Model:condit</span><span class="st">`</span> <span class="sc">+</span> </span>
+<span id="cb15-566"><a href="#cb15-566" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">wes_palette</span>(<span class="st">"Darjeeling1"</span>)) <span class="sc">+</span></span>
+<span id="cb15-567"><a href="#cb15-567" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Model"</span>,<span class="at">y=</span><span class="cn">NULL</span>,<span class="at">fill=</span><span class="cn">NULL</span>,<span class="at">col=</span><span class="cn">NULL</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"right"</span>) </span>
+<span id="cb15-568"><a href="#cb15-568" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-569"><a href="#cb15-569" aria-hidden="true" tabindex="-1"></a> p_e2 <span class="ot">&lt;-</span> (p1 <span class="sc">+</span> p2<span class="sc">+</span> p3) </span>
+<span id="cb15-570"><a href="#cb15-570" aria-hidden="true" tabindex="-1"></a><span class="co">#wrap_plots(plot(conditional_effects(e3_ee_brm_ae),points=FALSE,plot=FALSE))</span></span>
+<span id="cb15-571"><a href="#cb15-571" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-572"><a href="#cb15-572" aria-hidden="true" tabindex="-1"></a>p_e3 <span class="ot">&lt;-</span> <span class="fu">plot</span>(<span class="fu">conditional_effects</span>(e3_ee_brm_ae, </span>
+<span id="cb15-573"><a href="#cb15-573" aria-hidden="true" tabindex="-1"></a>                         <span class="at">effects =</span> <span class="st">"Model:condit"</span>, </span>
+<span id="cb15-574"><a href="#cb15-574" aria-hidden="true" tabindex="-1"></a>                         <span class="at">conditions=</span><span class="fu">make_conditions</span>(e3_ee_brm_ae,<span class="at">vars=</span><span class="fu">c</span>(<span class="st">"bandOrder"</span>))),</span>
+<span id="cb15-575"><a href="#cb15-575" aria-hidden="true" tabindex="-1"></a>     <span class="at">points=</span><span class="cn">FALSE</span>,<span class="at">plot=</span><span class="cn">FALSE</span>)<span class="sc">$</span><span class="st">`</span><span class="at">Model:condit</span><span class="st">`</span> <span class="sc">+</span> </span>
+<span id="cb15-576"><a href="#cb15-576" aria-hidden="true" tabindex="-1"></a>     <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Model"</span>,<span class="at">y=</span><span class="st">"Model Error"</span>, <span class="at">title=</span><span class="st">"E3. Model Error"</span>, <span class="at">fill=</span><span class="cn">NULL</span>, <span class="at">col=</span><span class="cn">NULL</span>) <span class="sc">+</span> </span>
+<span id="cb15-577"><a href="#cb15-577" aria-hidden="true" tabindex="-1"></a>     <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"right"</span>) <span class="sc">+</span> </span>
+<span id="cb15-578"><a href="#cb15-578" aria-hidden="true" tabindex="-1"></a>     <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">wes_palette</span>(<span class="st">"Darjeeling1"</span>)) </span>
+<span id="cb15-579"><a href="#cb15-579" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-580"><a href="#cb15-580" aria-hidden="true" tabindex="-1"></a><span class="co"># p1 &lt;- plot(conditional_effects(e3_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + </span></span>
+<span id="cb15-581"><a href="#cb15-581" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot2::xlab("Condition") +ylab("Model Error")</span></span>
+<span id="cb15-582"><a href="#cb15-582" aria-hidden="true" tabindex="-1"></a><span class="co"># p2 &lt;- plot(conditional_effects(e3_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + </span></span>
+<span id="cb15-583"><a href="#cb15-583" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Model",y=NULL)</span></span>
+<span id="cb15-584"><a href="#cb15-584" aria-hidden="true" tabindex="-1"></a><span class="co"># p3 &lt;- plot(conditional_effects(e3_ee_brm_ae, effects="Model:condit"),points=FALSE, plot=FALSE)$`Model:condit` + </span></span>
+<span id="cb15-585"><a href="#cb15-585" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_manual(values=wes_palette("Darjeeling1")) +</span></span>
+<span id="cb15-586"><a href="#cb15-586" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") </span></span>
+<span id="cb15-587"><a href="#cb15-587" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-588"><a href="#cb15-588" aria-hidden="true" tabindex="-1"></a> <span class="co">#p2 &lt;- (p1 + p2+ p3)</span></span>
+<span id="cb15-589"><a href="#cb15-589" aria-hidden="true" tabindex="-1"></a> (p_e2 <span class="sc">/</span> p_e3) <span class="sc">+</span> <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="fu">c</span>(<span class="st">'A'</span>), <span class="at">tag_suffix=</span><span class="st">"."</span>)</span>
+<span id="cb15-590"><a href="#cb15-590" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-591"><a href="#cb15-591" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-592"><a href="#cb15-592" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-593"><a href="#cb15-593" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-593"><a href="#cb15-593" aria-hidden="true" tabindex="-1"></a>*Computational Model Summary*. Across the model fits to all three experiments, we found greater support for EXAM over ALM (negative coefficients on the ModelEXAM term in @tbl-htw-ee-e23), and moreover that the constant participants were disproportionately well described by EXAM in comparison to ALM (positive coefficients on ModelEXAM:conditVaried terms in @tbl-htw-ee-e23). This pattern is also clearly depicted in  @fig-htw-best-model, which plots the difference in model errors between ALM and EXAM for each individual participant. Both varied and constant conditions have a  greater proportion of  subjects better fit by EXAM (positive error differences), with the magnitude of EXAM's advantage visibly greater for the constant group. It also bears mention that numerous participants were better fit by ALM, or did not show a clear preference for either model. A subset of these participants are shown in @fig-htw-indv-pred. </span>
 <span id="cb15-594"><a href="#cb15-594" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-595"><a href="#cb15-595" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-596"><a href="#cb15-596" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-597"><a href="#cb15-597" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-600"><a href="#cb15-600" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-601"><a href="#cb15-601" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-htw-best-model</span></span>
-<span id="cb15-602"><a href="#cb15-602" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM." </span></span>
-<span id="cb15-603"><a href="#cb15-603" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 12</span></span>
-<span id="cb15-604"><a href="#cb15-604" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
-<span id="cb15-605"><a href="#cb15-605" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-606"><a href="#cb15-606" aria-hidden="true" tabindex="-1"></a>tid1 <span class="ot">&lt;-</span> post_dat  <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Exp=</span><span class="st">"E1"</span>,<span class="at">bandOrder=</span><span class="st">"Original"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>pred_dist, <span class="sc">-</span>dist) <span class="sc">|&gt;</span></span>
-<span id="cb15-607"><a href="#cb15-607" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(e2_model<span class="sc">$</span>post_dat <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Exp=</span><span class="st">"E2"</span>,<span class="at">bandOrder=</span><span class="st">"Reverse"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb15-608"><a href="#cb15-608" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(e3_model<span class="sc">$</span>post_dat <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Exp=</span><span class="st">"E3"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb15-609"><a href="#cb15-609" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Fit_Method<span class="sc">==</span><span class="st">"Test_Train"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-610"><a href="#cb15-610" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,Model,Fit_Method,x, Exp) <span class="sc">|&gt;</span> </span>
-<span id="cb15-611"><a href="#cb15-611" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">e2=</span><span class="fu">abs</span>(y<span class="sc">-</span>pred)) <span class="sc">|&gt;</span> </span>
-<span id="cb15-612"><a href="#cb15-612" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">y1=</span><span class="fu">median</span>(y), <span class="at">pred1=</span><span class="fu">median</span>(pred),<span class="at">mean_error=</span><span class="fu">abs</span>(y1<span class="sc">-</span>pred1)) <span class="sc">|&gt;</span></span>
-<span id="cb15-613"><a href="#cb15-613" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(id,condit,Model,Fit_Method,Exp) <span class="sc">|&gt;</span> </span>
-<span id="cb15-614"><a href="#cb15-614" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">mean_error=</span><span class="fu">mean</span>(mean_error)) <span class="sc">|&gt;</span> </span>
-<span id="cb15-615"><a href="#cb15-615" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(id,condit,Fit_Method) <span class="sc">|&gt;</span></span>
-<span id="cb15-616"><a href="#cb15-616" aria-hidden="true" tabindex="-1"></a>    <span class="fu">round_tibble</span>(<span class="dv">1</span>) </span>
-<span id="cb15-617"><a href="#cb15-617" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-618"><a href="#cb15-618" aria-hidden="true" tabindex="-1"></a>best_id <span class="ot">&lt;-</span> tid1 <span class="sc">|&gt;</span> </span>
-<span id="cb15-619"><a href="#cb15-619" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,Fit_Method) <span class="sc">|&gt;</span> </span>
-<span id="cb15-620"><a href="#cb15-620" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">best=</span><span class="fu">ifelse</span>(mean_error<span class="sc">==</span><span class="fu">min</span>(mean_error),<span class="dv">1</span>,<span class="dv">0</span>)) </span>
-<span id="cb15-621"><a href="#cb15-621" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-622"><a href="#cb15-622" aria-hidden="true" tabindex="-1"></a>lowest_error_model <span class="ot">&lt;-</span> best_id <span class="sc">%&gt;%</span></span>
-<span id="cb15-623"><a href="#cb15-623" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, condit,Fit_Method, Exp) <span class="sc">%&gt;%</span></span>
-<span id="cb15-624"><a href="#cb15-624" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Best_Model =</span> Model[<span class="fu">which.min</span>(mean_error)],</span>
-<span id="cb15-625"><a href="#cb15-625" aria-hidden="true" tabindex="-1"></a>            <span class="at">Lowest_error =</span> <span class="fu">min</span>(mean_error),</span>
-<span id="cb15-626"><a href="#cb15-626" aria-hidden="true" tabindex="-1"></a>            <span class="at">differential =</span> <span class="fu">min</span>(mean_error) <span class="sc">-</span> <span class="fu">max</span>(mean_error)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-627"><a href="#cb15-627" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb15-628"><a href="#cb15-628" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-629"><a href="#cb15-629" aria-hidden="true" tabindex="-1"></a>error_difference<span class="ot">&lt;-</span> best_id <span class="sc">%&gt;%</span></span>
-<span id="cb15-630"><a href="#cb15-630" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, condit, Model,Fit_Method, mean_error) <span class="sc">%&gt;%</span></span>
-<span id="cb15-631"><a href="#cb15-631" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Model, <span class="at">values_from =</span> <span class="fu">c</span>(mean_error)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-632"><a href="#cb15-632" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Error_difference =</span> (ALM <span class="sc">-</span> EXAM))</span>
-<span id="cb15-633"><a href="#cb15-633" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-634"><a href="#cb15-634" aria-hidden="true" tabindex="-1"></a>full_comparison <span class="ot">&lt;-</span> lowest_error_model <span class="sc">|&gt;</span> </span>
-<span id="cb15-635"><a href="#cb15-635" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(error_difference, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"Fit_Method"</span>))  <span class="sc">|&gt;</span> </span>
-<span id="cb15-636"><a href="#cb15-636" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit,Fit_Method,Best_Model) <span class="sc">|&gt;</span> </span>
-<span id="cb15-637"><a href="#cb15-637" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nGrp=</span><span class="fu">n</span>(), <span class="at">model_rank =</span> nGrp <span class="sc">-</span> <span class="fu">rank</span>(Error_difference) ) <span class="sc">|&gt;</span> </span>
-<span id="cb15-638"><a href="#cb15-638" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Fit_Method,<span class="sc">-</span>Error_difference)</span>
-<span id="cb15-639"><a href="#cb15-639" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-640"><a href="#cb15-640" aria-hidden="true" tabindex="-1"></a>full_comparison <span class="sc">|&gt;</span> </span>
-<span id="cb15-641"><a href="#cb15-641" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Fit_Method<span class="sc">==</span><span class="st">"Test_Train"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb15-642"><a href="#cb15-642" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb15-643"><a href="#cb15-643" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">reorder</span>(id, Error_difference)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-644"><a href="#cb15-644" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>id,<span class="at">x=</span>Error_difference,<span class="at">fill=</span>Best_Model))<span class="sc">+</span></span>
-<span id="cb15-645"><a href="#cb15-645" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb15-646"><a href="#cb15-646" aria-hidden="true" tabindex="-1"></a>  <span class="co">#ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+</span></span>
-<span id="cb15-647"><a href="#cb15-647" aria-hidden="true" tabindex="-1"></a>  ggh4x<span class="sc">::</span><span class="fu">facet_nested_wrap</span>(<span class="sc">~</span>condit<span class="sc">+</span>Exp,<span class="at">scales=</span><span class="st">"free"</span>) <span class="sc">+</span> </span>
-<span id="cb15-648"><a href="#cb15-648" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>)) <span class="sc">+</span></span>
-<span id="cb15-649"><a href="#cb15-649" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill=</span><span class="st">"Best Model"</span>,</span>
-<span id="cb15-650"><a href="#cb15-650" aria-hidden="true" tabindex="-1"></a>  <span class="at">x=</span><span class="st">"Mean Model Error Difference (ALM - EXAM)"</span>,</span>
-<span id="cb15-651"><a href="#cb15-651" aria-hidden="true" tabindex="-1"></a>  <span class="at">y=</span><span class="st">"Participant"</span>)</span>
-<span id="cb15-652"><a href="#cb15-652" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-653"><a href="#cb15-653" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-598"><a href="#cb15-598" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-599"><a href="#cb15-599" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-602"><a href="#cb15-602" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-603"><a href="#cb15-603" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-htw-best-model</span></span>
+<span id="cb15-604"><a href="#cb15-604" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM." </span></span>
+<span id="cb15-605"><a href="#cb15-605" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 12</span></span>
+<span id="cb15-606"><a href="#cb15-606" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 11</span></span>
+<span id="cb15-607"><a href="#cb15-607" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-608"><a href="#cb15-608" aria-hidden="true" tabindex="-1"></a>tid1 <span class="ot">&lt;-</span> post_dat  <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Exp=</span><span class="st">"E1"</span>,<span class="at">bandOrder=</span><span class="st">"Original"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>pred_dist, <span class="sc">-</span>dist) <span class="sc">|&gt;</span></span>
+<span id="cb15-609"><a href="#cb15-609" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(e2_model<span class="sc">$</span>post_dat <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Exp=</span><span class="st">"E2"</span>,<span class="at">bandOrder=</span><span class="st">"Reverse"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb15-610"><a href="#cb15-610" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(e3_model<span class="sc">$</span>post_dat <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Exp=</span><span class="st">"E3"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb15-611"><a href="#cb15-611" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Fit_Method<span class="sc">==</span><span class="st">"Test_Train"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-612"><a href="#cb15-612" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,Model,Fit_Method,x, Exp) <span class="sc">|&gt;</span> </span>
+<span id="cb15-613"><a href="#cb15-613" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">e2=</span><span class="fu">abs</span>(y<span class="sc">-</span>pred)) <span class="sc">|&gt;</span> </span>
+<span id="cb15-614"><a href="#cb15-614" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">y1=</span><span class="fu">median</span>(y), <span class="at">pred1=</span><span class="fu">median</span>(pred),<span class="at">mean_error=</span><span class="fu">abs</span>(y1<span class="sc">-</span>pred1)) <span class="sc">|&gt;</span></span>
+<span id="cb15-615"><a href="#cb15-615" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(id,condit,Model,Fit_Method,Exp) <span class="sc">|&gt;</span> </span>
+<span id="cb15-616"><a href="#cb15-616" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">mean_error=</span><span class="fu">mean</span>(mean_error)) <span class="sc">|&gt;</span> </span>
+<span id="cb15-617"><a href="#cb15-617" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(id,condit,Fit_Method) <span class="sc">|&gt;</span></span>
+<span id="cb15-618"><a href="#cb15-618" aria-hidden="true" tabindex="-1"></a>    <span class="fu">round_tibble</span>(<span class="dv">1</span>) </span>
+<span id="cb15-619"><a href="#cb15-619" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-620"><a href="#cb15-620" aria-hidden="true" tabindex="-1"></a>best_id <span class="ot">&lt;-</span> tid1 <span class="sc">|&gt;</span> </span>
+<span id="cb15-621"><a href="#cb15-621" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id,condit,Fit_Method) <span class="sc">|&gt;</span> </span>
+<span id="cb15-622"><a href="#cb15-622" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">best=</span><span class="fu">ifelse</span>(mean_error<span class="sc">==</span><span class="fu">min</span>(mean_error),<span class="dv">1</span>,<span class="dv">0</span>)) </span>
+<span id="cb15-623"><a href="#cb15-623" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-624"><a href="#cb15-624" aria-hidden="true" tabindex="-1"></a>lowest_error_model <span class="ot">&lt;-</span> best_id <span class="sc">%&gt;%</span></span>
+<span id="cb15-625"><a href="#cb15-625" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, condit,Fit_Method, Exp) <span class="sc">%&gt;%</span></span>
+<span id="cb15-626"><a href="#cb15-626" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Best_Model =</span> Model[<span class="fu">which.min</span>(mean_error)],</span>
+<span id="cb15-627"><a href="#cb15-627" aria-hidden="true" tabindex="-1"></a>            <span class="at">Lowest_error =</span> <span class="fu">min</span>(mean_error),</span>
+<span id="cb15-628"><a href="#cb15-628" aria-hidden="true" tabindex="-1"></a>            <span class="at">differential =</span> <span class="fu">min</span>(mean_error) <span class="sc">-</span> <span class="fu">max</span>(mean_error)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-629"><a href="#cb15-629" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb15-630"><a href="#cb15-630" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-631"><a href="#cb15-631" aria-hidden="true" tabindex="-1"></a>error_difference<span class="ot">&lt;-</span> best_id <span class="sc">%&gt;%</span></span>
+<span id="cb15-632"><a href="#cb15-632" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, condit, Model,Fit_Method, mean_error) <span class="sc">%&gt;%</span></span>
+<span id="cb15-633"><a href="#cb15-633" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Model, <span class="at">values_from =</span> <span class="fu">c</span>(mean_error)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-634"><a href="#cb15-634" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Error_difference =</span> (ALM <span class="sc">-</span> EXAM))</span>
+<span id="cb15-635"><a href="#cb15-635" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-636"><a href="#cb15-636" aria-hidden="true" tabindex="-1"></a>full_comparison <span class="ot">&lt;-</span> lowest_error_model <span class="sc">|&gt;</span> </span>
+<span id="cb15-637"><a href="#cb15-637" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(error_difference, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"condit"</span>,<span class="st">"Fit_Method"</span>))  <span class="sc">|&gt;</span> </span>
+<span id="cb15-638"><a href="#cb15-638" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condit,Fit_Method,Best_Model) <span class="sc">|&gt;</span> </span>
+<span id="cb15-639"><a href="#cb15-639" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nGrp=</span><span class="fu">n</span>(), <span class="at">model_rank =</span> nGrp <span class="sc">-</span> <span class="fu">rank</span>(Error_difference) ) <span class="sc">|&gt;</span> </span>
+<span id="cb15-640"><a href="#cb15-640" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Fit_Method,<span class="sc">-</span>Error_difference)</span>
+<span id="cb15-641"><a href="#cb15-641" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-642"><a href="#cb15-642" aria-hidden="true" tabindex="-1"></a>full_comparison <span class="sc">|&gt;</span> </span>
+<span id="cb15-643"><a href="#cb15-643" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Fit_Method<span class="sc">==</span><span class="st">"Test_Train"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb15-644"><a href="#cb15-644" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-645"><a href="#cb15-645" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">reorder</span>(id, Error_difference)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-646"><a href="#cb15-646" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>id,<span class="at">x=</span>Error_difference,<span class="at">fill=</span>Best_Model))<span class="sc">+</span></span>
+<span id="cb15-647"><a href="#cb15-647" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb15-648"><a href="#cb15-648" aria-hidden="true" tabindex="-1"></a>  <span class="co">#ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+</span></span>
+<span id="cb15-649"><a href="#cb15-649" aria-hidden="true" tabindex="-1"></a>  ggh4x<span class="sc">::</span><span class="fu">facet_nested_wrap</span>(<span class="sc">~</span>condit<span class="sc">+</span>Exp,<span class="at">scales=</span><span class="st">"free"</span>) <span class="sc">+</span> </span>
+<span id="cb15-650"><a href="#cb15-650" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>)) <span class="sc">+</span></span>
+<span id="cb15-651"><a href="#cb15-651" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill=</span><span class="st">"Best Model"</span>,</span>
+<span id="cb15-652"><a href="#cb15-652" aria-hidden="true" tabindex="-1"></a>  <span class="at">x=</span><span class="st">"Mean Model Error Difference (ALM - EXAM)"</span>,</span>
+<span id="cb15-653"><a href="#cb15-653" aria-hidden="true" tabindex="-1"></a>  <span class="at">y=</span><span class="st">"Participant"</span>)</span>
 <span id="cb15-654"><a href="#cb15-654" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-655"><a href="#cb15-655" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-655"><a href="#cb15-655" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-656"><a href="#cb15-656" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-657"><a href="#cb15-657" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-658"><a href="#cb15-658" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-659"><a href="#cb15-659" aria-hidden="true" tabindex="-1"></a><span class="in">```{r  fig.width=11, fig.height=10}</span></span>
-<span id="cb15-660"><a href="#cb15-660" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: fig-htw-indv-pred</span></span>
-<span id="cb15-661"><a href="#cb15-661" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands. </span></span>
-<span id="cb15-662"><a href="#cb15-662" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-height: 7</span></span>
-<span id="cb15-663"><a href="#cb15-663" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-width: 10</span></span>
-<span id="cb15-664"><a href="#cb15-664" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-665"><a href="#cb15-665" aria-hidden="true" tabindex="-1"></a><span class="in">cId_tr &lt;- c(137, 181, 11)</span></span>
-<span id="cb15-666"><a href="#cb15-666" aria-hidden="true" tabindex="-1"></a><span class="in">vId_tr &lt;- c(14, 193, 47)</span></span>
-<span id="cb15-667"><a href="#cb15-667" aria-hidden="true" tabindex="-1"></a><span class="in">cId_tt &lt;- c(11, 93, 35)</span></span>
-<span id="cb15-668"><a href="#cb15-668" aria-hidden="true" tabindex="-1"></a><span class="in">vId_tt &lt;- c(1,14,74)</span></span>
-<span id="cb15-669"><a href="#cb15-669" aria-hidden="true" tabindex="-1"></a><span class="in">cId_new &lt;- c(175, 68, 93, 74)</span></span>
-<span id="cb15-670"><a href="#cb15-670" aria-hidden="true" tabindex="-1"></a><span class="in"># filter(id %in% (filter(bestTestEXAM,group_rank&lt;=9, Fit_Method=="Test")</span></span>
-<span id="cb15-671"><a href="#cb15-671" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-672"><a href="#cb15-672" aria-hidden="true" tabindex="-1"></a><span class="in">e1_sbjs &lt;- c(49,68,155, 175,74)</span></span>
-<span id="cb15-673"><a href="#cb15-673" aria-hidden="true" tabindex="-1"></a><span class="in">e3_sbjs &lt;-  c(245, 280, 249)</span></span>
-<span id="cb15-674"><a href="#cb15-674" aria-hidden="true" tabindex="-1"></a><span class="in">e2_sbjs &lt;- c(197, 157, 312, 334)</span></span>
-<span id="cb15-675"><a href="#cb15-675" aria-hidden="true" tabindex="-1"></a><span class="in">cFinal &lt;- c(49, 128,202 )</span></span>
-<span id="cb15-676"><a href="#cb15-676" aria-hidden="true" tabindex="-1"></a><span class="in">vFinal &lt;- c(68,70,245)</span></span>
-<span id="cb15-677"><a href="#cb15-677" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-678"><a href="#cb15-678" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-679"><a href="#cb15-679" aria-hidden="true" tabindex="-1"></a><span class="in">indv_post_l &lt;- post_dat_l  |&gt; mutate(Exp="E1",bandOrder="Original") |&gt; select(-signed_dist) |&gt;</span></span>
-<span id="cb15-680"><a href="#cb15-680" aria-hidden="true" tabindex="-1"></a><span class="in">  rbind(e2_model$post_dat_l |&gt; mutate(Exp="E2",bandOrder="Reverse")) |&gt;</span></span>
-<span id="cb15-681"><a href="#cb15-681" aria-hidden="true" tabindex="-1"></a><span class="in">  rbind(e3_model$post_dat_l |&gt; mutate(Exp="E3") |&gt; select(-fb)) |&gt;</span></span>
-<span id="cb15-682"><a href="#cb15-682" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(Fit_Method=="Test_Train", id %in% c(cFinal,vFinal))</span></span>
-<span id="cb15-683"><a href="#cb15-683" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-684"><a href="#cb15-684" aria-hidden="true" tabindex="-1"></a><span class="in">testIndv &lt;- indv_post_l |&gt; </span></span>
-<span id="cb15-685"><a href="#cb15-685" aria-hidden="true" tabindex="-1"></a><span class="in">#filter(id %in% c(cId_tt,vId_tt,cId_new), Fit_Method=="Test_Train") |&gt; </span></span>
-<span id="cb15-686"><a href="#cb15-686" aria-hidden="true" tabindex="-1"></a><span class="in">   mutate(x=as.factor(x), Resp=as.factor(Resp)) |&gt;</span></span>
-<span id="cb15-687"><a href="#cb15-687" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(id,condit,Fit_Method,Model,Resp) |&gt;</span></span>
-<span id="cb15-688"><a href="#cb15-688" aria-hidden="true" tabindex="-1"></a><span class="in">   mutate(flab=paste0("Subject: ",id)) |&gt;</span></span>
-<span id="cb15-689"><a href="#cb15-689" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = Resp, y = val, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + </span></span>
-<span id="cb15-690"><a href="#cb15-690" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_bar_sd + </span></span>
-<span id="cb15-691"><a href="#cb15-691" aria-hidden="true" tabindex="-1"></a><span class="in">  ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +</span></span>
-<span id="cb15-692"><a href="#cb15-692" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_color_manual(values = c("black" = "black"), guide = FALSE) +</span></span>
-<span id="cb15-693"><a href="#cb15-693" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_size_manual(values = c("black" = .5), guide = FALSE) + </span></span>
-<span id="cb15-694"><a href="#cb15-694" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title="Individual Participant fits from Test &amp; Train Fitting Method",</span></span>
-<span id="cb15-695"><a href="#cb15-695" aria-hidden="true" tabindex="-1"></a><span class="in">       y="X Velocity",fill="Target Velocity") +</span></span>
-<span id="cb15-696"><a href="#cb15-696" aria-hidden="true" tabindex="-1"></a><span class="in">   guides(fill = guide_legend(nrow = 1)) + </span></span>
-<span id="cb15-697"><a href="#cb15-697" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(legend.position = "bottom",axis.title.x = element_blank())</span></span>
-<span id="cb15-698"><a href="#cb15-698" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-699"><a href="#cb15-699" aria-hidden="true" tabindex="-1"></a><span class="in">testIndv </span></span>
-<span id="cb15-700"><a href="#cb15-700" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-659"><a href="#cb15-659" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-660"><a href="#cb15-660" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-661"><a href="#cb15-661" aria-hidden="true" tabindex="-1"></a><span class="in">```{r  fig.width=11, fig.height=10}</span></span>
+<span id="cb15-662"><a href="#cb15-662" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: fig-htw-indv-pred</span></span>
+<span id="cb15-663"><a href="#cb15-663" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands. </span></span>
+<span id="cb15-664"><a href="#cb15-664" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-height: 7</span></span>
+<span id="cb15-665"><a href="#cb15-665" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-width: 10</span></span>
+<span id="cb15-666"><a href="#cb15-666" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-667"><a href="#cb15-667" aria-hidden="true" tabindex="-1"></a><span class="in">cId_tr &lt;- c(137, 181, 11)</span></span>
+<span id="cb15-668"><a href="#cb15-668" aria-hidden="true" tabindex="-1"></a><span class="in">vId_tr &lt;- c(14, 193, 47)</span></span>
+<span id="cb15-669"><a href="#cb15-669" aria-hidden="true" tabindex="-1"></a><span class="in">cId_tt &lt;- c(11, 93, 35)</span></span>
+<span id="cb15-670"><a href="#cb15-670" aria-hidden="true" tabindex="-1"></a><span class="in">vId_tt &lt;- c(1,14,74)</span></span>
+<span id="cb15-671"><a href="#cb15-671" aria-hidden="true" tabindex="-1"></a><span class="in">cId_new &lt;- c(175, 68, 93, 74)</span></span>
+<span id="cb15-672"><a href="#cb15-672" aria-hidden="true" tabindex="-1"></a><span class="in"># filter(id %in% (filter(bestTestEXAM,group_rank&lt;=9, Fit_Method=="Test")</span></span>
+<span id="cb15-673"><a href="#cb15-673" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-674"><a href="#cb15-674" aria-hidden="true" tabindex="-1"></a><span class="in">e1_sbjs &lt;- c(49,68,155, 175,74)</span></span>
+<span id="cb15-675"><a href="#cb15-675" aria-hidden="true" tabindex="-1"></a><span class="in">e3_sbjs &lt;-  c(245, 280, 249)</span></span>
+<span id="cb15-676"><a href="#cb15-676" aria-hidden="true" tabindex="-1"></a><span class="in">e2_sbjs &lt;- c(197, 157, 312, 334)</span></span>
+<span id="cb15-677"><a href="#cb15-677" aria-hidden="true" tabindex="-1"></a><span class="in">cFinal &lt;- c(49, 128,202 )</span></span>
+<span id="cb15-678"><a href="#cb15-678" aria-hidden="true" tabindex="-1"></a><span class="in">vFinal &lt;- c(68,70,245)</span></span>
+<span id="cb15-679"><a href="#cb15-679" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-680"><a href="#cb15-680" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-681"><a href="#cb15-681" aria-hidden="true" tabindex="-1"></a><span class="in">indv_post_l &lt;- post_dat_l  |&gt; mutate(Exp="E1",bandOrder="Original") |&gt; select(-signed_dist) |&gt;</span></span>
+<span id="cb15-682"><a href="#cb15-682" aria-hidden="true" tabindex="-1"></a><span class="in">  rbind(e2_model$post_dat_l |&gt; mutate(Exp="E2",bandOrder="Reverse")) |&gt;</span></span>
+<span id="cb15-683"><a href="#cb15-683" aria-hidden="true" tabindex="-1"></a><span class="in">  rbind(e3_model$post_dat_l |&gt; mutate(Exp="E3") |&gt; select(-fb)) |&gt;</span></span>
+<span id="cb15-684"><a href="#cb15-684" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(Fit_Method=="Test_Train", id %in% c(cFinal,vFinal))</span></span>
+<span id="cb15-685"><a href="#cb15-685" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-686"><a href="#cb15-686" aria-hidden="true" tabindex="-1"></a><span class="in">testIndv &lt;- indv_post_l |&gt; </span></span>
+<span id="cb15-687"><a href="#cb15-687" aria-hidden="true" tabindex="-1"></a><span class="in">#filter(id %in% c(cId_tt,vId_tt,cId_new), Fit_Method=="Test_Train") |&gt; </span></span>
+<span id="cb15-688"><a href="#cb15-688" aria-hidden="true" tabindex="-1"></a><span class="in">   mutate(x=as.factor(x), Resp=as.factor(Resp)) |&gt;</span></span>
+<span id="cb15-689"><a href="#cb15-689" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(id,condit,Fit_Method,Model,Resp) |&gt;</span></span>
+<span id="cb15-690"><a href="#cb15-690" aria-hidden="true" tabindex="-1"></a><span class="in">   mutate(flab=paste0("Subject: ",id)) |&gt;</span></span>
+<span id="cb15-691"><a href="#cb15-691" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = Resp, y = val, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + </span></span>
+<span id="cb15-692"><a href="#cb15-692" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_bar_sd + </span></span>
+<span id="cb15-693"><a href="#cb15-693" aria-hidden="true" tabindex="-1"></a><span class="in">  ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +</span></span>
+<span id="cb15-694"><a href="#cb15-694" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_color_manual(values = c("black" = "black"), guide = FALSE) +</span></span>
+<span id="cb15-695"><a href="#cb15-695" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_size_manual(values = c("black" = .5), guide = FALSE) + </span></span>
+<span id="cb15-696"><a href="#cb15-696" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title="Individual Participant fits from Test &amp; Train Fitting Method",</span></span>
+<span id="cb15-697"><a href="#cb15-697" aria-hidden="true" tabindex="-1"></a><span class="in">       y="X Velocity",fill="Target Velocity") +</span></span>
+<span id="cb15-698"><a href="#cb15-698" aria-hidden="true" tabindex="-1"></a><span class="in">   guides(fill = guide_legend(nrow = 1)) + </span></span>
+<span id="cb15-699"><a href="#cb15-699" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(legend.position = "bottom",axis.title.x = element_blank())</span></span>
+<span id="cb15-700"><a href="#cb15-700" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-701"><a href="#cb15-701" aria-hidden="true" tabindex="-1"></a><span class="in">testIndv </span></span>
+<span id="cb15-702"><a href="#cb15-702" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Model/htw_model.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Model/htw_model.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","descPosition":"bottom","openEffect":"zoom","loop":false});
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/tegorman13/htw/blob/main/Model/htw_model.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/tegorman13/htw/edit/main/Model/htw_model.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/tegorman13/htw/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","loop":false});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
