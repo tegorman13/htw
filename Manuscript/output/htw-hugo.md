@@ -1,37 +1,42 @@
 ---
-title: "HTW"
-short-title: "Variability and Extrapolation"
-date: 10-11-2023
+title: HTW
+short-title: Variability and Extrapolation
+date: 04-02-2024
 author:
-- name: Thomas Gorman
-  affiliation: Indiana University
-  url: www.tegorman13.github.io
-  email: tegorman@iu.edu
-  orcid: 0000-0001-5366-5442
-- name: Rob Goldstone
-  affiliation: Indiana University
-  url: www.pc.cogs.indiana.edu 
-  email: rgoldsto@indiana.edu
-  orcid: 0000-0001-8357-8358
-abstract: |
-  In project 1, we applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for the difference between varied and constant training via an extended version of a similarity based generalization model. In project 2, we will go a step further, implementing a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. Project 2 also places a greater emphasis on extrapolation performance following training - as varied training has often been purported to be particularly beneficial in such situations. 
+  - name: Thomas Gorman
+    affiliation: Indiana University
+    url: www.tegorman13.github.io
+    email: tegorman@iu.edu
+    orcid: 0000-0001-5366-5442
+  - name: Rob Goldstone
+    affiliation: Indiana University
+    url: www.pc.cogs.indiana.edu
+    email: rgoldsto@indiana.edu
+    orcid: 0000-0001-8357-8358
+abstract: >
+  In project 1, we applied model-based techniques to quantify and control for
+  the similarity between training and testing experience, which in turn enabled
+  us to account for the difference between varied and constant training via an
+  extended version of a similarity based generalization model. In project 2, we
+  will go a step further, implementing a full process model capable of both 1)
+  producing novel responses and 2) modeling behavior in both the learning and
+  testing stages of the experiment. Project 2 also places a greater emphasis on
+  extrapolation performance following training - as varied training has often
+  been purported to be particularly beneficial in such situations. 
 keywords:
   - Learning Generalization
   - Function Learning
   - Visuomotor learning
   - Training Variability
-code-repo: "Access the code, data, and analysis at <https://github.com/tegorman13/htw>"
+code-repo: 'Access the code, data, and analysis at <https://github.com/tegorman13/htw>'
 bibliography: ../Assets/Bib/Dissertation.bib
 link-citations: true
 ---
 
-<link href="manuscript_files/libs/tabwid-1.1.3/tabwid.css" rel="stylesheet" />
-<script src="manuscript_files/libs/tabwid-1.1.3/tabwid.js"></script>
-
 
 # Introduction
 
-In project 1, I applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for the difference between varied and constant training via an extended version of a similarity based generalization model. In project 2, we will go a step further, implementing a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. Project 2 also places a greater emphasis on extrapolation performance following training. Although varied training has often been purported to be particularly beneficial for generalization or transfer, few experiments have compared varied and constant training in contexts with unambiguous extrapolation testing.
+A longstanding issue across both science and instruction has been to understand how various aspects of an educational curriculum or training program influence learning acquisition and generalization. One such aspect, which has received a great deal of research attention, is the variability of examples experienced during training ([Raviv et al., 2022](#ref-ravivHowVariabilityShapes2022)). The influence of training variation has been studied in numerous domains, including category learning ([Cohen et al., 2001](#ref-cohenCategoryVariabilityExemplar2001); [Posner & Keele, 1968](#ref-posnerGenesisAbstractIdeas1968)), visuomotor learning ([Berniker et al., 2014](#ref-bernikerEffectsTrainingBreadth2014) ; [Schmidt, 1975](#ref-schmidtSchemaTheoryDiscrete1975)), language learning ([Perry et al., 2010](#ref-perryLearnLocallyThink2010)), and education ([Braithwaite & Goldstone, 2015](#ref-braithwaiteEffectsVariationPrior2015); [Guo et al., 2014](#ref-guoEffectsExampleVariability2014)). The pattern of results is complex, with numerous studies finding both beneficial ([Braun et al., 2009](#ref-braunMotorTaskVariation2009); [Catalano & Kleiner, 1984](#ref-catalanoDistantTransferCoincident1984a); [Roller et al., 2001](#ref-rollerVariablePracticeLenses2001)), as well as null or negative effects ([Brekelmans et al., 2022](#ref-brekelmansDoesHighVariability2022) ; [Hu & Nosofsky, 2024](#ref-huHighvariabilityTrainingDoes2024); [Van Rossum, 1990](#ref-vanrossumSchmidtSchemaTheory1990)). The present study seeks to contribute to the large body of existing research by examining the influence of variability in visuomotor function learning - a domain in which it has been relatively under-studied.
 
 ## Function Learning and Extrapolation
 
@@ -45,35 +50,37 @@ The authors evaluated both of the rule-based models introduced in earlier resear
 
 The authors also introduced two new function-learning models. The Associative Learning Model (ALM) and the extrapolation-association model (EXAM). ALM is a two layer connectionist model adapted from the ALCOVE model in the category learning literature ([Kruschke, 1992](#ref-kruschkeALCOVEExemplarbasedConnectionist1992)). ALM belongs to the general class of radial-basis function neural networks, and can be considered a similarity-based model in the sense that the nodes in the input layer of the network are activated as a function of distance. The EXAM model retains the same similarity based activation and associative learning mechanisms as ALM, while being augmented with a linear rule response mechanism. When presented with novel stimuli, EXAM will retrieve the most similar input-output examples encountered during training, and from those examples compute a local slope. ALM was able to provide a good account of participant training and interpolation data in all three function conditions, however it was unable to extrapolate. EXAM, on the other hand, was able to reproduce both the extrapolation underestimation, as well as the quadratic and exponential overestimation patterns exhibited by the human participants. Subsequent research identified some limitations in EXAM's ability to account for cases where human participants learn and extrapolate sinusoidal function Bott & Heit ([2004](#ref-bottNonmonotonicExtrapolationFunction2004)) or to scenarios where different functions apply to different regions of the input space Kalish et al. ([2004](#ref-kalishPopulationLinearExperts2004)), though EXAM has been shown to provide a good account of human learning and extrapolation in tasks with bi-linear, V shaped input spaces Mcdaniel et al. ([2009](#ref-mcdanielPredictingTransferPerformance2009)).
 
+### Variability and Function Learning
+
+The influence of variability on function learning tasks has received relatively little attention. The study by DeLosh et al. ([1997](#ref-deloshExtrapolationSineQua1997)) (described in detail above) did include a variability manipulation (referred to as density in their paper), wherein participants were trained with either either 8, 20, or 50 unique input-output pairs, with the total number of training trials held constant. They found a minimal influence of variability on training performance, and no difference between groups in interpolation or extrapolation, with all three variability conditions displaying accurate interpolation, and linearly biased extrapolation that was well accounted for by the EXAM model.
+
+In the domain of visuomotor learning, van Dam & Ernst ([2015](#ref-vandamMappingShapeVisuomotor2015)) employed a task which required participants to learn a linear function between the spikiness of shape stimuli and the correct horizontal position to make a rapid pointing response. The shapes ranged from very spiky to completely circular at the extreme ends of the space. Participants trained with intermediate shapes from a lower variation (2 shapes) or higher variation (5 shapes) condition, with the 2 items of the lower varied condition matching the items used on the extreme ends of the higher variation training space. Learning was significantly slower in the higher variation group. However, the two conditions did not differ when tested with novel shapes, with both groups producing extrapolation responses of comparable magnitudes to the most similar training item, rather than in accordance with the true linear function. The authors accounted for both learning and extrapolation performance with a Bayesian learning model. Similar to ALM, the bayesian model assumes that generalization occurs as a Gaussian function of the distance between stimuli. However unlike ALM, the bayesian learning model utilizes more elaborate probabilistic stimulus representations, with a separate Kalman Filter for each shape stimulus.
+
 ![](manuscript.markdown_strict_files/figure-markdown_strict/fig-delosh-extrap-1.jpeg)
 
-# Methods
+## Overview Of Present Study
 
-## Participants
+The present study investigates the influence of training variability on learning, generalization, and extrapolation in a uni-dimensional visuomotor function learning task. To the best of our knowledge, this research is the first to employ the classic constant vs. varied training manipulation, commonly used in the literature on the benefits of variability, in the context of a uni-dimensional function learning task. Across three experiments, we compare constant and varied training conditions in terms of learning performance, extrapolation accuracy, and the ability to reliably discriminate between stimuli.
 
-Data was collected from 647 participants (after exclusions). The results shown below consider data from subjects in our initial experiment, which consisted of 196 participants (106 constant, 90 varied). The follow-up experiments entailed minor manipulations: 1) reversing the velocity bands that were trained on vs. novel during testing; 2) providing ordinal rather than numerical feedback during training (e.g. correct, too low, too high). The data from these subsequent experiments are largely consistently with our initial results shown below.
+To account for the empirical results, we will apply a series of computational models, including the Associative Learning Model (ALM) and the Extrapolation-Association Model (EXAM). Notably, this study is the first to employ approximate Bayesian computation (ABC) to fit these models to individual subject data, enabling us to thoroughly investigate the full range of posterior predictions of each model, and to examine the the ability of these influential models of function learning to account for both the group level and individual level data.
 
-## Task
+## Methods
 
-We developed a novel visuomotor extrapolation task, termed the Hit The Wall task, wherein participants learned to launch a projectile such that it hit a rectangle at the far end of the screen with an appropriate amount of force. Although the projectile had both x and y velocity components, only the x-dimension was relevant for the task.  <a href="https://pcl.sitehost.iu.edu/tg/HTW/HTW_Index.html?sonaid=" target="_blank">Link to task demo</a>
+*Participants* A total of 156 participants were recruited from the Indiana University Introductory Psychology Course. Participants were randomly assigned to one of two training conditions: varied training or constant training.
 
-## Procedure
+*Task.* The "Hit The Wall" (HTW) visuomotor extrapolation task task was programmed in Javascript, making heavy use of the [phaser.io](https://phaser.io/) game library. The HTW task involved launching a projectile such that it would strike the "wall" at target speed indicated at the top of the screen (see <a href="#fig-htw-task" class="quarto-xref">Figure 2</a>). The target velocities were given as a range, or band, of acceptable velocity values (e.g. band 800-1000). During the training stage, participants received feedback indicating whether they had hit the wall within the target velocity band, or how many units their throw was above or below from the target band. Participants were instructed that only the x velocity component of the ball was relevant to the task. The y velocity, or the location at which the ball struck the wall, had no influence on the task feedback.
 
-The HTW task involved launching projectiles to hit a target displayed on the computer screen. Participants completed a total of 90 trials during the training stage. In the varied training condition, participants encountered three velocity bands (800-1000, 1000-1200, and 1200-1400). In contrast, participants in the constant training condition encountered only one velocity band (800-1000).
+/
 
-During the training stage, participants in both conditions also completed "no feedback" trials, where they received no information about their performance. These trials were randomly interleaved with the regular training trials.
+<img src="../Assets/figs/htw_task_fig.png" style="width:60.0%" data-fig-align="center" />
 
-Following the training stage, participants proceeded to the testing stage, which consisted of three phases. In the first phase, participants completed "no-feedback" testing from three novel extrapolation bands (100-300, 350-550, and 600-800), with each band consisting of 15 trials.
+*Procedure.* All participants completed the task online. Participants were provided with a description of the experiment and indicated informed consent. <a href="#fig-design-e1" class="quarto-xref">Figure 3</a> illustrates the general procedure. Participants completed a total of 90 trials during the training stage. In the varied training condition, participants encountered three velocity bands (800-1000, 1000-1200, and 1200-1400). Participants in the constant training condition trained on only one velocity band (800-1000) - the closest band to what would be the novel extrapolation bands in the testing stage.
 
-In the second phase of testing, participants completed "no-feedback" testing from the three velocity bands used during the training stage (800-1000, 1000-1200, and 1200-1400). In the constant training condition, two of these bands were novel, while in the varied training condition, all three bands were encountered during training.
-
-The third and final phase of testing involved "feedback" testing for each of the three extrapolation bands (100-300, 350-550, and 600-800), with each band consisting of 10 trials. Participants received feedback on their performance during this phase.
-
-Throughout the experiment, participants' performance was measured by calculating the distance between the produced x-velocity of the projectiles and the closest edge of the current velocity band. Lower distances indicated better performance.
-
-After completing the experiment, participants were debriefed and provided with an opportunity to ask questions about the study.
+Following the training stage, participants proceeded immediately to the testing stage. Participants were tested from all six velocity bands, in two separate stages. In the novel extrapolation testing stage, participants completed "no-feedback" testing from three novel extrapolation bands (100-300, 350-550, and 600-800), with each band consisting of 15 trials. Participants were also tested from the three velocity bands that were trained by the varied condition (800-1000, 1000-1200, and 1200-1400). In the constant training condition, two of these bands were novel, while in the varied training condition, all three bands were encountered during training. The order in which participants completed the novel-extrapolation and testing-from-3-varied bands was counterbalanced across participants.
+A final training stage presented participants with "feedback" testing for each of the three extrapolation bands (100-300, 350-550, and 600-800).
 
 ``` dot
+/////| column: screen-inset-right
 digraph {
   graph [layout = dot, rankdir = LR]
 
@@ -99,7 +106,7 @@ digraph {
 }
 ```
 
-<svg width="576" height="240" viewbox="0.00 0.00 643.85 174.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<svg width="672" height="240" viewbox="0.00 0.00 643.85 174.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 170)">
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-170 639.85,-170 639.85,4 -4,4"></polygon>
 <g id="clust1" class="cluster">
@@ -181,85 +188,165 @@ digraph {
 </g>
 </svg>
 
-## Analyses Strategy
+``` r
+pacman::p_load(dplyr,purrr,tidyr,tibble,ggplot2,
+  brms,tidybayes, rstanarm,emmeans,broom,bayestestR,
+  stringr, here,conflicted, patchwork, knitr)
+#options(brms.backend="cmdstanr",mc.cores=4)
+options(digits=2, scipen=999, dplyr.summarise.inform=FALSE)
+walk(c("brms","dplyr","bayestestR"), conflict_prefer_all, quiet = TRUE)
+walk(c("Display_Functions","org_functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+e1 <- readRDS(here("data/e1_08-21-23.rds")) 
+e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
+testE1 <- e1 |> filter(expMode2 == "Test")
+nbins=5
+trainE1 <-  e1 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
+    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
+trainE1_max <- trainE1 |> filter(Trial_Bin == nbins, bandInt==800)
+trainE1_avg <- trainE1_max |> group_by(id,condit) |> summarise(avg = mean(dist))
+```
 
-All data processing and statistical analyses were performed in R version 4.31 Team ([2020](#ref-rcoreteamLanguageEnvironmentStatistical2020)). To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R Bürkner ([2017](#ref-burknerBrmsPackageBayesian2017)), and descriptive stats and tables were extracted with the BayestestR package ([**makowskiBayestestRDescribingEffects2019a?**](#ref-makowskiBayestestRDescribingEffects2019a)). Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as circumventing convergence issues common to the frequentist analogues of our mixed models. For each model, we report the median values of the posterior distribution, and 95% credible intervals.
+### Analyses Strategy
 
-Each model was set to run with 4 chains, 5000 iterations per chain, with the first 2500 of which were discarded as warmup chains. Rhat values were generally within an acceptable range, with values \<=1.02 (see appendix for diagnostic plots). We used uninformative priors for the fixed effects of the model (condition and velocity band), and weakly informative Student T distributions for for the random effects.
+All data processing and statistical analyses were performed in R version 4.32 Team ([2020](#ref-rcoreteamLanguageEnvironmentStatistical2020)). To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R Bürkner ([2017](#ref-burknerBrmsPackageBayesian2017)), and descriptive stats and tables were extracted with the BayestestR package Makowski et al. ([2019](#ref-makowskiBayestestRDescribingEffects2019)). Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as avoiding convergence issues common to the frequentist analogues of our mixed models.
 
-We compared varied and constant performance across two measures, deviation and discrimination. Deviation was quantified as the absolute deviation from the nearest boundary of the velocity band, or set to 0 if the throw velocity fell anywhere inside the target band. Thus, when the target band was 600-800, throws of 400, 650, and 1100 would result in deviation values of 200, 0, and 300, respectively. Discrimination was measured by fitting a linear model to the testing throws of each subjects, with the lower end of the target velocity band as the predicted variable, and the x velocity produced by the participants as the predictor variable. Participants who reliably discriminated between velocity bands tended to have positive slopes with values ~1, while participants who made throws irrespective of the current target band would have slopes ~0.
+Each model was set to run with 4 chains, 5000 iterations per chain, with the first 2500 discarded as warmup chains. Rhat values were within an acceptable range, with values \<=1.02 (see appendix for diagnostic plots). We used uninformative priors for the fixed effects of the model (condition and velocity band), and weakly informative Student T distributions for for the random effects. For each model, we report 1) the mean values of the posterior distribution for the parameters of interest, 2) the lower and upper credible intervals (CrI), and the probability of direction value (pd).
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Extrapolation |  254 |    148 | 298 |
-| 350-550   | Extrapolation |  191 |    110 | 229 |
-| 600-800   | Extrapolation |  150 |     84 | 184 |
-| 800-1000  | Trained       |  184 |    106 | 242 |
-| 1000-1200 | Extrapolation |  233 |    157 | 282 |
-| 1200-1400 | Extrapolation |  287 |    214 | 290 |
+| Group Comparison         | Code                                                  | Data                 |
+|-----------------|----------------------------------------|---------------|
+| End of Training Accuracy | `brm(dist ~ condit)`                                  | Final Training Block |
+| Test Accuracy            | `brm(dist ~ condit * bandType + (1|id) + (1|bandInt)` | All Testing trials   |
+| Band Discrimination      | `brm(vx ~ condit * band +(1 + bandInt|id)`            | All Testing Trials   |
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Extrapolation |  386 |    233 | 426 |
-| 350-550   | Extrapolation |  285 |    149 | 340 |
-| 600-800   | Extrapolation |  234 |    144 | 270 |
-| 800-1000  | Trained       |  221 |    149 | 248 |
-| 1000-1200 | Trained       |  208 |    142 | 226 |
-| 1200-1400 | Trained       |  242 |    182 | 235 |
+  
 
-## Results
+In each experiment we compare varied and constant conditions in terms of 1) accuracy in the final training block; 2) testing accuracy as a function of band type (trained vs. extrapolation bands); 3) extent of discrimination between all six testing bands. We quantified accuracy as the absolute deviation between the response velocity and the nearest boundary of the target band. Thus, when the target band was velocity 600-800, throws of 400, 650, and 900 would result in deviation values of 200, 0, and 100, respectively. The degree of discrimination between bands was index by fitting a linear model predicting the response velocity as a function of the target velocity. Participants who reliably discriminated between velocity bands tended to haves slope values ~1, while participants who made throws irrespective of the current target band would have slopes ~0.
 
-### Testing Phase - No feedback.
+### Results
 
-In the first part of the testing phase, participants are tested from each of the velocity bands, and receive no feedback after each throw.
+``` r
+p1 <- trainE1 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
+    stat_summary(geom = "line", fun = mean) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
+    facet_wrap(~vb)+
+    scale_x_continuous(breaks = seq(1, nbins + 1)) +
+    theme(legend.title=element_blank()) + 
+    labs(y = "Deviation", x="Training Block") 
+#ggsave(here("Assets/figs/e1_train_deviation.png"), p1, width = 8, height = 4,bg="white")
+p1
+```
 
-#### Deviation From Target Band
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-train-dev-1.jpeg)
 
-Descriptive summaries testing deviation data are provided in <a href="#tbl-e1-test-nf-deviation" class="quarto-xref">Table 1</a> and <a href="#fig-e1-test-dev" class="quarto-xref">Figure 3</a>. To model differences in accuracy between groups, we used Bayesian mixed effects regression models to the trial level data from the testing phase. The primary model predicted the absolute deviation from the target velocity band (dist) as a function of training condition (condit), target velocity band (band), and their interaction, with random intercepts and slopes for each participant (id).
+``` r
+##| label: tbl-e1-train-dist
+##| tbl-cap: "Experiment 1 - Learning curves. "
+##| output: asis
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-test-dev-1.jpeg" style="width:100.0%" data-fig-align="center" />
+bmm_e1_train<- trainE1_max %>% 
+  brm(dist ~ condit, 
+      file=here("data/model_cache/e1_train_deviation"),
+      data = .,
+      iter = 2000,
+      chains = 4,
+      control = list(adapt_delta = .94, max_treedepth = 13))
+mtr1 <- as.data.frame(describe_posterior(bmm_e1_train, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mtr1) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
 
-| Term         | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
-|:-------------|---------:|--------------:|--------------:|-----:|
-| Intercept    |   205.09 |        136.86 |        274.06 | 1.00 |
-| conditVaried |   157.44 |         60.53 |        254.90 | 1.00 |
-| Band         |     0.01 |         -0.07 |          0.08 | 0.57 |
-| condit\*Band |    -0.16 |         -0.26 |         -0.06 | 1.00 |
+# mtr1 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+#   tibble::remove_rownames() |> 
+#   mutate(Term = stringr::str_remove(Term, "b_")) |>
+#    kable(booktabs = TRUE)
 
-| contrast          | Band |   value |  lower |  upper |   pd |
-|:------------------|-----:|--------:|-------:|-------:|-----:|
-| Constant - Varied |  100 | -141.49 | -229.2 | -53.83 | 1.00 |
-| Constant - Varied |  350 | -101.79 | -165.6 | -36.32 | 1.00 |
-| Constant - Varied |  600 |  -62.02 | -106.2 | -14.77 | 1.00 |
-| Constant - Varied |  800 |  -30.11 |  -65.1 |   6.98 | 0.94 |
-| Constant - Varied | 1000 |    2.05 |  -33.5 |  38.41 | 0.54 |
-| Constant - Varied | 1200 |   33.96 |  -11.9 |  81.01 | 0.92 |
+cdtr1 <- get_coef_details(bmm_e1_train, "conditVaried")
+```
 
-The model predicting absolute deviation (dist) showed clear effects of both training condition and target velocity band (Table X). Overall, the varied training group showed a larger deviation relative to the constant training group (β = 157.44, 95% CI \[60.53, 254.9\]). Deviation also depended on target velocity band, with lower bands showing less deviation. See <a href="#tbl-e1-bmm-dist" class="quarto-xref">Table 2</a> for full model output.
+| Term         | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
+|:-------------|---------:|--------------:|--------------:|----:|
+| Intercept    |   106.34 |         95.46 |        117.25 |   1 |
+| conditVaried |    79.64 |         57.92 |        101.63 |   1 |
 
-#### Discrimination between bands
+  
 
-In addition to accuracy/deviation, we also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). <a href="#tbl-e1-test-nf-vx" class="quarto-xref">Table 3</a> shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants on each testing trial.
+*Training*. <a href="#fig-e1-train-dev" class="quarto-xref">Figure 4</a> displays the average deviations across training blocks for the varied group, which trained on three velocity bands, and the constant group, which trained on one velocity band. To compare the training conditions at the end of training, we analyzed performance on the 800-1000 velocity band, which both groups trained on. The full model results are shown in Table 1. The varied group had a significantly greater deviation than the constant group in the final training block, ($\beta$ = 79.64, 95% CrI \[57.92, 101.63\]; pd = 100%).
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-test-vx-1.jpeg" style="width:100.0%" data-fig-align="center" />
+``` r
+##| label: tbl-e1-bmm-dist
+##| tbl-cap: "E1. Training vs. Extrapolation"
+#| 
+modelFile <- paste0(here::here("data/model_cache/"), "e1_dist_Cond_Type_RF_2")
+bmtd <- brm(dist ~ condit * bandType + (1|bandInt) + (1|id), 
+    data=testE1, file=modelFile,
+    iter=5000,chains=4, control = list(adapt_delta = .94, max_treedepth = 13))
+                        
+# mted1 <- as.data.frame(describe_posterior(bmtd, centrality = "Mean"))[, c(1,2,4,5,6)]
+# colnames(mted1) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Extrapolation |  524 |    448 | 327 |
-| 350-550   | Extrapolation |  659 |    624 | 303 |
-| 600-800   | Extrapolation |  770 |    724 | 300 |
-| 800-1000  | Trained       | 1001 |    940 | 357 |
-| 1000-1200 | Extrapolation | 1167 |   1104 | 430 |
-| 1200-1400 | Extrapolation | 1283 |   1225 | 483 |
+# r_bandInt_params <- get_variables(bmtd)[grepl("r_bandInt", get_variables(bmtd))]
+# posterior_summary(bmtd,variable=r_bandInt_params)
+# 
+# r_bandInt_params <- get_variables(bmtd)[grepl("r_id:bandInt", get_variables(bmtd))]
+# posterior_summary(bmtd,variable=r_bandInt_params)
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Extrapolation |  664 |    533 | 448 |
-| 350-550   | Extrapolation |  768 |    677 | 402 |
-| 600-800   | Extrapolation |  876 |    813 | 390 |
-| 800-1000  | Trained       | 1064 |   1029 | 370 |
-| 1000-1200 | Trained       | 1180 |   1179 | 372 |
-| 1200-1400 | Trained       | 1265 |   1249 | 412 |
+# mted1 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+#   tibble::remove_rownames() |> 
+#   mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE)
+cdted1 <- get_coef_details(bmtd, "conditVaried")
+cdted2 <-get_coef_details(bmtd, "bandTypeExtrapolation")
+cdted3 <-get_coef_details(bmtd, "conditVaried:bandTypeExtrapolation")
+```
+
+| Term                               | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
+|:-----------------------|-----------:|-----------:|-----------:|-----------:|
+| Intercept                          |   152.55 |         70.63 |        229.85 | 1.0 |
+| conditVaried                       |    39.00 |        -21.10 |        100.81 | 0.9 |
+| bandTypeExtrapolation              |    71.51 |         33.24 |        109.60 | 1.0 |
+| conditVaried:bandTypeExtrapolation |    66.46 |         32.76 |         99.36 | 1.0 |
+
+*Testing.* To compare accuracy between groups in the testing stage, we fit a Bayesian mixed effects model predicting deviation from the target band as a function of training condition (varied vs. constant) and band type (trained vs. extrapolation), with random intercepts for participants and bands. The model results are shown in <a href="#tbl-e1-bmm-dist" class="quarto-xref">Table 2</a>. The main effect of training condition was not significant ($\beta$ = 39, 95% CrI \[-21.1, 100.81\]; pd = 89.93%). The extrapolation testing items had a significantly greater deviation than the training bands ($\beta$ = 71.51, 95% CrI \[33.24, 109.6\]; pd = 99.99%). Most importantly, the interaction between training condition and band type was significant ($\beta$ = 66.46, 95% CrI \[32.76, 99.36\]; pd = 99.99%), As shown in <a href="#fig-e1-test-dev" class="quarto-xref">Figure 5</a>, the varied group had disproportionately larger deviations compared to the constant group in the extrapolation bands.
+
+``` r
+pe1td <- testE1 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
+  labs(x="Band", y="Deviation From Target")
+
+condEffects <- function(m,xvar){
+  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() + 
+  stat_halfeye(alpha=.1, height=.5) +
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+  
+}
+
+pe1ce <- bmtd |> emmeans( ~condit + bandType) |>
+  gather_emmeans_draws() |>
+ condEffects(bandType) + labs(y="Absolute Deviation From Band", x="Band Type")
+
+p2 <- (pe1td + pe1ce) + plot_annotation(tag_levels= 'A')
+#ggsave(here::here("Assets/figs", "e1_test-dev.png"), p2, width=8, height=4, bg="white")
+p2
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-test-dev-1.jpeg)
+
+``` r
+##| label: tbl-e1-bmm-vx
+##| tbl-cap: "Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
+e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
+                        data=test,file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k")),
+                        iter=5000,chains=4,silent=0,
+                        control=list(adapt_delta=0.94, max_treedepth=13))
+
+#GetModelStats(e1_vxBMM) |> kable(booktabs = TRUE)
+
+cd1 <- get_coef_details(e1_vxBMM, "conditVaried")
+sc1 <- get_coef_details(e1_vxBMM, "bandInt")
+intCoef1 <- get_coef_details(e1_vxBMM, "conditVaried:bandInt")
+```
+
+  
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
 |:-------------|---------:|--------------:|--------------:|-----:|
@@ -268,52 +355,98 @@ In addition to accuracy/deviation, we also assessed the ability of participants 
 | Band         |     0.71 |          0.62 |          0.80 | 1.00 |
 | condit\*Band |    -0.14 |         -0.26 |         -0.01 | 0.98 |
 
-| Term         | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
-|:-------------|---------:|--------------:|--------------:|-----:|
-| Intercept    |   478.47 |        404.00 |        551.45 | 1.00 |
-| conditVaried |   142.04 |         37.17 |        247.59 | 1.00 |
-| Band         |     0.50 |          0.42 |          0.57 | 1.00 |
-| condit\*Band |    -0.07 |         -0.17 |          0.04 | 0.89 |
+Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. See <a href="#tbl-e1-bmm-vx" class="quarto-xref">Table 4</a> for the full model results. The estimated coefficient for training condition ($\beta$ = 164.05, 95% CrI \[45.5, 278.85\], pd = 99.61%) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the coefficient on the Band predictor ($\beta$ = 0.71 95% CrI \[0.62, 0.8\], pd = 100%). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition ($\beta$ = -0.14, 95% CrI \[-0.26, -0.01\], pd = 98.39%), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition. This difference is depicted visually in <a href="#fig-e1-test-vx" class="quarto-xref">Figure 6</a>.
 
-See <a href="#tbl-e1-bmm-vx" class="quarto-xref">Table 4</a> for the full model results. The estimated coefficient for training condition ($B$ = 164.05, 95% CrI \[45.5, 278.85\]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band ($B$ = 0.71, 95% CrI \[0.62, 0.8\]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition ($B$ = -0.14, 95% CrI \[-0.26, -0.01\]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less senitivity between vands than the constant condition. This difference is depicted visually in <a href="#fig-e1-bmm-vx" class="quarto-xref">Figure 5</a>.@tbl-e1-slope-quartile shows the average slope coefficients for varied and constant participants separately for each quartile. The constant participant participants appear to have larger slopes across quartiles, but the difference between conditions may be less pronounced for the top quartiles of subjects who show the strongest discrimination. Figure <a href="#fig-e1-bmm-bx2" class="quarto-xref">Figure 6</a> shows the distributions of slope values for each participant, and the compares the probability density of slope coefficients between training conditions. <a href="#fig-e1-indv-slopes" class="quarto-xref">Figure 7</a>
+``` r
+testE1 %>% group_by(id,vb,condit) |> plot_distByCondit()
+```
 
-The second model, which focused solely on extrapolation bands, revealed similar patterns. The Velocity Band term ($B$ = 0.5, 95% CrI \[0.42, 0.57\]) still demonstrates a high degree of discrimination ability. However, the posterior distribution for interaction term ($B$ = -0.07, 95% CrI \[-0.17, 0.04\] ) does across over 0, suggesting that the evidence for decreased discrimination ability for the varied participants is not as strong when considering only the three extrapolation bands.
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-test-vx-1.jpeg)
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-bmm-vx-1.jpeg" style="width:100.0%" data-fig-align="center" data-ref-parent="fig-e1-bmm-vx" />
+``` r
+pe1vce <- e1_vxBMM |> emmeans( ~condit + bandInt,re_formula=NA, 
+                       at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
+  gather_emmeans_draws() |> 
+  condEffects(bandInt) +
+  stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
+  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                     labels = levels(testE1$vb), 
+                     limits = c(0, 1400)) + 
+  scale_y_continuous(expand=expansion(add=100),breaks=round(seq(0,2000,by=200),2)) +
+  theme(legend.title=element_blank()) + 
+  labs(y="Velcoity", x="Band")
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-bmm-vx-2.jpeg" style="width:100.0%" data-fig-align="center" data-ref-parent="fig-e1-bmm-vx" />
+fe <- fixef(e1_vxBMM)[,1]
+fixed_effect_bandInt <- fixef(e1_vxBMM)[,1]["bandInt"]
+fixed_effect_interaction <- fixef(e1_vxBMM)[,1]["conditVaried:bandInt"]
 
-| Condition | Q_0%\_mean | Q_25%\_mean | Q_50%\_mean | Q_75%\_mean | Q_100%\_mean |
-|:----------|-----------:|------------:|------------:|------------:|-------------:|
-| Constant  |     -0.109 |       0.475 |       0.690 |       0.930 |          1.4 |
-| Varied    |     -0.194 |       0.266 |       0.587 |       0.899 |          1.3 |
+re <- data.frame(ranef(e1_vxBMM, pars = "bandInt")$id[, ,'bandInt']) |> 
+  rownames_to_column("id") |> 
+  left_join(e1Sbjs,by="id") |>
+  mutate(adjust= fixed_effect_bandInt + fixed_effect_interaction*(condit=="Varied"),slope = Estimate + adjust )
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-bmm-bx2-1.jpeg" style="width:100.0%" data-fig-align="center" data-ref-parent="fig-e1-bmm-bx2" />
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-bmm-bx2-2.jpeg" style="width:100.0%" data-fig-align="center" data-ref-parent="fig-e1-bmm-bx2" />
+pid_den1 <- ggplot(re, aes(x = slope, fill = condit)) + 
+  geom_density(alpha=.5) + 
+  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
+  xlim(c(min(re$slope)-.3, max(re$slope)+.3))+
+   theme(legend.title=element_blank()) + 
+  labs(x="Slope Coefficient",y="Density")
 
-test
+pid_slopes1 <- re |>  mutate(id=reorder(id,slope)) |>
+  ggplot(aes(y=id, x=slope,fill=condit,color=condit)) + 
+    geom_pointrange(aes(xmin=Q2.5+adjust, xmax=Q97.5+adjust)) + 
+  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
+     theme(legend.title=element_blank(), 
+           axis.text.y = element_text(size=6) ) + 
+    labs(x="Estimated Slope", y="Participant")  + 
+    ggh4x::facet_wrap2(~condit,axes="all",scales="free_y")
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-indv-slopes-1.jpeg" style="width:100.0%" data-fig-align="center" data-ref-parent="fig-e1-indv-slopes" />
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-indv-slopes-2.jpeg" style="width:100.0%" data-fig-align="center" data-ref-parent="fig-e1-indv-slopes" />
+p3 <- (pe1vce + pid_den1 + pid_slopes1) + plot_annotation(tag_levels= 'A')
+#ggsave(here::here("Assets/figs", "e1_test-vx.png"), p3,width=9,height=11, bg="white",dpi=600)
+p3
+```
 
-# Experiment 2
+<figure>
+<img src="manuscript.markdown_strict_files/figure-markdown_strict/tbl-e1-bmm-vx-1.jpeg" alt="Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands." />
+<figcaption aria-hidden="true">Experiment 1. Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.</figcaption>
+</figure>
 
-<a href="#fig-design-e2" class="quarto-xref">Figure 8</a> illustrates the design of Experiment 2. The stages of the experiment (i.e. training, testing no-feedback, test with feedback), are identical to that of Experiment 1. The only change is that Experiment 2 participants train, and then test, on bands in the reverse order of Experiment 1 (i.e. training on the softer bands; and testing on the harder bands).
+## E1 Summary
+
+In Experiment 1, we investigated how variability in training influenced participants' ability learn and extrapolate in a visuomotor task. Our findings that training with variable conditions rresulted in lower final training performance is consistent with much of the prior researchon the influence of training variability ([Raviv et al., 2022](#ref-ravivHowVariabilityShapes2022); [Soderstrom & Bjork, 2015](#ref-soderstromLearningPerformanceIntegrative2015)), and is particularly unsurprising in the present work, given that the constant group received three times the amount of training on the velocity band common to the two conditions.
+
+More importantly, the varied training group exhibited significantly larger deviations from the target velocity bands during the testing phase, particularly for the extrapolation bands that were not encountered by either condition during training.
+
+## Experiment 2
+
+``` r
+walk(c("brms","dplyr","bayestestR"), conflict_prefer_all, quiet = TRUE)
+walk(c("Display_Functions","org_functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
+e2 <- readRDS(here("data/e2_08-04-23.rds")) 
+e2Sbjs <- e2 |> group_by(id,condit) |> summarise(n=n())
+testE2 <- e2 |> filter(expMode2 == "Test")
+nbins=5
+trainE2 <-  e2 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
+    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
+trainE2_max <- trainE2 |> filter(Trial_Bin == nbins, bandInt==600)
+
+# e2 |> group_by(condit, bandOrder) |> summarise(n_distinct(id))
+```
+
+### Methods & Procedure
+
+The task and procedure of Experiment 2 was identical to Experiment 1, with the exception that the training and testing bands were reversed (see <a href="#fig-design-e2" class="quarto-xref">Figure 7</a>). The Varied group trained on bands 100-300, 350-550, 600-800, and the constant group trained on band 600-800. Both groups were tested from all six bands. A total of 110 participants completed the experiment (Varied: 55, Constant: 55).
 
 ``` dot
+/////| column: screen-inset-right
 digraph {
   graph [layout = dot, rankdir = LR]
-
-  // define the global styles of the nodes
   node [shape = rectangle, style = filled]
-
   data1 [label = " Varied Training \n100-300\n350-550\n600-800", fillcolor = "#FF0000"]
   data2 [label = " Constant Training \n600-800", fillcolor = "#00A08A"]
   Test3 [label = "    Final Test \n  Novel With Feedback  \n800-1000\n1000-1200\n1200-1400", fillcolor = "#ECCBAE"]
-
-  // edge definitions with the node IDs
   data1 -> Test1
   data2 -> Test1
   subgraph cluster {
@@ -322,12 +455,11 @@ digraph {
     Test2 [label = "  Test \n  Varied Training Bands  \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]
     Test1 -> Test2
   }
-
   Test2 -> Test3
 }
 ```
 
-<svg width="576" height="240" viewbox="0.00 0.00 647.35 174.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<svg width="768" height="240" viewbox="0.00 0.00 647.35 174.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 170)">
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-170 643.35,-170 643.35,4 -4,4"></polygon>
 <g id="clust1" class="cluster">
@@ -409,78 +541,121 @@ digraph {
 </g>
 </svg>
 
-## E2 Results
+### Results
 
-### Testing Phase - No feedback.
+``` r
+p1 <- trainE2 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
+    stat_summary(geom = "line", fun = mean) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
+    facet_wrap(~vb)+
+    scale_x_continuous(breaks = seq(1, nbins + 1)) +
+    theme(legend.title=element_blank()) + 
+    labs(y = "Deviation", x="Training Block") 
+#ggsave(here("Assets/figs/e2_train_deviation.png"), p1, width = 8, height = 4,bg="white")
+p1
+```
 
-In the first part of the testing phase, participants are tested from each of the velocity bands, and receive no feedback after each throw.
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e2-train-dev-1.jpeg)
 
-#### Deviation From Target Band
+``` r
+bmm_e2_train <- trainE2_max %>% 
+  brm(dist ~ condit, 
+      file=here("data/model_cache/e2_train_deviation"),
+      data = .,
+      iter = 2000,
+      chains = 4,
+      control = list(adapt_delta = .94, max_treedepth = 13))
 
-Descriptive summaries testing deviation data are provided in <a href="#tbl-e2-test-nf-deviation" class="quarto-xref">Table 6</a> and <a href="#fig-e2-test-dev" class="quarto-xref">Figure 9</a>.
-To model differences in accuracy between groups, we used Bayesian mixed effects regression models to the trial level data from the testing phase. The primary model predicted the absolute deviation from the target velocity band (dist) as a function of training condition (condit), target velocity band (band), and their interaction, with random intercepts and slopes for each participant (id).
+mtr2 <- as.data.frame(describe_posterior(bmm_e2_train, centrality = "Mean"))[, c(1,2,4,5,6)]
+colnames(mtr2) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Extrapolation |  206 |     48 | 317 |
-| 350-550   | Extrapolation |  194 |     86 | 268 |
-| 600-800   | Trained       |  182 |    112 | 240 |
-| 800-1000  | Extrapolation |  200 |    129 | 233 |
-| 1000-1200 | Extrapolation |  238 |    190 | 234 |
-| 1200-1400 | Extrapolation |  311 |    254 | 288 |
+cdtr2 <- get_coef_details(bmm_e2_train, "conditVaried")
+# mtr2 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+#   tibble::remove_rownames() |> 
+#   mutate(Term = stringr::str_remove(Term, "b_")) |>
+#   kable(escape=F,booktabs=T) 
+```
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Trained       |  153 |     25 | 266 |
-| 350-550   | Trained       |  138 |     53 | 233 |
-| 600-800   | Trained       |  160 |    120 | 183 |
-| 800-1000  | Extrapolation |  261 |    207 | 257 |
-| 1000-1200 | Extrapolation |  305 |    258 | 273 |
-| 1200-1400 | Extrapolation |  363 |    314 | 297 |
+| Term         | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
+|:-------------|---------:|--------------:|--------------:|----:|
+| Intercept    |    91.01 |         80.67 |        101.26 |   1 |
+| conditVaried |    36.15 |         16.35 |         55.67 |   1 |
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e2-test-dev-1.jpeg" style="width:100.0%" data-fig-align="center" />
+  
 
-| Term         | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
-|:-------------|---------:|--------------:|--------------:|-----:|
-| Intercept    |   151.71 |         90.51 |        215.86 | 1.00 |
-| conditVaried |   -70.33 |       -156.87 |         16.66 | 0.94 |
-| Band         |     0.10 |          0.02 |          0.18 | 1.00 |
-| condit\*Band |     0.12 |          0.02 |          0.23 | 0.99 |
+*Training*. <a href="#fig-e2-train-dev" class="quarto-xref">Figure 8</a> presents the deviations across training blocks for both constant and varied training groups. We again compared training performance on the band common to both groups (600-800). The full model results are shown in Table 1. The varied group had a significantly greater deviation than the constant group in the final training block, ( $\beta$ = 36.15, 95% CrI \[16.35, 55.67\]; pd = 99.95%).
 
-| contrast          | Band | value |  lower |  upper |   pd |
-|:------------------|-----:|------:|-------:|-------:|-----:|
-| Constant - Varied |  100 |  57.6 |  -20.5 | 135.32 | 0.93 |
-| Constant - Varied |  350 |  26.6 |  -30.9 |  83.84 | 0.83 |
-| Constant - Varied |  600 |  -4.3 |  -46.7 |  38.52 | 0.58 |
-| Constant - Varied |  800 | -29.3 |  -69.4 |  11.29 | 0.92 |
-| Constant - Varied | 1000 | -54.6 | -101.1 |  -5.32 | 0.98 |
-| Constant - Varied | 1200 | -79.6 | -139.5 | -15.45 | 0.99 |
+``` r
+modelFile <- paste0(here::here("data/model_cache/"), "e2_dist_Cond_Type_RF_2")
+bmtd2 <- brm(dist ~ condit * bandType + (1|bandInt) + (1|id), 
+    data=testE2, file=modelFile,
+    iter=5000,chains=4, control = list(adapt_delta = .94, max_treedepth = 13))
+                        
+# mted2 <- as.data.frame(describe_posterior(bmtd2, centrality = "Mean"))[, c(1,2,4,5,6)]
+# colnames(mted2) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+# mted2 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+#   tibble::remove_rownames() |> 
+#   mutate(Term = stringr::str_remove(Term, "b_")) |>
+#   kable(booktabs=TRUE) 
 
-The model predicting absolute deviation showed a modest tendency for the varied training group to have lower deviation compared to the constant training group (β = -70.33, 95% CI \[-156.87, 16.66\]),with 94% of the posterior distribution being less than 0. This suggests a potential benefit of training with variation, though the evidence is not definitive.
+cd2ted1 <- get_coef_details(bmtd2, "conditVaried")
+cd2ted2 <-get_coef_details(bmtd2, "bandTypeExtrapolation")
+cd2ted3 <-get_coef_details(bmtd2, "conditVaried:bandTypeExtrapolation")
+```
 
-#### Discrimination between Velocity Bands
+| Term                               | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
+|:-----------------------------|---------:|-------------:|-------------:|-----:|
+| Intercept                          |   190.91 |        125.03 |        259.31 | 1.00 |
+| conditVaried                       |   -20.58 |        -72.94 |         33.08 | 0.78 |
+| bandTypeExtrapolation              |    38.09 |         -6.94 |         83.63 | 0.95 |
+| conditVaried:bandTypeExtrapolation |    82.00 |         41.89 |        121.31 | 1.00 |
 
-In addition to accuracy/deviation. We also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). <a href="#tbl-e2-test-nf-vx" class="quarto-xref">Table 8</a> shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants.
+   
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e2-test-vx-1.jpeg" style="width:100.0%" data-fig-align="center" />
+*Testing Accuracy.* The analysis of testing accuracy examined deviations from the target band as influenced by training condition (Varied vs. Constant) and band type (training vs. extrapolation bands). The results, summarized in <a href="#tbl-e2-bmm-dist" class="quarto-xref">Table 6</a>, reveal no significant main effect of training condition ($\beta$ = -20.58, 95% CrI \[-72.94, 33.08\]; pd = 77.81%). However, the interaction between training condition and band type was significant ($\beta$ = 82, 95% CrI \[41.89, 121.31\]; pd = 100%), with the varied group showing disproportionately larger deviations compared to the constant group on the extrapolation bands (see <a href="#fig-e2-test-dev" class="quarto-xref">Figure 9</a>).
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Extrapolation |  457 |    346 | 354 |
-| 350-550   | Extrapolation |  597 |    485 | 368 |
-| 600-800   | Trained       |  728 |    673 | 367 |
-| 800-1000  | Extrapolation |  953 |    913 | 375 |
-| 1000-1200 | Extrapolation | 1064 |   1012 | 408 |
-| 1200-1400 | Extrapolation | 1213 |   1139 | 493 |
+``` r
+condEffects <- function(m,xvar){
+  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() + 
+  stat_halfeye(alpha=.1, height=.5) +
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+  
+}
+pe2td <- testE2 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
+  labs(x="Band", y="Deviation From Target")
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Trained       |  410 |    323 | 297 |
-| 350-550   | Trained       |  582 |    530 | 303 |
-| 600-800   | Trained       |  696 |    641 | 316 |
-| 800-1000  | Extrapolation |  910 |    848 | 443 |
-| 1000-1200 | Extrapolation | 1028 |    962 | 482 |
-| 1200-1400 | Extrapolation | 1095 |   1051 | 510 |
+
+
+pe2ce <- bmtd2 |> emmeans( ~condit + bandType) |>
+  gather_emmeans_draws() |>
+ condEffects(bandType) + labs(y="Absolute Deviation From Band", x="Band Type")
+
+p2 <- (pe2td + pe2ce) + plot_annotation(tag_levels= 'A')
+#ggsave(here::here("Assets/figs", "e2_test-dev.png"), p2, width=8, height=4, bg="white")
+p2
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e2-test-dev-1.jpeg)
+
+``` r
+##| label: tbl-e2-bmm-vx
+##| tbl-cap: "Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
+
+e2_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
+                        data=test,file=paste0(here::here("data/model_cache", "e2_testVxBand_RF_5k")),
+                        iter=5000,chains=4,silent=0,
+                        control=list(adapt_delta=0.94, max_treedepth=13))
+
+#GetModelStats(e2_vxBMM ) |> kable(escape=F,booktabs=T, caption="Fit to all 6 bands")
+
+cd2 <- get_coef_details(e2_vxBMM, "conditVaried")
+sc2 <- get_coef_details(e2_vxBMM, "bandInt")
+intCoef2 <- get_coef_details(e2_vxBMM, "conditVaried:bandInt")
+```
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
 |:-------------|---------:|--------------:|--------------:|-----:|
@@ -489,136 +664,375 @@ In addition to accuracy/deviation. We also assessed the ability of participants 
 | Band         |     0.71 |          0.58 |          0.84 | 1.00 |
 | condit\*Band |    -0.06 |         -0.24 |          0.13 | 0.73 |
 
-See <a href="#tbl-e2-bmm-vx" class="quarto-xref">Table 9</a> for the full model results.
+*Testing Discrimination.* Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. The full model results are shown in <a href="#tbl-e2-bmm-vx" class="quarto-xref">Table 8</a>. The overall slope on target velocity band predictor was significantly positive, ($\beta$ = 0.71, 95% CrI \[0.58, 0.84\]; pd= 100%), indicating that participants exhibited discrimination between bands. The interaction between slope and condition was not significant, ($\beta$ = -0.06, 95% CrI \[-0.24, 0.13\]; pd= 72.67%), suggesting that the two conditions did not differ in their ability to discriminate between bands (see <a href="#fig-e2-test-vx" class="quarto-xref">Figure 10</a>).
 
-When examining discrimination ability using the model predicting raw x-velocity, the results were less clear than those of the absolute deviation analysis. The slope on Velocity Band (β = 0.71, 95% CrI \[0.58, 0.84\]) indicates that participants showed good discrimination between bands overall. However, the interaction term suggested this effect was not modulated by training condition (β = -0.06, 95% CrI \[-0.24, 0.13\]) Thus, while varied training may provide some advantage for accuracy, both training conditions seem to have similar abilities to discriminate between velocity bands.
+``` r
+testE2 %>% group_by(id,vb,condit) |> plot_distByCondit()
+```
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e2-bmm-vx-1.jpeg" style="width:100.0%" data-fig-align="center" />
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e2-test-vx-1.jpeg)
 
-# Experiment 3
+``` r
+condEffects <- function(m,xvar){
+  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() + 
+  stat_halfeye(alpha=.1, height=.5) +
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+}
 
-The major manipulation adjustment of experiment 3 is for participants to receive ordinal feedback during training, in contrast to the continuous feedback of the earlier experiments. Ordinal feedback informs participants whether a throw was too soft, too hard, or fell within the target velocity range. Experiment 3 participants were randomly assigned to both a training condition (Constant vs. Varied) and a Band Order condition (original order used in Experiment 1, or the Reverse order of Experiment 2).
+pe2vce <- e2_vxBMM |> emmeans( ~condit + bandInt,re_formula=NA, 
+                       at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
+  gather_emmeans_draws() |> 
+  condEffects(bandInt) +
+  stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
+  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                     labels = levels(testE2$vb), 
+                     limits = c(0, 1400)) + 
+scale_y_continuous(expand=expansion(add=100),breaks=round(seq(0,2000,by=200),2)) +
+  theme(legend.title=element_blank()) + 
+  labs(y="Velcoity", x="Band")
 
-## Results
+fe <- fixef(e2_vxBMM)[,1]
+fixed_effect_bandInt <- fixef(e2_vxBMM)[,1]["bandInt"]
+fixed_effect_interaction <- fixef(e2_vxBMM)[,1]["conditVaried:bandInt"]
 
-### Testing Phase - No feedback.
+re <- data.frame(ranef(e2_vxBMM, pars = "bandInt")$id[, ,'bandInt']) |> 
+  rownames_to_column("id") |> 
+  left_join(e2Sbjs,by="id") |>
+  mutate(adjust= fixed_effect_bandInt + fixed_effect_interaction*(condit=="Varied"),slope = Estimate + adjust )
 
-In the first part of the testing phase, participants are tested from each of the velocity bands, and receive no feedback after each throw. Note that these no-feedback testing trials are identical to those of Experiment 1 and 2, as the ordinal feedback only occurs during the training phase, and final testing phase, of Experiment 3.
+pid_den2 <- ggplot(re, aes(x = slope, fill = condit)) + 
+  geom_density(alpha=.5) + 
+  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
+  xlim(c(min(re$slope)-.3, max(re$slope)+.3))+
+   theme(legend.title=element_blank()) + 
+  labs(x="Slope Coefficient",y="Density")
 
-#### Deviation From Target Band
+pid_slopes2 <- re |>  mutate(id=reorder(id,slope)) |>
+  ggplot(aes(y=id, x=slope,fill=condit,color=condit)) + 
+    geom_pointrange(aes(xmin=Q2.5+adjust, xmax=Q97.5+adjust)) + 
+  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
+      theme(legend.title=element_blank(), 
+        axis.text.y = element_text(size=6) ) + 
+    labs(x="Estimated Slope", y="Participant")  + 
+    ggh4x::facet_wrap2(~condit,axes="all",scales="free_y")
 
-Descriptive summaries testing deviation data are provided in <a href="#tbl-e3-test-nf-deviation" class="quarto-xref">Table 10</a> and <a href="#fig-e3-test-dev" class="quarto-xref">Figure 12</a>.
-To model differences in accuracy between groups, we fit Bayesian mixed effects regression models to the trial level data from the testing phase. The primary model predicted the absolute deviation from the target velocity band (dist) as a function of training condition (condit), target velocity band (band), and their interaction, with random intercepts and slopes for each participant (id).
+p3 <- (pe2vce + pid_den2 + pid_slopes2) + plot_annotation(tag_levels= 'A')
+#ggsave(here::here("Assets/figs", "e2_test-vx.png"), p3,width=9,height=11, bg="white",dpi=600)
+p3
+```
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Extrapolation |  396 |    325 | 350 |
-| 350-550   | Extrapolation |  278 |    176 | 299 |
-| 600-800   | Extrapolation |  173 |    102 | 215 |
-| 800-1000  | Trained       |  225 |    126 | 284 |
-| 1000-1200 | Extrapolation |  253 |    192 | 271 |
-| 1200-1400 | Extrapolation |  277 |    210 | 262 |
+<figure>
+<img src="manuscript.markdown_strict_files/figure-markdown_strict/tbl-e2-bmm-vx-1.jpeg" alt="Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands." />
+<figcaption aria-hidden="true">Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands.</figcaption>
+</figure>
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Extrapolation |  383 |    254 | 385 |
-| 350-550   | Extrapolation |  287 |    154 | 318 |
-| 600-800   | Extrapolation |  213 |    140 | 244 |
-| 800-1000  | Trained       |  199 |    142 | 209 |
-| 1000-1200 | Trained       |  222 |    163 | 221 |
-| 1200-1400 | Trained       |  281 |    227 | 246 |
+### Experiment 2 Summary
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Extrapolation |  403 |    334 | 383 |
-| 350-550   | Extrapolation |  246 |    149 | 287 |
-| 600-800   | Trained       |  155 |     82 | 209 |
-| 800-1000  | Extrapolation |  207 |    151 | 241 |
-| 1000-1200 | Extrapolation |  248 |    220 | 222 |
-| 1200-1400 | Extrapolation |  322 |    281 | 264 |
+Experiment 2 extended the findings of Experiment 1 by examining the effects of training variability on extrapolation performance in a visuomotor function learning task, but with reversed training and testing bands. Similar to Experiment 1, the Varied group exhibited poorer performance during training and testing. However unlike experiment 1, the Varied group did not show a significant difference in discrimination between bands.
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Trained       |  153 |      0 | 307 |
-| 350-550   | Trained       |  147 |     55 | 258 |
-| 600-800   | Trained       |  159 |    107 | 192 |
-| 800-1000  | Extrapolation |  221 |    160 | 235 |
-| 1000-1200 | Extrapolation |  244 |    185 | 235 |
-| 1200-1400 | Extrapolation |  324 |    264 | 291 |
+## Experiment 3
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e3-test-dev-1.jpeg" style="width:100.0%" data-fig-align="center" />
+``` r
+e3 <- readRDS(here("data/e3_08-04-23.rds")) |> 
+    mutate(trainCon=case_when(
+    bandOrder=="Original" ~ "800",
+    bandOrder=="Reverse" ~ "600",
+    TRUE ~ NA_character_
+    ), trainCon=as.numeric(trainCon)) 
+e3Sbjs <- e3 |> group_by(id,condit,bandOrder) |> summarise(n=n())
+testE3 <- e3 |> filter(expMode2 == "Test")
+nbins=5
+trainE3 <-  e3 |> filter(expMode2=="Train") |> group_by(id,condit,bandOrder, vb) |> 
+    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
+trainE3_max <- trainE3 |> filter(Trial_Bin == nbins, bandInt==trainCon)
+```
 
-| Term         | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
-|:-------------|---------:|--------------:|--------------:|-----:|
-| Intercept    |   306.47 |        243.89 |        368.75 | 1.00 |
-| conditVaried |   -90.65 |       -182.79 |          3.75 | 0.97 |
-| Band         |    -0.07 |         -0.13 |          0.00 | 0.97 |
-| condit\*Band |     0.09 |         -0.01 |          0.19 | 0.96 |
+### Methods & Procedure
 
-The effect of training condition in Experiment 3 showed a similar pattern to Experiment 2, with the varied group tending to have lower deviation than the constant group (β = -90.65, 95% CrI \[-182.79, 3.75\]), with 97% of the posterior distribution falling under 0.
+The major adjustment of Experiment 3 is for participants to receive ordinal feedback during training, in contrast to the continuous feedback of the prior experiments. After each training throw, participants are informed whether a throw was too soft, too hard, or correct (i.e. within the target velocity range). All other aspects of the task and design are identical to Experiments 1 and 2. We utilized the order of training and testing bands from both of the prior experiments, thus assigning participants to both an order condition (Original or Reverse) and a training condition (Constant or Varied). Participants were once again recruited from the online Indiana University Introductory Psychology Course pool. Following exclusions, 195 participants were included in the final analysis, n=51 in the Constant-Original condition, n=59 in the Constant-Reverse condition, n=39 in the Varied-Original condition, and n=46 in the Varied-Reverse condition.
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e3-bmm-dist-1.jpeg" style="width:100.0%" data-fig-align="center" />
+### Results
 
-#### Discrimination between Velocity Bands
+``` r
+bmm_e3_train <- trainE3_max %>% 
+  brm(dist ~ condit*bandOrder, 
+      file=here("data/model_cache/e3_train_deviation"),
+      data = .,
+      iter = 2000,
+      chains = 4,
+      control = list(adapt_delta = .94, max_treedepth = 13))
 
-In addition to accuracy/deviation. We also assessed the ability of participants to reliably discriminate between the velocity bands (i.e. responding differently when prompted for band 600-800 than when prompted for band 150-350). <a href="#tbl-e3-test-nf-vx" class="quarto-xref">Table 12</a> shows descriptive statistics of this measure, and Figure 1 visualizes the full distributions of throws for each combination of condition and velocity band. To quantify discrimination, we again fit Bayesian Mixed Models as above, but this time the dependent variable was the raw x velocity generated by participants.
+# mtr3 <- as.data.frame(describe_posterior(bmm_e3_train, centrality = "Mean"))[, c(1,2,4,5,6)]
+# colnames(mtr3) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+# mtr3 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+#   tibble::remove_rownames() |> 
+#   mutate(Term = stringr::str_remove(Term, "b_")) |>
+#   kable(escape=F,booktabs=T) 
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-e3-test-vx-1.jpeg" style="width:100.0%" data-fig-align="center" />
+cd3tr1 <- get_coef_details(bmm_e3_train, "conditVaried")
+cd3tr2 <-get_coef_details(bmm_e3_train, "bandOrderReverse")
+cd3tr3 <-get_coef_details(bmm_e3_train, "conditVaried:bandOrderReverse")
+```
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Extrapolation |  680 |    625 | 370 |
-| 350-550   | Extrapolation |  771 |    716 | 357 |
-| 600-800   | Extrapolation |  832 |    786 | 318 |
-| 800-1000  | Trained       | 1006 |    916 | 417 |
-| 1000-1200 | Extrapolation | 1149 |   1105 | 441 |
-| 1200-1400 | Extrapolation | 1180 |   1112 | 443 |
+| Term                          | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
+|:---------------------------|---------:|-------------:|-------------:|------:|
+| Intercept                     |   121.86 |        109.24 |        134.60 | 1.00 |
+| conditVaried                  |    64.93 |         36.99 |         90.80 | 1.00 |
+| bandOrderReverse              |     1.11 |        -16.02 |         18.16 | 0.55 |
+| conditVaried:bandOrderReverse |   -77.02 |       -114.16 |        -39.61 | 1.00 |
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Extrapolation |  667 |    554 | 403 |
-| 350-550   | Extrapolation |  770 |    688 | 383 |
-| 600-800   | Extrapolation |  869 |    814 | 358 |
-| 800-1000  | Trained       |  953 |    928 | 359 |
-| 1000-1200 | Trained       | 1072 |   1066 | 388 |
-| 1200-1400 | Trained       | 1144 |   1093 | 426 |
+*Training*. <a href="#fig-e3-train-dev" class="quarto-xref">Figure 11</a> displays the average deviations from the target band across training blocks, and <a href="#tbl-e3-train-dist" class="quarto-xref">Table 9</a> shows the results of the Bayesian regression model predicting the deviation from the common band at the end of training (600-800 for reversed order, and 800-1000 for original order conditions). The main effect of training condition is significant, with the varied condition showing larger deviations ( $\beta$ = 64.93, 95% CrI \[36.99, 90.8\]; pd = 100%). The main effect of band order is not significant $\beta$ = 1.11, 95% CrI \[-16.02, 18.16\]; pd = 55.4%, however the interaction between training condition and band order is significant, with the varied condition showing greater accuracy in the reverse order condition ( $\beta$ = -77.02, 95% CrI \[-114.16, -39.61\]; pd = 100%).
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Extrapolation |  684 |    634 | 406 |
-| 350-550   | Extrapolation |  729 |    679 | 350 |
-| 600-800   | Trained       |  776 |    721 | 318 |
-| 800-1000  | Extrapolation |  941 |    883 | 387 |
-| 1000-1200 | Extrapolation | 1014 |    956 | 403 |
-| 1200-1400 | Extrapolation | 1072 |   1014 | 442 |
+``` r
+p1 <- trainE3 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
+    stat_summary(geom = "line", fun = mean) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
+    ggh4x::facet_nested_wrap(~bandOrder*vb,ncol=3)+
+    scale_x_continuous(breaks = seq(1, nbins + 1)) +
+    theme(legend.title=element_blank()) + 
+    labs(y = "Deviation", x="Training Block") 
+#ggsave(here("Assets/figs/e3_train_deviation.png"), p1, width = 9, height = 8,bg="white")
+p1
+```
 
-| Band      | Band Type     | Mean | Median |  Sd |
-|:----------|:--------------|-----:|-------:|----:|
-| 100-300   | Trained       |  392 |    270 | 343 |
-| 350-550   | Trained       |  540 |    442 | 343 |
-| 600-800   | Trained       |  642 |    588 | 315 |
-| 800-1000  | Extrapolation |  943 |    899 | 394 |
-| 1000-1200 | Extrapolation | 1081 |   1048 | 415 |
-| 1200-1400 | Extrapolation | 1185 |   1129 | 500 |
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e3-train-dev-1.jpeg)
 
-| Term         | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
-|:-------------|---------:|--------------:|--------------:|----:|
-| Intercept    |   607.67 |        536.02 |        679.87 |   1 |
-| conditVaried |  -167.76 |       -277.14 |        -64.08 |   1 |
-| Band         |     0.44 |          0.35 |          0.52 |   1 |
-| condit\*Band |     0.18 |          0.06 |          0.31 |   1 |
+``` r
+#options(brms.backend="cmdstanr",mc.cores=4)
+modelFile <- paste0(here::here("data/model_cache/"), "e3_dist_Cond_Type_RF_2")
+bmtd3 <- brm(dist ~ condit * bandType*bandOrder + (1|bandInt) + (1|id), 
+    data=testE3, file=modelFile,
+    iter=5000,chains=4, control = list(adapt_delta = .94, max_treedepth = 13))
+                        
+# mted3 <- as.data.frame(describe_posterior(bmtd3, centrality = "Mean"))[, c(1,2,4,5,6)]
+# colnames(mted3) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
+# mted3 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+#   tibble::remove_rownames() |> 
+#   mutate(Term = stringr::str_remove(Term, "b_")) |>
+#   kable(booktabs=TRUE) 
 
-See <a href="#tbl-e3-bmm-vx" class="quarto-xref">Table 13</a> for the full model results.
+#ce_bmtd3 <- plot(conditional_effects(bmtd3),points=FALSE,plot=FALSE)
+#wrap_plots(ce_bmtd3)
 
-Slope estimates for experiment 3 suggest that participants were capable of distinguishing between velocity bands even when provided only ordinal feedback during training (β = 0.44, 95% CrI \[0.35, 0.52\]). Unlike the previous two experiments, the posterior distribution for the interaction between condition and band was consistently positive, suggestive of superior discrimination for the varied participants
-β = 0.18, 95% CrI \[0.06, 0.31\].
+#ggsave(here::here("Assets/figs", "e3_cond_effects_dist.png"), wrap_plots(ce_bmtd3), width=11, height=11, bg="white")
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-alm-diagram-1.jpeg" style="width:100.0%" data-fig-align="center" />
+cd3ted1 <- get_coef_details(bmtd3, "conditVaried")
+cd3ted2 <-get_coef_details(bmtd3, "bandTypeExtrapolation")
+cd3ted3 <-get_coef_details(bmtd3, "conditVaried:bandTypeExtrapolation")
+cd3ted4 <-get_coef_details(bmtd3, "bandOrderReverse")
+cd3ted5 <-get_coef_details(bmtd3, "conditVaried:bandOrderReverse")
+cd3ted6 <-get_coef_details(bmtd3, "bandTypeExtrapolation:bandOrderReverse")
+cd3ted7 <-get_coef_details(bmtd3, "conditVaried:bandTypeExtrapolation:bandOrderReverse")
+```
 
-
+| Term                                                | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
+|:------------------------------------|-------:|-----------:|-----------:|-----:|
+| Intercept                                           |   288.65 |        199.45 |        374.07 | 1.00 |
+| conditVaried                                        |   -40.19 |       -104.68 |         23.13 | 0.89 |
+| bandTypeExtrapolation                               |   -23.35 |        -57.28 |         10.35 | 0.92 |
+| bandOrderReverse                                    |   -73.72 |       -136.69 |        -11.07 | 0.99 |
+| conditVaried:bandTypeExtrapolation                  |    52.66 |         14.16 |         90.23 | 1.00 |
+| conditVaried:bandOrderReverse                       |   -37.48 |       -123.28 |         49.37 | 0.80 |
+| bandTypeExtrapolation:bandOrderReverse              |    80.69 |         30.01 |        130.93 | 1.00 |
+| conditVaried:bandTypeExtrapolation:bandOrderReverse |    30.42 |        -21.00 |         81.65 | 0.87 |
+
+*Testing Accuracy.* <a href="#tbl-e3-bmm-dist" class="quarto-xref">Table 10</a> presents the results of the Bayesian mixed efects model predicting absolute deviation from the target band during the testing stage. There was no significant main effect of training condition,$\beta$ = -40.19, 95% CrI \[-104.68, 23.13\]; pd = 89.31%, or band type,$\beta$ = -23.35, 95% CrI \[-57.28, 10.35\]; pd = 91.52%. However the effect of band order was significant, with the reverse order condition showing lower deviations, $\beta$ = -73.72, 95% CrI \[-136.69, -11.07\]; pd = 98.89%. The interaction between training condition and band type was also significant $\beta$ = 52.66, 95% CrI \[14.16, 90.23\]; pd = 99.59%, with the varied condition showing disproprionately large deviations on the extrapolation bands compared to the constant group. There was also a significant interaction between band type and band order, $\beta$ = 80.69, 95% CrI \[30.01, 130.93\]; pd = 99.89%, such that the reverse order condition showed larger deviations on the extrapolation bands. No other interactions were significant.
+
+<!-- ::: {#fig-e3-test-condEffect}
+
+![](../Assets/figs/e3_cond_effects_dist.png)
+
+E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
+::: -->
+
+``` r
+condEffects <- function(m,xvar){
+  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() + 
+  stat_halfeye(alpha=.1, height=.5) +
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+  
+}
+
+pe3td <- testE3 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
+    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
+    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
+    facet_wrap(~bandOrder,ncol=1) +
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
+  labs(x="Band", y="Deviation From Target")
+
+
+pe3ce <- bmtd3 |> emmeans( ~condit *bandOrder*bandType) |>
+  gather_emmeans_draws() |>
+ condEffects(bandType) + labs(y="Absolute Deviation From Band", x="Band Type") + 
+ facet_wrap(~bandOrder,ncol=1)
+
+p2 <- pe3td + pe3ce + plot_annotation(tag_levels= 'A')
+#ggsave(here::here("Assets/figs", "e3_test-dev.png"), p2, width=9, height=8, bg="white")
+p2
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e3-test-dev-1.jpeg)
+
+``` r
+##| label: tbl-e3-bmm-vx
+##| tbl-cap: "Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
+
+e3_vxBMM <- brm(vx ~ condit * bandOrder * bandInt + (1 + bandInt|id),
+                        data=test,file=paste0(here::here("data/model_cache", "e3_testVxBand_RF_5k")),
+                        iter=5000,chains=4,silent=0,
+                        control=list(adapt_delta=0.94, max_treedepth=13))
+
+# m1 <- as.data.frame(describe_posterior(e3_vxBMM, centrality = "Mean"))
+# m2 <- fixef(e3_vxBMM)
+# mp3 <- m1[, c(1,2,4,5,6)]
+# colnames(mp3) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")                       
+# mp3 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+#   tibble::remove_rownames() |> 
+#   mutate(Term = stringr::str_replace_all(Term, "b_bandInt", "Band")) |>
+#   mutate(Term = stringr::str_remove(Term, "b_")) |>
+#   kable(escape=F,booktabs=T)
+
+#wrap_plots(plot(conditional_effects(e3_vxBMM),points=FALSE,plot=FALSE))
+
+cd1 <- get_coef_details(e3_vxBMM, "conditVaried")
+sc1 <- get_coef_details(e3_vxBMM, "bandInt")
+intCoef1 <- get_coef_details(e3_vxBMM, "conditVaried:bandInt")
+intCoef2 <- get_coef_details(e3_vxBMM, "bandOrderReverse:bandInt")
+coef3 <- get_coef_details(e3_vxBMM,"conditVaried:bandOrderReverse:bandInt")
+```
+
+| Term                                  | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
+|:--------------------------------|--------:|------------:|------------:|-----:|
+| Intercept                             |   601.83 |        504.75 |        699.42 | 1.00 |
+| conditVaried                          |    12.18 |       -134.94 |        162.78 | 0.56 |
+| bandOrderReverse                      |    13.03 |       -123.89 |        144.67 | 0.58 |
+| Band                                  |     0.49 |          0.36 |          0.62 | 1.00 |
+| conditVaried:bandOrderReverse         |  -338.15 |       -541.44 |       -132.58 | 1.00 |
+| conditVaried:Band                     |    -0.04 |         -0.23 |          0.15 | 0.67 |
+| bandOrderReverse:bandInt              |    -0.10 |         -0.27 |          0.08 | 0.86 |
+| conditVaried:bandOrderReverse:bandInt |     0.42 |          0.17 |          0.70 | 1.00 |
+
+*Testing Discrimination.* The full results of the discrimination model are presented in <a href="#tbl-e3-bmm-dist" class="quarto-xref">Table 10</a>. For the purposes of assessing group differences in discrimination, only the coefficients including the band variable are of interest. The baseline effect of band represents the slope cofficient for the constant training - original order condition, this effect was significant $\beta$ = 0.49, 95% CrI \[0.36, 0.62\]; pd = 100%. Neither of the two way interactions reached significance, $\beta$ = -0.04, 95% CrI \[-0.23, 0.15\]; pd = 66.63%, $\beta$ = -0.1, 95% CrI \[-0.27, 0.08\]; pd = 86.35%. However, the three way interaction between training condition, band order, and target band was significant, $\beta$ = 0.42, 95% CrI \[0.17, 0.7\]; pd = 99.96% - indicating that the varied condition showed a greater slope coefficient on the reverse order bands, compared to the constant condition - this is clearly shown in <a href="#fig-e3-test-vx" class="quarto-xref">Figure 13</a>, where the steepness of the best fitting line for the varied-reversed condition is noticably steeper than the other conditions.
+
+``` r
+##| column: screen-inset-right
+# testE3 |> filter(bandOrder=="Original")|> group_by(id,vb,condit) |> plot_distByCondit()
+# testE3 |> filter(bandOrder=="Reverse")|> group_by(id,vb,condit) |> plot_distByCondit() +ggtitle("test")
+
+testE3 |> group_by(id,vb,condit,bandOrder) |> plot_distByCondit() + 
+   ggh4x::facet_nested_wrap(bandOrder~condit,scale="free_x")
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e3-test-vx-1.jpeg)
+
+``` r
+##| eval: FALSE
+# pe3tv <- testE3 %>% group_by(id,vb,condit,bandOrder) |> plot_distByCondit() + ggh4x::facet_nested_wrap(bandOrder~condit,scale="free_x")
+
+
+condEffects <- function(m,xvar){
+  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
+  stat_dist_pointinterval() + 
+  stat_halfeye(alpha=.1, height=.5) +
+  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
+  
+}
+
+pe3vce <- e3_vxBMM |> emmeans( ~condit* bandOrder* bandInt, 
+                       at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
+  gather_emmeans_draws() |> 
+  condEffects(bandInt) +
+  facet_wrap(~bandOrder,ncol=1) +
+  stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
+  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
+                     labels = levels(testE3$vb), 
+                     limits = c(0, 1400)) + 
+scale_y_continuous(expand=expansion(add=100),breaks=round(seq(0,2000,by=200),2)) +
+  theme(legend.title=element_blank()) + 
+  labs(y="Velcoity", x="Band")
+
+fe <- fixef(e3_vxBMM)[,1]
+fixed_effect_bandInt <- fixef(e3_vxBMM)[,1]["bandInt"]
+fixed_effect_interaction1 <- fixef(e3_vxBMM)[,1]["conditVaried:bandInt"]
+fixed_effect_interaction2 <- fixef(e3_vxBMM)[,1]["bandOrderReverse:bandInt"]
+fixed_effect_interaction3 <- fixef(e3_vxBMM)[,1]["conditVaried:bandOrderReverse:bandInt"]
+
+re <- data.frame(ranef(e3_vxBMM, pars = "bandInt")$id[, ,'bandInt']) |> 
+  rownames_to_column("id") |> 
+  left_join(e3Sbjs,by="id") |>
+  mutate(adjust= fixed_effect_bandInt + fixed_effect_interaction1*(condit=="Varied") + 
+           fixed_effect_interaction2*(bandOrder=="Reverse") + 
+           fixed_effect_interaction3*(condit=="Varied" & bandOrder=="Reverse"),
+  slope = Estimate + adjust )
+
+pid_den3 <- ggplot(re, aes(x = slope, fill = condit)) + 
+  geom_density(alpha=.5) + 
+  xlim(c(min(re$slope)-.3, max(re$slope)+.3))+
+  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
+   theme(legend.title=element_blank()) + 
+  labs(x="Slope Coefficient",y="Density") +
+  facet_wrap(~bandOrder,ncol=1)
+
+pid_slopes3 <- re |>  
+    mutate(id=reorder(id,slope)) |>
+  ggplot(aes(y=id, x=slope,fill=condit,color=condit)) + 
+    geom_pointrange(aes(xmin=Q2.5+adjust, xmax=Q97.5+adjust)) + 
+    geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
+    theme(legend.title=element_blank(), 
+      axis.text.y = element_text(size=6) ) + 
+    labs(x="Estimated Slope", y="Participant")  + 
+    ggh4x::facet_nested_wrap(bandOrder~condit,axes="all",scales="free_y")
+
+p3 <- (pe3vce + pid_den3 + pid_slopes3) + plot_annotation(tag_levels= 'A')
+
+#ggsave(here::here("Assets/figs", "e3_test-vx.png"), p3,width=11,height=13, bg="white",dpi=800)
+p3
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e3-bmm-vx-1.jpeg)
+
+### Experiment 3 Summary
+
+## Computational Model
+
+``` r
+pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
+               stringr,future,furrr, knitr, reactable,ggstance, htmltools,
+               ggdist,ggh4x,brms,tidybayes,emmeans,bayestestR, gt)
+#walk(c("dplyr"), conflict_prefer_all, quiet = TRUE)
+#options(brms.backend="cmdstanr",mc.cores=4)
+options(digits=3, scipen=999, dplyr.summarise.inform=FALSE)
+walk(c("Display_Functions","fun_alm","fun_indv_fit","fun_model", "prep_model_data","org_functions"), ~source(here::here(paste0("Functions/", .x, ".R"))))
+```
+
+``` r
+invisible(list2env(load_sbj_data(), envir = .GlobalEnv))
+invisible(list2env(load_e1(), envir = .GlobalEnv))
+e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
+e2_model <- load_e2()
+e3_model <- load_e3()
+```
+
+``` r
+alm_plot()
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-alm-diagram-1.jpeg)
+
+# Modeling Approach
+
+The modeling goal is to implement a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning ([DeLosh et al., 1997](#ref-deloshExtrapolationSineQua1997)). ALM is a simple connectionist learning model which closely resembles Kruschke's ALCOVE model ([Kruschke, 1992](#ref-kruschkeALCOVEExemplarbasedConnectionist1992)), with modifications to allow for the generation of continuous responses.
+
+## ALM & Exam Description
+
+ALM is a localist neural network model ([Page, 2000](#ref-pageConnectionistModellingPsychology2000a)), with each input node corresponding to a particular stimulus, and each output node corresponding to a particular response value. The units in the input layer activate as a function of their Gaussian similarity to the input stimulus. So, for example, an input stimulus of value 55 would induce maximal activation of the input unit tuned to 55. Depending on the value of the generalization parameter, the nearby units (e.g. 54 and 56; 53 and 57) may also activate to some degree. ALM is structured with input and output nodes that correspond to regions of the stimulus space, and response space, respectively. The units in the input layer activate as a function of their similarity to a presented stimulus. As was the case with the exemplar-based models, similarity in ALM is exponentially decaying function of distance. The input layer is fully connected to the output layer, and the activation for any particular output node is simply the weighted sum of the connection weights between that node and the input activations. The network then produces a response by taking the weighted average of the output units (recall that each output unit has a value corresponding to a particular response). During training, the network receives feedback which activates each output unit as a function of its distance from the ideal level of activation necessary to produce the correct response. The connection weights between input and output units are then updated via the standard delta learning rule, where the magnitude of weight changes are controlled by a learning rate parameter. The EXAM model is an extension of ALM, with the same learning rule and representational scheme for input and output units. EXAM differs from ALM only in its response rule, as it includes a linear extrapolation mechanism for generating novel responses. Although this extrapolation rule departs from a strictly similarity-based generalization mechanism, EXAM is distinct from pure rule-based models in that it remains constrained by the weights learned during training. EXAM retrieves the two nearest training inputs, and the ALM responses associated with those inputs, and computes the slope between these two points. The slope is then used to extrapolate the response to the novel test stimulus. Because EXAM requires at least two input-output pairs to generate a response, additional assumptions were required in order for it to generate resposnes for the constant group. We assumed that participants come to the task with prior knowledge of the origin point (0,0), which can serve as a reference point necessary for the model to generate responses for the constant group. This assumption is motivated by previous function learning research (Brown & Lacroix ([2017](#ref-brownUnderestimationLinearFunction2017))), which through a series of manipulations of the y intercept of the underlying function, found that participants consistently demonstrated knowledge of, or a bias towards, the origin point (see Kwantes & Neal ([2006](#ref-kwantesWhyPeopleUnderestimate2006)) for additional evidence of such a bias in function learning tasks).
+
+See <a href="#tbl-alm-exam" class="quarto-xref">Table 12</a> for a full specification of the equations that define ALM and EXAM, and <a href="#fig-alm-diagram" class="quarto-xref">Figure 15</a> for a visual representation of the ALM model.
 
 |                    | **ALM Response Generation**                                        |                                                                                               |
-|------------------|-----------------------------|-------------------------|
+|-------------------|-----------------------------|-------------------------|
 | Input Activation   | $a_i(X) = \frac{e^{-c(X-X_i)^2}}{\sum_{k=1}^M e^{-c(X-X_k)^2}}$    | Input nodes activate as a function of Gaussian similarity to stimulus                         |
 | Output Activation  | $O_j(X) = \sum_{k=1}^M w_{ji} \cdot a_i(X)$                        | Output unit $O_j$ activation is the weighted sum of input activations and association weights |
 | Output Probability | $P[Y_j|X] = \frac{O_j(X)}{\sum_{k=1}^M O_k(X)}$                    | The response, $Y_j$ probabilites computed via Luce's choice rule                              |
@@ -632,78 +1046,2293 @@ Slope estimates for experiment 3 suggest that participants were capable of disti
 | Slope Computation  | $S =$ $\frac{m(X_{1})-m(X_{2})}{X_{1}-X_{2}}$                      | Slope value, $S$ computed from nearest training instances                                     |
 | Response           | $E[Y|X_i] = m(X_i) + S \cdot [X - X_i]$                            | ALM response $m(X_i)$ adjusted by slope.                                                      |
 
-
+## Model Fitting
 
-# Modeling
+To fit ALM and EXAM to our participant data, we employ a similar method to Mcdaniel et al. ([2009](#ref-mcdanielPredictingTransferPerformance2009)), wherein we examine the performance of each model after being fit to various subsets of the data. Each model was fit to the data in with separate procedures: 1) fit to maximize predictions of the testing data, 2) fit to maximize predictions of both the training and testing data, 3) fit to maximize predictions of the just the training data. We refer to this fitting manipulations as "Fit Method" in the tables and figures below. It should be emphasized that for all three fit methods, the ALM and EXAM models behave identically - with weights updating only during the training phase.Models to were fit separately to the data of each individual participant. The free parameters for both models are the generalization ($c$) and learning rate ($lr$) parameters. Parameter estimation was performed using approximate bayesian computation (ABC), which we describe in detail below.
 
-In project 1, I applied model-based techniques to quantify and control for the similarity between training and testing experience, which in turn enabled us to account for the difference between varied and constant training via an extended version of a similarity based generalization model. In project 2, I will go a step further, implementing a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning (DeLosh 1997). ALM is a simple connectionist learning model which closely resembles Kruschke's ALCOVE model (Kruscke 1992), with modifications to allow for the generation of continuous responses.
+> **None**
+>
+> ** Approximate Bayesian Computation**
+>
+> To estimate the parameters of ALM and EXAM, we used approximate bayesian computation (ABC), enabling us to obtain an estimate of the posterior distribution of the generalization and learning rate parameters for each individual. ABC belongs to the class of simulation-based inference methods ([Cranmer et al., 2020](#ref-cranmerFrontierSimulationbasedInference2020)), which have begun being used for parameter estimation in cognitive modeling relatively recently ([Kangasrääsiö et al., 2019](#ref-kangasraasioParameterInferenceComputational2019); [Turner et al., 2016](#ref-turnerBayesianAnalysisSimulationbased2016); [Turner & Van Zandt, 2012](#ref-turnerTutorialApproximateBayesian2012)). Although they can be applied to any model from which data can be simulated, ABC methods are most useful for complex models that lack an explicit likelihood function (e.g. many neural network models).
+>
+> The general ABC procedure is to 1) define a prior distribution over model parameters. 2) sample candidate parameter values, $\theta^*$, from the prior. 3) Use $\theta^*$ to generate a simulated dataset, $Data_{sim}$. 4) Compute a measure of discrepancy between the simulated and observed datasets, $discrep$($Data_{sim}$, $Data_{obs}$). 5) Accept $\theta^*$ if the discrepancy is less than the tolerance threshold, $\epsilon$, otherwise reject $\theta^*$. 6) Repeat until desired number of posterior samples are obtained.
+>
+> Although simple in the abstract, implementations of ABC require researchers to make a number of non-trivial decisions as to i) the discrepancy function between observed and simulated data, ii) whether to compute the discrepancy between trial level data, or a summary statistic of the datasets, iii) the value of the minimum tolerance $\epsilon$ between simulated and observed data. For the present work, we follow the guidelines from previously published ABC tutorials ([Farrell & Lewandowsky, 2018](#ref-farrellComputationalModelingCognition2018); [Turner & Van Zandt, 2012](#ref-turnerTutorialApproximateBayesian2012)). For the test stage, we summarized datasets with mean velocity of each band in the observed dataset as $V_{obs}^{(k)}$ and in the simulated dataset as $V_{sim}^{(k)}$, where $k$ represents each of the six velocity bands. For computing the discrepancy between datasets in the training stage, we aggregated training trials into three equally sized blocks (separately for each velocity band in the case of the varied group). After obtaining the summary statistics of the simulated and observed datasets, the discrepancy was computed as the mean of the absolute difference between simulated and observed datasets (<a href="#eq-discrep-test" class="quarto-xref">Equation 1</a> and <a href="#eq-discrep-train" class="quarto-xref">Equation 2</a>). For the models fit to both training and testing data, discrepancies were computed for both stages, and then averaged together.
+>
+> <span id="eq-discrep-test">$$
+> discrep_{Test}(Data_{sim}, Data_{obs}) = \frac{1}{6} \sum_{k=1}^{6} |V_{obs}^{(k)} - V_{sim}^{(k)}|
+>  \qquad(1)$$</span>
+>
+> <span id="eq-discrep-train">$$
+> \begin{aligned} \\
+> discrep_{Train,constant}(Data_{sim}, Data_{obs}) = \frac{1}{N_{blocks}} \sum_{j=1}^{N_{blocks}} |V_{obs,constant}^{(j)} - V_{sim,constant}^{(j)}| \\ \\
+> discrep_{Train,varied}(Data_{sim}, Data_{obs}) = \frac{1}{N_{blocks} \times 3} \sum_{j=1}^{N_{blocks}} \sum_{k=1}^{3} |V_{obs,varied}^{(j,k)} - V_{sim,varied}^{(j,k)}|
+> \end{aligned}
+>  \qquad(2)$$</span>
+>
+> The final component of our ABC implementation is the determination of an appropriate value of $\epsilon$. The setting of $\epsilon$ exerts strong influence on the approximated posterior distribution. Smaller values of $\epsilon$ increase the rejection rate, and improve the fidelity of the approximated posterior, while larger values result in an ABC sampler that simply reproduces the prior distribution. Because the individual participants in our dataset differed substantially in terms of the noisiness of their data, we employed an adaptive tolerance setting strategy to tailor $\epsilon$ to each individual. The initial value of $\epsilon$ was set to the overall standard deviation of each individuals velocity values. Thus, sampled parameter values that generated simulated data within a standard deviation of the observed data were accepted, while worse performing parameters were rejected. After every 300 samples the tolerance was allowed to increase only if the current acceptance rate of the algorithm was less than 1%. In such cases, the tolerance was shifted towards the average discrepancy of the 5 best samples obtained thus far. To ensure the acceptance rate did not become overly permissive, $\epsilon$ was also allowed to decrease every time a sample was accepted into the posterior.
 
-## ALM & Exam Description
+For each of the 156 participants from Experiment 1, the ABC algorithm was run until 200 samples of parameters were accepted into the posterior distribution. Obtaining this number of posterior samples required an average of 205,000 simulation runs per participant. Fitting each combination of participant, Model (EXAM & ALM), and fitting method (Test only, Train only, Test & Train) required a total of 192 million simulation runs. To facilitate these intensive computational demands, we used the Future Package in R ([Bengtsson, 2021](#ref-bengtssonUnifyingFrameworkParallel2021)), allowing us to parallelize computations across a cluster of ten M1 iMacs, each with 8 cores.
 
-DeLosh et al. ([1997](#ref-deloshExtrapolationSineQua1997)) introduced the associative learning model (ALM), a connectionist model within the popular class of radial-basis networks. ALM was inspired by, and closely resembles Kruschke's influential ALCOVE model of categorization ([Kruschke, 1992](#ref-kruschkeALCOVEExemplarbasedConnectionist1992)).
+### Modelling Results
 
-ALM is a localist neural network model, with each input node corresponding to a particular stimulus, and each output node corresponding to a particular response value. The units in the input layer activate as a function of their Gaussian similarity to the input stimulus. So, for example, an input stimulus of value 55 would induce maximal activation of the input unit tuned to 55. Depending on thevalue of the generalization parameter, the nearby units (e.g. 54 and 56; 53 and 57) may also activate to some degree. ALM is structured with input and output nodes that correspond to regions of the stimulus space, and response space, respectively. The units in the input layer activate as a function of their similarity to a presented stimulus. As was the case with the exemplar-based models, similarity in ALM is exponentially decaying function of distance. The input layer is fully connected to the output layer, and the activation for any particular output node is simply the weighted sum of the connection weights between that node and the input activations. The network then produces a response by taking the weighted average of the output units (recall that each output unit has a value corresponding to a particular response). During training, the network receives feedback which activates each output unit as a function of its distance from the ideal level of activation necessary to produce the correct response. The connection weights between input and output units are then updated via the standard delta learning rule, where the magnitude of weight changes are controlled by a learning rate parameter.
+#### Group level Patterns
 
-See <a href="#tbl-alm-exam" class="quarto-xref">Table 14</a> for a full specification of the equations that define ALM and EXAM.
+``` r
+post_tabs <- abc_tables(post_dat,post_dat_l)
+train_tab <- abc_train_tables(pd_train,pd_train_l)
 
-## Model Fitting and Comparison
+e1_tab <- rbind(post_tabs$agg_pred_full |> mutate("Task Stage"="Test"), train_tab$agg_pred_full |> mutate("Task Stage"="Train")) |> mutate(Fit_Method=rename_fm(Fit_Method)) 
 
-Following the procedure used by Mcdaniel et al. ([2009](#ref-mcdanielPredictingTransferPerformance2009)), we will assess the ability of both ALM and EXAM to account for the empirical data when fitting the models to 1) only the training data, and 2) both training and testing data. Models were fit to the aggregated participant data by minimizing the root-mean squared deviation (RMSE). Because ALM has been shown to do poorly at accounting for human patterns extrapolation ([DeLosh et al., 1997](#ref-deloshExtrapolationSineQua1997)), we will also generate predictions from the EXAM model for the testing stage. EXAM which operates identically to ALM during training, but includes a linear extrapolation mechanism for generating novel responses during testing.
+e1_tab %>%
+  group_by(`Task Stage`, Fit_Method, Model, condit) %>%
+  summarize(ME = mean(mean_error), .groups = "drop") %>%
+  pivot_wider(
+    names_from = c(Model, condit),
+    values_from = ME,
+    names_sep = "_"  # Add this line to specify the separator for column names
+  ) %>%
+  rename("Fit Method" = Fit_Method) %>%
+  gt() %>%
+  cols_move_to_start(columns = c(`Task Stage`)) %>%
+  cols_label(
+    `Task Stage` = "Task Stage"
+  ) %>%
+  fmt_number(
+    columns = starts_with("ALM") | starts_with("EXAM"),
+    decimals = 2
+  ) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_style(
+    style = cell_fill(color = "white"),
+     locations = cells_body(columns = everything(), rows = everything())
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = px(1)),
+    locations = cells_column_labels()
+  ) %>%
+  tab_options(
+    column_labels.font.size = 10,
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.size = 10, 
+    quarto.disable_processing = TRUE
+  ) 
+```
 
-For the hybrid model, predictions are computed by first generating separate predictions from ALM and EXAM, and then combining them using the following equation: $\hat{y} = (1 - w) \cdot alm.pred + w \cdot exam.pred$. For the grid search, the weight parameter is varied from 0 to 1, and the resulting RMSE is recorded.
+<div id="zixvniqstv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zixvniqstv table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-Each model was fit to the data in 3 different ways. 1) To just the testing data, 2) Both the training and testing data, 3) Only the training data. In all cases, the model only updates its weights during the training phase, and the weights are frozen during the testing phase. In all cases, only the ALM model generates predictions during the training phase. For the testing phase, all 3 models are used to generate predictions.
+#zixvniqstv thead, #zixvniqstv tbody, #zixvniqstv tfoot, #zixvniqstv tr, #zixvniqstv td, #zixvniqstv th {
+  border-style: none;
+}
 
-
+#zixvniqstv p {
+  margin: 0;
+  padding: 0;
+}
 
-<div class="tabwid"><style>.cl-44db62be{}.cl-44d78f86{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-44d91f04{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-44d929f4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44d929fe{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44d92a08{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44d92a09{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44d92a12{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44d92a13{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44d92a14{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-44db62be'><thead><tr style="overflow-wrap:break-word;"><th  colspan="8"class="cl-44d929f4"><p class="cl-44d91f04"><span class="cl-44d78f86"> </span></p></th></tr><tr style="overflow-wrap:break-word;"><th  colspan="2"class="cl-44d929fe"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></th><th class="cl-44d92a08"><p class="cl-44d91f04"><span class="cl-44d78f86">Constant</span></p></th><th  colspan="2"class="cl-44d92a08"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></th><th class="cl-44d92a08"><p class="cl-44d91f04"><span class="cl-44d78f86">Varied</span></p></th><th  colspan="2"class="cl-44d92a08"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></th></tr><tr style="overflow-wrap:break-word;"><th class="cl-44d92a09"><p class="cl-44d91f04"><span class="cl-44d78f86">Model</span></p></th><th class="cl-44d92a09"><p class="cl-44d91f04"><span class="cl-44d78f86">Fit Method</span></p></th><th class="cl-44d92a12"><p class="cl-44d91f04"><span class="cl-44d78f86">c</span></p></th><th class="cl-44d92a12"><p class="cl-44d91f04"><span class="cl-44d78f86">lr</span></p></th><th class="cl-44d92a12"><p class="cl-44d91f04"><span class="cl-44d78f86">w</span></p></th><th class="cl-44d92a12"><p class="cl-44d91f04"><span class="cl-44d78f86">c</span></p></th><th class="cl-44d92a12"><p class="cl-44d91f04"><span class="cl-44d78f86">lr</span></p></th><th class="cl-44d92a12"><p class="cl-44d91f04"><span class="cl-44d78f86">w</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">ALM</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">Test Only</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.000</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.100</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.134</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">2.030</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">ALM</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">Test &amp; Train</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.047</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.080</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.067</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.100</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">ALM</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">Train Only</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.060</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.100</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.047</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.080</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">EXAM</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">Test Only</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.007</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">1.327</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.409</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">1.910</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">EXAM</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">Test &amp; Train</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.081</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.161</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.074</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.100</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">EXAM</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">Train Only</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.060</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.100</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.047</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.080</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">Hybrid</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">Test Only</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.008</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">1.580</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">1</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.395</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">2.017</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.64</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">Hybrid</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">Test &amp; Train</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.067</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.134</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">1</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.134</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">2.017</span></p></td><td class="cl-44d92a13"><p class="cl-44d91f04"><span class="cl-44d78f86">0.79</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44d92a14"><p class="cl-44d91f04"><span class="cl-44d78f86">Hybrid</span></p></td><td class="cl-44d92a14"><p class="cl-44d91f04"><span class="cl-44d78f86">Train Only</span></p></td><td class="cl-44d92a14"><p class="cl-44d91f04"><span class="cl-44d78f86">0.042</span></p></td><td class="cl-44d92a14"><p class="cl-44d91f04"><span class="cl-44d78f86">0.067</span></p></td><td class="cl-44d92a14"><p class="cl-44d91f04"><span class="cl-44d78f86">0</span></p></td><td class="cl-44d92a14"><p class="cl-44d91f04"><span class="cl-44d78f86">0.042</span></p></td><td class="cl-44d92a14"><p class="cl-44d91f04"><span class="cl-44d78f86">0.067</span></p></td><td class="cl-44d92a14"><p class="cl-44d91f04"><span class="cl-44d78f86">0.00</span></p></td></tr></tbody></table></div>
+#zixvniqstv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
 
-### Testing Observations vs. Predictions
+#zixvniqstv .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
 
-<div class="tabwid"><style>.cl-44f9e09a{}.cl-44f68f12{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-44f7e678{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-44f7e682{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:0;padding-top:0;padding-left:0;padding-right:0;line-height: 1;background-color:transparent;}.cl-44f7e683{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-44f7e68c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:0;padding-top:0;padding-left:0;padding-right:0;line-height: 1;background-color:transparent;}.cl-44f7e68d{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-44f7e696{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:0;padding-top:0;padding-left:0;padding-right:0;line-height: 1;background-color:transparent;}.cl-44f7e697{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-44f7ef92{width:1.096in;background-color:transparent;vertical-align: bottom;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7ef9c{width:0.705in;background-color:transparent;vertical-align: bottom;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7ef9d{width:0.079in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efa6{width:0.646in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efa7{width:0.705in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efb0{width:0.561in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efb1{width:1.096in;background-color:transparent;vertical-align: bottom;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efba{width:0.705in;background-color:transparent;vertical-align: bottom;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efbb{width:0.079in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efc4{width:0.646in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efc5{width:0.705in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efc6{width:0.561in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0.75pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efce{width:1.096in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efd8{width:0.705in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efe2{width:0.079in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efe3{width:0.646in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efec{width:0.705in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7efed{width:0.561in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7eff6{width:1.096in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7eff7{width:0.705in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f000{width:0.079in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f001{width:0.646in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f00a{width:0.705in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f014{width:0.561in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f015{width:1.096in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f016{width:0.705in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f01e{width:0.079in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f028{width:0.646in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f029{width:0.705in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f032{width:0.561in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f033{width:1.096in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f03c{width:0.705in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f03d{width:0.646in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f03e{width:0.705in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-44f7f046{width:0.561in;background-color:transparent;vertical-align: top;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-44f9e09a'><thead><tr style="overflow-wrap:break-word;"><th  rowspan="2"class="cl-44f7ef92"><p class="cl-44f7e678"><span class="cl-44f68f12">Fit_Method</span></p></th><th  rowspan="2"class="cl-44f7ef9c"><p class="cl-44f7e678"><span class="cl-44f68f12">Model</span></p></th><th class="cl-44f7ef9d"><p class="cl-44f7e682"><span class="cl-44f68f12"></span></p></th><th  colspan="2"class="cl-44f7efa6"><p class="cl-44f7e683"><span class="cl-44f68f12">Constant</span></p></th><th class="cl-44f7ef9d"><p class="cl-44f7e682"><span class="cl-44f68f12"></span></p></th><th  colspan="2"class="cl-44f7efb0"><p class="cl-44f7e683"><span class="cl-44f68f12">Varied</span></p></th></tr><tr style="overflow-wrap:break-word;"><th class="cl-44f7efbb"><p class="cl-44f7e68c"><span class="cl-44f68f12"></span></p></th><th class="cl-44f7efc4"><p class="cl-44f7e683"><span class="cl-44f68f12">ME</span></p></th><th class="cl-44f7efc5"><p class="cl-44f7e683"><span class="cl-44f68f12">RMSE</span></p></th><th class="cl-44f7efbb"><p class="cl-44f7e68c"><span class="cl-44f68f12"></span></p></th><th class="cl-44f7efc6"><p class="cl-44f7e683"><span class="cl-44f68f12">ME</span></p></th><th class="cl-44f7efc5"><p class="cl-44f7e683"><span class="cl-44f68f12">RMSE</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td  rowspan="3"class="cl-44f7efce"><p class="cl-44f7e68d"><span class="cl-44f68f12">Test Only</span></p></td><td class="cl-44f7efd8"><p class="cl-44f7e68d"><span class="cl-44f68f12">ALM</span></p></td><td class="cl-44f7efe2"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7efe3"><p class="cl-44f7e697"><span class="cl-44f68f12">223.8</span></p></td><td class="cl-44f7efec"><p class="cl-44f7e697"><span class="cl-44f68f12">348.0</span></p></td><td class="cl-44f7efe2"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7efed"><p class="cl-44f7e697"><span class="cl-44f68f12">56.3</span></p></td><td class="cl-44f7efec"><p class="cl-44f7e697"><span class="cl-44f68f12">95.4</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44f7efd8"><p class="cl-44f7e68d"><span class="cl-44f68f12">EXAM</span></p></td><td class="cl-44f7efe2"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7efe3"><p class="cl-44f7e697"><span class="cl-44f68f12">-59.2</span></p></td><td class="cl-44f7efec"><p class="cl-44f7e697"><span class="cl-44f68f12">127.5</span></p></td><td class="cl-44f7efe2"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7efed"><p class="cl-44f7e697"><span class="cl-44f68f12">-6.0</span></p></td><td class="cl-44f7efec"><p class="cl-44f7e697"><span class="cl-44f68f12">45.9</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44f7efd8"><p class="cl-44f7e68d"><span class="cl-44f68f12">Hybrid</span></p></td><td class="cl-44f7efe2"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7efe3"><p class="cl-44f7e697"><span class="cl-44f68f12">-58.2</span></p></td><td class="cl-44f7efec"><p class="cl-44f7e697"><span class="cl-44f68f12">127.4</span></p></td><td class="cl-44f7efe2"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7efed"><p class="cl-44f7e697"><span class="cl-44f68f12">-3.0</span></p></td><td class="cl-44f7efec"><p class="cl-44f7e697"><span class="cl-44f68f12">33.8</span></p></td></tr><tr style="overflow-wrap:break-word;"><td  rowspan="3"class="cl-44f7eff6"><p class="cl-44f7e68d"><span class="cl-44f68f12">Test &amp; Train</span></p></td><td class="cl-44f7eff7"><p class="cl-44f7e68d"><span class="cl-44f68f12">ALM</span></p></td><td class="cl-44f7f000"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7f001"><p class="cl-44f7e697"><span class="cl-44f68f12">193.2</span></p></td><td class="cl-44f7f00a"><p class="cl-44f7e697"><span class="cl-44f68f12">328.7</span></p></td><td class="cl-44f7f000"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7f014"><p class="cl-44f7e697"><span class="cl-44f68f12">82.3</span></p></td><td class="cl-44f7f00a"><p class="cl-44f7e697"><span class="cl-44f68f12">106.6</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44f7eff7"><p class="cl-44f7e68d"><span class="cl-44f68f12">EXAM</span></p></td><td class="cl-44f7f000"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7f001"><p class="cl-44f7e697"><span class="cl-44f68f12">-28.8</span></p></td><td class="cl-44f7f00a"><p class="cl-44f7e697"><span class="cl-44f68f12">132.1</span></p></td><td class="cl-44f7f000"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7f014"><p class="cl-44f7e697"><span class="cl-44f68f12">13.2</span></p></td><td class="cl-44f7f00a"><p class="cl-44f7e697"><span class="cl-44f68f12">60.2</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44f7f016"><p class="cl-44f7e68d"><span class="cl-44f68f12">Hybrid</span></p></td><td class="cl-44f7f01e"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7f028"><p class="cl-44f7e697"><span class="cl-44f68f12">-16.7</span></p></td><td class="cl-44f7f029"><p class="cl-44f7e697"><span class="cl-44f68f12">136.7</span></p></td><td class="cl-44f7f01e"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7f032"><p class="cl-44f7e697"><span class="cl-44f68f12">16.7</span></p></td><td class="cl-44f7f029"><p class="cl-44f7e697"><span class="cl-44f68f12">46.5</span></p></td></tr><tr style="overflow-wrap:break-word;"><td  rowspan="3"class="cl-44f7f033"><p class="cl-44f7e68d"><span class="cl-44f68f12">Train Only</span></p></td><td class="cl-44f7efd8"><p class="cl-44f7e68d"><span class="cl-44f68f12">ALM</span></p></td><td class="cl-44f7efe2"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7efe3"><p class="cl-44f7e697"><span class="cl-44f68f12">194.5</span></p></td><td class="cl-44f7efec"><p class="cl-44f7e697"><span class="cl-44f68f12">329.2</span></p></td><td class="cl-44f7efe2"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7efed"><p class="cl-44f7e697"><span class="cl-44f68f12">86.3</span></p></td><td class="cl-44f7efec"><p class="cl-44f7e697"><span class="cl-44f68f12">109.1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44f7efd8"><p class="cl-44f7e68d"><span class="cl-44f68f12">EXAM</span></p></td><td class="cl-44f7efe2"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7efe3"><p class="cl-44f7e697"><span class="cl-44f68f12">75.3</span></p></td><td class="cl-44f7efec"><p class="cl-44f7e697"><span class="cl-44f68f12">199.9</span></p></td><td class="cl-44f7efe2"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7efed"><p class="cl-44f7e697"><span class="cl-44f68f12">17.5</span></p></td><td class="cl-44f7efec"><p class="cl-44f7e697"><span class="cl-44f68f12">65.4</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-44f7f03c"><p class="cl-44f7e68d"><span class="cl-44f68f12">Hybrid</span></p></td><td class="cl-44f7efe2"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7f03d"><p class="cl-44f7e697"><span class="cl-44f68f12">197.5</span></p></td><td class="cl-44f7f03e"><p class="cl-44f7e697"><span class="cl-44f68f12">330.4</span></p></td><td class="cl-44f7efe2"><p class="cl-44f7e696"><span class="cl-44f68f12"></span></p></td><td class="cl-44f7f046"><p class="cl-44f7e697"><span class="cl-44f68f12">88.3</span></p></td><td class="cl-44f7f03e"><p class="cl-44f7e697"><span class="cl-44f68f12">110.3</span></p></td></tr></tbody></table></div>
+#zixvniqstv .gt_title {
+  color: #333333;
+  font-size: 14px;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
 
-## Varied Testing Predictions
+#zixvniqstv .gt_subtitle {
+  color: #333333;
+  font-size: 12px;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-model-preds-varied-1.jpeg" style="width:100.0%" data-fig-align="center" />
+#zixvniqstv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
 
-<div class="tabwid"><style>.cl-4568df68{}.cl-4564df80{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4564df94{font-family:'Helvetica';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4564df95{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:rgba(245, 222, 179, 1.00);}.cl-456679d0{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-45668466{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45668467{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45668470{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45668471{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4566847a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4566847b{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45668484{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45668485{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4566848e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45668498{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45668499{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-456684a2{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-456684ac{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-456684ad{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-456684b6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-456684c0{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-456684c1{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-456684ca{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-456684d4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-456684d5{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-456684de{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-456684df{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-4568df68'><thead><tr style="overflow-wrap:break-word;"><th  colspan="3"class="cl-45668466"><p class="cl-456679d0"><span class="cl-4564df80"></span></p></th><th class="cl-45668470"><p class="cl-456679d0"><span class="cl-4564df80">ALM</span></p></th><th class="cl-45668471"><p class="cl-456679d0"><span class="cl-4564df80"></span></p></th><th class="cl-45668470"><p class="cl-456679d0"><span class="cl-4564df80">EXAM</span></p></th><th class="cl-45668471"><p class="cl-456679d0"><span class="cl-4564df80"></span></p></th><th class="cl-45668470"><p class="cl-456679d0"><span class="cl-4564df80">Hybrid</span></p></th><th class="cl-4566847a"><p class="cl-456679d0"><span class="cl-4564df80"></span></p></th></tr><tr style="overflow-wrap:break-word;"><th class="cl-4566847b"><p class="cl-456679d0"><span class="cl-4564df80">Fit Method</span></p></th><th class="cl-4566847b"><p class="cl-456679d0"><span class="cl-4564df80">X</span></p></th><th class="cl-45668484"><p class="cl-456679d0"><span class="cl-4564df80">Observed</span></p></th><th class="cl-45668485"><p class="cl-456679d0"><span class="cl-4564df80">Predicted</span></p></th><th class="cl-4566848e"><p class="cl-456679d0"><span class="cl-4564df80">Residual</span></p></th><th class="cl-45668485"><p class="cl-456679d0"><span class="cl-4564df80">Predicted</span></p></th><th class="cl-4566848e"><p class="cl-456679d0"><span class="cl-4564df80">Residual</span></p></th><th class="cl-45668485"><p class="cl-456679d0"><span class="cl-4564df80">Predicted</span></p></th><th class="cl-45668498"><p class="cl-456679d0"><span class="cl-4564df80">Residual</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Test Only</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df94">100</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">663</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">675</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df95">-12</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">716</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">-53</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">708</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">-45</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Test Only</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df94">350</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">764</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">675</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">89</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">817</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">-53</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">792</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df95">-28</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Test Only</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df94">600</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">884</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">675</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">209</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">895</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">-11</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">875</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df95">9</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Test Only</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">800</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">1,083</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,078</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df95">5</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,000</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">83</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,091</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">-8</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Test Only</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">1,000</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">1,196</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,202</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">-6</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,199</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df95">-3</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,204</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">-8</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-456684ad"><p class="cl-456679d0"><span class="cl-4564df80">Test Only</span></p></td><td class="cl-456684ad"><p class="cl-456679d0"><span class="cl-4564df80">1,200</span></p></td><td class="cl-456684b6"><p class="cl-456679d0"><span class="cl-4564df80">1,283</span></p></td><td class="cl-456684c0"><p class="cl-456679d0"><span class="cl-4564df80">1,230</span></p></td><td class="cl-456684b6"><p class="cl-456679d0"><span class="cl-4564df80">53</span></p></td><td class="cl-456684c0"><p class="cl-456679d0"><span class="cl-4564df80">1,282</span></p></td><td class="cl-456684b6"><p class="cl-456679d0"><span class="cl-4564df95">1</span></p></td><td class="cl-456684c0"><p class="cl-456679d0"><span class="cl-4564df80">1,221</span></p></td><td class="cl-456684ad"><p class="cl-456679d0"><span class="cl-4564df80">62</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-456684c1"><p class="cl-456679d0"><span class="cl-4564df80">Test &amp; Train</span></p></td><td class="cl-456684c1"><p class="cl-456679d0"><span class="cl-4564df94">100</span></p></td><td class="cl-456684ca"><p class="cl-456679d0"><span class="cl-4564df80">663</span></p></td><td class="cl-456684d4"><p class="cl-456679d0"><span class="cl-4564df80">675</span></p></td><td class="cl-456684ca"><p class="cl-456679d0"><span class="cl-4564df95">-12</span></p></td><td class="cl-456684d4"><p class="cl-456679d0"><span class="cl-4564df80">716</span></p></td><td class="cl-456684ca"><p class="cl-456679d0"><span class="cl-4564df80">-53</span></p></td><td class="cl-456684d4"><p class="cl-456679d0"><span class="cl-4564df80">707</span></p></td><td class="cl-456684c1"><p class="cl-456679d0"><span class="cl-4564df80">-44</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Test &amp; Train</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df94">350</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">764</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">675</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">89</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">817</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">-53</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">788</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df95">-24</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Test &amp; Train</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df94">600</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">884</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">675</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">209</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">902</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df95">-18</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">851</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">33</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Test &amp; Train</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">800</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">1,083</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,000</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">83</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,000</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">83</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,004</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df95">79</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Test &amp; Train</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">1,000</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">1,196</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,163</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">33</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,165</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">31</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,196</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df95">0</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-456684ad"><p class="cl-456679d0"><span class="cl-4564df80">Test &amp; Train</span></p></td><td class="cl-456684ad"><p class="cl-456679d0"><span class="cl-4564df80">1,200</span></p></td><td class="cl-456684b6"><p class="cl-456679d0"><span class="cl-4564df80">1,283</span></p></td><td class="cl-456684c0"><p class="cl-456679d0"><span class="cl-4564df80">1,191</span></p></td><td class="cl-456684b6"><p class="cl-456679d0"><span class="cl-4564df80">92</span></p></td><td class="cl-456684c0"><p class="cl-456679d0"><span class="cl-4564df80">1,194</span></p></td><td class="cl-456684b6"><p class="cl-456679d0"><span class="cl-4564df80">89</span></p></td><td class="cl-456684c0"><p class="cl-456679d0"><span class="cl-4564df80">1,227</span></p></td><td class="cl-456684ad"><p class="cl-456679d0"><span class="cl-4564df95">56</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-456684c1"><p class="cl-456679d0"><span class="cl-4564df80">Train Only</span></p></td><td class="cl-456684c1"><p class="cl-456679d0"><span class="cl-4564df94">100</span></p></td><td class="cl-456684ca"><p class="cl-456679d0"><span class="cl-4564df80">663</span></p></td><td class="cl-456684d4"><p class="cl-456679d0"><span class="cl-4564df80">675</span></p></td><td class="cl-456684ca"><p class="cl-456679d0"><span class="cl-4564df95">-12</span></p></td><td class="cl-456684d4"><p class="cl-456679d0"><span class="cl-4564df80">716</span></p></td><td class="cl-456684ca"><p class="cl-456679d0"><span class="cl-4564df80">-53</span></p></td><td class="cl-456684d4"><p class="cl-456679d0"><span class="cl-4564df80">675</span></p></td><td class="cl-456684c1"><p class="cl-456679d0"><span class="cl-4564df95">-12</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Train Only</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df94">350</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">764</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">675</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">89</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">817</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df95">-53</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">675</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">89</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Train Only</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df94">600</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">884</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">675</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">209</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">905</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df95">-21</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">675</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">209</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Train Only</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">800</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">1,083</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,000</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df95">83</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,000</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df95">83</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">999</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">84</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">Train Only</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">1,000</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df80">1,196</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,150</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df95">46</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,150</span></p></td><td class="cl-456684a2"><p class="cl-456679d0"><span class="cl-4564df95">46</span></p></td><td class="cl-456684ac"><p class="cl-456679d0"><span class="cl-4564df80">1,143</span></p></td><td class="cl-45668499"><p class="cl-456679d0"><span class="cl-4564df80">53</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-456684d5"><p class="cl-456679d0"><span class="cl-4564df80">Train Only</span></p></td><td class="cl-456684d5"><p class="cl-456679d0"><span class="cl-4564df80">1,200</span></p></td><td class="cl-456684de"><p class="cl-456679d0"><span class="cl-4564df80">1,283</span></p></td><td class="cl-456684df"><p class="cl-456679d0"><span class="cl-4564df80">1,180</span></p></td><td class="cl-456684de"><p class="cl-456679d0"><span class="cl-4564df95">103</span></p></td><td class="cl-456684df"><p class="cl-456679d0"><span class="cl-4564df80">1,180</span></p></td><td class="cl-456684de"><p class="cl-456679d0"><span class="cl-4564df95">103</span></p></td><td class="cl-456684df"><p class="cl-456679d0"><span class="cl-4564df80">1,176</span></p></td><td class="cl-456684d5"><p class="cl-456679d0"><span class="cl-4564df80">107</span></p></td></tr></tbody></table></div>
+#zixvniqstv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
 
-## Constant Testing Predictions
+#zixvniqstv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
 
-<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-model-preds-constant-1.jpeg" style="width:100.0%" data-fig-align="center" />
+#zixvniqstv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 10px;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
 
-<div class="tabwid"><style>.cl-45d28bde{}.cl-45ceda2a{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-45ceda34{font-family:'Helvetica';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-45ceda3e{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:rgba(245, 222, 179, 1.00);}.cl-45d04b8a{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-45d055f8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05602{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05603{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d0560c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d0560d{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05616{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05617{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05620{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05621{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d0562a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d0562b{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05634{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05635{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05636{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d0563e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d0563f{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05648{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05649{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05652{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 1pt solid rgba(102, 102, 102, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05653{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d0565c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(102, 102, 102, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-45d05666{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 1pt solid rgba(102, 102, 102, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-45d28bde'><thead><tr style="overflow-wrap:break-word;"><th  colspan="3"class="cl-45d055f8"><p class="cl-45d04b8a"><span class="cl-45ceda2a"></span></p></th><th class="cl-45d05603"><p class="cl-45d04b8a"><span class="cl-45ceda2a">ALM</span></p></th><th class="cl-45d0560c"><p class="cl-45d04b8a"><span class="cl-45ceda2a"></span></p></th><th class="cl-45d05603"><p class="cl-45d04b8a"><span class="cl-45ceda2a">EXAM</span></p></th><th class="cl-45d0560c"><p class="cl-45d04b8a"><span class="cl-45ceda2a"></span></p></th><th class="cl-45d05603"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Hybrid</span></p></th><th class="cl-45d0560d"><p class="cl-45d04b8a"><span class="cl-45ceda2a"></span></p></th></tr><tr style="overflow-wrap:break-word;"><th class="cl-45d05616"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Fit Method</span></p></th><th class="cl-45d05616"><p class="cl-45d04b8a"><span class="cl-45ceda2a">X</span></p></th><th class="cl-45d05617"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Observed</span></p></th><th class="cl-45d05620"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Predicted</span></p></th><th class="cl-45d05621"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Residual</span></p></th><th class="cl-45d05620"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Predicted</span></p></th><th class="cl-45d05621"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Residual</span></p></th><th class="cl-45d05620"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Predicted</span></p></th><th class="cl-45d0562a"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Residual</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Test Only</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda34">100</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">527</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">-148</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">717</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-190</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">717</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-190</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Test Only</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda34">350</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">666</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">-9</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">822</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-156</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">821</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-155</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Test Only</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda34">600</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">780</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">105</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">927</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-147</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">926</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-146</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Test Only</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">800</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">980</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">305</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,010</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-30</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,009</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda3e">-29</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Test Only</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda34">1,000</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,163</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">488</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,094</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">69</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,093</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">70</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d05636"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Test Only</span></p></td><td class="cl-45d05636"><p class="cl-45d04b8a"><span class="cl-45ceda34">1,200</span></p></td><td class="cl-45d0563e"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,277</span></p></td><td class="cl-45d0563f"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d0563e"><p class="cl-45d04b8a"><span class="cl-45ceda2a">602</span></p></td><td class="cl-45d0563f"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,178</span></p></td><td class="cl-45d0563e"><p class="cl-45d04b8a"><span class="cl-45ceda3e">99</span></p></td><td class="cl-45d0563f"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,176</span></p></td><td class="cl-45d05636"><p class="cl-45d04b8a"><span class="cl-45ceda2a">101</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d05648"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Test &amp; Train</span></p></td><td class="cl-45d05648"><p class="cl-45d04b8a"><span class="cl-45ceda34">100</span></p></td><td class="cl-45d05649"><p class="cl-45d04b8a"><span class="cl-45ceda2a">527</span></p></td><td class="cl-45d05652"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05649"><p class="cl-45d04b8a"><span class="cl-45ceda3e">-148</span></p></td><td class="cl-45d05652"><p class="cl-45d04b8a"><span class="cl-45ceda2a">712</span></p></td><td class="cl-45d05649"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-185</span></p></td><td class="cl-45d05652"><p class="cl-45d04b8a"><span class="cl-45ceda2a">711</span></p></td><td class="cl-45d05648"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-184</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Test &amp; Train</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda34">350</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">666</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">-9</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">806</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-140</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">800</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-134</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Test &amp; Train</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda34">600</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">780</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">105</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">900</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-120</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">889</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-109</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Test &amp; Train</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">800</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">980</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">859</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">121</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">975</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">5</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">960</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">20</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Test &amp; Train</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda34">1,000</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,163</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">488</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,049</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">114</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,031</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">132</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d05636"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Test &amp; Train</span></p></td><td class="cl-45d05636"><p class="cl-45d04b8a"><span class="cl-45ceda34">1,200</span></p></td><td class="cl-45d0563e"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,277</span></p></td><td class="cl-45d0563f"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d0563e"><p class="cl-45d04b8a"><span class="cl-45ceda2a">602</span></p></td><td class="cl-45d0563f"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,124</span></p></td><td class="cl-45d0563e"><p class="cl-45d04b8a"><span class="cl-45ceda3e">153</span></p></td><td class="cl-45d0563f"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,102</span></p></td><td class="cl-45d05636"><p class="cl-45d04b8a"><span class="cl-45ceda2a">175</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d05648"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Train Only</span></p></td><td class="cl-45d05648"><p class="cl-45d04b8a"><span class="cl-45ceda34">100</span></p></td><td class="cl-45d05649"><p class="cl-45d04b8a"><span class="cl-45ceda2a">527</span></p></td><td class="cl-45d05652"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05649"><p class="cl-45d04b8a"><span class="cl-45ceda3e">-148</span></p></td><td class="cl-45d05652"><p class="cl-45d04b8a"><span class="cl-45ceda2a">697</span></p></td><td class="cl-45d05649"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-170</span></p></td><td class="cl-45d05652"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05648"><p class="cl-45d04b8a"><span class="cl-45ceda3e">-148</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Train Only</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda34">350</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">666</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">-9</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">752</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">-86</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda3e">-9</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Train Only</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda34">600</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">780</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">105</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">807</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">-27</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">105</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Train Only</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">800</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">980</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">851</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">129</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">851</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">129</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">833</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">147</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Train Only</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda34">1,000</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,163</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda2a">488</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">895</span></p></td><td class="cl-45d05634"><p class="cl-45d04b8a"><span class="cl-45ceda3e">268</span></p></td><td class="cl-45d05635"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d0562b"><p class="cl-45d04b8a"><span class="cl-45ceda2a">488</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-45d05653"><p class="cl-45d04b8a"><span class="cl-45ceda2a">Train Only</span></p></td><td class="cl-45d05653"><p class="cl-45d04b8a"><span class="cl-45ceda34">1,200</span></p></td><td class="cl-45d0565c"><p class="cl-45d04b8a"><span class="cl-45ceda2a">1,277</span></p></td><td class="cl-45d05666"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d0565c"><p class="cl-45d04b8a"><span class="cl-45ceda2a">602</span></p></td><td class="cl-45d05666"><p class="cl-45d04b8a"><span class="cl-45ceda2a">939</span></p></td><td class="cl-45d0565c"><p class="cl-45d04b8a"><span class="cl-45ceda3e">338</span></p></td><td class="cl-45d05666"><p class="cl-45d04b8a"><span class="cl-45ceda2a">675</span></p></td><td class="cl-45d05653"><p class="cl-45d04b8a"><span class="cl-45ceda2a">602</span></p></td></tr></tbody></table></div>
+#zixvniqstv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 10px;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
 
-# EXAM fit learning curves
+#zixvniqstv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
 
-# References
+#zixvniqstv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#zixvniqstv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#zixvniqstv .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#zixvniqstv .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#zixvniqstv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zixvniqstv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#zixvniqstv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#zixvniqstv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#zixvniqstv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zixvniqstv .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#zixvniqstv .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#zixvniqstv .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#zixvniqstv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zixvniqstv .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#zixvniqstv .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#zixvniqstv .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zixvniqstv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zixvniqstv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#zixvniqstv .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zixvniqstv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#zixvniqstv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zixvniqstv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zixvniqstv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zixvniqstv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zixvniqstv .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zixvniqstv .gt_left {
+  text-align: left;
+}
+
+#zixvniqstv .gt_center {
+  text-align: center;
+}
+
+#zixvniqstv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#zixvniqstv .gt_font_normal {
+  font-weight: normal;
+}
+
+#zixvniqstv .gt_font_bold {
+  font-weight: bold;
+}
+
+#zixvniqstv .gt_font_italic {
+  font-style: italic;
+}
+
+#zixvniqstv .gt_super {
+  font-size: 65%;
+}
+
+#zixvniqstv .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#zixvniqstv .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#zixvniqstv .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#zixvniqstv .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#zixvniqstv .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#zixvniqstv .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#zixvniqstv .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="true" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings gt_spanner_row">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" style="border-top-width: 1px; border-top-style: solid; border-top-color: black;" scope="col" id="Task Stage">Task Stage</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="2" colspan="1" style="border-top-width: 1px; border-top-style: solid; border-top-color: black;" scope="col" id="Fit Method">Fit Method</th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="ALM">
+        <span class="gt_column_spanner">ALM</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="EXAM">
+        <span class="gt_column_spanner">EXAM</span>
+      </th>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 1px; border-top-style: solid; border-top-color: black;" scope="col" id="Constant">Constant</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 1px; border-top-style: solid; border-top-color: black;" scope="col" id="Varied">Varied</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 1px; border-top-style: solid; border-top-color: black;" scope="col" id="Constant">Constant</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 1px; border-top-style: solid; border-top-color: black;" scope="col" id="Varied">Varied</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Task Stage" class="gt_row gt_left" style="background-color: #FFFFFF;">Test</td>
+<td headers="Fit Method" class="gt_row gt_center" style="background-color: #FFFFFF;">Fit to Test Data</td>
+<td headers="ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF;">199.93</td>
+<td headers="ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF;">103.36</td>
+<td headers="EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF;">104.01</td>
+<td headers="EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF;">85.68</td></tr>
+    <tr><td headers="Task Stage" class="gt_row gt_left" style="background-color: #FFFFFF;">Test</td>
+<td headers="Fit Method" class="gt_row gt_center" style="background-color: #FFFFFF;">Fit to Test &amp; Training Data</td>
+<td headers="ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF;">216.97</td>
+<td headers="ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF;">170.28</td>
+<td headers="EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF;">127.94</td>
+<td headers="EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF;">144.86</td></tr>
+    <tr><td headers="Task Stage" class="gt_row gt_left" style="background-color: #FFFFFF;">Test</td>
+<td headers="Fit Method" class="gt_row gt_center" style="background-color: #FFFFFF;">Fit to Training Data</td>
+<td headers="ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF;">467.73</td>
+<td headers="ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF;">291.38</td>
+<td headers="EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF;">273.30</td>
+<td headers="EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF;">297.91</td></tr>
+    <tr><td headers="Task Stage" class="gt_row gt_left" style="background-color: #FFFFFF;">Train</td>
+<td headers="Fit Method" class="gt_row gt_center" style="background-color: #FFFFFF;">Fit to Test Data</td>
+<td headers="ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF;">297.82</td>
+<td headers="ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF;">2,016.01</td>
+<td headers="EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF;">53.90</td>
+<td headers="EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF;">184.00</td></tr>
+    <tr><td headers="Task Stage" class="gt_row gt_left" style="background-color: #FFFFFF;">Train</td>
+<td headers="Fit Method" class="gt_row gt_center" style="background-color: #FFFFFF;">Fit to Test &amp; Training Data</td>
+<td headers="ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF;">57.40</td>
+<td headers="ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF;">132.32</td>
+<td headers="EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF;">42.92</td>
+<td headers="EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF;">127.90</td></tr>
+    <tr><td headers="Task Stage" class="gt_row gt_left" style="background-color: #FFFFFF;">Train</td>
+<td headers="Fit Method" class="gt_row gt_center" style="background-color: #FFFFFF;">Fit to Training Data</td>
+<td headers="ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF;">51.77</td>
+<td headers="ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF;">103.48</td>
+<td headers="EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF;">51.43</td>
+<td headers="EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF;">107.03</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+``` r
+c_post <- post_dat_avg %>%
+    group_by(id, condit, Model, Fit_Method, rank) %>%
+    slice_head(n = 1) |>
+    ggplot(aes(y=log(c), x = Fit_Method,col=condit)) + stat_pointinterval(position=position_dodge(.2)) +
+    ggh4x::facet_nested_wrap(~Model) + labs(title="c parameter") +
+  theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4))
+
+lr_post <- post_dat_avg %>%
+    group_by(id, condit, Model, Fit_Method, rank) %>%
+    slice_head(n = 1) |>
+    ggplot(aes(y=lr, x = Fit_Method,col=condit)) + stat_pointinterval(position=position_dodge(.4)) +
+    ggh4x::facet_nested_wrap(~Model) + labs(title="learning rate parameter") +
+  theme(legend.title = element_blank(), legend.position = "none",plot.title=element_text(hjust=.5))
+c_post + lr_post
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-htw-post-dist-1.jpeg)
+
+``` r
+train_resid <- pd_train |> group_by(id,condit,Model,Fit_Method, Block,x) |> 
+  summarise(y=mean(y), pred=mean(pred), mean_error=abs(y-pred)) |>
+  group_by(id,condit,Model,Fit_Method,Block) |>
+  summarise(mean_error=mean(mean_error)) |>
+  ggplot(aes(x=interaction(Block,Model), y = mean_error, fill=factor(Block))) + 
+  stat_bar + 
+  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, scales="free",ncol=2) +
+   scale_x_discrete(guide = "axis_nested") +
+  scale_fill_manual(values=c("gray10","gray50","gray92"))+
+  labs(title="Model Residual Errors - Training Stage", y="RMSE", x= "Model",fill="Training Block") +
+  theme(legend.position="top")
+
+test_resid <-  post_dat |> 
+   group_by(id,condit,x,Model,Fit_Method,bandType) |>
+    summarise(y=mean(y), pred=mean(pred), error=abs(y-pred)) |> 
+  mutate(vbLab = factor(paste0(x,"-",x+200))) |>
+  ggplot(aes(x = Model, y = abs(error), fill=vbLab,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+  stat_bar + 
+  #scale_fill_manual(values=wes_palette("AsteroidCity2"))+
+  scale_color_manual(values = c("black" = "black"), guide = "none") +
+  scale_size_manual(values = c("black" = .5), guide = "none") +
+  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, axes = "all",ncol=2,scale="free") +
+  labs(title="Model Residual Errors - Testing Stage",y="RMSE", x="Velocity Band") 
+
+(train_resid / test_resid) +
+  #plot_layout(heights=c(1,1.5)) & 
+  plot_annotation(tag_levels = list(c('A','B')),tag_suffix = ') ') 
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-htw-resid-pred-1.jpeg)
+
+The posterior distributions of the $c$ and $lr$ parameters are shown <a href="#fig-htw-post-dist" class="quarto-xref">Figure 16</a>, and model predictions are shown alongside the empirical data in <a href="#fig-cm-vx-pat" class="quarto-xref">Figure 18</a>. There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamped any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.
+
+We used the posterior distribution of $c$ and $lr$ parameters to generate a posterior predictive distribution of the observed data for each participant, which then allows us to compare the empirical data to the full range of predictions from each model. Aggregated residuals are displayed in <a href="#fig-htw-resid-pred" class="quarto-xref">Figure 17</a>. The pattern of training stage residual errors are unsurprising across the combinations of models and fitting method . Differences in training performance between ALM and EXAM are generally minor (the two models have identical learning mechanisms). The differences in the magnitude of residuals across the three fitting methods are also straightforward, with massive errors for the 'fit to Test Only' model, and the smallest errors for the 'fit to train only' models. It is also noteworthy that the residual errors are generally larger for the first block of training, which is likely due to the initial values of the ALM weights being unconstrained by whatever initial biases participants tend to bring to the task. Future work may explore the ability of the models to capture more fine grained aspects of the learning trajectories. However for the present purposes, our primary interest is in the ability of ALM and EXAM to account for the testing patterns while being constrained, or not constrained, by the training data. All subsequent analyses and discussion will thus focus on the testing stage.
+
+The residuals of the model predictions for the testing stage (<a href="#fig-htw-resid-pred" class="quarto-xref">Figure 17</a>) also show an unsurprising pattern across fitting methods - with models fit only to the test data showing the best performance, followed by models fit to both training and test data, and with models fit only to the training data showing the worst performance (note that y axes are scaled different between plots). Although EXAM tends to perform better for both Constant and Varied participants (see also <a href="#fig-ee-e1" class="quarto-xref">Figure 19</a>), the relative advantage of EXAM is generally larger for the Constant group - a pattern consistent across all three fitting methods. The primary predictive difference between ALM and EXAM is made clear in <a href="#fig-cm-vx-pat" class="quarto-xref">Figure 18</a>, which directly compares the observed data against the posterior predictive distributions for both models. Regardless of how the models are fit, only EXAM can capture the pattern where participants are able to discriminate all 6 target bands.
+
+``` r
+post_dat_l |> 
+  group_by(id,condit, Fit_Method,Resp,bandType,x,vb) |> 
+ summarize(vx=median(val)) |> 
+ #left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
+ ggplot(aes(x=Resp,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+  stat_bar + 
+    facet_wrap(~rename_fm(Fit_Method)+condit, ncol=2,strip.position = "top", scales = "free_x") +
+        scale_color_manual(values = c("black" = "black"), guide = "none") +
+  scale_size_manual(values = c("black" = .5), guide = "none") +
+    theme(panel.spacing = unit(0, "lines"), 
+         strip.background = element_blank(),
+         strip.placement = "outside",
+         legend.position = "none",plot.title = element_text(hjust=.50),
+         axis.title.x = element_blank(),
+         plot.margin = unit(c(10,0,0,0), "pt")) + 
+         labs(title="Model Predictions - Experiment 1 Data", y="Vx")
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-1.jpeg)
+
+``` r
+pdl <- post_dat_l |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
+  filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
+
+# aerror is model error, which is predicted by Model(ALM vs. EXAM) & condit (Constant vs. Varied)
+e1_ee_brm_ae <- brm(data=pdl,
+  aerror ~  Model * condit + (1+bandInt|id), 
+  file = paste0(here("data/model_cache/e1_ae_modelCond_RFint.rds")),
+  chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
+
+bct_e1 <- as.data.frame(bayestestR::describe_posterior(e1_ee_brm_ae, centrality = "Mean")) %>%
+  select(1,2,4,5,6) %>%
+  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
+  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
+  tibble::remove_rownames() %>%
+  mutate(Term = stringr::str_remove(Term, "b_")) #%>% kable(booktabs = TRUE)
+
+#wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))
+
+p1 <- plot(conditional_effects(e1_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + 
+  ggplot2::xlab("Condition") +ylab("Model Error")
+p2 <- plot(conditional_effects(e1_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + 
+  labs(x="Model",y=NULL)
+p3 <- plot(conditional_effects(e1_ee_brm_ae, effects="Model:condit"),points=FALSE, plot=FALSE)$`Model:condit` + 
+  scale_color_manual(values=wes_palette("Darjeeling1")) +
+  labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
+  
+p_ce_1 <- (p1 + p2+ p3) + plot_annotation(tag_levels = c('A'), tag_suffix=".")
+
+bm1 <- get_coef_details(e1_ee_brm_ae, "conditVaried")
+bm2 <- get_coef_details(e1_ee_brm_ae, "ModelEXAM")
+bm3 <- get_coef_details(e1_ee_brm_ae, "ModelEXAM:conditVaried")
+
+posterior_estimates <- as.data.frame(e1_ee_brm_ae) %>%
+  select(starts_with("b_")) %>%
+  setNames(c("Intercept", "ModelEXAM", "conditVaried", "ModelEXAM_conditVaried"))
+
+constant_EXAM <- posterior_estimates$Intercept + posterior_estimates$ModelEXAM
+varied_EXAM <- posterior_estimates$Intercept + posterior_estimates$ModelEXAM + posterior_estimates$conditVaried + posterior_estimates$ModelEXAM_conditVaried
+comparison_EXAM <- constant_EXAM - varied_EXAM
+summary_EXAM <- bayestestR::describe_posterior(comparison_EXAM, centrality = "Mean")
+
+# e1_ee_brm_ae |> emmeans(pairwise ~ Model * condit, re_formula=NULL)
+# e1_ee_brm_ae |> emmeans(pairwise ~ Model * condit, re_formula=NA)
+
+# full set of Model x condit contrasts
+# ALM - EXAM
+btw_model <- e1_ee_brm_ae |> emmeans(pairwise~ Model | condit, re_formula=NULL)  |> 
+  pluck("contrasts") |> 
+  gather_emmeans_draws() |> 
+  group_by(contrast,.draw,condit) |> summarise(value=mean(.value), n=n()) 
+
+# btw_model |> ggplot(aes(x=value,y=contrast,fill=condit)) +stat_halfeye()
+
+# Constant - Varied
+emm_condit <- e1_ee_brm_ae |> emmeans(~ condit | Model, re_formula = NULL)
+btw_con <- emm_condit |>  pairs() |> gather_emmeans_draws() |> 
+  group_by(contrast,.draw, Model) |> summarise(value=mean(.value), n=n()) 
+# btw_con |> ggplot(aes(x=value,y=Model,fill=Model)) +stat_halfeye()                              
+
+p_em_1<- e1_ee_brm_ae |> emmeans(pairwise~ Model*condit, re_formula=NA)  |> 
+  pluck("contrasts") |>
+  gather_emmeans_draws() |> 
+  group_by(contrast,.draw) |> summarise(value=mean(.value), n=n()) |> 
+  filter(!(contrast %in% c("ALM Constant - EXAM Constant","ALM Constant - EXAM Varied","ALM Varied - EXAM Varied ", "EXAM Constant - ALM Varied" ))) |> 
+  ggplot(aes(x=value,y=contrast,fill=contrast)) +stat_halfeye() + labs(x="Model Error Difference",y="Contrast") + theme(legend.position="none") 
+
+p_ce_1 / p_em_1
+```
+
+<img src="manuscript.markdown_strict_files/figure-markdown_strict/fig-ee-e1-1.jpeg" id="fig-ee-e1" />
+
+To quantitatively assess whether the differences in performance between models, we fit a bayesian regressions predicting the errors of the posterior predictions of each models as a function of the Model (ALM vs. EXAM) and training condition (Constant vs. Varied).
+
+Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.4, -14.17\], pd = 99.85%) than ALM. There was also a significant interaction between Model and Condition ($\beta$ = 60.42, 95% CrI \[36.17, 83.85\], pd = 100%), indicating that the advantage of EXAM over ALM was significantly greater for the constant group. To assess whether EXAM predicts constant performance significantly better for Constant than for Varied subjects, we calculated the difference in model error between the Constant and Varied conditions specifically for EXAM. The results indicated that the model error for EXAM was significantly lower in the Constant condition compared to the Varied condition, with a mean difference of -22.879 (95% CrI \[-46.016, -0.968\], pd = 0.981).
+
+``` r
+post_tabs2 <- abc_tables(e2_model$post_dat,e2_model$post_dat_l)
+train_tab2 <- abc_train_tables(e2_model$pd_train,e2_model$pd_train_l)
+
+pdl2 <- e2_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
+
+e2_tab <- rbind(post_tabs2$agg_pred_full |>
+ mutate("Task Stage"="Test"), train_tab2$agg_pred_full |> 
+ mutate("Task Stage"="Train")) |> 
+  mutate(Fit_Method=rename_fm(Fit_Method)) 
+
+post_tabs3 <- abc_tables(e3_model$post_dat,e3_model$post_dat_l)
+train_tab3 <- abc_train_tables(e3_model$pd_train,e3_model$pd_train_l)
+
+pdl3 <- e3_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
+
+e3_tab <- rbind(post_tabs3$agg_pred_full |> 
+  mutate("Task Stage"="Test"), train_tab3$agg_pred_full |> mutate("Task Stage"="Train")) |> 
+  mutate(Fit_Method=rename_fm(Fit_Method)) 
+
+e23_tab <- rbind(e2_tab |> mutate(Exp="E2"), e3_tab |> mutate(Exp="E3")) 
+gt_table <- e23_tab %>%
+  pivot_wider(
+    names_from = c(Exp, Model, condit),
+    values_from = mean_error,
+    names_glue = "{Exp}_{Model}_{condit}"
+  ) %>%
+  arrange(Fit_Method, `Task Stage`) %>%
+  gt() %>%
+  cols_move_to_start(columns = `Task Stage`) %>%
+  cols_label(`Task Stage` = "Task Stage") %>%
+  fmt_number(columns = matches("E2|E3"), decimals = 1) %>%
+  tab_spanner_delim(delim = "_") %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "white"),
+      cell_borders(sides = "top", color = "black", weight = px(1))
+    ),
+    locations = cells_body(columns = everything(), rows = everything())
+  ) %>%
+  tab_options(
+    column_labels.font.size = 10,
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.size = 10,
+    quarto.disable_processing = TRUE
+  ) 
+gt_table
+```
+
+<div id="qujjiaomra" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qujjiaomra table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#qujjiaomra thead, #qujjiaomra tbody, #qujjiaomra tfoot, #qujjiaomra tr, #qujjiaomra td, #qujjiaomra th {
+  border-style: none;
+}
+
+#qujjiaomra p {
+  margin: 0;
+  padding: 0;
+}
+
+#qujjiaomra .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#qujjiaomra .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qujjiaomra .gt_title {
+  color: #333333;
+  font-size: 14px;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#qujjiaomra .gt_subtitle {
+  color: #333333;
+  font-size: 12px;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#qujjiaomra .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qujjiaomra .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qujjiaomra .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qujjiaomra .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 10px;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#qujjiaomra .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 10px;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#qujjiaomra .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#qujjiaomra .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#qujjiaomra .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#qujjiaomra .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#qujjiaomra .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#qujjiaomra .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#qujjiaomra .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qujjiaomra .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qujjiaomra .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qujjiaomra .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qujjiaomra .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#qujjiaomra .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#qujjiaomra .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#qujjiaomra .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qujjiaomra .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#qujjiaomra .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#qujjiaomra .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qujjiaomra .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qujjiaomra .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#qujjiaomra .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qujjiaomra .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#qujjiaomra .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qujjiaomra .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qujjiaomra .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qujjiaomra .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qujjiaomra .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qujjiaomra .gt_left {
+  text-align: left;
+}
+
+#qujjiaomra .gt_center {
+  text-align: center;
+}
+
+#qujjiaomra .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qujjiaomra .gt_font_normal {
+  font-weight: normal;
+}
+
+#qujjiaomra .gt_font_bold {
+  font-weight: bold;
+}
+
+#qujjiaomra .gt_font_italic {
+  font-style: italic;
+}
+
+#qujjiaomra .gt_super {
+  font-size: 65%;
+}
+
+#qujjiaomra .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#qujjiaomra .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#qujjiaomra .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#qujjiaomra .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#qujjiaomra .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#qujjiaomra .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#qujjiaomra .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="true" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings gt_spanner_row">
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="1" scope="col" id></th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="4" scope="colgroup" id="E2">
+        <span class="gt_column_spanner">E2</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="4" scope="colgroup" id="E3">
+        <span class="gt_column_spanner">E3</span>
+      </th>
+    </tr>
+    <tr class="gt_col_headings gt_spanner_row">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" scope="col" id="Task Stage">Task Stage</th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="ALM">
+        <span class="gt_column_spanner">ALM</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="EXAM">
+        <span class="gt_column_spanner">EXAM</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="ALM">
+        <span class="gt_column_spanner">ALM</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="EXAM">
+        <span class="gt_column_spanner">EXAM</span>
+      </th>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Constant">Constant</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Varied">Varied</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Constant">Constant</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Varied">Varied</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Constant">Constant</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Varied">Varied</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Constant">Constant</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Varied">Varied</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <th colspan="9" class="gt_group_heading" scope="colgroup" id="Fit to Test Data">Fit to Test Data</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Fit to Test Data  Task Stage" class="gt_row gt_left" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">Test</td>
+<td headers="Fit to Test Data  E2_ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">239.7</td>
+<td headers="Fit to Test Data  E2_ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">129.8</td>
+<td headers="Fit to Test Data  E2_EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">99.7</td>
+<td headers="Fit to Test Data  E2_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">88.2</td>
+<td headers="Fit to Test Data  E3_ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">170.1</td>
+<td headers="Fit to Test Data  E3_ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">106.1</td>
+<td headers="Fit to Test Data  E3_EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">92.3</td>
+<td headers="Fit to Test Data  E3_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">72.8</td></tr>
+    <tr><td headers="Fit to Test Data  Task Stage" class="gt_row gt_left" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">Train</td>
+<td headers="Fit to Test Data  E2_ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">53.1</td>
+<td headers="Fit to Test Data  E2_ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">527.1</td>
+<td headers="Fit to Test Data  E2_EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">108.1</td>
+<td headers="Fit to Test Data  E2_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">169.3</td>
+<td headers="Fit to Test Data  E3_ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">70.9</td>
+<td headers="Fit to Test Data  E3_ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">543.5</td>
+<td headers="Fit to Test Data  E3_EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">157.8</td>
+<td headers="Fit to Test Data  E3_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">212.7</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="9" class="gt_group_heading" scope="colgroup" id="Fit to Test &amp;amp; Training Data">Fit to Test &amp; Training Data</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Fit to Test & Training Data  Task Stage" class="gt_row gt_left" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">Test</td>
+<td headers="Fit to Test & Training Data  E2_ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">266.0</td>
+<td headers="Fit to Test & Training Data  E2_ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">208.2</td>
+<td headers="Fit to Test & Training Data  E2_EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">125.1</td>
+<td headers="Fit to Test & Training Data  E2_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">126.4</td>
+<td headers="Fit to Test & Training Data  E3_ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">197.7</td>
+<td headers="Fit to Test & Training Data  E3_ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">189.5</td>
+<td headers="Fit to Test & Training Data  E3_EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">130.0</td>
+<td headers="Fit to Test & Training Data  E3_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">128.5</td></tr>
+    <tr><td headers="Fit to Test & Training Data  Task Stage" class="gt_row gt_left" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">Train</td>
+<td headers="Fit to Test & Training Data  E2_ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">40.0</td>
+<td headers="Fit to Test & Training Data  E2_ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">35.4</td>
+<td headers="Fit to Test & Training Data  E2_EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">30.4</td>
+<td headers="Fit to Test & Training Data  E2_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">23.6</td>
+<td headers="Fit to Test & Training Data  E3_ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">49.1</td>
+<td headers="Fit to Test & Training Data  E3_ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">85.6</td>
+<td headers="Fit to Test & Training Data  E3_EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">49.2</td>
+<td headers="Fit to Test & Training Data  E3_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">78.4</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="9" class="gt_group_heading" scope="colgroup" id="Fit to Training Data">Fit to Training Data</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Fit to Training Data  Task Stage" class="gt_row gt_left" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">Test</td>
+<td headers="Fit to Training Data  E2_ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">357.4</td>
+<td headers="Fit to Training Data  E2_ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">295.9</td>
+<td headers="Fit to Training Data  E2_EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">305.1</td>
+<td headers="Fit to Training Data  E2_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">234.5</td>
+<td headers="Fit to Training Data  E3_ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">415.0</td>
+<td headers="Fit to Training Data  E3_ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">298.8</td>
+<td headers="Fit to Training Data  E3_EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">295.5</td>
+<td headers="Fit to Training Data  E3_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">243.7</td></tr>
+    <tr><td headers="Fit to Training Data  Task Stage" class="gt_row gt_left" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">Train</td>
+<td headers="Fit to Training Data  E2_ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">42.5</td>
+<td headers="Fit to Training Data  E2_ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">23.0</td>
+<td headers="Fit to Training Data  E2_EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">43.2</td>
+<td headers="Fit to Training Data  E2_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">22.6</td>
+<td headers="Fit to Training Data  E3_ALM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">51.4</td>
+<td headers="Fit to Training Data  E3_ALM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">63.8</td>
+<td headers="Fit to Training Data  E3_EXAM_Constant" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">51.8</td>
+<td headers="Fit to Training Data  E3_EXAM_Varied" class="gt_row gt_right" style="background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">65.3</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+``` r
+rbind(e2_model$post_dat_l |> filter( Fit_Method=="Test_Train") |> 
+  group_by(id,condit, Fit_Method,Resp,bandType,x,vb) |> 
+ summarize(vx=median(val)) |> mutate(Exp="E2",bandOrder="Reverse"), 
+ e3_model$post_dat_l |> filter( Fit_Method=="Test_Train") |> 
+  group_by(id,condit, Fit_Method,Resp,bandType,x,vb,bandOrder) |>
+  summarize(vx=median(val)) |> mutate(Exp="E3")) |>
+  ggplot( aes(x=condit,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) +
+  stat_bar + 
+    facet_nested_wrap(~Exp+bandOrder+Resp, strip.position = "top", scales = "free_x") +
+    scale_color_manual(values = c("black" = "black"), guide = "none") +
+  scale_size_manual(values = c("black" = .7), guide = "none") +
+    theme(panel.spacing = unit(0, "lines"), 
+        #  strip.background = element_blank(),
+        #  strip.placement = "outside",
+         legend.position = "none",plot.title = element_text(hjust=.50),
+         axis.title.x = element_blank(),
+         plot.margin = unit(c(20,0,0,0), "pt")) + 
+         labs(title="Model Predictions Experiment 2 & 3", y="vx")
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-e2-e3-1.jpeg)
+
+``` r
+e2_ee_brm_ae <- brm(data=pdl2,
+  aerror ~  Model * condit + (1+bandInt|id), 
+  file = paste0(here("data/model_cache/e2_ae_modelCond_RFint.rds")),
+  chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
+
+bm1_e2 <- get_coef_details(e2_ee_brm_ae, "conditVaried")
+bm2_e2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM")
+bm3_e2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM:conditVaried")
+
+bct_e2 <- as.data.frame(bayestestR::describe_posterior(e2_ee_brm_ae, centrality = "Mean")) %>%
+  select(1,2,4,5,6) %>%
+  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
+  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
+  tibble::remove_rownames() %>%
+  mutate(Term = stringr::str_remove(Term, "b_")) # %>% kable(booktabs = TRUE)
+
+e3_ee_brm_ae <- brm(data=pdl3,
+  aerror ~  Model * condit*bandOrder + (1+bandInt|id), 
+  file = paste0(here("data/model_cache/e3_ae_modelCondBo_RFint2.rds")),
+  chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
+
+bm1_e3 <- get_coef_details(e3_ee_brm_ae, "conditVaried")
+bm2_e3  <- get_coef_details(e3_ee_brm_ae, "ModelEXAM")
+bm3_e3  <- get_coef_details(e3_ee_brm_ae, "ModelEXAM:conditVaried")
+bm4_e3  <- get_coef_details(e3_ee_brm_ae, "ModelEXAM:conditVaried:bandOrderReverse")
+
+
+bct_e3  <- as.data.frame(bayestestR::describe_posterior(e3_ee_brm_ae, centrality = "Mean")) %>%
+  select(1,2,4,5,6) %>%
+  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
+  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
+  tibble::remove_rownames() %>%
+  mutate(Term = stringr::str_remove(Term, "b_")) #%>% kable(booktabs = TRUE)
+
+bct <- rbind(bct_e1 |> mutate(exp="Exp 1"),bct_e2 |> 
+               mutate(exp= "Exp 2"),bct_e3 |> mutate(exp="Exp 3")) |> 
+  relocate(exp, .before=Term)
+
+bct_table <- bct %>%
+  mutate(
+    across(c(Estimate, `95% CrI Lower`, `95% CrI Upper`), ~ round(., 2)),
+    pd = round(pd, 2)
+  ) %>%
+  gt() %>%
+  # tab_header(
+  #   title = "Bayesian Model Results",
+  #   subtitle = "Estimates and Credible Intervals for Each Term Across Experiments"
+  # ) %>%
+  cols_label(
+    exp = "Experiment",
+    Term = "Term",
+    Estimate = "Estimate",
+    `95% CrI Lower` = "95% CrI Lower",
+    `95% CrI Upper` = "95% CrI Upper",
+    pd = "pd"
+  ) %>%
+  fmt_number(
+    columns = c(Estimate, `95% CrI Lower`, `95% CrI Upper`),
+    decimals = 2
+  ) %>%
+  fmt_number(
+    columns = pd,
+    decimals = 2
+  ) %>%
+  tab_spanner(
+    label = "Credible Interval",
+    columns = c(`95% CrI Lower`, `95% CrI Upper`)
+  ) %>%
+  tab_style(
+    style = list(
+      #cell_fill(color = "lightgray"),
+      cell_text(weight = "bold"), 
+      cell_fill(color = "white"),
+      cell_borders(sides = "top", color = "black", weight = px(1))
+    ),
+    locations = cells_body(
+      columns = c(Estimate, pd),
+      rows = Term=="ModelEXAM:conditVaried"
+    )
+  ) %>%
+   tab_row_group(
+    label = "Experiment 3",
+    rows = exp == "Exp 3"
+  ) %>%
+  tab_row_group(
+    label = "Experiment 2",
+    rows = exp == "Exp 2"
+  ) %>%
+  tab_row_group(
+    label = "Experiment 1",
+    rows = exp == "Exp 1"
+  ) %>%
+  tab_options(
+    table.font.size = 10,
+    heading.title.font.size = 16,
+    heading.subtitle.font.size = 14,
+    quarto.disable_processing = TRUE
+    #row_group.background.color = "gray95"
+  )
+bct_table
+```
+
+<div id="ndxgskvjqo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ndxgskvjqo table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ndxgskvjqo thead, #ndxgskvjqo tbody, #ndxgskvjqo tfoot, #ndxgskvjqo tr, #ndxgskvjqo td, #ndxgskvjqo th {
+  border-style: none;
+}
+
+#ndxgskvjqo p {
+  margin: 0;
+  padding: 0;
+}
+
+#ndxgskvjqo .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ndxgskvjqo .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ndxgskvjqo .gt_title {
+  color: #333333;
+  font-size: 16px;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ndxgskvjqo .gt_subtitle {
+  color: #333333;
+  font-size: 14px;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ndxgskvjqo .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ndxgskvjqo .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ndxgskvjqo .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ndxgskvjqo .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ndxgskvjqo .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ndxgskvjqo .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ndxgskvjqo .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ndxgskvjqo .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ndxgskvjqo .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ndxgskvjqo .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ndxgskvjqo .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ndxgskvjqo .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ndxgskvjqo .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ndxgskvjqo .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ndxgskvjqo .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ndxgskvjqo .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ndxgskvjqo .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ndxgskvjqo .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ndxgskvjqo .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ndxgskvjqo .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ndxgskvjqo .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ndxgskvjqo .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ndxgskvjqo .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ndxgskvjqo .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ndxgskvjqo .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ndxgskvjqo .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ndxgskvjqo .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ndxgskvjqo .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ndxgskvjqo .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ndxgskvjqo .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ndxgskvjqo .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ndxgskvjqo .gt_left {
+  text-align: left;
+}
+
+#ndxgskvjqo .gt_center {
+  text-align: center;
+}
+
+#ndxgskvjqo .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ndxgskvjqo .gt_font_normal {
+  font-weight: normal;
+}
+
+#ndxgskvjqo .gt_font_bold {
+  font-weight: bold;
+}
+
+#ndxgskvjqo .gt_font_italic {
+  font-style: italic;
+}
+
+#ndxgskvjqo .gt_super {
+  font-size: 65%;
+}
+
+#ndxgskvjqo .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ndxgskvjqo .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ndxgskvjqo .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ndxgskvjqo .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ndxgskvjqo .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ndxgskvjqo .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ndxgskvjqo .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="true" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings gt_spanner_row">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" scope="col" id="Experiment">Experiment</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" scope="col" id="Term">Term</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="2" colspan="1" scope="col" id="Estimate">Estimate</th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="Credible Interval">
+        <span class="gt_column_spanner">Credible Interval</span>
+      </th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="2" colspan="1" scope="col" id="pd">pd</th>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="95% CrI Lower">95% CrI Lower</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="95% CrI Upper">95% CrI Upper</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <th colspan="6" class="gt_group_heading" scope="colgroup" id="Experiment 1">Experiment 1</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Experiment 1  exp" class="gt_row gt_left">Exp 1</td>
+<td headers="Experiment 1  Term" class="gt_row gt_left">Intercept</td>
+<td headers="Experiment 1  Estimate" class="gt_row gt_right">176.30</td>
+<td headers="Experiment 1  95% CrI Lower" class="gt_row gt_right">156.86</td>
+<td headers="Experiment 1  95% CrI Upper" class="gt_row gt_right">194.59</td>
+<td headers="Experiment 1  pd" class="gt_row gt_right">1.00</td></tr>
+    <tr><td headers="Experiment 1  exp" class="gt_row gt_left">Exp 1</td>
+<td headers="Experiment 1  Term" class="gt_row gt_left">ModelEXAM</td>
+<td headers="Experiment 1  Estimate" class="gt_row gt_right">−88.44</td>
+<td headers="Experiment 1  95% CrI Lower" class="gt_row gt_right">−104.51</td>
+<td headers="Experiment 1  95% CrI Upper" class="gt_row gt_right">−71.81</td>
+<td headers="Experiment 1  pd" class="gt_row gt_right">1.00</td></tr>
+    <tr><td headers="Experiment 1  exp" class="gt_row gt_left">Exp 1</td>
+<td headers="Experiment 1  Term" class="gt_row gt_left">conditVaried</td>
+<td headers="Experiment 1  Estimate" class="gt_row gt_right">−37.54</td>
+<td headers="Experiment 1  95% CrI Lower" class="gt_row gt_right">−60.40</td>
+<td headers="Experiment 1  95% CrI Upper" class="gt_row gt_right">−14.17</td>
+<td headers="Experiment 1  pd" class="gt_row gt_right">1.00</td></tr>
+    <tr><td headers="Experiment 1  exp" class="gt_row gt_left">Exp 1</td>
+<td headers="Experiment 1  Term" class="gt_row gt_left">ModelEXAM:conditVaried</td>
+<td headers="Experiment 1  Estimate" class="gt_row gt_right" style="font-weight: bold; background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">60.42</td>
+<td headers="Experiment 1  95% CrI Lower" class="gt_row gt_right">36.17</td>
+<td headers="Experiment 1  95% CrI Upper" class="gt_row gt_right">83.85</td>
+<td headers="Experiment 1  pd" class="gt_row gt_right" style="font-weight: bold; background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">1.00</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="6" class="gt_group_heading" scope="colgroup" id="Experiment 2">Experiment 2</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Experiment 2  exp" class="gt_row gt_left">Exp 2</td>
+<td headers="Experiment 2  Term" class="gt_row gt_left">Intercept</td>
+<td headers="Experiment 2  Estimate" class="gt_row gt_right">245.87</td>
+<td headers="Experiment 2  95% CrI Lower" class="gt_row gt_right">226.18</td>
+<td headers="Experiment 2  95% CrI Upper" class="gt_row gt_right">264.52</td>
+<td headers="Experiment 2  pd" class="gt_row gt_right">1.00</td></tr>
+    <tr><td headers="Experiment 2  exp" class="gt_row gt_left">Exp 2</td>
+<td headers="Experiment 2  Term" class="gt_row gt_left">ModelEXAM</td>
+<td headers="Experiment 2  Estimate" class="gt_row gt_right">−137.73</td>
+<td headers="Experiment 2  95% CrI Lower" class="gt_row gt_right">−160.20</td>
+<td headers="Experiment 2  95% CrI Upper" class="gt_row gt_right">−115.48</td>
+<td headers="Experiment 2  pd" class="gt_row gt_right">1.00</td></tr>
+    <tr><td headers="Experiment 2  exp" class="gt_row gt_left">Exp 2</td>
+<td headers="Experiment 2  Term" class="gt_row gt_left">conditVaried</td>
+<td headers="Experiment 2  Estimate" class="gt_row gt_right">−86.39</td>
+<td headers="Experiment 2  95% CrI Lower" class="gt_row gt_right">−113.52</td>
+<td headers="Experiment 2  95% CrI Upper" class="gt_row gt_right">−59.31</td>
+<td headers="Experiment 2  pd" class="gt_row gt_right">1.00</td></tr>
+    <tr><td headers="Experiment 2  exp" class="gt_row gt_left">Exp 2</td>
+<td headers="Experiment 2  Term" class="gt_row gt_left">ModelEXAM:conditVaried</td>
+<td headers="Experiment 2  Estimate" class="gt_row gt_right" style="font-weight: bold; background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">56.87</td>
+<td headers="Experiment 2  95% CrI Lower" class="gt_row gt_right">25.26</td>
+<td headers="Experiment 2  95% CrI Upper" class="gt_row gt_right">88.04</td>
+<td headers="Experiment 2  pd" class="gt_row gt_right" style="font-weight: bold; background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">1.00</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="6" class="gt_group_heading" scope="colgroup" id="Experiment 3">Experiment 3</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Experiment 3  exp" class="gt_row gt_left">Exp 3</td>
+<td headers="Experiment 3  Term" class="gt_row gt_left">Intercept</td>
+<td headers="Experiment 3  Estimate" class="gt_row gt_right">164.83</td>
+<td headers="Experiment 3  95% CrI Lower" class="gt_row gt_right">140.05</td>
+<td headers="Experiment 3  95% CrI Upper" class="gt_row gt_right">189.44</td>
+<td headers="Experiment 3  pd" class="gt_row gt_right">1.00</td></tr>
+    <tr><td headers="Experiment 3  exp" class="gt_row gt_left">Exp 3</td>
+<td headers="Experiment 3  Term" class="gt_row gt_left">ModelEXAM</td>
+<td headers="Experiment 3  Estimate" class="gt_row gt_right">−65.66</td>
+<td headers="Experiment 3  95% CrI Lower" class="gt_row gt_right">−85.97</td>
+<td headers="Experiment 3  95% CrI Upper" class="gt_row gt_right">−46.02</td>
+<td headers="Experiment 3  pd" class="gt_row gt_right">1.00</td></tr>
+    <tr><td headers="Experiment 3  exp" class="gt_row gt_left">Exp 3</td>
+<td headers="Experiment 3  Term" class="gt_row gt_left">conditVaried</td>
+<td headers="Experiment 3  Estimate" class="gt_row gt_right">−40.61</td>
+<td headers="Experiment 3  95% CrI Lower" class="gt_row gt_right">−75.90</td>
+<td headers="Experiment 3  95% CrI Upper" class="gt_row gt_right">−3.02</td>
+<td headers="Experiment 3  pd" class="gt_row gt_right">0.98</td></tr>
+    <tr><td headers="Experiment 3  exp" class="gt_row gt_left">Exp 3</td>
+<td headers="Experiment 3  Term" class="gt_row gt_left">bandOrderReverse</td>
+<td headers="Experiment 3  Estimate" class="gt_row gt_right">25.47</td>
+<td headers="Experiment 3  95% CrI Lower" class="gt_row gt_right">−9.34</td>
+<td headers="Experiment 3  95% CrI Upper" class="gt_row gt_right">58.68</td>
+<td headers="Experiment 3  pd" class="gt_row gt_right">0.93</td></tr>
+    <tr><td headers="Experiment 3  exp" class="gt_row gt_left">Exp 3</td>
+<td headers="Experiment 3  Term" class="gt_row gt_left">ModelEXAM:conditVaried</td>
+<td headers="Experiment 3  Estimate" class="gt_row gt_right" style="font-weight: bold; background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">41.90</td>
+<td headers="Experiment 3  95% CrI Lower" class="gt_row gt_right">11.20</td>
+<td headers="Experiment 3  95% CrI Upper" class="gt_row gt_right">72.54</td>
+<td headers="Experiment 3  pd" class="gt_row gt_right" style="font-weight: bold; background-color: #FFFFFF; border-top-width: 1px; border-top-style: solid; border-top-color: black;">0.99</td></tr>
+    <tr><td headers="Experiment 3  exp" class="gt_row gt_left">Exp 3</td>
+<td headers="Experiment 3  Term" class="gt_row gt_left">ModelEXAM:bandOrderReverse</td>
+<td headers="Experiment 3  Estimate" class="gt_row gt_right">−7.32</td>
+<td headers="Experiment 3  95% CrI Lower" class="gt_row gt_right">−34.53</td>
+<td headers="Experiment 3  95% CrI Upper" class="gt_row gt_right">21.05</td>
+<td headers="Experiment 3  pd" class="gt_row gt_right">0.70</td></tr>
+    <tr><td headers="Experiment 3  exp" class="gt_row gt_left">Exp 3</td>
+<td headers="Experiment 3  Term" class="gt_row gt_left">conditVaried:bandOrderReverse</td>
+<td headers="Experiment 3  Estimate" class="gt_row gt_right">30.82</td>
+<td headers="Experiment 3  95% CrI Lower" class="gt_row gt_right">−19.57</td>
+<td headers="Experiment 3  95% CrI Upper" class="gt_row gt_right">83.56</td>
+<td headers="Experiment 3  pd" class="gt_row gt_right">0.88</td></tr>
+    <tr><td headers="Experiment 3  exp" class="gt_row gt_left">Exp 3</td>
+<td headers="Experiment 3  Term" class="gt_row gt_left">ModelEXAM:conditVaried:bandOrderReverse</td>
+<td headers="Experiment 3  Estimate" class="gt_row gt_right">−60.60</td>
+<td headers="Experiment 3  95% CrI Lower" class="gt_row gt_right">−101.80</td>
+<td headers="Experiment 3  95% CrI Upper" class="gt_row gt_right">−18.66</td>
+<td headers="Experiment 3  pd" class="gt_row gt_right">1.00</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+*Model Fits to Experiment 2 and 3.* Data from Experiments 2 and 3 were fit to ALM and EXAM in the same manner as Experiment1 . For brevity, we only plot and discuss the results of the "fit to training and testing data" models - results from the other fitting methods can be found in the appendix. The model fitting results for Experiments 2 and 3 closely mirrored those observed in Experiment 1. The Bayesian regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and their interaction (see <a href="#tbl-htw-ee-e23" class="quarto-xref">Table 15</a>) revealed a consistent main effect of Model across all three experiments. The negative coefficients for the ModelEXAM term (Exp 2: $\beta$ = -86.39, 95% CrI -113.52, -59.31, pd = 100%; Exp 3: $\beta$ = -40.61, 95% CrI -75.9, -3.02, pd = 98.17%) indicate that EXAM outperformed ALM in both experiments. Furthermore, the interaction between Model and Condition was significant in both Experiment 2 ($\beta$ = 56.87, 95% CrI 25.26, 88.04, pd = 99.98%) and Experiment 3 ($\beta$ = 41.9, 95% CrI 11.2, 72.54, pd = 99.35%), suggesting that the superiority of EXAM over ALM was more pronounced for the Constant group compared to the Varied group, as was the case in Experiment 1. Recall that Experiment 3 included participants in both the original and reverse order conditions - and that this manipulation interacted with the effect of training condition. We thus also controleld for band order in our Bayesian Regression assessing the relative performance of EXAM and ALM in Experiment 3. There was a significant three way interaction between Model, Training Condition, and Band Order ($\beta$ = -60.6, 95% CrI -101.8, -18.66, pd = 99.83%), indicating that the relative advantage of EXAM over ALM was only more pronounced in the original order condition, and not the reverse order condition (see <a href="#fig-e2_e3_ae" class="quarto-xref">Figure 21</a>).
+
+``` r
+#wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))
+p1 <- plot(conditional_effects(e2_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + 
+  ggplot2::xlab("Condition") +ylab("Model Error") + labs(title="E2. Model Error")
+p2 <- plot(conditional_effects(e2_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + 
+  labs(x="Model",y=NULL)
+p3 <- plot(conditional_effects(e2_ee_brm_ae, effects="Model:condit"),points=FALSE, plot=FALSE)$`Model:condit` + 
+  scale_color_manual(values=wes_palette("Darjeeling1")) +
+  labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
+  
+ p_e2 <- (p1 + p2+ p3) 
+#wrap_plots(plot(conditional_effects(e3_ee_brm_ae),points=FALSE,plot=FALSE))
+
+p_e3 <- plot(conditional_effects(e3_ee_brm_ae, 
+                         effects = "Model:condit", 
+                         conditions=make_conditions(e3_ee_brm_ae,vars=c("bandOrder"))),
+     points=FALSE,plot=FALSE)$`Model:condit` + 
+     labs(x="Model",y="Model Error", title="E3. Model Error", fill=NULL, col=NULL) + 
+     theme(legend.position="right") + 
+     scale_color_manual(values=wes_palette("Darjeeling1")) 
+
+# p1 <- plot(conditional_effects(e3_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + 
+#   ggplot2::xlab("Condition") +ylab("Model Error")
+# p2 <- plot(conditional_effects(e3_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + 
+#   labs(x="Model",y=NULL)
+# p3 <- plot(conditional_effects(e3_ee_brm_ae, effects="Model:condit"),points=FALSE, plot=FALSE)$`Model:condit` + 
+#   scale_color_manual(values=wes_palette("Darjeeling1")) +
+#   labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
+  
+ #p2 <- (p1 + p2+ p3)
+ (p_e2 / p_e3) + plot_annotation(tag_levels = c('A'), tag_suffix=".")
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e2_e3_ae-1.jpeg)
+
+*Computational Model Summary*. Across the model fits to all three experiments, we found greater support for EXAM over ALM (negative coefficients on the ModelEXAM term in <a href="#tbl-htw-ee-e23" class="quarto-xref">Table 15</a>), and moreover that the constant participants were disproportionately well described by EXAM in comparison to ALM (positive coefficients on ModelEXAM:conditVaried terms in <a href="#tbl-htw-ee-e23" class="quarto-xref">Table 15</a>). This pattern is also clearly depicted in <a href="#fig-htw-best-model" class="quarto-xref">Figure 22</a>, which plots the difference in model errors between ALM and EXAM for each individual participant. Both varied and constant conditions have a greater proportion of subjects better fit by EXAM (positive error differences), with the magnitude of EXAM's advantage visibly greater for the constant group. It also bears mention that numerous participants were better fit by ALM, or did not show a clear preference for either model. A subset of these participants are shown in <a href="#fig-htw-indv-pred" class="quarto-xref">Figure 23</a>.
+
+``` r
+tid1 <- post_dat  |> mutate(Exp="E1",bandOrder="Original") |> select(-pred_dist, -dist) |>
+  rbind(e2_model$post_dat |> mutate(Exp="E2",bandOrder="Reverse")) |>
+  rbind(e3_model$post_dat |> mutate(Exp="E3")) |>
+  filter(Fit_Method=="Test_Train") |>
+  group_by(id,condit,Model,Fit_Method,x, Exp) |> 
+    mutate(e2=abs(y-pred)) |> 
+    summarise(y1=median(y), pred1=median(pred),mean_error=abs(y1-pred1)) |>
+    group_by(id,condit,Model,Fit_Method,Exp) |> 
+    summarise(mean_error=mean(mean_error)) |> 
+    arrange(id,condit,Fit_Method) |>
+    round_tibble(1) 
+
+best_id <- tid1 |> 
+  group_by(id,condit,Fit_Method) |> 
+  mutate(best=ifelse(mean_error==min(mean_error),1,0)) 
+
+lowest_error_model <- best_id %>%
+  group_by(id, condit,Fit_Method, Exp) %>%
+  summarise(Best_Model = Model[which.min(mean_error)],
+            Lowest_error = min(mean_error),
+            differential = min(mean_error) - max(mean_error)) %>%
+  ungroup()
+
+error_difference<- best_id %>%
+  select(id, condit, Model,Fit_Method, mean_error) %>%
+  pivot_wider(names_from = Model, values_from = c(mean_error)) %>%
+  mutate(Error_difference = (ALM - EXAM))
+
+full_comparison <- lowest_error_model |> 
+  left_join(error_difference, by=c("id","condit","Fit_Method"))  |> 
+  group_by(condit,Fit_Method,Best_Model) |> 
+  mutate(nGrp=n(), model_rank = nGrp - rank(Error_difference) ) |> 
+  arrange(Fit_Method,-Error_difference)
+
+full_comparison |> 
+  filter(Fit_Method=="Test_Train") |> 
+  ungroup() |>
+  mutate(id = reorder(id, Error_difference)) %>%
+  ggplot(aes(y=id,x=Error_difference,fill=Best_Model))+
+  geom_col() +
+  #ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+
+  ggh4x::facet_nested_wrap(~condit+Exp,scales="free") + 
+  theme(axis.text.y = element_text(size=8)) +
+  labs(fill="Best Model",
+  x="Mean Model Error Difference (ALM - EXAM)",
+  y="Participant")
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-htw-best-model-1.jpeg)
+
+``` r
+cId_tr <- c(137, 181, 11)
+vId_tr <- c(14, 193, 47)
+cId_tt <- c(11, 93, 35)
+vId_tt <- c(1,14,74)
+cId_new <- c(175, 68, 93, 74)
+# filter(id %in% (filter(bestTestEXAM,group_rank<=9, Fit_Method=="Test")
+
+e1_sbjs <- c(49,68,155, 175,74)
+e3_sbjs <-  c(245, 280, 249)
+e2_sbjs <- c(197, 157, 312, 334)
+cFinal <- c(49, 128,202 )
+vFinal <- c(68,70,245)
+
+
+indv_post_l <- post_dat_l  |> mutate(Exp="E1",bandOrder="Original") |> select(-signed_dist) |>
+  rbind(e2_model$post_dat_l |> mutate(Exp="E2",bandOrder="Reverse")) |>
+  rbind(e3_model$post_dat_l |> mutate(Exp="E3") |> select(-fb)) |>
+  filter(Fit_Method=="Test_Train", id %in% c(cFinal,vFinal))
+
+testIndv <- indv_post_l |> 
+#filter(id %in% c(cId_tt,vId_tt,cId_new), Fit_Method=="Test_Train") |> 
+   mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
+  group_by(id,condit,Fit_Method,Model,Resp) |>
+   mutate(flab=paste0("Subject: ",id)) |>
+  ggplot(aes(x = Resp, y = val, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
+  stat_bar_sd + 
+  ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
+  scale_color_manual(values = c("black" = "black"), guide = FALSE) +
+  scale_size_manual(values = c("black" = .5), guide = FALSE) + 
+  labs(title="Individual Participant fits from Test & Train Fitting Method",
+       y="X Velocity",fill="Target Velocity") +
+   guides(fill = guide_legend(nrow = 1)) + 
+  theme(legend.position = "bottom",axis.title.x = element_blank())
+
+testIndv 
+```
+
+![](manuscript.markdown_strict_files/figure-markdown_strict/fig-htw-indv-pred-1.jpeg)
+
+# General Discussion
+
+*Experimental Result Summary*
+
+Across three experiments, we investigated the impact of training variability on learning and extrapolation in a visuomotor function learning task. In Experiment 1, participants in the varied training condition, who experienced a wider range of velocity bands during training, showed lower accuracy at the end of training compared to those in the constant training condition.
+
+Crucially, during the testing phase, the varied group exhibited significantly larger deviations from the target velocity bands, particularly for the extrapolation bands that were not encountered during training. The varied group also showed less discrimination between velocity bands, as evidenced by shallower slopes when predicting response velocity from target velocity band.
+
+Experiment 2 extended these findings by reversing the order of the training and testing bands. Similar to Experiment 1, the varied group demonstrated poorer performance during both training and testing phases. However, unlike Experiment 1, the varied group did not show a significant difference in discrimination between bands compared to the constant group.
+
+In Experiment 3, we provided only ordinal feedback during training, in contrast to the continuous feedback provided in the previous experiments. Participants were assigned to both an order condition (original or reverse) and a training condition (constant or varied). The varied condition showed larger deviations at the end of training, consistent with the previous experiments. Interestingly, there was a significant interaction between training condition and band order, with the varied condition showing greater accuracy in the reverse order condition. During testing, the varied group once again exhibited larger deviations, particularly for the extrapolation bands. The reverse order conditions showed smaller deviations compared to the original order conditions. Discrimination between velocity bands was poorer for the varied group in the original order condition, but not in the reverse order condition.
+
+All three of our experiments yielded evidence that varied training conditions produced less learning by the end of training, a pattern consistent with much of the previous research on the influence of training variability ([Catalano & Kleiner, 1984](#ref-catalanoDistantTransferCoincident1984a); [Soderstrom & Bjork, 2015](#ref-soderstromLearningPerformanceIntegrative2015); [Wrisberg et al., 1987](#ref-wrisbergVariabilityPracticeHypothesis1987)). The sole exception to this pattern was the reverse order condition in Experiment 3, where the varied group was not significantly worse than the constant group. Neither the varied condition trained with the same reverse-order items in Experiment 2, nor the original-order varied condition trained with ordinal feedback in Experiment 3 were able to match the performance of their complementary constant groups by the end of training, suggesting that the relative success of the ordinal-reverse ordered varied group cannot be attributed to item or feedback effects alone.
+
+Our findings also diverge from the two previous studies to cleanly manipulate the variability of training items in a function learning task ([DeLosh et al., 1997](#ref-deloshExtrapolationSineQua1997); [van Dam & Ernst, 2015](#ref-vandamMappingShapeVisuomotor2015)), although the varied training condition of van Dam & Ernst ([2015](#ref-vandamMappingShapeVisuomotor2015)) also exhibited less learning, neither of these previous studies observed any difference between training conditions in extrapolation to novel items. Like DeLosh et al. ([1997](#ref-deloshExtrapolationSineQua1997)) , our participants exhibited above chance extrapolation/discrimination of novel items, however they observed no difference between any of their three training conditions. A noteworthy difference difference between our studies is that DeLosh et al. ([1997](#ref-deloshExtrapolationSineQua1997)) trained participants with either 8, 20, or 50 unique items (all receiving the same total number of training trials). These larger sets of unique items, combined with the fact that participants achieved near ceiling level performance by the end of training - may have made it more difficult to observe any between-group differences of training variation in their study. van Dam & Ernst ([2015](#ref-vandamMappingShapeVisuomotor2015)) 's variability manipulation was more similar to our own, as they trained participants with either 2 or 5 unique items. However, although the mapping between their input stimuli and motor responses was technically linear, the input dimension was more complex than our own, as it was defined by the degree of "spikiness" of the input shape. This entirely arbitrary mapping also would have preculded any sense of a "0" point, which may partially explain why neither of their training conditions were able to extrapolate linearly in the manner observed in the current study or in DeLosh et al. ([1997](#ref-deloshExtrapolationSineQua1997)).
+
+*Modeling Summary*
+EXAM is the best model for both groups, but EXAM does relatively good at accounting for the constant group. May have seemed counterintuitive, if one assumed that multiple, varied, examples were necessary to extract a rule. But, EXAM is not a conventional rule model - it doesn't require explictly abstract of a rule, but rather the rule-based response occurs during retrieval. The constant groups formation of a single, accurate, input-output association, in combination with the usefulness of the zero point, may have been sufficient for EXAM, and the constant group, to perform well.
+
+One concern may have been that the assumption of participants making use of the zero point turned the extrapolation problem into an interpolation problem - however this concern is ameliorated by the consistency of the results across both the original and reverse order conditions.
+
+-   why does Constant do better
+    -   kind of task that permits for prior knowledge about 0
+    -   learning - end of training
+-   what does it suggest that the constant group was disproportionately well explained by the EXAM model?
+-   
+
+*Limitations*
+- amount of training
+- constant group always having more experience at nearest position
+
+-   constant group having more extrapolation items
+
+-   only training and extrapolation - no interpolation items - so harder to make claims about extrapolation specifically, as opposed to generalization in general.
+
+-   no mechanism to account for sequence effects in models
+
+-   more rigorous model comparison to account for exams greater complexity
+
+-   knowledge of function
+
+## Comparison to Project 1
+
+### Differences between the tasks
+
+There are a number of differences between Project 1's Hit The Target (HTT), and Project 2's Hit The Wall (HTW) tasks.
+
+-   Task Space Complexity: In HTW, the task space is also almost perfectly smooth, at least for the continuous feedback subjects, if they throw 100 units too hard, they'll be told that they were 100 units too hard. Whereas in HTT,  it was possible to produce xy velocity combinations that were technically closer to the empirical solution space than other throws, but which resulted in worse feedback due to striking the barrier.
+
+-   Perceptual Distinctiveness: HTT offers perceptually distinct varied conditions that directly relate to the task's demands, which may increase the sallience between training positions encounted by the varied group. In contrast, HTW's varied conditions differ only in the numerical values displayed, lacking the same level of perceptual differentiation. Conversely in HTW, the only difference between conditions for the varied group are the numbers displayed at the top of the screen which indicate the current target band(e.g. 800-1000, or 1000-1200)
+
+-   In HTW, our primary testing stage of interest has no feedback, whereas in HTT testing always included feedback (the intermittent testing in HTT expt 1 being the only exception). Of course, we do collect testing with feedback data at the end of HTW, but we haven't focused on that data at all in our modelling work thus far. It's also interesting to recall that the gap between varied and constant in HTW does seem to close substantially in the testing-with-feedback stage. The difference between no-feedback and feedback testing might be relevant if the benefits of variation have anything to do with improving subsequent learning (as opposed to subsequent immediate performance), OR if the benefits of constant training rely on having the most useful anchor, having the most useful anchor might be a lot less helpful if you're getting feedback from novel positions and can thus immediately begin to form position-specific anchors for the novelties, rather than relying on a training anchor. 
+
+-   HTW and HTT both have a similar amount of training trials (~200), and thus the constant groups acquire a similar amount of experience with their single position/velocity in both experiments. However, the varied conditions in both HTT experiments train on 2 positions, whereas the varied group in HTW trains on 3 velocity bands. This means that in HTT the varied group gets half as much experience on any one position as the constant group, and in HTW they only get 1/3 as much experience in any one position. There are likely myriad ways in which this might impact the success of the varied group regardless of how you think the benefits of variation might be occurring, e.g. maybe they also need to develop a coherent anchor, maybe they need more experience in order to extract a function, or more experience in order to properly learn to tune their c parameter. 
+
+Bengtsson, H. (2021). A Unifying Framework for Parallel and Distributed Processing in R using Futures. *The R Journal*, *13*(2), 208. <https://doi.org/10.32614/RJ-2021-048>
+
+Berniker, M., Mirzaei, H., & Kording, K. P. (2014). The effects of training breadth on motor generalization. *Journal of Neurophysiology*, *112*(11), 2791--2798. <https://doi.org/10.1152/jn.00615.2013>
 
 Bott, L., & Heit, E. (2004). Nonmonotonic Extrapolation in Function Learning. *Journal of Experimental Psychology: Learning, Memory, and Cognition*, *30*(1), 38--50. <https://doi.org/10.1037/0278-7393.30.1.38>
 
+Braithwaite, D. W., & Goldstone, R. L. (2015). Effects of Variation and Prior Knowledge on Abstract Concept Learning. *Cognition and Instruction*, *33*(3), 226--256. <https://doi.org/10.1080/07370008.2015.1067215>
+
+Braun, D. A., Aertsen, A., Wolpert, D. M., & Mehring, C. (2009). Motor Task Variation Induces Structural Learning. *Current Biology*, *19*(4), 352--357. <https://doi.org/10.1016/j.cub.2009.01.036>
+
 Brehmer, B. (1974). Hypotheses about relations between scaled variables in the learning of probabilistic inference tasks. *Organizational Behavior and Human Performance*, *11*(1), 1--27. <https://doi.org/10.1016/0030-5073(74)90002-6>
+
+Brekelmans, G., Lavan, N., Saito, H., Clayards, M., & Wonnacott, E. (2022). Does high variability training improve the learning of non-native phoneme contrasts over low variability training? A replication. *Journal of Memory and Language*, *126*, 104352. <https://doi.org/10.1016/j.jml.2022.104352>
+
+Brown, M. A., & Lacroix, G. (2017). Underestimation in linear function learning: Anchoring to zero or x-y similarity? *Canadian Journal of Experimental Psychology/Revue Canadienne de Psychologie Expérimentale*, *71*(4), 274--282. <https://doi.org/10.1037/cep0000129>
 
 Bürkner, P.-C. (2017). Brms: An R Package for Bayesian Multilevel Models Using Stan. *Journal of Statistical Software*, *80*, 1--28. <https://doi.org/10.18637/jss.v080.i01>
 
 Carroll, J. D. (1963). Functional Learning: The Learning of Continuous Functional Mappings Relating Stimulus and Response Continua. *ETS Research Bulletin Series*, *1963*(2), i--144. <https://doi.org/10.1002/j.2333-8504.1963.tb00958.x>
 
+Catalano, J. F., & Kleiner, B. M. (1984). Distant Transfer in Coincident Timing as a Function of Variability of Practice. *Perceptual and Motor Skills*, *58*(3), 851--856. <https://doi.org/10.2466/pms.1984.58.3.851>
+
 Ciccione, L., & Dehaene, S. (2021). Can humans perform mental regression on a graph? Accuracy and bias in the perception of scatterplots. *Cognitive Psychology*, *128*, 101406. <https://doi.org/10.1016/j.cogpsych.2021.101406>
+
+Cohen, A. L., Nosofsky, R. M., & Zaki, S. R. (2001). Category variability, exemplar similarity, and perceptual classification. *Memory & Cognition*, *29*(8), 1165--1175. <https://doi.org/10.3758/BF03206386>
 
 Courrieu, P. (2012). Quick approximation of bivariate functions. *British Journal of Mathematical and Statistical Psychology*, *65*(1), 89--121. <https://doi.org/10.1111/j.2044-8317.2011.02016.x>
 
+Cranmer, K., Brehmer, J., & Louppe, G. (2020). The frontier of simulation-based inference. *Proceedings of the National Academy of Sciences*, *117*(48), 30055--30062. <https://doi.org/10.1073/pnas.1912789117>
+
 DeLosh, E. L., McDaniel, M. A., & Busemeyer, J. R. (1997). Extrapolation: The Sine Qua Non for Abstraction in Function Learning. *Journal of Experimental Psychology: Learning, Memory, and Cognition*, *23*(4), 19. <https://doi.org/10.1037/0278-7393.23.4.968>
 
+Farrell, S., & Lewandowsky, S. (2018). *Computational Modeling of Cognition and Behavior:* (1st ed.). Cambridge University Press. <https://doi.org/10.1017/CBO9781316272503>
+
+Guo, J.-P., Yang, L.-Y., & Ding, Y. (2014). Effects of example variability and prior knowledge in how students learn to solve equations. *European Journal of Psychology of Education*, *29*(1), 21--42. <https://www.jstor.org/stable/43551124>
+
+Hu, M., & Nosofsky, R. M. (2024). High-variability training does not enhance generalization in the prototype-distortion paradigm. *Memory & Cognition*, 1--16. <https://doi.org/10.3758/s13421-023-01516-1>
+
 Kalish, M. L., Lewandowsky, S., & Kruschke, J. K. (2004). Population of Linear Experts: Knowledge Partitioning and Function Learning. *Psychological Review*, *111*(4), 1072--1099. <https://doi.org/10.1037/0033-295X.111.4.1072>
+
+Kangasrääsiö, A., Jokinen, J. P. P., Oulasvirta, A., Howes, A., & Kaski, S. (2019). Parameter Inference for Computational Cognitive Models with Approximate Bayesian Computation. *Cognitive Science*, *43*(6), e12738. <https://doi.org/10.1111/cogs.12738>
 
 Koh, K., & Meyer, D. E. (1991). Function learning: Induction of continuous stimulus-response relations. *Journal of Experimental Psychology: Learning, Memory, and Cognition*, *17*(5), 811. <https://doi.org/10.1037/0278-7393.17.5.811>
 
 Kruschke, J. K. (1992). ALCOVE: An exemplar-based connectionist model of Category Learning. *Psychological Review*, *99*(1). <https://doi.org/10.1037/0033-295X.99.1.22>
 
+Kwantes, P. J., & Neal, A. (2006). Why people underestimate y when extrapolating in linear functions. *Journal of Experimental Psychology: Learning, Memory, and Cognition*, *32*(5), 1019--1030. <https://doi.org/10.1037/0278-7393.32.5.1019>
+
+Makowski, D., Ben-Shachar, M. S., & Lüdecke, D. (2019). <span class="nocase">bayestestR</span>: Describing Effects and their Uncertainty, Existence and Significance within the Bayesian Framework. *Journal of Open Source Software*, *4*(40), 1541. <https://doi.org/10.21105/joss.01541>
+
 Mcdaniel, M. A., Dimperio, E., Griego, J. A., & Busemeyer, J. R. (2009). Predicting transfer performance: A comparison of competing function learning models. *Journal of Experimental Psychology. Learning, Memory, and Cognition*, *35*, 173--195. <https://doi.org/10.1037/a0013982>
 
 McDaniel, M. A., Fadler, C. L., & Pashler, H. (2013). Effects of spaced versus massed training in function learning. *Journal of Experimental Psychology: Learning, Memory, and Cognition*, *39*(5), 1417--1432. <https://doi.org/10.1037/a0032184>
 
+Page, M. (2000). Connectionist modelling in psychology: A localist manifesto. *Behavioral and Brain Sciences*, *23*(4), 443--467. <https://doi.org/10.1017/S0140525X00003356>
+
+Perry, L. K., Samuelson, L. K., Malloy, L. M., & Schiffer, R. N. (2010). Learn Locally, Think Globally: Exemplar Variability Supports Higher-Order Generalization and Word Learning. *Psychological Science*, *21*(12), 1894--1902. <https://doi.org/10.1177/0956797610389189>
+
+Posner, M. I., & Keele, S. W. (1968). On the genesis of abstract ideas. *Journal of Experimental Psychology*, *77*(3), 353--363. <https://doi.org/10.1037/h0025953>
+
+Raviv, L., Lupyan, G., & Green, S. C. (2022). How variability shapes learning and generalization. *Trends in Cognitive Sciences*, S1364661322000651. <https://doi.org/10.1016/j.tics.2022.03.007>
+
+Roller, C. A., Cohen, H. S., Kimball, K. T., & Bloomberg, J. J. (2001). Variable practice with lenses improves visuo-motor plasticity. *Cognitive Brain Research*, *12*(2), 341--352. <https://doi.org/10.1016/S0926-6410(01)00077-5>
+
 Said, N., & Fischer, H. (2021). Extrapolation accuracy underestimates rule learning: Evidence from the function-learning paradigm. *Acta Psychologica*, *218*, 103356. <https://doi.org/10.1016/j.actpsy.2021.103356>
+
+Schmidt, R. A. (1975). A schema theory of discrete motor skill learning. *Psychological Review*, *82*(4), 225--260. <https://doi.org/10.1037/h0076770>
 
 Schulz, E., Quiroga, F., & Gershman, S. J. (2020). Communicating Compositional Patterns. *Open Mind*, *4*, 25--39. <https://doi.org/10.1162/opmi_a_00032>
 
+Soderstrom, N. C., & Bjork, R. A. (2015). Learning versus performance: An integrative review. *Perspectives on Psychological Science*, *10*(2), 176--199. <https://doi.org/10.1177/1745691615569000>
+
 Team, R. C. (2020). *R: A Language and Environment for Statistical Computing*. R: A Language and Environment for Statistical Computing.
+
+Turner, B. M., Sederberg, P. B., & McClelland, J. L. (2016). Bayesian analysis of simulation-based models. *Journal of Mathematical Psychology*, *72*, 191--199. <https://doi.org/10.1016/j.jmp.2014.10.001>
+
+Turner, B. M., & Van Zandt, T. (2012). A tutorial on approximate Bayesian computation. *Journal of Mathematical Psychology*, *56*(2), 69--85. <https://doi.org/10.1016/j.jmp.2012.02.005>
+
+van Dam, L. C. J., & Ernst, M. O. (2015). Mapping Shape to Visuomotor Mapping: Learning and Generalisation of Sensorimotor Behaviour Based on Contextual Information. *PLOS Computational Biology*, *11*(3), e1004172. <https://doi.org/10.1371/journal.pcbi.1004172>
+
+Van Rossum, J. H. A. (1990). Schmidt's schema theory: The empirical base of the variability of practice hypothesis. *Human Movement Science*, *9*(3-5), 387--435. <https://doi.org/10.1016/0167-9457(90)90010-B>
+
+Wrisberg, C. A., Winter, T. P., & Kuhlman, J. S. (1987). The Variability of Practice Hypothesis: Further Tests and Methodological Discussion. *Research Quarterly for Exercise and Sport*, *58*(4), 369--374. <https://doi.org/10.1080/02701367.1987.10608114>

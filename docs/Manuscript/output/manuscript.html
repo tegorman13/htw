@@ -57,6 +57,8 @@ div.csl-indent {
 <script src="manuscript_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="manuscript_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="manuscript_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="manuscript_files/libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="manuscript_files/libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script src="manuscript_files/libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="manuscript_files/libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="manuscript_files/libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -121,7 +123,7 @@ window.Quarto = {
   <li><a href="#comparison-to-project-1" id="toc-comparison-to-project-1" class="nav-link" data-scroll-target="#comparison-to-project-1">Comparison to Project 1</a></li>
   </ul></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="htw_manuscript.pdf"><i class="bi bi-file-pdf"></i>PDF (hikmah)</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="htw-hugo.md"><i class="bi bi-file-code"></i>CommonMark (hugo)</a></li><li><a href="htw_manuscript.pdf"><i class="bi bi-file-pdf"></i>PDF (hikmah)</a></li></ul></div></nav>
 </div>
 <main class="content page-columns page-full" id="quarto-document-content">
 
@@ -1342,7 +1344,7 @@ Table&nbsp;12: ALM &amp; EXAM Equations
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container page-columns page-full">
-<p><strong>{{&lt; fa regular lightbulb &gt;}} Approximate Bayesian Computation</strong></p>
+<p><strong><i class="fa-regular fa-lightbulb" aria-label="lightbulb"></i> Approximate Bayesian Computation</strong></p>
 <p>To estimate the parameters of ALM and EXAM, we used approximate bayesian computation (ABC), enabling us to obtain an estimate of the posterior distribution of the generalization and learning rate parameters for each individual. ABC belongs to the class of simulation-based inference methods <span class="citation" data-cites="cranmerFrontierSimulationbasedInference2020">(<a href="#ref-cranmerFrontierSimulationbasedInference2020" role="doc-biblioref">Cranmer et al., 2020</a>)</span>, which have begun being used for parameter estimation in cognitive modeling relatively recently <span class="citation" data-cites="turnerTutorialApproximateBayesian2012 turnerBayesianAnalysisSimulationbased2016 kangasraasioParameterInferenceComputational2019">(<a href="#ref-kangasraasioParameterInferenceComputational2019" role="doc-biblioref">Kangasrääsiö et al., 2019</a>; <a href="#ref-turnerBayesianAnalysisSimulationbased2016" role="doc-biblioref">Turner et al., 2016</a>; <a href="#ref-turnerTutorialApproximateBayesian2012" role="doc-biblioref">Turner &amp; Van Zandt, 2012</a>)</span>. Although they can be applied to any model from which data can be simulated, ABC methods are most useful for complex models that lack an explicit likelihood function (e.g.&nbsp;many neural network models).</p>
 <p>The general ABC procedure is to 1) define a prior distribution over model parameters. 2) sample candidate parameter values, <span class="math inline">\(\theta^*\)</span>, from the prior. 3) Use <span class="math inline">\(\theta^*\)</span> to generate a simulated dataset, <span class="math inline">\(Data_{sim}\)</span>. 4) Compute a measure of discrepancy between the simulated and observed datasets, <span class="math inline">\(discrep\)</span>(<span class="math inline">\(Data_{sim}\)</span>, <span class="math inline">\(Data_{obs}\)</span>). 5) Accept <span class="math inline">\(\theta^*\)</span> if the discrepancy is less than the tolerance threshold, <span class="math inline">\(\epsilon\)</span>, otherwise reject <span class="math inline">\(\theta^*\)</span>. 6) Repeat until desired number of posterior samples are obtained.</p>
 <p>Although simple in the abstract, implementations of ABC require researchers to make a number of non-trivial decisions as to i) the discrepancy function between observed and simulated data, ii) whether to compute the discrepancy between trial level data, or a summary statistic of the datasets, iii) the value of the minimum tolerance <span class="math inline">\(\epsilon\)</span> between simulated and observed data. For the present work, we follow the guidelines from previously published ABC tutorials <span class="citation" data-cites="turnerTutorialApproximateBayesian2012 farrellComputationalModelingCognition2018">(<a href="#ref-farrellComputationalModelingCognition2018" role="doc-biblioref">Farrell &amp; Lewandowsky, 2018</a>; <a href="#ref-turnerTutorialApproximateBayesian2012" role="doc-biblioref">Turner &amp; Van Zandt, 2012</a>)</span>. For the test stage, we summarized datasets with mean velocity of each band in the observed dataset as <span class="math inline">\(V_{obs}^{(k)}\)</span> and in the simulated dataset as <span class="math inline">\(V_{sim}^{(k)}\)</span>, where <span class="math inline">\(k\)</span> represents each of the six velocity bands. For computing the discrepancy between datasets in the training stage, we aggregated training trials into three equally sized blocks (separately for each velocity band in the case of the varied group). After obtaining the summary statistics of the simulated and observed datasets, the discrepancy was computed as the mean of the absolute difference between simulated and observed datasets (<a href="#eq-discrep-test" class="quarto-xref">Equation&nbsp;1</a> and <a href="#eq-discrep-train" class="quarto-xref">Equation&nbsp;2</a>). For the models fit to both training and testing data, discrepancies were computed for both stages, and then averaged together.</p>
@@ -3736,7 +3738,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"loop":false,"closeEffect":"zoom","descPosition":"bottom","selector":".lightbox","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","closeEffect":"zoom","loop":false,"selector":".lightbox","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
