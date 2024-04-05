@@ -687,7 +687,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.tegorman13\.github\.io\/htw\/custom");
+      var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.tegorman13\.github\.io\/htw\/**");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -1055,78 +1055,79 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>e3 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/e3_08-04-23.rds"</span>)) </span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Methods</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>*Participants* A total of 156 participants were recruited from the Indiana University Introductory Psychology Course. Participants were randomly assigned to one of two training conditions: varied training or constant training. </span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>*Task.* The "Hit The Wall" (HTW) visuomotor extrapolation task task was programmed in Javascript, making heavy use of the <span class="co">[</span><span class="ot">phaser.io</span><span class="co">](https://phaser.io/)</span> game library. The HTW task involved launching a projectile such that it would strike the "wall" at target speed indicated at the top of the screen (see @fig-htw-task). The target velocities were given as a range, or band, of acceptable velocity values  (e.g. band 800-1000). During the training stage, participants received feedback indicating whether they had hit the wall within the target velocity band, or how many units their throw was above or below from the target band. Participants were instructed that only the x velocity component of the ball was relevant to the task. The y velocity, or the location at which the ball struck the wall, had no influence on the task feedback.</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>/</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="in">```{r out.width = "60%", echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: fig-htw-task</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: The Hit the wall task. Participants launch the blue ball to hit the red wall at the target velocity band indicated at the top of the screen. The ball must be released from within the orange square - but the location of release, and the location at which the ball strikes the wall are both irrelevant to the task feedback. </span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="in">#| eval: true</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="in">#knitr::include_graphics(here::here("images/2023-04-19-16-20-55.png"))</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_graphics(here::here("Assets/figs/htw_task_fig.png"))</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="fu">### Procedure</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>*Procedure.* All participants completed the task online. Participants were provided with a description of the experiment and indicated informed consent. @fig-design-e1 illustrates the general procedure. Participants completed a total of 90 trials during the training stage. In the varied training condition, participants encountered three velocity bands (800-1000, 1000-1200, and 1200-1400). Participants in the constant training condition trained on only one velocity band (800-1000) - the closest band to what would be the novel extrapolation bands in the testing stage. </span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>Following the training stage, participants proceeded immediately to the testing stage. Participants were tested from all six velocity bands, in two separate stages.  In the novel extrapolation testing stage, participants completed "no-feedback" testing from three novel extrapolation bands (100-300, 350-550, and 600-800), with each band consisting of 15 trials. Participants were also tested from the three velocity bands that were trained by the varied condition (800-1000, 1000-1200, and 1200-1400). In the constant training condition, two of these bands were novel, while in the varied training condition, all three bands were encountered during training. The order in which participants completed the novel-extrapolation and testing-from-3-varied bands was counterbalanced across participants.</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>A final training stage presented participants with "feedback" testing for each of the three extrapolation bands (100-300, 350-550, and 600-800). </span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="in">```{dot}</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="in">//| label: fig-design-e1</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="in">//| fig-cap: "Experiment 1 Design. Constant and Varied participants complete different training conditions."</span></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="in">//| fig-width: 7.0</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="in">//| fig-height: 2.5</span></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="in">//| fig-responsive: false</span></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="in">/////| column: screen-inset-right</span></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="in">digraph {</span></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="in">  graph [layout = dot, rankdir = LR]</span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="in">  // define the global styles of the nodes</span></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="in">  node [shape = rectangle, style = filled]</span></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="in">  data1 [label = " Varied Training \n800-1000\n1000-1200\n1200-1400", fillcolor = "#FF0000"]</span></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="in">  data2 [label = " Constant Training \n800-1000", fillcolor = "#00A08A"]</span></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="in">  Test3 [label = "    Final Test \n  Novel With Feedback  \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]</span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="in">  // edge definitions with the node IDs</span></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="in">  data1 -&gt; Test1</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="in">  data2 -&gt; Test1</span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="in">  subgraph cluster {</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="in">    label = "Test Phase \n(Counterbalanced Order)"</span></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="in">    Test1 [label = "Test  \nNovel Bands \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]</span></span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="in">    Test2 [label = "  Test \n  Varied Training Bands  \n800-1000\n1000-1200\n1200-1400", fillcolor = "#ECCBAE"]</span></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="in">    Test1 -&gt; Test2</span></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="in">  }</span></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="in">  Test2 -&gt; Test3</span></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Methods</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>*Participants* A total of 156 participants were recruited from the Indiana University Introductory Psychology Course. Participants were randomly assigned to one of two training conditions: varied training or constant training. </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>*Task.* The "Hit The Wall" (HTW) visuomotor extrapolation task task was programmed in Javascript, making heavy use of the <span class="co">[</span><span class="ot">phaser.io</span><span class="co">](https://phaser.io/)</span> game library. The HTW task involved launching a projectile such that it would strike the "wall" at target speed indicated at the top of the screen (see @fig-htw-task). The target velocities were given as a range, or band, of acceptable velocity values  (e.g. band 800-1000). During the training stage, participants received feedback indicating whether they had hit the wall within the target velocity band, or how many units their throw was above or below from the target band. Participants were instructed that only the x velocity component of the ball was relevant to the task. The y velocity, or the location at which the ball struck the wall, had no influence on the task feedback.</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>/</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="in">```{r out.width = "60%", echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: fig-htw-task</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: The Hit the wall task. Participants launch the blue ball to hit the red wall at the target velocity band indicated at the top of the screen. The ball must be released from within the orange square - but the location of release, and the location at which the ball strikes the wall are both irrelevant to the task feedback. </span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="in">#| eval: true</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="in">#knitr::include_graphics(here::here("images/2023-04-19-16-20-55.png"))</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_graphics(here::here("Assets/figs/htw_task_fig.png"))</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="fu">### Procedure</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>*Procedure.* All participants completed the task online. Participants were provided with a description of the experiment and indicated informed consent. @fig-design-e1 illustrates the general procedure. Participants completed a total of 90 trials during the training stage. In the varied training condition, participants encountered three velocity bands (800-1000, 1000-1200, and 1200-1400). Participants in the constant training condition trained on only one velocity band (800-1000) - the closest band to what would be the novel extrapolation bands in the testing stage. </span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>Following the training stage, participants proceeded immediately to the testing stage. Participants were tested from all six velocity bands, in two separate stages.  In the novel extrapolation testing stage, participants completed "no-feedback" testing from three novel extrapolation bands (100-300, 350-550, and 600-800), with each band consisting of 15 trials. Participants were also tested from the three velocity bands that were trained by the varied condition (800-1000, 1000-1200, and 1200-1400). In the constant training condition, two of these bands were novel, while in the varied training condition, all three bands were encountered during training. The order in which participants completed the novel-extrapolation and testing-from-3-varied bands was counterbalanced across participants.</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>A final training stage presented participants with "feedback" testing for each of the three extrapolation bands (100-300, 350-550, and 600-800). </span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="in">```{dot}</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="in">//| label: fig-design-e1</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="in">//| fig-cap: "Experiment 1 Design. Constant and Varied participants complete different training conditions."</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="in">//| fig-width: 7.0</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="in">//| fig-height: 2.5</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="in">//| fig-responsive: false</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="in">/////| column: screen-inset-right</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="in">digraph {</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="in">  graph [layout = dot, rankdir = LR]</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="in">  // define the global styles of the nodes</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="in">  node [shape = rectangle, style = filled]</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="in">  data1 [label = " Varied Training \n800-1000\n1000-1200\n1200-1400", fillcolor = "#FF0000"]</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="in">  data2 [label = " Constant Training \n800-1000", fillcolor = "#00A08A"]</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="in">  Test3 [label = "    Final Test \n  Novel With Feedback  \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]</span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="in">  // edge definitions with the node IDs</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="in">  data1 -&gt; Test1</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="in">  data2 -&gt; Test1</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="in">  subgraph cluster {</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="in">    label = "Test Phase \n(Counterbalanced Order)"</span></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="in">    Test1 [label = "Test  \nNovel Bands \n100-300\n350-550\n600-800", fillcolor = "#ECCBAE"]</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="in">    Test2 [label = "  Test \n  Varied Training Bands  \n800-1000\n1000-1200\n1200-1400", fillcolor = "#ECCBAE"]</span></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="in">    Test1 -&gt; Test2</span></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="in">  }</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="in">  Test2 -&gt; Test3</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ![](images/2023-04-19-16-20-55.png) --&gt;</span></span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- `r knitr::include_graphics(here::here("images/2023-04-19-16-20-55.png"))` --&gt;</span></span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- </span></span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a><span class="co">## Live Task Demo</span></span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a><span class="co">Check the box at the bottom of the consent form, and then click Start Experiment. </span></span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a><span class="co">![HTW_Task](https://pcl.sitehost.iu.edu/tg/HTW/HTW_Index_Of.html){width="900" height="800"}</span></span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="co"> --&gt;</span></span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ![](images/2023-04-19-16-20-55.png) --&gt;</span></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- `r knitr::include_graphics(here::here("images/2023-04-19-16-20-55.png"))` --&gt;</span></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- </span></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a><span class="co">## Live Task Demo</span></span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a><span class="co">Check the box at the bottom of the consent form, and then click Start Experiment. </span></span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="co">![HTW_Task](https://pcl.sitehost.iu.edu/tg/HTW/HTW_Index_Of.html){width="900" height="800"}</span></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a><span class="co"> --&gt;</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
