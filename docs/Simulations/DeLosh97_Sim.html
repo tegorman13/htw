@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.5.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2024-01-09">
-<title>HTW Project - Simulating DeLosh 1997</title>
+<meta name="dcterms.date" content="2024-05-20">
+<title>HTW Project – Simulating DeLosh 1997</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -97,7 +97,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script><style>html{ scroll-behavior: smooth; }</style>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -123,18 +123,19 @@ window.Quarto = {
   typesetMath
 };
 </script><link rel="stylesheet" href="../Assets/Style/calloutTG.css">
+<link rel="stylesheet" href="../Assets/Style/style.scss">
 </head>
 <body class="nav-sidebar docked slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Simulations/DeLosh97_Sim.html">Simulations</a></li><li class="breadcrumb-item"><a href="../Simulations/DeLosh97_Sim.html">Simulating DeLosh 1997</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -176,9 +177,9 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Sections</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -210,7 +211,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Sections/combo1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">combo1</span></a>
+ <span class="menu-text">Combo_all</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Sections/htw_full.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Full w/Code</span></a>
   </div>
 </li>
       </ul>
@@ -218,9 +225,9 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">Analyses</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -278,9 +285,9 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">Model</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -326,9 +333,9 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">Simulations</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -350,9 +357,9 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">Interactive</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -374,9 +381,9 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
  <span class="menu-text">Misc</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -415,9 +422,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
  <span class="menu-text">Appendix</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -460,7 +467,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 9, 2024</p>
+      <p class="date">May 20, 2024</p>
     </div>
   </div>
   
@@ -600,7 +607,9 @@ E[Y|X_i]=m(X_i) + \bigg[\frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1} - X_{i-1}} \bigg]\c
 
 <section id="generate-response" class="level3"><h3 class="anchored" data-anchor-id="generate-response">Generate Response</h3>
 <div class="cell">
-<details open="" class="code-fold"><summary>Toggle Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">alm.response</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">c</span>, <span class="va">input.layer</span>, <span class="va">output.layer</span>,<span class="va">weight.mat</span><span class="op">)</span> <span class="op">{</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">##| code-fold: show</span></span>
+<span><span class="co">#| code-summary: "Toggle Code"</span></span>
+<span><span class="va">alm.response</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">c</span>, <span class="va">input.layer</span>, <span class="va">output.layer</span>,<span class="va">weight.mat</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">input.activation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">c</span> <span class="op">*</span> <span class="op">(</span><span class="va">input.layer</span> <span class="op">-</span> <span class="va">input</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">c</span> <span class="op">*</span> <span class="op">(</span><span class="va">input.layer</span> <span class="op">-</span> <span class="va">input</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="va">output.activation</span> <span class="op">&lt;-</span> <span class="va">weight.mat</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">input.activation</span></span>
 <span>  <span class="va">output.probability</span> <span class="op">&lt;-</span> <span class="va">output.activation</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">output.activation</span><span class="op">)</span></span>
@@ -854,18 +863,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -897,7 +895,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
   const viewSource = window.document.getElementById('quarto-view-source') ||
                      window.document.getElementById('quarto-code-tools-source');
   if (viewSource) {
@@ -951,15 +971,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.tegorman13.github.io/htw\/custom");
+      var filterRegex = new RegExp("https:\/\/tegorman13\.github\.io\/htw\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
           // target, if specified
           link.setAttribute("target", "_blank");
           if (link.getAttribute("rel") === null) {
@@ -1001,7 +1026,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -1426,449 +1455,443 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>::: column-margin</span>
 <span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a><span class="fu">###### Input node actvation</span></span>
 <span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a>P<span class="co">[</span><span class="ot">X_i|X</span><span class="co">]</span> = \frac{a_i(X)}{<span class="sc">\\</span>sum_{k=1}^Ma_k(X)}</span>
+<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a><span class="fu">###### Input node actvation</span></span>
+<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a><span class="fu">###### Slope Computation</span></span>
 <span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a>P<span class="co">[</span><span class="ot">X_i|X</span><span class="co">]</span> = \frac{a_i(X)}{<span class="sc">\\</span>sum_{k=1}^Ma_k(X)}</span>
+<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a>E<span class="co">[</span><span class="ot">Y|X_i</span><span class="co">]</span>=m(X_i) + \bigg<span class="co">[</span><span class="ot">\frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1} - X_{i-1}} \bigg</span><span class="co">]</span>\cdot<span class="co">[</span><span class="ot">X-X_i</span><span class="co">]</span></span>
 <span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a><span class="fu">###### Slope Computation</span></span>
+<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a>E<span class="co">[</span><span class="ot">Y|X_i</span><span class="co">]</span>=m(X_i) + \bigg<span class="co">[</span><span class="ot">\frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1} - X_{i-1}} \bigg</span><span class="co">]</span>\cdot<span class="co">[</span><span class="ot">X-X_i</span><span class="co">]</span></span>
-<span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a><span class="fu">### Generate Response</span></span>
 <span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a><span class="fu">### Generate Response</span></span>
-<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: show</span></span>
-<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Toggle Code"</span></span>
-<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a>alm.response <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">input =</span> <span class="dv">1</span>, c, input.layer, output.layer,weight.mat) {</span>
-<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a>  input.activation <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c <span class="sc">*</span> (input.layer <span class="sc">-</span> input)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(<span class="sc">-</span>c <span class="sc">*</span> (input.layer <span class="sc">-</span> input)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a>  output.activation <span class="ot">&lt;-</span> weight.mat <span class="sc">%*%</span> input.activation</span>
-<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a>  output.probability <span class="ot">&lt;-</span> output.activation <span class="sc">/</span> <span class="fu">sum</span>(output.activation)</span>
-<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a>  mean.response <span class="ot">&lt;-</span> <span class="fu">sum</span>(output.layer <span class="sc">*</span> output.probability)</span>
-<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">mean.response =</span> mean.response, <span class="at">input.activation =</span> input.activation, <span class="at">output.activation =</span> output.activation)</span>
-<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a><span class="fu">### Update Weights Based on Feedback</span></span>
-<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: show</span></span>
-<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Toggle Code"</span></span>
-<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-overflow: wrap</span></span>
-<span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a>alm.update <span class="ot">&lt;-</span> <span class="cf">function</span>(corResp, c, lr, output.layer, input.activation, output.activation, weight.mat) {</span>
-<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a>  fz <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c <span class="sc">*</span> (output.layer <span class="sc">-</span> corResp)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a>  teacherSignal <span class="ot">&lt;-</span> (fz <span class="sc">-</span> output.activation) <span class="sc">*</span> lr</span>
-<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a>  wChange <span class="ot">&lt;-</span> teacherSignal <span class="sc">%*%</span> <span class="fu">t</span>(input.activation)</span>
-<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a>  weight.mat <span class="ot">&lt;-</span> weight.mat <span class="sc">+</span> wChange</span>
-<span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a>  weight.mat[weight.mat <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="ot">=</span> <span class="dv">0</span></span>
-<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(weight.mat)</span>
+<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a><span class="do">##| code-fold: show</span></span>
+<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Toggle Code"</span></span>
+<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a>alm.response <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">input =</span> <span class="dv">1</span>, c, input.layer, output.layer,weight.mat) {</span>
+<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a>  input.activation <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c <span class="sc">*</span> (input.layer <span class="sc">-</span> input)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(<span class="sc">-</span>c <span class="sc">*</span> (input.layer <span class="sc">-</span> input)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a>  output.activation <span class="ot">&lt;-</span> weight.mat <span class="sc">%*%</span> input.activation</span>
+<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a>  output.probability <span class="ot">&lt;-</span> output.activation <span class="sc">/</span> <span class="fu">sum</span>(output.activation)</span>
+<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a>  mean.response <span class="ot">&lt;-</span> <span class="fu">sum</span>(output.layer <span class="sc">*</span> output.probability)</span>
+<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">mean.response =</span> mean.response, <span class="at">input.activation =</span> input.activation, <span class="at">output.activation =</span> output.activation)</span>
+<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a><span class="fu">### Update Weights Based on Feedback</span></span>
+<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: show</span></span>
+<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Toggle Code"</span></span>
+<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-overflow: wrap</span></span>
+<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a>alm.update <span class="ot">&lt;-</span> <span class="cf">function</span>(corResp, c, lr, output.layer, input.activation, output.activation, weight.mat) {</span>
+<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a>  fz <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c <span class="sc">*</span> (output.layer <span class="sc">-</span> corResp)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a>  teacherSignal <span class="ot">&lt;-</span> (fz <span class="sc">-</span> output.activation) <span class="sc">*</span> lr</span>
+<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a>  wChange <span class="ot">&lt;-</span> teacherSignal <span class="sc">%*%</span> <span class="fu">t</span>(input.activation)</span>
+<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a>  weight.mat <span class="ot">&lt;-</span> weight.mat <span class="sc">+</span> wChange</span>
+<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a>  weight.mat[weight.mat <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(weight.mat)</span>
+<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a>alm.trial <span class="ot">&lt;-</span> <span class="cf">function</span>(input, corResp, c, lr, input.layer, output.layer, weight.mat) {</span>
+<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a>  alm_resp <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(input, c, input.layer,output.layer, weight.mat)</span>
+<span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a>  updated_weight.mat <span class="ot">&lt;-</span> <span class="fu">alm.update</span>(corResp, c, lr, output.layer, alm_resp<span class="sc">$</span>input.activation, alm_resp<span class="sc">$</span>output.activation, weight.mat)</span>
+<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">mean.response =</span> alm_resp<span class="sc">$</span>mean.response, <span class="at">weight.mat =</span> updated_weight.mat))</span>
 <span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a>alm.trial <span class="ot">&lt;-</span> <span class="cf">function</span>(input, corResp, c, lr, input.layer, output.layer, weight.mat) {</span>
-<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a>  alm_resp <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(input, c, input.layer,output.layer, weight.mat)</span>
-<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a>  updated_weight.mat <span class="ot">&lt;-</span> <span class="fu">alm.update</span>(corResp, c, lr, output.layer, alm_resp<span class="sc">$</span>input.activation, alm_resp<span class="sc">$</span>output.activation, weight.mat)</span>
-<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">mean.response =</span> alm_resp<span class="sc">$</span>mean.response, <span class="at">weight.mat =</span> updated_weight.mat))</span>
-<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-214"><a href="#cb12-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-216"><a href="#cb12-216" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exam Generalization</span></span>
-<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: show</span></span>
-<span id="cb12-222"><a href="#cb12-222" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Toggle Code"</span></span>
-<span id="cb12-223"><a href="#cb12-223" aria-hidden="true" tabindex="-1"></a>exam.response <span class="ot">&lt;-</span> <span class="cf">function</span>(input, c, trainVec, <span class="at">input.layer =</span> INPUT_LAYER_DEFAULT,<span class="at">output.layer =</span> OUTPUT_LAYER_DEFAULT, weight.mat) {</span>
-<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a>  nearestTrain <span class="ot">&lt;-</span> trainVec[<span class="fu">which.min</span>(<span class="fu">abs</span>(input <span class="sc">-</span> trainVec))]</span>
-<span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a>  aresp <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(nearestTrain, c, <span class="at">input.layer =</span> input.layer,<span class="at">output.layer =</span> OUTPUT_LAYER_DEFAULT,weight.mat)<span class="sc">$</span>mean.response</span>
+<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exam Generalization</span></span>
+<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-214"><a href="#cb12-214" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: show</span></span>
+<span id="cb12-216"><a href="#cb12-216" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Toggle Code"</span></span>
+<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a>exam.response <span class="ot">&lt;-</span> <span class="cf">function</span>(input, c, trainVec, <span class="at">input.layer =</span> INPUT_LAYER_DEFAULT,<span class="at">output.layer =</span> OUTPUT_LAYER_DEFAULT, weight.mat) {</span>
+<span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a>  nearestTrain <span class="ot">&lt;-</span> trainVec[<span class="fu">which.min</span>(<span class="fu">abs</span>(input <span class="sc">-</span> trainVec))]</span>
+<span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a>  aresp <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(nearestTrain, c, <span class="at">input.layer =</span> input.layer,<span class="at">output.layer =</span> OUTPUT_LAYER_DEFAULT,weight.mat)<span class="sc">$</span>mean.response</span>
+<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a>  xUnder <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">min</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">-</span> <span class="dv">1</span>])</span>
+<span id="cb12-222"><a href="#cb12-222" aria-hidden="true" tabindex="-1"></a>  xOver <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">max</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">+</span> <span class="dv">1</span>])</span>
+<span id="cb12-223"><a href="#cb12-223" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a>  mUnder <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xUnder, c, <span class="at">input.layer =</span> input.layer, output.layer, weight.mat)<span class="sc">$</span>mean.response</span>
+<span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a>  mOver <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xOver, c, <span class="at">input.layer =</span> input.layer,output.layer, weight.mat)<span class="sc">$</span>mean.response</span>
 <span id="cb12-226"><a href="#cb12-226" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a>  xUnder <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">min</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">-</span> <span class="dv">1</span>])</span>
-<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a>  xOver <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">max</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">+</span> <span class="dv">1</span>])</span>
-<span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a>  mUnder <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xUnder, c, <span class="at">input.layer =</span> input.layer, output.layer, weight.mat)<span class="sc">$</span>mean.response</span>
-<span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a>  mOver <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xOver, c, <span class="at">input.layer =</span> input.layer,output.layer, weight.mat)<span class="sc">$</span>mean.response</span>
-<span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a>  exam.output <span class="ot">&lt;-</span> <span class="fu">round</span>(aresp <span class="sc">+</span> ((mOver <span class="sc">-</span> mUnder) <span class="sc">/</span> (xOver <span class="sc">-</span> xUnder)) <span class="sc">*</span> (input <span class="sc">-</span> nearestTrain), <span class="dv">3</span>)</span>
-<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a>  exam.output</span>
-<span id="cb12-235"><a href="#cb12-235" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-236"><a href="#cb12-236" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-237"><a href="#cb12-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-238"><a href="#cb12-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-239"><a href="#cb12-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-240"><a href="#cb12-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-241"><a href="#cb12-241" aria-hidden="true" tabindex="-1"></a><span class="fu">### Simulation Functions</span></span>
-<span id="cb12-242"><a href="#cb12-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-245"><a href="#cb12-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-246"><a href="#cb12-246" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: show</span></span>
-<span id="cb12-247"><a href="#cb12-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-248"><a href="#cb12-248" aria-hidden="true" tabindex="-1"></a><span class="co"># simulation function</span></span>
-<span id="cb12-249"><a href="#cb12-249" aria-hidden="true" tabindex="-1"></a>alm.sim <span class="ot">&lt;-</span> <span class="cf">function</span>(dat, c, lr, <span class="at">input.layer =</span> INPUT_LAYER_DEFAULT, <span class="at">output.layer =</span> OUTPUT_LAYER_DEFAULT) {</span>
-<span id="cb12-250"><a href="#cb12-250" aria-hidden="true" tabindex="-1"></a>  weight.mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fl">0.00</span>, <span class="at">nrow =</span> <span class="fu">length</span>(output.layer), <span class="at">ncol =</span> <span class="fu">length</span>(input.layer))</span>
-<span id="cb12-251"><a href="#cb12-251" aria-hidden="true" tabindex="-1"></a>  xt <span class="ot">&lt;-</span> dat<span class="sc">$</span>x</span>
-<span id="cb12-252"><a href="#cb12-252" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(dat)</span>
-<span id="cb12-253"><a href="#cb12-253" aria-hidden="true" tabindex="-1"></a>  st <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># Initialize the vector to store mean responses</span></span>
-<span id="cb12-254"><a href="#cb12-254" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb12-255"><a href="#cb12-255" aria-hidden="true" tabindex="-1"></a>    trial <span class="ot">&lt;-</span> <span class="fu">alm.trial</span>(dat<span class="sc">$</span>x[i], dat<span class="sc">$</span>y[i], c, lr, input.layer, output.layer, weight.mat)</span>
-<span id="cb12-256"><a href="#cb12-256" aria-hidden="true" tabindex="-1"></a>    weight.mat <span class="ot">&lt;-</span> trial<span class="sc">$</span>weight.mat</span>
-<span id="cb12-257"><a href="#cb12-257" aria-hidden="true" tabindex="-1"></a>    st[i] <span class="ot">&lt;-</span> trial<span class="sc">$</span>mean.response</span>
-<span id="cb12-258"><a href="#cb12-258" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb12-259"><a href="#cb12-259" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">almResp =</span> st)</span>
-<span id="cb12-260"><a href="#cb12-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">d =</span> dat, <span class="at">wm =</span> weight.mat, <span class="at">c =</span> c, <span class="at">lr =</span> lr))</span>
-<span id="cb12-261"><a href="#cb12-261" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-262"><a href="#cb12-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-263"><a href="#cb12-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-264"><a href="#cb12-264" aria-hidden="true" tabindex="-1"></a>simOrganize <span class="ot">&lt;-</span> <span class="cf">function</span>(simOut) {</span>
-<span id="cb12-265"><a href="#cb12-265" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span> simOut<span class="sc">$</span>d</span>
-<span id="cb12-266"><a href="#cb12-266" aria-hidden="true" tabindex="-1"></a>  weight.mat <span class="ot">&lt;-</span> simOut<span class="sc">$</span>wm</span>
-<span id="cb12-267"><a href="#cb12-267" aria-hidden="true" tabindex="-1"></a>  c <span class="ot">&lt;-</span> simOut<span class="sc">$</span>c</span>
-<span id="cb12-268"><a href="#cb12-268" aria-hidden="true" tabindex="-1"></a>  lr <span class="ot">&lt;-</span> simOut<span class="sc">$</span>lr</span>
-<span id="cb12-269"><a href="#cb12-269" aria-hidden="true" tabindex="-1"></a>  trainX <span class="ot">&lt;-</span> <span class="fu">unique</span>(dat<span class="sc">$</span>x)</span>
+<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a>  exam.output <span class="ot">&lt;-</span> <span class="fu">round</span>(aresp <span class="sc">+</span> ((mOver <span class="sc">-</span> mUnder) <span class="sc">/</span> (xOver <span class="sc">-</span> xUnder)) <span class="sc">*</span> (input <span class="sc">-</span> nearestTrain), <span class="dv">3</span>)</span>
+<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a>  exam.output</span>
+<span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-235"><a href="#cb12-235" aria-hidden="true" tabindex="-1"></a><span class="fu">### Simulation Functions</span></span>
+<span id="cb12-236"><a href="#cb12-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-239"><a href="#cb12-239" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-240"><a href="#cb12-240" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: show</span></span>
+<span id="cb12-241"><a href="#cb12-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-242"><a href="#cb12-242" aria-hidden="true" tabindex="-1"></a><span class="co"># simulation function</span></span>
+<span id="cb12-243"><a href="#cb12-243" aria-hidden="true" tabindex="-1"></a>alm.sim <span class="ot">&lt;-</span> <span class="cf">function</span>(dat, c, lr, <span class="at">input.layer =</span> INPUT_LAYER_DEFAULT, <span class="at">output.layer =</span> OUTPUT_LAYER_DEFAULT) {</span>
+<span id="cb12-244"><a href="#cb12-244" aria-hidden="true" tabindex="-1"></a>  weight.mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fl">0.00</span>, <span class="at">nrow =</span> <span class="fu">length</span>(output.layer), <span class="at">ncol =</span> <span class="fu">length</span>(input.layer))</span>
+<span id="cb12-245"><a href="#cb12-245" aria-hidden="true" tabindex="-1"></a>  xt <span class="ot">&lt;-</span> dat<span class="sc">$</span>x</span>
+<span id="cb12-246"><a href="#cb12-246" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(dat)</span>
+<span id="cb12-247"><a href="#cb12-247" aria-hidden="true" tabindex="-1"></a>  st <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># Initialize the vector to store mean responses</span></span>
+<span id="cb12-248"><a href="#cb12-248" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb12-249"><a href="#cb12-249" aria-hidden="true" tabindex="-1"></a>    trial <span class="ot">&lt;-</span> <span class="fu">alm.trial</span>(dat<span class="sc">$</span>x[i], dat<span class="sc">$</span>y[i], c, lr, input.layer, output.layer, weight.mat)</span>
+<span id="cb12-250"><a href="#cb12-250" aria-hidden="true" tabindex="-1"></a>    weight.mat <span class="ot">&lt;-</span> trial<span class="sc">$</span>weight.mat</span>
+<span id="cb12-251"><a href="#cb12-251" aria-hidden="true" tabindex="-1"></a>    st[i] <span class="ot">&lt;-</span> trial<span class="sc">$</span>mean.response</span>
+<span id="cb12-252"><a href="#cb12-252" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-253"><a href="#cb12-253" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">almResp =</span> st)</span>
+<span id="cb12-254"><a href="#cb12-254" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">d =</span> dat, <span class="at">wm =</span> weight.mat, <span class="at">c =</span> c, <span class="at">lr =</span> lr))</span>
+<span id="cb12-255"><a href="#cb12-255" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-256"><a href="#cb12-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-257"><a href="#cb12-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-258"><a href="#cb12-258" aria-hidden="true" tabindex="-1"></a>simOrganize <span class="ot">&lt;-</span> <span class="cf">function</span>(simOut) {</span>
+<span id="cb12-259"><a href="#cb12-259" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span> simOut<span class="sc">$</span>d</span>
+<span id="cb12-260"><a href="#cb12-260" aria-hidden="true" tabindex="-1"></a>  weight.mat <span class="ot">&lt;-</span> simOut<span class="sc">$</span>wm</span>
+<span id="cb12-261"><a href="#cb12-261" aria-hidden="true" tabindex="-1"></a>  c <span class="ot">&lt;-</span> simOut<span class="sc">$</span>c</span>
+<span id="cb12-262"><a href="#cb12-262" aria-hidden="true" tabindex="-1"></a>  lr <span class="ot">&lt;-</span> simOut<span class="sc">$</span>lr</span>
+<span id="cb12-263"><a href="#cb12-263" aria-hidden="true" tabindex="-1"></a>  trainX <span class="ot">&lt;-</span> <span class="fu">unique</span>(dat<span class="sc">$</span>x)</span>
+<span id="cb12-264"><a href="#cb12-264" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-265"><a href="#cb12-265" aria-hidden="true" tabindex="-1"></a>  almResp <span class="ot">&lt;-</span> <span class="fu">generate.data</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,.<span class="dv">5</span>), <span class="at">type =</span> <span class="fu">first</span>(dat<span class="sc">$</span>type)) <span class="sc">%&gt;%</span> <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-266"><a href="#cb12-266" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"ALM"</span>, <span class="at">resp =</span> <span class="fu">alm.response</span>(x, c, <span class="at">input.layer =</span> INPUT_LAYER_DEFAULT,<span class="at">output.layer =</span> OUTPUT_LAYER_DEFAULT, <span class="at">weight.mat =</span> weight.mat)<span class="sc">$</span>mean.response)</span>
+<span id="cb12-267"><a href="#cb12-267" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-268"><a href="#cb12-268" aria-hidden="true" tabindex="-1"></a>  examResp <span class="ot">&lt;-</span> <span class="fu">generate.data</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,.<span class="dv">5</span>), <span class="at">type =</span> <span class="fu">first</span>(dat<span class="sc">$</span>type)) <span class="sc">%&gt;%</span> <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-269"><a href="#cb12-269" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"EXAM"</span>, <span class="at">resp =</span> <span class="fu">exam.response</span>(x, c, <span class="at">trainVec =</span> trainX, <span class="at">input.layer =</span> INPUT_LAYER_DEFAULT,<span class="at">output.layer =</span> OUTPUT_LAYER_DEFAULT, weight.mat))</span>
 <span id="cb12-270"><a href="#cb12-270" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-271"><a href="#cb12-271" aria-hidden="true" tabindex="-1"></a>  almResp <span class="ot">&lt;-</span> <span class="fu">generate.data</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,.<span class="dv">5</span>), <span class="at">type =</span> <span class="fu">first</span>(dat<span class="sc">$</span>type)) <span class="sc">%&gt;%</span> <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb12-272"><a href="#cb12-272" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"ALM"</span>, <span class="at">resp =</span> <span class="fu">alm.response</span>(x, c, <span class="at">input.layer =</span> INPUT_LAYER_DEFAULT,<span class="at">output.layer =</span> OUTPUT_LAYER_DEFAULT, <span class="at">weight.mat =</span> weight.mat)<span class="sc">$</span>mean.response)</span>
-<span id="cb12-273"><a href="#cb12-273" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-274"><a href="#cb12-274" aria-hidden="true" tabindex="-1"></a>  examResp <span class="ot">&lt;-</span> <span class="fu">generate.data</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,.<span class="dv">5</span>), <span class="at">type =</span> <span class="fu">first</span>(dat<span class="sc">$</span>type)) <span class="sc">%&gt;%</span> <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb12-275"><a href="#cb12-275" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"EXAM"</span>, <span class="at">resp =</span> <span class="fu">exam.response</span>(x, c, <span class="at">trainVec =</span> trainX, <span class="at">input.layer =</span> INPUT_LAYER_DEFAULT,<span class="at">output.layer =</span> OUTPUT_LAYER_DEFAULT, weight.mat))</span>
-<span id="cb12-276"><a href="#cb12-276" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-277"><a href="#cb12-277" aria-hidden="true" tabindex="-1"></a>  organized_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(almResp, examResp) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-278"><a href="#cb12-278" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">first</span>(dat<span class="sc">$</span>type),</span>
-<span id="cb12-279"><a href="#cb12-279" aria-hidden="true" tabindex="-1"></a>           <span class="at">error =</span> <span class="fu">abs</span>(resp <span class="sc">-</span> y),</span>
-<span id="cb12-280"><a href="#cb12-280" aria-hidden="true" tabindex="-1"></a>           <span class="at">c =</span> c,</span>
-<span id="cb12-281"><a href="#cb12-281" aria-hidden="true" tabindex="-1"></a>           <span class="at">lr =</span> lr,</span>
-<span id="cb12-282"><a href="#cb12-282" aria-hidden="true" tabindex="-1"></a>           <span class="at">type =</span> <span class="fu">factor</span>(type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"linear"</span>, <span class="st">"exponential"</span>, <span class="st">"quadratic"</span>)),</span>
-<span id="cb12-283"><a href="#cb12-283" aria-hidden="true" tabindex="-1"></a>           <span class="at">test_region =</span> <span class="fu">ifelse</span>(x <span class="sc">%in%</span> trainX, <span class="st">"train"</span>, </span>
-<span id="cb12-284"><a href="#cb12-284" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">ifelse</span>(x <span class="sc">&gt;</span> <span class="fu">min</span>(trainX) <span class="sc">&amp;</span> x <span class="sc">&lt;</span> <span class="fu">max</span>(trainX), <span class="st">"interpolate"</span>, <span class="st">"extrapolate"</span>)))</span>
-<span id="cb12-285"><a href="#cb12-285" aria-hidden="true" tabindex="-1"></a>  organized_data</span>
-<span id="cb12-286"><a href="#cb12-286" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-287"><a href="#cb12-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-288"><a href="#cb12-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-289"><a href="#cb12-289" aria-hidden="true" tabindex="-1"></a>generateSimData <span class="ot">&lt;-</span> <span class="cf">function</span>(density, envTypes, noise) {</span>
-<span id="cb12-290"><a href="#cb12-290" aria-hidden="true" tabindex="-1"></a>  reps <span class="ot">&lt;-</span> <span class="dv">200</span> <span class="sc">/</span> <span class="fu">length</span>(trainingBlocks[[density]])</span>
-<span id="cb12-291"><a href="#cb12-291" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(envTypes, <span class="sc">~</span> </span>
-<span id="cb12-292"><a href="#cb12-292" aria-hidden="true" tabindex="-1"></a>            <span class="fu">generate.data</span>(<span class="fu">rep</span>(trainingBlocks[[density]], reps), <span class="at">type =</span> .x, noise)) <span class="sc">|&gt;</span></span>
-<span id="cb12-293"><a href="#cb12-293" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(type) <span class="sc">|&gt;</span></span>
-<span id="cb12-294"><a href="#cb12-294" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">block =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>reps, <span class="at">each =</span> <span class="fu">length</span>(trainingBlocks[[density]])),</span>
-<span id="cb12-295"><a href="#cb12-295" aria-hidden="true" tabindex="-1"></a>           <span class="at">trial=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">200</span>))</span>
+<span id="cb12-271"><a href="#cb12-271" aria-hidden="true" tabindex="-1"></a>  organized_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(almResp, examResp) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-272"><a href="#cb12-272" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">first</span>(dat<span class="sc">$</span>type),</span>
+<span id="cb12-273"><a href="#cb12-273" aria-hidden="true" tabindex="-1"></a>           <span class="at">error =</span> <span class="fu">abs</span>(resp <span class="sc">-</span> y),</span>
+<span id="cb12-274"><a href="#cb12-274" aria-hidden="true" tabindex="-1"></a>           <span class="at">c =</span> c,</span>
+<span id="cb12-275"><a href="#cb12-275" aria-hidden="true" tabindex="-1"></a>           <span class="at">lr =</span> lr,</span>
+<span id="cb12-276"><a href="#cb12-276" aria-hidden="true" tabindex="-1"></a>           <span class="at">type =</span> <span class="fu">factor</span>(type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"linear"</span>, <span class="st">"exponential"</span>, <span class="st">"quadratic"</span>)),</span>
+<span id="cb12-277"><a href="#cb12-277" aria-hidden="true" tabindex="-1"></a>           <span class="at">test_region =</span> <span class="fu">ifelse</span>(x <span class="sc">%in%</span> trainX, <span class="st">"train"</span>, </span>
+<span id="cb12-278"><a href="#cb12-278" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">ifelse</span>(x <span class="sc">&gt;</span> <span class="fu">min</span>(trainX) <span class="sc">&amp;</span> x <span class="sc">&lt;</span> <span class="fu">max</span>(trainX), <span class="st">"interpolate"</span>, <span class="st">"extrapolate"</span>)))</span>
+<span id="cb12-279"><a href="#cb12-279" aria-hidden="true" tabindex="-1"></a>  organized_data</span>
+<span id="cb12-280"><a href="#cb12-280" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-281"><a href="#cb12-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-282"><a href="#cb12-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-283"><a href="#cb12-283" aria-hidden="true" tabindex="-1"></a>generateSimData <span class="ot">&lt;-</span> <span class="cf">function</span>(density, envTypes, noise) {</span>
+<span id="cb12-284"><a href="#cb12-284" aria-hidden="true" tabindex="-1"></a>  reps <span class="ot">&lt;-</span> <span class="dv">200</span> <span class="sc">/</span> <span class="fu">length</span>(trainingBlocks[[density]])</span>
+<span id="cb12-285"><a href="#cb12-285" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(envTypes, <span class="sc">~</span> </span>
+<span id="cb12-286"><a href="#cb12-286" aria-hidden="true" tabindex="-1"></a>            <span class="fu">generate.data</span>(<span class="fu">rep</span>(trainingBlocks[[density]], reps), <span class="at">type =</span> .x, noise)) <span class="sc">|&gt;</span></span>
+<span id="cb12-287"><a href="#cb12-287" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(type) <span class="sc">|&gt;</span></span>
+<span id="cb12-288"><a href="#cb12-288" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">block =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>reps, <span class="at">each =</span> <span class="fu">length</span>(trainingBlocks[[density]])),</span>
+<span id="cb12-289"><a href="#cb12-289" aria-hidden="true" tabindex="-1"></a>           <span class="at">trial=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">200</span>))</span>
+<span id="cb12-290"><a href="#cb12-290" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-291"><a href="#cb12-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-292"><a href="#cb12-292" aria-hidden="true" tabindex="-1"></a>simulateAll <span class="ot">&lt;-</span> <span class="cf">function</span>(density,envTypes, noise, <span class="at">c =</span> .<span class="dv">2</span>, <span class="at">lr =</span> .<span class="dv">2</span>) {</span>
+<span id="cb12-293"><a href="#cb12-293" aria-hidden="true" tabindex="-1"></a>  trainMat <span class="ot">&lt;-</span> <span class="fu">generateSimData</span>(density, envTypes, noise)</span>
+<span id="cb12-294"><a href="#cb12-294" aria-hidden="true" tabindex="-1"></a>  trainData <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(trainMat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> c, <span class="at">lr =</span> lr))</span>
+<span id="cb12-295"><a href="#cb12-295" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assign</span>(<span class="fu">paste</span>(density),<span class="fu">list</span>(<span class="at">train=</span>trainData, <span class="at">test=</span><span class="fu">map_dfr</span>(trainData, simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> density)))</span>
 <span id="cb12-296"><a href="#cb12-296" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb12-297"><a href="#cb12-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-298"><a href="#cb12-298" aria-hidden="true" tabindex="-1"></a>simulateAll <span class="ot">&lt;-</span> <span class="cf">function</span>(density,envTypes, noise, <span class="at">c =</span> .<span class="dv">2</span>, <span class="at">lr =</span> .<span class="dv">2</span>) {</span>
-<span id="cb12-299"><a href="#cb12-299" aria-hidden="true" tabindex="-1"></a>  trainMat <span class="ot">&lt;-</span> <span class="fu">generateSimData</span>(density, envTypes, noise)</span>
-<span id="cb12-300"><a href="#cb12-300" aria-hidden="true" tabindex="-1"></a>  trainData <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(trainMat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> c, <span class="at">lr =</span> lr))</span>
-<span id="cb12-301"><a href="#cb12-301" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assign</span>(<span class="fu">paste</span>(density),<span class="fu">list</span>(<span class="at">train=</span>trainData, <span class="at">test=</span><span class="fu">map_dfr</span>(trainData, simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> density)))</span>
-<span id="cb12-302"><a href="#cb12-302" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-303"><a href="#cb12-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-304"><a href="#cb12-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-305"><a href="#cb12-305" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-306"><a href="#cb12-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-307"><a href="#cb12-307" aria-hidden="true" tabindex="-1"></a><span class="fu">### Simulate Training and Testing</span></span>
-<span id="cb12-308"><a href="#cb12-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-309"><a href="#cb12-309" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.width=10, fig.height=8}</span></span>
-<span id="cb12-310"><a href="#cb12-310" aria-hidden="true" tabindex="-1"></a><span class="in">#| column: page-inset-right</span></span>
+<span id="cb12-298"><a href="#cb12-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-299"><a href="#cb12-299" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-300"><a href="#cb12-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-301"><a href="#cb12-301" aria-hidden="true" tabindex="-1"></a><span class="fu">### Simulate Training and Testing</span></span>
+<span id="cb12-302"><a href="#cb12-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-303"><a href="#cb12-303" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.width=10, fig.height=8}</span></span>
+<span id="cb12-304"><a href="#cb12-304" aria-hidden="true" tabindex="-1"></a><span class="in">#| column: page-inset-right</span></span>
+<span id="cb12-305"><a href="#cb12-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-306"><a href="#cb12-306" aria-hidden="true" tabindex="-1"></a><span class="in">envTypes &lt;- c("linear", "exponential", "quadratic")</span></span>
+<span id="cb12-307"><a href="#cb12-307" aria-hidden="true" tabindex="-1"></a><span class="in">densities &lt;- c("low", "med", "high")</span></span>
+<span id="cb12-308"><a href="#cb12-308" aria-hidden="true" tabindex="-1"></a><span class="in">noise=0</span></span>
+<span id="cb12-309"><a href="#cb12-309" aria-hidden="true" tabindex="-1"></a><span class="in">INPUT_LAYER_DEFAULT &lt;- seq(0, 100, 0.5)</span></span>
+<span id="cb12-310"><a href="#cb12-310" aria-hidden="true" tabindex="-1"></a><span class="in">OUTPUT_LAYER_DEFAULT &lt;- seq(0, 250, 1)</span></span>
 <span id="cb12-311"><a href="#cb12-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-312"><a href="#cb12-312" aria-hidden="true" tabindex="-1"></a><span class="in">envTypes &lt;- c("linear", "exponential", "quadratic")</span></span>
-<span id="cb12-313"><a href="#cb12-313" aria-hidden="true" tabindex="-1"></a><span class="in">densities &lt;- c("low", "med", "high")</span></span>
-<span id="cb12-314"><a href="#cb12-314" aria-hidden="true" tabindex="-1"></a><span class="in">noise=0</span></span>
-<span id="cb12-315"><a href="#cb12-315" aria-hidden="true" tabindex="-1"></a><span class="in">INPUT_LAYER_DEFAULT &lt;- seq(0, 100, 0.5)</span></span>
-<span id="cb12-316"><a href="#cb12-316" aria-hidden="true" tabindex="-1"></a><span class="in">OUTPUT_LAYER_DEFAULT &lt;- seq(0, 250, 1)</span></span>
+<span id="cb12-312"><a href="#cb12-312" aria-hidden="true" tabindex="-1"></a><span class="in">c = 1.4</span></span>
+<span id="cb12-313"><a href="#cb12-313" aria-hidden="true" tabindex="-1"></a><span class="in">lr=.8</span></span>
+<span id="cb12-314"><a href="#cb12-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-315"><a href="#cb12-315" aria-hidden="true" tabindex="-1"></a><span class="in">results &lt;- map(densities, ~ simulateAll(.x, envTypes, noise, c, lr)) |&gt;</span></span>
+<span id="cb12-316"><a href="#cb12-316" aria-hidden="true" tabindex="-1"></a><span class="in">  set_names(densities) </span></span>
 <span id="cb12-317"><a href="#cb12-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-318"><a href="#cb12-318" aria-hidden="true" tabindex="-1"></a><span class="in">c = 1.4</span></span>
-<span id="cb12-319"><a href="#cb12-319" aria-hidden="true" tabindex="-1"></a><span class="in">lr=.8</span></span>
-<span id="cb12-320"><a href="#cb12-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-321"><a href="#cb12-321" aria-hidden="true" tabindex="-1"></a><span class="in">results &lt;- map(densities, ~ simulateAll(.x, envTypes, noise, c, lr)) |&gt;</span></span>
-<span id="cb12-322"><a href="#cb12-322" aria-hidden="true" tabindex="-1"></a><span class="in">  set_names(densities) </span></span>
-<span id="cb12-323"><a href="#cb12-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-324"><a href="#cb12-324" aria-hidden="true" tabindex="-1"></a><span class="in">trainAll &lt;- results %&gt;%</span></span>
-<span id="cb12-325"><a href="#cb12-325" aria-hidden="true" tabindex="-1"></a><span class="in">  map_df(~ map_df(.x$train, pluck, "d"), .id = "density") |&gt;</span></span>
-<span id="cb12-326"><a href="#cb12-326" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(stage=as.numeric(cut(trial,breaks=20,labels=seq(1,20))),</span></span>
-<span id="cb12-327"><a href="#cb12-327" aria-hidden="true" tabindex="-1"></a><span class="in">         dev=sqrt((y-almResp)^2),</span></span>
-<span id="cb12-328"><a href="#cb12-328" aria-hidden="true" tabindex="-1"></a><span class="in">         density=factor(density,levels=c("low","med","high")),</span></span>
-<span id="cb12-329"><a href="#cb12-329" aria-hidden="true" tabindex="-1"></a><span class="in">         type=factor(type,levels=c("linear","exponential","quadratic"))) |&gt;</span></span>
-<span id="cb12-330"><a href="#cb12-330" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr::relocate(density,type,stage)</span></span>
+<span id="cb12-318"><a href="#cb12-318" aria-hidden="true" tabindex="-1"></a><span class="in">trainAll &lt;- results %&gt;%</span></span>
+<span id="cb12-319"><a href="#cb12-319" aria-hidden="true" tabindex="-1"></a><span class="in">  map_df(~ map_df(.x$train, pluck, "d"), .id = "density") |&gt;</span></span>
+<span id="cb12-320"><a href="#cb12-320" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(stage=as.numeric(cut(trial,breaks=20,labels=seq(1,20))),</span></span>
+<span id="cb12-321"><a href="#cb12-321" aria-hidden="true" tabindex="-1"></a><span class="in">         dev=sqrt((y-almResp)^2),</span></span>
+<span id="cb12-322"><a href="#cb12-322" aria-hidden="true" tabindex="-1"></a><span class="in">         density=factor(density,levels=c("low","med","high")),</span></span>
+<span id="cb12-323"><a href="#cb12-323" aria-hidden="true" tabindex="-1"></a><span class="in">         type=factor(type,levels=c("linear","exponential","quadratic"))) |&gt;</span></span>
+<span id="cb12-324"><a href="#cb12-324" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr::relocate(density,type,stage)</span></span>
+<span id="cb12-325"><a href="#cb12-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-326"><a href="#cb12-326" aria-hidden="true" tabindex="-1"></a><span class="in">simTestAll &lt;- results |&gt; map("test") |&gt; bind_rows() |&gt;</span></span>
+<span id="cb12-327"><a href="#cb12-327" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(type,density,model) %&gt;%</span></span>
+<span id="cb12-328"><a href="#cb12-328" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(type=factor(type,levels=c("linear","exponential","quadratic")),</span></span>
+<span id="cb12-329"><a href="#cb12-329" aria-hidden="true" tabindex="-1"></a><span class="in">         density=factor(density,levels=c("low","med","high"))) %&gt;%</span></span>
+<span id="cb12-330"><a href="#cb12-330" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr::relocate(density,type,test_region)</span></span>
 <span id="cb12-331"><a href="#cb12-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-332"><a href="#cb12-332" aria-hidden="true" tabindex="-1"></a><span class="in">simTestAll &lt;- results |&gt; map("test") |&gt; bind_rows() |&gt;</span></span>
-<span id="cb12-333"><a href="#cb12-333" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(type,density,model) %&gt;%</span></span>
-<span id="cb12-334"><a href="#cb12-334" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(type=factor(type,levels=c("linear","exponential","quadratic")),</span></span>
-<span id="cb12-335"><a href="#cb12-335" aria-hidden="true" tabindex="-1"></a><span class="in">         density=factor(density,levels=c("low","med","high"))) %&gt;%</span></span>
-<span id="cb12-336"><a href="#cb12-336" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr::relocate(density,type,test_region)</span></span>
-<span id="cb12-337"><a href="#cb12-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-332"><a href="#cb12-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-333"><a href="#cb12-333" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-334"><a href="#cb12-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-335"><a href="#cb12-335" aria-hidden="true" tabindex="-1"></a><span class="fu">### Training Data</span></span>
+<span id="cb12-336"><a href="#cb12-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-337"><a href="#cb12-337" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.width=10, fig.height=8}</span></span>
 <span id="cb12-338"><a href="#cb12-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-339"><a href="#cb12-339" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-340"><a href="#cb12-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-341"><a href="#cb12-341" aria-hidden="true" tabindex="-1"></a><span class="fu">### Training Data</span></span>
+<span id="cb12-339"><a href="#cb12-339" aria-hidden="true" tabindex="-1"></a><span class="in">trainAll %&gt;% ggplot(aes(x=block,y=dev,color=type)) + stat_summary(geom="line",fun=mean,alpha=.4)+</span></span>
+<span id="cb12-340"><a href="#cb12-340" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_summary(geom="point",fun=mean,alpha=.4)+</span></span>
+<span id="cb12-341"><a href="#cb12-341" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_summary(geom="errorbar",fun.data=mean_cl_normal,alpha=.4)+facet_wrap(~density, scales="free_x")</span></span>
 <span id="cb12-342"><a href="#cb12-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-343"><a href="#cb12-343" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.width=10, fig.height=8}</span></span>
+<span id="cb12-343"><a href="#cb12-343" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb12-344"><a href="#cb12-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-345"><a href="#cb12-345" aria-hidden="true" tabindex="-1"></a><span class="in">trainAll %&gt;% ggplot(aes(x=block,y=dev,color=type)) + stat_summary(geom="line",fun=mean,alpha=.4)+</span></span>
-<span id="cb12-346"><a href="#cb12-346" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_summary(geom="point",fun=mean,alpha=.4)+</span></span>
-<span id="cb12-347"><a href="#cb12-347" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_summary(geom="errorbar",fun.data=mean_cl_normal,alpha=.4)+facet_wrap(~density, scales="free_x")</span></span>
+<span id="cb12-345"><a href="#cb12-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-346"><a href="#cb12-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-347"><a href="#cb12-347" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-348"><a href="#cb12-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-349"><a href="#cb12-349" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-350"><a href="#cb12-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-349"><a href="#cb12-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-350"><a href="#cb12-350" aria-hidden="true" tabindex="-1"></a>Predictions for Generalization</span>
 <span id="cb12-351"><a href="#cb12-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-352"><a href="#cb12-352" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-353"><a href="#cb12-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-354"><a href="#cb12-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-355"><a href="#cb12-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-356"><a href="#cb12-356" aria-hidden="true" tabindex="-1"></a>Predictions for Generalization</span>
-<span id="cb12-357"><a href="#cb12-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-358"><a href="#cb12-358" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.width=11,fig.height=10}</span></span>
-<span id="cb12-359"><a href="#cb12-359" aria-hidden="true" tabindex="-1"></a><span class="in">#| column: page-inset-right</span></span>
-<span id="cb12-360"><a href="#cb12-360" aria-hidden="true" tabindex="-1"></a><span class="in">#| </span></span>
-<span id="cb12-361"><a href="#cb12-361" aria-hidden="true" tabindex="-1"></a><span class="in">simTestAll %&gt;% ggplot(aes(x=x,y=y)) + </span></span>
-<span id="cb12-362"><a href="#cb12-362" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(aes(x=x,y=resp,shape=model,color=model),alpha=.7,size=1) + </span></span>
-<span id="cb12-363"><a href="#cb12-363" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line(aes(x=x,y=y),alpha=.4)+ </span></span>
-<span id="cb12-364"><a href="#cb12-364" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(data=simTestAll %&gt;% filter(test_region=="train"),aes(x=x,y=y),color="black",size=1,alpha=1) +</span></span>
-<span id="cb12-365"><a href="#cb12-365" aria-hidden="true" tabindex="-1"></a><span class="in">  facet_grid(density~type) + </span></span>
-<span id="cb12-366"><a href="#cb12-366" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_bw() + theme(legend.position="bottom")</span></span>
-<span id="cb12-367"><a href="#cb12-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-368"><a href="#cb12-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-369"><a href="#cb12-369" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-370"><a href="#cb12-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-371"><a href="#cb12-371" aria-hidden="true" tabindex="-1"></a>Collpasing Across Density Levels gives us:</span>
-<span id="cb12-372"><a href="#cb12-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-375"><a href="#cb12-375" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-376"><a href="#cb12-376" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb12-377"><a href="#cb12-377" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: page-inset-right</span></span>
-<span id="cb12-378"><a href="#cb12-378" aria-hidden="true" tabindex="-1"></a>simTestAll <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type,model,x,y) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">resp=</span><span class="fu">mean</span>(resp))  <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span> </span>
-<span id="cb12-379"><a href="#cb12-379" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">shape=</span>model,<span class="at">color=</span>model),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb12-380"><a href="#cb12-380" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
-<span id="cb12-381"><a href="#cb12-381" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>type) <span class="sc">+</span> </span>
-<span id="cb12-382"><a href="#cb12-382" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
-<span id="cb12-383"><a href="#cb12-383" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-384"><a href="#cb12-384" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-385"><a href="#cb12-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-386"><a href="#cb12-386" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-387"><a href="#cb12-387" aria-hidden="true" tabindex="-1"></a><span class="fu">### Table</span></span>
-<span id="cb12-388"><a href="#cb12-388" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-389"><a href="#cb12-389" aria-hidden="true" tabindex="-1"></a>| Model &amp; Definition                    | R Code                                                                                                      |</span>
-<span id="cb12-390"><a href="#cb12-390" aria-hidden="true" tabindex="-1"></a>|---------------------------------------|-------------------------------------------------------------------------------------------------------------|</span>
-<span id="cb12-391"><a href="#cb12-391" aria-hidden="true" tabindex="-1"></a>| $a_i(X)=\exp \left|-\gamma \cdot\left<span class="co">[</span><span class="ot">X-X_i\right</span><span class="co">]</span>^2\right|$   | <span class="in">`exp(-c * (input.layer - input)^2)`</span>        |</span>
-<span id="cb12-392"><a href="#cb12-392" aria-hidden="true" tabindex="-1"></a>| $o_j(X)=\Sigma_{i=1, M} w_{j i} \cdot a_i(X)$                 | <span class="in">`weight.mat %*% input.activation`</span>                                                     |</span>
-<span id="cb12-393"><a href="#cb12-393" aria-hidden="true" tabindex="-1"></a>| $P\left<span class="co">[</span><span class="ot">Y_j \mid X\right</span><span class="co">]</span>=o_j(X) / \Sigma_{k=1, L} o_k(X)$   | <span class="in">`output.activation / sum(output.activation)`</span>                                         |</span>
-<span id="cb12-394"><a href="#cb12-394" aria-hidden="true" tabindex="-1"></a>| $m(X)=\Sigma_{j=1, L} Y_j \cdot P\left<span class="co">[</span><span class="ot">Y_j \mid X\right</span><span class="co">]</span>$    | <span class="in">`sum(output.layer * output.probability)`</span>                                                  |</span>
-<span id="cb12-395"><a href="#cb12-395" aria-hidden="true" tabindex="-1"></a>| $f_j(Z)=e^{-c\cdot(Z-Y_j)^2}$                                 | <span class="in">`exp(-c * (output.layer - corResp)^2)`</span>                                                               |</span>
-<span id="cb12-396"><a href="#cb12-396" aria-hidden="true" tabindex="-1"></a>| $w_{ji}(t+1)=w_{ji}(t)+\alpha \cdot {f_i(Z(t))-O_j(X(t))} \cdot a_i(X(t)$   | <span class="in">` lr *(fz - output.activation) %*% t(input.activation)`</span>  |</span>
-<span id="cb12-397"><a href="#cb12-397" aria-hidden="true" tabindex="-1"></a>                                                      |</span>
-<span id="cb12-398"><a href="#cb12-398" aria-hidden="true" tabindex="-1"></a>| $E<span class="co">[</span><span class="ot">Y|X_i</span><span class="co">]</span>=m(X_i) + \bigg<span class="co">[</span><span class="ot">\frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1} - X_{i-1}} \bigg</span><span class="co">]</span>\cdot<span class="co">[</span><span class="ot">X-X_i</span><span class="co">]</span>$ | <span class="in">` trainVec[which.min(abs(input - trainVec))]; xUnder &lt;- ...; xOver &lt;- ...; mUnder &lt;- ...; mOver &lt;- ...; exam.output &lt;- round(aresp + ((mOver - mUnder) / (xOver - xUnder)) * (input - nearestTrain), 3)`</span>|</span>
-<span id="cb12-399"><a href="#cb12-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-400"><a href="#cb12-400" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-401"><a href="#cb12-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-402"><a href="#cb12-402" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-403"><a href="#cb12-403" aria-hidden="true" tabindex="-1"></a><span class="fu">### Master Function for full simulation</span></span>
-<span id="cb12-404"><a href="#cb12-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-407"><a href="#cb12-407" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-408"><a href="#cb12-408" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb12-409"><a href="#cb12-409" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false </span></span>
-<span id="cb12-410"><a href="#cb12-410" aria-hidden="true" tabindex="-1"></a><span class="co"># Function that goes through every step of generating data, simulating training, and simulating generalization</span></span>
-<span id="cb12-411"><a href="#cb12-411" aria-hidden="true" tabindex="-1"></a>full.sim <span class="ot">&lt;-</span> <span class="cf">function</span>(c,lr,noise)</span>
-<span id="cb12-412"><a href="#cb12-412" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb12-413"><a href="#cb12-413" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-414"><a href="#cb12-414" aria-hidden="true" tabindex="-1"></a>envTypes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"linear"</span>, <span class="st">"exponential"</span>, <span class="st">"quadratic"</span>)</span>
-<span id="cb12-415"><a href="#cb12-415" aria-hidden="true" tabindex="-1"></a>lowDensityTrainBlock <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">30.5</span>, <span class="fl">36.0</span>, <span class="fl">41.0</span>, <span class="fl">46.5</span>, <span class="fl">53.5</span>, <span class="fl">59.0</span>, <span class="fl">64.0</span>, <span class="fl">69.5</span>)</span>
-<span id="cb12-416"><a href="#cb12-416" aria-hidden="true" tabindex="-1"></a>medDensityTrainBlock <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb12-417"><a href="#cb12-417" aria-hidden="true" tabindex="-1"></a>    <span class="fl">30.0</span>, <span class="fl">31.5</span>, <span class="fl">33.0</span>, <span class="fl">34.5</span>, <span class="fl">36.5</span>, <span class="fl">38.5</span>, <span class="fl">41.0</span>, <span class="fl">43.5</span>, <span class="fl">46.0</span>,</span>
-<span id="cb12-418"><a href="#cb12-418" aria-hidden="true" tabindex="-1"></a>    <span class="fl">48.5</span>, <span class="fl">51.5</span>, <span class="fl">54.0</span>, <span class="fl">56.5</span>, <span class="fl">59.0</span>, <span class="fl">61.5</span>, <span class="fl">63.5</span>, <span class="fl">65.5</span>, <span class="fl">67.0</span>, <span class="fl">68.5</span>, <span class="fl">70.0</span></span>
-<span id="cb12-419"><a href="#cb12-419" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-420"><a href="#cb12-420" aria-hidden="true" tabindex="-1"></a>highDensityTrainBlock <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb12-421"><a href="#cb12-421" aria-hidden="true" tabindex="-1"></a>    <span class="fl">30.0</span>, <span class="fl">30.5</span>, <span class="fl">31.0</span>, <span class="fl">32.0</span>, <span class="fl">33.0</span>, <span class="fl">33.5</span>, <span class="fl">34.5</span>, <span class="fl">35.5</span>,</span>
-<span id="cb12-422"><a href="#cb12-422" aria-hidden="true" tabindex="-1"></a>    <span class="fl">36.5</span>, <span class="fl">37.0</span>, <span class="fl">38.0</span>, <span class="fl">38.5</span>, <span class="fl">39.5</span>, <span class="fl">40.5</span>, <span class="fl">41.5</span>, <span class="fl">42.0</span>, <span class="fl">43.0</span>,</span>
-<span id="cb12-423"><a href="#cb12-423" aria-hidden="true" tabindex="-1"></a>    <span class="fl">43.5</span>, <span class="fl">44.5</span>, <span class="fl">45.5</span>, <span class="fl">46.5</span>, <span class="fl">47.0</span>, <span class="fl">48.0</span>, <span class="fl">48.5</span>, <span class="fl">49.0</span>, <span class="fl">51.0</span>, <span class="fl">51.5</span>, <span class="fl">52.0</span>,</span>
-<span id="cb12-424"><a href="#cb12-424" aria-hidden="true" tabindex="-1"></a>    <span class="fl">53.0</span>, <span class="fl">53.5</span>, <span class="fl">54.5</span>, <span class="fl">55.5</span>, <span class="fl">56.5</span>, <span class="fl">57.0</span>, <span class="fl">58.0</span>, <span class="fl">58.5</span>, <span class="fl">59.5</span>, <span class="fl">60.5</span>, <span class="fl">61.5</span>, </span>
-<span id="cb12-425"><a href="#cb12-425" aria-hidden="true" tabindex="-1"></a>    <span class="fl">62.0</span>, <span class="fl">63.0</span>,<span class="fl">63.5</span>, <span class="fl">64.5</span>, <span class="fl">65.5</span>, <span class="fl">66.5</span>, <span class="fl">67.0</span>, <span class="fl">68.0</span>, <span class="fl">69.0</span>, <span class="fl">69.5</span>, <span class="fl">70.0</span></span>
-<span id="cb12-426"><a href="#cb12-426" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-427"><a href="#cb12-427" aria-hidden="true" tabindex="-1"></a><span class="co"># low density has 25 training blocks, medium has 10 blocks, high has 4 blocks. </span></span>
-<span id="cb12-428"><a href="#cb12-428" aria-hidden="true" tabindex="-1"></a><span class="co"># generate training data, for each combination of environment type and density. Use purrr map functions. Rep each dataset by its number of blocks.</span></span>
-<span id="cb12-429"><a href="#cb12-429" aria-hidden="true" tabindex="-1"></a>a</span>
-<span id="cb12-430"><a href="#cb12-430" aria-hidden="true" tabindex="-1"></a>lowSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(lowTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
-<span id="cb12-431"><a href="#cb12-431" aria-hidden="true" tabindex="-1"></a>medSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(medTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
-<span id="cb12-432"><a href="#cb12-432" aria-hidden="true" tabindex="-1"></a>highSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(highTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
-<span id="cb12-433"><a href="#cb12-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-434"><a href="#cb12-434" aria-hidden="true" tabindex="-1"></a>simAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">bind_rows</span>(lowSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>), </span>
-<span id="cb12-435"><a href="#cb12-435" aria-hidden="true" tabindex="-1"></a>                <span class="fu">bind_rows</span>(medSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>), </span>
-<span id="cb12-436"><a href="#cb12-436" aria-hidden="true" tabindex="-1"></a>                <span class="fu">bind_rows</span>(highSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>))</span>
-<span id="cb12-437"><a href="#cb12-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-438"><a href="#cb12-438" aria-hidden="true" tabindex="-1"></a>simAll <span class="ot">&lt;-</span> simAll <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">stage=</span><span class="fu">as.numeric</span>(<span class="fu">cut</span>(trial,<span class="at">breaks=</span><span class="dv">20</span>,<span class="at">labels=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">20</span>))),</span>
-<span id="cb12-439"><a href="#cb12-439" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">dev=</span><span class="fu">sqrt</span>((y<span class="sc">-</span>almResp)<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb12-440"><a href="#cb12-440" aria-hidden="true" tabindex="-1"></a>                                  <span class="co">#reorder density factor levels</span></span>
-<span id="cb12-441"><a href="#cb12-441" aria-hidden="true" tabindex="-1"></a>                            <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>)),</span>
-<span id="cb12-442"><a href="#cb12-442" aria-hidden="true" tabindex="-1"></a>                            <span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb12-443"><a href="#cb12-443" aria-hidden="true" tabindex="-1"></a>                            dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,stage)</span>
-<span id="cb12-444"><a href="#cb12-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-445"><a href="#cb12-445" aria-hidden="true" tabindex="-1"></a>lowSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(lowSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>)</span>
-<span id="cb12-446"><a href="#cb12-446" aria-hidden="true" tabindex="-1"></a>medSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(medSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>)</span>
-<span id="cb12-447"><a href="#cb12-447" aria-hidden="true" tabindex="-1"></a>highSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(highSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>)</span>
-<span id="cb12-448"><a href="#cb12-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-449"><a href="#cb12-449" aria-hidden="true" tabindex="-1"></a>simTestAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(lowSimTest,medSimTest,highSimTest) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type,density,model) <span class="sc">%&gt;%</span></span>
-<span id="cb12-450"><a href="#cb12-450" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>)),</span>
-<span id="cb12-451"><a href="#cb12-451" aria-hidden="true" tabindex="-1"></a>         <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb12-452"><a href="#cb12-452" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,test_region)</span>
-<span id="cb12-453"><a href="#cb12-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-454"><a href="#cb12-454" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(<span class="fu">list</span>(<span class="at">simAll=</span><span class="fu">list</span>(simAll),<span class="at">simTestAll=</span><span class="fu">list</span>(simTestAll)))</span>
-<span id="cb12-455"><a href="#cb12-455" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-456"><a href="#cb12-456" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-457"><a href="#cb12-457" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-458"><a href="#cb12-458" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-459"><a href="#cb12-459" aria-hidden="true" tabindex="-1"></a><span class="fu">### Simulations with noise</span></span>
+<span id="cb12-352"><a href="#cb12-352" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.width=11,fig.height=10}</span></span>
+<span id="cb12-353"><a href="#cb12-353" aria-hidden="true" tabindex="-1"></a><span class="in">#| column: page-inset-right</span></span>
+<span id="cb12-354"><a href="#cb12-354" aria-hidden="true" tabindex="-1"></a><span class="in">#| </span></span>
+<span id="cb12-355"><a href="#cb12-355" aria-hidden="true" tabindex="-1"></a><span class="in">simTestAll %&gt;% ggplot(aes(x=x,y=y)) + </span></span>
+<span id="cb12-356"><a href="#cb12-356" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(aes(x=x,y=resp,shape=model,color=model),alpha=.7,size=1) + </span></span>
+<span id="cb12-357"><a href="#cb12-357" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line(aes(x=x,y=y),alpha=.4)+ </span></span>
+<span id="cb12-358"><a href="#cb12-358" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(data=simTestAll %&gt;% filter(test_region=="train"),aes(x=x,y=y),color="black",size=1,alpha=1) +</span></span>
+<span id="cb12-359"><a href="#cb12-359" aria-hidden="true" tabindex="-1"></a><span class="in">  facet_grid(density~type) + </span></span>
+<span id="cb12-360"><a href="#cb12-360" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_bw() + theme(legend.position="bottom")</span></span>
+<span id="cb12-361"><a href="#cb12-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-362"><a href="#cb12-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-363"><a href="#cb12-363" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-364"><a href="#cb12-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-365"><a href="#cb12-365" aria-hidden="true" tabindex="-1"></a>Collpasing Across Density Levels gives us:</span>
+<span id="cb12-366"><a href="#cb12-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-369"><a href="#cb12-369" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-370"><a href="#cb12-370" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb12-371"><a href="#cb12-371" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: page-inset-right</span></span>
+<span id="cb12-372"><a href="#cb12-372" aria-hidden="true" tabindex="-1"></a>simTestAll <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type,model,x,y) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">resp=</span><span class="fu">mean</span>(resp))  <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span> </span>
+<span id="cb12-373"><a href="#cb12-373" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">shape=</span>model,<span class="at">color=</span>model),<span class="at">alpha=</span>.<span class="dv">7</span>,<span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb12-374"><a href="#cb12-374" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
+<span id="cb12-375"><a href="#cb12-375" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>type) <span class="sc">+</span> </span>
+<span id="cb12-376"><a href="#cb12-376" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
+<span id="cb12-377"><a href="#cb12-377" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-378"><a href="#cb12-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-379"><a href="#cb12-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-380"><a href="#cb12-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-381"><a href="#cb12-381" aria-hidden="true" tabindex="-1"></a><span class="fu">### Table</span></span>
+<span id="cb12-382"><a href="#cb12-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-383"><a href="#cb12-383" aria-hidden="true" tabindex="-1"></a>| Model &amp; Definition                    | R Code                                                                                                      |</span>
+<span id="cb12-384"><a href="#cb12-384" aria-hidden="true" tabindex="-1"></a>|---------------------------------------|-------------------------------------------------------------------------------------------------------------|</span>
+<span id="cb12-385"><a href="#cb12-385" aria-hidden="true" tabindex="-1"></a>| $a_i(X)=\exp \left|-\gamma \cdot\left<span class="co">[</span><span class="ot">X-X_i\right</span><span class="co">]</span>^2\right|$   | <span class="in">`exp(-c * (input.layer - input)^2)`</span>        |</span>
+<span id="cb12-386"><a href="#cb12-386" aria-hidden="true" tabindex="-1"></a>| $o_j(X)=\Sigma_{i=1, M} w_{j i} \cdot a_i(X)$                 | <span class="in">`weight.mat %*% input.activation`</span>                                                     |</span>
+<span id="cb12-387"><a href="#cb12-387" aria-hidden="true" tabindex="-1"></a>| $P\left<span class="co">[</span><span class="ot">Y_j \mid X\right</span><span class="co">]</span>=o_j(X) / \Sigma_{k=1, L} o_k(X)$   | <span class="in">`output.activation / sum(output.activation)`</span>                                         |</span>
+<span id="cb12-388"><a href="#cb12-388" aria-hidden="true" tabindex="-1"></a>| $m(X)=\Sigma_{j=1, L} Y_j \cdot P\left<span class="co">[</span><span class="ot">Y_j \mid X\right</span><span class="co">]</span>$    | <span class="in">`sum(output.layer * output.probability)`</span>                                                  |</span>
+<span id="cb12-389"><a href="#cb12-389" aria-hidden="true" tabindex="-1"></a>| $f_j(Z)=e^{-c\cdot(Z-Y_j)^2}$                                 | <span class="in">`exp(-c * (output.layer - corResp)^2)`</span>                                                               |</span>
+<span id="cb12-390"><a href="#cb12-390" aria-hidden="true" tabindex="-1"></a>| $w_{ji}(t+1)=w_{ji}(t)+\alpha \cdot {f_i(Z(t))-O_j(X(t))} \cdot a_i(X(t)$   | <span class="in">` lr *(fz - output.activation) %*% t(input.activation)`</span>  |</span>
+<span id="cb12-391"><a href="#cb12-391" aria-hidden="true" tabindex="-1"></a>                                                      |</span>
+<span id="cb12-392"><a href="#cb12-392" aria-hidden="true" tabindex="-1"></a>| $E<span class="co">[</span><span class="ot">Y|X_i</span><span class="co">]</span>=m(X_i) + \bigg<span class="co">[</span><span class="ot">\frac{m(X_{i+1})-m(X_{i-1})}{X_{i+1} - X_{i-1}} \bigg</span><span class="co">]</span>\cdot<span class="co">[</span><span class="ot">X-X_i</span><span class="co">]</span>$ | <span class="in">` trainVec[which.min(abs(input - trainVec))]; xUnder &lt;- ...; xOver &lt;- ...; mUnder &lt;- ...; mOver &lt;- ...; exam.output &lt;- round(aresp + ((mOver - mUnder) / (xOver - xUnder)) * (input - nearestTrain), 3)`</span>|</span>
+<span id="cb12-393"><a href="#cb12-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-394"><a href="#cb12-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-395"><a href="#cb12-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-396"><a href="#cb12-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-397"><a href="#cb12-397" aria-hidden="true" tabindex="-1"></a><span class="fu">### Master Function for full simulation</span></span>
+<span id="cb12-398"><a href="#cb12-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-401"><a href="#cb12-401" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-402"><a href="#cb12-402" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb12-403"><a href="#cb12-403" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false </span></span>
+<span id="cb12-404"><a href="#cb12-404" aria-hidden="true" tabindex="-1"></a><span class="co"># Function that goes through every step of generating data, simulating training, and simulating generalization</span></span>
+<span id="cb12-405"><a href="#cb12-405" aria-hidden="true" tabindex="-1"></a>full.sim <span class="ot">&lt;-</span> <span class="cf">function</span>(c,lr,noise)</span>
+<span id="cb12-406"><a href="#cb12-406" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb12-407"><a href="#cb12-407" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-408"><a href="#cb12-408" aria-hidden="true" tabindex="-1"></a>envTypes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"linear"</span>, <span class="st">"exponential"</span>, <span class="st">"quadratic"</span>)</span>
+<span id="cb12-409"><a href="#cb12-409" aria-hidden="true" tabindex="-1"></a>lowDensityTrainBlock <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">30.5</span>, <span class="fl">36.0</span>, <span class="fl">41.0</span>, <span class="fl">46.5</span>, <span class="fl">53.5</span>, <span class="fl">59.0</span>, <span class="fl">64.0</span>, <span class="fl">69.5</span>)</span>
+<span id="cb12-410"><a href="#cb12-410" aria-hidden="true" tabindex="-1"></a>medDensityTrainBlock <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb12-411"><a href="#cb12-411" aria-hidden="true" tabindex="-1"></a>    <span class="fl">30.0</span>, <span class="fl">31.5</span>, <span class="fl">33.0</span>, <span class="fl">34.5</span>, <span class="fl">36.5</span>, <span class="fl">38.5</span>, <span class="fl">41.0</span>, <span class="fl">43.5</span>, <span class="fl">46.0</span>,</span>
+<span id="cb12-412"><a href="#cb12-412" aria-hidden="true" tabindex="-1"></a>    <span class="fl">48.5</span>, <span class="fl">51.5</span>, <span class="fl">54.0</span>, <span class="fl">56.5</span>, <span class="fl">59.0</span>, <span class="fl">61.5</span>, <span class="fl">63.5</span>, <span class="fl">65.5</span>, <span class="fl">67.0</span>, <span class="fl">68.5</span>, <span class="fl">70.0</span></span>
+<span id="cb12-413"><a href="#cb12-413" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-414"><a href="#cb12-414" aria-hidden="true" tabindex="-1"></a>highDensityTrainBlock <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb12-415"><a href="#cb12-415" aria-hidden="true" tabindex="-1"></a>    <span class="fl">30.0</span>, <span class="fl">30.5</span>, <span class="fl">31.0</span>, <span class="fl">32.0</span>, <span class="fl">33.0</span>, <span class="fl">33.5</span>, <span class="fl">34.5</span>, <span class="fl">35.5</span>,</span>
+<span id="cb12-416"><a href="#cb12-416" aria-hidden="true" tabindex="-1"></a>    <span class="fl">36.5</span>, <span class="fl">37.0</span>, <span class="fl">38.0</span>, <span class="fl">38.5</span>, <span class="fl">39.5</span>, <span class="fl">40.5</span>, <span class="fl">41.5</span>, <span class="fl">42.0</span>, <span class="fl">43.0</span>,</span>
+<span id="cb12-417"><a href="#cb12-417" aria-hidden="true" tabindex="-1"></a>    <span class="fl">43.5</span>, <span class="fl">44.5</span>, <span class="fl">45.5</span>, <span class="fl">46.5</span>, <span class="fl">47.0</span>, <span class="fl">48.0</span>, <span class="fl">48.5</span>, <span class="fl">49.0</span>, <span class="fl">51.0</span>, <span class="fl">51.5</span>, <span class="fl">52.0</span>,</span>
+<span id="cb12-418"><a href="#cb12-418" aria-hidden="true" tabindex="-1"></a>    <span class="fl">53.0</span>, <span class="fl">53.5</span>, <span class="fl">54.5</span>, <span class="fl">55.5</span>, <span class="fl">56.5</span>, <span class="fl">57.0</span>, <span class="fl">58.0</span>, <span class="fl">58.5</span>, <span class="fl">59.5</span>, <span class="fl">60.5</span>, <span class="fl">61.5</span>, </span>
+<span id="cb12-419"><a href="#cb12-419" aria-hidden="true" tabindex="-1"></a>    <span class="fl">62.0</span>, <span class="fl">63.0</span>,<span class="fl">63.5</span>, <span class="fl">64.5</span>, <span class="fl">65.5</span>, <span class="fl">66.5</span>, <span class="fl">67.0</span>, <span class="fl">68.0</span>, <span class="fl">69.0</span>, <span class="fl">69.5</span>, <span class="fl">70.0</span></span>
+<span id="cb12-420"><a href="#cb12-420" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-421"><a href="#cb12-421" aria-hidden="true" tabindex="-1"></a><span class="co"># low density has 25 training blocks, medium has 10 blocks, high has 4 blocks. </span></span>
+<span id="cb12-422"><a href="#cb12-422" aria-hidden="true" tabindex="-1"></a><span class="co"># generate training data, for each combination of environment type and density. Use purrr map functions. Rep each dataset by its number of blocks.</span></span>
+<span id="cb12-423"><a href="#cb12-423" aria-hidden="true" tabindex="-1"></a>a</span>
+<span id="cb12-424"><a href="#cb12-424" aria-hidden="true" tabindex="-1"></a>lowSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(lowTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
+<span id="cb12-425"><a href="#cb12-425" aria-hidden="true" tabindex="-1"></a>medSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(medTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
+<span id="cb12-426"><a href="#cb12-426" aria-hidden="true" tabindex="-1"></a>highSim <span class="ot">&lt;-</span> <span class="fu">map</span>(envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(highTrain <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .x), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
+<span id="cb12-427"><a href="#cb12-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-428"><a href="#cb12-428" aria-hidden="true" tabindex="-1"></a>simAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">bind_rows</span>(lowSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>), </span>
+<span id="cb12-429"><a href="#cb12-429" aria-hidden="true" tabindex="-1"></a>                <span class="fu">bind_rows</span>(medSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>), </span>
+<span id="cb12-430"><a href="#cb12-430" aria-hidden="true" tabindex="-1"></a>                <span class="fu">bind_rows</span>(highSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>))</span>
+<span id="cb12-431"><a href="#cb12-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-432"><a href="#cb12-432" aria-hidden="true" tabindex="-1"></a>simAll <span class="ot">&lt;-</span> simAll <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">stage=</span><span class="fu">as.numeric</span>(<span class="fu">cut</span>(trial,<span class="at">breaks=</span><span class="dv">20</span>,<span class="at">labels=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">20</span>))),</span>
+<span id="cb12-433"><a href="#cb12-433" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">dev=</span><span class="fu">sqrt</span>((y<span class="sc">-</span>almResp)<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb12-434"><a href="#cb12-434" aria-hidden="true" tabindex="-1"></a>                                  <span class="co">#reorder density factor levels</span></span>
+<span id="cb12-435"><a href="#cb12-435" aria-hidden="true" tabindex="-1"></a>                            <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>)),</span>
+<span id="cb12-436"><a href="#cb12-436" aria-hidden="true" tabindex="-1"></a>                            <span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb12-437"><a href="#cb12-437" aria-hidden="true" tabindex="-1"></a>                            dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,stage)</span>
+<span id="cb12-438"><a href="#cb12-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-439"><a href="#cb12-439" aria-hidden="true" tabindex="-1"></a>lowSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(lowSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>)</span>
+<span id="cb12-440"><a href="#cb12-440" aria-hidden="true" tabindex="-1"></a>medSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(medSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>)</span>
+<span id="cb12-441"><a href="#cb12-441" aria-hidden="true" tabindex="-1"></a>highSimTest <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(highSim,simOrganize) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>)</span>
+<span id="cb12-442"><a href="#cb12-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-443"><a href="#cb12-443" aria-hidden="true" tabindex="-1"></a>simTestAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(lowSimTest,medSimTest,highSimTest) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type,density,model) <span class="sc">%&gt;%</span></span>
+<span id="cb12-444"><a href="#cb12-444" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type=</span><span class="fu">factor</span>(type,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"linear"</span>,<span class="st">"exponential"</span>,<span class="st">"quadratic"</span>)),</span>
+<span id="cb12-445"><a href="#cb12-445" aria-hidden="true" tabindex="-1"></a>         <span class="at">density=</span><span class="fu">factor</span>(density,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"med"</span>,<span class="st">"high"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb12-446"><a href="#cb12-446" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(density,type,test_region)</span>
+<span id="cb12-447"><a href="#cb12-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-448"><a href="#cb12-448" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(<span class="fu">list</span>(<span class="at">simAll=</span><span class="fu">list</span>(simAll),<span class="at">simTestAll=</span><span class="fu">list</span>(simTestAll)))</span>
+<span id="cb12-449"><a href="#cb12-449" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-450"><a href="#cb12-450" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-451"><a href="#cb12-451" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-452"><a href="#cb12-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-453"><a href="#cb12-453" aria-hidden="true" tabindex="-1"></a><span class="fu">### Simulations with noise</span></span>
+<span id="cb12-454"><a href="#cb12-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-455"><a href="#cb12-455" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.height=10,fig.width=11}</span></span>
+<span id="cb12-456"><a href="#cb12-456" aria-hidden="true" tabindex="-1"></a><span class="in">#| eval: false</span></span>
+<span id="cb12-457"><a href="#cb12-457" aria-hidden="true" tabindex="-1"></a><span class="in">#| include: false</span></span>
+<span id="cb12-458"><a href="#cb12-458" aria-hidden="true" tabindex="-1"></a><span class="in">k = full.sim(c=1.4,lr=.4,noise=2.0)</span></span>
+<span id="cb12-459"><a href="#cb12-459" aria-hidden="true" tabindex="-1"></a><span class="in">k4 = full.sim(c=1.4,lr=.4,noise=4.0)</span></span>
 <span id="cb12-460"><a href="#cb12-460" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-461"><a href="#cb12-461" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig.height=10,fig.width=11}</span></span>
-<span id="cb12-462"><a href="#cb12-462" aria-hidden="true" tabindex="-1"></a><span class="in">#| eval: false</span></span>
-<span id="cb12-463"><a href="#cb12-463" aria-hidden="true" tabindex="-1"></a><span class="in">#| include: false</span></span>
-<span id="cb12-464"><a href="#cb12-464" aria-hidden="true" tabindex="-1"></a><span class="in">k = full.sim(c=1.4,lr=.4,noise=2.0)</span></span>
-<span id="cb12-465"><a href="#cb12-465" aria-hidden="true" tabindex="-1"></a><span class="in">k4 = full.sim(c=1.4,lr=.4,noise=4.0)</span></span>
+<span id="cb12-461"><a href="#cb12-461" aria-hidden="true" tabindex="-1"></a><span class="in"># run simulation with noise=10, 3 times, average results together. </span></span>
+<span id="cb12-462"><a href="#cb12-462" aria-hidden="true" tabindex="-1"></a><span class="in">k10 = map_dfr(1:3, ~ full.sim(c=1.4,lr=.4,noise=10.0)) %&gt;% group_by(type,density,model) %&gt;%</span></span>
+<span id="cb12-463"><a href="#cb12-463" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(type=factor(type,levels=c("linear","exponential","quadratic")),</span></span>
+<span id="cb12-464"><a href="#cb12-464" aria-hidden="true" tabindex="-1"></a><span class="in">         density=factor(density,levels=c("low","med","high"))) %&gt;%</span></span>
+<span id="cb12-465"><a href="#cb12-465" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr::relocate(density,type,test_region)</span></span>
 <span id="cb12-466"><a href="#cb12-466" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-467"><a href="#cb12-467" aria-hidden="true" tabindex="-1"></a><span class="in"># run simulation with noise=10, 3 times, average results together. </span></span>
-<span id="cb12-468"><a href="#cb12-468" aria-hidden="true" tabindex="-1"></a><span class="in">k10 = map_dfr(1:3, ~ full.sim(c=1.4,lr=.4,noise=10.0)) %&gt;% group_by(type,density,model) %&gt;%</span></span>
-<span id="cb12-469"><a href="#cb12-469" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(type=factor(type,levels=c("linear","exponential","quadratic")),</span></span>
-<span id="cb12-470"><a href="#cb12-470" aria-hidden="true" tabindex="-1"></a><span class="in">         density=factor(density,levels=c("low","med","high"))) %&gt;%</span></span>
-<span id="cb12-471"><a href="#cb12-471" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr::relocate(density,type,test_region)</span></span>
+<span id="cb12-467"><a href="#cb12-467" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-468"><a href="#cb12-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-469"><a href="#cb12-469" aria-hidden="true" tabindex="-1"></a><span class="in">k %&gt;% pluck("simAll") %&gt;% ggplot(aes(x=block,y=dev,color=type)) + stat_summary(geom="line",fun=mean,alpha=.4)+</span></span>
+<span id="cb12-470"><a href="#cb12-470" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_summary(geom="point",fun=mean,alpha=.4)+</span></span>
+<span id="cb12-471"><a href="#cb12-471" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_summary(geom="errorbar",fun.data=mean_cl_normal,alpha=.4)+facet_wrap(~density, scales="free_x")</span></span>
 <span id="cb12-472"><a href="#cb12-472" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-473"><a href="#cb12-473" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-474"><a href="#cb12-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-475"><a href="#cb12-475" aria-hidden="true" tabindex="-1"></a><span class="in">k %&gt;% pluck("simAll") %&gt;% ggplot(aes(x=block,y=dev,color=type)) + stat_summary(geom="line",fun=mean,alpha=.4)+</span></span>
-<span id="cb12-476"><a href="#cb12-476" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_summary(geom="point",fun=mean,alpha=.4)+</span></span>
-<span id="cb12-477"><a href="#cb12-477" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_summary(geom="errorbar",fun.data=mean_cl_normal,alpha=.4)+facet_wrap(~density, scales="free_x")</span></span>
+<span id="cb12-474"><a href="#cb12-474" aria-hidden="true" tabindex="-1"></a><span class="in">k4 %&gt;% pluck("simAll") %&gt;% ggplot(aes(x=block,y=dev,color=type)) + stat_summary(geom="line",fun=mean,alpha=.4)+</span></span>
+<span id="cb12-475"><a href="#cb12-475" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_summary(geom="point",fun=mean,alpha=.4)+</span></span>
+<span id="cb12-476"><a href="#cb12-476" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_summary(geom="errorbar",fun.data=mean_cl_normal,alpha=.4)+facet_wrap(~density, scales="free_x")</span></span>
+<span id="cb12-477"><a href="#cb12-477" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-478"><a href="#cb12-478" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-479"><a href="#cb12-479" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-480"><a href="#cb12-480" aria-hidden="true" tabindex="-1"></a><span class="in">k4 %&gt;% pluck("simAll") %&gt;% ggplot(aes(x=block,y=dev,color=type)) + stat_summary(geom="line",fun=mean,alpha=.4)+</span></span>
-<span id="cb12-481"><a href="#cb12-481" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_summary(geom="point",fun=mean,alpha=.4)+</span></span>
-<span id="cb12-482"><a href="#cb12-482" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_summary(geom="errorbar",fun.data=mean_cl_normal,alpha=.4)+facet_wrap(~density, scales="free_x")</span></span>
-<span id="cb12-483"><a href="#cb12-483" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-484"><a href="#cb12-484" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-485"><a href="#cb12-485" aria-hidden="true" tabindex="-1"></a><span class="in">k %&gt;% pluck("simTestAll") %&gt;%ggplot(aes(x=x,y=y)) + </span></span>
-<span id="cb12-486"><a href="#cb12-486" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(aes(x=x,y=resp,shape=model,color=model),alpha=.7,size=1) + </span></span>
-<span id="cb12-487"><a href="#cb12-487" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line(aes(x=x,y=y),alpha=.4)+ </span></span>
-<span id="cb12-488"><a href="#cb12-488" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(data=simTestAll %&gt;% filter(test_region=="train"),aes(x=x,y=y),color="black",size=1,alpha=1) +</span></span>
-<span id="cb12-489"><a href="#cb12-489" aria-hidden="true" tabindex="-1"></a><span class="in">  facet_grid(density~type) + </span></span>
-<span id="cb12-490"><a href="#cb12-490" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_bw() + theme(legend.position="bottom")</span></span>
-<span id="cb12-491"><a href="#cb12-491" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-492"><a href="#cb12-492" aria-hidden="true" tabindex="-1"></a><span class="in">k4 %&gt;% pluck("simTestAll") %&gt;%ggplot(aes(x=x,y=y)) + </span></span>
-<span id="cb12-493"><a href="#cb12-493" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(aes(x=x,y=resp,shape=model,color=model),alpha=.7,size=1) + </span></span>
-<span id="cb12-494"><a href="#cb12-494" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line(aes(x=x,y=y),alpha=.4)+ </span></span>
-<span id="cb12-495"><a href="#cb12-495" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(data=simTestAll %&gt;% filter(test_region=="train"),aes(x=x,y=y),color="black",size=1,alpha=1) +</span></span>
-<span id="cb12-496"><a href="#cb12-496" aria-hidden="true" tabindex="-1"></a><span class="in">  facet_grid(density~type) + </span></span>
-<span id="cb12-497"><a href="#cb12-497" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_bw() + theme(legend.position="bottom")</span></span>
-<span id="cb12-498"><a href="#cb12-498" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-499"><a href="#cb12-499" aria-hidden="true" tabindex="-1"></a><span class="in">k10 %&gt;% pluck("simTestAll") %&gt;%ggplot(aes(x=x,y=y)) + </span></span>
-<span id="cb12-500"><a href="#cb12-500" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(aes(x=x,y=resp,shape=model,color=model),alpha=.7,size=1) + </span></span>
-<span id="cb12-501"><a href="#cb12-501" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line(aes(x=x,y=y),alpha=.4)+ </span></span>
-<span id="cb12-502"><a href="#cb12-502" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(data=simTestAll %&gt;% filter(test_region=="train"),aes(x=x,y=y),color="black",size=1,alpha=1) +</span></span>
-<span id="cb12-503"><a href="#cb12-503" aria-hidden="true" tabindex="-1"></a><span class="in">  facet_grid(density~type) + </span></span>
-<span id="cb12-504"><a href="#cb12-504" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_bw() + theme(legend.position="bottom")</span></span>
-<span id="cb12-505"><a href="#cb12-505" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-506"><a href="#cb12-506" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-507"><a href="#cb12-507" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-508"><a href="#cb12-508" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-511"><a href="#cb12-511" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-512"><a href="#cb12-512" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb12-513"><a href="#cb12-513" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
-<span id="cb12-514"><a href="#cb12-514" aria-hidden="true" tabindex="-1"></a><span class="co"># label each each simulation with its density level (low, med, high), then combine all 3</span></span>
-<span id="cb12-515"><a href="#cb12-515" aria-hidden="true" tabindex="-1"></a>lowSimTest <span class="ot">&lt;-</span> lowSimTest <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>)</span>
-<span id="cb12-516"><a href="#cb12-516" aria-hidden="true" tabindex="-1"></a>medSimTest <span class="ot">&lt;-</span> medSimTest <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>)</span>
-<span id="cb12-517"><a href="#cb12-517" aria-hidden="true" tabindex="-1"></a>highSimTest <span class="ot">&lt;-</span> highSimTest <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>)</span>
-<span id="cb12-518"><a href="#cb12-518" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-519"><a href="#cb12-519" aria-hidden="true" tabindex="-1"></a>simTest <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(lowSimTest,medSimTest,highSimTest)</span>
-<span id="cb12-520"><a href="#cb12-520" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-521"><a href="#cb12-521" aria-hidden="true" tabindex="-1"></a><span class="co"># extract element d from each list, and bind rows, remove Nan's, group by type, mutate new variable "Stage", which is set to first for block 1, last for final block, and middle for all other glocks, pipe to ggplot, plotting y and almResp in different colors, facet by type and stage (only first and last block)</span></span>
-<span id="cb12-522"><a href="#cb12-522" aria-hidden="true" tabindex="-1"></a>ls2<span class="ot">=</span><span class="fu">bind_rows</span>(lowSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(almResp)) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-523"><a href="#cb12-523" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-524"><a href="#cb12-524" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stage =</span> <span class="fu">ifelse</span>(block <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"first"</span>, <span class="fu">ifelse</span>(block <span class="sc">==</span> <span class="dv">25</span>, <span class="st">"last"</span>, <span class="st">"middle"</span>)),</span>
-<span id="cb12-525"><a href="#cb12-525" aria-hidden="true" tabindex="-1"></a>         <span class="at">stage2=</span><span class="fu">cut</span>(trial,<span class="at">breaks=</span><span class="dv">20</span>,<span class="at">labels=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">20</span>)),</span>
-<span id="cb12-526"><a href="#cb12-526" aria-hidden="true" tabindex="-1"></a>         <span class="at">dev=</span><span class="fu">sqrt</span>((y<span class="sc">-</span>almResp)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb12-527"><a href="#cb12-527" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb12-528"><a href="#cb12-528" aria-hidden="true" tabindex="-1"></a>ls2 <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>stage2,<span class="at">y=</span>dev))<span class="sc">+</span><span class="fu">facet_grid</span>(<span class="sc">~</span>type)</span>
+<span id="cb12-479"><a href="#cb12-479" aria-hidden="true" tabindex="-1"></a><span class="in">k %&gt;% pluck("simTestAll") %&gt;%ggplot(aes(x=x,y=y)) + </span></span>
+<span id="cb12-480"><a href="#cb12-480" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(aes(x=x,y=resp,shape=model,color=model),alpha=.7,size=1) + </span></span>
+<span id="cb12-481"><a href="#cb12-481" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line(aes(x=x,y=y),alpha=.4)+ </span></span>
+<span id="cb12-482"><a href="#cb12-482" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(data=simTestAll %&gt;% filter(test_region=="train"),aes(x=x,y=y),color="black",size=1,alpha=1) +</span></span>
+<span id="cb12-483"><a href="#cb12-483" aria-hidden="true" tabindex="-1"></a><span class="in">  facet_grid(density~type) + </span></span>
+<span id="cb12-484"><a href="#cb12-484" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_bw() + theme(legend.position="bottom")</span></span>
+<span id="cb12-485"><a href="#cb12-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-486"><a href="#cb12-486" aria-hidden="true" tabindex="-1"></a><span class="in">k4 %&gt;% pluck("simTestAll") %&gt;%ggplot(aes(x=x,y=y)) + </span></span>
+<span id="cb12-487"><a href="#cb12-487" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(aes(x=x,y=resp,shape=model,color=model),alpha=.7,size=1) + </span></span>
+<span id="cb12-488"><a href="#cb12-488" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line(aes(x=x,y=y),alpha=.4)+ </span></span>
+<span id="cb12-489"><a href="#cb12-489" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(data=simTestAll %&gt;% filter(test_region=="train"),aes(x=x,y=y),color="black",size=1,alpha=1) +</span></span>
+<span id="cb12-490"><a href="#cb12-490" aria-hidden="true" tabindex="-1"></a><span class="in">  facet_grid(density~type) + </span></span>
+<span id="cb12-491"><a href="#cb12-491" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_bw() + theme(legend.position="bottom")</span></span>
+<span id="cb12-492"><a href="#cb12-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-493"><a href="#cb12-493" aria-hidden="true" tabindex="-1"></a><span class="in">k10 %&gt;% pluck("simTestAll") %&gt;%ggplot(aes(x=x,y=y)) + </span></span>
+<span id="cb12-494"><a href="#cb12-494" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(aes(x=x,y=resp,shape=model,color=model),alpha=.7,size=1) + </span></span>
+<span id="cb12-495"><a href="#cb12-495" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line(aes(x=x,y=y),alpha=.4)+ </span></span>
+<span id="cb12-496"><a href="#cb12-496" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point(data=simTestAll %&gt;% filter(test_region=="train"),aes(x=x,y=y),color="black",size=1,alpha=1) +</span></span>
+<span id="cb12-497"><a href="#cb12-497" aria-hidden="true" tabindex="-1"></a><span class="in">  facet_grid(density~type) + </span></span>
+<span id="cb12-498"><a href="#cb12-498" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_bw() + theme(legend.position="bottom")</span></span>
+<span id="cb12-499"><a href="#cb12-499" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-500"><a href="#cb12-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-501"><a href="#cb12-501" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-502"><a href="#cb12-502" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-505"><a href="#cb12-505" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-506"><a href="#cb12-506" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb12-507"><a href="#cb12-507" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb12-508"><a href="#cb12-508" aria-hidden="true" tabindex="-1"></a><span class="co"># label each each simulation with its density level (low, med, high), then combine all 3</span></span>
+<span id="cb12-509"><a href="#cb12-509" aria-hidden="true" tabindex="-1"></a>lowSimTest <span class="ot">&lt;-</span> lowSimTest <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"low"</span>)</span>
+<span id="cb12-510"><a href="#cb12-510" aria-hidden="true" tabindex="-1"></a>medSimTest <span class="ot">&lt;-</span> medSimTest <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"med"</span>)</span>
+<span id="cb12-511"><a href="#cb12-511" aria-hidden="true" tabindex="-1"></a>highSimTest <span class="ot">&lt;-</span> highSimTest <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">density =</span> <span class="st">"high"</span>)</span>
+<span id="cb12-512"><a href="#cb12-512" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-513"><a href="#cb12-513" aria-hidden="true" tabindex="-1"></a>simTest <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(lowSimTest,medSimTest,highSimTest)</span>
+<span id="cb12-514"><a href="#cb12-514" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-515"><a href="#cb12-515" aria-hidden="true" tabindex="-1"></a><span class="co"># extract element d from each list, and bind rows, remove Nan's, group by type, mutate new variable "Stage", which is set to first for block 1, last for final block, and middle for all other glocks, pipe to ggplot, plotting y and almResp in different colors, facet by type and stage (only first and last block)</span></span>
+<span id="cb12-516"><a href="#cb12-516" aria-hidden="true" tabindex="-1"></a>ls2<span class="ot">=</span><span class="fu">bind_rows</span>(lowSim <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="st">"d"</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(almResp)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-517"><a href="#cb12-517" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-518"><a href="#cb12-518" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stage =</span> <span class="fu">ifelse</span>(block <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"first"</span>, <span class="fu">ifelse</span>(block <span class="sc">==</span> <span class="dv">25</span>, <span class="st">"last"</span>, <span class="st">"middle"</span>)),</span>
+<span id="cb12-519"><a href="#cb12-519" aria-hidden="true" tabindex="-1"></a>         <span class="at">stage2=</span><span class="fu">cut</span>(trial,<span class="at">breaks=</span><span class="dv">20</span>,<span class="at">labels=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">20</span>)),</span>
+<span id="cb12-520"><a href="#cb12-520" aria-hidden="true" tabindex="-1"></a>         <span class="at">dev=</span><span class="fu">sqrt</span>((y<span class="sc">-</span>almResp)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb12-521"><a href="#cb12-521" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb12-522"><a href="#cb12-522" aria-hidden="true" tabindex="-1"></a>ls2 <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>stage2,<span class="at">y=</span>dev))<span class="sc">+</span><span class="fu">facet_grid</span>(<span class="sc">~</span>type)</span>
+<span id="cb12-523"><a href="#cb12-523" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-524"><a href="#cb12-524" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-525"><a href="#cb12-525" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-526"><a href="#cb12-526" aria-hidden="true" tabindex="-1"></a>ls2 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(stage <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"first"</span>,<span class="st">"last"</span>)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">color=</span><span class="st">"red"</span>,<span class="at">alpha=</span>.<span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb12-527"><a href="#cb12-527" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>almResp),<span class="at">color=</span><span class="st">"blue"</span>,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
+<span id="cb12-528"><a href="#cb12-528" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_grid</span>(type<span class="sc">~</span>stage) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
 <span id="cb12-529"><a href="#cb12-529" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-530"><a href="#cb12-530" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-531"><a href="#cb12-531" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-532"><a href="#cb12-532" aria-hidden="true" tabindex="-1"></a>ls2 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(stage <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"first"</span>,<span class="st">"last"</span>)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">color=</span><span class="st">"red"</span>,<span class="at">alpha=</span>.<span class="dv">3</span>) <span class="sc">+</span> </span>
-<span id="cb12-533"><a href="#cb12-533" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>almResp),<span class="at">color=</span><span class="st">"blue"</span>,<span class="at">alpha=</span>.<span class="dv">4</span>)<span class="sc">+</span> </span>
-<span id="cb12-534"><a href="#cb12-534" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_grid</span>(type<span class="sc">~</span>stage) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
+<span id="cb12-531"><a href="#cb12-531" aria-hidden="true" tabindex="-1"></a>lowSimTest <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">color=</span>model)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">3</span>)<span class="sc">+</span> <span class="fu">facet_grid</span>(<span class="sc">~</span>type) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
+<span id="cb12-532"><a href="#cb12-532" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-533"><a href="#cb12-533" aria-hidden="true" tabindex="-1"></a><span class="co"># make grid of each combination of train dataset and envType</span></span>
+<span id="cb12-534"><a href="#cb12-534" aria-hidden="true" tabindex="-1"></a>simGrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">envTypes=</span>envTypes,<span class="at">trainData=</span><span class="fu">c</span>(<span class="st">"lowTrain"</span>,<span class="st">"medTrain"</span>,<span class="st">"highTrain"</span>))</span>
 <span id="cb12-535"><a href="#cb12-535" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-536"><a href="#cb12-536" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-537"><a href="#cb12-537" aria-hidden="true" tabindex="-1"></a>lowSimTest <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>resp,<span class="at">color=</span>model)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">alpha=</span>.<span class="dv">3</span>)<span class="sc">+</span> <span class="fu">facet_grid</span>(<span class="sc">~</span>type) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
+<span id="cb12-536"><a href="#cb12-536" aria-hidden="true" tabindex="-1"></a><span class="co"># map over the grid, for each row of simGrid, filter the training dataset by the envType, and then run the simulation function, and then bind rows of the output data frame.</span></span>
+<span id="cb12-537"><a href="#cb12-537" aria-hidden="true" tabindex="-1"></a>simOut <span class="ot">&lt;-</span> <span class="fu">map2</span>(<span class="fu">c</span>(<span class="st">"lowTrain"</span>,<span class="st">"medTrain"</span>,<span class="st">"highTrain"</span>),envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(<span class="fu">get</span>(.x) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .y), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
 <span id="cb12-538"><a href="#cb12-538" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-539"><a href="#cb12-539" aria-hidden="true" tabindex="-1"></a><span class="co"># make grid of each combination of train dataset and envType</span></span>
-<span id="cb12-540"><a href="#cb12-540" aria-hidden="true" tabindex="-1"></a>simGrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">envTypes=</span>envTypes,<span class="at">trainData=</span><span class="fu">c</span>(<span class="st">"lowTrain"</span>,<span class="st">"medTrain"</span>,<span class="st">"highTrain"</span>))</span>
-<span id="cb12-541"><a href="#cb12-541" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-542"><a href="#cb12-542" aria-hidden="true" tabindex="-1"></a><span class="co"># map over the grid, for each row of simGrid, filter the training dataset by the envType, and then run the simulation function, and then bind rows of the output data frame.</span></span>
-<span id="cb12-543"><a href="#cb12-543" aria-hidden="true" tabindex="-1"></a>simOut <span class="ot">&lt;-</span> <span class="fu">map2</span>(<span class="fu">c</span>(<span class="st">"lowTrain"</span>,<span class="st">"medTrain"</span>,<span class="st">"highTrain"</span>),envTypes, <span class="sc">~</span> <span class="fu">alm.sim</span>(<span class="fu">get</span>(.x) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> .y), <span class="at">c =</span> <span class="fl">1.4</span>, <span class="at">lr =</span> .<span class="dv">4</span>))</span>
+<span id="cb12-539"><a href="#cb12-539" aria-hidden="true" tabindex="-1"></a><span class="co"># simOut &lt;- map(c("lowTrain","medTrain","highTrain"), ~ map_dfr(envTypes, ~ alm.sim(get(.) %&gt;% filter(type == .x), c = 1.4, lr = .4) %&gt;% a))</span></span>
+<span id="cb12-540"><a href="#cb12-540" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb12-541"><a href="#cb12-541" aria-hidden="true" tabindex="-1"></a><span class="co"># simOut &lt;- map_dfr(simGrid, ~ alm.sim(get(.x$trainData) %&gt;% filter(type == .x$envTypes), c = 1.4, lr = .4) %&gt;% simOrganize)</span></span>
+<span id="cb12-542"><a href="#cb12-542" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb12-543"><a href="#cb12-543" aria-hidden="true" tabindex="-1"></a><span class="co"># for each training dataset in c(lowTrain,medTrain,highTrain), run simulation function, separately for each type, and then bind rows of the output data frame.</span></span>
 <span id="cb12-544"><a href="#cb12-544" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-545"><a href="#cb12-545" aria-hidden="true" tabindex="-1"></a><span class="co"># simOut &lt;- map(c("lowTrain","medTrain","highTrain"), ~ map_dfr(envTypes, ~ alm.sim(get(.) %&gt;% filter(type == .x), c = 1.4, lr = .4) %&gt;% a))</span></span>
-<span id="cb12-546"><a href="#cb12-546" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb12-547"><a href="#cb12-547" aria-hidden="true" tabindex="-1"></a><span class="co"># simOut &lt;- map_dfr(simGrid, ~ alm.sim(get(.x$trainData) %&gt;% filter(type == .x$envTypes), c = 1.4, lr = .4) %&gt;% simOrganize)</span></span>
-<span id="cb12-548"><a href="#cb12-548" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb12-549"><a href="#cb12-549" aria-hidden="true" tabindex="-1"></a><span class="co"># for each training dataset in c(lowTrain,medTrain,highTrain), run simulation function, separately for each type, and then bind rows of the output data frame.</span></span>
-<span id="cb12-550"><a href="#cb12-550" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-551"><a href="#cb12-551" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-552"><a href="#cb12-552" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-553"><a href="#cb12-553" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-554"><a href="#cb12-554" aria-hidden="true" tabindex="-1"></a><span class="fu">### Primary Functions</span></span>
-<span id="cb12-555"><a href="#cb12-555" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-558"><a href="#cb12-558" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-559"><a href="#cb12-559" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
-<span id="cb12-560"><a href="#cb12-560" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb12-561"><a href="#cb12-561" aria-hidden="true" tabindex="-1"></a>alm.response <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">input=</span><span class="dv">1</span>,c) {</span>
-<span id="cb12-562"><a href="#cb12-562" aria-hidden="true" tabindex="-1"></a>input.activation <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c<span class="sc">*</span>(input.layer <span class="sc">-</span> input)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb12-563"><a href="#cb12-563" aria-hidden="true" tabindex="-1"></a>input.activation <span class="ot">&lt;&lt;-</span> input.activation<span class="sc">/</span><span class="fu">sum</span>(input.activation)</span>
-<span id="cb12-564"><a href="#cb12-564" aria-hidden="true" tabindex="-1"></a><span class="co">#print(length(input.activation)); print(dim(weight.mat))</span></span>
-<span id="cb12-565"><a href="#cb12-565" aria-hidden="true" tabindex="-1"></a>output.activation <span class="ot">&lt;&lt;-</span> weight.mat <span class="sc">%*%</span> input.activation</span>
-<span id="cb12-566"><a href="#cb12-566" aria-hidden="true" tabindex="-1"></a>output.probability <span class="ot">&lt;&lt;-</span> output.activation<span class="sc">/</span><span class="fu">sum</span>(output.activation)</span>
-<span id="cb12-567"><a href="#cb12-567" aria-hidden="true" tabindex="-1"></a>mean.response <span class="ot">&lt;&lt;-</span> <span class="fu">sum</span>(output.layer <span class="sc">*</span> output.probability)</span>
-<span id="cb12-568"><a href="#cb12-568" aria-hidden="true" tabindex="-1"></a>mean.response</span>
-<span id="cb12-569"><a href="#cb12-569" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-570"><a href="#cb12-570" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-571"><a href="#cb12-571" aria-hidden="true" tabindex="-1"></a>alm.update <span class="ot">&lt;-</span> <span class="cf">function</span>(corResp,c,lr){</span>
-<span id="cb12-572"><a href="#cb12-572" aria-hidden="true" tabindex="-1"></a>  fz <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c<span class="sc">*</span>(output.layer <span class="sc">-</span> corResp)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb12-573"><a href="#cb12-573" aria-hidden="true" tabindex="-1"></a>  teacherSignal <span class="ot">&lt;-</span> (fz <span class="sc">-</span> output.activation)<span class="sc">*</span>lr</span>
-<span id="cb12-574"><a href="#cb12-574" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(length(teacherSignal)); print(length(fz))</span></span>
-<span id="cb12-575"><a href="#cb12-575" aria-hidden="true" tabindex="-1"></a>  wChange <span class="ot">&lt;-</span> teacherSignal <span class="sc">%*%</span> <span class="fu">t</span>(input.activation)</span>
-<span id="cb12-576"><a href="#cb12-576" aria-hidden="true" tabindex="-1"></a>  weight.mat <span class="ot">&lt;&lt;-</span> weight.mat <span class="sc">+</span> (wChange)</span>
-<span id="cb12-577"><a href="#cb12-577" aria-hidden="true" tabindex="-1"></a>  weight.mat[weight.mat<span class="sc">&lt;</span><span class="dv">0</span>]<span class="ot">=</span><span class="dv">0</span></span>
-<span id="cb12-578"><a href="#cb12-578" aria-hidden="true" tabindex="-1"></a> <span class="co"># weight.mat[weight.mat&gt;1]=1</span></span>
-<span id="cb12-579"><a href="#cb12-579" aria-hidden="true" tabindex="-1"></a>  weight.mat <span class="ot">&lt;&lt;-</span> weight.mat</span>
-<span id="cb12-580"><a href="#cb12-580" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-581"><a href="#cb12-581" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-582"><a href="#cb12-582" aria-hidden="true" tabindex="-1"></a>alm.trial <span class="ot">&lt;-</span> <span class="cf">function</span>(input, corResp,c,lr){</span>
-<span id="cb12-583"><a href="#cb12-583" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alm.response</span>(input,c)</span>
-<span id="cb12-584"><a href="#cb12-584" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alm.update</span>(corResp,c,lr)</span>
-<span id="cb12-585"><a href="#cb12-585" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"input="</span>,input,<span class="st">"; corResp="</span>,corResp,<span class="st">"; mean.response="</span>,mean.response))</span>
-<span id="cb12-586"><a href="#cb12-586" aria-hidden="true" tabindex="-1"></a>  mean.response</span>
-<span id="cb12-587"><a href="#cb12-587" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-588"><a href="#cb12-588" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-589"><a href="#cb12-589" aria-hidden="true" tabindex="-1"></a>exam.response <span class="ot">&lt;-</span> <span class="cf">function</span>(input,c){</span>
-<span id="cb12-590"><a href="#cb12-590" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Find the index of the input node with the highest activation</span></span>
-<span id="cb12-591"><a href="#cb12-591" aria-hidden="true" tabindex="-1"></a>  trainVec <span class="ot">=</span> <span class="fu">sort</span>(<span class="fu">unique</span>(xt))</span>
-<span id="cb12-592"><a href="#cb12-592" aria-hidden="true" tabindex="-1"></a>  nearestTrain <span class="ot">&lt;-</span> trainVec[<span class="fu">which.min</span>(<span class="fu">abs</span>(input <span class="sc">-</span> trainVec))]</span>
-<span id="cb12-593"><a href="#cb12-593" aria-hidden="true" tabindex="-1"></a>  aresp <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(nearestTrain,c)</span>
-<span id="cb12-594"><a href="#cb12-594" aria-hidden="true" tabindex="-1"></a>  <span class="co">#max.index &lt;- which.max(input.activation)</span></span>
-<span id="cb12-595"><a href="#cb12-595" aria-hidden="true" tabindex="-1"></a>  xUnder <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">min</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">-</span> <span class="dv">1</span>])</span>
-<span id="cb12-596"><a href="#cb12-596" aria-hidden="true" tabindex="-1"></a>  xOver <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">max</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">+</span> <span class="dv">1</span>])</span>
-<span id="cb12-597"><a href="#cb12-597" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-598"><a href="#cb12-598" aria-hidden="true" tabindex="-1"></a>  mUnder <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xUnder,c)</span>
-<span id="cb12-599"><a href="#cb12-599" aria-hidden="true" tabindex="-1"></a>  mOver <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xOver,c)</span>
-<span id="cb12-600"><a href="#cb12-600" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb12-601"><a href="#cb12-601" aria-hidden="true" tabindex="-1"></a>   exam.output <span class="ot">=</span> <span class="fu">round</span>(aresp <span class="sc">+</span> ((mOver <span class="sc">-</span> mUnder) <span class="sc">/</span> (xOver <span class="sc">-</span> xUnder)) <span class="sc">*</span> (input <span class="sc">-</span> nearestTrain), <span class="dv">3</span>)</span>
-<span id="cb12-602"><a href="#cb12-602" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Determine the input nodes and associated weights for computing the slope</span></span>
-<span id="cb12-603"><a href="#cb12-603" aria-hidden="true" tabindex="-1"></a>  exam.output</span>
-<span id="cb12-604"><a href="#cb12-604" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-605"><a href="#cb12-605" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-606"><a href="#cb12-606" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-607"><a href="#cb12-607" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-608"><a href="#cb12-608" aria-hidden="true" tabindex="-1"></a></span>
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-545"><a href="#cb12-545" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-546"><a href="#cb12-546" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-547"><a href="#cb12-547" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-548"><a href="#cb12-548" aria-hidden="true" tabindex="-1"></a><span class="fu">### Primary Functions</span></span>
+<span id="cb12-549"><a href="#cb12-549" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-552"><a href="#cb12-552" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-553"><a href="#cb12-553" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb12-554"><a href="#cb12-554" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb12-555"><a href="#cb12-555" aria-hidden="true" tabindex="-1"></a>alm.response <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">input=</span><span class="dv">1</span>,c) {</span>
+<span id="cb12-556"><a href="#cb12-556" aria-hidden="true" tabindex="-1"></a>input.activation <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c<span class="sc">*</span>(input.layer <span class="sc">-</span> input)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb12-557"><a href="#cb12-557" aria-hidden="true" tabindex="-1"></a>input.activation <span class="ot">&lt;&lt;-</span> input.activation<span class="sc">/</span><span class="fu">sum</span>(input.activation)</span>
+<span id="cb12-558"><a href="#cb12-558" aria-hidden="true" tabindex="-1"></a><span class="co">#print(length(input.activation)); print(dim(weight.mat))</span></span>
+<span id="cb12-559"><a href="#cb12-559" aria-hidden="true" tabindex="-1"></a>output.activation <span class="ot">&lt;&lt;-</span> weight.mat <span class="sc">%*%</span> input.activation</span>
+<span id="cb12-560"><a href="#cb12-560" aria-hidden="true" tabindex="-1"></a>output.probability <span class="ot">&lt;&lt;-</span> output.activation<span class="sc">/</span><span class="fu">sum</span>(output.activation)</span>
+<span id="cb12-561"><a href="#cb12-561" aria-hidden="true" tabindex="-1"></a>mean.response <span class="ot">&lt;&lt;-</span> <span class="fu">sum</span>(output.layer <span class="sc">*</span> output.probability)</span>
+<span id="cb12-562"><a href="#cb12-562" aria-hidden="true" tabindex="-1"></a>mean.response</span>
+<span id="cb12-563"><a href="#cb12-563" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-564"><a href="#cb12-564" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-565"><a href="#cb12-565" aria-hidden="true" tabindex="-1"></a>alm.update <span class="ot">&lt;-</span> <span class="cf">function</span>(corResp,c,lr){</span>
+<span id="cb12-566"><a href="#cb12-566" aria-hidden="true" tabindex="-1"></a>  fz <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>c<span class="sc">*</span>(output.layer <span class="sc">-</span> corResp)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb12-567"><a href="#cb12-567" aria-hidden="true" tabindex="-1"></a>  teacherSignal <span class="ot">&lt;-</span> (fz <span class="sc">-</span> output.activation)<span class="sc">*</span>lr</span>
+<span id="cb12-568"><a href="#cb12-568" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(length(teacherSignal)); print(length(fz))</span></span>
+<span id="cb12-569"><a href="#cb12-569" aria-hidden="true" tabindex="-1"></a>  wChange <span class="ot">&lt;-</span> teacherSignal <span class="sc">%*%</span> <span class="fu">t</span>(input.activation)</span>
+<span id="cb12-570"><a href="#cb12-570" aria-hidden="true" tabindex="-1"></a>  weight.mat <span class="ot">&lt;&lt;-</span> weight.mat <span class="sc">+</span> (wChange)</span>
+<span id="cb12-571"><a href="#cb12-571" aria-hidden="true" tabindex="-1"></a>  weight.mat[weight.mat<span class="sc">&lt;</span><span class="dv">0</span>]<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb12-572"><a href="#cb12-572" aria-hidden="true" tabindex="-1"></a> <span class="co"># weight.mat[weight.mat&gt;1]=1</span></span>
+<span id="cb12-573"><a href="#cb12-573" aria-hidden="true" tabindex="-1"></a>  weight.mat <span class="ot">&lt;&lt;-</span> weight.mat</span>
+<span id="cb12-574"><a href="#cb12-574" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-575"><a href="#cb12-575" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-576"><a href="#cb12-576" aria-hidden="true" tabindex="-1"></a>alm.trial <span class="ot">&lt;-</span> <span class="cf">function</span>(input, corResp,c,lr){</span>
+<span id="cb12-577"><a href="#cb12-577" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alm.response</span>(input,c)</span>
+<span id="cb12-578"><a href="#cb12-578" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alm.update</span>(corResp,c,lr)</span>
+<span id="cb12-579"><a href="#cb12-579" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"input="</span>,input,<span class="st">"; corResp="</span>,corResp,<span class="st">"; mean.response="</span>,mean.response))</span>
+<span id="cb12-580"><a href="#cb12-580" aria-hidden="true" tabindex="-1"></a>  mean.response</span>
+<span id="cb12-581"><a href="#cb12-581" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-582"><a href="#cb12-582" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-583"><a href="#cb12-583" aria-hidden="true" tabindex="-1"></a>exam.response <span class="ot">&lt;-</span> <span class="cf">function</span>(input,c){</span>
+<span id="cb12-584"><a href="#cb12-584" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Find the index of the input node with the highest activation</span></span>
+<span id="cb12-585"><a href="#cb12-585" aria-hidden="true" tabindex="-1"></a>  trainVec <span class="ot">=</span> <span class="fu">sort</span>(<span class="fu">unique</span>(xt))</span>
+<span id="cb12-586"><a href="#cb12-586" aria-hidden="true" tabindex="-1"></a>  nearestTrain <span class="ot">&lt;-</span> trainVec[<span class="fu">which.min</span>(<span class="fu">abs</span>(input <span class="sc">-</span> trainVec))]</span>
+<span id="cb12-587"><a href="#cb12-587" aria-hidden="true" tabindex="-1"></a>  aresp <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(nearestTrain,c)</span>
+<span id="cb12-588"><a href="#cb12-588" aria-hidden="true" tabindex="-1"></a>  <span class="co">#max.index &lt;- which.max(input.activation)</span></span>
+<span id="cb12-589"><a href="#cb12-589" aria-hidden="true" tabindex="-1"></a>  xUnder <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">min</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">-</span> <span class="dv">1</span>])</span>
+<span id="cb12-590"><a href="#cb12-590" aria-hidden="true" tabindex="-1"></a>  xOver <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">max</span>(trainVec) <span class="sc">==</span> nearestTrain, nearestTrain, trainVec[<span class="fu">which</span>(trainVec <span class="sc">==</span> nearestTrain) <span class="sc">+</span> <span class="dv">1</span>])</span>
+<span id="cb12-591"><a href="#cb12-591" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-592"><a href="#cb12-592" aria-hidden="true" tabindex="-1"></a>  mUnder <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xUnder,c)</span>
+<span id="cb12-593"><a href="#cb12-593" aria-hidden="true" tabindex="-1"></a>  mOver <span class="ot">&lt;-</span> <span class="fu">alm.response</span>(xOver,c)</span>
+<span id="cb12-594"><a href="#cb12-594" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb12-595"><a href="#cb12-595" aria-hidden="true" tabindex="-1"></a>   exam.output <span class="ot">=</span> <span class="fu">round</span>(aresp <span class="sc">+</span> ((mOver <span class="sc">-</span> mUnder) <span class="sc">/</span> (xOver <span class="sc">-</span> xUnder)) <span class="sc">*</span> (input <span class="sc">-</span> nearestTrain), <span class="dv">3</span>)</span>
+<span id="cb12-596"><a href="#cb12-596" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Determine the input nodes and associated weights for computing the slope</span></span>
+<span id="cb12-597"><a href="#cb12-597" aria-hidden="true" tabindex="-1"></a>  exam.output</span>
+<span id="cb12-598"><a href="#cb12-598" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-599"><a href="#cb12-599" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-600"><a href="#cb12-600" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-601"><a href="#cb12-601" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-602"><a href="#cb12-602" aria-hidden="true" tabindex="-1"></a></span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

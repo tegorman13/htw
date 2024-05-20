@@ -145,12 +145,6 @@ $$
 
 ::: column-margin
 
-
-
-
-
-
-
 ###### Input node actvation
 
 $$
@@ -172,7 +166,7 @@ $$
 ### Generate Response
 
 ```{r}
-#| code-fold: show
+##| code-fold: show
 #| code-summary: "Toggle Code"
 alm.response <- function(input = 1, c, input.layer, output.layer,weight.mat) {
   input.activation <- exp(-c * (input.layer - input)^2) / sum(exp(-c * (input.layer - input)^2))

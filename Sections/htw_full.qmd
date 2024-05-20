@@ -1,14 +1,16 @@
 ---
-title: HTW Full w/Code
+title: Impact of Training Variability on Visuomotor Function Learning and Extrapolation
 author:
 - name: Thomas E. Gorman
   affiliations: 
    - Department of Psychological and Brain Sciences, Indiana University-Bloomington
+  affiliation-url: https://psych.indiana.edu/
   url: https://tegorman13.github.io/
   email: tegorman@iu.edu
   orcid: 0000-0001-5366-5442
 - name: Robert L. Goldstone
   affiliation: Department of Psychological and Brain Sciences, Indiana University-Bloomington
+  affiliation-url: https://psych.indiana.edu/
   url: https://pc.cogs.indiana.edu/
   email: rgoldsto@indiana.edu
   orcid: 0000-0001-8357-8358
@@ -24,7 +26,34 @@ repo-actions: false
 execute: 
   warning: false
   eval: true
+format:
+  html: default
+  hugo-md:
+    echo: false
+    include: true
+    html-math-method: mathjax
+    output-file: htw_hugo.md
+  gfm:
+    echo: false
+    #output: false
+    output-file: htw_gfm.md
+  hikmah-manuscript-pdf:
+    echo: false
+    output-file: "htw.pdf"
+    mainfont: "Linux Libertine O"
+    mainfontoptions:
+      - "Numbers=Proportional"
+      - "Numbers=OldStyle"
+    mathfont: "Libertinus Math"
+  docx:
+    echo: false
+    prefer-html: true
+    output-file: "htw.docx"
+    toc: true
+prefer-html: true
 ---
+
+::: {.content-visible when-format="html"}
 _______________________________________________________________________________
 {{< fa file-lines >}} [Link to project page](https://tegorman13.github.io/htw/){target="_blank"} \
 
@@ -32,6 +61,9 @@ _______________________________________________________________________________
 
 {{< fa brands github >}} [repo](https://github.com/tegorman13/htw) \
 _______________________________________________________________________________
+
+:::
+
 
 # Introduction
 
@@ -131,7 +163,7 @@ To account for the empirical results, we will apply a series of computational mo
 
 ## Experiment 1
 
-## Methods
+### Methods
 
 *Participants* A total of 156 participants were recruited from the Indiana University Introductory Psychology Course. Participants were randomly assigned to one of two training conditions: varied training or constant training. 
 

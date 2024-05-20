@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.5.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>HTW Project - HTW E1 Testing</title>
+<title>HTW Project – HTW E1 Testing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,7 +30,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -118,7 +118,7 @@ div.csl-indent {
   }
 }</script><style>html{ scroll-behavior: smooth; }</style>
 <script src="../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -144,18 +144,19 @@ window.Quarto = {
   typesetMath
 };
 </script><link rel="stylesheet" href="../Assets/Style/calloutTG.css">
+<link rel="stylesheet" href="../Assets/Style/style.scss">
 </head>
 <body class="nav-sidebar docked">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Analysis/e1.html">Analyses</a></li><li class="breadcrumb-item"><a href="../Analysis/e1_test.html">HTW E1 Testing</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -197,9 +198,9 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Sections</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -231,7 +232,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Sections/combo1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">combo1</span></a>
+ <span class="menu-text">Combo_all</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Sections/htw_full.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTW Full w/Code</span></a>
   </div>
 </li>
       </ul>
@@ -239,9 +246,9 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">Analyses</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -299,9 +306,9 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">Model</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -347,9 +354,9 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">Simulations</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -371,9 +378,9 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">Interactive</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -395,9 +402,9 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
  <span class="menu-text">Misc</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -436,9 +443,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
  <span class="menu-text">Appendix</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -521,12 +528,11 @@ window.Quarto = {
 <span>  <span class="fu">pack_rows</span><span class="op">(</span><span class="st">""</span>, <span class="fl">7</span>, <span class="fl">7</span>, bold <span class="op">=</span> <span class="cn">FALSE</span>, italic <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">kable_out</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div id="tbl-bmm-structure" class="cell quarto-float anchored">
+</details><div id="tbl-bmm-structure" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bmm-structure-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Mixed model structure and coefficient descriptions
 </figcaption><div aria-describedby="tbl-bmm-structure-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
 <table class="table table-hover do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Type</th>
@@ -590,7 +596,6 @@ Table&nbsp;1: Mixed model structure and coefficient descriptions
 </table>
 </div>
 </div>
-</div>
 </figure>
 </div>
 </div>
@@ -618,8 +623,7 @@ Table&nbsp;2: Testing Deviation - Empirical Summary
 </figcaption><div aria-describedby="tbl-e1-test-nf-deviation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-e1-test-nf-deviation" style="flex-basis: 100.0%;justify-content: center;">
-<div class="quarto-layout-cell-subref" data-ref-parent="tbl-e1-test-nf-deviation">
-<div id="tbl-e1-test-nf-deviation-1" class="do-not-create-environment quarto-float anchored" data-quarto-postprocess="true">
+<div id="tbl-e1-test-nf-deviation-1" class="do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-subfloat-tbl figure"><figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-e1-test-nf-deviation-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Constant Testing - Deviation
 </figcaption><div aria-describedby="tbl-e1-test-nf-deviation-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -683,11 +687,9 @@ Table&nbsp;2: Testing Deviation - Empirical Summary
 
 </div>
 </div>
-</div>
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-e1-test-nf-deviation" style="flex-basis: 100.0%;justify-content: center;">
-<div class="quarto-layout-cell-subref" data-ref-parent="tbl-e1-test-nf-deviation">
-<div id="tbl-e1-test-nf-deviation-2" class="do-not-create-environment quarto-float anchored" data-quarto-postprocess="true">
+<div id="tbl-e1-test-nf-deviation-2" class="do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-subfloat-tbl figure"><figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-e1-test-nf-deviation-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Varied Testing - Deviation
 </figcaption><div aria-describedby="tbl-e1-test-nf-deviation-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -752,7 +754,6 @@ Table&nbsp;2: Testing Deviation - Empirical Summary
 </div>
 </div>
 </div>
-</div>
 </figure>
 </div>
 <div class="cell">
@@ -761,7 +762,7 @@ Table&nbsp;2: Testing Deviation - Empirical Summary
 <span>    <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"errorbar"</span>, position<span class="op">=</span><span class="fu">position_dodge</span><span class="op">(</span><span class="fl">.9</span><span class="op">)</span>, fun.data <span class="op">=</span> <span class="va">mean_se</span>, width <span class="op">=</span> <span class="fl">.4</span>, alpha <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Band"</span>, y<span class="op">=</span><span class="st">"Deviation From Target"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e1-test-dev" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-e1-test-dev" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-test-dev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="e1_test_files/figure-html/fig-e1-test-dev-1.png" class="img-fluid figure-img" width="672">
 </div>
@@ -796,12 +797,11 @@ Figure&nbsp;1: E1. Deviations from target band during testing without feedback s
 <span><span class="va">cdted1</span> <span class="op">&lt;-</span> <span class="fu">get_coef_details</span><span class="op">(</span><span class="va">bmtd</span>, <span class="st">"conditVaried"</span><span class="op">)</span></span>
 <span><span class="va">cdted2</span> <span class="op">&lt;-</span><span class="fu">get_coef_details</span><span class="op">(</span><span class="va">bmtd</span>, <span class="st">"bandTypeExtrapolation"</span><span class="op">)</span></span>
 <span><span class="va">cdted3</span> <span class="op">&lt;-</span><span class="fu">get_coef_details</span><span class="op">(</span><span class="va">bmtd</span>, <span class="st">"conditVaried:bandTypeExtrapolation"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div id="tbl-e1-bmm-dist" class="cell quarto-float anchored">
+</details><div id="tbl-e1-bmm-dist" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e1-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;3: E1. Training vs.&nbsp;Extrapolation
 </figcaption><div aria-describedby="tbl-e1-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
 <table class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Term</th>
@@ -843,7 +843,6 @@ Table&nbsp;3: E1. Training vs.&nbsp;Extrapolation
 </table>
 </div>
 </div>
-</div>
 </figure>
 </div>
 </div>
@@ -871,7 +870,7 @@ Table&nbsp;3: E1. Training vs.&nbsp;Extrapolation
 </div>
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">pe1td</span> <span class="op">+</span> <span class="va">pe1ce</span><span class="op">)</span> <span class="op">+</span> <span class="fu">plot_annotation</span><span class="op">(</span>tag_levels<span class="op">=</span> <span class="st">'A'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e1-test-dev2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-e1-test-dev2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-test-dev2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="e1_test_files/figure-html/fig-e1-test-dev2-1.png" class="img-fluid figure-img" width="672">
 </div>
@@ -899,12 +898,11 @@ Figure&nbsp;2: E1. Deviations from target band during testing without feedback s
 <span>          pd<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">value</span><span class="op">&lt;</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">-</span><span class="va">pd</span>,<span class="va">pd</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>   <span class="fu">kbl</span><span class="op">(</span>caption<span class="op">=</span><span class="st">"Contrasts"</span><span class="op">)</span></span>
 <span><span class="va">coef_details</span> <span class="op">&lt;-</span> <span class="fu">get_coef_details</span><span class="op">(</span><span class="va">e1_distBMM</span>, <span class="st">"conditVaried"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div id="tbl-e1-bmm-dist2" class="cell quarto-float anchored">
+</details><div id="tbl-e1-bmm-dist2" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e1-bmm-dist2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;4: Experiment 1. Bayesian Mixed Model predicting absolute deviation as a function of condition (Constant vs.&nbsp;Varied) and Velocity Band
 </figcaption><div aria-describedby="tbl-e1-bmm-dist2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
 <table class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <caption>Model Coefficients</caption>
 <thead><tr class="header">
@@ -946,9 +944,7 @@ Table&nbsp;4: Experiment 1. Bayesian Mixed Model predicting absolute deviation a
 </tbody>
 </table>
 </div>
-</div>
 <div class="cell-output-display">
-<div>
 <table class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <caption>Contrasts</caption>
 <thead><tr class="header">
@@ -1012,7 +1008,6 @@ Table&nbsp;4: Experiment 1. Bayesian Mixed Model predicting absolute deviation a
 </table>
 </div>
 </div>
-</div>
 </figure>
 </div>
 </div>
@@ -1034,7 +1029,7 @@ Table&nbsp;4: Experiment 1. Bayesian Mixed Model predicting absolute deviation a
 <span>                     labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">test</span><span class="op">$</span><span class="va">vb</span><span class="op">)</span>, </span>
 <span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1400</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e1-bmm-dist" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-e1-bmm-dist" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-bmm-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="e1_test_files/figure-html/fig-e1-bmm-dist-1.png" class="img-fluid figure-img" width="672">
 </div>
@@ -1052,7 +1047,7 @@ vx_{ij} = \beta_0 + \beta_1 \cdot condit_{ij} + \beta_2 \cdot bandInt_{ij} + \be
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">test</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span>,<span class="va">vb</span>,<span class="va">condit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">plot_distByCondit</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div id="fig-e1-test-vx" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-e1-test-vx" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-test-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="e1_test_files/figure-html/fig-e1-test-vx-1.png" class="img-fluid figure-img" width="1056">
 </div>
@@ -1071,8 +1066,7 @@ Table&nbsp;5: Testing vx - Empirical Summary
 </figcaption><div aria-describedby="tbl-e1-test-nf-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-e1-test-nf-vx" style="flex-basis: 100.0%;justify-content: center;">
-<div class="quarto-layout-cell-subref" data-ref-parent="tbl-e1-test-nf-vx">
-<div id="tbl-e1-test-nf-vx-1" class="do-not-create-environment quarto-float anchored" data-quarto-postprocess="true">
+<div id="tbl-e1-test-nf-vx-1" class="do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-subfloat-tbl figure"><figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-e1-test-nf-vx-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Constant Testing - vx
 </figcaption><div aria-describedby="tbl-e1-test-nf-vx-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1136,11 +1130,9 @@ Table&nbsp;5: Testing vx - Empirical Summary
 
 </div>
 </div>
-</div>
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-e1-test-nf-vx" style="flex-basis: 100.0%;justify-content: center;">
-<div class="quarto-layout-cell-subref" data-ref-parent="tbl-e1-test-nf-vx">
-<div id="tbl-e1-test-nf-vx-2" class="do-not-create-environment quarto-float anchored" data-quarto-postprocess="true">
+<div id="tbl-e1-test-nf-vx-2" class="do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-subfloat-tbl figure"><figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-e1-test-nf-vx-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Varied Testing - vx
 </figcaption><div aria-describedby="tbl-e1-test-nf-vx-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1205,7 +1197,6 @@ Table&nbsp;5: Testing vx - Empirical Summary
 </div>
 </div>
 </div>
-</div>
 </figure>
 </div>
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">e1_vxBMM</span> <span class="op">&lt;-</span> <span class="fu">brm</span><span class="op">(</span><span class="va">vx</span> <span class="op">~</span> <span class="va">condit</span> <span class="op">*</span> <span class="va">bandInt</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">bandInt</span><span class="op">|</span><span class="va">id</span><span class="op">)</span>,</span>
@@ -1232,8 +1223,7 @@ Table&nbsp;6: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of 
 </figcaption><div aria-describedby="tbl-e1-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-e1-bmm-vx" style="flex-basis: 100.0%;justify-content: center;">
-<div class="quarto-layout-cell-subref" data-ref-parent="tbl-e1-bmm-vx">
-<div id="tbl-e1-bmm-vx-1" class="do-not-create-environment quarto-float anchored" data-quarto-postprocess="true">
+<div id="tbl-e1-bmm-vx-1" class="do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-subfloat-tbl figure"><figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-e1-bmm-vx-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Model fit to all 6 bands
 </figcaption><div aria-describedby="tbl-e1-bmm-vx-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1283,11 +1273,9 @@ Table&nbsp;6: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of 
 
 </div>
 </div>
-</div>
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-e1-bmm-vx" style="flex-basis: 100.0%;justify-content: center;">
-<div class="quarto-layout-cell-subref" data-ref-parent="tbl-e1-bmm-vx">
-<div id="tbl-e1-bmm-vx-2" class="do-not-create-environment quarto-float anchored" data-quarto-postprocess="true">
+<div id="tbl-e1-bmm-vx-2" class="do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-subfloat-tbl figure"><figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-e1-bmm-vx-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Model fit to 3 extrapolation bands
 </figcaption><div aria-describedby="tbl-e1-bmm-vx-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1338,7 +1326,6 @@ Table&nbsp;6: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of 
 </div>
 </div>
 </div>
-</div>
 </figure>
 </div>
 <p>See <a href="#tbl-e1-bmm-vx" class="quarto-xref">Table&nbsp;6</a> for the full model results. The estimated coefficient for training condition (β = 164.05, 95% CrI [45.5, 278.85]) suggests that the varied group tends to produce harder throws than the constant group, but is not in and of itself useful for assessing discrimination. Most relevant to the issue of discrimination is the slope on Velocity Band (β = 0.71, 95% CrI [0.62, 0.8]). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The estimate for the interaction between slope and condition (β = -0.14, 95% CrI [-0.26, -0.01]), suggests that the discrimination was somewhat modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition. This difference is depicted visually in <a href="#fig-e1-bmm-vx" class="quarto-xref">Figure&nbsp;5</a>. <a href="#tbl-e1-slope-quartile" class="quarto-xref">Table&nbsp;7</a> shows the average slope coefficients for varied and constant participants separately for each quartile. The constant participant participants appear to have larger slopes across quartiles, but the difference between conditions may be less pronounced for the top quartiles of subjects who show the strongest discrimination. Figure <a href="#fig-e1-bmm-bx2" class="quarto-xref">Figure&nbsp;6</a> shows the distributions of slope values for each participant, and the compares the probability density of slope coefficients between training conditions. <a href="#fig-e1-indv-slopes" class="quarto-xref">Figure&nbsp;7</a></p>
@@ -1362,7 +1349,7 @@ Table&nbsp;6: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of 
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-bmm-vx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-e1-bmm-vx" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-e1-bmm-vx-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-e1-bmm-vx-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-e1-bmm-vx-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="e1_test_files/figure-html/fig-e1-bmm-vx-1.png" class="img-fluid figure-img" data-ref-parent="fig-e1-bmm-vx" width="1152">
 </div>
@@ -1374,7 +1361,7 @@ Table&nbsp;6: Experiment 1. Bayesian Mixed Model Predicting Vx as a function of 
 </div>
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-e1-bmm-vx" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-e1-bmm-vx-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-e1-bmm-vx-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-e1-bmm-vx-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="e1_test_files/figure-html/fig-e1-bmm-vx-2.png" class="img-fluid figure-img" data-ref-parent="fig-e1-bmm-vx" width="1152">
 </div>
@@ -1439,12 +1426,11 @@ Figure&nbsp;5: Conditional effect of training condition and Band. Ribbons indica
 <span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from<span class="op">=</span><span class="va">quantile</span>,values_from<span class="op">=</span><span class="va">SlopeInt</span>,names_prefix<span class="op">=</span><span class="st">"Q_"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">Condition</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">summarise</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"Q"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">mean</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">kbl</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div id="tbl-e1-slope-quartile" class="cell quarto-float anchored">
+</details><div id="tbl-e1-slope-quartile" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-e1-slope-quartile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;7: Slope coefficients by quartile, per condition
 </figcaption><div aria-describedby="tbl-e1-slope-quartile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
 <table class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Condition</th>
@@ -1475,7 +1461,6 @@ Table&nbsp;7: Slope coefficients by quartile, per condition
 </table>
 </div>
 </div>
-</div>
 </figure>
 </div>
 </div>
@@ -1490,7 +1475,7 @@ Table&nbsp;7: Slope coefficients by quartile, per condition
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-bmm-bx2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-e1-bmm-bx2" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-e1-bmm-bx2-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-e1-bmm-bx2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-e1-bmm-bx2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="e1_test_files/figure-html/fig-e1-bmm-bx2-1.png" class="img-fluid figure-img" data-ref-parent="fig-e1-bmm-bx2" width="960">
 </div>
@@ -1502,7 +1487,7 @@ Table&nbsp;7: Slope coefficients by quartile, per condition
 </div>
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-e1-bmm-bx2" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-e1-bmm-bx2-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-e1-bmm-bx2-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-e1-bmm-bx2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="e1_test_files/figure-html/fig-e1-bmm-bx2-2.png" class="img-fluid figure-img" data-ref-parent="fig-e1-bmm-bx2" width="960">
 </div>
@@ -1521,10 +1506,10 @@ Figure&nbsp;6: Slope distributions between condition
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nSbj</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
 <span><span class="va">indvDraws</span>  <span class="op">|&gt;</span> <span class="fu">indv_model_plot</span><span class="op">(</span><span class="va">indvSlopes</span>, <span class="va">testAvg</span>, <span class="va">SlopeInt</span>,rank_variable<span class="op">=</span><span class="va">Slope</span>,n_sbj<span class="op">=</span><span class="va">nSbj</span>,<span class="st">"max"</span><span class="op">)</span></span>
 <span><span class="va">indvDraws</span> <span class="op">|&gt;</span> <span class="fu">indv_model_plot</span><span class="op">(</span><span class="va">indvSlopes</span>, <span class="va">testAvg</span>,<span class="va">SlopeInt</span>, rank_variable<span class="op">=</span><span class="va">Slope</span>,n_sbj<span class="op">=</span><span class="va">nSbj</span>,<span class="st">"min"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div id="fig-e1-indv-slopes" class="cell quarto-figure quarto-figure-center quarto-float anchored">
+</details><div id="fig-e1-indv-slopes" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-e1-indv-slopes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="fig-e1-indv-slopes-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-e1-indv-slopes-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-e1-indv-slopes-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="e1_test_files/figure-html/fig-e1-indv-slopes-1.png" class="img-fluid figure-img" data-ref-parent="fig-e1-indv-slopes" width="1152">
 </div>
@@ -1534,7 +1519,7 @@ Figure&nbsp;6: Slope distributions between condition
 </div>
 </div>
 <div class="cell-output-display">
-<div id="fig-e1-indv-slopes-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-e1-indv-slopes-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-e1-indv-slopes-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="e1_test_files/figure-html/fig-e1-indv-slopes-2.png" class="img-fluid figure-img" data-ref-parent="fig-e1-indv-slopes" width="1152">
 </div>
@@ -1755,18 +1740,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1798,7 +1772,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
   const viewSource = window.document.getElementById('quarto-view-source') ||
                      window.document.getElementById('quarto-code-tools-source');
   if (viewSource) {
@@ -1852,15 +1848,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.tegorman13.github.io/htw\/custom");
+      var filterRegex = new RegExp("https:\/\/tegorman13\.github\.io\/htw\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
           // target, if specified
           link.setAttribute("target", "_blank");
           if (link.getAttribute("rel") === null) {
@@ -1902,7 +1903,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -2649,7 +2654,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb35-493"><a href="#cb35-493" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-494"><a href="#cb35-494" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-495"><a href="#cb35-495" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- {{include Appendix/E1_Appendix.qmd}} --&gt;</span></span>
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
