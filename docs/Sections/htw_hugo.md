@@ -20,7 +20,7 @@ author:
     url: 'https://pc.cogs.indiana.edu/'
     email: rgoldsto@indiana.edu
     orcid: 0000-0001-8357-8358
-date: last-modified
+date: 05/20/24
 page-layout: full
 code-fold: true
 code-tools: true
