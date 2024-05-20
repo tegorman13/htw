@@ -165,9 +165,7 @@ Filter for each shape stimulus.
 
 <div id="fig-delosh-extrap">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-delosh-extrap-1.png"
-width="960" />
+![](htw_full_files/figure-commonmark/fig-delosh-extrap-1.png)
 
 
 Figure 1: Generalization reproduced patterns from DeLosh et al. (1997)
@@ -322,9 +320,7 @@ band would have slopes ~0.
 
 <div id="fig-e1-train-dev">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e1-train-dev-1.png"
-width="768" />
+![](htw_full_files/figure-commonmark/fig-e1-train-dev-1.png)
 
 
 Figure 3: Experiment 1 Training Stage. Deviations from target band
@@ -400,9 +396,7 @@ group in the extrapolation bands.
 
 <div id="fig-e1-test-dev">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e1-test-dev-1.png"
-width="1056" />
+![](htw_full_files/figure-commonmark/fig-e1-test-dev-1.png)
 
 
 Figure 4: Experiment 1 Testing Accuracy. A) Empricial Deviations from
@@ -459,9 +453,7 @@ the constant condition (see
 
 <div id="fig-e1-test-vx">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e1-test-vx-1.png"
-width="1056" />
+![](htw_full_files/figure-commonmark/fig-e1-test-vx-1.png)
 
 
 Figure 5: Experiment 1. Empirical distribution of velocities producing
@@ -471,9 +463,7 @@ correct range for each velocity band.
 </div>
 <div id="fig-e1-bmm-vx">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e1-bmm-vx-1.png"
-width="1056" />
+![](htw_full_files/figure-commonmark/fig-e1-bmm-vx-1.png)
 
 
 Figure 6: Experiment 1 Discrimination. A) Conditional effect of training
@@ -516,9 +506,7 @@ completed the experiment (Varied: 55, Constant: 55).
 
 <div id="fig-e2-train-dev">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2-train-dev-1.png"
-width="768" />
+![](htw_full_files/figure-commonmark/fig-e2-train-dev-1.png)
 
 
 Figure 7: Experiment 2 Training Stage. Deviations from target band
@@ -590,9 +578,7 @@ the extrapolation bands (see
 
 <div id="fig-e2-test-dev">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2-test-dev-1.png"
-width="1056" />
+![](htw_full_files/figure-commonmark/fig-e2-test-dev-1.png)
 
 
 Figure 8: Experiment 2 Testing Accuracy. A) Empricial Deviations from
@@ -639,9 +625,7 @@ not differ in their ability to discriminate between bands (see
 
 <div id="fig-e2-test-vx">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2-test-vx-1.png"
-width="1056" />
+![](htw_full_files/figure-commonmark/fig-e2-test-vx-1.png)
 
 
 Figure 9: Experiment 2. Empirical distribution of velocities produced in
@@ -651,9 +635,7 @@ correct range for each velocity band.
 </div>
 <div id="fig-e2-bmm-vx">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2-bmm-vx-1.png"
-width="1056" />
+![](htw_full_files/figure-commonmark/fig-e2-bmm-vx-1.png)
 
 
 Figure 10: Experiment 2 Discrimination. A) Conditional effect of
@@ -735,9 +717,7 @@ showing greater accuracy in the reverse order condition ( $\beta$ =
 
 <div id="fig-e3-train-dev">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e3-train-dev-1.png"
-width="768" />
+![](htw_full_files/figure-commonmark/fig-e3-train-dev-1.png)
 
 
 Figure 11: Experiment 3 training. Deviations from target band during
@@ -794,9 +774,7 @@ significant.
 ::: -->
 <div id="fig-e3-test-dev">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e3-test-dev-1.png"
-width="1056" />
+![](htw_full_files/figure-commonmark/fig-e3-test-dev-1.png)
 
 
 Figure 12: Experiment 3 Testing Accuracy. A) Empricial Deviations from
@@ -853,9 +831,7 @@ noticably steeper than the other conditions.
 
 <div id="fig-e3-test-vx">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e3-test-vx-1.png"
-width="1056" />
+![](htw_full_files/figure-commonmark/fig-e3-test-vx-1.png)
 
 
 Figure 13: e3 testing x velocities. Translucent bands with dash lines
@@ -867,9 +843,7 @@ indicate the correct range for each velocity band.
 
 <div id="fig-e3-bmm-vx">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e3-bmm-vx-1.png"
-width="1056" />
+![](htw_full_files/figure-commonmark/fig-e3-bmm-vx-1.png)
 
 
 Figure 14: Experiment 3 Discrimination. A) Conditional effect of
@@ -903,9 +877,7 @@ when the band order was reversed during testing.
 
 <div id="fig-alm-diagram">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-alm-diagram-1.png"
-width="768" />
+![](htw_full_files/figure-commonmark/fig-alm-diagram-1.png)
 
 
 Figure 15: The Associative Learning Model (ALM). The diagram illustrates
@@ -1168,9 +1140,7 @@ model was evaluated on.
 </div>
 <div id="fig-htw-post-dist">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-htw-post-dist-1.png"
-width="960" />
+![](htw_full_files/figure-commonmark/fig-htw-post-dist-1.png)
 
 
 Figure 16: Posterior Distributions of $c$ and $lr$ parameters. Points
@@ -1182,9 +1152,7 @@ logarithmically.
 </div>
 <div id="fig-htw-resid-pred">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-htw-resid-pred-1.png"
-width="1056" />
+![](htw_full_files/figure-commonmark/fig-htw-resid-pred-1.png)
 
 
 Figure 17: Model residuals for each combination of training condition,
@@ -1250,9 +1218,7 @@ discriminate all 6 target bands.
 
 <div id="fig-cm-vx-pat">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-1.png"
-width="960" />
+![](htw_full_files/figure-commonmark/fig-cm-vx-pat-1.png)
 
 
 Figure 18: Empirical data and Model predictions for mean velocity across
@@ -1264,9 +1230,7 @@ EXAM, alongside the observed data.
 </div>
 <div id="fig-ee-e1">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-ee-e1-1.png"
-width="960" />
+![](htw_full_files/figure-commonmark/fig-ee-e1-1.png)
 
 
 Figure 19: A-C) Conditional effects of Model (ALM vs EXAM) and Condition
@@ -1324,9 +1288,7 @@ evaluated on.
 
 <div id="fig-cm-vx-pat-e2-e3">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-e2-e3-1.png"
-width="960" />
+![](htw_full_files/figure-commonmark/fig-cm-vx-pat-e2-e3-1.png)
 
 
 Figure 20: Empirical data and Model predictions from Experiment 2 and 3
@@ -1404,9 +1366,7 @@ reverse order condition (see
 
 <div id="fig-e2_e3_ae">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2_e3_ae-1.png"
-width="864" />
+![](htw_full_files/figure-commonmark/fig-e2_e3_ae-1.png)
 
 
 Figure 21: Conditional effects of Model (ALM vs EXAM) and Condition
@@ -1477,9 +1437,7 @@ patterns they can produce (Dome & Wills, 2023).
 
 <div id="fig-htw-best-model">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-htw-best-model-1.png"
-width="1056" />
+![](htw_full_files/figure-commonmark/fig-htw-best-model-1.png)
 
 
 Figure 22: Difference in model errors for each participant, with models
@@ -1489,9 +1447,7 @@ negative values favor ALM.
 </div>
 <div id="fig-htw-indv-pred">
 
-<img
-src="htw_full.markdown_strict_files/figure-markdown_strict/fig-htw-indv-pred-1.png"
-width="960" />
+![](htw_full_files/figure-commonmark/fig-htw-indv-pred-1.png)
 
 
 Figure 23: Model predictions alongside observed data for a subset of
