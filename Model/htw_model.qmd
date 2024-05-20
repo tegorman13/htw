@@ -258,7 +258,7 @@ post_dat_l |>
 
 ```{r}
 #| label: fig-ee-e1
-#| fig-caption: conditional and marginal effects
+#| fig-cap: A-C) Conditional effects of Model (ALM vs EXAM) and Condition (Constant vs. Varied). Lower values on the y axis indicate better model fit. D) Specific contrasts of model performance comparing 1) EXAM fits between constant and varied training; 2) ALM vs. EXAM for the varied group; 3) ALM fits between constant and varied. Negative error differences indicate that the term on the left side (e.g. EXAM Constant) tended to have smaller model residuals. 
 #| fig-height: 8
 #| fig-width: 10
 
@@ -288,7 +288,7 @@ p3 <- plot(conditional_effects(e1_ee_brm_ae, effects="Model:condit"),points=FALS
   scale_color_manual(values=wes_palette("Darjeeling1")) +
   labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
   
-p_ce_1 <- (p1 + p2+ p3) + plot_annotation(tag_levels = c('A'), tag_suffix=".")
+#p_ce_1 <- (p1 + p2+ p3) + plot_annotation(tag_levels = c('A'), tag_suffix=".")
 
 bm1 <- get_coef_details(e1_ee_brm_ae, "conditVaried")
 bm2 <- get_coef_details(e1_ee_brm_ae, "ModelEXAM")
@@ -328,7 +328,9 @@ p_em_1<- e1_ee_brm_ae |> emmeans(pairwise~ Model*condit, re_formula=NA)  |>
   filter(!(contrast %in% c("ALM Constant - EXAM Constant","ALM Constant - EXAM Varied","ALM Varied - EXAM Varied ", "EXAM Constant - ALM Varied" ))) |> 
   ggplot(aes(x=value,y=contrast,fill=contrast)) +stat_halfeye() + labs(x="Model Error Difference",y="Contrast") + theme(legend.position="none") 
 
-p_ce_1 / p_em_1
+#p_ce_1 / p_em_1
+
+(p1 + p2+ p3) /p_em_1 + plot_annotation(tag_levels = c('A'), tag_suffix=".")
 ```
 
 To quantitatively assess whether the differences in performance between models,  we fit a bayesian regressions predicting the errors of the posterior predictions of each models as a function of the Model (ALM vs. EXAM) and training condition (Constant vs. Varied).
