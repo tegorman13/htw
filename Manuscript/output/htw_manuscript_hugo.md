@@ -2,7 +2,6 @@
 title: >-
   Impact of Training Variability on Visuomotor Function Learning and
   Extrapolation
-date: 05-20-2024
 author:
   - name: Thomas E. Gorman
     affiliations:
