@@ -2,6 +2,7 @@
 title: >-
   Impact of Training Variability on Visuomotor Function Learning and
   Extrapolation
+date: 05-20-2024
 author:
   - name: Thomas E. Gorman
     affiliations:
@@ -78,9 +79,9 @@ The present study investigates the influence of training variability on learning
 
 To account for the empirical results, we will apply a series of computational models, including the Associative Learning Model (ALM) and the Extrapolation-Association Model (EXAM). Notably, this study is the first to employ approximate Bayesian computation (ABC) to fit these models to individual subject data, enabling us to thoroughly investigate the full range of posterior predictions of each model, and to examine the ability of these influential models of function learning to account for both the group level and individual level data.
 
-## Experiment 1
+# Experiment 1
 
-### Methods
+## Methods
 
 *Participants* A total of 156 participants were recruited from the Indiana University Introductory Psychology Course. Participants were randomly assigned to one of two training conditions: varied training or constant training.
 
@@ -113,7 +114,7 @@ trainE1_max <- trainE1 |> filter(Trial_Bin == nbins, bandInt==800)
 trainE1_avg <- trainE1_max |> group_by(id,condit) |> summarise(avg = mean(dist))
 ```
 
-### Analyses Strategy
+## Analyses Strategy
 
 All data processing and statistical analyses were performed in R version 4.32 ([Team, 2020](#ref-rcoreteamLanguageEnvironmentStatistical2020)). To assess differences between groups, we used Bayesian Mixed Effects Regression. Model fitting was performed with the brms package in R ([Bürkner, 2017](#ref-burknerBrmsPackageBayesian2017)), and descriptive stats and tables were extracted with the BayestestR package ([Makowski et al., 2019](#ref-makowskiBayestestRDescribingEffects2019)). Mixed effects regression enables us to take advantage of partial pooling, simultaneously estimating parameters at the individual and group level. Our use of Bayesian, rather than frequentist methods allows us to directly quantify the uncertainty in our parameter estimates, as well as avoiding convergence issues common to the frequentist analogues of our mixed models.
 
@@ -129,7 +130,7 @@ Each model was set to run with 4 chains, 5000 iterations per chain, with the fir
 
 In each experiment we compare varied and constant conditions in terms of 1) accuracy in the final training block; 2) testing accuracy as a function of band type (trained vs. extrapolation bands); 3) extent of discrimination between all six testing bands. We quantified accuracy as the absolute deviation between the response velocity and the nearest boundary of the target band. Thus, when the target band was velocity 600-800, throws of 400, 650, and 900 would result in deviation values of 200, 0, and 100, respectively. The degree of discrimination between bands was index by fitting a linear model predicting the response velocity as a function of the target velocity. Participants who reliably discriminated between velocity bands tended to haves slope values ~1, while participants who made throws irrespective of the current target band would have slopes ~0.
 
-### Results
+## Results
 
 ``` r
 p1 <- trainE1 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
@@ -317,13 +318,13 @@ p3
 
 ![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-bmm-vx-1.jpeg)
 
-## E1 Summary
+## Experiment 1 Summary
 
 In Experiment 1, we investigated how variability in training influenced participants' ability learn and extrapolate in a visuomotor task. Our findings that training with variable conditions resulted in lower final training performance are consistent with much of the prior research on the influence of training variability ([Raviv et al., 2022](#ref-ravivHowVariabilityShapes2022); [Soderstrom & Bjork, 2015](#ref-soderstromLearningPerformanceIntegrative2015)), and is particularly unsurprising in the present work, given that the constant group received three times the amount of training on the velocity band common to the two conditions.
 
 More importantly, the varied training group exhibited significantly larger deviations from the target velocity bands during the testing phase, particularly for the extrapolation bands that were not encountered by either condition during training.
 
-## Experiment 2
+# Experiment 2
 
 ``` r
 # walk(c("brms","dplyr","bayestestR"), conflict_prefer_all, quiet = TRUE)
@@ -339,11 +340,11 @@ trainE2_max <- trainE2 |> filter(Trial_Bin == nbins, bandInt==600)
 # e2 |> group_by(condit, bandOrder) |> summarise(n_distinct(id))
 ```
 
-### Methods & Procedure
+## Methods & Procedure
 
 The task and procedure of Experiment 2 was identical to Experiment 1, with the exception that the training and testing bands were reversed (see **?@fig-design-e2**). The Varied group trained on bands 100-300, 350-550, 600-800, and the constant group trained on band 600-800. Both groups were tested from all six bands. A total of 110 participants completed the experiment (Varied: 55, Constant: 55).
 
-### Results
+## Results
 
 ``` r
 p1 <- trainE2 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
@@ -526,11 +527,11 @@ p3
 
 ![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e2-bmm-vx-1.jpeg)
 
-### Experiment 2 Summary
+## Experiment 2 Summary
 
 Experiment 2 extended the findings of Experiment 1 by examining the effects of training variability on extrapolation performance in a visuomotor function learning task, but with reversed training and testing bands. Similar to Experiment 1, the Varied group exhibited poorer performance during training and testing. However unlike experiment 1, the Varied group did not show a significant difference in discrimination between bands.
 
-## Experiment 3
+# Experiment 3
 
 ``` r
 e3 <- readRDS(here("data/e3_08-04-23.rds")) |> 
@@ -547,11 +548,11 @@ trainE3 <-  e3 |> filter(expMode2=="Train") |> group_by(id,condit,bandOrder, vb)
 trainE3_max <- trainE3 |> filter(Trial_Bin == nbins, bandInt==trainCon)
 ```
 
-### Methods & Procedure
+## Methods & Procedure
 
 The major adjustment of Experiment 3 is for participants to receive ordinal feedback during training, in contrast to the continuous feedback of the prior experiments. After each training throw, participants are informed whether a throw was too soft, too hard, or correct (i.e. within the target velocity range). All other aspects of the task and design are identical to Experiments 1 and 2. We utilized the order of training and testing bands from both of the prior experiments, thus assigning participants to both an order condition (Original or Reverse) and a training condition (Constant or Varied). Participants were once again recruited from the online Indiana University Introductory Psychology Course pool. Following exclusions, 195 participants were included in the final analysis, n=51 in the Constant-Original condition, n=59 in the Constant-Reverse condition, n=39 in the Varied-Original condition, and n=46 in the Varied-Reverse condition.
 
-### Results
+## Results
 
 ``` r
 bmm_e3_train <- trainE3_max %>% 
@@ -793,11 +794,11 @@ p3
 
 ![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e3-bmm-vx-1.jpeg)
 
-### Experiment 3 Summary
+## Experiment 3 Summary
 
 In Experiment 3, we investigated the effects of training condition (constant vs. varied) and band type (training vs. extrapolation) on participants' accuracy and discrimination during the testing phase. Unlike the previous experiments, participants received ordinal feedback during the training phase. Additionally, Experiment 3 included both the original order condition from Experiment 1 and the reverse order condition from Experiment 2. The results revealed no significant main effects of training condition on testing accuracy, nor was there a significant difference between groups in band discrimination. However, we observed a significant three-way interaction for the discrimination analysis, indicating that the varied condition showed a steeper slope coefficient on the reverse order bands compared to the constant condition. This result suggests that varied training enhanced participants' ability to discriminate between velocity bands, but only when the band order was reversed during testing.
 
-## Computational Model
+# Computational Model
 
 ``` r
 ###| cache: true
@@ -817,7 +818,7 @@ alm_plot()
 
 The modeling goal is to implement a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning ([DeLosh et al., 1997](#ref-deloshExtrapolationSineQua1997)). ALM is a simple connectionist learning model which closely resembles Kruschke's ALCOVE model ([Kruschke, 1992](#ref-kruschkeALCOVEExemplarbasedConnectionist1992)), with modifications to allow for the generation of continuous responses.
 
-### ALM & Exam
+## ALM & Exam
 
 ALM is a localist neural network model ([Page, 2000](#ref-pageConnectionistModellingPsychology2000a)), with each input node corresponding to a particular stimulus, and each output node corresponding to a particular response value. The units in the input layer activate as a function of their Gaussian similarity to the input stimulus ( a_i(X) = exp(-c(X - X_i)^2) ). So, for example, an input stimulus of value 55 would induce maximal activation of the input unit tuned to 55. Depending on the value of the generalization parameter, the nearby units (e.g., 54 and 56; 53 and 57) may also activate to some degree. The units in the input layer activate as a function of their similarity to a presented stimulus. The input layer is fully connected to the output layer, and the activation for any particular output node is simply the weighted sum of the connection weights between that node and the input activations. The network then produces a response by taking the weighted average of the output units (recall that each output unit has a value corresponding to a particular response). During training, the network receives feedback which activates each output unit as a function of its distance from the ideal level of activation necessary to produce the correct response. The connection weights between input and output units are then updated via the standard delta learning rule, where the magnitude of weight changes are controlled by a learning rate parameter.
 
@@ -858,7 +859,7 @@ See <a href="#tbl-alm-exam" class="quarto-xref">Table 11</a> for a full specifi
 | Slope Computation | $S =$ $\frac{m(X_{1})-m(X_{2})}{X_{1}-X_{2}}$ | Slope value, $S$ computed from nearest training instances |
 | Response | $E[Y|X_i] = m(X_i) + S \cdot [X - X_i]$ | Final EXAM response is the ALM response for the nearest training stimulus, $m(X_i)$, adjusted by local slope $S$. |
 
-### Model Fitting
+## Model Fitting
 
 To fit ALM and EXAM to our participant data, we employ a similar method to Mcdaniel et al. ([2009](#ref-mcdanielPredictingTransferPerformance2009)), wherein we examine the performance of each model after being fit to various subsets of the data. Each model was fit to the data with three separate procedures: 1) fit to maximize predictions of the testing data, 2) fit to maximize predictions of both the training and testing data, 3) fit to maximize predictions of the just the training data. We refer to this fitting manipulations as "Fit Method" in the tables and figures below. It should be emphasized that for all three fit methods, the ALM and EXAM models behave identically - with weights updating only during the training phase. Models were fit separately to the data of each individual participant. The free parameters for both models are the generalization ($c$) and learning rate ($lr$) parameters. Parameter estimation was performed using approximate bayesian computation (ABC), which we describe in detail below.
 
@@ -887,7 +888,7 @@ To fit ALM and EXAM to our participant data, we employ a similar method to Mcdan
 
 For each of the 156 participants from Experiment 1, the ABC algorithm was run until 200 samples of parameters were accepted into the posterior distribution. Obtaining this number of posterior samples required an average of 205,000 simulation runs per participant. Fitting each combination of participant, Model (EXAM & ALM), and fitting method (Test only, Train only, Test & Train) required a total of 192 million simulation runs. To facilitate these intensive computational demands, we used the Future Package in R ([Bengtsson, 2021](#ref-bengtssonUnifyingFrameworkParallel2021)), allowing us to parallelize computations across a cluster of ten M1 iMacs, each with 8 cores.
 
-### Modelling Results
+## Modelling Results
 
 ``` r
 post_tabs <- abc_tables(post_dat,post_dat_l)

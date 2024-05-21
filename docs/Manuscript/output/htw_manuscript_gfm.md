@@ -193,9 +193,9 @@ the full range of posterior predictions of each model, and to examine
 the ability of these influential models of function learning to account
 for both the group level and individual level data.
 
-## Experiment 1
+# Experiment 1
 
-### Methods
+## Methods
 
 *Participants* A total of 156 participants were recruited from the
 Indiana University Introductory Psychology Course. Participants were
@@ -258,7 +258,7 @@ bands was counterbalanced across participants. A final training stage
 presented participants with “feedback” testing for each of the three
 extrapolation bands (100-300, 350-550, and 600-800).
 
-### Analyses Strategy
+## Analyses Strategy
 
 All data processing and statistical analyses were performed in R version
 4.32 ([Team, 2020](#ref-rcoreteamLanguageEnvironmentStatistical2020)).
@@ -316,7 +316,7 @@ discriminated between velocity bands tended to haves slope values ~1,
 while participants who made throws irrespective of the current target
 band would have slopes ~0.
 
-### Results
+## Results
 
 <div id="fig-e1-train-dev">
 
@@ -475,7 +475,7 @@ participant slopes. Error bars represent 95% HDI.
 
 </div>
 
-## E1 Summary
+## Experiment 1 Summary
 
 In Experiment 1, we investigated how variability in training influenced
 participants’ ability learn and extrapolate in a visuomotor task. Our
@@ -493,9 +493,9 @@ larger deviations from the target velocity bands during the testing
 phase, particularly for the extrapolation bands that were not
 encountered by either condition during training.
 
-## Experiment 2
+# Experiment 2
 
-### Methods & Procedure
+## Methods & Procedure
 
 The task and procedure of Experiment 2 was identical to Experiment 1,
 with the exception that the training and testing bands were reversed
@@ -504,7 +504,7 @@ with the exception that the training and testing bands were reversed
 groups were tested from all six bands. A total of 110 participants
 completed the experiment (Varied: 55, Constant: 55).
 
-### Results
+## Results
 
 <div id="fig-e2-train-dev">
 
@@ -649,7 +649,7 @@ Individual participant slopes. Error bars represent 95% HDI.
 
 </div>
 
-### Experiment 2 Summary
+## Experiment 2 Summary
 
 Experiment 2 extended the findings of Experiment 1 by examining the
 effects of training variability on extrapolation performance in a
@@ -659,9 +659,9 @@ poorer performance during training and testing. However unlike
 experiment 1, the Varied group did not show a significant difference in
 discrimination between bands.
 
-## Experiment 3
+# Experiment 3
 
-### Methods & Procedure
+## Methods & Procedure
 
 The major adjustment of Experiment 3 is for participants to receive
 ordinal feedback during training, in contrast to the continuous feedback
@@ -678,7 +678,7 @@ final analysis, n=51 in the Constant-Original condition, n=59 in the
 Constant-Reverse condition, n=39 in the Varied-Original condition, and
 n=46 in the Varied-Reverse condition.
 
-### Results
+## Results
 
 <div id="tbl-e3-train-dist">
 
@@ -857,7 +857,7 @@ Individual participant slopes. Error bars represent 95% HDI.
 
 </div>
 
-### Experiment 3 Summary
+## Experiment 3 Summary
 
 In Experiment 3, we investigated the effects of training condition
 (constant vs. varied) and band type (training vs. extrapolation) on
@@ -875,7 +875,7 @@ condition. This result suggests that varied training enhanced
 participants’ ability to discriminate between velocity bands, but only
 when the band order was reversed during testing.
 
-## Computational Model
+# Computational Model
 
 <div id="fig-alm-diagram">
 
@@ -903,7 +903,7 @@ model ([Kruschke,
 1992](#ref-kruschkeALCOVEExemplarbasedConnectionist1992)), with
 modifications to allow for the generation of continuous responses.
 
-### ALM & Exam
+## ALM & Exam
 
 ALM is a localist neural network model ([Page,
 2000](#ref-pageConnectionistModellingPsychology2000a)), with each input
@@ -1008,7 +1008,7 @@ Table 11: ALM & EXAM Equations
 
 </div>
 
-### Model Fitting
+## Model Fitting
 
 To fit ALM and EXAM to our participant data, we employ a similar method
 to Mcdaniel et al.
@@ -1127,7 +1127,7 @@ used the Future Package in R ([Bengtsson,
 parallelize computations across a cluster of ten M1 iMacs, each with 8
 cores.
 
-### Modelling Results
+## Modelling Results
 
 <div id="tbl-htw-modelError-e1">
 

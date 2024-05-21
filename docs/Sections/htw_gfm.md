@@ -1,7 +1,7 @@
 # Impact of Training Variability on Visuomotor Function Learning and
 Extrapolation
 Thomas E. Gorman, Robert L. Goldstone
-2024-05-20
+2024-05-21
 
 - [Introduction](#introduction)
   - [Function Learning and
@@ -9,23 +9,23 @@ Thomas E. Gorman, Robert L. Goldstone
     - [Variability and Function
       Learning](#variability-and-function-learning)
   - [Overview Of Present Study](#overview-of-present-study)
-  - [Experiment 1](#experiment-1)
-    - [Methods](#methods)
-    - [Analyses Strategy](#analyses-strategy)
-    - [Results](#results)
-  - [E1 Summary](#e1-summary)
-  - [Experiment 2](#experiment-2)
-    - [Methods & Procedure](#methods--procedure)
-    - [Results](#results-1)
-    - [Experiment 2 Summary](#experiment-2-summary)
-  - [Experiment 3](#experiment-3)
-    - [Methods & Procedure](#methods--procedure-1)
-    - [Results](#results-2)
-    - [Experiment 3 Summary](#experiment-3-summary)
-  - [Computational Model](#computational-model)
-    - [ALM & Exam](#alm--exam)
-    - [Model Fitting](#model-fitting)
-    - [Modelling Results](#modelling-results)
+- [Experiment 1](#experiment-1)
+  - [Methods](#methods)
+  - [Analyses Strategy](#analyses-strategy)
+  - [Results](#results)
+  - [Experiment 1 Summary](#experiment-1-summary)
+- [Experiment 2](#experiment-2)
+  - [Methods & Procedure](#methods--procedure)
+  - [Results](#results-1)
+  - [Experiment 2 Summary](#experiment-2-summary)
+- [Experiment 3](#experiment-3)
+  - [Methods & Procedure](#methods--procedure-1)
+  - [Results](#results-2)
+  - [Experiment 3 Summary](#experiment-3-summary)
+- [Computational Model](#computational-model)
+  - [ALM & Exam](#alm--exam)
+  - [Model Fitting](#model-fitting)
+  - [Modelling Results](#modelling-results)
 - [General Discussion](#general-discussion)
 - [Supplementary](#supplementary)
 - [References](#references)
@@ -165,7 +165,9 @@ Filter for each shape stimulus.
 
 <div id="fig-delosh-extrap">
 
-![](htw_full_files/figure-commonmark/fig-delosh-extrap-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-delosh-extrap-1.png"
+width="960" />
 
 
 Figure 1: Generalization reproduced patterns from DeLosh et al. (1997)
@@ -195,9 +197,9 @@ the full range of posterior predictions of each model, and to examine
 the ability of these influential models of function learning to account
 for both the group level and individual level data.
 
-## Experiment 1
+# Experiment 1
 
-### Methods
+## Methods
 
 *Participants* A total of 156 participants were recruited from the
 Indiana University Introductory Psychology Course. Participants were
@@ -260,7 +262,7 @@ bands was counterbalanced across participants. A final training stage
 presented participants with “feedback” testing for each of the three
 extrapolation bands (100-300, 350-550, and 600-800).
 
-### Analyses Strategy
+## Analyses Strategy
 
 All data processing and statistical analyses were performed in R version
 4.32 (Team, 2020). To assess differences between groups, we used
@@ -316,11 +318,13 @@ discriminated between velocity bands tended to haves slope values ~1,
 while participants who made throws irrespective of the current target
 band would have slopes ~0.
 
-### Results
+## Results
 
 <div id="fig-e1-train-dev">
 
-![](htw_full_files/figure-commonmark/fig-e1-train-dev-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e1-train-dev-1.png"
+width="768" />
 
 
 Figure 3: Experiment 1 Training Stage. Deviations from target band
@@ -396,7 +400,9 @@ group in the extrapolation bands.
 
 <div id="fig-e1-test-dev">
 
-![](htw_full_files/figure-commonmark/fig-e1-test-dev-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e1-test-dev-1.png"
+width="1056" />
 
 
 Figure 4: Experiment 1 Testing Accuracy. A) Empricial Deviations from
@@ -453,7 +459,9 @@ the constant condition (see
 
 <div id="fig-e1-test-vx">
 
-![](htw_full_files/figure-commonmark/fig-e1-test-vx-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e1-test-vx-1.png"
+width="1056" />
 
 
 Figure 5: Experiment 1. Empirical distribution of velocities producing
@@ -463,7 +471,9 @@ correct range for each velocity band.
 </div>
 <div id="fig-e1-bmm-vx">
 
-![](htw_full_files/figure-commonmark/fig-e1-bmm-vx-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e1-bmm-vx-1.png"
+width="1056" />
 
 
 Figure 6: Experiment 1 Discrimination. A) Conditional effect of training
@@ -475,7 +485,7 @@ participant slopes. Error bars represent 95% HDI.
 
 </div>
 
-## E1 Summary
+## Experiment 1 Summary
 
 In Experiment 1, we investigated how variability in training influenced
 participants’ ability learn and extrapolate in a visuomotor task. Our
@@ -491,9 +501,9 @@ larger deviations from the target velocity bands during the testing
 phase, particularly for the extrapolation bands that were not
 encountered by either condition during training.
 
-## Experiment 2
+# Experiment 2
 
-### Methods & Procedure
+## Methods & Procedure
 
 The task and procedure of Experiment 2 was identical to Experiment 1,
 with the exception that the training and testing bands were reversed
@@ -502,11 +512,13 @@ with the exception that the training and testing bands were reversed
 groups were tested from all six bands. A total of 110 participants
 completed the experiment (Varied: 55, Constant: 55).
 
-### Results
+## Results
 
 <div id="fig-e2-train-dev">
 
-![](htw_full_files/figure-commonmark/fig-e2-train-dev-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2-train-dev-1.png"
+width="768" />
 
 
 Figure 7: Experiment 2 Training Stage. Deviations from target band
@@ -578,7 +590,9 @@ the extrapolation bands (see
 
 <div id="fig-e2-test-dev">
 
-![](htw_full_files/figure-commonmark/fig-e2-test-dev-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2-test-dev-1.png"
+width="1056" />
 
 
 Figure 8: Experiment 2 Testing Accuracy. A) Empricial Deviations from
@@ -625,7 +639,9 @@ not differ in their ability to discriminate between bands (see
 
 <div id="fig-e2-test-vx">
 
-![](htw_full_files/figure-commonmark/fig-e2-test-vx-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2-test-vx-1.png"
+width="1056" />
 
 
 Figure 9: Experiment 2. Empirical distribution of velocities produced in
@@ -635,7 +651,9 @@ correct range for each velocity band.
 </div>
 <div id="fig-e2-bmm-vx">
 
-![](htw_full_files/figure-commonmark/fig-e2-bmm-vx-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2-bmm-vx-1.png"
+width="1056" />
 
 
 Figure 10: Experiment 2 Discrimination. A) Conditional effect of
@@ -647,7 +665,7 @@ Individual participant slopes. Error bars represent 95% HDI.
 
 </div>
 
-### Experiment 2 Summary
+## Experiment 2 Summary
 
 Experiment 2 extended the findings of Experiment 1 by examining the
 effects of training variability on extrapolation performance in a
@@ -657,9 +675,9 @@ poorer performance during training and testing. However unlike
 experiment 1, the Varied group did not show a significant difference in
 discrimination between bands.
 
-## Experiment 3
+# Experiment 3
 
-### Methods & Procedure
+## Methods & Procedure
 
 The major adjustment of Experiment 3 is for participants to receive
 ordinal feedback during training, in contrast to the continuous feedback
@@ -676,7 +694,7 @@ final analysis, n=51 in the Constant-Original condition, n=59 in the
 Constant-Reverse condition, n=39 in the Varied-Original condition, and
 n=46 in the Varied-Reverse condition.
 
-### Results
+## Results
 
 <div id="tbl-e3-train-dist">
 
@@ -717,7 +735,9 @@ showing greater accuracy in the reverse order condition ( $\beta$ =
 
 <div id="fig-e3-train-dev">
 
-![](htw_full_files/figure-commonmark/fig-e3-train-dev-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e3-train-dev-1.png"
+width="768" />
 
 
 Figure 11: Experiment 3 training. Deviations from target band during
@@ -774,7 +794,9 @@ significant.
 ::: -->
 <div id="fig-e3-test-dev">
 
-![](htw_full_files/figure-commonmark/fig-e3-test-dev-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e3-test-dev-1.png"
+width="1056" />
 
 
 Figure 12: Experiment 3 Testing Accuracy. A) Empricial Deviations from
@@ -831,7 +853,9 @@ noticably steeper than the other conditions.
 
 <div id="fig-e3-test-vx">
 
-![](htw_full_files/figure-commonmark/fig-e3-test-vx-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e3-test-vx-1.png"
+width="1056" />
 
 
 Figure 13: e3 testing x velocities. Translucent bands with dash lines
@@ -843,7 +867,9 @@ indicate the correct range for each velocity band.
 
 <div id="fig-e3-bmm-vx">
 
-![](htw_full_files/figure-commonmark/fig-e3-bmm-vx-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e3-bmm-vx-1.png"
+width="1056" />
 
 
 Figure 14: Experiment 3 Discrimination. A) Conditional effect of
@@ -855,7 +881,7 @@ Individual participant slopes. Error bars represent 95% HDI.
 
 </div>
 
-### Experiment 3 Summary
+## Experiment 3 Summary
 
 In Experiment 3, we investigated the effects of training condition
 (constant vs. varied) and band type (training vs. extrapolation) on
@@ -873,11 +899,13 @@ condition. This result suggests that varied training enhanced
 participants’ ability to discriminate between velocity bands, but only
 when the band order was reversed during testing.
 
-## Computational Model
+# Computational Model
 
 <div id="fig-alm-diagram">
 
-![](htw_full_files/figure-commonmark/fig-alm-diagram-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-alm-diagram-1.png"
+width="768" />
 
 
 Figure 15: The Associative Learning Model (ALM). The diagram illustrates
@@ -899,7 +927,7 @@ learning model which closely resembles Kruschke’s ALCOVE model
 (Kruschke, 1992), with modifications to allow for the generation of
 continuous responses.
 
-### ALM & Exam
+## ALM & Exam
 
 ALM is a localist neural network model (Page, 2000), with each input
 node corresponding to a particular stimulus, and each output node
@@ -1002,7 +1030,7 @@ Table 11: ALM & EXAM Equations
 
 </div>
 
-### Model Fitting
+## Model Fitting
 
 To fit ALM and EXAM to our participant data, we employ a similar method
 to Mcdaniel et al. (2009), wherein we examine the performance of each
@@ -1114,7 +1142,7 @@ used the Future Package in R (Bengtsson, 2021), allowing us to
 parallelize computations across a cluster of ten M1 iMacs, each with 8
 cores.
 
-### Modelling Results
+## Modelling Results
 
 <div id="tbl-htw-modelError-e1">
 
@@ -1140,7 +1168,9 @@ model was evaluated on.
 </div>
 <div id="fig-htw-post-dist">
 
-![](htw_full_files/figure-commonmark/fig-htw-post-dist-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-htw-post-dist-1.png"
+width="960" />
 
 
 Figure 16: Posterior Distributions of $c$ and $lr$ parameters. Points
@@ -1152,7 +1182,9 @@ logarithmically.
 </div>
 <div id="fig-htw-resid-pred">
 
-![](htw_full_files/figure-commonmark/fig-htw-resid-pred-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-htw-resid-pred-1.png"
+width="1056" />
 
 
 Figure 17: Model residuals for each combination of training condition,
@@ -1218,7 +1250,9 @@ discriminate all 6 target bands.
 
 <div id="fig-cm-vx-pat">
 
-![](htw_full_files/figure-commonmark/fig-cm-vx-pat-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-1.png"
+width="960" />
 
 
 Figure 18: Empirical data and Model predictions for mean velocity across
@@ -1230,7 +1264,9 @@ EXAM, alongside the observed data.
 </div>
 <div id="fig-ee-e1">
 
-![](htw_full_files/figure-commonmark/fig-ee-e1-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-ee-e1-1.png"
+width="960" />
 
 
 Figure 19: A-C) Conditional effects of Model (ALM vs EXAM) and Condition
@@ -1288,7 +1324,9 @@ evaluated on.
 
 <div id="fig-cm-vx-pat-e2-e3">
 
-![](htw_full_files/figure-commonmark/fig-cm-vx-pat-e2-e3-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-e2-e3-1.png"
+width="960" />
 
 
 Figure 20: Empirical data and Model predictions from Experiment 2 and 3
@@ -1366,7 +1404,9 @@ reverse order condition (see
 
 <div id="fig-e2_e3_ae">
 
-![](htw_full_files/figure-commonmark/fig-e2_e3_ae-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2_e3_ae-1.png"
+width="864" />
 
 
 Figure 21: Conditional effects of Model (ALM vs EXAM) and Condition
@@ -1437,7 +1477,9 @@ patterns they can produce (Dome & Wills, 2023).
 
 <div id="fig-htw-best-model">
 
-![](htw_full_files/figure-commonmark/fig-htw-best-model-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-htw-best-model-1.png"
+width="1056" />
 
 
 Figure 22: Difference in model errors for each participant, with models
@@ -1447,7 +1489,9 @@ negative values favor ALM.
 </div>
 <div id="fig-htw-indv-pred">
 
-![](htw_full_files/figure-commonmark/fig-htw-indv-pred-1.png)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-htw-indv-pred-1.png"
+width="960" />
 
 
 Figure 23: Model predictions alongside observed data for a subset of
