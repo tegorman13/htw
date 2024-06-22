@@ -23,7 +23,7 @@ testAvg <- test %>% group_by(id, condit, vb, bandInt,bandType,tOrder) %>%
 ```
 
 
-::: {.column-page-right}
+
 ```{r}
 
 plot_violin_condit <- function(fcondit, fvb, pvar) {
@@ -82,17 +82,14 @@ tables <- map(vars_to_plot, function(pvar) {
       }
     )
 })
-#print(tables[[1]])
-#print(tables[[2]])
+print(tables[[1]])
+print(tables[[2]])
 
 library(gtExtras)
 gt_two_column_layout(tables)
 
 
 ```
-
-::: 
-
 
 ```{r fig.width=12, fig.height=11}
 
@@ -260,7 +257,7 @@ vt1 %>% kable() %>% add_header_above(c(" "=2, "Training Block "=1," " = ncol(vt1
 #| fig-width: 10
 #| fig-height: 9
 #| tbl-cap: "test table"
-#| eval: false
+
 # vpt1=plotWithTable(vp1,vt1,arrange="V")
 nb=5
 vp1=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,vx,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb)
@@ -290,8 +287,7 @@ vt2=e1 |> filter(expMode=="train") |>
 ```{r}
 #| fig-cap: "Absolute Deviation from Band over training"
 #| fig-width: 8
-#| eval: false
-#| 
+
 vp2=e1 |> filter(expMode=="train") |> 
   learn_curve_plot(gt.train,dist,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) 
 vp2
@@ -319,7 +315,7 @@ vt3 %>% kable(format = "html",escape = FALSE)
 ```{r}
 #| fig-cap: "Signed Deviation from Band over training"
 #| fig-width: 8
-#| eval: false
+
 vp3=e1 |> filter(expMode=="train") |> learn_curve_plot(gt.train,sdist,condit,facet_var=vb,groupVec=c(gt.train,condit,tOrder,id,vb),nbins=nb) 
 vp3
 
@@ -348,8 +344,7 @@ vp4 <- e1 |> filter(expMode=="train") |> group_by(id) |>
 #| tbl-subcap: 
 #|   - "Vx"
 #|   - "Deviation from target"
-#| eval: false
-#| 
+
 vt1 %>% kable(format = "html",escape = FALSE)
 vt2 %>% kable(format = "html",escape = FALSE)
 
@@ -369,7 +364,7 @@ vp4+big_text()
 #|   - "Vx"
 #|   - "Deviation from target"
 #| column: screen-inset-right
-#| eval: false
+
 vt1 %>% kable(format = "html",escape = FALSE)
 vt2 %>% kable(format = "html",escape = FALSE)
 
@@ -388,7 +383,7 @@ vp4
 #| echo: fenced
 #| column: screen-inset-right
 #| fig-width: 14
-#| eval: false
+#| 
 
 
 vt2 %>% kable(format = "html",escape = FALSE) %>% kable_styling(font_size = 7)
@@ -403,7 +398,6 @@ vp4+vp3 + plot_layout(guides = "collect") & theme(legend.position = 'right')
 #| fig-width: 12
 #| fig-height: 11
 #| column: page-inset-right
-#| eval: false
 ((vp1+big_text()+vp2+big_text())/(vp3+big_text()+vp4+big_text())) + plot_layout(guides = "collect") 
 
 
