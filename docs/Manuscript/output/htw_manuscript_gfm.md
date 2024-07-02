@@ -1,7 +1,6 @@
 # Impact of Training Variability on Visuomotor Function Learning and
 Extrapolation
 Thomas E. Gorman, Robert L. Goldstone
-2024-05-20
 
 # Introduction
 
@@ -42,12 +41,18 @@ sequence of input/output pairs ([DeLosh et al.,
 1997](#ref-deloshExtrapolationSineQua1997); [McDaniel et al.,
 2013](#ref-mcdanielEffectsSpacedMassed2013)), or situations where
 observers are presented with an incomplete scatterplot or line graph and
-make predictions about regions of the plot that don’t contain data
+make predictions about regions of the plot that do not contain data
 ([Ciccione & Dehaene, 2021](#ref-ciccioneCanHumansPerform2021);
 [Courrieu, 2012](#ref-courrieuQuickApproximationBivariate2012); [Said &
 Fischer, 2021](#ref-saidExtrapolationAccuracyUnderestimates2021);
 [Schulz et al.,
-2020](#ref-schulzCommunicatingCompositionalPatterns2020)).
+2020](#ref-schulzCommunicatingCompositionalPatterns2020)). Studies of
+function learning often compare the difficulty of learning functions of
+different underlying forms (e.g. linear, bi-linear, power, sinusoidal),
+and the extent to which participants can accurately respond to novel
+inputs that fall in-between previously experienced inputs (interpolation
+testing), or that fall outside the range of previously experienced
+inputs (extrapolation).
 
 Carroll ([1963](#ref-carrollFunctionalLearningLearning1963)) conducted
 the earliest work on function learning. Input stimuli and output
@@ -56,48 +61,49 @@ was related to the length of the input line by a linear, quadratic, or
 random function. Participants in the linear and quadratic performed
 above chance levels during extrapolation testing, with those in the
 linear condition performing the best overall. Carroll argued that these
-results were best explained by a ruled based model wherein learners form
+results were best explained by a rule-based model wherein learners form
 an abstract representation of the underlying function. Subsequent work
-by Brehmer ([1974](#ref-brehmerHypothesesRelationsScaled1974)),testing a
-wider array of functional forms, provided further evidence for superior
-extrapolation in tasks with linear functions. Brehmer argued that
-individuals start out with an assumption of a linear function, but given
-sufficient error will progressively test alternative hypothesis with
+by Brehmer ([1974](#ref-brehmerHypothesesRelationsScaled1974)), testing
+a wider array of functional forms, provided further evidence for
+superior extrapolation in tasks with linear functions. Brehmer argued
+that individuals start out assuming a linear function, but given
+sufficient error will progressively test alternative hypotheses with
 polynomials of greater degree. Koh & Meyer
 ([1991](#ref-kohFunctionLearningInduction1991)) employed a visuomotor
 function learning task, wherein participants were trained on examples
 from an unknown function relating the length of an input line to the
 duration of a response (time between keystrokes). In this domain,
 participants performed best when the relation between line length and
-response duration was determined by a power, as opposed to linear
-function. Koh & Meyer developed the log-polynomial adaptive-regression
+response duration was determined by a power law, as opposed to linear
+function. Koh and Meyer developed the log-polynomial adaptive-regression
 model to account for their results.
 
-The first significant challenge to the rule-based accounts of function
+The first significant challenge to rule-based accounts of function
 learning was put forth by DeLosh et al.
 ([1997](#ref-deloshExtrapolationSineQua1997)) . In their task,
 participants learned to associate stimulus magnitudes with response
 magnitudes that were related via either linear, exponential, or
 quadratic function. Participants approached ceiling performance by the
-end of training in each function condition, and were able to correctly
-respond in interpolation testing trials. All three conditions
+end of training in each function condition, and were able to accurately
+respond on interpolation testing trials. All three conditions
 demonstrated some capacity for extrapolation, however participants in
 the linear condition tended to underestimate the true function, while
 exponential and quadratic participants reliably overestimated the true
 function on extrapolation trials. Extrapolation and interpolation
-performance are depicted in
+performances are depicted in
 <a href="#fig-delosh-extrap" class="quarto-xref">Figure 1</a>.
 
-The authors evaluated both of the rule-based models introduced in
-earlier research (with some modifications enabling trial-by-trial
-learning). The polynomial hypothesis testing model ([Brehmer,
+The authors evaluated the rule-based models introduced in earlier
+research (with some modifications enabling trial-by-trial learning). The
+polynomial hypothesis testing model ([Brehmer,
 1974](#ref-brehmerHypothesesRelationsScaled1974); [Carroll,
 1963](#ref-carrollFunctionalLearningLearning1963)) tended to mimic the
 true function closely in extrapolation, and thus offered a poor account
-of the human data. The log-polynomial adaptive regression model ([Koh &
-Meyer, 1991](#ref-kohFunctionLearningInduction1991)) was able to mimic
-some of the systematic deviations produced by human subjects, but also
-predicted overestimation in cases where underestimation occurred.
+of the under and over-estimation biases shown in the human data. The
+log-polynomial adaptive regression model ([Koh & Meyer,
+1991](#ref-kohFunctionLearningInduction1991)) was able to mimic some of
+the systematic deviations produced by human subjects, but also predicted
+overestimation in cases where underestimation occurred.
 
 The authors also introduced two new function-learning models. The
 Associative Learning Model (ALM) and the extrapolation-association model
@@ -106,39 +112,56 @@ model in the category learning literature ([Kruschke,
 1992](#ref-kruschkeALCOVEExemplarbasedConnectionist1992)). ALM belongs
 to the general class of radial-basis function neural networks, and can
 be considered a similarity-based model in the sense that the nodes in
-the input layer of the network are activated as a function of distance.
-The EXAM model retains the same similarity based activation and
-associative learning mechanisms as ALM, while being augmented with a
-linear rule response mechanism. When presented with novel stimuli, EXAM
-will retrieve the most similar input-output examples encountered during
+the input layer of the network are activated as a function of distance
+(see <a href="#fig-alm-diagram" class="quarto-xref">Figure 15</a>). The
+EXAM model retains the same similarity-based activation and associative
+learning mechanisms as ALM, while being augmented with a linear rule
+response mechanism. When presented with novel stimuli, EXAM will
+retrieve the most similar input-output examples encountered during
 training, and from those examples compute a local slope. ALM was able to
-provide a good account of participant training and interpolation data in
-all three function conditions, however it was unable to extrapolate.
-EXAM, on the other hand, was able to reproduce both the extrapolation
+provide a good account of participants’ training and interpolation data
+in all three function conditions, however it was unable to extrapolate.
+EXAM, by contrast, was able to reproduce both the extrapolation
 underestimation, as well as the quadratic and exponential overestimation
 patterns exhibited by the human participants. Subsequent research
 identified some limitations in EXAM’s ability to account for cases where
-human participants learn and extrapolate sinusoidal function Bott & Heit
-([2004](#ref-bottNonmonotonicExtrapolationFunction2004)) or to scenarios
-where different functions apply to different regions of the input space
-Kalish et al. ([2004](#ref-kalishPopulationLinearExperts2004)), though
-EXAM has been shown to provide a good account of human learning and
-extrapolation in tasks with bi-linear, V shaped input spaces Mcdaniel et
-al. ([2009](#ref-mcdanielPredictingTransferPerformance2009)).
+human participants learn and extrapolate a sinusoidal function ([Bott &
+Heit, 2004](#ref-bottNonmonotonicExtrapolationFunction2004)) or to
+scenarios where different functions apply to different regions of the
+input space ([Kalish et al.,
+2004](#ref-kalishPopulationLinearExperts2004)), though EXAM has been
+shown to provide a good account of human learning and extrapolation in
+tasks with bi-linear, V-shaped input spaces ([Mcdaniel et al.,
+2009](#ref-mcdanielPredictingTransferPerformance2009)).
 
-### Variability and Function Learning
+<div id="fig-delosh-extrap">
+
+![](manuscript_files/figure-commonmark/fig-delosh-extrap-1.png)
+
+
+Figure 1: The generalization patterns of human particpiants observed in
+DeLosh et al. (1997) (reproduced from Figure 3 in their manuscript).
+Dots represent the average responses of human participants, and solid
+lines represent the true functions. The dashed vertical lines indicate
+the lower and upper bounds of the trained examples. Stimulii that fall
+within the dashed lines are interpolations of the training examples,
+while those that fall outside the dashed lines are extrapolations.
+
+</div>
+
+## Variability and Function Learning
 
 The influence of variability on function learning tasks has received
 relatively little attention. The study by DeLosh et al.
 ([1997](#ref-deloshExtrapolationSineQua1997)) (described in detail
 above) did include a variability manipulation (referred to as density in
-their paper), wherein participants were trained with either either 8,
-20, or 50 unique input-output pairs, with the total number of training
-trials held constant. They found a minimal influence of variability on
-training performance, and no difference between groups in interpolation
-or extrapolation, with all three variability conditions displaying
-accurate interpolation, and linearly biased extrapolation that was well
-accounted for by the EXAM model.
+their paper), wherein participants were trained with either 8, 20, or 50
+unique input-output pairs, with the total number of training trials held
+constant. They found a minimal influence of variability on training
+performance, and no difference between groups in interpolation or
+extrapolation, with all three variability conditions displaying accurate
+interpolation, and linearly biased extrapolation that was well accounted
+for by the EXAM model.
 
 In the domain of visuomotor learning, van Dam & Ernst
 ([2015](#ref-vandamMappingShapeVisuomotor2015)) employed a task which
@@ -146,31 +169,20 @@ required participants to learn a linear function between the spikiness
 of shape stimuli and the correct horizontal position to make a rapid
 pointing response. The shapes ranged from very spiky to completely
 circular at the extreme ends of the space. Participants trained with
-intermediate shapes from a lower variation (2 shapes) or higher
-variation (5 shapes) condition, with the 2 items of the lower varied
+intermediate shapes having lower variation (2 shapes) or higher
+variation (5 shapes) condition, with the 2 items of the lower variation
 condition matching the items used on the extreme ends of the higher
 variation training space. Learning was significantly slower in the
 higher variation group. However, the two conditions did not differ when
 tested with novel shapes, with both groups producing extrapolation
-responses of comparable magnitudes to the most similar training item,
+responses of comparable magnitude to the most similar training item,
 rather than in accordance with the true linear function. The authors
 accounted for both learning and extrapolation performance with a
-Bayesian learning model. Similar to ALM, the bayesian model assumes that
+Bayesian learning model. Similar to ALM, the model assumes that
 generalization occurs as a Gaussian function of the distance between
-stimuli. However unlike ALM, the bayesian learning model utilizes more
+stimuli. However, unlike ALM, the Bayesian learning model utilizes more
 elaborate probabilistic stimulus representations, with a separate Kalman
 Filter for each shape stimulus.
-
-<div id="fig-delosh-extrap">
-
-![](manuscript_files/figure-commonmark/fig-delosh-extrap-1.png)
-
-
-Figure 1: Generalization reproduced patterns from DeLosh et al. (1997)
-Figure 3. Stimulii that fall within the dashed lines are interpolations
-of the training examples.
-
-</div>
 
 ## Overview Of Present Study
 
@@ -178,7 +190,7 @@ The present study investigates the influence of training variability on
 learning, generalization, and extrapolation in a uni-dimensional
 visuomotor function learning task. To the best of our knowledge, this
 research is the first to employ the classic constant vs. varied training
-manipulation, commonly used in the literature on the benefits of
+manipulation, commonly used in the literature studying the benefits of
 variability, in the context of a uni-dimensional function learning task.
 Across three experiments, we compare constant and varied training
 conditions in terms of learning performance, extrapolation accuracy, and
