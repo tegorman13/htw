@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALM & EXAM Demo</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        input[type="range"] { width: 200px; }
+        #plot { width: 100%; height: 400px; }
+    </style>
+</head>
+<body>
+    <h1>ALM & EXAM Predictions</h1>
+
+    <div>
+        <label>
+            Association Parameter (c): <span id="associationParameterValue">0.03</span>
+            <input type="range" id="associationParameter" min="0.01" max="0.1" step="0.01" value="0.03">
+        </label>
+    </div>
+
+    <div>
+        <label>
+            Update Parameter (lr): <span id="updateParameterValue">0.2</span>
+            <input type="range" id="updateParameter" min="0.1" max="1" step="0.1" value="0.2">
+        </label>
+    </div>
+
+    <div>
+        <label>
+            Training Repetitions: <span id="trainRepValue">1</span>
+            <input type="range" id="trainRep" min="1" max="10" step="1" value="1">
+        </label>
+    </div>
+
+    <div>
+        <label>
+            Noise Level: <span id="noiseValue">0</span>
+            <input type="range" id="noise" min="0" max="10" step="0.1" value="0">
+        </label>
+    </div>
+
+    <div>
+        <p>Function Form:</p>
+        <label><input type="radio" name="functionForm" value="Linear" checked> Linear</label>
+        <label><input type="radio" name="functionForm" value="Quadratic"> Quadratic</label>
+        <label><input type="radio" name="functionForm" value="Exponential"> Exponential</label>
+    </div>
+
+    <div>
+        <label>
+            Number of Replications:
+            <input type="number" id="nRep" min="1" max="100" value="1">
+        </label>
+    </div>
+
+    <button onclick="runSimulation()">Run Simulation</button>
+
+    <h2>Performance Metrics</h2>
+    <div id="metrics"></div>
+
+    <div id="plot"></div>
+
+    <script>
+        let associationParameter, updateParameter, trainRep, noise, nRep, functionForm;
+        let xPlotting, yPlotting;
+    
+        function inputActivation(xTarget, xPlot, c) {
+            return Math.exp(-c * Math.pow(xTarget - xPlot, 2));
+        }
+    
+        function outputActivation(xTarget, weights, xPlotting, c) {
+            return weights.reduce((sum, weight, i) => sum + weight * inputActivation(xTarget, xPlotting[i], c), 0);
+        }
+    
+        function meanPrediction(xTarget, weights, yPlotting, xPlotting, c) {
+            const outputs = xPlotting.map(x => outputActivation(xTarget, weights, [x], c));
+            const totalOutput = outputs.reduce((sum, output) => sum + output, 0);
+            if (totalOutput === 0) return yPlotting[Math.floor(yPlotting.length / 2)];
+            const probabilities = outputs.map(output => output / totalOutput);
+            return yPlotting.reduce((sum, y, i) => sum + y * probabilities[i], 0);
+        }
+    
+        function updateWeights(xNew, yNew, weights, yPlotting, xPlotting, c, lr) {
+            const yFeedbackActivation = yPlotting.map(y => Math.exp(-c * Math.pow(yNew - y, 2)));
+            const xFeedbackActivation = outputActivation(xNew, weights, xPlotting, c);
+            return weights.map((weight, i) => {
+                const newWeight = weight + lr * (yFeedbackActivation[i] - xFeedbackActivation) * inputActivation(xNew, xPlotting[i], c);
+                return isNaN(newWeight) ? weight : Math.max(0, newWeight);
+            });
+        }
+    
+        function learnALM(yLearning, xLearning, yPlotting, xPlotting, c, lr) {
+            let weights = new Array(yPlotting.length).fill(1 / yPlotting.length);
+            for (let i = 0; i < yLearning.length; i++) {
+                weights = updateWeights(xLearning[i], yLearning[i], weights, yPlotting, xPlotting, c, lr);
+            }
+            const almPredictions = xPlotting.map(x => meanPrediction(x, weights, yPlotting, xPlotting, c));
+            return almPredictions;
+        }
+    
+        function calculatePerformanceMetrics(predictions, actual) {
+            const n = predictions.length;
+            const mse = predictions.reduce((sum, pred, i) => sum + Math.pow(pred - actual[i], 2), 0) / n;
+            const rmse = Math.sqrt(mse);
+            const mae = predictions.reduce((sum, pred, i) => sum + Math.abs(pred - actual[i]), 0) / n;
+            
+            const meanActual = actual.reduce((sum, val) => sum + val, 0) / n;
+            const totalSS = actual.reduce((sum, val) => sum + Math.pow(val - meanActual, 2), 0);
+            const residualSS = predictions.reduce((sum, pred, i) => sum + Math.pow(actual[i] - pred, 2), 0);
+            const r2 = 1 - (residualSS / totalSS);
+    
+            return { mse, rmse, mae, r2 };
+        }
+    
+        window.runSimulation = function() {
+            let fPlotting;
+            if (functionForm === 'Linear') {
+                fPlotting = xPlotting.map(x => x * 2.2 + 30);
+            } else if (functionForm === 'Quadratic') {
+                fPlotting = xPlotting.map(x => 210 - Math.pow(x - 50, 2) / 12);
+            } else if (functionForm === 'Exponential') {
+                fPlotting = xPlotting.map(x => 200 * (1 - Math.exp(-x / 25)));
+            }
+    
+            const trainItems = [10, 25, 40];
+            const xLearning = trainItems.flatMap(item => Array(trainRep).fill(xPlotting[item]));
+            const fLearning = trainItems.flatMap(item => Array(trainRep).fill(fPlotting[item]));
+    
+            const results = [];
+            for (let i = 0; i < nRep; i++) {
+                const yLearning = fLearning.map(y => y + (Math.random() - 0.5) * 2 * noise);
+                const almPredictions = learnALM(yLearning, xLearning, yPlotting, xPlotting, associationParameter, updateParameter);
+                results.push(almPredictions);
+            }
+    
+            const almPredictions = xPlotting.map((_, i) => 
+                results.reduce((sum, result) => sum + result[i], 0) / nRep
+            );
+    
+            const metrics = calculatePerformanceMetrics(almPredictions, fPlotting);
+            document.getElementById('metrics').innerHTML = `
+                <p>MSE: ${metrics.mse.toFixed(4)}</p>
+                <p>RMSE: ${metrics.rmse.toFixed(4)}</p>
+                <p>MAE: ${metrics.mae.toFixed(4)}</p>
+                <p>R²: ${metrics.r2.toFixed(4)}</p>
+            `;
+    
+            Plotly.newPlot('plot', [
+                {x: xPlotting, y: fPlotting, mode: 'lines', name: 'True Function'},
+                {x: xPlotting, y: almPredictions, mode: 'lines', name: 'ALM Prediction'}
+            ]);
+        };
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            associationParameter = 0.03;
+            updateParameter = 0.2;
+            trainRep = 1;
+            noise = 0;
+            nRep = 1;
+            functionForm = 'Linear';
+    
+            xPlotting = Array.from({ length: 181 }, (_, i) => i * 0.5);
+            yPlotting = Array.from({ length: 211 }, (_, i) => i * 1);
+    
+            // Event listeners for input changes
+            document.getElementById('associationParameter').addEventListener('input', (e) => {
+                associationParameter = parseFloat(e.target.value);
+                document.getElementById('associationParameterValue').textContent = associationParameter.toFixed(2);
+            });
+    
+            document.getElementById('updateParameter').addEventListener('input', (e) => {
+                updateParameter = parseFloat(e.target.value);
+                document.getElementById('updateParameterValue').textContent = updateParameter.toFixed(2);
+            });
+    
+            document.getElementById('trainRep').addEventListener('input', (e) => {
+                trainRep = parseInt(e.target.value);
+                document.getElementById('trainRepValue').textContent = trainRep;
+            });
+    
+            document.getElementById('noise').addEventListener('input', (e) => {
+                noise = parseFloat(e.target.value);
+                document.getElementById('noiseValue').textContent = noise.toFixed(1);
+            });
+    
+            document.getElementById('nRep').addEventListener('input', (e) => {
+                nRep = Math.max(1, Math.min(100, parseInt(e.target.value) || 1));
+                e.target.value = nRep;
+            });
+    
+            document.querySelectorAll('input[name="functionForm"]').forEach((radio) => {
+                radio.addEventListener('change', (e) => {
+                    functionForm = e.target.value;
+                });
+            });
+    
+            // Initial simulation run
+            runSimulation();
+        });
+    </script>
+</body>
+</html>
