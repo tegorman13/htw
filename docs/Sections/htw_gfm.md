@@ -1525,9 +1525,9 @@ constant groups by the end of training, suggesting that the relative
 success of the ordinal-reverse ordered varied group cannot be attributed
 to item or feedback effects alone.
 
-Our findings also diverge from the two previous studies to cleanly
-manipulate the variability of training items in a function learning task
-(DeLosh et al., 1997; van Dam & Ernst, 2015), although the varied
+Our findings also diverge from the two previous studies that cleanly
+manipulated the variability of training items in a function learning
+task (DeLosh et al., 1997; van Dam & Ernst, 2015), although the varied
 training condition of van Dam & Ernst (2015) also exhibited less
 learning, neither of these previous studies observed any difference
 between training conditions in extrapolation to novel items. Like DeLosh
@@ -1538,7 +1538,7 @@ difference difference between our studies is that DeLosh et al. (1997)
 trained participants with either 8, 20, or 50 unique items (all
 receiving the same total number of training trials). These larger sets
 of unique items, combined with the fact that participants achieved near
-ceiling level performance by the end of training - may have made it more
+ceiling level performance by the end of training, may have made it more
 difficult to observe any between-group differences of training variation
 in their study. van Dam & Ernst (2015) ’s variability manipulation was
 more similar to our own, as they trained participants with either 2 or 5
@@ -1546,7 +1546,7 @@ unique items. However, although the mapping between their input stimuli
 and motor responses was technically linear, the input dimension was more
 complex than our own, as it was defined by the degree of “spikiness” of
 the input shape. This entirely arbitrary mapping also would have
-preculded any sense of a “0” point, which may partially explain why
+precluded any sensible “0” point, which may partially explain why
 neither of their training conditions were able to extrapolate linearly
 in the manner observed in the current study or in DeLosh et al. (1997).
 
@@ -1558,28 +1558,28 @@ there are several limitations that should be flagged. First, although
 the constant training group never had experience from a velocity band
 closer to the extrapolation bands than the varied group, they always had
 a three times more trials with the nearest velocity band. Such a
-difference may be an unavoidable consequence of varied vs. constant
-design which match the total number of training trials between the two
-groups. However in order to more carefully tease apart the influence of
+difference may be an unavoidable consequence of a varied vs. constant
+design which matches the total number of training trials between the two
+groups. However, in order to more carefully tease apart the influence of
 variability from the influence of frequency/repetition effects, future
 research could explore alternative designs that maintain the variability
 manipulation while equating the amount of training on the nearest
 examples across conditions, such as by increasing the total number of
 trials for the varied group. Another limitation is that the testing
 stage did not include any interpolation items, i.e. the participants
-tested only from the training bands they experienced during training, or
-from extrapolation bands. The absence of interpolation testing makes it
-more difficult to distinguish between the effects of training
-variability on extrapolation specifically, as opposed to generalization
-more broadly. Of course, the nature of the constant training condition
-makes interpolation testing impossible to implement, however future
-studies might compare a training regimes that each include at least 2
-distinct items, but still differ in total amount of variability
-experienced, which would then allow groups to be compared in terms of
-both interpolation and extrapolation testing. Finally, the task employed
-in the present study consisted of only a linear, positive function.
-Previous work in human function learning has repeatedly shown that such
-functions are among the easiest to learn, but that humans are
+were tested only from the training bands they experienced during
+training, or from extrapolation bands. The absence of interpolation
+testing makes it more difficult to distinguish between the effects of
+training variability on extrapolation specifically, as opposed to
+generalization more broadly. Of course, the nature of the constant
+training condition makes interpolation testing impossible to implement,
+however future studies might compare training regimes that each include
+at least 2 distinct items, but still differ in the total amount of
+variability experienced, which would then allow groups to be compared in
+terms of both interpolation and extrapolation testing. Finally, the task
+employed in the present study consisted of only a linear, positive
+function. Previous work in human function learning has repeatedly shown
+that such functions are among the easiest to learn, but that humans are
 nonetheless capable of learning negative, non-linear, or discontinuous
 functions (Busemeyer et al., 1997; DeLosh et al., 1997; Kalish, 2013;
 McDaniel et al., 2009). It thus remains an open question as to whether
