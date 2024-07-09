@@ -1515,7 +1515,7 @@ unique items. However, although the mapping between their input stimuli
 and motor responses was technically linear, the input dimension was more
 complex than our own, as it was defined by the degree of “spikiness” of
 the input shape. This entirely arbitrary mapping also would have
-precluded any sense sensible “0” point, which may partially explain why
+precluded any sensible “0” point, which may partially explain why
 neither of their training conditions were able to extrapolate linearly
 in the manner observed in the current study or in DeLosh et al. (1997).
 
