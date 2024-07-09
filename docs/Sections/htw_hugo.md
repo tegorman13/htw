@@ -22,9 +22,73 @@ author:
     url: 'https://pc.cogs.indiana.edu/'
     email: rgoldsto@indiana.edu
     orcid: 0000-0001-8357-8358
-toc: false
+page-layout: full
+code-fold: show
+code-tools: true
+cache: true
+toc: true
+toc-location: body
+toc-title: Contents
+repo-actions: false
+execute:
+  warning: false
+  eval: true
+format:
+  html:
+    date: last-modified
+  hugo-md:
+    echo: false
+    include: true
+    html-math-method: mathjax
+    output-file: htw_hugo.md
+  gfm:
+    echo: false
+    output-file: htw_gfm.md
+  hikmah-manuscript-pdf:
+    echo: false
+    output-file: htw.pdf
+    mainfont: Linux Libertine O
+    mainfontoptions:
+      - Numbers=Proportional
+      - Numbers=OldStyle
+    mathfont: Libertinus Math
+  docx:
+    echo: false
+    prefer-html: true
+    output-file: htw.docx
+    toc: true
+prefer-html: true
+format-links:
+  - hikmah-manuscript-pdf
+  - gfm
+  - docx
 ---
 
+
+-   [Introduction](#introduction)
+    -   [Function Learning and Extrapolation](#function-learning-and-extrapolation)
+    -   [Variability and Function Learning](#variability-and-function-learning)
+    -   [Overview Of Present Study](#overview-of-present-study)
+-   [Experiment 1](#experiment-1)
+    -   [Methods](#methods)
+    -   [Analyses Strategy](#analyses-strategy)
+    -   [Results](#results)
+    -   [Experiment 1 Summary](#experiment-1-summary)
+-   [Experiment 2](#experiment-2)
+    -   [Methods & Procedure](#methods-procedure)
+    -   [Results](#results-1)
+    -   [Experiment 2 Summary](#experiment-2-summary)
+-   [Experiment 3](#experiment-3)
+    -   [Methods & Procedure](#methods-procedure-1)
+    -   [Results](#results-2)
+    -   [Experiment 3 Summary](#experiment-3-summary)
+-   [Computational Model](#computational-model)
+    -   [ALM & Exam](#alm-exam)
+    -   [Model Fitting](#model-fitting)
+    -   [Modelling Results](#modelling-results)
+-   [General Discussion](#general-discussion)
+-   [Supplementary](#supplementary)
+-   [References](#references)
 
 # Introduction
 
@@ -42,24 +106,10 @@ The authors evaluated the rule-based models introduced in earlier research (with
 
 The authors also introduced two new function-learning models. The Associative Learning Model (ALM) and the extrapolation-association model (EXAM). ALM is a two layer connectionist model adapted from the ALCOVE model in the category learning literature (Kruschke, 1992). ALM belongs to the general class of radial-basis function neural networks, and can be considered a similarity-based model in the sense that the nodes in the input layer of the network are activated as a function of distance (see <a href="#fig-alm-diagram" class="quarto-xref">Figure 15</a>). The EXAM model retains the same similarity-based activation and associative learning mechanisms as ALM, while being augmented with a linear rule response mechanism. When presented with novel stimuli, EXAM will retrieve the most similar input-output examples encountered during training, and from those examples compute a local slope. ALM was able to provide a good account of participants' training and interpolation data in all three function conditions, however it was unable to extrapolate. EXAM, by contrast, was able to reproduce both the extrapolation underestimation, as well as the quadratic and exponential overestimation patterns exhibited by the human participants. Subsequent research identified some limitations in EXAM's ability to account for cases where human participants learn and extrapolate a sinusoidal function (Bott & Heit, 2004) or to scenarios where different functions apply to different regions of the input space (Kalish et al., 2004), though EXAM has been shown to provide a good account of human learning and extrapolation in tasks with bi-linear, V-shaped input spaces (McDaniel et al., 2009).
 
-``` r
-pacman::p_load(dplyr,purrr,tidyr,tibble,ggplot2,
-  brms,tidybayes, rstanarm,emmeans,broom,bayestestR,
-  data.table, stringr, here,conflicted, gt, ggh4x, patchwork, knitr)
-#options(brms.backend="cmdstanr",mc.cores=4)
-walk(c("brms","dplyr","bayestestR","here"), conflict_prefer_all, quiet = TRUE)
-options(digits=2, scipen=999, dplyr.summarise.inform=FALSE)
-
-walk(c("brms","dplyr","bayestestR","here"), conflict_prefer_all, quiet = TRUE)
-walk(c("Display_Functions","deLosh_data","fun_alm","fun_indv_fit","fun_model", "prep_model_data","org_functions"), ~source(here::here(paste0("Functions/", .x, ".R"))))
-
-# walk(c("brms","dplyr","bayestestR"), conflict_prefer_all, quiet = TRUE)
-# walk(c("Display_Functions","org_functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
-# source(here::here("Functions","deLosh_data.R"))
-# source(here::here("Functions","Display_Functions.R"))
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-delosh-extrap-1.jpeg)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-delosh-extrap-1.png"
+id="fig-delosh-extrap"
+alt="Figure 1: The generalization patterns of human particpiants observed in DeLosh et al. (1997) (reproduced from Figure 3 in their manuscript). Dots represent the average responses of human participants, and solid lines represent the true functions. The dashed vertical lines indicate the lower and upper bounds of the trained examples. Stimulii that fall within the dashed lines are interpolations of the training examples, while those that fall outside the dashed lines are extrapolations." />
 
 ## Variability and Function Learning
 
@@ -83,30 +133,13 @@ To account for the empirical results, we will apply a series of computational mo
 
   
 
-<img src="../Assets/figs/htw_task_fig.png" style="width:60.0%" data-fig-align="center" />
+<img src="../Assets/figs/htw_task_fig.png" id="fig-htw-task"
+alt="Figure 2: The Hit the wall task. Participants launch the blue ball to hit the red wall at the target velocity band indicated at the top of the screen. The ball must be released from within the orange square - but the location of release, and the location at which the ball strikes the wall are both irrelevant to the task feedback." />
 
 *Procedure.* All participants completed the task online. Participants were provided with a description of the experiment and indicated informed consent. **?@fig-design-e1** illustrates the general procedure. Participants completed a total of 90 trials during the training stage. In the varied training condition, participants encountered three velocity bands (800-1000, 1000-1200, and 1200-1400). Participants in the constant training condition trained on only one velocity band (800-1000) - the closest band to what would be the novel extrapolation bands in the testing stage.
 
 Following the training stage, participants proceeded immediately to the testing stage. Participants were tested from all six velocity bands, in two separate stages. In the novel extrapolation testing stage, participants completed "no-feedback" testing from three novel extrapolation bands (100-300, 350-550, and 600-800), with each band consisting of 15 trials. Participants were also tested from the three velocity bands that were trained by the varied condition (800-1000, 1000-1200, and 1200-1400). In the constant training condition, two of these bands were novel, while in the varied training condition, all three bands were encountered during training. The order in which participants completed the novel-extrapolation and testing-from-3-varied bands was counterbalanced across participants.
 A final training stage presented participants with "feedback" testing for each of the three extrapolation bands (100-300, 350-550, and 600-800).
-
-``` r
-# pacman::p_load(dplyr,purrr,tidyr,tibble,ggplot2,
-#   brms,tidybayes, rstanarm,emmeans,broom,bayestestR,
-#   stringr, here,conflicted, patchwork, knitr)
-# #options(brms.backend="cmdstanr",mc.cores=4)
-# options(digits=2, scipen=999, dplyr.summarise.inform=FALSE)
-# walk(c("brms","dplyr","bayestestR"), conflict_prefer_all, quiet = TRUE)
-# walk(c("Display_Functions","org_functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
-e1 <- readRDS(here("data/e1_08-21-23.rds")) 
-e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
-testE1 <- e1 |> filter(expMode2 == "Test")
-nbins=5
-trainE1 <-  e1 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
-    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
-trainE1_max <- trainE1 |> filter(Trial_Bin == nbins, bandInt==800)
-trainE1_avg <- trainE1_max |> group_by(id,condit) |> summarise(avg = mean(dist))
-```
 
 ## Analyses Strategy
 
@@ -114,11 +147,16 @@ All data processing and statistical analyses were performed in R version 4.32 (T
 
 Each model was set to run with 4 chains, 5000 iterations per chain, with the first 2500 discarded as warmup chains. Rhat values were within an acceptable range, with values \<=1.02 (see appendix for diagnostic plots). We used uninformative priors for the fixed effects of the model (condition and velocity band), and weakly informative Student T distributions for the random effects. For each model, we report 1) the mean values of the posterior distribution for the parameters of interest, 2) the lower and upper credible intervals (CrI), and the probability of direction value (pd).
 
+<div id="tbl-brms-models">
+
 | Group Comparison | Code | Data |
 |-----------------|--------------------------------------|-----------------|
 | End of Training Accuracy | `brm(Abs. Deviation ~ condit)` | Final Training Block |
 | Test Accuracy | `brm(Abs. Deviation ~ condit * bandType + (1|id) + (1|bandInt)` | All Testing trials |
 | Band Discrimination | `brm(vx ~ condit * band +(1 + bandInt|id)` | All Testing Trials |
+
+Table 1: **Statistical Model Specifications**. The specifications for the Bayesian regression models used in the analyses of each of the 3 experiments. Comparisons of accuracy use absolute deviation as the dependent variable, while comparisons of discrimination use the raw velocities produced by participants as the dependent variable.
+</div>
 
   
 
@@ -126,77 +164,25 @@ In each experiment we compare varied and constant conditions in terms of 1) accu
 
 ## Results
 
-``` r
-p1 <- trainE1 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
-    stat_summary(geom = "line", fun = mean) +
-    stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
-    facet_wrap(~vb)+
-    scale_x_continuous(breaks = seq(1, nbins + 1)) +
-    theme(legend.title=element_blank()) + 
-    labs(y = "Deviation", x="Training Block") 
-#ggsave(here("Assets/figs/e1_train_deviation.png"), p1, width = 8, height = 4,bg="white")
-p1
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-train-dev-1.jpeg)
-
-``` r
-##| label: tbl-e1-train-dist
-##| tbl-cap: "Experiment 1 - Learning curves. "
-##| output: asis
-
-bmm_e1_train<- trainE1_max %>% 
-  brm(dist ~ condit, 
-      file=here("data/model_cache/e1_train_deviation"),
-      data = .,
-      iter = 2000,
-      chains = 4,
-      control = list(adapt_delta = .94, max_treedepth = 13))
-mtr1 <- as.data.frame(describe_posterior(bmm_e1_train, centrality = "Mean"))[, c(1,2,4,5,6)]
-colnames(mtr1) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
-
-# mtr1 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
-#   tibble::remove_rownames() |> 
-#   mutate(Term = stringr::str_remove(Term, "b_")) |>
-#    kable(booktabs = TRUE)
-
-cdtr1 <- get_coef_details(bmm_e1_train, "conditVaried")
-```
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e1-train-dev-1.png"
+id="fig-e1-train-dev"
+alt="Figure 3: Experiment 1 - Training Stage. Deviations from target band across training blocks. Lower values represent greater accuracy." />
+<div id="tbl-e1-train-dist">
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
 |:-------------|---------:|--------------:|--------------:|----:|
 | Intercept    |   106.34 |         95.46 |        117.25 |   1 |
 | conditVaried |    79.64 |         57.92 |        101.63 |   1 |
 
+Table 2: **Experiment 1 - End of training performance**. Comparing final training block accuracy in the band common to both groups. The Intercept represents the average of the baseline condition (constant training), and the conditVaried coefficient reflects the difference between the constant and varied groups. A larger positive estimates indicates a greater deviation (lower accuracy) for the varied group. CrI values indicate 95% credible intervals. pd is the probability of direction (the % of the posterior on the same side of 0 as the coefficient estimate).
+</div>
+
   
 
 *Training*. <a href="#fig-e1-train-dev" class="quarto-xref">Figure 3</a> displays the average deviations across training blocks for the varied group, which trained on three velocity bands, and the constant group, which trained on one velocity band. To compare the training conditions at the end of training, we analyzed performance on the 800-1000 velocity band, which both groups trained on. The full model results are shown in Table 1. The varied group had a significantly greater deviation from the target band than the constant group in the final training block, ($\beta$ = 79.64, 95% CrI \[57.92, 101.63\]; pd = 100%).
 
-``` r
-##| label: tbl-e1-bmm-dist
-##| tbl-cap: "E1. Training vs. Extrapolation"
-#| 
-modelFile <- paste0(here::here("data/model_cache/"), "e1_dist_Cond_Type_RF_2")
-bmtd <- brm(dist ~ condit * bandType + (1|bandInt) + (1|id), 
-    data=testE1, file=modelFile,
-    iter=5000,chains=4, control = list(adapt_delta = .94, max_treedepth = 13))
-                        
-# mted1 <- as.data.frame(describe_posterior(bmtd, centrality = "Mean"))[, c(1,2,4,5,6)]
-# colnames(mted1) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
-
-# r_bandInt_params <- get_variables(bmtd)[grepl("r_bandInt", get_variables(bmtd))]
-# posterior_summary(bmtd,variable=r_bandInt_params)
-# 
-# r_bandInt_params <- get_variables(bmtd)[grepl("r_id:bandInt", get_variables(bmtd))]
-# posterior_summary(bmtd,variable=r_bandInt_params)
-
-# mted1 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
-#   tibble::remove_rownames() |> 
-#   mutate(Term = stringr::str_remove(Term, "b_")) |> kable(booktabs = TRUE)
-cdted1 <- get_coef_details(bmtd, "conditVaried")
-cdted2 <-get_coef_details(bmtd, "bandTypeExtrapolation")
-cdted3 <-get_coef_details(bmtd, "conditVaried:bandTypeExtrapolation")
-```
+<div id="tbl-e1-bmm-dist">
 
 | Term                               | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
 |:-----------------------|-----------:|-----------:|-----------:|-----------:|
@@ -205,50 +191,19 @@ cdted3 <-get_coef_details(bmtd, "conditVaried:bandTypeExtrapolation")
 | bandTypeExtrapolation              |    71.51 |         33.24 |        109.60 | 1.0 |
 | conditVaried:bandTypeExtrapolation |    66.46 |         32.76 |         99.36 | 1.0 |
 
+Table 3: **Experiment 1 testing accuracy**. Main effects of condition and band type (training vs. extrapolation bands), and the interaction between the two factors. The Intercept represents the baseline condition (constant training & trained bands). Larger coefficients indicate larger deviations from the baselines - and a positive interaction coefficient indicates disproporionate deviation for the varied condition on the extrapolation bands. CrI values indicate 95% credible intervals. pd is the probability of direction (the % of the posterior on the same side of 0 as the coefficient estimate).
+</div>
+
 *Testing.* To compare accuracy between groups in the testing stage, we fit a Bayesian mixed effects model predicting deviation from the target band as a function of training condition (varied vs. constant) and band type (trained vs. extrapolation), with random intercepts for participants and bands. The model results are shown in <a href="#tbl-e1-bmm-dist" class="quarto-xref">Table 3</a>. The main effect of training condition was not significant ($\beta$ = 39, 95% CrI \[-21.1, 100.81\]; pd = 89.93%). The extrapolation testing items had a significantly greater deviation than the training bands ($\beta$ = 71.51, 95% CrI \[33.24, 109.6\]; pd = 99.99%). Most importantly, the interaction between training condition and band type was significant ($\beta$ = 66.46, 95% CrI \[32.76, 99.36\]; pd = 99.99%), As shown in <a href="#fig-e1-test-dev" class="quarto-xref">Figure 4</a>, the varied group had disproportionately larger deviations compared to the constant group in the extrapolation bands.
 
-``` r
-pe1td <- testE1 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
-    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
-    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
-  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
-  labs(x="Band", y="Deviation From Target Band")
-
-condEffects <- function(m,xvar){
-  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
-  stat_dist_pointinterval() + 
-  stat_halfeye(alpha=.1, height=.5) +
-  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
-  
-}
-
-pe1ce <- bmtd |> emmeans( ~condit + bandType) |>
-  gather_emmeans_draws() |>
- condEffects(bandType) + labs(y="Absolute Deviation From Target Band", x="Band Type")
-
-p2 <- (pe1td + pe1ce) + plot_annotation(tag_levels= 'A')
-#ggsave(here::here("Assets/figs", "e1_test-dev.png"), p2, width=8, height=4, bg="white")
-p2
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-test-dev-1.jpeg)
-
-``` r
-##| label: tbl-e1-bmm-vx
-##| tbl-cap: "Experiment 1. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
-e1_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
-                        data=test,file=paste0(here::here("data/model_cache", "e1_testVxBand_RF_5k")),
-                        iter=5000,chains=4,silent=0,
-                        control=list(adapt_delta=0.94, max_treedepth=13))
-
-#GetModelStats(e1_vxBMM) |> kable(booktabs = TRUE)
-
-cd1 <- get_coef_details(e1_vxBMM, "conditVaried")
-sc1 <- get_coef_details(e1_vxBMM, "bandInt")
-intCoef1 <- get_coef_details(e1_vxBMM, "conditVaried:bandInt")
-```
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e1-test-dev-1.png"
+id="fig-e1-test-dev"
+alt="Figure 4: Experiment 1 Testing Accuracy. A) Empirical Deviations from target band during testing without feedback stage. B) Conditional effect of condition (Constant vs. Varied) and testing band type (trained bands vs. novel extrapolation bands) on testing accuracy. Error bars represent 95% credible intervals." />
 
   
+
+<div id="tbl-e1-bmm-vx">
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
 |:-------------|---------:|--------------:|--------------:|-----:|
@@ -257,60 +212,20 @@ intCoef1 <- get_coef_details(e1_vxBMM, "conditVaried:bandInt")
 | Band         |     0.71 |          0.62 |          0.80 | 1.00 |
 | condit\*Band |    -0.14 |         -0.26 |         -0.01 | 0.98 |
 
+Table 4: **Experiment 1 Testing Discrimination**. Bayesian Mixed Model Predicting velocity as a function of condition (Constant vs. Varied) and Velocity Band. Larger coefficients for the Band term reflect a larger slope, or greater sensitivity/discrimination. The interaction between condit and Band indicates the difference between constant and varied slopes. CrI values indicate 95% credible intervals. pd is the probability of direction (the % of the posterior on the same side of 0 as the coefficient estimate).
+</div>
+
 Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. See <a href="#tbl-e1-bmm-vx" class="quarto-xref">Table 4</a> for the full model results. The estimated coefficient for training condition ($\beta$ = 164.05, 95% CrI \[45.5, 278.85\], pd = 99.61%) suggests that the varied group tends to produce harder throws than the constant group, though this is not, in and of itself, useful for assessing discrimination. Most relevant to the issue of discrimination is the coefficient on the Band predictor ($\beta$ = 0.71 95% CrI \[0.62, 0.8\], pd = 100%). Although the median slope does fall underneath the ideal of value of 1, the fact that the 95% credible interval does not contain 0 provides strong evidence that participants exhibited some discrimination between bands. The significant negative estimate for the interaction between slope and condition ($\beta$ = -0.14, 95% CrI \[-0.26, -0.01\], pd = 98.39%), indicates that the discrimination was modulated by training condition, with the varied participants showing less sensitivity between bands than the constant condition (see <a href="#fig-e1-test-vx" class="quarto-xref">Figure 5</a> and <a href="#fig-e1-bmm-vx" class="quarto-xref">Figure 6</a>).
 
-``` r
-testE1 %>% group_by(id,vb,condit) |> plot_distByCondit()
-```
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e1-test-vx-1.png"
+id="fig-e1-test-vx"
+alt="Figure 5: Experiment 1. Empirical distribution of velocities produced in the testing stage. Translucent bands with dashed lines indicate the correct range for each velocity band." />
 
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-test-vx-1.jpeg)
-
-``` r
-pe1vce <- e1_vxBMM |> emmeans( ~condit + bandInt,re_formula=NA, 
-                       at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
-  gather_emmeans_draws() |> 
-  condEffects(bandInt) +
-  stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
-  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
-                     labels = levels(testE1$vb), 
-                     limits = c(0, 1400)) + 
-  scale_y_continuous(expand=expansion(add=100),breaks=round(seq(0,2000,by=200),2)) +
-  theme(legend.title=element_blank()) + 
-  labs(y="Velcoity", x="Band")
-
-fe <- fixef(e1_vxBMM)[,1]
-fixed_effect_bandInt <- fixef(e1_vxBMM)[,1]["bandInt"]
-fixed_effect_interaction <- fixef(e1_vxBMM)[,1]["conditVaried:bandInt"]
-
-re <- data.frame(ranef(e1_vxBMM, pars = "bandInt")$id[, ,'bandInt']) |> 
-  rownames_to_column("id") |> 
-  left_join(e1Sbjs,by="id") |>
-  mutate(adjust= fixed_effect_bandInt + fixed_effect_interaction*(condit=="Varied"),slope = Estimate + adjust )
-
-
-pid_den1 <- ggplot(re, aes(x = slope, fill = condit)) + 
-  geom_density(alpha=.5) + 
-  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
-  xlim(c(min(re$slope)-.3, max(re$slope)+.3))+
-   theme(legend.title=element_blank()) + 
-  labs(x="Slope Coefficient",y="Density")
-
-pid_slopes1 <- re |>  mutate(id=reorder(id,slope)) |>
-  ggplot(aes(y=id, x=slope,fill=condit,color=condit)) + 
-    geom_pointrange(aes(xmin=Q2.5+adjust, xmax=Q97.5+adjust)) + 
-  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
-     theme(legend.title=element_blank(), 
-           axis.text.y = element_text(size=6) ) + 
-    labs(x="Estimated Slope", y="Participant")  + 
-    ggh4x::facet_wrap2(~condit,axes="all",scales="free_y")
-
-
-p3 <- (pe1vce + pid_den1 + pid_slopes1) + plot_annotation(tag_levels= 'A')
-#ggsave(here::here("Assets/figs", "e1_test-vx.png"), p3,width=9,height=11, bg="white",dpi=600)
-p3
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e1-bmm-vx-1.jpeg)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e1-bmm-vx-1.png"
+id="fig-e1-bmm-vx"
+alt="Figure 6: Experiment 1 Discrimination. A) Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. B) The distribution of slope coefficients for each condition. Larger slopes indicates better discrimination between target bands. C) Individual participant slopes. Error bars represent 95% HDI." />
 
 ## Experiment 1 Summary
 
@@ -320,85 +235,31 @@ More importantly, the varied training group exhibited significantly larger devia
 
 # Experiment 2
 
-``` r
-# walk(c("brms","dplyr","bayestestR"), conflict_prefer_all, quiet = TRUE)
-# walk(c("Display_Functions","org_functions"), ~ source(here::here(paste0("Functions/", .x, ".R"))))
-e2 <- readRDS(here("data/e2_08-04-23.rds")) 
-e2Sbjs <- e2 |> group_by(id,condit) |> summarise(n=n())
-testE2 <- e2 |> filter(expMode2 == "Test")
-nbins=5
-trainE2 <-  e2 |> filter(expMode2=="Train") |> group_by(id,condit, vb) |> 
-    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
-trainE2_max <- trainE2 |> filter(Trial_Bin == nbins, bandInt==600)
-
-# e2 |> group_by(condit, bandOrder) |> summarise(n_distinct(id))
-```
-
 ## Methods & Procedure
 
 The task and procedure of Experiment 2 was identical to Experiment 1, with the exception that the training and testing bands were reversed (see **?@fig-design-e2**). The Varied group trained on bands 100-300, 350-550, 600-800, and the constant group trained on band 600-800. Both groups were tested from all six bands. A total of 110 participants completed the experiment (Varied: 55, Constant: 55).
 
 ## Results
 
-``` r
-p1 <- trainE2 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
-    stat_summary(geom = "line", fun = mean) +
-    stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
-    facet_wrap(~vb)+
-    scale_x_continuous(breaks = seq(1, nbins + 1)) +
-    theme(legend.title=element_blank()) + 
-    labs(y = "Deviation", x="Training Block") 
-#ggsave(here("Assets/figs/e2_train_deviation.png"), p1, width = 8, height = 4,bg="white")
-p1
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e2-train-dev-1.jpeg)
-
-``` r
-bmm_e2_train <- trainE2_max %>% 
-  brm(dist ~ condit, 
-      file=here("data/model_cache/e2_train_deviation"),
-      data = .,
-      iter = 2000,
-      chains = 4,
-      control = list(adapt_delta = .94, max_treedepth = 13))
-
-mtr2 <- as.data.frame(describe_posterior(bmm_e2_train, centrality = "Mean"))[, c(1,2,4,5,6)]
-colnames(mtr2) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
-
-cdtr2 <- get_coef_details(bmm_e2_train, "conditVaried")
-# mtr2 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
-#   tibble::remove_rownames() |> 
-#   mutate(Term = stringr::str_remove(Term, "b_")) |>
-#   kable(escape=F,booktabs=T) 
-```
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2-train-dev-1.png"
+id="fig-e2-train-dev"
+alt="Figure 7: Experiment 2 Training Stage. Deviations from target band across training blocks. Lower values represent greater accuracy." />
+<div id="tbl-e2-train-dist">
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |  pd |
 |:-------------|---------:|--------------:|--------------:|----:|
 | Intercept    |    91.01 |         80.67 |        101.26 |   1 |
 | conditVaried |    36.15 |         16.35 |         55.67 |   1 |
 
+Table 5: **Experiment 2 - End of training performance**. The Intercept represents the average of the baseline condition (constant training), and the conditVaried coefficient reflects the difference between the constant and varied groups. A larger positive coefficient indicates a greater deviation (lower accuracy) for the varied group. CrI values indicate 95% credible intervals. pd is the probability of direction (the % of the posterior on the same side of 0 as the coefficient estimate).
+</div>
+
   
 
 *Training*. <a href="#fig-e2-train-dev" class="quarto-xref">Figure 7</a> presents the deviations across training blocks for both constant and varied training groups. We again compared training performance on the band common to both groups (600-800). The full model results are shown in Table 1. The varied group had a significantly greater deviation than the constant group in the final training block, ( $\beta$ = 36.15, 95% CrI \[16.35, 55.67\]; pd = 99.95%).
 
-``` r
-modelFile <- paste0(here::here("data/model_cache/"), "e2_dist_Cond_Type_RF_2")
-bmtd2 <- brm(dist ~ condit * bandType + (1|bandInt) + (1|id), 
-    data=testE2, file=modelFile,
-    iter=5000,chains=4, control = list(adapt_delta = .94, max_treedepth = 13))
-                        
-# mted2 <- as.data.frame(describe_posterior(bmtd2, centrality = "Mean"))[, c(1,2,4,5,6)]
-# colnames(mted2) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
-# mted2 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
-#   tibble::remove_rownames() |> 
-#   mutate(Term = stringr::str_remove(Term, "b_")) |>
-#   kable(booktabs=TRUE) 
-
-cd2ted1 <- get_coef_details(bmtd2, "conditVaried")
-cd2ted2 <-get_coef_details(bmtd2, "bandTypeExtrapolation")
-cd2ted3 <-get_coef_details(bmtd2, "conditVaried:bandTypeExtrapolation")
-```
+<div id="tbl-e2-bmm-dist">
 
 | Term                               | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
 |:-----------------------------|---------:|-------------:|-------------:|-----:|
@@ -407,52 +268,18 @@ cd2ted3 <-get_coef_details(bmtd2, "conditVaried:bandTypeExtrapolation")
 | bandTypeExtrapolation              |    38.09 |         -6.94 |         83.63 | 0.95 |
 | conditVaried:bandTypeExtrapolation |    82.00 |         41.89 |        121.31 | 1.00 |
 
+Table 6: **Experiment 2 testing accuracy**. Main effects of condition and band type (training vs. extrapolation), and the interaction between the two factors. The Intercept represents the baseline condition (constant training & trained bands). Larger coefficients indicate larger deviations from the baselines - and a positive interaction coefficient indicates disproportionate deviation for the varied condition on the extrapolation bands. CrI values indicate 95% credible intervals. pd is the probability of direction (the % of the posterior on the same side of 0 as the coefficient estimate).
+</div>
+
    
 
 *Testing Accuracy.* The analysis of testing accuracy examined deviations from the target band as influenced by training condition (Varied vs. Constant) and band type (training vs. extrapolation bands). The results, summarized in <a href="#tbl-e2-bmm-dist" class="quarto-xref">Table 6</a>, reveal no significant main effect of training condition ($\beta$ = -20.58, 95% CrI \[-72.94, 33.08\]; pd = 77.81%). However, the interaction between training condition and band type was significant ($\beta$ = 82, 95% CrI \[41.89, 121.31\]; pd = 100%), with the varied group showing disproportionately larger deviations compared to the constant group on the extrapolation bands (see <a href="#fig-e2-test-dev" class="quarto-xref">Figure 8</a>).
 
-``` r
-condEffects <- function(m,xvar){
-  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
-  stat_dist_pointinterval() + 
-  stat_halfeye(alpha=.1, height=.5) +
-  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
-  
-}
-pe2td <- testE2 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
-    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
-    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
-  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
-  labs(x="Band", y="Deviation From Target")
-
-
-
-pe2ce <- bmtd2 |> emmeans( ~condit + bandType) |>
-  gather_emmeans_draws() |>
- condEffects(bandType) + labs(y="Absolute Deviation From Band", x="Band Type")
-
-p2 <- (pe2td + pe2ce) + plot_annotation(tag_levels= 'A')
-#ggsave(here::here("Assets/figs", "e2_test-dev.png"), p2, width=8, height=4, bg="white")
-p2
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e2-test-dev-1.jpeg)
-
-``` r
-##| label: tbl-e2-bmm-vx
-##| tbl-cap: "Experiment 2. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
-
-e2_vxBMM <- brm(vx ~ condit * bandInt + (1 + bandInt|id),
-                        data=test,file=paste0(here::here("data/model_cache", "e2_testVxBand_RF_5k")),
-                        iter=5000,chains=4,silent=0,
-                        control=list(adapt_delta=0.94, max_treedepth=13))
-
-#GetModelStats(e2_vxBMM ) |> kable(escape=F,booktabs=T, caption="Fit to all 6 bands")
-
-cd2 <- get_coef_details(e2_vxBMM, "conditVaried")
-sc2 <- get_coef_details(e2_vxBMM, "bandInt")
-intCoef2 <- get_coef_details(e2_vxBMM, "conditVaried:bandInt")
-```
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2-test-dev-1.png"
+id="fig-e2-test-dev"
+alt="Figure 8: Experiment 2 Testing Accuracy. A) Empirical Deviations from target band during testing without feedback stage. B) Conditional effect of condition (Constant vs. Varied) and testing band type (trained bands vs. novel extrapolation bands) on testing accuracy. Error bars represent 95% credible intervals." />
+<div id="tbl-e2-bmm-vx">
 
 | Term         | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
 |:-------------|---------:|--------------:|--------------:|-----:|
@@ -461,65 +288,20 @@ intCoef2 <- get_coef_details(e2_vxBMM, "conditVaried:bandInt")
 | Band         |     0.71 |          0.58 |          0.84 | 1.00 |
 | condit\*Band |    -0.06 |         -0.24 |          0.13 | 0.73 |
 
+Table 7: **Experiment 2 Testing Discrimination**. Bayesian Mixed Model Predicting velocity as a function of condition (Constant vs. Varied) and Velocity Band. Larger coefficients for the Band term reflect a larger slope, or greater sensitivity/discrimination. The interaction between condition and Band indicates the difference between constant and varied slopes. CrI values indicate 95% credible intervals. pd is the probability of direction (the % of the posterior on the same side of 0 as the coefficient estimate)
+</div>
+
 *Testing Discrimination.* Finally, to assess the ability of both conditions to discriminate between velocity bands, we fit a model predicting velocity as a function of training condition and velocity band, with random intercepts and random slopes for each participant. The full model results are shown in <a href="#tbl-e2-bmm-vx" class="quarto-xref">Table 7</a>. The overall slope on target velocity band predictor was significantly positive, ($\beta$ = 0.71, 95% CrI \[0.58, 0.84\]; pd= 100%), indicating that participants exhibited discrimination between bands. The interaction between slope and condition was not significant, ($\beta$ = -0.06, 95% CrI \[-0.24, 0.13\]; pd= 72.67%), suggesting that the two conditions did not differ in their ability to discriminate between bands (see <a href="#fig-e2-test-vx" class="quarto-xref">Figure 9</a> and <a href="#fig-e2-bmm-vx" class="quarto-xref">Figure 10</a>).
 
-``` r
-testE2 %>% group_by(id,vb,condit) |> plot_distByCondit()
-```
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2-test-vx-1.png"
+id="fig-e2-test-vx"
+alt="Figure 9: Experiment 2. Empirical distribution of velocities produced in the testing stage. Translucent bands with dash lines indicate the correct range for each velocity band." />
 
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e2-test-vx-1.jpeg)
-
-``` r
-condEffects <- function(m,xvar){
-  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
-  stat_dist_pointinterval() + 
-  stat_halfeye(alpha=.1, height=.5) +
-  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
-}
-
-pe2vce <- e2_vxBMM |> emmeans( ~condit + bandInt,re_formula=NA, 
-                       at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
-  gather_emmeans_draws() |> 
-  condEffects(bandInt) +
-  stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
-  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
-                     labels = levels(testE2$vb), 
-                     limits = c(0, 1400)) + 
-scale_y_continuous(expand=expansion(add=100),breaks=round(seq(0,2000,by=200),2)) +
-  theme(legend.title=element_blank()) + 
-  labs(y="Velcoity", x="Band")
-
-fe <- fixef(e2_vxBMM)[,1]
-fixed_effect_bandInt <- fixef(e2_vxBMM)[,1]["bandInt"]
-fixed_effect_interaction <- fixef(e2_vxBMM)[,1]["conditVaried:bandInt"]
-
-re <- data.frame(ranef(e2_vxBMM, pars = "bandInt")$id[, ,'bandInt']) |> 
-  rownames_to_column("id") |> 
-  left_join(e2Sbjs,by="id") |>
-  mutate(adjust= fixed_effect_bandInt + fixed_effect_interaction*(condit=="Varied"),slope = Estimate + adjust )
-
-pid_den2 <- ggplot(re, aes(x = slope, fill = condit)) + 
-  geom_density(alpha=.5) + 
-  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
-  xlim(c(min(re$slope)-.3, max(re$slope)+.3))+
-   theme(legend.title=element_blank()) + 
-  labs(x="Slope Coefficient",y="Density")
-
-pid_slopes2 <- re |>  mutate(id=reorder(id,slope)) |>
-  ggplot(aes(y=id, x=slope,fill=condit,color=condit)) + 
-    geom_pointrange(aes(xmin=Q2.5+adjust, xmax=Q97.5+adjust)) + 
-  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
-      theme(legend.title=element_blank(), 
-        axis.text.y = element_text(size=6) ) + 
-    labs(x="Estimated Slope", y="Participant")  + 
-    ggh4x::facet_wrap2(~condit,axes="all",scales="free_y")
-
-p3 <- (pe2vce + pid_den2 + pid_slopes2) + plot_annotation(tag_levels= 'A')
-#ggsave(here::here("Assets/figs", "e2_test-vx.png"), p3,width=9,height=11, bg="white",dpi=600)
-p3
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e2-bmm-vx-1.jpeg)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2-bmm-vx-1.png"
+id="fig-e2-bmm-vx"
+alt="Figure 10: Experiment 2 Discrimination. A) Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. B) The distribution of slope coefficients for each condition. Larger slopes indicates better discrimination. C) Individual participant slopes. Error bars represent 95% HDI." />
 
 ## Experiment 2 Summary
 
@@ -527,47 +309,13 @@ Experiment 2 extended the findings of Experiment 1 by examining the effects of t
 
 # Experiment 3
 
-``` r
-e3 <- readRDS(here("data/e3_08-04-23.rds")) |> 
-    mutate(trainCon=case_when(
-    bandOrder=="Original" ~ "800",
-    bandOrder=="Reverse" ~ "600",
-    TRUE ~ NA_character_
-    ), trainCon=as.numeric(trainCon)) 
-e3Sbjs <- e3 |> group_by(id,condit,bandOrder) |> summarise(n=n())
-testE3 <- e3 |> filter(expMode2 == "Test")
-nbins=5
-trainE3 <-  e3 |> filter(expMode2=="Train") |> group_by(id,condit,bandOrder, vb) |> 
-    mutate(Trial_Bin = cut( gt.train, breaks = seq(1, max(gt.train),length.out=nbins+1),include.lowest = TRUE, labels=FALSE)) 
-trainE3_max <- trainE3 |> filter(Trial_Bin == nbins, bandInt==trainCon)
-```
-
 ## Methods & Procedure
 
 The major adjustment of Experiment 3 is for participants to receive ordinal feedback during training, in contrast to the continuous feedback of the prior experiments. After each training throw, participants are informed whether a throw was too soft, too hard, or correct (i.e. within the target velocity range). All other aspects of the task and design are identical to Experiments 1 and 2. We utilized the order of training and testing bands from both of the prior experiments, thus assigning participants to both an order condition (Original or Reverse) and a training condition (Constant or Varied). Participants were once again recruited from the online Indiana University Introductory Psychology Course pool. Following exclusions, 195 participants were included in the final analysis, n=51 in the Constant-Original condition, n=59 in the Constant-Reverse condition, n=39 in the Varied-Original condition, and n=46 in the Varied-Reverse condition.
 
 ## Results
 
-``` r
-bmm_e3_train <- trainE3_max %>% 
-  brm(dist ~ condit*bandOrder, 
-      file=here("data/model_cache/e3_train_deviation"),
-      data = .,
-      iter = 2000,
-      chains = 4,
-      control = list(adapt_delta = .94, max_treedepth = 13))
-
-# mtr3 <- as.data.frame(describe_posterior(bmm_e3_train, centrality = "Mean"))[, c(1,2,4,5,6)]
-# colnames(mtr3) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
-# mtr3 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
-#   tibble::remove_rownames() |> 
-#   mutate(Term = stringr::str_remove(Term, "b_")) |>
-#   kable(escape=F,booktabs=T) 
-
-cd3tr1 <- get_coef_details(bmm_e3_train, "conditVaried")
-cd3tr2 <-get_coef_details(bmm_e3_train, "bandOrderReverse")
-cd3tr3 <-get_coef_details(bmm_e3_train, "conditVaried:bandOrderReverse")
-```
+<div id="tbl-e3-train-dist">
 
 | Term                          | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
 |:---------------------------|---------:|-------------:|-------------:|------:|
@@ -576,49 +324,16 @@ cd3tr3 <-get_coef_details(bmm_e3_train, "conditVaried:bandOrderReverse")
 | bandOrderReverse              |     1.11 |        -16.02 |         18.16 | 0.55 |
 | conditVaried:bandOrderReverse |   -77.02 |       -114.16 |        -39.61 | 1.00 |
 
+Table 8: **Experiment 3 - End of training performance**. The Intercept represents the average of the baseline condition (constant training & original band order), the conditVaried coefficient reflects the difference between the constant and varied groups, and the bandOrderReverse coefficient reflects the difference between original and reverse order. A larger positive coefficient indicates a greater deviation (lower accuracy) for the varied group. The negative value for the interaction between condit and bandOrder indicates that varied condition with reverse order had significantly lower deviations than the varied condition with the original band order
+</div>
+
 *Training*. <a href="#fig-e3-train-dev" class="quarto-xref">Figure 11</a> displays the average deviations from the target band across training blocks, and <a href="#tbl-e3-train-dist" class="quarto-xref">Table 8</a> shows the results of the Bayesian regression model predicting the deviation from the common band at the end of training (600-800 for reversed order, and 800-1000 for original order conditions). The main effect of training condition is significant, with the varied condition showing larger deviations ( $\beta$ = 64.93, 95% CrI \[36.99, 90.8\]; pd = 100%). The main effect of band order is not significant $\beta$ = 1.11, 95% CrI \[-16.02, 18.16\]; pd = 55.4%, however the interaction between training condition and band order is significant, with the varied condition showing greater accuracy in the reverse order condition ( $\beta$ = -77.02, 95% CrI \[-114.16, -39.61\]; pd = 100%).
 
-``` r
-p1 <- trainE3 |> ggplot(aes(x = Trial_Bin, y = dist, color = condit)) +
-    stat_summary(geom = "line", fun = mean) +
-    stat_summary(geom = "errorbar", fun.data = mean_se, width = .4, alpha = .7) +
-    ggh4x::facet_nested_wrap(~bandOrder*vb,ncol=3)+
-    scale_x_continuous(breaks = seq(1, nbins + 1)) +
-    theme(legend.title=element_blank()) + 
-    labs(y = "Absolute Deviation", x="Training Block") 
-#ggsave(here("Assets/figs/e3_train_deviation.png"), p1, width = 9, height = 8,bg="white")
-p1
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e3-train-dev-1.jpeg)
-
-``` r
-#options(brms.backend="cmdstanr",mc.cores=4)
-modelFile <- paste0(here::here("data/model_cache/"), "e3_dist_Cond_Type_RF_2")
-bmtd3 <- brm(dist ~ condit * bandType*bandOrder + (1|bandInt) + (1|id), 
-    data=testE3, file=modelFile,
-    iter=5000,chains=4, control = list(adapt_delta = .94, max_treedepth = 13))
-                        
-# mted3 <- as.data.frame(describe_posterior(bmtd3, centrality = "Mean"))[, c(1,2,4,5,6)]
-# colnames(mted3) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")
-# mted3 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
-#   tibble::remove_rownames() |> 
-#   mutate(Term = stringr::str_remove(Term, "b_")) |>
-#   kable(booktabs=TRUE) 
-
-#ce_bmtd3 <- plot(conditional_effects(bmtd3),points=FALSE,plot=FALSE)
-#wrap_plots(ce_bmtd3)
-
-#ggsave(here::here("Assets/figs", "e3_cond_effects_dist.png"), wrap_plots(ce_bmtd3), width=11, height=11, bg="white")
-
-cd3ted1 <- get_coef_details(bmtd3, "conditVaried")
-cd3ted2 <-get_coef_details(bmtd3, "bandTypeExtrapolation")
-cd3ted3 <-get_coef_details(bmtd3, "conditVaried:bandTypeExtrapolation")
-cd3ted4 <-get_coef_details(bmtd3, "bandOrderReverse")
-cd3ted5 <-get_coef_details(bmtd3, "conditVaried:bandOrderReverse")
-cd3ted6 <-get_coef_details(bmtd3, "bandTypeExtrapolation:bandOrderReverse")
-cd3ted7 <-get_coef_details(bmtd3, "conditVaried:bandTypeExtrapolation:bandOrderReverse")
-```
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e3-train-dev-1.png"
+id="fig-e3-train-dev"
+alt="Figure 11: Experiment 3 training. Deviations from target band during training, shown separately for groups trained with the original order (used in E1) and reverse order (used in E2)." />
+<div id="tbl-e3-bmm-dist">
 
 | Term | Estimate | 95% CrI Lower | 95% CrI Upper | pd |
 |:------------------------------------|-------:|-----------:|-----------:|-----:|
@@ -631,6 +346,9 @@ cd3ted7 <-get_coef_details(bmtd3, "conditVaried:bandTypeExtrapolation:bandOrderR
 | bandTypeExtrapolation:bandOrderReverse | 80.69 | 30.01 | 130.93 | 1.00 |
 | conditVaried:bandTypeExtrapolation:bandOrder | 30.42 | -21.00 | 81.65 | 0.87 |
 
+Table 9: **Experiment 3 testing accuracy**. Main effects of condition and band type (training vs. extrapolation), and the interaction between the two factors. The Intercept represents the baseline condition, (constant training, trained bands & original order), and the remaining coefficients reflect the deviation from that baseline. Positive coefficients thus represent worse performance relative to the baseline, and a positive interaction coefficient indicates disproportionate deviation for the varied condition or reverse order condition.
+</div>
+
 *Testing Accuracy.* <a href="#tbl-e3-bmm-dist" class="quarto-xref">Table 9</a> presents the results of the Bayesian mixed effects model predicting absolute deviation from the target band during the testing stage. There was no significant main effect of training condition,$\beta$ = -40.19, 95% CrI \[-104.68, 23.13\]; pd = 89.31%, or band type,$\beta$ = -23.35, 95% CrI \[-57.28, 10.35\]; pd = 91.52%. However the effect of band order was significant, with the reverse order condition showing lower deviations, $\beta$ = -73.72, 95% CrI \[-136.69, -11.07\]; pd = 98.89%. The interaction between training condition and band type was also significant $\beta$ = 52.66, 95% CrI \[14.16, 90.23\]; pd = 99.59%, with the varied condition showing disproprionately large deviations on the extrapolation bands compared to the constant group. There was also a significant interaction between band type and band order, $\beta$ = 80.69, 95% CrI \[30.01, 130.93\]; pd = 99.89%, such that the reverse order condition showed larger deviations on the extrapolation bands. No other interactions were significant.
 
 <!-- ::: {#fig-e3-test-condEffect}
@@ -639,63 +357,11 @@ cd3ted7 <-get_coef_details(bmtd3, "conditVaried:bandTypeExtrapolation:bandOrderR
 
 E3. A) Deviations from target band during testing without feedback stage. B) Estimated marginal means for the interaction between training condition and band type. Error bars represent 95% confidence intervals.
 ::: -->
-
-``` r
-condEffects <- function(m,xvar){
-  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
-  stat_dist_pointinterval() + 
-  stat_halfeye(alpha=.1, height=.5) +
-  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
-  
-}
-
-pe3td <- testE3 |>  ggplot(aes(x = vb, y = dist,fill=condit)) +
-    stat_summary(geom = "bar", position=position_dodge(), fun = mean) +
-    stat_summary(geom = "errorbar", position=position_dodge(.9), fun.data = mean_se, width = .4, alpha = .7) + 
-    facet_wrap(~bandOrder,ncol=1) +
-  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) +
-  labs(x="Band", y="Deviation From Target")
-
-
-pe3ce <- bmtd3 |> emmeans( ~condit *bandOrder*bandType) |>
-  gather_emmeans_draws() |>
- condEffects(bandType) + labs(y="Absolute Deviation From Band", x="Band Type") + 
- facet_wrap(~bandOrder,ncol=1)
-
-p2 <- pe3td + pe3ce + plot_annotation(tag_levels= 'A')
-#ggsave(here::here("Assets/figs", "e3_test-dev.png"), p2, width=9, height=8, bg="white")
-p2
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e3-test-dev-1.jpeg)
-
-``` r
-##| label: tbl-e3-bmm-vx
-##| tbl-cap: "Experiment 3. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band"
-
-e3_vxBMM <- brm(vx ~ condit * bandOrder * bandInt + (1 + bandInt|id),
-                        data=test,file=paste0(here::here("data/model_cache", "e3_testVxBand_RF_5k")),
-                        iter=5000,chains=4,silent=0,
-                        control=list(adapt_delta=0.94, max_treedepth=13))
-
-# m1 <- as.data.frame(describe_posterior(e3_vxBMM, centrality = "Mean"))
-# m2 <- fixef(e3_vxBMM)
-# mp3 <- m1[, c(1,2,4,5,6)]
-# colnames(mp3) <- c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")                       
-# mp3 |> mutate(across(where(is.numeric), \(x) round(x, 2))) |>
-#   tibble::remove_rownames() |> 
-#   mutate(Term = stringr::str_replace_all(Term, "b_bandInt", "Band")) |>
-#   mutate(Term = stringr::str_remove(Term, "b_")) |>
-#   kable(escape=F,booktabs=T)
-
-#wrap_plots(plot(conditional_effects(e3_vxBMM),points=FALSE,plot=FALSE))
-
-cd1 <- get_coef_details(e3_vxBMM, "conditVaried")
-sc1 <- get_coef_details(e3_vxBMM, "bandInt")
-intCoef1 <- get_coef_details(e3_vxBMM, "conditVaried:bandInt")
-intCoef2 <- get_coef_details(e3_vxBMM, "bandOrderReverse:bandInt")
-coef3 <- get_coef_details(e3_vxBMM,"conditVaried:bandOrderReverse:bandInt")
-```
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e3-test-dev-1.png"
+id="fig-e3-test-dev"
+alt="Figure 12: Experiment 3 Testing Accuracy. A) Empirical Deviations from target band during testing without feedback stage. B) Conditional effect of condition (Constant vs. Varied) and testing band type (trained bands vs. novel extrapolation bands) on testing accuracy. Shown separately for groups trained with the original order (used in E1) and reverse order (used in E2). Error bars represent 95% credible intervals." />
+<div id="tbl-e3-bmm-vx">
 
 | Term | Estimate | 95% CrI Lower | 95% CrI Upper | pd |
 |:--------------------------------|--------:|------------:|------------:|-----:|
@@ -708,85 +374,22 @@ coef3 <- get_coef_details(e3_vxBMM,"conditVaried:bandOrderReverse:bandInt")
 | bandOrderReverse:band | -0.10 | -0.27 | 0.08 | 0.86 |
 | **conditVaried:bandOrderReverse:band** | 0.42 | 0.17 | 0.70 | 1.00 |
 
+Table 10: **Experiment 3 testing discrimination**. Bayesian Mixed Model Predicting Vx as a function of condition (Constant vs. Varied) and Velocity Band. The Intercept represents the baseline condition (constant training & original order), and the Band coefficient represents the slope for the baseline condition. The interaction terms which include condit and Band (e.g., conditVaried:Band & conditVaried:bandOrderReverse:band) respectively indicate how the slopes of the varied-original condition differed from the baseline condition, and how varied-reverse condition differed from the varied-original condition
+</div>
+
 *Testing Discrimination.* The full results of the discrimination model are presented in <a href="#tbl-e3-bmm-dist" class="quarto-xref">Table 9</a>. For the purposes of assessing group differences in discrimination, only the coefficients including the band variable are of interest. The baseline effect of band represents the slope coefficient for the constant training - original order condition, this effect was significant $\beta$ = 0.49, 95% CrI \[0.36, 0.62\]; pd = 100%. Neither of the two way interactions reached significance, $\beta$ = -0.04, 95% CrI \[-0.23, 0.15\]; pd = 66.63%, $\beta$ = -0.1, 95% CrI \[-0.27, 0.08\]; pd = 86.35%. However, the three way interaction between training condition, band order, and target band was significant, $\beta$ = 0.42, 95% CrI \[0.17, 0.7\]; pd = 99.96% - indicating a greater slope for the varied condition trained with reverse order bands. This interaction is shown in <a href="#fig-e3-test-vx" class="quarto-xref">Figure 13</a>, where the steepness of the best fitting line for the varied-reversed condition is noticeably steeper than the other conditions.
 
-``` r
-##| column: screen-inset-right
-# testE3 |> filter(bandOrder=="Original")|> group_by(id,vb,condit) |> plot_distByCondit()
-# testE3 |> filter(bandOrder=="Reverse")|> group_by(id,vb,condit) |> plot_distByCondit() +ggtitle("test")
-
-testE3 |> group_by(id,vb,condit,bandOrder) |> plot_distByCondit() + 
-   ggh4x::facet_nested_wrap(bandOrder~condit,scale="free_x")
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e3-test-vx-1.jpeg)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e3-test-vx-1.png"
+id="fig-e3-test-vx"
+alt="Figure 13: Experiment 3. Empirical distribution of velocities produced in the testing stage. Translucent bands with dash lines indicate the correct range for each velocity band." />
 
 
 
-``` r
-# pe3tv <- testE3 %>% group_by(id,vb,condit,bandOrder) |> plot_distByCondit() + ggh4x::facet_nested_wrap(bandOrder~condit,scale="free_x")
-
-
-condEffects <- function(m,xvar){
-  m |> ggplot(aes(x = {{xvar}}, y = .value, color = condit, fill = condit)) + 
-  stat_dist_pointinterval() + 
-  stat_halfeye(alpha=.1, height=.5) +
-  theme(legend.title=element_blank(),axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5)) 
-  
-}
-
-pe3vce <- e3_vxBMM |> emmeans( ~condit* bandOrder* bandInt, 
-                       at = list(bandInt = c(100, 350, 600, 800, 1000, 1200))) |>
-  gather_emmeans_draws() |> 
-  condEffects(bandInt) +
-  facet_wrap(~bandOrder,ncol=1) +
-  stat_lineribbon(alpha = .25, size = 1, .width = c(.95)) +
-  scale_x_continuous(breaks = c(100, 350, 600, 800, 1000, 1200), 
-                     labels = levels(testE3$vb), 
-                     limits = c(0, 1400)) + 
-scale_y_continuous(expand=expansion(add=100),breaks=round(seq(0,2000,by=200),2)) +
-  theme(legend.title=element_blank()) + 
-  labs(y="Velcoity", x="Band")
-
-fe <- fixef(e3_vxBMM)[,1]
-fixed_effect_bandInt <- fixef(e3_vxBMM)[,1]["bandInt"]
-fixed_effect_interaction1 <- fixef(e3_vxBMM)[,1]["conditVaried:bandInt"]
-fixed_effect_interaction2 <- fixef(e3_vxBMM)[,1]["bandOrderReverse:bandInt"]
-fixed_effect_interaction3 <- fixef(e3_vxBMM)[,1]["conditVaried:bandOrderReverse:bandInt"]
-
-re <- data.frame(ranef(e3_vxBMM, pars = "bandInt")$id[, ,'bandInt']) |> 
-  rownames_to_column("id") |> 
-  left_join(e3Sbjs,by="id") |>
-  mutate(adjust= fixed_effect_bandInt + fixed_effect_interaction1*(condit=="Varied") + 
-           fixed_effect_interaction2*(bandOrder=="Reverse") + 
-           fixed_effect_interaction3*(condit=="Varied" & bandOrder=="Reverse"),
-  slope = Estimate + adjust )
-
-pid_den3 <- ggplot(re, aes(x = slope, fill = condit)) + 
-  geom_density(alpha=.5) + 
-  xlim(c(min(re$slope)-.3, max(re$slope)+.3))+
-  geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
-   theme(legend.title=element_blank()) + 
-  labs(x="Slope Coefficient",y="Density") +
-  facet_wrap(~bandOrder,ncol=1)
-
-pid_slopes3 <- re |>  
-    mutate(id=reorder(id,slope)) |>
-  ggplot(aes(y=id, x=slope,fill=condit,color=condit)) + 
-    geom_pointrange(aes(xmin=Q2.5+adjust, xmax=Q97.5+adjust)) + 
-    geom_vline(xintercept = 1, linetype="dashed",alpha=.5) +
-    theme(legend.title=element_blank(), 
-      axis.text.y = element_text(size=6) ) + 
-    labs(x="Estimated Slope", y="Participant")  + 
-    ggh4x::facet_nested_wrap(bandOrder~condit,axes="all",scales="free_y")
-
-p3 <- (pe3vce + pid_den3 + pid_slopes3) + plot_annotation(tag_levels= 'A')
-
-#ggsave(here::here("Assets/figs", "e3_test-vx.png"), p3,width=11,height=13, bg="white",dpi=800)
-p3
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e3-bmm-vx-1.jpeg)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e3-bmm-vx-1.png"
+id="fig-e3-bmm-vx"
+alt="Figure 14: Experiment 3 Discrimination. A) Conditional effect of training condition and Band. Ribbons indicate 95% HDI. The steepness of the lines serves as an indicator of how well participants discriminated between velocity bands. B) The distribution of slope coefficients for each condition. Larger slopes indicates better discrimination. C) Individual participant slopes. Error bars represent 95% HDI." />
 
 ## Experiment 3 Summary
 
@@ -794,21 +397,10 @@ In Experiment 3, we investigated the effects of training condition (constant vs.
 
 # Computational Model
 
-``` r
-###| cache: true
-invisible(list2env(load_sbj_data(), envir = .GlobalEnv))
-invisible(list2env(load_e1(), envir = .GlobalEnv))
-e1Sbjs <- e1 |> group_by(id,condit) |> summarise(n=n())
-e2_model <- load_e2()
-e3_model <- load_e3()
-#options(contrasts = initial_contrasts)
-```
-
-``` r
-alm_plot()
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-alm-diagram-1.jpeg)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-alm-diagram-1.png"
+id="fig-alm-diagram"
+alt="Figure 15: The Associative Learning Model (ALM). The diagram illustrates the basic structure of the ALM model used in the present work. Input nodes are activated as a function of their similarity to the lower-boundary of the target band. The generalization parameter, c, determines the degree to which nearby input nodes are activated. The output nodes are activated as a function of the weighted sum of the input nodes. During training, when feedback is provided, network weights connecting the input layer to the output layer are updated via the delta rule." />
 
 The modeling goal is to implement a full process model capable of both 1) producing novel responses and 2) modeling behavior in both the learning and testing stages of the experiment. For this purpose, we will apply the associative learning model (ALM) and the EXAM model of function learning (DeLosh et al., 1997). ALM is a simple connectionist learning model which closely resembles Kruschke's ALCOVE model (Kruschke, 1992), with modifications to allow for the generation of continuous responses.
 
@@ -838,6 +430,8 @@ Although this extrapolation rule departs from a strictly similarity-based genera
 
 See <a href="#tbl-alm-exam" class="quarto-xref">Table 11</a> for a full specification of the equations that define ALM and EXAM, and <a href="#fig-alm-diagram" class="quarto-xref">Figure 15</a> for a visual representation of the ALM model.
 
+<div id="tbl-alm-exam">
+
 |  | **ALM Response Generation** |  |
 |-------------------|-----------------------------|-------------------------|
 | Input Activation | $a_i(X) = \frac{e^{-c(X-X_i)^2}}{\sum_{k=1}^M e^{-c(X-X_k)^2}}$ | Input nodes activate as a function of Gaussian similarity to stimulus |
@@ -852,6 +446,9 @@ See <a href="#tbl-alm-exam" class="quarto-xref">Table 11</a> for a full specifi
 | Instance Retrieval | $P[X_i|X] = \frac{a_i(X)}{\sum_{k=1}^M a_k(X)}$ | Novel test stimulus $X$ activates input nodes $X_i$ |
 | Slope Computation | $S =$ $\frac{m(X_{1})-m(X_{2})}{X_{1}-X_{2}}$ | Slope value, $S$ computed from nearest training instances |
 | Response | $E[Y|X_i] = m(X_i) + S \cdot [X - X_i]$ | Final EXAM response is the ALM response for the nearest training stimulus, $m(X_i)$, adjusted by local slope $S$. |
+
+Table 11: ALM & EXAM Equations
+</div>
 
 ## Model Fitting
 
@@ -884,68 +481,7 @@ For each of the 156 participants from Experiment 1, the ABC algorithm was run un
 
 ## Modelling Results
 
-``` r
-post_tabs <- abc_tables(post_dat,post_dat_l)
-train_tab <- abc_train_tables(pd_train,pd_train_l)
-
-
-out_type <- knitr::opts_knit$get("rmarkdown.pandoc.to")
-primary=out_type == "html" || out_type == "pdf" || out_type =="latex" || out_type == "docx"
-
-
-
-e1_tab <- rbind(post_tabs$agg_pred_full |> mutate("Task Stage"="Test"), train_tab$agg_pred_full |> mutate("Task Stage"="Train")) |> mutate(Fit_Method=rename_fm(Fit_Method)) 
-
-if (primary) {
-e1_tab %>%
-  group_by(`Task Stage`, Fit_Method, Model, condit) %>%
-  summarize(ME = mean(mean_error), .groups = "drop") %>%
-  pivot_wider(
-    names_from = c(Model, condit),
-    values_from = ME,
-    names_sep = "_"  # Add this line to specify the separator for column names
-  ) %>%
-  rename("Fit Method" = Fit_Method) %>%
-  gt() %>%
-  cols_move_to_start(columns = c(`Task Stage`)) %>%
-  cols_label(
-    `Task Stage` = "Task Stage"
-  ) %>%
-  fmt_number(
-    columns = starts_with("ALM") | starts_with("EXAM"),
-    decimals = 2
-  ) %>%
-  tab_spanner_delim(delim = "_") %>%
-  tab_style(
-    style = cell_fill(color = "white"),
-     locations = cells_body(columns = everything(), rows = everything())
-  ) %>%
-  tab_style(
-    style = cell_borders(sides = "top", color = "black", weight = px(1)),
-    locations = cells_column_labels()
-  ) %>%
-  tab_options(
-    table.font.size = 12,
-    heading.title.font.size = 14,
-    heading.subtitle.font.size = 12,
-    quarto.disable_processing = TRUE,
-    column_labels.padding = 2,
-    data_row.padding = 2
-  )
-} else {
-
-  e1_tab %>%
-  group_by(`Task Stage`, Fit_Method, Model, condit) %>%
-  summarize(ME = mean(mean_error), .groups = "drop") %>%
-  pivot_wider(
-    names_from = c(Model, condit),
-    values_from = ME,
-    names_sep = "_"  # Add this line to specify the separator for column names
-  ) %>%
-  rename("Fit Method" = Fit_Method) %>% kable(escape=F,booktabs=T)
-
-  }
-```
+<div id="tbl-htw-modelError-e1">
 
 | Task Stage | Fit Method | ALM_Constant | ALM_Varied | EXAM_Constant | EXAM_Varied |
 |:---------|:---------------------|----------:|---------:|-----------:|---------:|
@@ -956,56 +492,17 @@ e1_tab %>%
 | Train | Fit to Test & Training Data | 57 | 132 | 43 | 128 |
 | Train | Fit to Training Data | 52 | 103 | 51 | 107 |
 
-``` r
-c_post <- post_dat_avg %>%
-    group_by(id, condit, Model, Fit_Method, rank) %>%
-    slice_head(n = 1) |>
-    ggplot(aes(y=log(c), x = Fit_Method,col=condit)) + stat_pointinterval(position=position_dodge(.2)) +
-    ggh4x::facet_nested_wrap(~Model) + labs(title="c parameter") +
-  theme(legend.title = element_blank(), legend.position="right",plot.title=element_text(hjust=.4))
+Table 12: Model errors predicting empirical data from Experiment 1 - aggregated over the full posterior distribution for each participant. Note that Fit Method refers to the subset of the data that the model was trained on, while Task Stage refers to the subset of the data that the model was evaluated on.
+</div>
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-htw-post-dist-1.png"
+id="fig-htw-post-dist"
+alt="Figure 16: Posterior Distributions of c and lr parameters. Points represent median values, thicker intervals represent 66% credible intervals and thin intervals represent 95% credible intervals around the median. Note that the y-axes of the plots for the c parameter are scaled logarithmically." />
 
-lr_post <- post_dat_avg %>%
-    group_by(id, condit, Model, Fit_Method, rank) %>%
-    slice_head(n = 1) |>
-    ggplot(aes(y=lr, x = Fit_Method,col=condit)) + stat_pointinterval(position=position_dodge(.4)) +
-    ggh4x::facet_nested_wrap(~Model) + labs(title="learning rate parameter") +
-  theme(legend.title = element_blank(), legend.position = "none",plot.title=element_text(hjust=.5))
-c_post + lr_post
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-htw-post-dist-1.jpeg)
-
-``` r
-train_resid <- pd_train |> group_by(id,condit,Model,Fit_Method, Block,x) |> 
-  summarise(y=mean(y), pred=mean(pred), mean_error=abs(y-pred)) |>
-  group_by(id,condit,Model,Fit_Method,Block) |>
-  summarise(mean_error=mean(mean_error)) |>
-  ggplot(aes(x=interaction(Block,Model), y = mean_error, fill=factor(Block))) + 
-  stat_bar + 
-  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, scales="free",ncol=2) +
-   scale_x_discrete(guide = "axis_nested") +
-  scale_fill_manual(values=c("gray10","gray50","gray92"))+
-  labs(title="Model Residual Errors - Training Stage", y="RMSE", x= "Model",fill="Training Block") +
-  theme(legend.position="top")
-
-test_resid <-  post_dat |> 
-   group_by(id,condit,x,Model,Fit_Method,bandType) |>
-    summarise(y=mean(y), pred=mean(pred), error=abs(y-pred)) |> 
-  mutate(vbLab = factor(paste0(x,"-",x+200))) |>
-  ggplot(aes(x = Model, y = abs(error), fill=vbLab,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
-  stat_bar + 
-  #scale_fill_manual(values=wes_palette("AsteroidCity2"))+
-  scale_color_manual(values = c("black" = "black"), guide = "none") +
-  scale_size_manual(values = c("black" = .5), guide = "none") +
-  ggh4x::facet_nested_wrap(rename_fm(Fit_Method)~condit, axes = "all",ncol=2,scale="free") +
-  labs(title="Model Residual Errors - Testing Stage",y="RMSE", x="Velocity Band") 
-
-(train_resid / test_resid) +
-  #plot_layout(heights=c(1,1.5)) & 
-  plot_annotation(tag_levels = list(c('A','B')),tag_suffix = ') ') 
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-htw-resid-pred-1.jpeg)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-htw-resid-pred-1.png"
+id="fig-htw-resid-pred"
+alt="Figure 17: Model residuals for each combination of training condition, fit method, and model. Residuals reflect the difference between observed and predicted values. Lower values indicate better model fit. Note that y-axes are scaled differently between facets. A) Residuals predicting each block of the training data. B) Residuals predicting each band during the testing stage. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands." />
 
 The posterior distributions of the $c$ and $lr$ parameters are shown <a href="#fig-htw-post-dist" class="quarto-xref">Figure 16</a>, and model predictions are shown alongside the empirical data in <a href="#fig-cm-vx-pat" class="quarto-xref">Figure 18</a>. There were substantial individual differences in the posteriors of both parameters, with the within-group individual differences generally swamped any between-group or between-model differences. The magnitude of these individual differences remains even if we consider only the single best parameter set for each subject.
 
@@ -1013,208 +510,21 @@ We used the posterior distribution of $c$ and $lr$ parameters to generate a post
 
 The residuals of the model predictions for the testing stage (<a href="#fig-htw-resid-pred" class="quarto-xref">Figure 17</a>) show an unsurprising pattern across fitting methods - with models fit only to the test data showing the best performance, followed by models fit to both training and test data, and with models fit only to the training data showing the worst performance (note that Y-axes are scaled different between plots). Although EXAM tends to perform better for both Constant and Varied participants (see also <a href="#fig-ee-e1" class="quarto-xref">Figure 19</a>), the relative advantage of EXAM is generally larger for the Constant group - a pattern consistent across all three fitting methods. The primary predictive difference between ALM and EXAM is made clear in <a href="#fig-cm-vx-pat" class="quarto-xref">Figure 18</a>, which directly compares the observed data against the posterior predictive distributions for both models. Regardless of how the models are fit, only EXAM can capture the pattern where participants are able to discriminate all 6 target bands.
 
-``` r
-post_dat_l |> 
-  group_by(id,condit, Fit_Method,Resp,bandType,x,vb) |> 
- summarize(vx=median(val)) |> 
- #left_join(testAvgE1, by=join_by(id,condit,x==bandInt)) |>
- ggplot(aes(x=Resp,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
-  stat_bar + 
-    facet_wrap(~rename_fm(Fit_Method)+condit, ncol=2,strip.position = "top", scales = "free_x") +
-        scale_color_manual(values = c("black" = "black"), guide = "none") +
-  scale_size_manual(values = c("black" = .5), guide = "none") +
-    theme(panel.spacing = unit(0, "lines"), 
-         strip.background = element_blank(),
-         strip.placement = "outside",
-         legend.position = "none",plot.title = element_text(hjust=.50),
-         axis.title.x = element_blank(),
-         plot.margin = unit(c(10,0,0,0), "pt")) + 
-         labs(title="Model Predictions - Experiment 1 Data", y="Vx")
-```
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-1.png"
+id="fig-cm-vx-pat"
+alt="Figure 18: Empirical data and Model predictions for mean velocity across target bands. Fitting methods (Test Only, Test &amp; Train, Train Only) - are separated across rows, and Training Condition (Constant vs. Varied) are separated by columns. Each facet contains the predictions of ALM and EXAM, alongside the observed data." />
 
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-1.jpeg)
-
-``` r
-###| eval: false
-
-pacman::p_load(dplyr,purrr,tidyr,ggplot2, data.table, here, patchwork, conflicted, 
-               stringr,future,furrr, knitr, reactable,ggstance, htmltools,
-               ggdist,ggh4x,brms,tidybayes,emmeans,bayestestR, gt)
-
-pdl <- post_dat_l |> rename("bandInt"=x) |> left_join(testAvgE1,by=c("id","condit","bandInt")) |> 
-  filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
-
-# aerror is model error, which is predicted by Model(ALM vs. EXAM) & condit (Constant vs. Varied)
-e1_ee_brm_ae <- brm(data=pdl,
-  aerror ~  Model * condit + (1+bandInt|id), 
-  file = paste0(here("data/model_cache/e1_ae_modelCond_RFint.rds")),
-  chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
-
-bct_e1 <- as.data.frame(bayestestR::describe_posterior(e1_ee_brm_ae, centrality = "Mean")) %>%
-  select(1,2,4,5,6) %>%
-  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
-  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
-  tibble::remove_rownames() %>%
-  mutate(Term = stringr::str_remove(Term, "b_")) #%>% kable(booktabs = TRUE)
-
-#wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))
-
-p1 <- plot(conditional_effects(e1_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + 
-  ggplot2::xlab("Condition") +ylab("Model Error")
-p2 <- plot(conditional_effects(e1_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + 
-  labs(x="Model",y=NULL)
-p3 <- plot(conditional_effects(e1_ee_brm_ae, effects="Model:condit"),points=FALSE, plot=FALSE)$`Model:condit` + 
-  scale_color_manual(values=wes_palette("Darjeeling1")) +
-  labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
-  
-#p_ce_1 <- (p1 + p2+ p3) + plot_annotation(tag_levels = c('A'), tag_suffix=".")
-
-
-# plot_custom_effects <- function(model) {
-#   # Extract posterior samples for fixed effects
-#   post_samples <- posterior_samples(model, pars = c("b_Intercept", "b_ModelEXAM", "b_conditVaried", "b_ModelEXAM:conditVaried"))
-  
-#   # Calculate conditional effects
-#   post_samples <- post_samples %>%
-#     mutate(
-#       ALM_Constant = b_Intercept,
-#       EXAM_Constant = b_Intercept + b_ModelEXAM,
-#       ALM_Varied = b_Intercept + b_conditVaried,
-#       EXAM_Varied = b_Intercept + b_ModelEXAM + b_conditVaried + `b_ModelEXAM:conditVaried`
-#     )
-  
-#   # Reshape data for plotting
-#   plot_data <- post_samples %>%
-#     select(ALM_Constant, EXAM_Constant, ALM_Varied, EXAM_Varied) %>%
-#     pivot_longer(everything(), names_to = "Condition", values_to = "Estimate") %>%
-#     separate(Condition, into = c("Model", "Condit"), sep = "_")
-  
-#   # Plot conditional effects
-#   ggplot(plot_data, aes(x = Model, y = Estimate, color = Condit)) +
-#     geom_boxplot() +
-#     theme_minimal() +
-#     labs(x = "Model", y = "Estimate", color = "Condition")
-# }
-# p_ce_1 <- plot_custom_effects(e1_ee_brm_ae)
-
-
-
-
-bm1 <- get_coef_details(e1_ee_brm_ae, "conditVaried")
-bm2 <- get_coef_details(e1_ee_brm_ae, "ModelEXAM")
-bm3 <- get_coef_details(e1_ee_brm_ae, "ModelEXAM:conditVaried")
-
-posterior_estimates <- as.data.frame(e1_ee_brm_ae) %>%
-  select(starts_with("b_")) %>%
-  setNames(c("Intercept", "ModelEXAM", "conditVaried", "ModelEXAM_conditVaried"))
-
-constant_EXAM <- posterior_estimates$Intercept + posterior_estimates$ModelEXAM
-varied_EXAM <- posterior_estimates$Intercept + posterior_estimates$ModelEXAM + posterior_estimates$conditVaried + posterior_estimates$ModelEXAM_conditVaried
-comparison_EXAM <- constant_EXAM - varied_EXAM
-summary_EXAM <- bayestestR::describe_posterior(comparison_EXAM, centrality = "Mean")
-
-# e1_ee_brm_ae |> emmeans(pairwise ~ Model * condit, re_formula=NULL)
-# e1_ee_brm_ae |> emmeans(pairwise ~ Model * condit, re_formula=NA)
-
-# full set of Model x condit contrasts
-# ALM - EXAM
-# btw_model <- e1_ee_brm_ae |> emmeans(pairwise~ Model | condit, re_formula=NULL)  |> 
-#   pluck("contrasts") |> 
-#   gather_emmeans_draws() |> 
-#   group_by(contrast,.draw,condit) |> summarise(value=mean(.value), n=n()) 
-
-# btw_model |> ggplot(aes(x=value,y=contrast,fill=condit)) +stat_halfeye()
-
-# Constant - Varied
-# emm_condit <- e1_ee_brm_ae |> emmeans(~ condit | Model, re_formula = NULL)
-# btw_con <- emm_condit |>  pairs() |> gather_emmeans_draws() |> 
-#   group_by(contrast,.draw, Model) |> summarise(value=mean(.value), n=n()) 
-# # btw_con |> ggplot(aes(x=value,y=Model,fill=Model)) +stat_halfeye()                              
-
-p_em_1 <- e1_ee_brm_ae |> emmeans(pairwise~ Model*condit, re_formula=NA)  |> 
-  pluck("contrasts") |>
-  gather_emmeans_draws() |> 
-  group_by(contrast,.draw) |> summarise(value=mean(.value), n=n()) |> 
-  filter(!(contrast %in% c("ALM Constant - EXAM Constant","ALM Constant - EXAM Varied","ALM Varied - EXAM Varied ", "EXAM Constant - ALM Varied" ))) |> 
-  ggplot(aes(x=value,y=contrast,fill=contrast)) +stat_halfeye() + labs(x="Model Error Difference",y="Contrast") + theme(legend.position="none") 
-
-#p_ce_1 / p_em_1
-
-(p1 + p2+ p3) /p_em_1 + plot_annotation(tag_levels = c('A'), tag_suffix=".")
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-ee-e1-1.jpeg)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-ee-e1-1.png"
+id="fig-ee-e1"
+alt="Figure 19: A-C) Conditional effects of Model (ALM vs EXAM) and Condition (Constant vs. Varied). Lower values on the y axis indicate better model fit. D) Specific contrasts of model performance comparing 1) EXAM fits between constant and varied training; 2) ALM vs. EXAM for the varied group; 3) ALM fits between constant and varied. Negative error differences indicate that the term on the left side (e.g., EXAM Constant) tended to have smaller model residuals." />
 
 To quantitatively assess the differences in performance between models, we fit a Bayesian regression model predicting the errors of the posterior predictions of each models as a function of the Model (ALM vs. EXAM) and training condition (Constant vs. Varied).
 
 Model errors were significantly lower for EXAM ($\beta$ = -37.54, 95% CrI \[-60.4, -14.17\], pd = 99.85%) than ALM. There was also a significant interaction between Model and Condition ($\beta$ = 60.42, 95% CrI \[36.17, 83.85\], pd = 100%), indicating that the advantage of EXAM over ALM was significantly greater for the constant group. To assess whether EXAM predicts performance significantly better for Constant than for Varied subjects, we calculated the difference in model error between the Constant and Varied conditions specifically for EXAM. The results indicated that the model error for EXAM was significantly lower in the Constant condition compared to the Varied condition, with a mean difference of -22.88 (95% CrI \[-46.02, -0.97\], pd = 0.98).
 
-``` r
-out_type <- knitr::opts_knit$get("rmarkdown.pandoc.to")
-primary=out_type == "html" || out_type == "pdf" || out_type =="latex" || out_type == "docx"
-
-
-post_tabs2 <- abc_tables(e2_model$post_dat,e2_model$post_dat_l)
-train_tab2 <- abc_train_tables(e2_model$pd_train,e2_model$pd_train_l)
-
-pdl2 <- e2_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
-
-e2_tab <- rbind(post_tabs2$agg_pred_full |>
- mutate("Task Stage"="Test"), train_tab2$agg_pred_full |> 
- mutate("Task Stage"="Train")) |> 
-  mutate(Fit_Method=rename_fm(Fit_Method)) 
-
-post_tabs3 <- abc_tables(e3_model$post_dat,e3_model$post_dat_l)
-train_tab3 <- abc_train_tables(e3_model$pd_train,e3_model$pd_train_l)
-
-pdl3 <- e3_model$post_dat_l |> rename("bandInt"=x) |> filter(rank<=1,Fit_Method=="Test_Train", !(Resp=="Observed")) |> mutate(aerror = abs(error))
-
-e3_tab <- rbind(post_tabs3$agg_pred_full |> 
-  mutate("Task Stage"="Test"), train_tab3$agg_pred_full |> mutate("Task Stage"="Train")) |> 
-  mutate(Fit_Method=rename_fm(Fit_Method)) 
-
-e23_tab <- rbind(e2_tab |> mutate(Exp="E2"), e3_tab |> mutate(Exp="E3")) 
-
-if (primary) {
-gt_table <- e23_tab %>%
-  pivot_wider(
-    names_from = c(Exp, Model, condit),
-    values_from = mean_error,
-    names_glue = "{Exp}_{Model}_{condit}"
-  ) %>%
-  arrange(Fit_Method, `Task Stage`) %>%
-  gt() %>%
-  cols_move_to_start(columns = `Task Stage`) %>%
-  cols_label(`Task Stage` = "Task Stage") %>%
-  fmt_number(columns = matches("E2|E3"), decimals = 1) %>%
-  tab_spanner_delim(delim = "_") %>%
-  tab_style(
-    style = list(
-      cell_fill(color = "white"),
-      cell_borders(sides = "top", color = "black", weight = px(1))
-    ),
-    locations = cells_body(columns = everything(), rows = everything())
-  ) %>%
-  tab_options(
-    table.font.size = 12,
-    heading.title.font.size = 14,
-    heading.subtitle.font.size = 12,
-    quarto.disable_processing = TRUE,
-    column_labels.padding = 2,
-    data_row.padding = 2
-  )
-gt_table
-} else {
-  e23_tab %>%
-  pivot_wider(
-    names_from = c(Exp, Model, condit),
-    values_from = mean_error,
-    names_glue = "{Exp}_{Model}_{condit}"
-  ) %>%
-  arrange(Fit_Method, `Task Stage`) %>%
-  kable(escape=F,booktabs=T)
-}
-```
+<div id="tbl-htw-modelError-e23">
 
 | Fit_Method | Task Stage | E2_ALM_Constant | E2_ALM_Varied | E2_EXAM_Constant | E2_EXAM_Varied | E3_ALM_Constant | E3_ALM_Varied | E3_EXAM_Constant | E3_EXAM_Varied |
 |:-----------|:-----|------:|------:|-------:|------:|------:|------:|-------:|------:|
@@ -1225,150 +535,19 @@ gt_table
 | Fit to Training Data | Test | 357 | 296 | 305 | 235 | 415 | 299 | 295 | 244 |
 | Fit to Training Data | Train | 43 | 23 | 43 | 23 | 51 | 64 | 52 | 65 |
 
+Table 13: Models errors predicting empirical data - aggregated over all participants, posterior parameter values, and velocity bands. Note that Fit Method refers to the subset of the data that the model was trained on, while Task Stage refers to the subset of the data that the model was evaluated on.
+</div>
+
    
 
-``` r
-rbind(e2_model$post_dat_l |> filter( Fit_Method=="Test_Train") |> 
-  group_by(id,condit, Fit_Method,Resp,bandType,x,vb) |> 
- summarize(vx=median(val)) |> mutate(Exp="E2",bandOrder="Reverse"), 
- e3_model$post_dat_l |> filter( Fit_Method=="Test_Train") |> 
-  group_by(id,condit, Fit_Method,Resp,bandType,x,vb,bandOrder) |>
-  summarize(vx=median(val)) |> mutate(Exp="E3")) |>
-  ggplot( aes(x=condit,y=vx, fill=vb,col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) +
-  stat_bar + 
-    facet_nested_wrap(~Exp+bandOrder+Resp, strip.position = "top", scales = "free_x") +
-    scale_color_manual(values = c("black" = "black"), guide = "none") +
-  scale_size_manual(values = c("black" = .7), guide = "none") +
-    theme(panel.spacing = unit(0, "lines"), 
-        #  strip.background = element_blank(),
-        #  strip.placement = "outside",
-         legend.position = "none",plot.title = element_text(hjust=.50),
-         axis.title.x = element_blank(),
-         plot.margin = unit(c(20,0,0,0), "pt")) + 
-         labs(title="Model Predictions Experiment 2 & 3", y="vx")
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-e2-e3-1.jpeg)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-cm-vx-pat-e2-e3-1.png"
+id="fig-cm-vx-pat-e2-e3"
+alt="Figure 20: Empirical data and Model predictions from Experiment 2 and 3 for the testing stage. Observed data is shown on the right. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands." />
 
 
 
-``` r
-e2_ee_brm_ae <- brm(data=pdl2,
-  aerror ~  Model * condit + (1+bandInt|id), 
-  file = paste0(here("data/model_cache/e2_ae_modelCond_RFint.rds")),
-  chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
-
-bm1_e2 <- get_coef_details(e2_ee_brm_ae, "conditVaried")
-bm2_e2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM")
-bm3_e2 <- get_coef_details(e2_ee_brm_ae, "ModelEXAM:conditVaried")
-
-bct_e2 <- as.data.frame(bayestestR::describe_posterior(e2_ee_brm_ae, centrality = "Mean")) %>%
-  select(1,2,4,5,6) %>%
-  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
-  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
-  tibble::remove_rownames() %>%
-  mutate(Term = stringr::str_remove(Term, "b_")) # %>% kable(booktabs = TRUE)
-
-e3_ee_brm_ae <- brm(data=pdl3,
-  aerror ~  Model * condit*bandOrder + (1+bandInt|id), 
-  file = paste0(here("data/model_cache/e3_ae_modelCondBo_RFint2.rds")),
-  chains=4,silent=1, iter=2000, control=list(adapt_delta=0.92, max_treedepth=11))
-
-bm1_e3 <- get_coef_details(e3_ee_brm_ae, "conditVaried")
-bm2_e3  <- get_coef_details(e3_ee_brm_ae, "ModelEXAM")
-bm3_e3  <- get_coef_details(e3_ee_brm_ae, "ModelEXAM:conditVaried")
-bm4_e3  <- get_coef_details(e3_ee_brm_ae, "ModelEXAM:conditVaried:bandOrderReverse")
-
-
-bct_e3  <- as.data.frame(bayestestR::describe_posterior(e3_ee_brm_ae, centrality = "Mean")) %>%
-  select(1,2,4,5,6) %>%
-  setNames(c("Term", "Estimate","95% CrI Lower", "95% CrI Upper", "pd")) %>%
-  mutate(across(where(is.numeric), \(x) round(x, 2))) %>%
-  tibble::remove_rownames() %>%
-  mutate(Term = stringr::str_remove(Term, "b_")) #%>% kable(booktabs = TRUE)
-
-bct <- rbind(bct_e1 |> mutate(exp="Exp 1"),bct_e2 |> 
-               mutate(exp= "Exp 2"),bct_e3 |> mutate(exp="Exp 3")) |> 
-  relocate(exp, .before=Term)
-
-
-out_type <- knitr::opts_knit$get("rmarkdown.pandoc.to")
-primary=out_type == "html" || out_type == "pdf" || out_type =="latex" || out_type == "docx"
-
-if (primary) {
-bct_table <- bct %>%
-  mutate(
-    across(c(Estimate, `95% CrI Lower`, `95% CrI Upper`), ~ round(., 2)),
-    pd = round(pd, 2)
-  ) %>%
-  gt() %>%
-  # tab_header(
-  #   title = "Bayesian Model Results",
-  #   subtitle = "Estimates and Credible Intervals for Each Term Across Experiments"
-  # ) %>%
-  cols_label(
-    exp = "Experiment",
-    Term = "Term",
-    Estimate = "Estimate",
-    `95% CrI Lower` = "95% CrI Lower",
-    `95% CrI Upper` = "95% CrI Upper",
-    pd = "pd"
-  ) %>%
-  fmt_number(
-    columns = c(Estimate, `95% CrI Lower`, `95% CrI Upper`),
-    decimals = 1
-  ) %>%
-  fmt_number(
-    columns = pd,
-    decimals = 2
-  ) %>%
-  tab_spanner(
-    label = "Credible Interval",
-    columns = c(`95% CrI Lower`, `95% CrI Upper`)
-  ) %>%
-  tab_style(
-    style = list(
-      #cell_fill(color = "lightgray"),
-      cell_text(weight = "bold"), 
-      cell_fill(color = "white"),
-      cell_borders(sides = "top", color = "black", weight = px(1))
-    ),
-    locations = cells_body(
-      columns = c(Estimate, pd),
-      rows = Term=="ModelEXAM:conditVaried"
-    )
-  ) %>%
-   tab_row_group(
-    label = "Experiment 3",
-    rows = exp == "Exp 3"
-  ) %>%
-  tab_row_group(
-    label = "Experiment 2",
-    rows = exp == "Exp 2"
-  ) %>%
-  tab_row_group(
-    label = "Experiment 1",
-    rows = exp == "Exp 1"
-  ) %>%
-  tab_options(
-    table.font.size = 12,
-    heading.title.font.size = 14,
-    heading.subtitle.font.size = 12,
-    quarto.disable_processing = TRUE,
-    column_labels.padding = 2,
-    data_row.padding = 2
-    #row_group.background.color = "gray95"
-  )
-bct_table
-} else {
-  bct %>%
-  mutate(
-    across(c(Estimate, `95% CrI Lower`, `95% CrI Upper`), ~ round(., 2)),
-    pd = round(pd, 2)
-  ) %>% kable(booktabs = TRUE)
-
-}
-```
+<div id="tbl-htw-ee-e23">
 
 | exp | Term | Estimate | 95% CrI Lower | 95% CrI Upper | pd |
 |:-----|:------------------------------|-------:|-----------:|-----------:|----:|
@@ -1389,44 +568,18 @@ bct_table
 | Exp 3 | conditVaried:bandOrderReverse | 30.8 | -19.6 | 84 | 0.88 |
 | Exp 3 | ModelEXAM:conditVaried:bandOrderReverse | -60.6 | -101.8 | -19 | 1.00 |
 
+Table 14: Results of Bayesian Regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and the interaction between Model and Condition. The values represent the estimated coefficient for each term, with 95% credible intervals in brackets. The intercept reflects the baseline of ALM and Constant. The other estimates indicate deviations from the baseline for the EXAM mode and varied condition. Lower values indicate better model fit.
+</div>
 *Model Fits to Experiment 2 and 3.* Data from Experiments 2 and 3 were fit to ALM and EXAM in the same manner as Experiment 1. For brevity, we only plot and discuss the results of the "fit to training and testing data" models - results from the other fitting methods can be found in the appendix. The model fitting results for Experiments 2 and 3 closely mirrored those observed in Experiment 1. The Bayesian regression models predicting model error as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied), and their interaction (see <a href="#tbl-htw-ee-e23" class="quarto-xref">Table 14</a>) revealed a consistent main effect of Model across all three experiments. The negative coefficients for the ModelEXAM term (Exp 2: $\beta$ = -86.39, 95% CrI -113.52, -59.31, pd = 100%; Exp 3: $\beta$ = -40.61, 95% CrI -75.9, -3.02, pd = 98.17%) indicate that EXAM outperformed ALM in both experiments. Furthermore, the interaction between Model and Condition was significant in both Experiment 2 ($\beta$ = 56.87, 95% CrI 25.26, 88.04, pd = 99.98%) and Experiment 3 ($\beta$ = 41.9, 95% CrI 11.2, 72.54, pd = 99.35%), suggesting that the superiority of EXAM over ALM was more pronounced for the Constant group compared to the Varied group, as was the case in Experiment 1. Recall that Experiment 3 included participants in both the original and reverse order conditions - and that this manipulation interacted with the effect of training condition. We thus also controlled for band order in our Bayesian Regression assessing the relative performance of EXAM and ALM in Experiment 3. There was a significant three way interaction between Model, Training Condition, and Band Order ($\beta$ = -60.6, 95% CrI -101.8, -18.66, pd = 99.83%), indicating that the relative advantage of EXAM over ALM was only more pronounced in the original order condition, and not the reverse order condition (see <a href="#fig-e2_e3_ae" class="quarto-xref">Figure 21</a>).
 
-``` r
-#wrap_plots(plot(conditional_effects(e1_ee_brm_ae),points=FALSE,plot=FALSE))
-p1 <- plot(conditional_effects(e2_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + 
-  ggplot2::xlab("Condition") +ylab("Model Error") + labs(title="E2. Model Error")
-p2 <- plot(conditional_effects(e2_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + 
-  labs(x="Model",y=NULL)
-p3 <- plot(conditional_effects(e2_ee_brm_ae, effects="Model:condit"),points=FALSE, plot=FALSE)$`Model:condit` + 
-  scale_color_manual(values=wes_palette("Darjeeling1")) +
-  labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
-  
-  p_e2 <- (p1 + p2+ p3) 
-# #wrap_plots(plot(conditional_effects(e3_ee_brm_ae),points=FALSE,plot=FALSE))
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-e2_e3_ae-1.png"
+id="fig-e2_e3_ae"
+alt="Figure 21: Conditional effects of Model (ALM vs EXAM) and Condition (Constant vs. Varied) on Model Error for Experiments 2 and 3 data. Experiment 3 also includes a condition for the order of training vs. testing bands (original order vs. reverse order)." />
 
-p_e3 <- plot(conditional_effects(e3_ee_brm_ae, 
-                         effects = "Model:condit", 
-                         conditions=make_conditions(e3_ee_brm_ae,vars=c("bandOrder"))),
-     points=FALSE,plot=FALSE)$`Model:condit` + 
-     labs(x="Model",y="Model Error", title="E3. Model Error", fill=NULL, col=NULL) + 
-     theme(legend.position="right") + 
-     scale_color_manual(values=wes_palette("Darjeeling1")) 
+*Computational Model Summary*.
 
-p1 <- plot(conditional_effects(e3_ee_brm_ae, effects="condit"),points=FALSE, plot=FALSE)$condit + 
-  ggplot2::xlab("Condition") +ylab("Model Error")
-p2 <- plot(conditional_effects(e3_ee_brm_ae, effects="Model"),points=FALSE, plot=FALSE)$Model + 
-  labs(x="Model",y=NULL)
-p3 <- plot(conditional_effects(e3_ee_brm_ae, effects="Model:condit"),points=FALSE, plot=FALSE)$`Model:condit` + 
-  scale_color_manual(values=wes_palette("Darjeeling1")) +
-  labs(x="Model",y=NULL,fill=NULL,col=NULL) + theme(legend.position="right") 
-  
- p2 <- (p1 + p2+ p3)
- (p_e2 / p_e3) + plot_annotation(tag_levels = c('A'), tag_suffix=".")
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-e2_e3_ae-1.jpeg)
-
-*Computational Model Summary*. Across all three experiments, the model fits consistently favored the Extrapolation-Association Model (EXAM) over the Associative Learning Model (ALM). This preference for EXAM was particularly pronounced for participants in the constant training conditions (note the positive coefficients on ModelEXAM:conditVaried interaction terms <a href="#tbl-htw-ee-e23" class="quarto-xref">Table 14</a>). This pattern is clearly illustrated in <a href="#fig-htw-best-model" class="quarto-xref">Figure 22</a>, which plots the difference in model errors between ALM and EXAM for each individual participant. Both varied and constant conditions have a greater proportion of subjects better fit by EXAM (positive error differences), with the magnitude of EXAM's advantage visibly larger for the constant group.
+Across all three experiments, the model fits consistently favored the Extrapolation-Association Model (EXAM) over the Associative Learning Model (ALM). This preference for EXAM was particularly pronounced for participants in the constant training conditions (note the positive coefficients on ModelEXAM:conditVaried interaction terms <a href="#tbl-htw-ee-e23" class="quarto-xref">Table 14</a>). This pattern is clearly illustrated in <a href="#fig-htw-best-model" class="quarto-xref">Figure 22</a>, which plots the difference in model errors between ALM and EXAM for each individual participant. Both varied and constant conditions have a greater proportion of subjects better fit by EXAM (positive error differences), with the magnitude of EXAM's advantage visibly larger for the constant group.
 
 The superior performance of EXAM, especially for the constant training groups, may initially seem counterintuitive. One might assume that exposure to multiple, varied examples would be necessary to extract an abstract rule. However, EXAM is not a conventional rule-based model; it does not require the explicit abstraction of a rule. Instead, rule-based responses emerge during the retrieval process. The constant groups' formation of a single, accurate input-output association, combined with the usefulness of the zero point, seem to have been sufficient for EXAM to capture their performance. A potential concern is that the assumption of participants utilizing the zero point essentially transforms the extrapolation problem into an interpolation problem. However, this concern is mitigated by the consistency of the results across both the original and reversed order conditions (the testing extrapolation bands fall in between the constant training band and the 0 point in experiment 1, but not in experiment 2).
 
@@ -1436,96 +589,15 @@ The fits to the individual participants also reveal a number of interesting case
 
 
 
-``` r
-tid1 <- post_dat  |> mutate(Exp="E1",bandOrder="Original") |> select(-pred_dist, -dist) |>
-  rbind(e2_model$post_dat |> mutate(Exp="E2",bandOrder="Reverse")) |>
-  rbind(e3_model$post_dat |> mutate(Exp="E3")) |>
-  filter(Fit_Method=="Test_Train") |>
-  group_by(id,condit,Model,Fit_Method,x, Exp) |> 
-    mutate(e2=abs(y-pred)) |> 
-    summarise(y1=median(y), pred1=median(pred),mean_error=abs(y1-pred1)) |>
-    group_by(id,condit,Model,Fit_Method,Exp) |> 
-    summarise(mean_error=mean(mean_error)) |> 
-    arrange(id,condit,Fit_Method) |>
-    round_tibble(1) 
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-htw-best-model-1.png"
+id="fig-htw-best-model"
+alt="Figure 22: Difference in model errors for each participant, with models fit to both train and test data. Positive values favor EXAM, while negative values favor ALM." />
 
-best_id <- tid1 |> 
-  group_by(id,condit,Fit_Method) |> 
-  mutate(best=ifelse(mean_error==min(mean_error),1,0)) 
-
-lowest_error_model <- best_id %>%
-  group_by(id, condit,Fit_Method, Exp) %>%
-  summarise(Best_Model = Model[which.min(mean_error)],
-            Lowest_error = min(mean_error),
-            differential = min(mean_error) - max(mean_error)) %>%
-  ungroup()
-
-error_difference<- best_id %>%
-  select(id, condit, Model,Fit_Method, mean_error) %>%
-  pivot_wider(names_from = Model, values_from = c(mean_error)) %>%
-  mutate(Error_difference = (ALM - EXAM))
-
-full_comparison <- lowest_error_model |> 
-  left_join(error_difference, by=c("id","condit","Fit_Method"))  |> 
-  group_by(condit,Fit_Method,Best_Model) |> 
-  mutate(nGrp=n(), model_rank = nGrp - rank(Error_difference) ) |> 
-  arrange(Fit_Method,-Error_difference)
-
-full_comparison |> 
-  filter(Fit_Method=="Test_Train") |> 
-  ungroup() |>
-  mutate(id = reorder(id, Error_difference)) %>%
-  ggplot(aes(y=id,x=Error_difference,fill=Best_Model))+
-  geom_col() +
-  #ggh4x::facet_grid2(~condit,axes="all",scales="free_y", independent = "y")+
-  ggh4x::facet_nested_wrap(~condit+Exp,scales="free") + 
-  theme(axis.text.y = element_text(size=8)) +
-  labs(fill="Best Model",
-  x="Mean Model Error Difference (ALM - EXAM)",
-  y="Participant")
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-htw-best-model-1.jpeg)
-
-``` r
-cId_tr <- c(137, 181, 11)
-vId_tr <- c(14, 193, 47)
-cId_tt <- c(11, 93, 35)
-vId_tt <- c(1,14,74)
-cId_new <- c(175, 68, 93, 74)
-# filter(id %in% (filter(bestTestEXAM,group_rank<=9, Fit_Method=="Test")
-
-e1_sbjs <- c(49,68,155, 175,74)
-e3_sbjs <-  c(245, 280, 249)
-e2_sbjs <- c(197, 157, 312, 334)
-cFinal <- c(49, 128,202 )
-vFinal <- c(68,70,245)
-
-
-indv_post_l <- post_dat_l  |> mutate(Exp="E1",bandOrder="Original") |> select(-signed_dist) |>
-  rbind(e2_model$post_dat_l |> mutate(Exp="E2",bandOrder="Reverse")) |>
-  rbind(e3_model$post_dat_l |> mutate(Exp="E3") |> select(-fb)) |>
-  filter(Fit_Method=="Test_Train", id %in% c(cFinal,vFinal))
-
-testIndv <- indv_post_l |> 
-#filter(id %in% c(cId_tt,vId_tt,cId_new), Fit_Method=="Test_Train") |> 
-   mutate(x=as.factor(x), Resp=as.factor(Resp)) |>
-  group_by(id,condit,Fit_Method,Model,Resp) |>
-   mutate(flab=paste0("Subject: ",id)) |>
-  ggplot(aes(x = Resp, y = val, fill=vb, col=ifelse(bandType=="Trained","black",NA),size=ifelse(bandType=="Trained","black",NA))) + 
-  stat_bar_sd + 
-  ggh4x::facet_nested_wrap(condit~flab, axes = "all",ncol=3) +
-  scale_color_manual(values = c("black" = "black"), guide = FALSE) +
-  scale_size_manual(values = c("black" = .5), guide = FALSE) + 
-  labs(title="Individual Participant fits from Test & Train Fitting Method",
-       y="X Velocity",fill="Target Velocity") +
-   guides(fill = guide_legend(nrow = 1)) + 
-  theme(legend.position = "bottom",axis.title.x = element_blank())
-
-testIndv 
-```
-
-![](manuscript.markdown_strict_files/figure-markdown_strict/fig-htw-indv-pred-1.jpeg)
+<img
+src="htw_full.markdown_strict_files/figure-markdown_strict/fig-htw-indv-pred-1.png"
+id="fig-htw-indv-pred"
+alt="Figure 23: Model predictions alongside observed data for a subset of individual participants. A) 3 constant and 3 varied participants fit to both the test and training data. B) 3 constant and 3 varied subjects fit to only the trainign data. Bolded bars indicate bands that were trained, non-bold bars indicate extrapolation bands." />
 
 # General Discussion
 

@@ -8,27 +8,17 @@ A longstanding issue across both science and instruction has been to
 understand how various aspects of an educational curriculum or training
 program influence learning acquisition and generalization. One such
 aspect, which has received a great deal of research attention, is the
-variability of examples experienced during training ([Raviv et al.,
-2022](#ref-ravivHowVariabilityShapes2022)). The influence of training
-variation has been studied in numerous domains, including category
-learning ([Cohen et al.,
-2001](#ref-cohenCategoryVariabilityExemplar2001); [Posner & Keele,
-1968](#ref-posnerGenesisAbstractIdeas1968)), visuomotor learning
-([Berniker et al., 2014](#ref-bernikerEffectsTrainingBreadth2014);
-[Schmidt, 1975](#ref-schmidtSchemaTheoryDiscrete1975)), language
-learning ([Perry et al., 2010](#ref-perryLearnLocallyThink2010)), and
-education ([Braithwaite & Goldstone,
-2015](#ref-braithwaiteEffectsVariationPrior2015); [Guo et al.,
-2014](#ref-guoEffectsExampleVariability2014)). The pattern of results is
-complex, with numerous studies finding both beneficial ([Braun et al.,
-2009](#ref-braunMotorTaskVariation2009); [Catalano & Kleiner,
-1984](#ref-catalanoDistantTransferCoincident1984a); [Roller et al.,
-2001](#ref-rollerVariablePracticeLenses2001)), as well as null or
-negative effects ([Brekelmans et al.,
-2022](#ref-brekelmansDoesHighVariability2022); [Hu & Nosofsky,
-2024](#ref-huHighvariabilityTrainingDoes2024); [Van Rossum,
-1990](#ref-vanrossumSchmidtSchemaTheory1990)). The present study seeks
-to contribute to the large body of existing research by examining the
+variability of examples experienced during training (Raviv et al.,
+2022). The influence of training variation has been studied in numerous
+domains, including category learning (Cohen et al., 2001; Posner &
+Keele, 1968), visuomotor learning (Berniker et al., 2014; Schmidt,
+1975), language learning (Perry et al., 2010), and education
+(Braithwaite & Goldstone, 2015; Guo et al., 2014). The pattern of
+results is complex, with numerous studies finding both beneficial (Braun
+et al., 2009; Catalano & Kleiner, 1984; Gorman & Goldstone, 2022; Roller
+et al., 2001), as well as null or negative effects (Brekelmans et al.,
+2022; Hu & Nosofsky, 2024; Van Rossum, 1990). The present study seeks to
+contribute to the large body of existing research by examining the
 influence of variability in visuomotor function learning - a domain in
 which it has been relatively under-studied.
 
@@ -37,50 +27,41 @@ which it has been relatively under-studied.
 The study of human function learning investigates how people learn
 relationships between continuous input and output values. Function
 learning is studied both in tasks where individuals are exposed to a
-sequence of input/output pairs ([DeLosh et al.,
-1997](#ref-deloshExtrapolationSineQua1997); [McDaniel et al.,
-2013](#ref-mcdanielEffectsSpacedMassed2013)), or situations where
-observers are presented with an incomplete scatterplot or line graph and
-make predictions about regions of the plot that do not contain data
-([Ciccione & Dehaene, 2021](#ref-ciccioneCanHumansPerform2021);
-[Courrieu, 2012](#ref-courrieuQuickApproximationBivariate2012); [Said &
-Fischer, 2021](#ref-saidExtrapolationAccuracyUnderestimates2021);
-[Schulz et al.,
-2020](#ref-schulzCommunicatingCompositionalPatterns2020)). Studies of
-function learning often compare the difficulty of learning functions of
-different underlying forms (e.g. linear, bi-linear, power, sinusoidal),
-and the extent to which participants can accurately respond to novel
-inputs that fall in-between previously experienced inputs (interpolation
-testing), or that fall outside the range of previously experienced
-inputs (extrapolation).
+sequence of input/output pairs (DeLosh et al., 1997; McDaniel et al.,
+2013), or situations where observers are presented with an incomplete
+scatterplot or line graph and make predictions about regions of the plot
+that do not contain data (Ciccione & Dehaene, 2021; Courrieu, 2012; Said
+& Fischer, 2021; Schulz et al., 2020). Studies of function learning
+often compare the difficulty of learning functions of different
+underlying forms (e.g. linear, bi-linear, power, sinusoidal), and the
+extent to which participants can accurately respond to novel inputs that
+fall in-between previously experienced inputs (interpolation testing),
+or that fall outside the range of previously experienced inputs
+(extrapolation).
 
-Carroll ([1963](#ref-carrollFunctionalLearningLearning1963)) conducted
-the earliest work on function learning. Input stimuli and output
-responses were both lines of varying length. The correct output response
-was related to the length of the input line by a linear, quadratic, or
-random function. Participants in the linear and quadratic performed
-above chance levels during extrapolation testing, with those in the
-linear condition performing the best overall. Carroll argued that these
-results were best explained by a rule-based model wherein learners form
-an abstract representation of the underlying function. Subsequent work
-by Brehmer ([1974](#ref-brehmerHypothesesRelationsScaled1974)), testing
-a wider array of functional forms, provided further evidence for
-superior extrapolation in tasks with linear functions. Brehmer argued
-that individuals start out assuming a linear function, but given
-sufficient error will progressively test alternative hypotheses with
-polynomials of greater degree. Koh & Meyer
-([1991](#ref-kohFunctionLearningInduction1991)) employed a visuomotor
-function learning task, wherein participants were trained on examples
-from an unknown function relating the length of an input line to the
-duration of a response (time between keystrokes). In this domain,
-participants performed best when the relation between line length and
-response duration was determined by a power law, as opposed to linear
-function. Koh and Meyer developed the log-polynomial adaptive-regression
-model to account for their results.
+Carroll (1963) conducted the earliest work on function learning. Input
+stimuli and output responses were both lines of varying length. The
+correct output response was related to the length of the input line by a
+linear, quadratic, or random function. Participants in the linear and
+quadratic performed above chance levels during extrapolation testing,
+with those in the linear condition performing the best overall. Carroll
+argued that these results were best explained by a rule-based model
+wherein learners form an abstract representation of the underlying
+function. Subsequent work by Brehmer (1974), testing a wider array of
+functional forms, provided further evidence for superior extrapolation
+in tasks with linear functions. Brehmer argued that individuals start
+out assuming a linear function, but given sufficient error will
+progressively test alternative hypotheses with polynomials of greater
+degree. Koh & Meyer (1991) employed a visuomotor function learning task,
+wherein participants were trained on examples from an unknown function
+relating the length of an input line to the duration of a response (time
+between keystrokes). In this domain, participants performed best when
+the relation between line length and response duration was determined by
+a power law, as opposed to linear function. Koh and Meyer developed the
+log-polynomial adaptive-regression model to account for their results.
 
 The first significant challenge to rule-based accounts of function
-learning was put forth by DeLosh et al.
-([1997](#ref-deloshExtrapolationSineQua1997)) . In their task,
+learning was put forth by DeLosh et al. (1997) . In their task,
 participants learned to associate stimulus magnitudes with response
 magnitudes that were related via either linear, exponential, or
 quadratic function. Participants approached ceiling performance by the
@@ -95,21 +76,18 @@ performances are depicted in
 
 The authors evaluated the rule-based models introduced in earlier
 research (with some modifications enabling trial-by-trial learning). The
-polynomial hypothesis testing model ([Brehmer,
-1974](#ref-brehmerHypothesesRelationsScaled1974); [Carroll,
-1963](#ref-carrollFunctionalLearningLearning1963)) tended to mimic the
-true function closely in extrapolation, and thus offered a poor account
-of the under and over-estimation biases shown in the human data. The
-log-polynomial adaptive regression model ([Koh & Meyer,
-1991](#ref-kohFunctionLearningInduction1991)) was able to mimic some of
-the systematic deviations produced by human subjects, but also predicted
-overestimation in cases where underestimation occurred.
+polynomial hypothesis testing model (Brehmer, 1974; Carroll, 1963)
+tended to mimic the true function closely in extrapolation, and thus
+offered a poor account of the under and over-estimation biases shown in
+the human data. The log-polynomial adaptive regression model (Koh &
+Meyer, 1991) was able to mimic some of the systematic deviations
+produced by human subjects, but also predicted overestimation in cases
+where underestimation occurred.
 
 The authors also introduced two new function-learning models. The
 Associative Learning Model (ALM) and the extrapolation-association model
 (EXAM). ALM is a two layer connectionist model adapted from the ALCOVE
-model in the category learning literature ([Kruschke,
-1992](#ref-kruschkeALCOVEExemplarbasedConnectionist1992)). ALM belongs
+model in the category learning literature (Kruschke, 1992). ALM belongs
 to the general class of radial-basis function neural networks, and can
 be considered a similarity-based model in the sense that the nodes in
 the input layer of the network are activated as a function of distance
@@ -125,14 +103,11 @@ EXAM, by contrast, was able to reproduce both the extrapolation
 underestimation, as well as the quadratic and exponential overestimation
 patterns exhibited by the human participants. Subsequent research
 identified some limitations in EXAM’s ability to account for cases where
-human participants learn and extrapolate a sinusoidal function ([Bott &
-Heit, 2004](#ref-bottNonmonotonicExtrapolationFunction2004)) or to
-scenarios where different functions apply to different regions of the
-input space ([Kalish et al.,
-2004](#ref-kalishPopulationLinearExperts2004)), though EXAM has been
+human participants learn and extrapolate a sinusoidal function (Bott &
+Heit, 2004) or to scenarios where different functions apply to different
+regions of the input space (Kalish et al., 2004), though EXAM has been
 shown to provide a good account of human learning and extrapolation in
-tasks with bi-linear, V-shaped input spaces ([Mcdaniel et al.,
-2009](#ref-mcdanielPredictingTransferPerformance2009)).
+tasks with bi-linear, V-shaped input spaces (McDaniel et al., 2009).
 
 <div id="fig-delosh-extrap">
 
@@ -152,22 +127,20 @@ while those that fall outside the dashed lines are extrapolations.
 ## Variability and Function Learning
 
 The influence of variability on function learning tasks has received
-relatively little attention. The study by DeLosh et al.
-([1997](#ref-deloshExtrapolationSineQua1997)) (described in detail
-above) did include a variability manipulation (referred to as density in
-their paper), wherein participants were trained with either 8, 20, or 50
-unique input-output pairs, with the total number of training trials held
-constant. They found a minimal influence of variability on training
-performance, and no difference between groups in interpolation or
-extrapolation, with all three variability conditions displaying accurate
-interpolation, and linearly biased extrapolation that was well accounted
-for by the EXAM model.
+relatively little attention. The study by DeLosh et al. (1997)
+(described in detail above) did include a variability manipulation
+(referred to as density in their paper), wherein participants were
+trained with either 8, 20, or 50 unique input-output pairs, with the
+total number of training trials held constant. They found a minimal
+influence of variability on training performance, and no difference
+between groups in interpolation or extrapolation, with all three
+variability conditions displaying accurate interpolation, and linearly
+biased extrapolation that was well accounted for by the EXAM model.
 
-In the domain of visuomotor learning, van Dam & Ernst
-([2015](#ref-vandamMappingShapeVisuomotor2015)) employed a task which
-required participants to learn a linear function between the spikiness
-of shape stimuli and the correct horizontal position to make a rapid
-pointing response. The shapes ranged from very spiky to completely
+In the domain of visuomotor learning, van Dam & Ernst (2015) employed a
+task which required participants to learn a linear function between the
+spikiness of shape stimuli and the correct horizontal position to make a
+rapid pointing response. The shapes ranged from very spiky to completely
 circular at the extreme ends of the space. Participants trained with
 intermediate shapes having lower variation (2 shapes) or higher
 variation (5 shapes) condition, with the 2 items of the lower variation
@@ -209,21 +182,21 @@ for both the group level and individual level data.
 
 ## Methods
 
-*Participants* A total of 156 participants were recruited from the
-Indiana University Introductory Psychology Course. Participants were
-randomly assigned to one of two training conditions: varied training or
-constant training.
+*Participants* A total of 156 participants were recruited from Indiana
+University Introductory Psychology Courses. Participants were randomly
+assigned to one of two training conditions: varied training or constant
+training.
 
 *Task.* The “Hit The Wall” (HTW) visuomotor extrapolation task task was
-programmed in Javascript, making heavy use of the
+programmed in JavaScript, making use of the
 [phaser.io](https://phaser.io/) game library. The HTW task involved
-launching a projectile such that it would strike the “wall” at target
-speed indicated at the top of the screen (see
+launching a projectile such that it would strike the “wall” at the
+target speed indicated at the top of the screen (see
 <a href="#fig-htw-task" class="quarto-xref">Figure 2</a>). The target
 velocities were given as a range, or band, of acceptable velocity values
-(e.g. band 800-1000). During the training stage, participants received
+(e.g., band 800-1000). During the training stage, participants received
 feedback indicating whether they had hit the wall within the target
-velocity band, or how many units their throw was above or below from the
+velocity band, or how many units their throw was above or below the
 target band. Participants were instructed that only the x velocity
 component of the ball was relevant to the task. The y velocity, or the
 location at which the ball struck the wall, had no influence on the task
@@ -273,17 +246,15 @@ extrapolation bands (100-300, 350-550, and 600-800).
 ## Analyses Strategy
 
 All data processing and statistical analyses were performed in R version
-4.32 ([Team, 2020](#ref-rcoreteamLanguageEnvironmentStatistical2020)).
-To assess differences between groups, we used Bayesian Mixed Effects
-Regression. Model fitting was performed with the brms package in R
-([Bürkner, 2017](#ref-burknerBrmsPackageBayesian2017)), and descriptive
-stats and tables were extracted with the BayestestR package ([Makowski
-et al., 2019](#ref-makowskiBayestestRDescribingEffects2019)). Mixed
+4.32 (Team, 2020). To assess differences between groups, we used
+Bayesian Mixed Effects Regression. Model fitting was performed with the
+brms package in R (Bürkner, 2017), and descriptive stats and tables were
+extracted with the BayestestR package (Makowski et al., 2019). Mixed
 effects regression enables us to take advantage of partial pooling,
 simultaneously estimating parameters at the individual and group level.
 Our use of Bayesian, rather than frequentist methods allows us to
 directly quantify the uncertainty in our parameter estimates, as well as
-avoiding convergence issues common to the frequentist analogues of our
+avoid convergence issues common to the frequentist analogues of our
 mixed models.
 
 Each model was set to run with 4 chains, 5000 iterations per chain, with
@@ -291,8 +262,8 @@ the first 2500 discarded as warmup chains. Rhat values were within an
 acceptable range, with values \<=1.02 (see appendix for diagnostic
 plots). We used uninformative priors for the fixed effects of the model
 (condition and velocity band), and weakly informative Student T
-distributions for for the random effects. For each model, we report 1)
-the mean values of the posterior distribution for the parameters of
+distributions for the random effects. For each model, we report 1) the
+mean values of the posterior distribution for the parameters of
 interest, 2) the lower and upper credible intervals (CrI), and the
 probability of direction value (pd).
 
@@ -300,7 +271,7 @@ probability of direction value (pd).
 
 Table 1: **Statistical Model Specifications**. The specifications for
 the Bayesian regression models used in the analyses of each of the 3
-experiments. Comparisons of accuracy use abosulte deviation as the
+experiments. Comparisons of accuracy use absolute deviation as the
 dependent variable, while comparisons of discrimination use the raw
 velocities produced by participants as the dependent variable.
 
@@ -322,9 +293,9 @@ the absolute deviation between the response velocity and the nearest
 boundary of the target band. Thus, when the target band was velocity
 600-800, throws of 400, 650, and 900 would result in deviation values of
 200, 0, and 100, respectively. The degree of discrimination between
-bands was index by fitting a linear model predicting the response
+bands was measured by fitting a linear model predicting the response
 velocity as a function of the target velocity. Participants who reliably
-discriminated between velocity bands tended to haves slope values ~1,
+discriminated between velocity bands tended to have slope values ~1,
 while participants who made throws irrespective of the current target
 band would have slopes ~0.
 
@@ -335,14 +306,14 @@ band would have slopes ~0.
 ![](manuscript_files/figure-commonmark/fig-e1-train-dev-1.png)
 
 
-Figure 3: Experiment 1 Training Stage. Deviations from target band
+Figure 3: Experiment 1 - Training Stage. Deviations from target band
 across training blocks. Lower values represent greater accuracy.
 
 </div>
 <div id="tbl-e1-train-dist">
 
 Table 2: **Experiment 1 - End of training performance**. Comparing final
-training block accuracy in band common to both groups. The Intercept
+training block accuracy in the band common to both groups. The Intercept
 represents the average of the baseline condition (constant training),
 and the conditVaried coefficient reflects the difference between the
 constant and varied groups. A larger positive estimates indicates a
@@ -365,9 +336,9 @@ group, which trained on three velocity bands, and the constant group,
 which trained on one velocity band. To compare the training conditions
 at the end of training, we analyzed performance on the 800-1000 velocity
 band, which both groups trained on. The full model results are shown in
-Table 1. The varied group had a significantly greater deviation than the
-constant group in the final training block, ($\beta$ = 79.64, 95% CrI
-\[57.92, 101.63\]; pd = 100%).
+Table 1. The varied group had a significantly greater deviation from the
+target band than the constant group in the final training block,
+($\beta$ = 79.64, 95% CrI \[57.92, 101.63\]; pd = 100%).
 
 <div id="tbl-e1-bmm-dist">
 
@@ -411,7 +382,7 @@ group in the extrapolation bands.
 ![](manuscript_files/figure-commonmark/fig-e1-test-dev-1.png)
 
 
-Figure 4: Experiment 1 Testing Accuracy. A) Empricial Deviations from
+Figure 4: Experiment 1 Testing Accuracy. A) Empirical Deviations from
 target band during testing without feedback stage. B) Conditional effect
 of condition (Constant vs. Varied) and testing band type (trained bands
 vs. novel extrapolation bands) on testing accuracy. Error bars represent
@@ -449,17 +420,17 @@ random slopes for each participant. See
 model results. The estimated coefficient for training condition ($\beta$
 = 164.05, 95% CrI \[45.5, 278.85\], pd = 99.61%) suggests that the
 varied group tends to produce harder throws than the constant group,
-though is not in and of itself useful for assessing discrimination. Most
-relevant to the issue of discrimination is the coefficient on the Band
-predictor ($\beta$ = 0.71 95% CrI \[0.62, 0.8\], pd = 100%). Although
-the median slope does fall underneath the ideal of value of 1, the fact
-that the 95% credible interval does not contain 0 provides strong
-evidence that participants exhibited some discrimination between bands.
-The significant negative estimate for the interaction between slope and
-condition ($\beta$ = -0.14, 95% CrI \[-0.26, -0.01\], pd = 98.39%),
-suggests that the discrimination was modulated by training condition,
-with the varied participants showing less sensitivity between bands than
-the constant condition (see
+though this is not, in and of itself, useful for assessing
+discrimination. Most relevant to the issue of discrimination is the
+coefficient on the Band predictor ($\beta$ = 0.71 95% CrI \[0.62, 0.8\],
+pd = 100%). Although the median slope does fall underneath the ideal of
+value of 1, the fact that the 95% credible interval does not contain 0
+provides strong evidence that participants exhibited some discrimination
+between bands. The significant negative estimate for the interaction
+between slope and condition ($\beta$ = -0.14, 95% CrI \[-0.26, -0.01\],
+pd = 98.39%), indicates that the discrimination was modulated by
+training condition, with the varied participants showing less
+sensitivity between bands than the constant condition (see
 <a href="#fig-e1-test-vx" class="quarto-xref">Figure 5</a> and
 <a href="#fig-e1-bmm-vx" class="quarto-xref">Figure 6</a>).
 
@@ -468,8 +439,8 @@ the constant condition (see
 ![](manuscript_files/figure-commonmark/fig-e1-test-vx-1.png)
 
 
-Figure 5: Experiment 1. Empirical distribution of velocities producing
-in testing stage. Translucent bands with dashed lines indicate the
+Figure 5: Experiment 1. Empirical distribution of velocities produced in
+the testing stage. Translucent bands with dashed lines indicate the
 correct range for each velocity band.
 
 </div>
@@ -482,23 +453,21 @@ Figure 6: Experiment 1 Discrimination. A) Conditional effect of training
 condition and Band. Ribbons indicate 95% HDI. The steepness of the lines
 serves as an indicator of how well participants discriminated between
 velocity bands. B) The distribution of slope coefficients for each
-condition. Larger slopes indicates better discrimination. C) Individual
-participant slopes. Error bars represent 95% HDI.
+condition. Larger slopes indicates better discrimination between target
+bands. C) Individual participant slopes. Error bars represent 95% HDI.
 
 </div>
 
 ## Experiment 1 Summary
 
 In Experiment 1, we investigated how variability in training influenced
-participants’ ability learn and extrapolate in a visuomotor task. Our
+participants’ ability to learn and extrapolate in a visuomotor task. Our
 findings that training with variable conditions resulted in lower final
 training performance are consistent with much of the prior research on
-the influence of training variability ([Raviv et al.,
-2022](#ref-ravivHowVariabilityShapes2022); [Soderstrom & Bjork,
-2015](#ref-soderstromLearningPerformanceIntegrative2015)), and is
-particularly unsurprising in the present work, given that the constant
-group received three times the amount of training on the velocity band
-common to the two conditions.
+the influence of training variability (Raviv et al., 2022; Soderstrom &
+Bjork, 2015), and are particularly unsurprising in the present work,
+given that the constant group received three times the amount of
+training on the velocity band common to the two conditions.
 
 More importantly, the varied training group exhibited significantly
 larger deviations from the target velocity bands during the testing
@@ -561,7 +530,7 @@ and band type (training vs. extrapolation), and the interaction between
 the two factors. The Intercept represents the baseline condition
 (constant training & trained bands). Larger coefficients indicate larger
 deviations from the baselines - and a positive interaction coefficient
-indicates disproporionate deviation for the varied condition on the
+indicates disproportionate deviation for the varied condition on the
 extrapolation bands. CrI values indicate 95% credible intervals. pd is
 the probability of direction (the % of the posterior on the same side of
 0 as the coefficient estimate).
@@ -595,7 +564,7 @@ the extrapolation bands (see
 ![](manuscript_files/figure-commonmark/fig-e2-test-dev-1.png)
 
 
-Figure 8: Experiment 2 Testing Accuracy. A) Empricial Deviations from
+Figure 8: Experiment 2 Testing Accuracy. A) Empirical Deviations from
 target band during testing without feedback stage. B) Conditional effect
 of condition (Constant vs. Varied) and testing band type (trained bands
 vs. novel extrapolation bands) on testing accuracy. Error bars represent
@@ -608,7 +577,7 @@ Table 7: **Experiment 2 Testing Discrimination**. Bayesian Mixed Model
 Predicting velocity as a function of condition (Constant vs. Varied) and
 Velocity Band. Larger coefficients for the Band term reflect a larger
 slope, or greater sensitivity/discrimination. The interaction between
-condit and Band indicates the difference between constant and varied
+condition and band indicates the difference between constant and varied
 slopes. CrI values indicate 95% credible intervals. pd is the
 probability of direction (the % of the posterior on the same side of 0
 as the coefficient estimate)
@@ -668,8 +637,8 @@ effects of training variability on extrapolation performance in a
 visuomotor function learning task, but with reversed training and
 testing bands. Similar to Experiment 1, the Varied group exhibited
 poorer performance during training and testing. However unlike
-experiment 1, the Varied group did not show a significant difference in
-discrimination between bands.
+experiment 1, the Varied and Constant groups did not show a significant
+difference in their discrimination between bands.
 
 # Experiment 3
 
@@ -694,16 +663,14 @@ n=46 in the Varied-Reverse condition.
 
 <div id="tbl-e3-train-dist">
 
-Table 8: **Experiment 3 - End of training performance**. The Intercept
-represents the average of the baseline condition (constant training &
-original band order), the conditVaried coefficient reflects the
-difference between the constant and varied groups, and the
-bandOrderReverse coefficient reflects the difference between original
-and reverse order. A larger positive coefficient indicates a greater
-deviation (lower accuracy) for the varied group. The negative value for
-the interaction between condit and bandOrder indicates that varied
-condition with reverse order had significantly lower deviations than the
-varied condition with the original band order
+Table 8: **Experiment 3 testing accuracy**. Main effects of condition
+and band type (training vs. extrapolation), and the interaction between
+the two factors. The Intercept represents the baseline condition,
+(constant training, trained bands & original order), and the remaining
+coefficients reflect the deviation from that baseline. Positive
+coefficients thus represent worse performance relative to the baseline,
+and a positive interaction coefficient indicates disproportionate
+deviation for the varied condition or reverse order condition.
 
 | Term                          | Estimate | 95% CrI Lower | 95% CrI Upper |   pd |
 |:------------------------------|---------:|--------------:|--------------:|-----:|
@@ -735,7 +702,7 @@ showing greater accuracy in the reverse order condition ( $\beta$ =
 
 
 Figure 11: Experiment 3 training. Deviations from target band during
-training. Shown separately for groups trained with the orginal order
+training, shown separately for groups trained with the original order
 (used in E1) and reverse order (used in E2).
 
 </div>
@@ -746,10 +713,9 @@ and band type (training vs. extrapolation), and the interaction between
 the two factors. The Intercept represents the baseline condition,
 (constant training, trained bands & original order), and the remaining
 coefficients reflect the deviation from that baseline. Positive
-coefficients thus represent worse performance relative to the
-baseline, - and a positive interaction coefficient indicates
-disproportionate deviation for the varied condition or reverse order
-condition.
+coefficients thus represent worse performance relative to the baseline,
+and a positive interaction coefficient indicates disproportionate
+deviation for the varied condition or reverse order condition.
 
 | Term | Estimate | 95% CrI Lower | 95% CrI Upper | pd |
 |:---|---:|---:|---:|---:|
@@ -766,21 +732,21 @@ condition.
 
 *Testing Accuracy.*
 <a href="#tbl-e3-bmm-dist" class="quarto-xref">Table 9</a> presents the
-results of the Bayesian mixed efects model predicting absolute deviation
-from the target band during the testing stage. There was no significant
-main effect of training condition,$\beta$ = -40.19, 95% CrI \[-104.68,
-23.13\]; pd = 89.31%, or band type,$\beta$ = -23.35, 95% CrI \[-57.28,
-10.35\]; pd = 91.52%. However the effect of band order was significant,
-with the reverse order condition showing lower deviations, $\beta$ =
--73.72, 95% CrI \[-136.69, -11.07\]; pd = 98.89%. The interaction
-between training condition and band type was also significant $\beta$ =
-52.66, 95% CrI \[14.16, 90.23\]; pd = 99.59%, with the varied condition
-showing disproprionately large deviations on the extrapolation bands
-compared to the constant group. There was also a significant interaction
-between band type and band order, $\beta$ = 80.69, 95% CrI \[30.01,
-130.93\]; pd = 99.89%, such that the reverse order condition showed
-larger deviations on the extrapolation bands. No other interactions were
-significant.
+results of the Bayesian mixed effects model predicting absolute
+deviation from the target band during the testing stage. There was no
+significant main effect of training condition,$\beta$ = -40.19, 95% CrI
+\[-104.68, 23.13\]; pd = 89.31%, or band type,$\beta$ = -23.35, 95% CrI
+\[-57.28, 10.35\]; pd = 91.52%. However the effect of band order was
+significant, with the reverse order condition showing lower deviations,
+$\beta$ = -73.72, 95% CrI \[-136.69, -11.07\]; pd = 98.89%. The
+interaction between training condition and band type was also
+significant $\beta$ = 52.66, 95% CrI \[14.16, 90.23\]; pd = 99.59%, with
+the varied condition showing disproprionately large deviations on the
+extrapolation bands compared to the constant group. There was also a
+significant interaction between band type and band order, $\beta$ =
+80.69, 95% CrI \[30.01, 130.93\]; pd = 99.89%, such that the reverse
+order condition showed larger deviations on the extrapolation bands. No
+other interactions were significant.
 
 <!-- ::: {#fig-e3-test-condEffect}
 &#10;![](../Assets/figs/e3_cond_effects_dist.png)
@@ -791,11 +757,11 @@ significant.
 ![](manuscript_files/figure-commonmark/fig-e3-test-dev-1.png)
 
 
-Figure 12: Experiment 3 Testing Accuracy. A) Empricial Deviations from
+Figure 12: Experiment 3 Testing Accuracy. A) Empirical Deviations from
 target band during testing without feedback stage. B) Conditional effect
 of condition (Constant vs. Varied) and testing band type (trained bands
 vs. novel extrapolation bands) on testing accuracy. Shown separately for
-groups trained with the orginal order (used in E1) and reverse order
+groups trained with the original order (used in E1) and reverse order
 (used in E2). Error bars represent 95% credible intervals.
 
 </div>
@@ -807,10 +773,10 @@ Velocity Band. The Intercept represents the baseline condition (constant
 training & original order), and the Band coefficient represents the
 slope for the baseline condition. The interaction terms which include
 condit and Band (e.g., conditVaried:Band &
-conditVaried:bandOrderReverse:band) respectively indicate the how the
-slopes of the varied-original condition differed from the baseline
-condition, and how varied-reverse condition differed from the
-varied-original condition
+conditVaried:bandOrderReverse:band) respectively indicate how the slopes
+of the varied-original condition differed from the baseline condition,
+and how varied-reverse condition differed from the varied-original
+condition
 
 | Term | Estimate | 95% CrI Lower | 95% CrI Upper | pd |
 |:---|---:|---:|---:|---:|
@@ -830,7 +796,7 @@ are presented in
 <a href="#tbl-e3-bmm-dist" class="quarto-xref">Table 9</a>. For the
 purposes of assessing group differences in discrimination, only the
 coefficients including the band variable are of interest. The baseline
-effect of band represents the slope cofficient for the constant
+effect of band represents the slope coefficient for the constant
 training - original order condition, this effect was significant $\beta$
 = 0.49, 95% CrI \[0.36, 0.62\]; pd = 100%. Neither of the two way
 interactions reached significance, $\beta$ = -0.04, 95% CrI \[-0.23,
@@ -841,15 +807,16 @@ band order, and target band was significant, $\beta$ = 0.42, 95% CrI
 condition trained with reverse order bands. This interaction is shown in
 <a href="#fig-e3-test-vx" class="quarto-xref">Figure 13</a>, where the
 steepness of the best fitting line for the varied-reversed condition is
-noticably steeper than the other conditions.
+noticeably steeper than the other conditions.
 
 <div id="fig-e3-test-vx">
 
 ![](manuscript_files/figure-commonmark/fig-e3-test-vx-1.png)
 
 
-Figure 13: e3 testing x velocities. Translucent bands with dash lines
-indicate the correct range for each velocity band.
+Figure 13: Experiment 3. Empirical distribution of velocities produced
+in the testing stage. Translucent bands with dash lines indicate the
+correct range for each velocity band.
 
 </div>
 
@@ -874,18 +841,18 @@ Individual participant slopes. Error bars represent 95% HDI.
 In Experiment 3, we investigated the effects of training condition
 (constant vs. varied) and band type (training vs. extrapolation) on
 participants’ accuracy and discrimination during the testing phase.
-Unlike the previous experiments, participants received ordinal feedback
-during the training phase. Additionally, Experiment 3 included both the
-original order condition from Experiment 1 and the reverse order
-condition from Experiment 2. The results revealed no significant main
-effects of training condition on testing accuracy, nor was there a
-significant difference between groups in band discrimination. However,
-we observed a significant three-way interaction for the discrimination
-analysis, indicating that the varied condition showed a steeper slope
-coefficient on the reverse order bands compared to the constant
-condition. This result suggests that varied training enhanced
-participants’ ability to discriminate between velocity bands, but only
-when the band order was reversed during testing.
+Unlike the previous experiments, participants received only ordinal, not
+continuous valued, feedback during the training phase. Additionally,
+Experiment 3 included both the original order condition from Experiment
+1 and the reverse order condition from Experiment 2. The results
+revealed no significant main effects of training condition on testing
+accuracy, nor was there a significant difference between groups in band
+discrimination. However, we observed a significant three-way interaction
+for the discrimination analysis, indicating that the varied condition
+showed a steeper slope coefficient on the reverse order bands compared
+to the constant condition. This result suggests that varied training
+enhanced participants’ ability to discriminate between velocity bands,
+but only when the band order was reversed during testing.
 
 # Computational Model
 
@@ -895,12 +862,14 @@ when the band order was reversed during testing.
 
 
 Figure 15: The Associative Learning Model (ALM). The diagram illustrates
-the basic structure of the ALM model as used in the present work. Input
+the basic structure of the ALM model used in the present work. Input
 nodes are activated as a function of their similarity to the
 lower-boundary of the target band. The generalization parameter, $c$,
 determines the degree to which nearby input nodes are activated. The
 output nodes are activated as a function of the weighted sum of the
-input nodes - weights are updated via the delta rule.
+input nodes. During training, when feedback is provided, network weights
+connecting the input layer to the output layer are updated via the delta
+rule.
 
 </div>
 
@@ -908,17 +877,14 @@ The modeling goal is to implement a full process model capable of
 both 1) producing novel responses and 2) modeling behavior in both the
 learning and testing stages of the experiment. For this purpose, we will
 apply the associative learning model (ALM) and the EXAM model of
-function learning ([DeLosh et al.,
-1997](#ref-deloshExtrapolationSineQua1997)). ALM is a simple
-connectionist learning model which closely resembles Kruschke’s ALCOVE
-model ([Kruschke,
-1992](#ref-kruschkeALCOVEExemplarbasedConnectionist1992)), with
-modifications to allow for the generation of continuous responses.
+function learning (DeLosh et al., 1997). ALM is a simple connectionist
+learning model which closely resembles Kruschke’s ALCOVE model
+(Kruschke, 1992), with modifications to allow for the generation of
+continuous responses.
 
 ## ALM & Exam
 
-ALM is a localist neural network model ([Page,
-2000](#ref-pageConnectionistModellingPsychology2000a)), with each input
+ALM is a localist neural network model (Page, 2000), with each input
 node corresponding to a particular stimulus, and each output node
 corresponding to a particular response value. The units in the input
 layer activate as a function of their Gaussian similarity to the input
@@ -982,13 +948,12 @@ required in order for it to generate resposnes for the constant group.
 We assumed that participants come to the task with prior knowledge of
 the origin point (0,0), which can serve as a reference point necessary
 for the model to generate responses for the constant group. This
-assumption is motivated by previous function learning research ([Brown &
-Lacroix, 2017](#ref-brownUnderestimationLinearFunction2017)), which
-through a series of manipulations of the y intercept of the underlying
-function, found that participants consistently demonstrated knowledge
-of, or a bias towards, the origin point (see Kwantes & Neal
-([2006](#ref-kwantesWhyPeopleUnderestimate2006)) for additional evidence
-of such a bias in function learning tasks).
+assumption is motivated by previous function learning research (Brown &
+Lacroix, 2017), which through a series of manipulations of the y
+intercept of the underlying function, found that participants
+consistently demonstrated knowledge of, or a bias towards, the origin
+point (see Kwantes & Neal (2006) for additional evidence of such a bias
+in function learning tasks).
 
 See <a href="#tbl-alm-exam" class="quarto-xref">Table 11</a> for a full
 specification of the equations that define ALM and EXAM, and
@@ -1023,40 +988,36 @@ Table 11: ALM & EXAM Equations
 ## Model Fitting
 
 To fit ALM and EXAM to our participant data, we employ a similar method
-to Mcdaniel et al.
-([2009](#ref-mcdanielPredictingTransferPerformance2009)), wherein we
-examine the performance of each model after being fit to various subsets
-of the data. Each model was fit to the data with three separate
-procedures: 1) fit to maximize predictions of the testing data, 2) fit
-to maximize predictions of both the training and testing data, 3) fit to
-maximize predictions of the just the training data. We refer to this
-fitting manipulations as “Fit Method” in the tables and figures below.
-It should be emphasized that for all three fit methods, the ALM and EXAM
-models behave identically - with weights updating only during the
-training phase. Models were fit separately to the data of each
-individual participant. The free parameters for both models are the
-generalization ($c$) and learning rate ($lr$) parameters. Parameter
-estimation was performed using approximate bayesian computation (ABC),
-which we describe in detail below.
+to McDaniel et al. (2009), wherein we examine the performance of each
+model after being fit to various subsets of the data. Each model was fit
+to the data with three separate procedures: 1) fit to maximize
+predictions of the testing data, 2) fit to maximize predictions of both
+the training and testing data, 3) fit to maximize predictions of the
+just the training data. We refer to this fitting manipulations as “Fit
+Method” in the tables and figures below. It should be emphasized that
+for all three fit methods, the ALM and EXAM models behave identically -
+with weights updating only during the training phase. Models were fit
+separately to the data of each individual participant. The free
+parameters for both models are the generalization ($c$) and learning
+rate ($lr$) parameters. Parameter estimation was performed using
+approximate Bayesian computation (ABC), which we describe in detail
+below.
 
 > [!NONE]
 >
 > ** Approximate Bayesian Computation**
 >
 > To estimate the parameters of ALM and EXAM, we used approximate
-> bayesian computation (ABC), enabling us to obtain an estimate of the
+> Bayesian computation (ABC), enabling us to obtain an estimate of the
 > posterior distribution of the generalization and learning rate
 > parameters for each individual. ABC belongs to the class of
-> simulation-based inference methods ([Cranmer et al.,
-> 2020](#ref-cranmerFrontierSimulationbasedInference2020)), which have
+> simulation-based inference methods (Cranmer et al., 2020), which have
 > begun being used for parameter estimation in cognitive modeling
-> relatively recently ([Kangasrääsiö et al.,
-> 2019](#ref-kangasraasioParameterInferenceComputational2019); [Turner
-> et al., 2016](#ref-turnerBayesianAnalysisSimulationbased2016); [Turner
-> & Van Zandt, 2012](#ref-turnerTutorialApproximateBayesian2012)).
-> Although they can be applied to any model from which data can be
-> simulated, ABC methods are most useful for complex models that lack an
-> explicit likelihood function (e.g., many neural network models).
+> relatively recently (Kangasrääsiö et al., 2019; Turner et al., 2016;
+> Turner & Van Zandt, 2012). Although they can be applied to any model
+> from which data can be simulated, ABC methods are most useful for
+> complex models that lack an explicit likelihood function (e.g., many
+> neural network models).
 >
 > The general ABC procedure is to 1) define a prior distribution over
 > model parameters. 2) sample candidate parameter values, $\theta^*$,
@@ -1065,7 +1026,7 @@ which we describe in detail below.
 > simulated and observed datasets, $discrep$($Data_{sim}$,
 > $Data_{obs}$). 5) Accept $\theta^*$ if the discrepancy is less than
 > the tolerance threshold, $\epsilon$, otherwise reject $\theta^*$. 6)
-> Repeat until desired number of posterior samples are obtained.
+> Repeat until the desired number of posterior samples are obtained.
 >
 > Although simple in the abstract, implementations of ABC require
 > researchers to make a number of non-trivial decisions as to i) the
@@ -1074,14 +1035,12 @@ which we describe in detail below.
 > statistic of the datasets, iii) the value of the minimum tolerance
 > $\epsilon$ between simulated and observed data. For the present work,
 > we follow the guidelines from previously published ABC tutorials
-> ([Farrell & Lewandowsky,
-> 2018](#ref-farrellComputationalModelingCognition2018); [Turner & Van
-> Zandt, 2012](#ref-turnerTutorialApproximateBayesian2012)). For the
-> test stage, we summarized datasets with mean velocity of each band in
-> the observed dataset as $V_{obs}^{(k)}$ and in the simulated dataset
-> as $V_{sim}^{(k)}$, where $k$ represents each of the six velocity
-> bands. For computing the discrepancy between datasets in the training
-> stage, we aggregated training trials into three equally sized blocks
+> (Farrell & Lewandowsky, 2018; Turner & Van Zandt, 2012). For the test
+> stage, we summarized datasets with mean velocity of each band in the
+> observed dataset as $V_{obs}^{(k)}$ and in the simulated dataset as
+> $V_{sim}^{(k)}$, where $k$ represents each of the six velocity bands.
+> For computing the discrepancy between datasets in the training stage,
+> we aggregated training trials into three equally sized blocks
 > (separately for each velocity band in the case of the varied group).
 > After obtaining the summary statistics of the simulated and observed
 > datasets, the discrepancy was computed as the mean of the absolute
@@ -1116,16 +1075,16 @@ which we describe in detail below.
 > terms of the noisiness of their data, we employed an adaptive
 > tolerance setting strategy to tailor $\epsilon$ to each individual.
 > The initial value of $\epsilon$ was set to the overall standard
-> deviation of each individuals velocity values. Thus, sampled parameter
-> values that generated simulated data within a standard deviation of
-> the observed data were accepted, while worse performing parameters
-> were rejected. After every 300 samples the tolerance was allowed to
-> increase only if the current acceptance rate of the algorithm was less
-> than 1%. In such cases, the tolerance was shifted towards the average
-> discrepancy of the 5 best samples obtained thus far. To ensure the
-> acceptance rate did not become overly permissive, $\epsilon$ was also
-> allowed to decrease every time a sample was accepted into the
-> posterior.
+> deviation of each individual’s velocity values. Thus, sampled
+> parameter values that generated simulated data within a standard
+> deviation of the observed data were accepted, while worse performing
+> parameters were rejected. After every 300 samples the tolerance was
+> allowed to increase only if the current acceptance rate of the
+> algorithm was less than 1%. In such cases, the tolerance was shifted
+> towards the average discrepancy of the 5 best samples obtained thus
+> far. To ensure the acceptance rate did not become overly permissive,
+> $\epsilon$ was also allowed to decrease every time a sample was
+> accepted into the posterior.
 
 For each of the 156 participants from Experiment 1, the ABC algorithm
 was run until 200 samples of parameters were accepted into the posterior
@@ -1134,8 +1093,7 @@ average of 205,000 simulation runs per participant. Fitting each
 combination of participant, Model (EXAM & ALM), and fitting method (Test
 only, Train only, Test & Train) required a total of 192 million
 simulation runs. To facilitate these intensive computational demands, we
-used the Future Package in R ([Bengtsson,
-2021](#ref-bengtssonUnifyingFrameworkParallel2021)), allowing us to
+used the Future Package in R (Bengtsson, 2021), allowing us to
 parallelize computations across a cluster of ten M1 iMacs, each with 8
 cores.
 
@@ -1143,7 +1101,7 @@ cores.
 
 <div id="tbl-htw-modelError-e1">
 
-Table 12: Models errors predicting empirical data from Experiment 1 -
+Table 12: Model errors predicting empirical data from Experiment 1 -
 aggregated over the full posterior distribution for each participant.
 Note that Fit Method refers to the subset of the data that the model was
 trained on, while Task Stage refers to the subset of the data that the
@@ -1224,11 +1182,11 @@ not constrained, by the training data. All subsequent analyses and
 discussion will thus focus on the testing stage.
 
 The residuals of the model predictions for the testing stage
-(<a href="#fig-htw-resid-pred" class="quarto-xref">Figure 17</a>) also
-show an unsurprising pattern across fitting methods - with models fit
-only to the test data showing the best performance, followed by models
-fit to both training and test data, and with models fit only to the
-training data showing the worst performance (note that y axes are scaled
+(<a href="#fig-htw-resid-pred" class="quarto-xref">Figure 17</a>) show
+an unsurprising pattern across fitting methods - with models fit only to
+the test data showing the best performance, followed by models fit to
+both training and test data, and with models fit only to the training
+data showing the worst performance (note that Y-axes are scaled
 different between plots). Although EXAM tends to perform better for both
 Constant and Varied participants (see also
 <a href="#fig-ee-e1" class="quarto-xref">Figure 19</a>), the relative
@@ -1268,8 +1226,8 @@ Constant) tended to have smaller model residuals.
 
 </div>
 
-To quantitatively assess whether the differences in performance between
-models, we fit a Bayesian regression predicting the errors of the
+To quantitatively assess the differences in performance between models,
+we fit a Bayesian regression model predicting the errors of the
 posterior predictions of each models as a function of the Model (ALM
 vs. EXAM) and training condition (Constant vs. Varied).
 
@@ -1278,13 +1236,12 @@ CrI \[-60.4, -14.17\], pd = 99.85%) than ALM. There was also a
 significant interaction between Model and Condition ($\beta$ = 60.42,
 95% CrI \[36.17, 83.85\], pd = 100%), indicating that the advantage of
 EXAM over ALM was significantly greater for the constant group. To
-assess whether EXAM predicts constant performance significantly better
-for Constant than for Varied subjects, we calculated the difference in
-model error between the Constant and Varied conditions specifically for
-EXAM. The results indicated that the model error for EXAM was
-significantly lower in the Constant condition compared to the Varied
-condition, with a mean difference of -22.88 (95% CrI \[-46.02, -0.97\],
-pd = 0.98).
+assess whether EXAM predicts performance significantly better for
+Constant than for Varied subjects, we calculated the difference in model
+error between the Constant and Varied conditions specifically for EXAM.
+The results indicated that the model error for EXAM was significantly
+lower in the Constant condition compared to the Varied condition, with a
+mean difference of -22.88 (95% CrI \[-46.02, -0.97\], pd = 0.98).
 
 <div id="tbl-htw-modelError-e23">
 
@@ -1330,7 +1287,7 @@ bands.
 Table 14: Results of Bayesian Regression models predicting model error
 as a function of Model (ALM vs. EXAM), Condition (Constant vs. Varied),
 and the interaction between Model and Condition. The values represent
-the estimate coefficient for each term, with 95% credible intervals in
+the estimated coefficient for each term, with 95% credible intervals in
 brackets. The intercept reflects the baseline of ALM and Constant. The
 other estimates indicate deviations from the baseline for the EXAM mode
 and varied condition. Lower values indicate better model fit.
@@ -1360,7 +1317,7 @@ and varied condition. Lower values indicate better model fit.
 
 </div>
 *Model Fits to Experiment 2 and 3.* Data from Experiments 2 and 3 were
-fit to ALM and EXAM in the same manner as Experiment1 . For brevity, we
+fit to ALM and EXAM in the same manner as Experiment 1. For brevity, we
 only plot and discuss the results of the “fit to training and testing
 data” models - results from the other fitting methods can be found in
 the appendix. The model fitting results for Experiments 2 and 3 closely
@@ -1395,8 +1352,8 @@ reverse order condition (see
 
 
 Figure 21: Conditional effects of Model (ALM vs EXAM) and Condition
-(Constant vs. Varied) on Model Error for Experiment 2 and 3 data.
-Experiment 3 also includes a control for the order of training
+(Constant vs. Varied) on Model Error for Experiments 2 and 3 data.
+Experiment 3 also includes a condition for the order of training
 vs. testing bands (original order vs. reverse order).
 
 </div>
@@ -1423,9 +1380,9 @@ abstract rule. However, EXAM is not a conventional rule-based model; it
 does not require the explicit abstraction of a rule. Instead, rule-based
 responses emerge during the retrieval process. The constant groups’
 formation of a single, accurate input-output association, combined with
-the usefulness of the zero point, may have been sufficient for EXAM to
-capture their performance. A potential concern is that the assumption of
-participants utilizing the zero point essentially transforms the
+the usefulness of the zero point, seem to have been sufficient for EXAM
+to capture their performance. A potential concern is that the assumption
+of participants utilizing the zero point essentially transforms the
 extrapolation problem into an interpolation problem. However, this
 concern is mitigated by the consistency of the results across both the
 original and reversed order conditions (the testing extrapolation bands
@@ -1435,11 +1392,11 @@ fall in between the constant training band and the 0 point in experiment
 The fits to the individual participants also reveal a number of
 interesting cases where the models struggle to capture the data
 (<a href="#fig-htw-indv-pred" class="quarto-xref">Figure 23</a>). For
-example participant 68 exhibits a strong a strong non-monotonicity in
-the highest velocity band, a pattern which ALM can mimic, but which EXAM
-cannot capture, given it’s to enforce a simple linear relationship
-between target velocity and response. Participant 70 (lower right corner
-of <a href="#fig-htw-indv-pred" class="quarto-xref">Figure 23</a>) had a
+example participant 68 exhibits a strong non-monotonicity in the highest
+velocity band, a pattern which ALM can mimic, but which EXAM cannot
+capture, given that it enforces a simple linear relationship between
+target velocity and response. Participant 70 (lower right corner of
+<a href="#fig-htw-indv-pred" class="quarto-xref">Figure 23</a>) had a
 roughly parabolic response pattern in their observed data, a pattern
 which neither model can properly reproduce, but which causes EXAM to
 perform particularly poorly.
@@ -1449,16 +1406,16 @@ ability to predict the observed data, without employing conventional
 model fit indices such as the Akaike Information Criterion (AIC) or the
 Bayesian Information Criterion (BIC). These indices, which penalize
 models based on their number of free parameters, would have been of
-limited utility in this case, as both ALM and EXAM have two free
+limited utility in the current case, as both ALM and EXAM have two free
 parameters. However, despite having the same number of free parameters,
 EXAM could still be considered the more complex model, as it
 incorporates all the components of ALM plus an additional mechanism for
 rule-based responding. A more comprehensive model comparison approach
 might involve performing cross-validation with a held-out subset of the
-data ([Mezzadri et al.,
-2022](#ref-mezzadriHoldoutStrategySelecting2022)) or penalizing models
-based on the range of patterns they can produce ([Dome & Wills,
-2023](#ref-domeGdistanceComparisonModel2023)).
+data (Mezzadri et al., 2022) or penalizing models based on the range of
+patterns they can produce (Dome & Wills, 2023), under the assumption
+that more constrained models are more impressive when they do adequately
+fit a given pattern of results.
 
 
 
@@ -1526,48 +1483,41 @@ order condition.
 All three of our experiments yielded evidence that varied training
 conditions produced less learning by the end of training, a pattern
 consistent with much of the previous research on the influence of
-training variability ([Catalano & Kleiner,
-1984](#ref-catalanoDistantTransferCoincident1984a); [Soderstrom & Bjork,
-2015](#ref-soderstromLearningPerformanceIntegrative2015); [Wrisberg et
-al., 1987](#ref-wrisbergVariabilityPracticeHypothesis1987)). The sole
-exception to this pattern was the reverse order condition in Experiment
-3, where the varied group was not significantly worse than the constant
-group. Neither the varied condition trained with the same reverse-order
-items in Experiment 2, nor the original-order varied condition trained
-with ordinal feedback in Experiment 3 were able to match the performance
-of their complementary constant groups by the end of training,
-suggesting that the relative success of the ordinal-reverse ordered
-varied group cannot be attributed to item or feedback effects alone.
+training variability (Catalano & Kleiner, 1984; Soderstrom & Bjork,
+2015; Wrisberg et al., 1987). The sole exception to this pattern was the
+reverse order condition in Experiment 3, where the varied group was not
+significantly worse than the constant group. Neither the varied
+condition trained with the same reverse-order items in Experiment 2, nor
+the original-order varied condition trained with ordinal feedback in
+Experiment 3 were able to match the performance of their complementary
+constant groups by the end of training, suggesting that the relative
+success of the ordinal-reverse ordered varied group cannot be attributed
+to item or feedback effects alone.
 
 Our findings also diverge from the two previous studies to cleanly
 manipulate the variability of training items in a function learning task
-([DeLosh et al., 1997](#ref-deloshExtrapolationSineQua1997); [van Dam &
-Ernst, 2015](#ref-vandamMappingShapeVisuomotor2015)), although the
-varied training condition of van Dam & Ernst
-([2015](#ref-vandamMappingShapeVisuomotor2015)) also exhibited less
+(DeLosh et al., 1997; van Dam & Ernst, 2015), although the varied
+training condition of van Dam & Ernst (2015) also exhibited less
 learning, neither of these previous studies observed any difference
 between training conditions in extrapolation to novel items. Like DeLosh
-et al. ([1997](#ref-deloshExtrapolationSineQua1997)) , our participants
-exhibited above chance extrapolation/discrimination of novel items,
-however they observed no difference between any of their three training
-conditions. A noteworthy difference difference between our studies is
-that DeLosh et al. ([1997](#ref-deloshExtrapolationSineQua1997)) trained
-participants with either 8, 20, or 50 unique items (all receiving the
-same total number of training trials). These larger sets of unique
-items, combined with the fact that participants achieved near ceiling
-level performance by the end of training - may have made it more
+et al. (1997) , our participants exhibited above chance
+extrapolation/discrimination of novel items, however they observed no
+difference between any of their three training conditions. A noteworthy
+difference difference between our studies is that DeLosh et al. (1997)
+trained participants with either 8, 20, or 50 unique items (all
+receiving the same total number of training trials). These larger sets
+of unique items, combined with the fact that participants achieved near
+ceiling level performance by the end of training - may have made it more
 difficult to observe any between-group differences of training variation
-in their study. van Dam & Ernst
-([2015](#ref-vandamMappingShapeVisuomotor2015)) ’s variability
-manipulation was more similar to our own, as they trained participants
-with either 2 or 5 unique items. However, although the mapping between
-their input stimuli and motor responses was technically linear, the
-input dimension was more complex than our own, as it was defined by the
-degree of “spikiness” of the input shape. This entirely arbitrary
-mapping also would have preculded any sense of a “0” point, which may
-partially explain why neither of their training conditions were able to
-extrapolate linearly in the manner observed in the current study or in
-DeLosh et al. ([1997](#ref-deloshExtrapolationSineQua1997)).
+in their study. van Dam & Ernst (2015) ’s variability manipulation was
+more similar to our own, as they trained participants with either 2 or 5
+unique items. However, although the mapping between their input stimuli
+and motor responses was technically linear, the input dimension was more
+complex than our own, as it was defined by the degree of “spikiness” of
+the input shape. This entirely arbitrary mapping also would have
+preculded any sense of a “0” point, which may partially explain why
+neither of their training conditions were able to extrapolate linearly
+in the manner observed in the current study or in DeLosh et al. (1997).
 
 *Limitations*
 
@@ -1600,13 +1550,10 @@ in the present study consisted of only a linear, positive function.
 Previous work in human function learning has repeatedly shown that such
 functions are among the easiest to learn, but that humans are
 nonetheless capable of learning negative, non-linear, or discontinuous
-functions ([Busemeyer et al.,
-1997](#ref-busemeyerLearningFunctionalRelations1997); [DeLosh et al.,
-1997](#ref-deloshExtrapolationSineQua1997); [Kalish,
-2013](#ref-kalishLearningExtrapolatingPeriodic2013); [Mcdaniel et al.,
-2009](#ref-mcdanielPredictingTransferPerformance2009)). It thus remains
-an open question as to whether the influence of training variability
-might interact with various components of the to-be-learned function.
+functions (Busemeyer et al., 1997; DeLosh et al., 1997; Kalish, 2013;
+McDaniel et al., 2009). It thus remains an open question as to whether
+the influence of training variability might interact with various
+components of the to-be-learned function.
 
 # Supplementary
 
@@ -1785,6 +1732,15 @@ Cognition and Behavior:* (1st ed.). Cambridge University Press.
 
 </div>
 
+<div id="ref-gormanInstancebasedModelAccount2022" class="csl-entry">
+
+Gorman, T. E., & Goldstone, R. L. (2022). An instance-based model
+account of the benefits of varied practice in visuomotor skill.
+*Cognitive Psychology*, *137*, 101491.
+<https://doi.org/10.1016/j.cogpsych.2022.101491>
+
+</div>
+
 <div id="ref-guoEffectsExampleVariability2014" class="csl-entry">
 
 Guo, J.-P., Yang, L.-Y., & Ding, Y. (2014). Effects of example
@@ -1869,10 +1825,11 @@ Uncertainty, Existence and Significance within the Bayesian Framework.
 <div id="ref-mcdanielPredictingTransferPerformance2009"
 class="csl-entry">
 
-Mcdaniel, M. A., Dimperio, E., Griego, J. A., & Busemeyer, J. R. (2009).
-Predicting transfer performance: A comparison of competing function
-learning models. *Journal of Experimental Psychology. Learning, Memory,
-and Cognition*, *35*, 173–195. <https://doi.org/10.1037/a0013982>
+McDaniel, M. A., Dimperio, E., Jacqueline A. Griego, & Busemeyer, J. R.
+(2009). Predicting transfer performance: A comparison of competing
+function learning models. *Journal of Experimental Psychology. Learning,
+Memory, and Cognition*, *35*, 173–195.
+<https://doi.org/10.1037/a0013982>
 
 </div>
 
