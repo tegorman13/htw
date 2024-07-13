@@ -32,6 +32,7 @@ d <- d |> mutate(Exp=case_when(
   TRUE ~ NA_character_
 ))
 
+# remove E1 subjects from miscoded task (who weren't tested on all bands)
 alt <- d |> filter(expMode2=="Test") |> group_by(id,condit,Exp) |> summarise(n=n_distinct(bandInt)) |> 
   filter(n<=4) |> pull(id) |> droplevels()
 d <- d |> filter(!(id %in% alt))

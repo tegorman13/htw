@@ -168,7 +168,7 @@ To account for the empirical results, we will apply a series of computational mo
 
 ## Methods
 
-*Participants* A total of 156 participants were recruited from Indiana University Introductory Psychology Courses. Participants were randomly assigned to one of two training conditions: varied training or constant training. 
+*Participants.* A total of 183 participants were initially recruited from Indiana University Introductory Psychology Courses. Of these, 27 participants were excluded from further analysis due to meeting the exclusion criteria, resulting in a final sample of 156 participants. The exclusion criteria was defined as performance worse (i.e., larger deviations) than the condition average in either the training or testing stage of the experiment. The remaining participants were randomly assigned to one of two training conditions: varied training or constant training.
 
 
 *Task.* The "Hit The Wall" (HTW) visuomotor extrapolation task task was programmed in JavaScript, making use of the [phaser.io](https://phaser.io/) game library. The HTW task involved launching a projectile such that it would strike the "wall" at the target speed indicated at the top of the screen (see @fig-htw-task). The target velocities were given as a range, or band, of acceptable velocity values (e.g., band 800-1000). During the training stage, participants received feedback indicating whether they had hit the wall within the target velocity band, or how many units their throw was above or below  the target band. Participants were instructed that only the x velocity component of the ball was relevant to the task. The y velocity, or the location at which the ball struck the wall, had no influence on the task feedback.
@@ -525,8 +525,7 @@ trainE2_max <- trainE2 |> filter(Trial_Bin == nbins, bandInt==600)
 
 ## Methods & Procedure 
 
-The task and procedure of Experiment 2 was identical to Experiment 1, with the exception that the training and testing bands were reversed (see @fig-design-e2). The Varied group trained on bands 100-300, 350-550, 600-800,  and the constant group trained on band 600-800. Both groups were tested from all six bands. A total of 110 participants completed the experiment (Varied: 55, Constant: 55).
-  
+Initially, 131 participants were recruited. After applying the same exclusion procedure as in Experiment 1, 21 participants were excluded, resulting in a final sample of 110 participants who completed the experiment (Varied: 55, Constant: 55). The task and procedure of Experiment 2 was identical to Experiment 1, with the exception that the training and testing bands were reversed (see @fig-design-e2). The Varied group trained on bands 100-300, 350-550, 600-800,  and the constant group trained on band 600-800. Both groups were tested from all six bands. 
 
 ::: {.content-visible unless-format="markdown"}
 ```{dot}
@@ -786,18 +785,13 @@ p3 <- (pe2vce + pid_den2 + pid_slopes2) + plot_annotation(tag_levels= 'A')
 p3
 ```
 
-
-
 ## Experiment 2 Summary  
 
 Experiment 2 extended the findings of Experiment 1 by examining the effects of training variability on extrapolation performance in a visuomotor function learning task, but with reversed training and testing bands. Similar to Experiment 1, the Varied group exhibited poorer performance during training and testing. However unlike experiment 1, the Varied and Constant groups did not show a significant difference in their discrimination between bands. 
 
-
-
 # Experiment 3
 
 ```{r}
-
 e3 <- readRDS(here("data/e3_08-04-23.rds")) |> 
     mutate(trainCon=case_when(
     bandOrder=="Original" ~ "800",
@@ -815,7 +809,7 @@ trainE3_max <- trainE3 |> filter(Trial_Bin == nbins, bandInt==trainCon)
 
 ## Methods & Procedure 
 
-The major adjustment of Experiment 3 is for participants to receive ordinal feedback during training, in contrast to the continuous feedback of the prior experiments. After each training throw, participants are informed whether a throw was too soft, too hard, or correct (i.e. within the target velocity range). All other aspects of the task and design are identical to Experiments 1 and 2. We utilized the order of training and testing bands from both of the prior experiments, thus assigning participants to both an order condition (Original or Reverse) and a training condition (Constant or Varied). Participants were once again recruited from the online Indiana University Introductory Psychology Course pool. Following exclusions, 195 participants were included in the final analysis, n=51 in the Constant-Original condition, n=59 in the Constant-Reverse condition, n=39 in the Varied-Original condition, and n=46 in the Varied-Reverse condition.
+The major adjustment of Experiment 3 is for participants to receive ordinal feedback during training, in contrast to the continuous feedback of the prior experiments. After each training throw, participants are informed whether a throw was too soft, too hard, or correct (i.e. within the target velocity range). All other aspects of the task and design are identical to Experiments 1 and 2. We utilized the order of training and testing bands from both of the prior experiments, thus assigning participants to both an order condition (Original or Reverse) and a training condition (Constant or Varied). Participants were once again recruited from the online Indiana University Introductory Psychology Course pool. 227 participants were recruited initially. Following exclusions, 195 participants were included in the final analysis, n=51 in the Constant-Original condition, n=59 in the Constant-Reverse condition, n=39 in the Varied-Original condition, and n=46 in the Varied-Reverse condition.
 
 
 ## Results
